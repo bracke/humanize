@@ -4,8 +4,11 @@
 human-readable, localized text:
 
 * relative date/times (`now`, `yesterday`, `4 hours ago`, `in 3 days`);
-* simple durations (`90 seconds` → `1 minute`);
-* byte sizes (`1536` → `1.5 KiB`, decimal or binary).
+* durations (`90 seconds` → `1 minute`; multi-unit `1 hour, 30 minutes`);
+* byte sizes (`1536` → `1.5 KiB`, decimal or binary);
+* ordinals (`21` → `21st`) and compact numbers (`1200` → `1.2K`).
+
+English, Danish, and German catalog fragments ship built in.
 
 Humanize selects a semantic message key and arguments, then renders through the
 public [`i18n`](../i18n) runtime. It owns the formatting *policy*; `i18n` owns
@@ -15,8 +18,6 @@ direction is one-way:
 ```text
 Humanize -> I18N
 ```
-
-English and Danish catalog fragments ship built in.
 
 ## Quick start
 
@@ -54,12 +55,25 @@ A complete runnable program is in [`examples/humanize_demo.adb`](examples/humani
 | `Humanize.Messages` | Semantic `Message_Id` enum and stable catalog `Key`. |
 | `Humanize.Contexts` | Non-owning `Context` binding an `i18n` runtime + locale. |
 | `Humanize.Catalogs` | `Load_Defaults` loads the built-in en/da fragments. |
-| `Humanize.Datetimes` | `Relative` / `Relative_Into`. |
-| `Humanize.Durations` | `Format` / `Format_Into`. |
+| `Humanize.Datetimes` | `Relative` / `Relative_Into`, plus a civil-component (`Relative_Civil`) convenience API. |
+| `Humanize.Durations` | `Format` / `Format_Into` (single unit) and `Format_Components` (multi-unit). |
 | `Humanize.Bytes` | `Format` / `Format_Into`. |
+| `Humanize.Numbers` | `Ordinal` and `Compact`, with bounded forms. |
 
 Every formatter offers a convenience form returning `Humanize.Status.Text_Result`
 and a bounded form (`*_Into`) writing into a caller-owned 1-based `String`.
+
+Shipped locales: English (`en`), Danish (`da`), German (`de`). Ordinal and
+plural correctness is delegated to `i18n`'s CLDR rules.
+
+## Non-goals
+
+By design (these belong in other libraries or a later major version):
+
+* a time zone database — civil components are interpreted in the local zone via `Ada.Calendar`;
+* importing arbitrary CLDR data at runtime — catalog fragments are built in for the shipped locales;
+* locale-aware decimal grouping and locale-specific list patterns (a single `", "` separator is used);
+* runtime rule plugins or application-defined domain classifiers.
 
 Rule selection, catalog construction, and the i18n boundary
 (`Humanize.I18N_Rendering`) are private. The architectural boundary and the

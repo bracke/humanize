@@ -62,4 +62,58 @@ package body Humanize.Duration_Classification is
       return Selected (Options.Smallest_Unit, 0);
    end Classify;
 
+   function Classify_Multi
+     (Seconds        : Duration_Seconds;
+      Options        : Duration_Options;
+      Max_Components : Positive)
+      return Multi_Outcome
+   is
+      Result    : Multi_Outcome;
+      Remaining : Duration_Seconds;
+   begin
+      if Seconds < 0 then
+         return (Kind => Value_Invalid, others => <>);
+      end if;
+
+      if Options.Largest_Unit < Options.Smallest_Unit then
+         return (Kind => Options_Invalid, others => <>);
+      end if;
+
+      Remaining := Seconds;
+      Result.Length := 0;
+
+      for Unit in reverse Options.Smallest_Unit .. Options.Largest_Unit loop
+         exit when Result.Length >= Max_Components;
+         declare
+            Whole : constant Duration_Seconds := Remaining / Size (Unit);
+         begin
+            if Whole >= 1 then
+               Result.Length := Result.Length + 1;
+               Result.Items (Result.Length) :=
+                 (Unit => Unit, Count => Long_Long_Integer (Whole));
+               Remaining := Remaining mod Size (Unit);
+            end if;
+         end;
+      end loop;
+
+      --  Zero or sub-smallest values render a single zero count.
+      if Result.Length = 0 then
+         Result.Length := 1;
+         Result.Items (1) := (Unit => Options.Smallest_Unit, Count => 0);
+      end if;
+
+      Result.Kind := Ok_Selection;
+      return Result;
+   end Classify_Multi;
+
+   function Component_Selection
+     (Item : Component)
+      return Humanize.Selections.Message_Selection
+   is
+   begin
+      return Humanize.Selections.Count
+               (Unit_Key (Item.Unit),
+                Humanize.Selections.Count_Value (Item.Count));
+   end Component_Selection;
+
 end Humanize.Duration_Classification;

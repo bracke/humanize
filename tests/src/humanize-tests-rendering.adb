@@ -28,6 +28,20 @@ package body Humanize.Tests.Rendering is
    Inv_Runtime : aliased I18N.Runtime.Instance;
    Inv_Loaded  : Boolean := False;
 
+   --  A runtime made invalid (Initialize on a missing file) to provoke an i18n
+   --  Execution_Error -> Humanize Runtime_Error.
+   Bad_Runtime : aliased I18N.Runtime.Instance;
+   Bad_Ready   : Boolean := False;
+
+   procedure Ensure_Bad is
+   begin
+      if not Bad_Ready then
+         I18N.Runtime.Initialize
+           (Bad_Runtime, "/humanize/no/such/catalog/file.catalog");
+         Bad_Ready := True;
+      end if;
+   end Ensure_Bad;
+
    procedure Ensure_Inv is
       Result : I18N.Runtime.Load_Result;
    begin
@@ -73,6 +87,25 @@ package body Humanize.Tests.Rendering is
            = "i g" & AA & "r",
          "Danish yesterday is i g" & AA & "r");
    end Test_Danish;
+
+   procedure Test_German (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+      use Ada.Calendar;
+      Ref   : constant Time := Time_Of (2026, 3, 21, Day_Duration (600));
+      Value : constant Time := Time_Of (2026, 3, 20, Day_Duration (86_100));
+   begin
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Durations.Format (Support.De, 1)) = "1 Sekunde",
+         "German duration one");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Durations.Format (Support.De, 2))
+           = "2 Sekunden",
+         "German duration other");
+      AUnit.Assertions.Assert
+        (Support.Text
+           (Humanize.Datetimes.Relative (Support.De, Value, Ref)) = "gestern",
+         "German yesterday");
+   end Test_German;
 
    procedure Test_Missing_Message (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
@@ -120,6 +153,38 @@ package body Humanize.Tests.Rendering is
       end;
    end Test_Invalid_Argument;
 
+   procedure Test_Runtime_Error (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+   begin
+      Ensure_Bad;
+      declare
+         Ctx : constant Humanize.Contexts.Context :=
+           Humanize.Contexts.Create (Bad_Runtime'Access, "en");
+         Result : constant Text_Result :=
+           Humanize.Durations.Format (Ctx, 5);
+      begin
+         AUnit.Assertions.Assert
+           (Result.Status = Runtime_Error,
+            "an invalid runtime maps to Runtime_Error, got "
+            & Status_Image (Result.Status));
+      end;
+   end Test_Runtime_Error;
+
+   procedure Test_Value_Argument (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+      --  A value-argument selection flows the deterministic formatter text
+      --  through i18n's {value} substitution.
+      Result : constant Text_Result :=
+        Humanize.I18N_Rendering.Render
+          (Support.En,
+           Humanize.Selections.Text_Value
+             (Humanize.Messages.Bytes_KiB, "1.5"));
+   begin
+      AUnit.Assertions.Assert
+        (Result.Status = Ok and then Support.Text (Result) = "1.5 KiB",
+         "value argument substitutes formatter text");
+   end Test_Value_Argument;
+
    procedure Test_Count_Strict_Decimal (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
       --  Count must serialize as a strict decimal with no leading space.
@@ -145,9 +210,12 @@ package body Humanize.Tests.Rendering is
    begin
       Register_Routine (T, Test_English'Access, "English output");
       Register_Routine (T, Test_Danish'Access, "Danish output (plurals + UTF-8)");
+      Register_Routine (T, Test_German'Access, "German output");
       Register_Routine (T, Test_Missing_Message'Access, "missing key");
       Register_Routine (T, Test_Missing_Argument'Access, "missing argument");
       Register_Routine (T, Test_Invalid_Argument'Access, "invalid argument");
+      Register_Routine (T, Test_Runtime_Error'Access, "runtime error");
+      Register_Routine (T, Test_Value_Argument'Access, "value argument text");
       Register_Routine (T, Test_Count_Strict_Decimal'Access,
         "count is strict decimal");
    end Register_Tests;

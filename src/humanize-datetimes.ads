@@ -48,4 +48,38 @@ package Humanize.Datetimes is
       Status    : out Humanize.Status.Status_Code;
       Options   : Datetime_Options := Default_Datetime_Options);
 
+   --  Civil-component convenience API. Callers that hold broken-down civil
+   --  date/time fields (rather than an Ada.Calendar.Time) can humanize directly.
+   --  Impossible civil dates (for example February 30) yield Invalid_Value.
+   --  Humanize v0.2 still does not own a time zone database; these components
+   --  are interpreted in the local time zone via Ada.Calendar.
+   subtype Hour_Number   is Natural range 0 .. 23;
+   subtype Minute_Number is Natural range 0 .. 59;
+   subtype Second_Number is Natural range 0 .. 59;
+
+   type Civil_Date_Time is record
+      Year   : Ada.Calendar.Year_Number := Ada.Calendar.Year_Number'First;
+      Month  : Ada.Calendar.Month_Number := 1;
+      Day    : Ada.Calendar.Day_Number := 1;
+      Hour   : Hour_Number := 0;
+      Minute : Minute_Number := 0;
+      Second : Second_Number := 0;
+   end record;
+
+   function Relative_Civil
+     (Context   : Humanize.Contexts.Context;
+      Value     : Civil_Date_Time;
+      Reference : Civil_Date_Time;
+      Options   : Datetime_Options := Default_Datetime_Options)
+      return Humanize.Status.Text_Result;
+
+   procedure Relative_Civil_Into
+     (Context   : Humanize.Contexts.Context;
+      Value     : Civil_Date_Time;
+      Reference : Civil_Date_Time;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Options   : Datetime_Options := Default_Datetime_Options);
+
 end Humanize.Datetimes;

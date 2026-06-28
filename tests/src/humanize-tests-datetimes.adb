@@ -169,8 +169,14 @@ package body Humanize.Tests.Datetimes is
    procedure Test_Future (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
    begin
+      Check (Support.En, Noon + Duration (1), Noon, Elapsed_Opts,
+             "in 1 second", "future seconds (one)");
+      Check (Support.En, Noon + Duration (30), Noon, Elapsed_Opts,
+             "in 30 seconds", "future seconds (other)");
       Check (Support.En, Noon + Duration (120), Noon, Elapsed_Opts,
              "in 2 minutes", "future minutes");
+      Check (Support.En, Noon + Duration (7_200), Noon, Elapsed_Opts,
+             "in 2 hours", "future hours");
       Check (Support.En, Noon + Duration (3 * 86_400), Noon, Elapsed_Opts,
              "in 3 days", "future days");
    end Test_Future;
@@ -201,6 +207,47 @@ package body Humanize.Tests.Datetimes is
       end;
    end Test_Calendar_Fallback;
 
+   procedure Test_Civil (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+      Ref   : constant Civil_Date_Time :=
+        (Year => 2026, Month => 3, Day => 21, Hour => 0, Minute => 10,
+         Second => 0);
+      Value : constant Civil_Date_Time :=
+        (Year => 2026, Month => 3, Day => 20, Hour => 23, Minute => 55,
+         Second => 0);
+      Yesterday : constant Text_Result :=
+        Relative_Civil (Support.En, Value, Ref, Default_Datetime_Options);
+      Bad : constant Text_Result :=
+        Relative_Civil
+          (Support.En,
+           (Year => 2026, Month => 2, Day => 30, others => 0),  -- no Feb 30
+           Ref, Default_Datetime_Options);
+   begin
+      AUnit.Assertions.Assert
+        (Yesterday.Status = Ok and then Support.Text (Yesterday) = "yesterday",
+         "civil components humanize like the Ada.Calendar API");
+      AUnit.Assertions.Assert
+        (Bad.Status = Invalid_Value,
+         "an impossible civil date is Invalid_Value, got "
+         & Status_Image (Bad.Status));
+   end Test_Civil;
+
+   procedure Test_Civil_Into (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+      Now_Time : constant Civil_Date_Time :=
+        (Year => 2026, Month => 3, Day => 21, others => 0);
+      Buffer   : String (1 .. 16);
+      Written  : Natural;
+      Code     : Status_Code;
+   begin
+      Relative_Civil_Into
+        (Support.En, Now_Time, Now_Time, Buffer, Written, Code,
+         Default_Datetime_Options);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "now",
+         "civil bounded render, status " & Status_Image (Code));
+   end Test_Civil_Into;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -228,6 +275,8 @@ package body Humanize.Tests.Datetimes is
       Register_Routine (T, Test_Future'Access, "future units");
       Register_Routine (T, Test_Determinism'Access, "explicit reference determinism");
       Register_Routine (T, Test_Calendar_Fallback'Access, "calendar semantic fallback");
+      Register_Routine (T, Test_Civil'Access, "civil date/time components");
+      Register_Routine (T, Test_Civil_Into'Access, "civil bounded render");
    end Register_Tests;
 
 end Humanize.Tests.Datetimes;

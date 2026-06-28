@@ -41,7 +41,14 @@ package Humanize.Messages is
       Bytes_KiB,
       Bytes_MiB,
       Bytes_GiB,
-      Bytes_TiB);
+      Bytes_TiB,
+
+      Number_Ordinal,
+      Number_Compact_Plain,
+      Number_Compact_Thousand,
+      Number_Compact_Million,
+      Number_Compact_Billion,
+      Number_Compact_Trillion);
 
    --  Return the stable catalog key for Id.
    --

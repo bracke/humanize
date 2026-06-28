@@ -9,6 +9,7 @@ with Humanize.Catalogs;
 with Humanize.Contexts;
 with Humanize.Datetimes;
 with Humanize.Durations;
+with Humanize.Numbers;
 with Humanize.Status;
 
 with Humanize_Demo_Runtime;
@@ -58,5 +59,16 @@ begin
       Put_Line
         ("  4 hours ago  : "
          & Text (Humanize.Datetimes.Relative (Danish, Earlier, Reference)));
+      New_Line;
+      Put_Line ("Numbers / multi-unit (English):");
+      Put_Line
+        ("  ordinal 21   : "
+         & Text (Humanize.Numbers.Ordinal (English, 21)));
+      Put_Line
+        ("  compact 1.2M : "
+         & Text (Humanize.Numbers.Compact (English, 1_200_000)));
+      Put_Line
+        ("  3661 seconds : "
+         & Text (Humanize.Durations.Format_Components (English, 3661, 3)));
    end;
 end Humanize_Demo;

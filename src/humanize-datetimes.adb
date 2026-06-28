@@ -80,4 +80,48 @@ package body Humanize.Datetimes is
         (Context, Selection, Target, Written, Status);
    end Relative_Into;
 
+   function To_Time (Item : Civil_Date_Time) return Ada.Calendar.Time is
+   begin
+      return Ada.Calendar.Time_Of
+               (Year    => Item.Year,
+                Month   => Item.Month,
+                Day     => Item.Day,
+                Seconds => Ada.Calendar.Day_Duration
+                             (Item.Hour * 3600 + Item.Minute * 60
+                              + Item.Second));
+   end To_Time;
+
+   function Relative_Civil
+     (Context   : Humanize.Contexts.Context;
+      Value     : Civil_Date_Time;
+      Reference : Civil_Date_Time;
+      Options   : Datetime_Options := Default_Datetime_Options)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Relative (Context, To_Time (Value), To_Time (Reference), Options);
+   exception
+      when others =>
+         return (Status => Humanize.Status.Invalid_Value, others => <>);
+   end Relative_Civil;
+
+   procedure Relative_Civil_Into
+     (Context   : Humanize.Contexts.Context;
+      Value     : Civil_Date_Time;
+      Reference : Civil_Date_Time;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Options   : Datetime_Options := Default_Datetime_Options)
+   is
+   begin
+      Relative_Into
+        (Context, To_Time (Value), To_Time (Reference),
+         Target, Written, Status, Options);
+   exception
+      when others =>
+         Written := 0;
+         Status := Humanize.Status.Invalid_Value;
+   end Relative_Civil_Into;
+
 end Humanize.Datetimes;

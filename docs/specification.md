@@ -1274,3 +1274,29 @@ AUnit tests cover all public behavior.
 No localized strings are embedded in rule-selection code.
 Every invariant HUM-INV-001 through HUM-INV-010 is tested or covered by code review.
 ```
+
+## 22. v0.2 Additions
+
+Humanize v0.2 extends the v0.1 contract without changing it. New public surface:
+
+* `Humanize.Numbers` — `Ordinal` (locale-aware ordinals via i18n
+  selectordinal: English `21 -> 21st`; German/Danish `21 -> 21.`) and `Compact`
+  (`1200 -> 1.2K`, with localized suffixes), each with convenience and bounded
+  forms.
+* `Humanize.Durations.Format_Components` / `Format_Components_Into` — multi-unit
+  duration rendering (for example `1 hour, 30 minutes`). Components are joined
+  with a `", "` separator.
+* `Humanize.Datetimes.Relative_Civil` / `Relative_Civil_Into` — a civil
+  date/time component API (`Civil_Date_Time`). Impossible civil dates return
+  `Invalid_Value`. No time zone database is owned; components are interpreted in
+  the local zone via `Ada.Calendar`.
+* German (`de`) catalog fragment. Shipped locales: `en`, `da`, `de`.
+
+The architectural boundary is unchanged: classifiers stay pure (HUM-INV-001),
+domain packages (now including `Humanize.Numbers`) do not call `I18N.Runtime`
+directly (HUM-INV-002), and all i18n rendering and status mapping stays in
+`Humanize.I18N_Rendering` (HUM-INV-003).
+
+Still out of scope (deferred beyond v0.2): a time zone database, runtime CLDR
+data import, locale-aware decimal grouping, locale-specific list patterns, and
+runtime rule plugins.

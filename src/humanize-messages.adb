@@ -74,6 +74,19 @@ package body Humanize.Messages is
             return "humanize.bytes.gib";
          when Bytes_TiB =>
             return "humanize.bytes.tib";
+
+         when Number_Ordinal =>
+            return "humanize.number.ordinal";
+         when Number_Compact_Plain =>
+            return "humanize.number.compact.plain";
+         when Number_Compact_Thousand =>
+            return "humanize.number.compact.thousand";
+         when Number_Compact_Million =>
+            return "humanize.number.compact.million";
+         when Number_Compact_Billion =>
+            return "humanize.number.compact.billion";
+         when Number_Compact_Trillion =>
+            return "humanize.number.compact.trillion";
       end case;
    end Key;
 

@@ -41,4 +41,22 @@ package Humanize.Durations is
       Status  : out Humanize.Status.Status_Code;
       Options : Duration_Options := Default_Duration_Options);
 
+   --  Multi-unit API: render up to Max_Components largest whole units joined by
+   --  the locale's list separator (e.g. "1 hour, 30 minutes").
+   function Format_Components
+     (Context        : Humanize.Contexts.Context;
+      Seconds        : Duration_Seconds;
+      Max_Components : Positive;
+      Options        : Duration_Options := Default_Duration_Options)
+      return Humanize.Status.Text_Result;
+
+   procedure Format_Components_Into
+     (Context        : Humanize.Contexts.Context;
+      Seconds        : Duration_Seconds;
+      Max_Components : Positive;
+      Target         : in out String;
+      Written        : out Natural;
+      Status         : out Humanize.Status.Status_Code;
+      Options        : Duration_Options := Default_Duration_Options);
+
 end Humanize.Durations;

@@ -8,6 +8,7 @@ package body Humanize.Catalogs is
    AA : constant String :=
      Character'Val (16#C3#) & Character'Val (16#A5#);
 
+
    --  English catalog fragment. Catalog values are unquoted; i18n trims the
    --  text after the first '=' separator.
    English : constant String :=
@@ -60,7 +61,14 @@ package body Humanize.Catalogs is
      & "en.humanize.bytes.kib = {value} KiB" & LF
      & "en.humanize.bytes.mib = {value} MiB" & LF
      & "en.humanize.bytes.gib = {value} GiB" & LF
-     & "en.humanize.bytes.tib = {value} TiB" & LF;
+     & "en.humanize.bytes.tib = {value} TiB" & LF
+     & "en.humanize.number.ordinal = "
+     & "{count, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}" & LF
+     & "en.humanize.number.compact.plain = {value}" & LF
+     & "en.humanize.number.compact.thousand = {value}K" & LF
+     & "en.humanize.number.compact.million = {value}M" & LF
+     & "en.humanize.number.compact.billion = {value}B" & LF
+     & "en.humanize.number.compact.trillion = {value}T" & LF;
 
    --  Danish catalog fragment. 'å' is spliced via AA to keep UTF-8 output.
    Danish : constant String :=
@@ -118,7 +126,74 @@ package body Humanize.Catalogs is
      & "da.humanize.bytes.kib = {value} KiB" & LF
      & "da.humanize.bytes.mib = {value} MiB" & LF
      & "da.humanize.bytes.gib = {value} GiB" & LF
-     & "da.humanize.bytes.tib = {value} TiB" & LF;
+     & "da.humanize.bytes.tib = {value} TiB" & LF
+     & "da.humanize.number.ordinal = "
+     & "{count, selectordinal, other {#.}}" & LF
+     & "da.humanize.number.compact.plain = {value}" & LF
+     & "da.humanize.number.compact.thousand = {value} t" & LF
+     & "da.humanize.number.compact.million = {value} mio." & LF
+     & "da.humanize.number.compact.billion = {value} mia." & LF
+     & "da.humanize.number.compact.trillion = {value} bio." & LF;
+
+   --  German catalog fragment (pure ASCII: no umlauts in these words).
+   German : constant String :=
+     "de.humanize.datetime.now = jetzt" & LF
+     & "de.humanize.datetime.day.previous = gestern" & LF
+     & "de.humanize.datetime.day.current = heute" & LF
+     & "de.humanize.datetime.day.next = morgen" & LF
+     & "de.humanize.datetime.relative.second.past = "
+     & "{count, plural, one {vor # Sekunde} other {vor # Sekunden}}" & LF
+     & "de.humanize.datetime.relative.second.future = "
+     & "{count, plural, one {in # Sekunde} other {in # Sekunden}}" & LF
+     & "de.humanize.datetime.relative.minute.past = "
+     & "{count, plural, one {vor # Minute} other {vor # Minuten}}" & LF
+     & "de.humanize.datetime.relative.minute.future = "
+     & "{count, plural, one {in # Minute} other {in # Minuten}}" & LF
+     & "de.humanize.datetime.relative.hour.past = "
+     & "{count, plural, one {vor # Stunde} other {vor # Stunden}}" & LF
+     & "de.humanize.datetime.relative.hour.future = "
+     & "{count, plural, one {in # Stunde} other {in # Stunden}}" & LF
+     & "de.humanize.datetime.relative.day.past = "
+     & "{count, plural, one {vor # Tag} other {vor # Tagen}}" & LF
+     & "de.humanize.datetime.relative.day.future = "
+     & "{count, plural, one {in # Tag} other {in # Tagen}}" & LF
+     & "de.humanize.datetime.relative.week.past = "
+     & "{count, plural, one {vor # Woche} other {vor # Wochen}}" & LF
+     & "de.humanize.datetime.relative.week.future = "
+     & "{count, plural, one {in # Woche} other {in # Wochen}}" & LF
+     & "de.humanize.datetime.relative.month.past = "
+     & "{count, plural, one {vor # Monat} other {vor # Monaten}}" & LF
+     & "de.humanize.datetime.relative.month.future = "
+     & "{count, plural, one {in # Monat} other {in # Monaten}}" & LF
+     & "de.humanize.datetime.relative.year.past = "
+     & "{count, plural, one {vor # Jahr} other {vor # Jahren}}" & LF
+     & "de.humanize.datetime.relative.year.future = "
+     & "{count, plural, one {in # Jahr} other {in # Jahren}}" & LF
+     & "de.humanize.duration.unit.second = "
+     & "{count, plural, one {# Sekunde} other {# Sekunden}}" & LF
+     & "de.humanize.duration.unit.minute = "
+     & "{count, plural, one {# Minute} other {# Minuten}}" & LF
+     & "de.humanize.duration.unit.hour = "
+     & "{count, plural, one {# Stunde} other {# Stunden}}" & LF
+     & "de.humanize.duration.unit.day = "
+     & "{count, plural, one {# Tag} other {# Tage}}" & LF
+     & "de.humanize.bytes.byte = "
+     & "{count, plural, one {# Byte} other {# Bytes}}" & LF
+     & "de.humanize.bytes.kb = {value} kB" & LF
+     & "de.humanize.bytes.mb = {value} MB" & LF
+     & "de.humanize.bytes.gb = {value} GB" & LF
+     & "de.humanize.bytes.tb = {value} TB" & LF
+     & "de.humanize.bytes.kib = {value} KiB" & LF
+     & "de.humanize.bytes.mib = {value} MiB" & LF
+     & "de.humanize.bytes.gib = {value} GiB" & LF
+     & "de.humanize.bytes.tib = {value} TiB" & LF
+     & "de.humanize.number.ordinal = "
+     & "{count, selectordinal, other {#.}}" & LF
+     & "de.humanize.number.compact.plain = {value}" & LF
+     & "de.humanize.number.compact.thousand = {value} Tsd." & LF
+     & "de.humanize.number.compact.million = {value} Mio." & LF
+     & "de.humanize.number.compact.billion = {value} Mrd." & LF
+     & "de.humanize.number.compact.trillion = {value} Bio." & LF;
 
    procedure Load_Defaults
      (Runtime : in out I18N.Runtime.Instance;
@@ -130,7 +205,7 @@ package body Humanize.Catalogs is
       I18N.Runtime.Load_Text
         (Item        => Runtime,
          Source_Name => "humanize.builtin.catalog",
-         Text        => English & Danish,
+         Text        => English & Danish & German,
          Result      => Result,
          Policy      => Policy);
    end Load_Defaults;

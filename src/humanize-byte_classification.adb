@@ -10,14 +10,14 @@ package body Humanize.Byte_Classification is
    type Key_Array is array (Unit_Range) of Message_Id;
 
    Binary_Threshold : constant Threshold_Array :=
-     (1024, 1_048_576, 1_073_741_824, 1_099_511_627_776);
+     [1024, 1_048_576, 1_073_741_824, 1_099_511_627_776];
    Decimal_Threshold : constant Threshold_Array :=
-     (1000, 1_000_000, 1_000_000_000, 1_000_000_000_000);
+     [1000, 1_000_000, 1_000_000_000, 1_000_000_000_000];
 
    Binary_Keys : constant Key_Array :=
-     (Bytes_KiB, Bytes_MiB, Bytes_GiB, Bytes_TiB);
+     [Bytes_KiB, Bytes_MiB, Bytes_GiB, Bytes_TiB];
    Decimal_Keys : constant Key_Array :=
-     (Bytes_KB, Bytes_MB, Bytes_GB, Bytes_TB);
+     [Bytes_KB, Bytes_MB, Bytes_GB, Bytes_TB];
 
    --  Byte_Count image without the leading space that 'Image produces.
    function Image_No_Space (Value : Byte_Count) return String is

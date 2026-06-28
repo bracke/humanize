@@ -1,0 +1,23 @@
+# Changelog
+
+## 0.2.0
+
+* Added `Humanize.Numbers` with `Ordinal` (locale-aware, via i18n
+  selectordinal) and `Compact` ("1.2K", "1.5M", localized suffixes).
+* Added multi-unit duration rendering: `Humanize.Durations.Format_Components`
+  (e.g. "1 hour, 30 minutes") with a bounded form.
+* Added a civil-component datetime API: `Humanize.Datetimes.Relative_Civil`
+  and `Relative_Civil_Into` (impossible dates yield `Invalid_Value`).
+* Added a German (`de`) catalog fragment; shipped locales are now `en`, `da`,
+  `de`.
+* Expanded the AUnit suite and closed test gaps (future seconds/hours,
+  `Runtime_Error` mapping, value-argument flow, no-localized-strings classifier
+  scan).
+* Added a GitHub Actions workflow that runs the `check_humanize` release guard.
+
+## 0.1.0
+
+* Initial release: relative datetime, single-unit duration, and binary/decimal
+  byte-size humanization rendered through the public `i18n` runtime.
+* English and Danish catalog fragments; convenience and bounded APIs for every
+  formatter; a `project_tools`-based release guard (`check_humanize`).
