@@ -1,0 +1,19 @@
+with "../humanize.gpr";
+
+project Examples is
+
+   for Source_Dirs use (".");
+   for Object_Dir use "../obj/examples";
+   for Create_Missing_Dirs use "True";
+   for Exec_Dir use "bin";
+   for Main use ("humanize_demo.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat2022", "-gnatyM120", "-gnatX");
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es");
+   end Binder;
+
+end Examples;

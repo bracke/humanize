@@ -1,0 +1,9 @@
+# GNAT/GPRbuild output (any crate level: ., tests, check_humanize, examples)
+obj/
+lib/
+bin/
+
+# Alire-generated config and local workspace state
+config/
+alire/
+.alire/
