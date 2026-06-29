@@ -40,7 +40,8 @@ package body Humanize.Numbers is
    begin
       return Humanize.I18N_Rendering.Render
                (Context,
-                Humanize.Number_Classification.Compact (Value, Options));
+                Humanize.Number_Classification.Compact
+                  (Value, Options, Humanize.Contexts.Locale (Context)));
    end Compact;
 
    procedure Compact_Into
@@ -59,7 +60,8 @@ package body Humanize.Numbers is
       end if;
       Humanize.I18N_Rendering.Render_Into
         (Context,
-         Humanize.Number_Classification.Compact (Value, Options),
+         Humanize.Number_Classification.Compact
+           (Value, Options, Humanize.Contexts.Locale (Context)),
          Target, Written, Status);
    end Compact_Into;
 

@@ -77,13 +77,15 @@ package body Humanize.Tests.Durations is
    procedure Test_Multi_Unit (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
    begin
-      Check_Multi (Support.En, 3661, 2, "1 hour, 1 minute", "two components");
-      Check_Multi (Support.En, 90, 2, "1 minute, 30 seconds", "minute+second");
-      Check_Multi (Support.En, 3661, 3, "1 hour, 1 minute, 1 second",
+      Check_Multi (Support.En, 3661, 2, "1 hour and 1 minute", "two components");
+      Check_Multi (Support.En, 90, 2, "1 minute and 30 seconds",
+                   "minute+second");
+      Check_Multi (Support.En, 3661, 3, "1 hour, 1 minute and 1 second",
                    "three components");
       Check_Multi (Support.En, 60, 1, "1 minute", "single component");
       Check_Multi (Support.En, 0, 2, "0 seconds", "zero stays single");
-      Check_Multi (Support.De, 3661, 2, "1 Stunde, 1 Minute", "German multi");
+      Check_Multi (Support.De, 3661, 2, "1 Stunde und 1 Minute", "German multi");
+      Check_Multi (Support.Fr, 3661, 2, "1 heure et 1 minute", "French multi");
    end Test_Multi_Unit;
 
    procedure Test_Multi_Unit_Errors (T : in out AUnit.Test_Cases.Test_Case'Class) is
@@ -104,7 +106,7 @@ package body Humanize.Tests.Durations is
    begin
       Format_Components_Into (Support.En, 3661, 2, Buffer, Written, Code);
       AUnit.Assertions.Assert
-        (Code = Ok and then Buffer (1 .. Written) = "1 hour, 1 minute",
+        (Code = Ok and then Buffer (1 .. Written) = "1 hour and 1 minute",
          "bounded multi-unit, status " & Status_Image (Code));
    end Test_Multi_Bounded;
 

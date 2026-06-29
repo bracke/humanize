@@ -57,6 +57,9 @@ package body Humanize.Tests.Numbers is
       Check_Ordinal (Support.De, 1, "1.", "German 1.");
       Check_Ordinal (Support.De, 21, "21.", "German 21.");
       Check_Ordinal (Support.Da, 2, "2.", "Danish 2.");
+      Check_Ordinal (Support.Fr, 1, "1er", "French 1er");
+      Check_Ordinal (Support.Fr, 2, "2e", "French 2e");
+      Check_Ordinal (Support.Fr, 21, "21e", "French 21e");
    end Test_Ordinal_Other_Locales;
 
    procedure Test_Compact_English (T : in out AUnit.Test_Cases.Test_Case'Class) is
@@ -74,9 +77,13 @@ package body Humanize.Tests.Numbers is
    procedure Test_Compact_Other_Locales (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
    begin
-      Check_Compact (Support.De, 1_200, "1.2 Tsd.", "German thousand suffix");
+      --  German/Danish use a comma decimal separator.
+      Check_Compact (Support.De, 1_200, "1,2 Tsd.", "German thousand suffix");
       Check_Compact (Support.De, 1_000_000, "1 Mio.", "German million suffix");
+      Check_Compact (Support.Da, 1_500, "1,5 t", "Danish comma decimal");
       Check_Compact (Support.Da, 1_000_000, "1 mio.", "Danish million suffix");
+      Check_Compact (Support.Fr, 1_200, "1,2 k", "French thousand suffix");
+      Check_Compact (Support.Fr, 1_000_000, "1 M", "French million suffix");
    end Test_Compact_Other_Locales;
 
    procedure Test_Number_Bounded (T : in out AUnit.Test_Cases.Test_Case'Class) is

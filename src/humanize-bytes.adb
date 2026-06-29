@@ -11,7 +11,8 @@ package body Humanize.Bytes is
       return Humanize.Status.Text_Result
    is
       Selection : constant Humanize.Selections.Message_Selection :=
-        Humanize.Byte_Classification.Classify (Bytes, Options);
+        Humanize.Byte_Classification.Classify
+          (Bytes, Options, Humanize.Contexts.Locale (Context));
    begin
       return Humanize.I18N_Rendering.Render (Context, Selection);
    end Format;
@@ -25,7 +26,8 @@ package body Humanize.Bytes is
       Options : Byte_Options := Default_Byte_Options)
    is
       Selection : constant Humanize.Selections.Message_Selection :=
-        Humanize.Byte_Classification.Classify (Bytes, Options);
+        Humanize.Byte_Classification.Classify
+          (Bytes, Options, Humanize.Contexts.Locale (Context));
    begin
       Written := 0;
 

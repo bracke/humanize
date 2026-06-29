@@ -87,6 +87,9 @@ package body Humanize.Messages is
             return "humanize.number.compact.billion";
          when Number_Compact_Trillion =>
             return "humanize.number.compact.trillion";
+
+         when List_And =>
+            return "humanize.list.and";
       end case;
    end Key;
 

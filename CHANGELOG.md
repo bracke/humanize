@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0
+
+* Locale-aware numeric formatting: `{value}` arguments now use each locale's
+  decimal separator and digit grouping (`de`/`da` comma decimal + `.` grouping,
+  `fr` comma decimal + space grouping). German bytes now render `1,5 KiB`.
+* Added a French (`fr`) catalog fragment; shipped locales are now `en`, `da`,
+  `de`, `fr`.
+* Multi-unit durations now join the final component with the locale conjunction
+  ("and"/"og"/"und"/"et"), e.g. "1 hour, 1 minute and 1 second".
+
 ## 0.2.0
 
 * Added `Humanize.Numbers` with `Ordinal` (locale-aware, via i18n

@@ -1,4 +1,5 @@
 with Humanize.Messages;
+with Humanize.Number_Formatting;
 
 package body Humanize.Byte_Classification is
 
@@ -96,7 +97,8 @@ package body Humanize.Byte_Classification is
 
    function Classify
      (Bytes   : Byte_Count;
-      Options : Byte_Options)
+      Options : Byte_Options;
+      Locale  : String)
       return Humanize.Selections.Message_Selection
    is
       Thresholds : constant Threshold_Array :=
@@ -126,7 +128,9 @@ package body Humanize.Byte_Classification is
 
       return Humanize.Selections.Text_Value
                (Keys (Chosen),
-                Format_Value (Bytes, Thresholds (Chosen), Options));
+                Humanize.Number_Formatting.Localize
+                  (Format_Value (Bytes, Thresholds (Chosen), Options),
+                   Humanize.Number_Formatting.Symbols_For (Locale)));
    end Classify;
 
 end Humanize.Byte_Classification;

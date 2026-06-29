@@ -107,6 +107,30 @@ package body Humanize.Tests.Rendering is
          "German yesterday");
    end Test_German;
 
+   procedure Test_French (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+      use Ada.Calendar;
+      Ref     : constant Time := Time_Of (2026, 3, 21, Day_Duration (43_200));
+      Earlier : constant Time := Ref - Duration (14_400);  --  4 hours
+   begin
+      --  French plural "one" covers 0 and 1.
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Durations.Format (Support.Fr, 1)) = "1 seconde",
+         "French duration one");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Durations.Format (Support.Fr, 0)) = "0 seconde",
+         "French zero uses the one form");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Durations.Format (Support.Fr, 2))
+           = "2 secondes",
+         "French duration other");
+      AUnit.Assertions.Assert
+        (Support.Text
+           (Humanize.Datetimes.Relative (Support.Fr, Earlier, Ref))
+           = "il y a 4 heures",
+         "French relative hours");
+   end Test_French;
+
    procedure Test_Missing_Message (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
       Result : constant Text_Result :=
@@ -211,6 +235,7 @@ package body Humanize.Tests.Rendering is
       Register_Routine (T, Test_English'Access, "English output");
       Register_Routine (T, Test_Danish'Access, "Danish output (plurals + UTF-8)");
       Register_Routine (T, Test_German'Access, "German output");
+      Register_Routine (T, Test_French'Access, "French output (plurals)");
       Register_Routine (T, Test_Missing_Message'Access, "missing key");
       Register_Routine (T, Test_Missing_Argument'Access, "missing argument");
       Register_Routine (T, Test_Invalid_Argument'Access, "invalid argument");

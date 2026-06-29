@@ -9,6 +9,7 @@ package Humanize.Tests.Support is
    function En return Humanize.Contexts.Context;
    function Da return Humanize.Contexts.Context;
    function De return Humanize.Contexts.Context;
+   function Fr return Humanize.Contexts.Context;
 
    --  Context over a runtime with NO Humanize catalog (for missing-key tests).
    function Empty return Humanize.Contexts.Context;

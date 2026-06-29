@@ -48,7 +48,9 @@ package Humanize.Messages is
       Number_Compact_Thousand,
       Number_Compact_Million,
       Number_Compact_Billion,
-      Number_Compact_Trillion);
+      Number_Compact_Trillion,
+
+      List_And);
 
    --  Return the stable catalog key for Id.
    --

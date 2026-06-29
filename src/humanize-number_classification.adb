@@ -1,4 +1,5 @@
 with Humanize.Messages;
+with Humanize.Number_Formatting;
 
 package body Humanize.Number_Classification is
 
@@ -105,32 +106,46 @@ package body Humanize.Number_Classification is
 
    function Compact
      (Value   : Long_Long_Integer;
-      Options : Humanize.Numbers.Number_Options)
+      Options : Humanize.Numbers.Number_Options;
+      Locale  : String)
       return Message_Selection
    is
       Mag      : constant Long_Long_Integer := Magnitude (Value);
       Sign     : constant String := (if Value < 0 then "-" else "");
       Digit_Count : constant Natural := Options.Maximum_Fraction_Digits;
       Suppress : constant Boolean := Options.Suppress_Trailing_Zero;
+      Symbols  : constant Humanize.Number_Formatting.Number_Symbols :=
+        Humanize.Number_Formatting.Symbols_For (Locale);
+
+      function Local (Raw : String) return String is
+        (Humanize.Number_Formatting.Localize (Raw, Symbols));
    begin
       if Mag < Thousand then
-         return Text_Value (Number_Compact_Plain, Image (Value));
+         return Text_Value (Number_Compact_Plain, Local (Image (Value)));
       elsif Mag < Million then
          return Text_Value
                   (Number_Compact_Thousand,
-                   Sign & Format_Scaled (Mag, Thousand, Digit_Count, Suppress));
+                   Local
+                     (Sign
+                      & Format_Scaled (Mag, Thousand, Digit_Count, Suppress)));
       elsif Mag < Billion then
          return Text_Value
                   (Number_Compact_Million,
-                   Sign & Format_Scaled (Mag, Million, Digit_Count, Suppress));
+                   Local
+                     (Sign
+                      & Format_Scaled (Mag, Million, Digit_Count, Suppress)));
       elsif Mag < Trillion then
          return Text_Value
                   (Number_Compact_Billion,
-                   Sign & Format_Scaled (Mag, Billion, Digit_Count, Suppress));
+                   Local
+                     (Sign
+                      & Format_Scaled (Mag, Billion, Digit_Count, Suppress)));
       else
          return Text_Value
                   (Number_Compact_Trillion,
-                   Sign & Format_Scaled (Mag, Trillion, Digit_Count, Suppress));
+                   Local
+                     (Sign
+                      & Format_Scaled (Mag, Trillion, Digit_Count, Suppress)));
       end if;
    end Compact;
 

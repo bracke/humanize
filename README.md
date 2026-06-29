@@ -8,7 +8,8 @@ human-readable, localized text:
 * byte sizes (`1536` → `1.5 KiB`, decimal or binary);
 * ordinals (`21` → `21st`) and compact numbers (`1200` → `1.2K`).
 
-English, Danish, and German catalog fragments ship built in.
+English, Danish, German, and French catalog fragments ship built in, with
+locale-aware decimal and grouping symbols (`1536` → `1,5 KiB` in `de`/`da`/`fr`).
 
 Humanize selects a semantic message key and arguments, then renders through the
 public [`i18n`](../i18n) runtime. It owns the formatting *policy*; `i18n` owns
@@ -63,7 +64,9 @@ A complete runnable program is in [`examples/humanize_demo.adb`](examples/humani
 Every formatter offers a convenience form returning `Humanize.Status.Text_Result`
 and a bounded form (`*_Into`) writing into a caller-owned 1-based `String`.
 
-Shipped locales: English (`en`), Danish (`da`), German (`de`). Ordinal and
+Shipped locales: English (`en`), Danish (`da`), German (`de`), French (`fr`).
+Numeric values use each locale's decimal and grouping symbols; multi-unit
+durations join with the locale conjunction ("and"/"og"/"und"/"et"). Ordinal and
 plural correctness is delegated to `i18n`'s CLDR rules.
 
 ## Non-goals
@@ -72,7 +75,7 @@ By design (these belong in other libraries or a later major version):
 
 * a time zone database — civil components are interpreted in the local zone via `Ada.Calendar`;
 * importing arbitrary CLDR data at runtime — catalog fragments are built in for the shipped locales;
-* locale-aware decimal grouping and locale-specific list patterns (a single `", "` separator is used);
+* full CLDR list/number patterns (compact long forms, currency, percent, scientific);
 * runtime rule plugins or application-defined domain classifiers.
 
 Rule selection, catalog construction, and the i18n boundary

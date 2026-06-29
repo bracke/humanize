@@ -1300,3 +1300,18 @@ directly (HUM-INV-002), and all i18n rendering and status mapping stays in
 Still out of scope (deferred beyond v0.2): a time zone database, runtime CLDR
 data import, locale-aware decimal grouping, locale-specific list patterns, and
 runtime rule plugins.
+
+## 23. v0.3 Additions
+
+* Locale-aware numeric value formatting (`Humanize.Number_Formatting`): the
+  Humanize-formatted `{value}` arguments (byte sizes, compact numbers) now use
+  the locale's decimal separator and digit grouping — `en` `1,023.5`, `de`/`da`
+  `1.023,5`, `fr` `1 023,5`. Symbols are resolved by language subtag in a pure
+  helper; count integers still render through i18n unchanged.
+* French (`fr`) catalog fragment; shipped locales: `en`, `da`, `de`, `fr`.
+* Multi-unit duration lists join the final component with the locale conjunction
+  (`humanize.list.and`: "and"/"og"/"und"/"et").
+
+Still out of scope: time zone database, runtime CLDR data import, full CLDR
+list/number patterns (long-form compact, currency, percent), and runtime rule
+plugins.

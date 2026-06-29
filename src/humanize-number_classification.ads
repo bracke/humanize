@@ -12,7 +12,8 @@ private package Humanize.Number_Classification is
 
    function Compact
      (Value   : Long_Long_Integer;
-      Options : Humanize.Numbers.Number_Options)
+      Options : Humanize.Numbers.Number_Options;
+      Locale  : String)
       return Humanize.Selections.Message_Selection;
 
 end Humanize.Number_Classification;

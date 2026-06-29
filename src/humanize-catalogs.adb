@@ -68,7 +68,8 @@ package body Humanize.Catalogs is
      & "en.humanize.number.compact.thousand = {value}K" & LF
      & "en.humanize.number.compact.million = {value}M" & LF
      & "en.humanize.number.compact.billion = {value}B" & LF
-     & "en.humanize.number.compact.trillion = {value}T" & LF;
+     & "en.humanize.number.compact.trillion = {value}T" & LF
+     & "en.humanize.list.and = and" & LF;
 
    --  Danish catalog fragment. 'å' is spliced via AA to keep UTF-8 output.
    Danish : constant String :=
@@ -133,7 +134,8 @@ package body Humanize.Catalogs is
      & "da.humanize.number.compact.thousand = {value} t" & LF
      & "da.humanize.number.compact.million = {value} mio." & LF
      & "da.humanize.number.compact.billion = {value} mia." & LF
-     & "da.humanize.number.compact.trillion = {value} bio." & LF;
+     & "da.humanize.number.compact.trillion = {value} bio." & LF
+     & "da.humanize.list.and = og" & LF;
 
    --  German catalog fragment (pure ASCII: no umlauts in these words).
    German : constant String :=
@@ -193,7 +195,72 @@ package body Humanize.Catalogs is
      & "de.humanize.number.compact.thousand = {value} Tsd." & LF
      & "de.humanize.number.compact.million = {value} Mio." & LF
      & "de.humanize.number.compact.billion = {value} Mrd." & LF
-     & "de.humanize.number.compact.trillion = {value} Bio." & LF;
+     & "de.humanize.number.compact.trillion = {value} Bio." & LF
+     & "de.humanize.list.and = und" & LF;
+
+   --  French catalog fragment (pure ASCII; French plural "one" covers 0 and 1).
+   --  "byte" is "octet"; unit symbols stay international (kB/KiB).
+   French : constant String :=
+     "fr.humanize.datetime.now = maintenant" & LF
+     & "fr.humanize.datetime.day.previous = hier" & LF
+     & "fr.humanize.datetime.day.current = aujourd'hui" & LF
+     & "fr.humanize.datetime.day.next = demain" & LF
+     & "fr.humanize.datetime.relative.second.past = "
+     & "{count, plural, one {il y a # seconde} "
+     & "other {il y a # secondes}}" & LF
+     & "fr.humanize.datetime.relative.second.future = "
+     & "{count, plural, one {dans # seconde} other {dans # secondes}}" & LF
+     & "fr.humanize.datetime.relative.minute.past = "
+     & "{count, plural, one {il y a # minute} other {il y a # minutes}}" & LF
+     & "fr.humanize.datetime.relative.minute.future = "
+     & "{count, plural, one {dans # minute} other {dans # minutes}}" & LF
+     & "fr.humanize.datetime.relative.hour.past = "
+     & "{count, plural, one {il y a # heure} other {il y a # heures}}" & LF
+     & "fr.humanize.datetime.relative.hour.future = "
+     & "{count, plural, one {dans # heure} other {dans # heures}}" & LF
+     & "fr.humanize.datetime.relative.day.past = "
+     & "{count, plural, one {il y a # jour} other {il y a # jours}}" & LF
+     & "fr.humanize.datetime.relative.day.future = "
+     & "{count, plural, one {dans # jour} other {dans # jours}}" & LF
+     & "fr.humanize.datetime.relative.week.past = "
+     & "{count, plural, one {il y a # semaine} "
+     & "other {il y a # semaines}}" & LF
+     & "fr.humanize.datetime.relative.week.future = "
+     & "{count, plural, one {dans # semaine} other {dans # semaines}}" & LF
+     & "fr.humanize.datetime.relative.month.past = "
+     & "{count, plural, one {il y a # mois} other {il y a # mois}}" & LF
+     & "fr.humanize.datetime.relative.month.future = "
+     & "{count, plural, one {dans # mois} other {dans # mois}}" & LF
+     & "fr.humanize.datetime.relative.year.past = "
+     & "{count, plural, one {il y a # an} other {il y a # ans}}" & LF
+     & "fr.humanize.datetime.relative.year.future = "
+     & "{count, plural, one {dans # an} other {dans # ans}}" & LF
+     & "fr.humanize.duration.unit.second = "
+     & "{count, plural, one {# seconde} other {# secondes}}" & LF
+     & "fr.humanize.duration.unit.minute = "
+     & "{count, plural, one {# minute} other {# minutes}}" & LF
+     & "fr.humanize.duration.unit.hour = "
+     & "{count, plural, one {# heure} other {# heures}}" & LF
+     & "fr.humanize.duration.unit.day = "
+     & "{count, plural, one {# jour} other {# jours}}" & LF
+     & "fr.humanize.bytes.byte = "
+     & "{count, plural, one {# octet} other {# octets}}" & LF
+     & "fr.humanize.bytes.kb = {value} kB" & LF
+     & "fr.humanize.bytes.mb = {value} MB" & LF
+     & "fr.humanize.bytes.gb = {value} GB" & LF
+     & "fr.humanize.bytes.tb = {value} TB" & LF
+     & "fr.humanize.bytes.kib = {value} KiB" & LF
+     & "fr.humanize.bytes.mib = {value} MiB" & LF
+     & "fr.humanize.bytes.gib = {value} GiB" & LF
+     & "fr.humanize.bytes.tib = {value} TiB" & LF
+     & "fr.humanize.number.ordinal = "
+     & "{count, selectordinal, one {#er} other {#e}}" & LF
+     & "fr.humanize.number.compact.plain = {value}" & LF
+     & "fr.humanize.number.compact.thousand = {value} k" & LF
+     & "fr.humanize.number.compact.million = {value} M" & LF
+     & "fr.humanize.number.compact.billion = {value} Md" & LF
+     & "fr.humanize.number.compact.trillion = {value} Bn" & LF
+     & "fr.humanize.list.and = et" & LF;
 
    procedure Load_Defaults
      (Runtime : in out I18N.Runtime.Instance;
@@ -205,7 +272,7 @@ package body Humanize.Catalogs is
       I18N.Runtime.Load_Text
         (Item        => Runtime,
          Source_Name => "humanize.builtin.catalog",
-         Text        => English & Danish & German,
+         Text        => English & Danish & German & French,
          Result      => Result,
          Policy      => Policy);
    end Load_Defaults;

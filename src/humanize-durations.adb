@@ -3,6 +3,7 @@ with Ada.Strings.Unbounded;
 with Humanize.Duration_Classification;
 with Humanize.I18N_Rendering;
 with Humanize.Messages;
+with Humanize.Selections;
 
 package body Humanize.Durations is
 
@@ -79,9 +80,15 @@ package body Humanize.Durations is
       end case;
 
       declare
-         --  List separator. Common to the shipped locales (en/da/de);
-         --  locale-specific CLDR list patterns are a future refinement.
-         Separator : constant String := ", ";
+         Parts : array (1 .. Outcome.Length) of Unbounded_String;
+         --  The locale conjunction joining the final component ("and"/"og"/...).
+         Conj_Result : constant Humanize.Status.Text_Result :=
+           Humanize.I18N_Rendering.Render
+             (Context, Humanize.Selections.No_Arg (Humanize.Messages.List_And));
+         Conjunction : constant String :=
+           (if Conj_Result.Status = Humanize.Status.Ok
+            then To_String (Conj_Result.Text)
+            else "and");
       begin
          for Index in 1 .. Outcome.Length loop
             declare
@@ -94,12 +101,24 @@ package body Humanize.Durations is
                if Part.Status /= Humanize.Status.Ok then
                   return Part;  --  propagate the first render failure
                end if;
-               if Index > 1 then
-                  Append (Joined, Separator);
-               end if;
-               Append (Joined, To_String (Part.Text));
+               Parts (Index) := Part.Text;
             end;
          end loop;
+
+         --  Join: non-final components with ", ", the last with the conjunction
+         --  (for example "1 hour, 1 minute and 1 second").
+         if Outcome.Length = 1 then
+            Joined := Parts (1);
+         else
+            for Index in 1 .. Outcome.Length - 1 loop
+               if Index > 1 then
+                  Append (Joined, ", ");
+               end if;
+               Append (Joined, Parts (Index));
+            end loop;
+            Append (Joined, " " & Conjunction & " ");
+            Append (Joined, Parts (Outcome.Length));
+         end if;
       end;
 
       return

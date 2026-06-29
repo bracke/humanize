@@ -75,6 +75,25 @@ package body Humanize.Tests.Bytes is
       Check (1536, Zero_Digit, "2 KiB", "zero digits rounds half away from zero");
    end Test_Fraction_Digit_Limit;
 
+   procedure Test_Locale_Decimal (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+   begin
+      --  German/Danish use a comma decimal separator.
+      AUnit.Assertions.Assert
+        (Support.Text (Format (Support.De, 1536, Binary_1)) = "1,5 KiB",
+         "German byte decimal separator");
+      AUnit.Assertions.Assert
+        (Support.Text (Format (Support.Da, 1536, Binary_1)) = "1,5 KiB",
+         "Danish byte decimal separator");
+      --  Grouping in the four-digit KiB range (1023 KiB).
+      AUnit.Assertions.Assert
+        (Support.Text (Format (Support.En, 1_047_552, Binary_1)) = "1,023 KiB",
+         "English thousands grouping");
+      AUnit.Assertions.Assert
+        (Support.Text (Format (Support.De, 1_047_552, Binary_1)) = "1.023 KiB",
+         "German thousands grouping");
+   end Test_Locale_Decimal;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -93,6 +112,8 @@ package body Humanize.Tests.Bytes is
         "fraction suppression");
       Register_Routine (T, Test_Fraction_Digit_Limit'Access,
         "fraction digit limit");
+      Register_Routine (T, Test_Locale_Decimal'Access,
+        "locale decimal separator and grouping");
    end Register_Tests;
 
 end Humanize.Tests.Bytes;

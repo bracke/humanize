@@ -8,7 +8,8 @@ private package Humanize.Byte_Classification is
 
    function Classify
      (Bytes   : Humanize.Bytes.Byte_Count;
-      Options : Humanize.Bytes.Byte_Options)
+      Options : Humanize.Bytes.Byte_Options;
+      Locale  : String)
       return Humanize.Selections.Message_Selection;
 
 end Humanize.Byte_Classification;
