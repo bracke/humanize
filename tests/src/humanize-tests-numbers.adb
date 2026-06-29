@@ -10,6 +10,38 @@ package body Humanize.Tests.Numbers is
    use Humanize.Numbers;
    use Humanize.Status;
 
+   --  UTF-8 masculine/feminine ordinal indicators (U+00BA / U+00AA).
+   ORDM : constant String :=
+     Character'Val (16#C2#) & Character'Val (16#BA#);
+   FEMORD : constant String :=
+     Character'Val (16#C2#) & Character'Val (16#AA#);
+
+   procedure Check_Ordinal_F
+     (Context  : Humanize.Contexts.Context;
+      Value    : Natural;
+      Expected : String;
+      Message  : String)
+   is
+      Result : constant Text_Result := Ordinal (Context, Value, Feminine);
+   begin
+      AUnit.Assertions.Assert
+        (Result.Status = Ok and then Support.Text (Result) = Expected,
+         Message & " -> expected [" & Expected & "] got ["
+         & Support.Text (Result) & "] status " & Status_Image (Result.Status));
+   end Check_Ordinal_F;
+
+   procedure Test_Ordinal_Gender (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+   begin
+      --  Romance feminine ordinals differ from the masculine form.
+      Check_Ordinal_F (Support.Fr, 1, "1re", "French feminine 1re");
+      Check_Ordinal_F (Support.Fr, 2, "2e", "French feminine 2e");
+      Check_Ordinal_F (Support.Es, 1, "1." & FEMORD, "Spanish feminine 1.a");
+      Check_Ordinal_F (Support.It, 1, "1" & FEMORD, "Italian feminine 1a");
+      --  English has no gender distinction.
+      Check_Ordinal_F (Support.En, 1, "1st", "English feminine == masculine");
+   end Test_Ordinal_Gender;
+
    procedure Check_Ordinal
      (Context  : Humanize.Contexts.Context;
       Value    : Natural;
@@ -60,6 +92,8 @@ package body Humanize.Tests.Numbers is
       Check_Ordinal (Support.Fr, 1, "1er", "French 1er");
       Check_Ordinal (Support.Fr, 2, "2e", "French 2e");
       Check_Ordinal (Support.Fr, 21, "21e", "French 21e");
+      Check_Ordinal (Support.Es, 1, "1." & ORDM, "Spanish 1.o");
+      Check_Ordinal (Support.It, 1, "1" & ORDM, "Italian 1o");
    end Test_Ordinal_Other_Locales;
 
    procedure Test_Compact_English (T : in out AUnit.Test_Cases.Test_Case'Class) is
@@ -85,6 +119,25 @@ package body Humanize.Tests.Numbers is
       Check_Compact (Support.Fr, 1_200, "1,2 k", "French thousand suffix");
       Check_Compact (Support.Fr, 1_000_000, "1 M", "French million suffix");
    end Test_Compact_Other_Locales;
+
+   procedure Test_Compact_Rollover (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+   begin
+      Check_Compact (Support.En, 999_499, "999.5K", "no rollover");
+      --  Rounding must promote the tier instead of showing "1000K".
+      Check_Compact (Support.En, 999_999, "1M", "999,999 rolls over to 1M");
+      Check_Compact (Support.En, 999_950_000, "1B", "rolls over to 1B");
+   end Test_Compact_Rollover;
+
+   procedure Test_Count_Grouping (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+   begin
+      --  Count integers are locale-grouped (1234 -> 1,234 / 1.234 / 1 234).
+      Check_Ordinal (Support.En, 1234, "1,234th", "English grouped ordinal");
+      Check_Ordinal (Support.De, 1234, "1.234.", "German grouped ordinal");
+      Check_Ordinal (Support.Fr, 1234, "1" & ' ' & "234e",
+                     "French grouped ordinal");
+   end Test_Count_Grouping;
 
    procedure Test_Number_Bounded (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
@@ -117,6 +170,9 @@ package body Humanize.Tests.Numbers is
       Register_Routine (T, Test_Compact_English'Access, "English compact");
       Register_Routine (T, Test_Compact_Other_Locales'Access,
         "German/Danish compact suffixes");
+      Register_Routine (T, Test_Ordinal_Gender'Access, "feminine ordinals");
+      Register_Routine (T, Test_Compact_Rollover'Access, "compact tier rollover");
+      Register_Routine (T, Test_Count_Grouping'Access, "locale count grouping");
       Register_Routine (T, Test_Number_Bounded'Access, "bounded number APIs");
    end Register_Tests;
 

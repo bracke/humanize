@@ -4,9 +4,10 @@ with Humanize.Status;
 --  Ordinal and compact number humanization.
 --
 --  Ordinal renders "1st"/"2nd"/"3rd"/"4th" (English) or "1."/"2." (German,
---  Danish) using i18n selectordinal mechanics. Compact renders large values as
---  "1.2K"/"3.4M" with locale-specific suffixes. Locale-aware decimal grouping
---  is deferred. This package selects keys only and must not call I18N.Runtime
+--  Danish) using i18n selectordinal mechanics; Romance locales offer a feminine
+--  form (French "1re", Spanish "1.a", Italian "1a"). Compact renders large
+--  values as "1.2K"/"3.4M" with locale-specific suffixes and locale decimal
+--  grouping. This package selects keys only and must not call I18N.Runtime
 --  directly (HUM-INV-002).
 package Humanize.Numbers is
 
@@ -19,10 +20,15 @@ package Humanize.Numbers is
      (Maximum_Fraction_Digits => 1,
       Suppress_Trailing_Zero  => True);
 
+   --  Grammatical gender for ordinals. Locales without an ordinal gender
+   --  distinction (en/da/de) render both alike.
+   type Ordinal_Gender is (Masculine, Feminine);
+
    --  Ordinal of a non-negative value (1 -> "1st" in English).
    function Ordinal
      (Context : Humanize.Contexts.Context;
-      Value   : Natural)
+      Value   : Natural;
+      Gender  : Ordinal_Gender := Masculine)
       return Humanize.Status.Text_Result;
 
    procedure Ordinal_Into
@@ -30,7 +36,8 @@ package Humanize.Numbers is
       Value   : Natural;
       Target  : in out String;
       Written : out Natural;
-      Status  : out Humanize.Status.Status_Code);
+      Status  : out Humanize.Status.Status_Code;
+      Gender  : Ordinal_Gender := Masculine);
 
    --  Compact magnitude rendering (1200 -> "1.2K"). Values below 1000 render
    --  as a plain decimal.

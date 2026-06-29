@@ -42,6 +42,18 @@ package body Humanize.Tests.Support is
       return Humanize.Contexts.Create (Full_Runtime'Access, "fr");
    end Fr;
 
+   function Es return Humanize.Contexts.Context is
+   begin
+      Ensure_Loaded;
+      return Humanize.Contexts.Create (Full_Runtime'Access, "es");
+   end Es;
+
+   function It return Humanize.Contexts.Context is
+   begin
+      Ensure_Loaded;
+      return Humanize.Contexts.Create (Full_Runtime'Access, "it");
+   end It;
+
    function Empty return Humanize.Contexts.Context is
    begin
       return Humanize.Contexts.Create (Empty_Runtime'Access, "en");

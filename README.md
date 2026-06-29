@@ -6,10 +6,12 @@ human-readable, localized text:
 * relative date/times (`now`, `yesterday`, `4 hours ago`, `in 3 days`);
 * durations (`90 seconds` → `1 minute`; multi-unit `1 hour, 30 minutes`);
 * byte sizes (`1536` → `1.5 KiB`, decimal or binary);
-* ordinals (`21` → `21st`) and compact numbers (`1200` → `1.2K`).
+* ordinals (`21` → `21st`, with feminine forms) and compact numbers (`1200` → `1.2K`);
+* unit quantities (`5` + `Kilometer` → `5 kilometers`).
 
-English, Danish, German, and French catalog fragments ship built in, with
-locale-aware decimal and grouping symbols (`1536` → `1,5 KiB` in `de`/`da`/`fr`).
+Six catalog fragments ship built in — English, Danish, German, French, Spanish,
+and Italian — with locale-aware decimal and grouping symbols (`1536` → `1,5 KiB`
+in `de`/`da`/`fr`/`es`/`it`) and locale-grouped counts (`1234` → `1,234`).
 
 Humanize selects a semantic message key and arguments, then renders through the
 public [`i18n`](../i18n) runtime. It owns the formatting *policy*; `i18n` owns
@@ -59,15 +61,17 @@ A complete runnable program is in [`examples/humanize_demo.adb`](examples/humani
 | `Humanize.Datetimes` | `Relative` / `Relative_Into`, plus a civil-component (`Relative_Civil`) convenience API. |
 | `Humanize.Durations` | `Format` / `Format_Into` (single unit) and `Format_Components` (multi-unit). |
 | `Humanize.Bytes` | `Format` / `Format_Into`. |
-| `Humanize.Numbers` | `Ordinal` and `Compact`, with bounded forms. |
+| `Humanize.Numbers` | `Ordinal` (with `Gender`) and `Compact`, with bounded forms. |
+| `Humanize.Units` | `Format` for unit quantities (meter/kilometer/gram/kilogram/liter). |
 
 Every formatter offers a convenience form returning `Humanize.Status.Text_Result`
 and a bounded form (`*_Into`) writing into a caller-owned 1-based `String`.
 
-Shipped locales: English (`en`), Danish (`da`), German (`de`), French (`fr`).
-Numeric values use each locale's decimal and grouping symbols; multi-unit
-durations join with the locale conjunction ("and"/"og"/"und"/"et"). Ordinal and
-plural correctness is delegated to `i18n`'s CLDR rules.
+Shipped locales: English (`en`), Danish (`da`), German (`de`), French (`fr`),
+Spanish (`es`), Italian (`it`). Numeric values and counts use each locale's
+decimal and grouping symbols; multi-unit durations join with the locale
+conjunction ("and"/"og"/"und"/"et"/"y"/"e"). Ordinal and plural correctness is
+delegated to `i18n`'s CLDR rules.
 
 ## Non-goals
 
@@ -75,7 +79,8 @@ By design (these belong in other libraries or a later major version):
 
 * a time zone database — civil components are interpreted in the local zone via `Ada.Calendar`;
 * importing arbitrary CLDR data at runtime — catalog fragments are built in for the shipped locales;
-* full CLDR list/number patterns (compact long forms, currency, percent, scientific);
+* fractional unit quantities (i18n plural selection is integer-only) and long-form compact numbers (`1 thousand`);
+* currency, percent, and scientific number formatting;
 * runtime rule plugins or application-defined domain classifiers.
 
 Rule selection, catalog construction, and the i18n boundary

@@ -4,6 +4,8 @@ with I18N.Arguments;
 with I18N.Result;
 with I18N.Runtime;
 
+with Humanize.Number_Formatting;
+
 package body Humanize.I18N_Rendering is
 
    use Ada.Strings.Unbounded;
@@ -36,10 +38,23 @@ package body Humanize.I18N_Rendering is
       end case;
    end To_Status;
 
-   --  Populate the i18n argument map from a selection.
+   --  Decimal image of a non-negative value without 'Image leading space.
+   function Image (Value : Long_Long_Integer) return String is
+      Text : constant String := Long_Long_Integer'Image (Value);
+   begin
+      if Text (Text'First) = ' ' then
+         return Text (Text'First + 1 .. Text'Last);
+      end if;
+      return Text;
+   end Image;
+
+   --  Populate the i18n argument map from a selection. Count selections set both
+   --  "count" (the raw integer, for plural/ordinal selection) and "value" (the
+   --  locale-grouped count, displayed by the catalog via {value}).
    procedure Apply_Arguments
      (Args      : in out I18N.Arguments.Arguments;
-      Selection : Humanize.Selections.Message_Selection)
+      Selection : Humanize.Selections.Message_Selection;
+      Locale    : String)
    is
    begin
       case Selection.Arguments is
@@ -48,6 +63,11 @@ package body Humanize.I18N_Rendering is
          when Humanize.Selections.Count_Argument =>
             I18N.Arguments.Set_Integer
               (Args, "count", Long_Long_Integer (Selection.Count));
+            I18N.Arguments.Set
+              (Args, "value",
+               Humanize.Number_Formatting.Localize
+                 (Image (Long_Long_Integer (Selection.Count)),
+                  Humanize.Number_Formatting.Symbols_For (Locale)));
          when Humanize.Selections.Value_Argument =>
             I18N.Arguments.Set (Args, "value", To_String (Selection.Value));
       end case;
@@ -75,7 +95,8 @@ package body Humanize.I18N_Rendering is
       Args   : I18N.Arguments.Arguments;
       Output : Humanize.Status.Text_Result;
    begin
-      Apply_Arguments (Args, Selection);
+      Apply_Arguments
+        (Args, Selection, Humanize.Contexts.Locale (Context));
 
       declare
          Result : constant I18N.Result.Render_Result :=
@@ -113,7 +134,8 @@ package body Humanize.I18N_Rendering is
          return;
       end if;
 
-      Apply_Arguments (Args, Selection);
+      Apply_Arguments
+        (Args, Selection, Humanize.Contexts.Locale (Context));
 
       I18N.Runtime.Render_Into
         (Item      => Humanize.Contexts.Runtime (Context).all,

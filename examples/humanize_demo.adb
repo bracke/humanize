@@ -11,6 +11,7 @@ with Humanize.Datetimes;
 with Humanize.Durations;
 with Humanize.Numbers;
 with Humanize.Status;
+with Humanize.Units;
 
 with Humanize_Demo_Runtime;
 
@@ -37,6 +38,9 @@ begin
       Danish  : constant Humanize.Contexts.Context :=
         Humanize.Contexts.Create
           (Humanize_Demo_Runtime.Runtime'Access, "da-DK");
+      Spanish : constant Humanize.Contexts.Context :=
+        Humanize.Contexts.Create
+          (Humanize_Demo_Runtime.Runtime'Access, "es");
    begin
       Put_Line ("English:");
       Put_Line
@@ -70,5 +74,19 @@ begin
       Put_Line
         ("  3661 seconds : "
          & Text (Humanize.Durations.Format_Components (English, 3661, 3)));
+      Put_Line
+        ("  5 kilometers : "
+         & Text (Humanize.Units.Format (English, 5, Humanize.Units.Kilometer)));
+      New_Line;
+      Put_Line ("Spanish:");
+      Put_Line
+        ("  bytes 1536   : "
+         & Text (Humanize.Bytes.Format (Spanish, 1536)));
+      Put_Line
+        ("  4 hours ago  : "
+         & Text (Humanize.Datetimes.Relative (Spanish, Earlier, Reference)));
+      Put_Line
+        ("  3 kilometers : "
+         & Text (Humanize.Units.Format (Spanish, 3, Humanize.Units.Kilometer)));
    end;
 end Humanize_Demo;

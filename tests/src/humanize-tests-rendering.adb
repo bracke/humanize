@@ -131,6 +131,44 @@ package body Humanize.Tests.Rendering is
          "French relative hours");
    end Test_French;
 
+   procedure Test_Spanish_Italian
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      use Ada.Calendar;
+      Ref     : constant Time := Time_Of (2026, 3, 21, Day_Duration (43_200));
+      Earlier : constant Time := Ref - Duration (14_400);  --  4 hours
+   begin
+      --  Spanish: plural one=1, comma decimal, "hace ..." past.
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Durations.Format (Support.Es, 1)) = "1 segundo",
+         "Spanish duration one");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Durations.Format (Support.Es, 2))
+           = "2 segundos",
+         "Spanish duration other");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Datetimes.Relative (Support.Es, Earlier, Ref))
+           = "hace 4 horas",
+         "Spanish relative hours");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Bytes.Format (Support.Es, 1536,
+                       Humanize.Bytes.Default_Byte_Options)) = "1,5 KiB",
+         "Spanish byte decimal");
+      --  Italian: "... fa" past, comma decimal.
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Durations.Format (Support.It, 1)) = "1 secondo",
+         "Italian duration one");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Datetimes.Relative (Support.It, Earlier, Ref))
+           = "4 ore fa",
+         "Italian relative hours");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Bytes.Format (Support.It, 1536,
+                       Humanize.Bytes.Default_Byte_Options)) = "1,5 KiB",
+         "Italian byte decimal");
+   end Test_Spanish_Italian;
+
    procedure Test_Missing_Message (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
       Result : constant Text_Result :=
@@ -236,6 +274,7 @@ package body Humanize.Tests.Rendering is
       Register_Routine (T, Test_Danish'Access, "Danish output (plurals + UTF-8)");
       Register_Routine (T, Test_German'Access, "German output");
       Register_Routine (T, Test_French'Access, "French output (plurals)");
+      Register_Routine (T, Test_Spanish_Italian'Access, "Spanish/Italian output");
       Register_Routine (T, Test_Missing_Message'Access, "missing key");
       Register_Routine (T, Test_Missing_Argument'Access, "missing argument");
       Register_Routine (T, Test_Invalid_Argument'Access, "invalid argument");

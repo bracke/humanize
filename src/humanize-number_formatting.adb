@@ -36,7 +36,9 @@ package body Humanize.Number_Formatting is
    function Symbols_For (Locale : String) return Number_Symbols is
       Code : constant String := Subtag (Locale);
    begin
-      if Code = "de" or else Code = "da" then
+      if Code = "de" or else Code = "da"
+        or else Code = "es" or else Code = "it"
+      then
          return (Decimal => ',', Grouping => '.', Group => True);
       elsif Code = "fr" then
          return (Decimal => ',', Grouping => ' ', Group => True);

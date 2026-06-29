@@ -2,6 +2,7 @@ with Humanize.Tests.Datetimes;
 with Humanize.Tests.Durations;
 with Humanize.Tests.Bytes;
 with Humanize.Tests.Numbers;
+with Humanize.Tests.Units;
 with Humanize.Tests.Rendering;
 with Humanize.Tests.Bounded;
 with Humanize.Tests.Architecture;
@@ -16,6 +17,7 @@ package body Humanize.Tests.Suite is
       Result.Add_Test (new Humanize.Tests.Durations.Test_Case);
       Result.Add_Test (new Humanize.Tests.Bytes.Test_Case);
       Result.Add_Test (new Humanize.Tests.Numbers.Test_Case);
+      Result.Add_Test (new Humanize.Tests.Units.Test_Case);
       Result.Add_Test (new Humanize.Tests.Rendering.Test_Case);
       Result.Add_Test (new Humanize.Tests.Bounded.Test_Case);
       Result.Add_Test (new Humanize.Tests.Architecture.Test_Case);

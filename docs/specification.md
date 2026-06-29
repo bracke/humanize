@@ -1315,3 +1315,26 @@ runtime rule plugins.
 Still out of scope: time zone database, runtime CLDR data import, full CLDR
 list/number patterns (long-form compact, currency, percent), and runtime rule
 plugins.
+
+## 24. v0.4 Additions
+
+* `Humanize.Units` — a new public domain package humanizing whole unit
+  quantities (`Meter`, `Kilometer`, `Gram`, `Kilogram`, `Liter`) with plural
+  forms. Like the other formatters it selects a key and renders through
+  `Humanize.I18N_Rendering`; it never calls `I18N.Runtime` (HUM-INV-002).
+  Fractional quantities are deferred because i18n plural selection is
+  integer-only.
+* Spanish (`es`) and Italian (`it`) catalog fragments. Shipped locales: `en`,
+  `da`, `de`, `fr`, `es`, `it`.
+* Locale-grouped counts: catalog count branches render `{value}` (a
+  locale-grouped image of the count) while still selecting the plural/ordinal
+  category from the raw `{count}`. `Humanize.I18N_Rendering` sets both arguments.
+* Compact tier promotion: when rounding a compact value reaches 1000, the tier
+  is promoted (`999_999` → `1M`, not `1000K`).
+* Gendered ordinals: `Humanize.Numbers.Ordinal` takes an `Ordinal_Gender`
+  (`Masculine`/`Feminine`); Romance locales carry a distinct feminine key
+  (`humanize.number.ordinal.feminine`), others reuse the masculine form.
+
+Still out of scope: time zone database, runtime CLDR import, fractional units,
+long-form compact numbers, currency/percent/scientific formatting, and runtime
+rule plugins.

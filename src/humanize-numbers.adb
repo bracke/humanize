@@ -5,12 +5,14 @@ package body Humanize.Numbers is
 
    function Ordinal
      (Context : Humanize.Contexts.Context;
-      Value   : Natural)
+      Value   : Natural;
+      Gender  : Ordinal_Gender := Masculine)
       return Humanize.Status.Text_Result
    is
    begin
       return Humanize.I18N_Rendering.Render
-               (Context, Humanize.Number_Classification.Ordinal (Value));
+               (Context,
+                Humanize.Number_Classification.Ordinal (Value, Gender));
    end Ordinal;
 
    procedure Ordinal_Into
@@ -18,7 +20,8 @@ package body Humanize.Numbers is
       Value   : Natural;
       Target  : in out String;
       Written : out Natural;
-      Status  : out Humanize.Status.Status_Code)
+      Status  : out Humanize.Status.Status_Code;
+      Gender  : Ordinal_Gender := Masculine)
    is
    begin
       Written := 0;
@@ -27,7 +30,7 @@ package body Humanize.Numbers is
          return;
       end if;
       Humanize.I18N_Rendering.Render_Into
-        (Context, Humanize.Number_Classification.Ordinal (Value),
+        (Context, Humanize.Number_Classification.Ordinal (Value, Gender),
          Target, Written, Status);
    end Ordinal_Into;
 

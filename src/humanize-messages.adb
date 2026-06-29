@@ -77,6 +77,8 @@ package body Humanize.Messages is
 
          when Number_Ordinal =>
             return "humanize.number.ordinal";
+         when Number_Ordinal_Feminine =>
+            return "humanize.number.ordinal.feminine";
          when Number_Compact_Plain =>
             return "humanize.number.compact.plain";
          when Number_Compact_Thousand =>
@@ -87,6 +89,17 @@ package body Humanize.Messages is
             return "humanize.number.compact.billion";
          when Number_Compact_Trillion =>
             return "humanize.number.compact.trillion";
+
+         when Unit_Meter =>
+            return "humanize.unit.meter";
+         when Unit_Kilometer =>
+            return "humanize.unit.kilometer";
+         when Unit_Gram =>
+            return "humanize.unit.gram";
+         when Unit_Kilogram =>
+            return "humanize.unit.kilogram";
+         when Unit_Liter =>
+            return "humanize.unit.liter";
 
          when List_And =>
             return "humanize.list.and";

@@ -52,6 +52,12 @@ package body Humanize.Tests.Architecture is
             AUnit.Assertions.Assert
               (Humanize.I18N_Rendering.Available (Support.Fr, Id),
                "French catalog missing " & Key (Id));
+            AUnit.Assertions.Assert
+              (Humanize.I18N_Rendering.Available (Support.Es, Id),
+               "Spanish catalog missing " & Key (Id));
+            AUnit.Assertions.Assert
+              (Humanize.I18N_Rendering.Available (Support.It, Id),
+               "Italian catalog missing " & Key (Id));
          end if;
       end loop;
    end Test_Locale_Coverage;
@@ -126,6 +132,8 @@ package body Humanize.Tests.Architecture is
       Check_No_Runtime (Base & "humanize-bytes.adb");
       Check_No_Runtime (Base & "humanize-numbers.ads");
       Check_No_Runtime (Base & "humanize-numbers.adb");
+      Check_No_Runtime (Base & "humanize-units.ads");
+      Check_No_Runtime (Base & "humanize-units.adb");
    end Test_Domain_Boundary;
 
    procedure Test_No_Localized_Strings (T : in out AUnit.Test_Cases.Test_Case'Class) is
@@ -149,7 +157,7 @@ package body Humanize.Tests.Architecture is
       Register_Routine (T, Test_Unique_Keys'Access,
         "every Message_Id maps to a unique key");
       Register_Routine (T, Test_Locale_Coverage'Access,
-        "every key exists in en, da, de and fr");
+        "every key exists in en, da, de, fr, es and it");
       Register_Routine (T, Test_Domain_Boundary'Access,
         "domain packages do not import I18N.Runtime");
       Register_Routine (T, Test_No_Localized_Strings'Access,

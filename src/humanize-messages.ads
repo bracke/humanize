@@ -44,11 +44,18 @@ package Humanize.Messages is
       Bytes_TiB,
 
       Number_Ordinal,
+      Number_Ordinal_Feminine,
       Number_Compact_Plain,
       Number_Compact_Thousand,
       Number_Compact_Million,
       Number_Compact_Billion,
       Number_Compact_Trillion,
+
+      Unit_Meter,
+      Unit_Kilometer,
+      Unit_Gram,
+      Unit_Kilogram,
+      Unit_Liter,
 
       List_And);
 

@@ -86,11 +86,17 @@ package body Humanize.Number_Classification is
    end Format_Scaled;
 
    function Ordinal
-     (Value : Natural)
+     (Value  : Natural;
+      Gender : Humanize.Numbers.Ordinal_Gender)
       return Message_Selection
    is
+      use type Humanize.Numbers.Ordinal_Gender;
+      Key : constant Message_Id :=
+        (if Gender = Humanize.Numbers.Feminine
+         then Number_Ordinal_Feminine
+         else Number_Ordinal);
    begin
-      return Count (Number_Ordinal, Count_Value (Long_Long_Integer (Value)));
+      return Count (Key, Count_Value (Long_Long_Integer (Value)));
    end Ordinal;
 
    function Magnitude (Value : Long_Long_Integer) return Long_Long_Integer is
@@ -104,49 +110,72 @@ package body Humanize.Number_Classification is
       end if;
    end Magnitude;
 
+   --  True when rounding Magnitude / Divisor to Digit_Count digits reaches the
+   --  next tier (>= 1000), so the compact tier should be promoted.
+   function Promotes
+     (Mag       : Long_Long_Integer;
+      Divisor   : Long_Long_Integer;
+      Digit_Count : Natural)
+      return Boolean
+   is
+      Int_Part  : Long_Long_Integer := Mag / Divisor;
+      Remainder : constant Long_Long_Integer := Mag mod Divisor;
+      Scale     : Long_Long_Integer := 1;
+   begin
+      for I in 1 .. Digit_Count loop
+         Scale := Scale * 10;
+      end loop;
+      if (Remainder * Scale + Divisor / 2) / Divisor = Scale then
+         Int_Part := Int_Part + 1;
+      end if;
+      return Int_Part >= 1000;
+   end Promotes;
+
    function Compact
      (Value   : Long_Long_Integer;
       Options : Humanize.Numbers.Number_Options;
       Locale  : String)
       return Message_Selection
    is
-      Mag      : constant Long_Long_Integer := Magnitude (Value);
-      Sign     : constant String := (if Value < 0 then "-" else "");
+      Mag         : constant Long_Long_Integer := Magnitude (Value);
+      Sign        : constant String := (if Value < 0 then "-" else "");
       Digit_Count : constant Natural := Options.Maximum_Fraction_Digits;
-      Suppress : constant Boolean := Options.Suppress_Trailing_Zero;
-      Symbols  : constant Humanize.Number_Formatting.Number_Symbols :=
+      Suppress    : constant Boolean := Options.Suppress_Trailing_Zero;
+      Symbols     : constant Humanize.Number_Formatting.Number_Symbols :=
         Humanize.Number_Formatting.Symbols_For (Locale);
 
       function Local (Raw : String) return String is
         (Humanize.Number_Formatting.Localize (Raw, Symbols));
+
+      Divisor : Long_Long_Integer;
+      Key     : Message_Id;
    begin
       if Mag < Thousand then
          return Text_Value (Number_Compact_Plain, Local (Image (Value)));
       elsif Mag < Million then
-         return Text_Value
-                  (Number_Compact_Thousand,
-                   Local
-                     (Sign
-                      & Format_Scaled (Mag, Thousand, Digit_Count, Suppress)));
+         Divisor := Thousand;
+         Key := Number_Compact_Thousand;
       elsif Mag < Billion then
-         return Text_Value
-                  (Number_Compact_Million,
-                   Local
-                     (Sign
-                      & Format_Scaled (Mag, Million, Digit_Count, Suppress)));
+         Divisor := Million;
+         Key := Number_Compact_Million;
       elsif Mag < Trillion then
-         return Text_Value
-                  (Number_Compact_Billion,
-                   Local
-                     (Sign
-                      & Format_Scaled (Mag, Billion, Digit_Count, Suppress)));
+         Divisor := Billion;
+         Key := Number_Compact_Billion;
       else
-         return Text_Value
-                  (Number_Compact_Trillion,
-                   Local
-                     (Sign
-                      & Format_Scaled (Mag, Trillion, Digit_Count, Suppress)));
+         Divisor := Trillion;
+         Key := Number_Compact_Trillion;
       end if;
+
+      --  Rounding may carry into the next tier (999_999 -> 1M, not 1000K).
+      if Divisor < Trillion and then Promotes (Mag, Divisor, Digit_Count) then
+         Divisor := Divisor * 1000;
+         Key := Message_Id'Succ (Key);  --  Thousand->Million->Billion->Trillion
+      end if;
+
+      return Text_Value
+               (Key,
+                Local (Sign & Format_Scaled (Mag, Divisor, Digit_Count,
+                                             Suppress)));
    end Compact;
 
 end Humanize.Number_Classification;

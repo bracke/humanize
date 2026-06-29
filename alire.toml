@@ -1,6 +1,6 @@
 name = "humanize"
-description = "Localized humanization of datetimes, durations, bytes and numbers"
-version = "0.3.0"
+description = "Localized humanization of datetimes, durations, bytes, numbers, units"
+version = "0.4.0"
 
 authors = ["Bent Bracke"]
 maintainers = ["Bent Bracke <bent@bracke.dk>"]

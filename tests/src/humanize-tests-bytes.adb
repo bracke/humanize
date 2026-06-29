@@ -32,7 +32,7 @@ package body Humanize.Tests.Bytes is
       Check (0, Binary_1, "0 bytes", "zero bytes");
       Check (1, Binary_1, "1 byte", "one byte");
       Check (2, Binary_1, "2 bytes", "two bytes");
-      Check (1023, Binary_1, "1023 bytes", "1023 binary stays bytes");
+      Check (1023, Binary_1, "1,023 bytes", "1023 binary stays bytes (grouped)");
       Check (999, Decimal_1, "999 bytes", "999 decimal stays bytes");
    end Test_Bytes_Unit;
 

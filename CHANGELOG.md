@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0
+
+* Added `Humanize.Units` — unit-quantity humanization ("5 kilometers",
+  "1 kilogram") for meter/kilometer/gram/kilogram/liter, with convenience and
+  bounded APIs.
+* Added Spanish (`es`) and Italian (`it`) catalog fragments; shipped locales are
+  now `en`, `da`, `de`, `fr`, `es`, `it`.
+* Count integers are now locale-grouped (`1234 days` → `1,234 days` /
+  `1.234 days` / `1 234 jours`), matching the v0.3 value formatting.
+* Compact numbers now promote the tier when rounding overflows (`999_999` →
+  `1M` instead of `1000K`).
+* Ordinals gained a `Gender` parameter with feminine forms for Romance locales
+  (French `1re`, Spanish `1.a`, Italian `1a`).
+
 ## 0.3.0
 
 * Locale-aware numeric formatting: `{value}` arguments now use each locale's

@@ -7,7 +7,8 @@ with Humanize.Selections;
 private package Humanize.Number_Classification is
 
    function Ordinal
-     (Value : Natural)
+     (Value  : Natural;
+      Gender : Humanize.Numbers.Ordinal_Gender)
       return Humanize.Selections.Message_Selection;
 
    function Compact
