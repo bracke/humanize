@@ -24,6 +24,10 @@ package Humanize.Numbers is
    --  distinction (en/da/de) render both alike.
    type Ordinal_Gender is (Masculine, Feminine);
 
+   --  Compact rendering style: Short uses symbols ("1.2K"); Long uses the
+   --  spelled-out scale word with plural agreement ("1.2 million").
+   type Compact_Style is (Short, Long);
+
    --  Ordinal of a non-negative value (1 -> "1st" in English).
    function Ordinal
      (Context : Humanize.Contexts.Context;
@@ -39,17 +43,35 @@ package Humanize.Numbers is
       Status  : out Humanize.Status.Status_Code;
       Gender  : Ordinal_Gender := Masculine);
 
-   --  Compact magnitude rendering (1200 -> "1.2K"). Values below 1000 render
-   --  as a plain decimal.
+   --  Compact magnitude rendering (1200 -> "1.2K", or "1.2 thousand" in Long
+   --  style). Values below 1000 render as a plain decimal.
    function Compact
      (Context : Humanize.Contexts.Context;
       Value   : Long_Long_Integer;
-      Options : Number_Options := Default_Number_Options)
+      Options : Number_Options := Default_Number_Options;
+      Style   : Compact_Style := Short)
       return Humanize.Status.Text_Result;
 
    procedure Compact_Into
      (Context : Humanize.Contexts.Context;
       Value   : Long_Long_Integer;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Number_Options := Default_Number_Options;
+      Style   : Compact_Style := Short);
+
+   --  Percentage rendering ("50%", French "50 %"). Value is the percent number;
+   --  Options control fraction digits (12.5 -> "12.5%").
+   function Percent
+     (Context : Humanize.Contexts.Context;
+      Value   : Long_Float;
+      Options : Number_Options := Default_Number_Options)
+      return Humanize.Status.Text_Result;
+
+   procedure Percent_Into
+     (Context : Humanize.Contexts.Context;
+      Value   : Long_Float;
       Target  : in out String;
       Written : out Natural;
       Status  : out Humanize.Status.Status_Code;

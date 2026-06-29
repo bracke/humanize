@@ -51,11 +51,22 @@ package Humanize.Messages is
       Number_Compact_Billion,
       Number_Compact_Trillion,
 
+      Number_Compact_Long_Thousand,
+      Number_Compact_Long_Million,
+      Number_Compact_Long_Billion,
+      Number_Compact_Long_Trillion,
+
+      Number_Percent,
+
       Unit_Meter,
       Unit_Kilometer,
+      Unit_Centimeter,
+      Unit_Millimeter,
       Unit_Gram,
       Unit_Kilogram,
+      Unit_Milligram,
       Unit_Liter,
+      Unit_Milliliter,
 
       List_And);
 

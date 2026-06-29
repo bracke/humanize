@@ -70,6 +70,19 @@ package body Humanize.I18N_Rendering is
                   Humanize.Number_Formatting.Symbols_For (Locale)));
          when Humanize.Selections.Value_Argument =>
             I18N.Arguments.Set (Args, "value", To_String (Selection.Value));
+         when Humanize.Selections.Decimal_Argument =>
+            --  ASCII decimal selects the plural category ("count"); its locale
+            --  form is the displayed "value".
+            declare
+               Ascii : constant String := To_String (Selection.Value);
+            begin
+               I18N.Arguments.Set (Args, "count", Ascii);
+               I18N.Arguments.Set
+                 (Args, "value",
+                  Humanize.Number_Formatting.Localize
+                    (Ascii,
+                     Humanize.Number_Formatting.Symbols_For (Locale)));
+            end;
       end case;
    end Apply_Arguments;
 

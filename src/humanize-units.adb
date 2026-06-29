@@ -14,6 +14,22 @@ package body Humanize.Units is
                (Context, Humanize.Unit_Classification.Classify (Value, Unit));
    end Format;
 
+   function Format
+     (Context : Humanize.Contexts.Context;
+      Value   : Long_Float;
+      Unit    : Unit_Kind;
+      Options : Humanize.Numbers.Number_Options :=
+        Humanize.Numbers.Default_Number_Options)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Humanize.I18N_Rendering.Render
+               (Context,
+                Humanize.Unit_Classification.Classify_Decimal
+                  (Value, Unit, Options.Maximum_Fraction_Digits,
+                   Options.Suppress_Trailing_Zero));
+   end Format;
+
    procedure Format_Into
      (Context : Humanize.Contexts.Context;
       Value   : Natural;
@@ -30,6 +46,30 @@ package body Humanize.Units is
       end if;
       Humanize.I18N_Rendering.Render_Into
         (Context, Humanize.Unit_Classification.Classify (Value, Unit),
+         Target, Written, Status);
+   end Format_Into;
+
+   procedure Format_Into
+     (Context : Humanize.Contexts.Context;
+      Value   : Long_Float;
+      Unit    : Unit_Kind;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Humanize.Numbers.Number_Options :=
+        Humanize.Numbers.Default_Number_Options)
+   is
+   begin
+      Written := 0;
+      if Target'First /= 1 then
+         Status := Humanize.Status.Invalid_Options;
+         return;
+      end if;
+      Humanize.I18N_Rendering.Render_Into
+        (Context,
+         Humanize.Unit_Classification.Classify_Decimal
+           (Value, Unit, Options.Maximum_Fraction_Digits,
+            Options.Suppress_Trailing_Zero),
          Target, Written, Status);
    end Format_Into;
 

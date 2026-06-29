@@ -40,4 +40,17 @@ package body Humanize.Selections is
          Value     => To_Unbounded_String (Value));
    end Text_Value;
 
+   function Decimal
+     (Key          : Humanize.Messages.Message_Id;
+      Decimal_Text : String)
+      return Message_Selection
+   is
+   begin
+      return
+        (Key       => Key,
+         Arguments => Decimal_Argument,
+         Count     => 0,
+         Value     => To_Unbounded_String (Decimal_Text));
+   end Decimal;
+
 end Humanize.Selections;

@@ -120,6 +120,34 @@ package body Humanize.Tests.Numbers is
       Check_Compact (Support.Fr, 1_000_000, "1 M", "French million suffix");
    end Test_Compact_Other_Locales;
 
+   procedure Check_Long
+     (Context  : Humanize.Contexts.Context;
+      Value    : Long_Long_Integer;
+      Expected : String;
+      Message  : String)
+   is
+      Result : constant Text_Result :=
+        Compact (Context, Value, Default_Number_Options, Long);
+   begin
+      AUnit.Assertions.Assert
+        (Result.Status = Ok and then Support.Text (Result) = Expected,
+         Message & " -> expected [" & Expected & "] got ["
+         & Support.Text (Result) & "] status " & Status_Image (Result.Status));
+   end Check_Long;
+
+   procedure Test_Compact_Long (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+   begin
+      Check_Long (Support.En, 1_500, "1.5 thousand", "en long thousand");
+      Check_Long (Support.En, 1_200_000, "1.2 million", "en long million");
+      Check_Long (Support.En, 2_000_000, "2 million", "en long 2 million");
+      --  French pluralizes the scale word; comma decimal.
+      Check_Long (Support.Fr, 1_200_000, "1,2 million", "fr long one");
+      Check_Long (Support.Fr, 2_500_000, "2,5 millions", "fr long plural");
+      --  German plural scale word, comma decimal.
+      Check_Long (Support.De, 1_500_000, "1,5 Millionen", "de long");
+   end Test_Compact_Long;
+
    procedure Test_Compact_Rollover (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
    begin
@@ -138,6 +166,29 @@ package body Humanize.Tests.Numbers is
       Check_Ordinal (Support.Fr, 1234, "1" & ' ' & "234e",
                      "French grouped ordinal");
    end Test_Count_Grouping;
+
+   procedure Check_Percent
+     (Context  : Humanize.Contexts.Context;
+      Value    : Long_Float;
+      Expected : String;
+      Message  : String)
+   is
+      Result : constant Text_Result := Percent (Context, Value);
+   begin
+      AUnit.Assertions.Assert
+        (Result.Status = Ok and then Support.Text (Result) = Expected,
+         Message & " -> expected [" & Expected & "] got ["
+         & Support.Text (Result) & "] status " & Status_Image (Result.Status));
+   end Check_Percent;
+
+   procedure Test_Percent (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+   begin
+      Check_Percent (Support.En, 50.0, "50%", "en whole percent");
+      Check_Percent (Support.En, 12.5, "12.5%", "en fractional percent");
+      Check_Percent (Support.De, 12.5, "12,5%", "de comma decimal percent");
+      Check_Percent (Support.Fr, 50.0, "50 %", "fr spaces the percent sign");
+   end Test_Percent;
 
    procedure Test_Number_Bounded (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
@@ -171,6 +222,8 @@ package body Humanize.Tests.Numbers is
       Register_Routine (T, Test_Compact_Other_Locales'Access,
         "German/Danish compact suffixes");
       Register_Routine (T, Test_Ordinal_Gender'Access, "feminine ordinals");
+      Register_Routine (T, Test_Compact_Long'Access, "long-form compact");
+      Register_Routine (T, Test_Percent'Access, "percent formatting");
       Register_Routine (T, Test_Compact_Rollover'Access, "compact tier rollover");
       Register_Routine (T, Test_Count_Grouping'Access, "locale count grouping");
       Register_Routine (T, Test_Number_Bounded'Access, "bounded number APIs");

@@ -77,6 +77,19 @@ begin
       Put_Line
         ("  5 kilometers : "
          & Text (Humanize.Units.Format (English, 5, Humanize.Units.Kilometer)));
+      Put_Line
+        ("  1.5 km       : "
+         & Text (Humanize.Units.Format
+                   (English, 1.5, Humanize.Units.Kilometer)));
+      Put_Line
+        ("  long 1.2M    : "
+         & Text (Humanize.Numbers.Compact
+                   (English, 1_200_000,
+                    Humanize.Numbers.Default_Number_Options,
+                    Humanize.Numbers.Long)));
+      Put_Line
+        ("  percent 12.5 : "
+         & Text (Humanize.Numbers.Percent (English, 12.5)));
       New_Line;
       Put_Line ("Spanish:");
       Put_Line
@@ -88,5 +101,9 @@ begin
       Put_Line
         ("  3 kilometers : "
          & Text (Humanize.Units.Format (Spanish, 3, Humanize.Units.Kilometer)));
+      Put_Line
+        ("  1.5 km       : "
+         & Text (Humanize.Units.Format
+                   (Spanish, 1.5, Humanize.Units.Kilometer)));
    end;
 end Humanize_Demo;

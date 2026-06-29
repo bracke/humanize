@@ -90,16 +90,36 @@ package body Humanize.Messages is
          when Number_Compact_Trillion =>
             return "humanize.number.compact.trillion";
 
+         when Number_Compact_Long_Thousand =>
+            return "humanize.number.compact.long.thousand";
+         when Number_Compact_Long_Million =>
+            return "humanize.number.compact.long.million";
+         when Number_Compact_Long_Billion =>
+            return "humanize.number.compact.long.billion";
+         when Number_Compact_Long_Trillion =>
+            return "humanize.number.compact.long.trillion";
+
+         when Number_Percent =>
+            return "humanize.number.percent";
+
          when Unit_Meter =>
             return "humanize.unit.meter";
          when Unit_Kilometer =>
             return "humanize.unit.kilometer";
+         when Unit_Centimeter =>
+            return "humanize.unit.centimeter";
+         when Unit_Millimeter =>
+            return "humanize.unit.millimeter";
          when Unit_Gram =>
             return "humanize.unit.gram";
          when Unit_Kilogram =>
             return "humanize.unit.kilogram";
+         when Unit_Milligram =>
+            return "humanize.unit.milligram";
          when Unit_Liter =>
             return "humanize.unit.liter";
+         when Unit_Milliliter =>
+            return "humanize.unit.milliliter";
 
          when List_And =>
             return "humanize.list.and";

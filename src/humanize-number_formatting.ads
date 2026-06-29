@@ -21,4 +21,12 @@ private package Humanize.Number_Formatting is
    --  Symbols: replace the decimal point and group the integer digits.
    function Localize (Value : String; Symbols : Number_Symbols) return String;
 
+   --  Locale-neutral ASCII decimal image of a real value ("1.5", "2"), with a
+   --  '.' decimal point, rounded to at most Max_Digits fraction digits.
+   function Decimal_Image
+     (Value                  : Long_Float;
+      Max_Digits             : Natural;
+      Suppress_Trailing_Zero : Boolean := True)
+      return String;
+
 end Humanize.Number_Formatting;

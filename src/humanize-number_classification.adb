@@ -131,12 +131,22 @@ package body Humanize.Number_Classification is
       return Int_Part >= 1000;
    end Promotes;
 
+   --  Long-style key for a short compact tier key.
+   function Long_Key (Short : Message_Id) return Message_Id is
+     (case Short is
+         when Number_Compact_Thousand => Number_Compact_Long_Thousand,
+         when Number_Compact_Million  => Number_Compact_Long_Million,
+         when Number_Compact_Billion  => Number_Compact_Long_Billion,
+         when others                  => Number_Compact_Long_Trillion);
+
    function Compact
      (Value   : Long_Long_Integer;
       Options : Humanize.Numbers.Number_Options;
-      Locale  : String)
+      Locale  : String;
+      Style   : Humanize.Numbers.Compact_Style)
       return Message_Selection
    is
+      use type Humanize.Numbers.Compact_Style;
       Mag         : constant Long_Long_Integer := Magnitude (Value);
       Sign        : constant String := (if Value < 0 then "-" else "");
       Digit_Count : constant Natural := Options.Maximum_Fraction_Digits;
@@ -172,10 +182,35 @@ package body Humanize.Number_Classification is
          Key := Message_Id'Succ (Key);  --  Thousand->Million->Billion->Trillion
       end if;
 
-      return Text_Value
-               (Key,
-                Local (Sign & Format_Scaled (Mag, Divisor, Digit_Count,
-                                             Suppress)));
+      declare
+         Scaled : constant String :=
+           Sign & Format_Scaled (Mag, Divisor, Digit_Count, Suppress);
+      begin
+         if Style = Humanize.Numbers.Short then
+            return Text_Value (Key, Local (Scaled));
+         else
+            --  Long style: the scaled value is a plural selector (decimal), the
+            --  scale word agrees with it.
+            return Humanize.Selections.Decimal (Long_Key (Key), Scaled);
+         end if;
+      end;
    end Compact;
+
+   function Percent
+     (Value   : Long_Float;
+      Options : Humanize.Numbers.Number_Options;
+      Locale  : String)
+      return Message_Selection
+   is
+      Ascii : constant String :=
+        Humanize.Number_Formatting.Decimal_Image
+          (Value, Options.Maximum_Fraction_Digits,
+           Options.Suppress_Trailing_Zero);
+   begin
+      return Text_Value
+               (Number_Percent,
+                Humanize.Number_Formatting.Localize
+                  (Ascii, Humanize.Number_Formatting.Symbols_For (Locale)));
+   end Percent;
 
 end Humanize.Number_Classification;

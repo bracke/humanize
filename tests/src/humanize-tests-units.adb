@@ -10,9 +10,11 @@ package body Humanize.Tests.Units is
    use Humanize.Status;
    use Humanize.Units;
 
-   --  UTF-8 'e' grave for French expectations.
+   --  UTF-8 'e' grave (fr) and 'o' acute (es) for expectations.
    EG : constant String :=
      Character'Val (16#C3#) & Character'Val (16#A8#);
+   OA : constant String :=
+     Character'Val (16#C3#) & Character'Val (16#B3#);
 
    procedure Check
      (Context  : Humanize.Contexts.Context;
@@ -52,7 +54,44 @@ package body Humanize.Tests.Units is
       Check (Support.Fr, 3, Kilometer, "3 kilom" & EG & "tres",
              "French kilometres");
       Check (Support.Fr, 2, Gram, "2 grammes", "French grams");
+      --  Additional metric units.
+      Check (Support.En, 5, Centimeter, "5 centimeters", "English centimeters");
+      Check (Support.En, 250, Milliliter, "250 milliliters", "English millilitres");
+      Check (Support.Fr, 2, Centimeter, "2 centim" & EG & "tres",
+             "French centimetres");
+      Check (Support.De, 5, Millimeter, "5 Millimeter", "German millimetres");
    end Test_Locales;
+
+   procedure Check_F
+     (Context  : Humanize.Contexts.Context;
+      Value    : Long_Float;
+      Unit     : Unit_Kind;
+      Expected : String;
+      Message  : String)
+   is
+      Result : constant Text_Result := Format (Context, Value, Unit);
+   begin
+      AUnit.Assertions.Assert
+        (Result.Status = Ok and then Support.Text (Result) = Expected,
+         Message & " -> expected [" & Expected & "] got ["
+         & Support.Text (Result) & "] status " & Status_Image (Result.Status));
+   end Check_F;
+
+   procedure Test_Fractional (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+   begin
+      --  English: any fraction -> plural ("kilometers").
+      Check_F (Support.En, 1.5, Kilometer, "1.5 kilometers", "en 1.5 plural");
+      Check_F (Support.En, 2.5, Meter, "2.5 meters", "en 2.5 plural");
+      --  French: i in {0,1} -> singular; comma decimal.
+      Check_F (Support.Fr, 1.5, Meter, "1,5 m" & EG & "tre", "fr 1.5 singular");
+      Check_F (Support.Fr, 2.5, Meter, "2,5 m" & EG & "tres", "fr 2.5 plural");
+      --  Spanish: n=1 only -> 1.5 is plural; comma decimal.
+      Check_F (Support.Es, 1.5, Kilometer, "1,5 kil" & OA & "metros",
+               "es 1.5 plural");
+      --  German invariant word, comma decimal.
+      Check_F (Support.De, 1.5, Meter, "1,5 Meter", "de 1.5");
+   end Test_Fractional;
 
    procedure Test_Bounded (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
@@ -77,6 +116,7 @@ package body Humanize.Tests.Units is
    begin
       Register_Routine (T, Test_English'Access, "English units");
       Register_Routine (T, Test_Locales'Access, "German/Danish/French units");
+      Register_Routine (T, Test_Fractional'Access, "fractional units");
       Register_Routine (T, Test_Bounded'Access, "bounded unit API");
    end Register_Tests;
 

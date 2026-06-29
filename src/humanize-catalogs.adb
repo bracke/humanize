@@ -26,6 +26,17 @@ package body Humanize.Catalogs is
    FEMORD : constant String :=
      Character'Val (16#C2#) & Character'Val (16#AA#);
 
+   --  UTF-8 byte sequences for Portuguese letters: 'a' tilde (U+00E3), 'o'
+   --  tilde (U+00F5), 'a' acute (U+00E1), and 'e' circumflex (U+00EA).
+   ATILDE : constant String :=
+     Character'Val (16#C3#) & Character'Val (16#A3#);
+   OTILDE : constant String :=
+     Character'Val (16#C3#) & Character'Val (16#B5#);
+   AACUTE : constant String :=
+     Character'Val (16#C3#) & Character'Val (16#A1#);
+   ECIRC  : constant String :=
+     Character'Val (16#C3#) & Character'Val (16#AA#);
+
    --  English catalog fragment. Catalog values are unquoted; i18n trims the
    --  text after the first '=' separator.
    English : constant String :=
@@ -88,6 +99,14 @@ package body Humanize.Catalogs is
      & "en.humanize.number.compact.million = {value}M" & LF
      & "en.humanize.number.compact.billion = {value}B" & LF
      & "en.humanize.number.compact.trillion = {value}T" & LF
+     & "en.humanize.number.compact.long.thousand = "
+     & "{count, plural, one {{value} thousand} other {{value} thousand}}" & LF
+     & "en.humanize.number.compact.long.million = "
+     & "{count, plural, one {{value} million} other {{value} million}}" & LF
+     & "en.humanize.number.compact.long.billion = "
+     & "{count, plural, one {{value} billion} other {{value} billion}}" & LF
+     & "en.humanize.number.compact.long.trillion = "
+     & "{count, plural, one {{value} trillion} other {{value} trillion}}" & LF
      & "en.humanize.unit.meter = "
      & "{count, plural, one {{value} meter} other {{value} meters}}" & LF
      & "en.humanize.unit.kilometer = "
@@ -98,6 +117,15 @@ package body Humanize.Catalogs is
      & "{count, plural, one {{value} kilogram} other {{value} kilograms}}" & LF
      & "en.humanize.unit.liter = "
      & "{count, plural, one {{value} liter} other {{value} liters}}" & LF
+     & "en.humanize.number.percent = {value}%" & LF
+     & "en.humanize.unit.centimeter = "
+     & "{count, plural, one {{value} centimeter} other {{value} centimeters}}" & LF
+     & "en.humanize.unit.millimeter = "
+     & "{count, plural, one {{value} millimeter} other {{value} millimeters}}" & LF
+     & "en.humanize.unit.milligram = "
+     & "{count, plural, one {{value} milligram} other {{value} milligrams}}" & LF
+     & "en.humanize.unit.milliliter = "
+     & "{count, plural, one {{value} milliliter} other {{value} milliliters}}" & LF
      & "en.humanize.list.and = and" & LF;
 
    --  Danish catalog fragment. 'å' is spliced via AA to keep UTF-8 output.
@@ -166,6 +194,14 @@ package body Humanize.Catalogs is
      & "da.humanize.number.compact.million = {value} mio." & LF
      & "da.humanize.number.compact.billion = {value} mia." & LF
      & "da.humanize.number.compact.trillion = {value} bio." & LF
+     & "da.humanize.number.compact.long.thousand = "
+     & "{count, plural, one {{value} tusind} other {{value} tusind}}" & LF
+     & "da.humanize.number.compact.long.million = "
+     & "{count, plural, one {{value} million} other {{value} millioner}}" & LF
+     & "da.humanize.number.compact.long.billion = "
+     & "{count, plural, one {{value} milliard} other {{value} milliarder}}" & LF
+     & "da.humanize.number.compact.long.trillion = "
+     & "{count, plural, one {{value} billion} other {{value} billioner}}" & LF
      & "da.humanize.unit.meter = "
      & "{count, plural, one {{value} meter} other {{value} meter}}" & LF
      & "da.humanize.unit.kilometer = "
@@ -176,6 +212,15 @@ package body Humanize.Catalogs is
      & "{count, plural, one {{value} kilogram} other {{value} kilogram}}" & LF
      & "da.humanize.unit.liter = "
      & "{count, plural, one {{value} liter} other {{value} liter}}" & LF
+     & "da.humanize.number.percent = {value}%" & LF
+     & "da.humanize.unit.centimeter = "
+     & "{count, plural, one {{value} centimeter} other {{value} centimeter}}" & LF
+     & "da.humanize.unit.millimeter = "
+     & "{count, plural, one {{value} millimeter} other {{value} millimeter}}" & LF
+     & "da.humanize.unit.milligram = "
+     & "{count, plural, one {{value} milligram} other {{value} milligram}}" & LF
+     & "da.humanize.unit.milliliter = "
+     & "{count, plural, one {{value} milliliter} other {{value} milliliter}}" & LF
      & "da.humanize.list.and = og" & LF;
 
    --  German catalog fragment (pure ASCII: no umlauts in these words).
@@ -239,6 +284,14 @@ package body Humanize.Catalogs is
      & "de.humanize.number.compact.million = {value} Mio." & LF
      & "de.humanize.number.compact.billion = {value} Mrd." & LF
      & "de.humanize.number.compact.trillion = {value} Bio." & LF
+     & "de.humanize.number.compact.long.thousand = "
+     & "{count, plural, one {{value} Tausend} other {{value} Tausend}}" & LF
+     & "de.humanize.number.compact.long.million = "
+     & "{count, plural, one {{value} Million} other {{value} Millionen}}" & LF
+     & "de.humanize.number.compact.long.billion = "
+     & "{count, plural, one {{value} Milliarde} other {{value} Milliarden}}" & LF
+     & "de.humanize.number.compact.long.trillion = "
+     & "{count, plural, one {{value} Billion} other {{value} Billionen}}" & LF
      & "de.humanize.unit.meter = "
      & "{count, plural, one {{value} Meter} other {{value} Meter}}" & LF
      & "de.humanize.unit.kilometer = "
@@ -249,6 +302,15 @@ package body Humanize.Catalogs is
      & "{count, plural, one {{value} Kilogramm} other {{value} Kilogramm}}" & LF
      & "de.humanize.unit.liter = "
      & "{count, plural, one {{value} Liter} other {{value} Liter}}" & LF
+     & "de.humanize.number.percent = {value}%" & LF
+     & "de.humanize.unit.centimeter = "
+     & "{count, plural, one {{value} Zentimeter} other {{value} Zentimeter}}" & LF
+     & "de.humanize.unit.millimeter = "
+     & "{count, plural, one {{value} Millimeter} other {{value} Millimeter}}" & LF
+     & "de.humanize.unit.milligram = "
+     & "{count, plural, one {{value} Milligramm} other {{value} Milligramm}}" & LF
+     & "de.humanize.unit.milliliter = "
+     & "{count, plural, one {{value} Milliliter} other {{value} Milliliter}}" & LF
      & "de.humanize.list.and = und" & LF;
 
    --  French catalog fragment (pure ASCII; French plural "one" covers 0 and 1).
@@ -315,6 +377,14 @@ package body Humanize.Catalogs is
      & "fr.humanize.number.compact.million = {value} M" & LF
      & "fr.humanize.number.compact.billion = {value} Md" & LF
      & "fr.humanize.number.compact.trillion = {value} Bn" & LF
+     & "fr.humanize.number.compact.long.thousand = "
+     & "{count, plural, one {{value} millier} other {{value} milliers}}" & LF
+     & "fr.humanize.number.compact.long.million = "
+     & "{count, plural, one {{value} million} other {{value} millions}}" & LF
+     & "fr.humanize.number.compact.long.billion = "
+     & "{count, plural, one {{value} milliard} other {{value} milliards}}" & LF
+     & "fr.humanize.number.compact.long.trillion = "
+     & "{count, plural, one {{value} billion} other {{value} billions}}" & LF
      & "fr.humanize.unit.meter = "
      & "{count, plural, one {{value} m" & EGRAVE & "tre} "
      & "other {{value} m" & EGRAVE & "tres}}" & LF
@@ -328,6 +398,17 @@ package body Humanize.Catalogs is
      & "other {{value} kilogrammes}}" & LF
      & "fr.humanize.unit.liter = "
      & "{count, plural, one {{value} litre} other {{value} litres}}" & LF
+     & "fr.humanize.number.percent = {value} %" & LF
+     & "fr.humanize.unit.centimeter = "
+     & "{count, plural, one {{value} centim" & EGRAVE & "tre} "
+     & "other {{value} centim" & EGRAVE & "tres}}" & LF
+     & "fr.humanize.unit.millimeter = "
+     & "{count, plural, one {{value} millim" & EGRAVE & "tre} "
+     & "other {{value} millim" & EGRAVE & "tres}}" & LF
+     & "fr.humanize.unit.milligram = "
+     & "{count, plural, one {{value} milligramme} other {{value} milligrammes}}" & LF
+     & "fr.humanize.unit.milliliter = "
+     & "{count, plural, one {{value} millilitre} other {{value} millilitres}}" & LF
      & "fr.humanize.list.and = et" & LF;
 
    --  Spanish catalog fragment. 'n'-tilde, 'i'/'o'-acute and the ordinal
@@ -407,6 +488,17 @@ package body Humanize.Catalogs is
      & "es.humanize.number.compact.million = {value} M" & LF
      & "es.humanize.number.compact.billion = {value} mil M" & LF
      & "es.humanize.number.compact.trillion = {value} B" & LF
+     & "es.humanize.number.compact.long.thousand = "
+     & "{count, plural, one {{value} mil} other {{value} mil}}" & LF
+     & "es.humanize.number.compact.long.million = "
+     & "{count, plural, one {{value} mill" & OACUTE & "n} "
+     & "other {{value} millones}}" & LF
+     & "es.humanize.number.compact.long.billion = "
+     & "{count, plural, one {{value} mil millones} "
+     & "other {{value} mil millones}}" & LF
+     & "es.humanize.number.compact.long.trillion = "
+     & "{count, plural, one {{value} bill" & OACUTE & "n} "
+     & "other {{value} billones}}" & LF
      & "es.humanize.unit.meter = "
      & "{count, plural, one {{value} metro} other {{value} metros}}" & LF
      & "es.humanize.unit.kilometer = "
@@ -418,6 +510,17 @@ package body Humanize.Catalogs is
      & "{count, plural, one {{value} kilogramo} other {{value} kilogramos}}" & LF
      & "es.humanize.unit.liter = "
      & "{count, plural, one {{value} litro} other {{value} litros}}" & LF
+     & "es.humanize.number.percent = {value}%" & LF
+     & "es.humanize.unit.centimeter = "
+     & "{count, plural, one {{value} cent" & IACUTE & "metro} "
+     & "other {{value} cent" & IACUTE & "metros}}" & LF
+     & "es.humanize.unit.millimeter = "
+     & "{count, plural, one {{value} mil" & IACUTE & "metro} "
+     & "other {{value} mil" & IACUTE & "metros}}" & LF
+     & "es.humanize.unit.milligram = "
+     & "{count, plural, one {{value} miligramo} other {{value} miligramos}}" & LF
+     & "es.humanize.unit.milliliter = "
+     & "{count, plural, one {{value} mililitro} other {{value} mililitros}}" & LF
      & "es.humanize.list.and = y" & LF;
 
    --  Italian catalog fragment (the ordinal indicator is spliced as UTF-8).
@@ -487,6 +590,14 @@ package body Humanize.Catalogs is
      & "it.humanize.number.compact.million = {value} Mln" & LF
      & "it.humanize.number.compact.billion = {value} Mld" & LF
      & "it.humanize.number.compact.trillion = {value} Bln" & LF
+     & "it.humanize.number.compact.long.thousand = "
+     & "{count, plural, one {{value} mille} other {{value} mila}}" & LF
+     & "it.humanize.number.compact.long.million = "
+     & "{count, plural, one {{value} milione} other {{value} milioni}}" & LF
+     & "it.humanize.number.compact.long.billion = "
+     & "{count, plural, one {{value} miliardo} other {{value} miliardi}}" & LF
+     & "it.humanize.number.compact.long.trillion = "
+     & "{count, plural, one {{value} bilione} other {{value} bilioni}}" & LF
      & "it.humanize.unit.meter = "
      & "{count, plural, one {{value} metro} other {{value} metri}}" & LF
      & "it.humanize.unit.kilometer = "
@@ -499,7 +610,72 @@ package body Humanize.Catalogs is
      & "other {{value} chilogrammi}}" & LF
      & "it.humanize.unit.liter = "
      & "{count, plural, one {{value} litro} other {{value} litri}}" & LF
+     & "it.humanize.number.percent = {value}%" & LF
+     & "it.humanize.unit.centimeter = "
+     & "{count, plural, one {{value} centimetro} other {{value} centimetri}}" & LF
+     & "it.humanize.unit.millimeter = "
+     & "{count, plural, one {{value} millimetro} other {{value} millimetri}}" & LF
+     & "it.humanize.unit.milligram = "
+     & "{count, plural, one {{value} milligrammo} other {{value} milligrammi}}" & LF
+     & "it.humanize.unit.milliliter = "
+     & "{count, plural, one {{value} millilitro} other {{value} millilitri}}" & LF
      & "it.humanize.list.and = e" & LF;
+
+   --  Portuguese catalog fragment (one iff i in {0,1}; accents spliced).
+   Portuguese : constant String :=
+     "pt.humanize.datetime.now = " & "agora" & LF
+     & "pt.humanize.datetime.day.previous = " & "ontem" & LF
+     & "pt.humanize.datetime.day.current = " & "hoje" & LF
+     & "pt.humanize.datetime.day.next = " & "amanh" & ATILDE & LF
+     & "pt.humanize.datetime.relative.second.past = " & "{count, plural, one {h" & AACUTE & " {value} segundo} other {h" & AACUTE & " {value} segundos}}" & LF
+     & "pt.humanize.datetime.relative.second.future = " & "{count, plural, one {dentro de {value} segundo} other {dentro de {value} segundos}}" & LF
+     & "pt.humanize.datetime.relative.minute.past = " & "{count, plural, one {h" & AACUTE & " {value} minuto} other {h" & AACUTE & " {value} minutos}}" & LF
+     & "pt.humanize.datetime.relative.minute.future = " & "{count, plural, one {dentro de {value} minuto} other {dentro de {value} minutos}}" & LF
+     & "pt.humanize.datetime.relative.hour.past = " & "{count, plural, one {h" & AACUTE & " {value} hora} other {h" & AACUTE & " {value} horas}}" & LF
+     & "pt.humanize.datetime.relative.hour.future = " & "{count, plural, one {dentro de {value} hora} other {dentro de {value} horas}}" & LF
+     & "pt.humanize.datetime.relative.day.past = " & "{count, plural, one {h" & AACUTE & " {value} dia} other {h" & AACUTE & " {value} dias}}" & LF
+     & "pt.humanize.datetime.relative.day.future = " & "{count, plural, one {dentro de {value} dia} other {dentro de {value} dias}}" & LF
+     & "pt.humanize.datetime.relative.week.past = " & "{count, plural, one {h" & AACUTE & " {value} semana} other {h" & AACUTE & " {value} semanas}}" & LF
+     & "pt.humanize.datetime.relative.week.future = " & "{count, plural, one {dentro de {value} semana} other {dentro de {value} semanas}}" & LF
+     & "pt.humanize.datetime.relative.month.past = " & "{count, plural, one {h" & AACUTE & " {value} m" & ECIRC & "s} other {h" & AACUTE & " {value} meses}}" & LF
+     & "pt.humanize.datetime.relative.month.future = " & "{count, plural, one {dentro de {value} m" & ECIRC & "s} other {dentro de {value} meses}}" & LF
+     & "pt.humanize.datetime.relative.year.past = " & "{count, plural, one {h" & AACUTE & " {value} ano} other {h" & AACUTE & " {value} anos}}" & LF
+     & "pt.humanize.datetime.relative.year.future = " & "{count, plural, one {dentro de {value} ano} other {dentro de {value} anos}}" & LF
+     & "pt.humanize.duration.unit.second = " & "{count, plural, one {{value} segundo} other {{value} segundos}}" & LF
+     & "pt.humanize.duration.unit.minute = " & "{count, plural, one {{value} minuto} other {{value} minutos}}" & LF
+     & "pt.humanize.duration.unit.hour = " & "{count, plural, one {{value} hora} other {{value} horas}}" & LF
+     & "pt.humanize.duration.unit.day = " & "{count, plural, one {{value} dia} other {{value} dias}}" & LF
+     & "pt.humanize.bytes.byte = " & "{count, plural, one {{value} byte} other {{value} bytes}}" & LF
+     & "pt.humanize.bytes.kb = " & "{value} kB" & LF
+     & "pt.humanize.bytes.mb = " & "{value} MB" & LF
+     & "pt.humanize.bytes.gb = " & "{value} GB" & LF
+     & "pt.humanize.bytes.tb = " & "{value} TB" & LF
+     & "pt.humanize.bytes.kib = " & "{value} KiB" & LF
+     & "pt.humanize.bytes.mib = " & "{value} MiB" & LF
+     & "pt.humanize.bytes.gib = " & "{value} GiB" & LF
+     & "pt.humanize.bytes.tib = " & "{value} TiB" & LF
+     & "pt.humanize.number.ordinal = " & "{count, selectordinal, other {{value}." & ORDM & "}}" & LF
+     & "pt.humanize.number.ordinal.feminine = " & "{count, selectordinal, other {{value}." & FEMORD & "}}" & LF
+     & "pt.humanize.number.compact.plain = " & "{value}" & LF
+     & "pt.humanize.number.compact.thousand = " & "{value} mil" & LF
+     & "pt.humanize.number.compact.million = " & "{value} mi" & LF
+     & "pt.humanize.number.compact.billion = " & "{value} bi" & LF
+     & "pt.humanize.number.compact.trillion = " & "{value} tri" & LF
+     & "pt.humanize.number.compact.long.thousand = " & "{count, plural, one {{value} mil} other {{value} mil}}" & LF
+     & "pt.humanize.number.compact.long.million = " & "{count, plural, one {{value} milh" & ATILDE & "o} other {{value} milh" & OTILDE & "es}}" & LF
+     & "pt.humanize.number.compact.long.billion = " & "{count, plural, one {{value} mil milh" & OTILDE & "es} other {{value} mil milh" & OTILDE & "es}}" & LF
+     & "pt.humanize.number.compact.long.trillion = " & "{count, plural, one {{value} bili" & ATILDE & "o} other {{value} bili" & OTILDE & "es}}" & LF
+     & "pt.humanize.number.percent = " & "{value}%" & LF
+     & "pt.humanize.unit.meter = " & "{count, plural, one {{value} metro} other {{value} metros}}" & LF
+     & "pt.humanize.unit.kilometer = " & "{count, plural, one {{value} quil" & OACUTE & "metro} other {{value} quil" & OACUTE & "metros}}" & LF
+     & "pt.humanize.unit.centimeter = " & "{count, plural, one {{value} cent" & IACUTE & "metro} other {{value} cent" & IACUTE & "metros}}" & LF
+     & "pt.humanize.unit.millimeter = " & "{count, plural, one {{value} mil" & IACUTE & "metro} other {{value} mil" & IACUTE & "metros}}" & LF
+     & "pt.humanize.unit.gram = " & "{count, plural, one {{value} grama} other {{value} gramas}}" & LF
+     & "pt.humanize.unit.kilogram = " & "{count, plural, one {{value} quilograma} other {{value} quilogramas}}" & LF
+     & "pt.humanize.unit.milligram = " & "{count, plural, one {{value} miligrama} other {{value} miligramas}}" & LF
+     & "pt.humanize.unit.liter = " & "{count, plural, one {{value} litro} other {{value} litros}}" & LF
+     & "pt.humanize.unit.milliliter = " & "{count, plural, one {{value} mililitro} other {{value} mililitros}}" & LF
+     & "pt.humanize.list.and = " & "e" & LF;
 
    procedure Load_Defaults
      (Runtime : in out I18N.Runtime.Instance;
@@ -512,7 +688,7 @@ package body Humanize.Catalogs is
         (Item        => Runtime,
          Source_Name => "humanize.builtin.catalog",
          Text        =>
-           English & Danish & German & French & Spanish & Italian,
+           English & Danish & German & French & Spanish & Italian & Portuguese,
          Result      => Result,
          Policy      => Policy);
    end Load_Defaults;

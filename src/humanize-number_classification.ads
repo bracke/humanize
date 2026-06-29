@@ -14,6 +14,14 @@ private package Humanize.Number_Classification is
    function Compact
      (Value   : Long_Long_Integer;
       Options : Humanize.Numbers.Number_Options;
+      Locale  : String;
+      Style   : Humanize.Numbers.Compact_Style)
+      return Humanize.Selections.Message_Selection;
+
+   --  Percentage rendering: Value is the percent number (50.0 -> "50%").
+   function Percent
+     (Value   : Long_Float;
+      Options : Humanize.Numbers.Number_Options;
       Locale  : String)
       return Humanize.Selections.Message_Selection;
 

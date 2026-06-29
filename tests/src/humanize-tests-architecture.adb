@@ -58,6 +58,9 @@ package body Humanize.Tests.Architecture is
             AUnit.Assertions.Assert
               (Humanize.I18N_Rendering.Available (Support.It, Id),
                "Italian catalog missing " & Key (Id));
+            AUnit.Assertions.Assert
+              (Humanize.I18N_Rendering.Available (Support.Pt, Id),
+               "Portuguese catalog missing " & Key (Id));
          end if;
       end loop;
    end Test_Locale_Coverage;
@@ -157,7 +160,7 @@ package body Humanize.Tests.Architecture is
       Register_Routine (T, Test_Unique_Keys'Access,
         "every Message_Id maps to a unique key");
       Register_Routine (T, Test_Locale_Coverage'Access,
-        "every key exists in en, da, de, fr, es and it");
+        "every key exists in en, da, de, fr, es, it and pt");
       Register_Routine (T, Test_Domain_Boundary'Access,
         "domain packages do not import I18N.Runtime");
       Register_Routine (T, Test_No_Localized_Strings'Access,

@@ -1338,3 +1338,22 @@ plugins.
 Still out of scope: time zone database, runtime CLDR import, fractional units,
 long-form compact numbers, currency/percent/scientific formatting, and runtime
 rule plugins.
+
+## 25. v0.5 Additions
+
+* Fractional plural agreement. i18n 1.1 adds an overloaded
+  `I18N.Plurals.Cardinal` taking CLDR operands (i, v, f) and teaches the public
+  render paths to accept decimal plural selectors. Humanize passes a decimal
+  "count" (the ASCII value) alongside the localized "value" via a new
+  `Decimal_Argument` selection, so fractional quantities agree in number
+  (French "1,5 kilometre" singular; English "1.5 kilometers").
+* `Humanize.Units` fractional overloads (`Format`/`Format_Into` taking a
+  `Long_Float`), plus new metric units (centimeter, millimeter, milligram,
+  milliliter).
+* `Humanize.Numbers.Compact` `Style` parameter: Long renders the spelled-out
+  scale word ("1.2 million") with plural agreement.
+* `Humanize.Numbers.Percent` / `Percent_Into`.
+* Portuguese (`pt`). Shipped locales: en, da, de, fr, es, it, pt.
+
+Still out of scope: time zone database, runtime CLDR import, currency and
+scientific-notation formatting, and runtime rule plugins.

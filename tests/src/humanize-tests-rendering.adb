@@ -169,6 +169,32 @@ package body Humanize.Tests.Rendering is
          "Italian byte decimal");
    end Test_Spanish_Italian;
 
+   procedure Test_Portuguese (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+      AC      : constant String :=  --  'a' acute for "há"
+        Character'Val (16#C3#) & Character'Val (16#A1#);
+      use Ada.Calendar;
+      Ref     : constant Time := Time_Of (2026, 3, 21, Day_Duration (43_200));
+      Earlier : constant Time := Ref - Duration (14_400);  --  4 hours
+   begin
+      --  Portuguese: one iff i in {0,1}.
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Durations.Format (Support.Pt, 1)) = "1 segundo",
+         "Portuguese duration one");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Durations.Format (Support.Pt, 2))
+           = "2 segundos",
+         "Portuguese duration other");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Datetimes.Relative (Support.Pt, Earlier, Ref))
+           = "h" & AC & " 4 horas",
+         "Portuguese relative hours");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Bytes.Format (Support.Pt, 1536,
+                       Humanize.Bytes.Default_Byte_Options)) = "1,5 KiB",
+         "Portuguese byte decimal");
+   end Test_Portuguese;
+
    procedure Test_Missing_Message (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
       Result : constant Text_Result :=
@@ -275,6 +301,7 @@ package body Humanize.Tests.Rendering is
       Register_Routine (T, Test_German'Access, "German output");
       Register_Routine (T, Test_French'Access, "French output (plurals)");
       Register_Routine (T, Test_Spanish_Italian'Access, "Spanish/Italian output");
+      Register_Routine (T, Test_Portuguese'Access, "Portuguese output");
       Register_Routine (T, Test_Missing_Message'Access, "missing key");
       Register_Routine (T, Test_Missing_Argument'Access, "missing argument");
       Register_Routine (T, Test_Invalid_Argument'Access, "invalid argument");

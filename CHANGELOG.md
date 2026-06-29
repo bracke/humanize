@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.0
+
+* Fractional unit quantities ("1.5 kilometers"), with CLDR fractional plural
+  agreement — French renders "1,5 kilomètre" (singular), English
+  "1.5 kilometers". Requires i18n >= 1.1 (fractional plural operands).
+* Long-form compact numbers ("1.2 million", French "2,5 millions") via a
+  `Compact` `Style` parameter, with plural agreement on the scale word.
+* `Humanize.Numbers.Percent` ("50%", French "50 %").
+* Added Portuguese (`pt`); shipped locales are now `en`, `da`, `de`, `fr`, `es`,
+  `it`, `pt`.
+* Added metric units: centimeter, millimeter, milligram, milliliter.
+
 ## 0.4.0
 
 * Added `Humanize.Units` — unit-quantity humanization ("5 kilometers",
