@@ -22,7 +22,7 @@ private package Humanize.Duration_Classification is
       return Outcome;
 
    --  Multi-unit decomposition (e.g. "1 hour, 30 minutes").
-   Max_Component_Count : constant := 4;  --  second/minute/hour/day
+   Max_Component_Count : constant := 7;
 
    type Component is record
       Unit  : Humanize.Durations.Duration_Unit := Humanize.Durations.Second;

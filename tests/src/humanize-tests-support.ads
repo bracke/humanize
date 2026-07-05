@@ -13,6 +13,8 @@ package Humanize.Tests.Support is
    function Es return Humanize.Contexts.Context;
    function It return Humanize.Contexts.Context;
    function Pt return Humanize.Contexts.Context;
+   function Nl return Humanize.Contexts.Context;
+   function Locale (Name : String) return Humanize.Contexts.Context;
 
    --  Context over a runtime with NO Humanize catalog (for missing-key tests).
    function Empty return Humanize.Contexts.Context;

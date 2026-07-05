@@ -11,6 +11,7 @@ package body Humanize.Tests.Bytes is
 
    Binary_1  : constant Byte_Options := (Binary, 1, True);
    Decimal_1 : constant Byte_Options := (Decimal, 1, True);
+   Auto_1    : constant Byte_Options := (Auto, 1, True);
 
    procedure Check
      (Bytes    : Byte_Count;
@@ -94,6 +95,100 @@ package body Humanize.Tests.Bytes is
          "German thousands grouping");
    end Test_Locale_Decimal;
 
+   procedure Test_Auto_And_File_Polish
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      Auto_Decimal : constant Text_Result := Format (Support.En, 2_000, Auto_1);
+      Auto_Binary : constant Text_Result := Format (Support.En, 1_536, Auto_1);
+      Files : constant Text_Result :=
+        File_Size_Summary (Support.En, 3, 1_536, Binary_1);
+      One_File : constant Text_Result :=
+        File_Size_Summary (Support.En, 1, 1_536, Binary_1);
+      No_Files : constant Text_Result :=
+        File_Size_Summary (Support.En, 0, 0, Binary_1);
+      Remaining : constant Text_Result :=
+        Transfer_Remaining_Label (Support.En, 2_000_000, Auto_1);
+      Remaining_With_Rate : constant Text_Result :=
+        Transfer_Remaining_Label (Support.En, 2_000_000, 1_000, Auto_1);
+      Complete : constant Text_Result :=
+        Transfer_Remaining_Label (Support.En, 0, Auto_1);
+      Stalled : constant Text_Result :=
+        Transfer_Remaining_Label (Support.En, 2_000_000, 0, Auto_1);
+      Disk : constant Text_Result :=
+        Disk_Usage_Label (Support.En, 1_500, 10_000, Decimal_1);
+      Bad_Disk : constant Text_Result :=
+        Disk_Usage_Label (Support.En, 1, 0, Decimal_1);
+      Buffer : String (1 .. 32);
+      Written : Natural;
+      Code : Status_Code;
+   begin
+      AUnit.Assertions.Assert
+        (Auto_Decimal.Status = Ok and then Support.Text (Auto_Decimal) = "2 kB",
+         "auto byte options prefer decimal for decimal-aligned values");
+      AUnit.Assertions.Assert
+        (Auto_Binary.Status = Ok and then Support.Text (Auto_Binary) = "1.5 KiB",
+         "auto byte options keep binary for binary-aligned values");
+      AUnit.Assertions.Assert
+        (Files.Status = Ok and then Support.Text (Files) = "3 files, 1.5 KiB",
+         "file size summary");
+      AUnit.Assertions.Assert
+        (One_File.Status = Ok
+         and then Support.Text (One_File) = "1 file, 1.5 KiB",
+         "single file size summary");
+      AUnit.Assertions.Assert
+        (No_Files.Status = Ok
+         and then Support.Text (No_Files) = "no files, 0 bytes",
+         "empty file size summary");
+      AUnit.Assertions.Assert
+        (Remaining.Status = Ok
+         and then Support.Text (Remaining) = "2 MB remaining",
+         "transfer remaining label");
+      AUnit.Assertions.Assert
+        (Remaining_With_Rate.Status = Ok
+         and then Support.Text (Remaining_With_Rate) =
+           "2 MB remaining at 1 kB/s",
+         "transfer remaining label with rate");
+      AUnit.Assertions.Assert
+        (Complete.Status = Ok
+         and then Support.Text (Complete) = "transfer complete",
+         "transfer complete label");
+      AUnit.Assertions.Assert
+        (Stalled.Status = Ok
+         and then Support.Text (Stalled) = "2 MB remaining, stalled",
+         "stalled transfer label");
+      AUnit.Assertions.Assert
+        (Disk.Status = Ok
+         and then Support.Text (Disk) = "1.5 kB of 10 kB used (15%)",
+         "disk usage label");
+      AUnit.Assertions.Assert
+        (Bad_Disk.Status = Invalid_Value,
+         "zero total disk usage is invalid");
+
+      File_Size_Summary_Into
+        (Support.En, 3, 1_536, Buffer, Written, Code, Binary_1);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "3 files, 1.5 KiB",
+         "file summary bounded");
+      Transfer_Remaining_Label_Into
+        (Support.En, 2_000_000, Buffer, Written, Code, Auto_1);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "2 MB remaining",
+         "transfer remaining bounded");
+      Transfer_Remaining_Label_Into
+        (Support.En, 2_000_000, 1_000, Buffer, Written, Code, Auto_1);
+      AUnit.Assertions.Assert
+        (Code = Ok
+         and then Buffer (1 .. Written) = "2 MB remaining at 1 kB/s",
+         "transfer remaining rate bounded");
+      Disk_Usage_Label_Into
+        (Support.En, 1_500, 10_000, Buffer, Written, Code, Decimal_1);
+      AUnit.Assertions.Assert
+        (Code = Ok
+         and then Buffer (1 .. Written) = "1.5 kB of 10 kB used (15%)",
+         "disk usage bounded");
+   end Test_Auto_And_File_Polish;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -114,6 +209,8 @@ package body Humanize.Tests.Bytes is
         "fraction digit limit");
       Register_Routine (T, Test_Locale_Decimal'Access,
         "locale decimal separator and grouping");
+      Register_Routine (T, Test_Auto_And_File_Polish'Access,
+        "auto byte and file polish");
    end Register_Tests;
 
 end Humanize.Tests.Bytes;

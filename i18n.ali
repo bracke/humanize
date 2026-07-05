@@ -1,0 +1,16 @@
+V "GNAT Lib v13"
+A -gnat2022
+A -gnatX
+P ZX
+
+RN
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U i18n%s		i18n.ads		fa948552 NE OO PR PK IU
+
+D i18n.ads		20260630205449 fa948552 i18n%s
+D system.ads		20240521074738 426dafb8 system%s
+G a e
+X 1 i18n.ads
+16K9*I18N 19l5 19e9
+

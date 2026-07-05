@@ -1,35 +1,106 @@
-# Humanize v0.1 Specification — Ada 2022 Alire Library Crate
+# Humanize 0.5.0 Specification
 
-## 1. Purpose
+## Purpose
 
-`humanize` is an Ada 2022 Alire library crate for converting machine-oriented values into human-readable localized text.
+`humanize` is an Ada 2022 Alire library crate for converting machine-oriented
+values into localized, human-readable text.
 
-Humanize v0.1 supports:
+Humanize 0.5.0 supports:
 
-* relative datetime humanization;
-* simple duration humanization;
-* byte-size humanization;
-* English and Danish catalog fragments;
-* convenience result APIs;
-* bounded caller-owned output APIs;
-* rendering through the existing `i18n` runtime.
+* relative datetimes, including elapsed and calendar-word modes, natural
+  time-of-day labels, richer calendar-relative labels such as `next Friday`,
+  `tomorrow morning`, `tonight`, and `this weekend`, calendar relation labels,
+  compact date/time ranges, and business-time range labels;
+* natural day labels, exact calendar differences, and ISO-date fallback for
+  distant civil dates;
+* single-unit, multi-unit, compact, clock-style, natural-wording, exact-week,
+  approximate-month/year, and precise subsecond durations with unit suppression,
+  plus configurable business-date and business-hour arithmetic, interval,
+  lifecycle, freshness, progress, and retry phrases;
+* decimal, binary, and auto byte-size formatting plus file, transfer, and disk
+  usage summaries;
+* deterministic color and visual value labels, including full CSS named colors,
+  `currentColor`, CSS Color 4 parsing into sRGB, alpha hex,
+  RGB/RGBA/HSL/HWB/Lab/LCH/OKLab/OKLCH/`color()` input, `none` channels,
+  simple `calc()` numeric expressions, RGB/RGBA/HSL/HSV summaries, CIE Lab and
+  OKLab conversion, hue family, saturation, temperature, chroma, pastel/vivid
+  descriptions, nearest color names, palette roles, harmony, contrast-pair
+  suggestions, accessibility labels, mood labels, advanced palette summaries,
+  opacity, brightness, contrast, text-readability, RGB-distance, and
+  perceptual color-difference labels;
+* cardinal words, signed English and grouped locale cardinal words,
+  AP/editorial number wording, deterministic currency phrases, fractional
+  numbers, ordinals, compact numbers, long-form compact numbers, bounded
+  numbers, number ranges, proportions, relative change phrases, and
+  percentages;
+* metric and selected customary unit quantities, including fractional
+  quantities, abbreviation style, automatic unit selectors, practical
+  engineering/display/print/signal/storage-endurance helpers, and bounded
+  forms;
+* human-readable conjunction/disjunction lists, limited lists, counted noun
+  phrases with zero/article/word/compact policies, result/page summaries,
+  compact more/others summaries, pagination ranges, frequency, and rate
+  phrasing with custom nouns;
+* deterministic generic queue/job/run/cache/sync/import/export summaries for
+  operational counts, states, and failure totals;
+* deterministic file-size, civil-date, absolute-number, and relative-percent
+  comparison summaries;
+* deterministic string helpers for truncation, UTF-8 boundary-safe truncation
+  and counting, grapheme-cluster-safe counting, width estimation, truncation,
+  and slicing, Unicode-aware text metrics, capitalization, configurable title
+  casing, identifier
+  conversion including demodulize/tableize/classify/foreign-key helpers,
+  simple English inflection, whitespace/tag cleanup,
+  configurable excerpt/highlight policies, HTML-safe highlighted excerpts,
+  mask/initials/possessive helpers, person/name display helpers, compact
+  people lists, HTML escaping, separator cleanup, and line-break conversion,
+  with direct bounded wrappers;
+* parsing, scanner, and normalization helpers for Humanize-style byte sizes,
+  durations and ranges, natural dates and date ranges including repeated
+  weekdays, time-of-day suffixes, `tonight`, `later today`, weekend ranges,
+  ordinal weekdays in a month, boundaries, business days, business days before
+  period boundaries, week numbers, and quarter labels,
+  business-calendar phrases, countdown/SLA/age/freshness/ETA/retry phrases,
+  precise durations, compact and scientific numbers, Roman numerals, bounded
+  numbers, percentages, ordinals, cardinal words, counted nouns,
+  progress/result/page summaries, step/attempt counts, business/working counts,
+  recurrence,
+  throughput, progress bars, units and compound units, aspect ratios, CSS
+  lengths, frequencies, rates, and lists;
+* built-in native catalog fragments for `en`, `da`, `de`, `fr`, `es`, `it`,
+  `pt`, and `nl`, plus complete generated-source fragments for `sv`, `no`,
+  `nb`, `fi`, `pl`, `cs`, `tr`, `ru`, `uk`, `ja`, `ko`, `zh`, `ar`, and `hi`;
+* locale-rendered numeric values through public `i18n` number placeholders;
+* CLDR fractional plural agreement through `i18n >= 1.1.0`;
+* convenience APIs returning `Humanize.Status.Text_Result`;
+* bounded caller-owned output APIs for every formatter.
 
-Humanize does not implement its own localization runtime.
+Humanize does not implement its own localization runtime. It classifies values,
+chooses semantic message keys, prepares render arguments, and delegates message
+rendering to the public `i18n` runtime.
 
 The dependency direction is:
 
 ```text
-Humanize → I18N
+Humanize -> I18N
 ```
 
-`i18n` must not know about `humanize`.
+`i18n` must not depend on `humanize`.
 
-## 2. Crate and Namespace
+## Crate and Namespace
 
 Alire crate name:
 
 ```toml
 name = "humanize"
+```
+
+The development manifest pins the sibling `../i18n` checkout for local work.
+The release manifest template is `alire.release.toml` and must contain no local
+path pins. Both manifests require:
+
+```toml
+i18n = ">=1.1.0"
 ```
 
 Root Ada namespace:
@@ -38,7 +109,7 @@ Root Ada namespace:
 Humanize
 ```
 
-Public packages for v0.1:
+Public packages:
 
 ```text
 Humanize
@@ -49,9 +120,19 @@ Humanize.Catalogs
 Humanize.Datetimes
 Humanize.Durations
 Humanize.Bytes
+Humanize.Colors
+Humanize.Numbers
+Humanize.Units
+Humanize.Lists
+Humanize.Frequencies
+Humanize.Rates
+Humanize.Strings
+Humanize.Parsing
+Humanize.Styles
+Humanize.Phrases
 ```
 
-Required internal/private packages:
+Private/internal packages:
 
 ```text
 Humanize.Selections
@@ -59,67 +140,70 @@ Humanize.I18N_Rendering
 Humanize.Datetime_Classification
 Humanize.Duration_Classification
 Humanize.Byte_Classification
+Humanize.Number_Classification
+Humanize.Unit_Classification
+Humanize.Decimal_Images
 ```
 
-Deferred public packages:
-
-```text
-Humanize.Numbers
-Humanize.Units
-```
-
-## 3. Architectural Boundary
+## Architectural Boundary
 
 Humanize owns:
 
 * value normalization;
-* rule selection;
-* threshold policy;
-* byte-unit policy;
+* threshold and unit-selection policy;
 * duration decomposition policy;
+* byte-unit policy;
+* compact-number tier selection;
+* list, occurrence, rate, and deterministic string-helper policy;
+* unit-quantity classification;
 * semantic message-key selection;
-* construction of render arguments;
+* construction of locale-neutral render arguments;
+* deterministic numeric rounding/scaling before values are handed to `i18n`;
 * bounded API behavior;
 * Humanize catalog fragments.
 
 `i18n` owns:
 
-* locale identifiers;
-* catalog loading;
-* catalog shard composition;
+* locale identifiers and fallback;
+* catalog loading and shard composition;
 * message lookup;
-* locale fallback;
-* ICU-subset parsing/compilation/rendering;
-* plural/select/selectordinal mechanics;
+* ICU-subset parsing, compilation, and rendering;
+* locale numeric display formatting for Humanize `{value, number}` arguments;
+* plural, select, and selectordinal mechanics;
+* CLDR fractional plural operands;
 * argument storage;
-* render statuses;
-* diagnostics.
+* render statuses and diagnostics.
 
-Humanize shall only import stable public `i18n` packages:
+Humanize library sources may import only the stable public `i18n` packages that
+their role requires:
 
 ```ada
-with I18N;
-with I18N.Runtime;
-with I18N.Result;
-with I18N.Arguments;
-with I18N.Locales;
-with I18N.Plurals;
+I18N.Arguments
+I18N.Locales
+I18N.Result
+I18N.Runtime
 ```
 
-Humanize shall not import private/internal `i18n` packages such as parser, compiler, AST, cache, renderer, buffer, validation, or compatibility packages.
+Direct runtime calls and argument-map construction are isolated in
+`Humanize.I18N_Rendering`, except catalog loading in `Humanize.Catalogs` and
+non-owning context references in `Humanize.Contexts`. Domain packages such as
+`Humanize.Datetimes`, `Humanize.Durations`, `Humanize.Bytes`,
+`Humanize.Numbers`, and `Humanize.Units` must not import `I18N.Runtime`.
 
-## 4. Text Encoding
+Humanize must not import private/internal `i18n` packages such as AST, parser,
+compiler, cache, renderer, buffer, runtime data, errors, or validation packages.
 
-Humanize v0.1 returns UTF-8-compatible Ada `String` text, matching the current public `i18n` result model.
+## Text Encoding
 
-No `Wide_Wide_String` public API is part of v0.1.
+Humanize returns UTF-8-compatible Ada `String` text, matching the current public
+`i18n` result model. No `Wide_Wide_String` public API is part of 0.5.0.
 
-## 5. Output API Policy
+## Output API Policy
 
-Every public formatter in v0.1 provides two output forms:
+Every public formatter provides:
 
-1. Convenience API returning `Humanize.Status.Text_Result`.
-2. Bounded API writing into a caller-owned `String`.
+1. a convenience API returning `Humanize.Status.Text_Result`;
+2. a bounded API writing into caller-owned `String` storage.
 
 Bounded APIs use:
 
@@ -129,1231 +213,475 @@ Written : out Natural;
 Status  : out Humanize.Status.Status_Code;
 ```
 
-Bounded API rules:
+Rules:
 
-* `Target` should be a 1-based buffer, for example `String (1 .. 256)`.
-* If `Target'First /= 1`, the operation returns `Invalid_Options`, `Written = 0`.
-* On `Ok`, `Written` is the number of characters written.
-* On `Ok`, the rendered text is `Target (1 .. Written)`.
-* On `Buffer_Overflow`, `Written` is the number of prefix characters copied.
-* On `Buffer_Overflow`, callers must treat the output as incomplete.
+* `Target` must be 1-based, for example `String (1 .. 256)`.
+* If `Target'First /= 1`, the operation returns `Invalid_Options` and
+  `Written = 0`.
+* On `Ok`, `Written` is the number of characters written and the rendered text
+  is `Target (1 .. Written)`.
+* On `Buffer_Overflow`, `Written` is the number of prefix characters copied and
+  callers must treat the output as incomplete.
 * On any non-overflow failure, `Written = 0`.
-* Humanize classification must not allocate heap memory.
-* Rendering allocation behavior follows the public `i18n` API used by the rendering adapter.
+* Classification code must not call the `i18n` runtime directly.
+* Rendering allocation behavior follows the public `i18n` API used by
+  `Humanize.I18N_Rendering`.
 
-## 6. Public Ada Package Specifications
+## Public API Summary
 
-### 6.1 `humanize.ads`
+`Humanize.Status` defines `Status_Code`, `Text_Result`, `Is_Ok`, and
+`Status_Image`.
 
-```ada
---  Root namespace for the Humanize Ada 2022 library.
---
---  Humanize classifies machine values into semantic localization keys and
---  renders them through the public I18N runtime. Humanize does not own locale
---  fallback, message parsing, plural rules, or catalog rendering.
-package Humanize is
-   pragma Preelaborate;
-end Humanize;
-```
+`Humanize.Messages` defines the stable semantic `Message_Id` enumeration and
+`Key`, which maps every non-`No_Message` value to a non-empty `humanize.*`
+catalog key.
 
-### 6.2 `humanize-messages.ads`
+`Humanize.Contexts` defines a non-owning formatting context bound to a
+caller-owned `I18N.Runtime.Instance` and a locale identifier. The runtime must
+outlive every context that references it.
 
-```ada
-package Humanize.Messages is
-   pragma Preelaborate;
+`Humanize.Capabilities` defines stable area labels, rendering-source metadata,
+and locale-behavior metadata. Rendering-source metadata distinguishes
+catalog-rendered output from Humanize-owned deterministic text. Locale behavior
+metadata further distinguishes catalog-localized areas, deterministic
+locale-aware areas, deterministic English/structural areas, and mixed areas
+that combine catalog output with deterministic labels or fallbacks.
 
-   --  Stable semantic message identifiers used by Humanize classifiers.
-   --
-   --  The enum gives internal type safety. Key returns the stable public
-   --  catalog key string rendered through I18N.
-   type Message_Id is
-     (No_Message,
+`Humanize.Catalogs.Load_Defaults` loads the built-in catalog fragments into a
+caller-owned `i18n` runtime using `I18N.Runtime.Load_Text` and the caller's
+duplicate policy.
 
-      Datetime_Now,
-      Datetime_Day_Previous,
-      Datetime_Day_Current,
-      Datetime_Day_Next,
+`Humanize.Datetimes` provides `Relative`, `Relative_Into`, `Relative_Civil`,
+`Relative_Civil_Into`, `Natural_Day`, `Natural_Day_Into`,
+`Natural_Time_Of_Day`, `Calendar_Relative_Label`,
+`Calendar_Relative_Label_Into`, `Calendar_Relation`, `Date_Range`,
+`Time_Range`, `Date_Time_Range`, `Business_Time_Range_Label`,
+`Calendar_Range_Label`, `Offset_Label`, `Calendar_Date_Label`,
+`Month_Day_Ordinal_Label`, `Weekday_Ordinal_Label`, `Fiscal_Year_Label`,
+`Fiscal_Half_Label`, `Semester_Label`, `Half_Year_Label`,
+`Calendar_Badge_Label`, and `Due_Status`.
+The civil API validates impossible dates and then interprets civil components
+through `Ada.Calendar`; Humanize does not own a time zone database.
+`Datetime_Options` controls relative precision with floor, nearest, or ceiling
+rounding, one- or two-unit output, calendar-word use, and calendar-only output
+that falls back to deterministic ISO dates instead of elapsed text.
+`Natural_Day` renders nearby dates as day words and distant dates as ISO
+`YYYY-MM-DD` text. `Calendar_Relative_Label` adds deterministic labels for
+nearby weekdays, same-day time buckets, tomorrow/yesterday time-of-day phrases,
+and nearby weekend dates, falling back to ISO dates outside the configured
+weekday window. `Calendar_Date_Label` supports deterministic presets for
+ISO, short numeric, medium, long, weekday, month-year, year-month, quarter,
+fiscal-quarter, ordinal month/day, weekday ordinal, month phase, quarter phase,
+fiscal year, fiscal half, fiscal year end, semester, half-year, half-year
+phrase, and compact calendar badge labels.
+`Calendar_Difference_Label` decomposes civil dates into
+real years, months, and days using month lengths and leap years rather than
+approximate seconds. Date ranges support compact same-month elision,
+month-name display, same-year elision, weekday labels, 12-hour time display,
+and custom separator policy. `Calendar_Range_Label` adds semantic labels for
+same-day time ranges, weekends, weeks, full months, full quarters, fiscal
+quarters, and polished month-name date ranges such as `Mar 21-23, 2026`.
+Combined date/time ranges can use relative same-day labels, and business-time
+range labels classify intervals with caller-supplied business calendar rules.
+All datetime helpers have bounded output forms.
 
-      Datetime_Relative_Second_Past,
-      Datetime_Relative_Second_Future,
-      Datetime_Relative_Minute_Past,
-      Datetime_Relative_Minute_Future,
-      Datetime_Relative_Hour_Past,
-      Datetime_Relative_Hour_Future,
-      Datetime_Relative_Day_Past,
-      Datetime_Relative_Day_Future,
-      Datetime_Relative_Week_Past,
-      Datetime_Relative_Week_Future,
-      Datetime_Relative_Month_Past,
-      Datetime_Relative_Month_Future,
-      Datetime_Relative_Year_Past,
-      Datetime_Relative_Year_Future,
+`Humanize.Durations` provides `Format`, `Format_Into`, `Format_Components`,
+`Format_Components_Into`, `Format_Compact`, `Format_Compact_Into`,
+`Format_Clock`, `Format_Clock_Into`, `Format_Precise`, and
+`Format_Precise_Into` for single-unit, multi-unit, compact, clock-style,
+exact-week, approximate-month/year, and subsecond durations. Months are
+deterministic 30-day units and years are deterministic 365-day units; calendar
+month/year arithmetic belongs to date APIs. Precise duration options allow
+callers to set the minimum unit and suppress selected units. `Format_Range`,
+`Interval`, `Next_Window`,
+`Countdown`, `SLA_Window`, `Age`, `Stale_For`, `Expires_In`, `Modified_Ago`,
+`Synced_Ago`, `Backup_Age`, `Complete_Count`, `Percent_Complete`, `Retry_In`,
+`Step_Count`, `Attempt_Count`, `ETA`, `Throughput_Remaining`, `Progress_Bar`,
+`Business_Days`, `Working_Hours`, `End_Of_Week`, `End_Of_Month`,
+`End_Of_Quarter`, `Recurrence`, `Natural_Duration`,
+`Natural_Duration_Detailed`, `Add_Business_Days`, `Add_Business_Hours`,
+`Business_Date_Label`, `Business_Hour_Label`, and `Business_Calendar_Label`
+provide deterministic duration-backed and configurable business/progress UI
+phrases. Business-day options support caller-selected workweek days and overloads
+accept date-only holiday exclusions. Rule-aware business-day helpers accept
+signed offsets and honor one-off holidays, recurring holidays, shutdowns,
+half-day closures, and per-weekday open days from `Business_Calendar_Rules`.
+Business-hour helpers add whole working hours inside a caller-supplied workday
+window. Calendar-hour helpers also accept holiday exclusions and an optional
+break window. Advanced calendar overloads add per-weekday business hours,
+recurring month/day holidays, date-only half-days, and inclusive shutdown
+periods. `Business_Calendar_Rules` collects those advanced calendar inputs into
+a single fixed-capacity rule set with helper adders and direct
+`Add_Business_Hours` / `Business_Calendar_Label` overloads.
+Duration interval and natural-duration helpers expose option records for fixed
+wording policy without involving `i18n` message syntax. Natural duration
+styles include plain, brief, precise brief, approximate, almost, over,
+just-over, little-under, few, and half-hour wording such as `almost 2 hours`,
+`just over 3 weeks`, `a little under 1 month`, and `about half an hour`.
+`Natural_Duration_Approximation_Options` lets callers tune round-up and
+larger-unit thresholds for those approximate styles without changing the
+existing default behavior.
+`Accessible_Progress` provides a verbose non-symbolic progress phrase for
+assistive output.
 
-      Duration_Unit_Second,
-      Duration_Unit_Minute,
-      Duration_Unit_Hour,
-      Duration_Unit_Day,
+`Humanize.Bytes` provides `Format` and `Format_Into` for binary, decimal, and
+auto byte units. `Binary_Byte_Options`, `Decimal_Byte_Options`, and
+`Auto_Byte_Options` provide ready-made byte policies. `File_Size_Summary`,
+`Transfer_Remaining_Label`, and `Disk_Usage_Label` compose deterministic
+Humanize-owned file, transfer, and storage labels from byte-size fragments; each
+has a bounded output form.
 
-      Bytes_Byte,
-      Bytes_KB,
-      Bytes_MB,
-      Bytes_GB,
-      Bytes_TB,
-      Bytes_KiB,
-      Bytes_MiB,
-      Bytes_GiB,
-      Bytes_TiB);
+`Humanize.Colors` provides `Parse_Hex_Color`, `Parse_Named_Color`,
+`Parse_CSS_Color`, `Hex_Color`, `RGB_Label`, `RGBA_Label`, `CSS_Color_Label`,
+`HSL`, `HSV`, `HSL_Label`, `HSV_Label`, `Lab`, `OKLab`, `Hue_Family_Label`,
+`Saturation_Label`, `Temperature_Label`, `Chroma_Label`,
+`Color_Description`, `Nearest_Color_Name`, `Palette_Summary`,
+`Palette_Roles`, `Palette_Harmony_Label`, `Palette_Contrast_Suggestion`,
+`Palette_Accessibility_Label`, `Palette_Contrast_Matrix_Label`,
+`Palette_Mood_Label`, `Advanced_Palette_Summary`, `Color_Summary`,
+`Brightness`, `Brightness_Label`, `Opacity_Label`, `Relative_Luminance`,
+`Contrast_Ratio`, `Contrast_Level_For`, `Contrast_Label`,
+`Readability_Label`, `APCA_Contrast`, `APCA_Contrast_Label`,
+`Color_Vision_Deficiency_Label`, `Color_Accessibility_Summary`,
+`Color_Difference`, `Color_Difference_Label`, `Perceptual_Difference`,
+`OK_Perceptual_Difference`, and `Perceptual_Difference_Label`, plus bounded
+forms. CSS
+parsing covers full CSS named colors, `transparent`, `currentColor`,
+3/4/6/8-digit hex, legacy comma and modern space/slash `rgb()`, `rgba()`,
+`hsl()`, and `hsla()`, plus `hwb()`, `lab()`, `lch()`, `oklab()`, `oklch()`,
+and `color()` input converted into the package's sRGB model. Supported
+`color()` profiles are `srgb`, `srgb-linear`, `display-p3`, `rec2020`, `xyz`,
+`xyz-d65`, and `xyz-d50`; numeric components may use `none` and simple
+`calc()` arithmetic. The package owns deterministic visual-value wording and
+WCAG-style contrast/readability labels; it does not implement browser CSS
+cascade parsing, custom `@color-profile` loading, ICC profile management, or
+application theming policy.
 
-   --  Return the stable catalog key for Id.
-   --
-   --  No_Message returns the empty string.
-   function Key
-     (Id : Message_Id)
-      return String;
+`Humanize.Numbers` provides `Cardinal`, `Signed_Cardinal`, `Locale_Cardinal`,
+`Decimal_Words`, `Fraction_Words`, `Ordinal_Words`, `Currency`,
+`Currency_Words`, `Percent_Words`, `Accessible_Number`,
+`Spellout_Coverage`, `Approximate_Currency`, `Fractional`, `Bounded_Number`,
+`Direction_Of_Change`, `Change`, `Change_Since`, `Change_From`,
+`Percent_Change`, `Percent_Delta`, `Point_Change`, `Unit_Change`, `Ordinal`,
+`Compact`, `Percent`, `Roman`,
+`Scientific_Notation`, `SI_Prefix`, `Editorial_Number`,
+`Editorial_Ordinal`, `Editorial_Percent`, `Editorial_Measurement`,
+`Editorial_Age`, `Approximate`, and `Approximate_To`, plus bounded forms.
+Cardinal, signed cardinal, grouped locale cardinal, decimal/fraction/ordinal
+word spellout, currency, currency-word, and fractional helpers provide
+deterministic text. Locale cardinal, decimal, fraction, and ordinal word
+spellout uses native UTF-8 orthography and deterministic language-specific
+compound grammar for the shipped spellout locales. The native spellout tier
+covers English, Danish, German, French, Spanish, Italian, Portuguese, and
+Dutch. The generated-locale deterministic tier additionally covers Swedish,
+Norwegian, Norwegian Bokmal, Finnish, and Turkish cardinal, decimal,
+common-fraction, and direct ordinal words. Locale cardinal words cover grouped
+values through quadrillions for the shipped spellout locales, with English
+fallback beyond the deterministic range.
+Editorial helpers provide deterministic English AP-style policy: general and
+headline text spell out caller-selected small numbers, while ages,
+measurements, percentages, and larger ordinals use grouped digits.
+Relative change helpers provide deterministic directional (`up 4`), signed
+(`+4`), comparative (`4 fewer errors`), unchanged, percent, point, unit, and
+current-versus-previous delta phrases.
+SI-prefix formatting provides deterministic symbol or long-prefix scaling from
+yocto through yotta. Bounded numbers, ordinals, compact numbers, and
+percentages pass
+locale-neutral numeric values to `i18n` for display. Ordinals support masculine
+and feminine forms where the locale catalog distinguishes them. Compact numbers
+support short and long styles. Approximation helpers provide explicit and
+threshold-chosen comparison phrasing. Number range and proportion helpers
+provide deterministic `1-5`, `about 10-20`, `under 5`, `up to 100`,
+`between 3 and 7`, inclusive/exclusive range wording, tolerance ranges,
+threshold labels, within/below/above range-position labels, `2:1`,
+`2 errors per file`, `1 in 4`, and `3 out of 10` style phrases.
+`Spellout_Coverage` reports the deterministic Humanize-owned spellout scope;
+`Spellout_Locale_Tier_For` reports whether a context uses English, hand-written
+native-locale, generated-locale, or English-fallback deterministic spellout.
+Open-ended CLDR-grade spellout remains i18n territory.
 
-end Humanize.Messages;
-```
+`Humanize.Units` provides `Format` and `Format_Into` for meter, kilometer,
+centimeter, millimeter, gram, kilogram, milligram, liter, milliliter,
+temperature, area, speed, pressure, energy, power, frequency, angle, and
+selected US customary units. Fractional quantities use CLDR fractional plural
+agreement through `i18n`. Long and abbreviated unit styles are supported.
+`Format_Length`, `Format_Mass`, `Format_Volume`, `Format_Speed`,
+`Format_Area`, `Format_Pressure`, `Format_Energy`, `Format_Power`,
+`Format_Temperature`, `Format_Frequency`, `Format_Angle`,
+`Format_Data_Rate`, `Format_Bits`, `Format_Bit_Rate`,
+`Format_Binary_Data_Rate`, `Format_Density`, `Format_Acceleration`,
+`Format_Torque`, `Format_Fuel_Economy`, `Format_Flow_Rate`,
+`Format_Electric_Current`, `Format_Voltage`, `Format_Electric_Resistance`,
+`Format_Resolution`, `Format_Pixel_Density`, `Format_CSS_Length`,
+`Format_Aspect_Ratio`, `Format_Electric_Capacitance`,
+`Format_Electric_Inductance`, `Format_Concentration`,
+`Format_Fuel_Efficiency_MPG`, `Format_Cooking_Temperature`,
+`Format_Memory_Bandwidth`, `Format_Latency`, `Format_CPU_Load`,
+`Format_Battery`, `Format_Screen_Size`, `Format_Typography_Size`,
+`Format_IOPS`, `Format_Audio_Level`, `Format_Signal_Strength`,
+`Format_Storage_Endurance`, `Format_Refresh_Rate`, `Format_Luminance`,
+`Format_Print_Resolution`, and `Format_Geographic_Distance` choose practical
+units from base-unit or domain-specific inputs.
+Selector helpers have bounded output forms. Newly added unit domains have
+native or domain-appropriate built-in labels across all shipped locales.
 
-Required key mapping:
+`Humanize.Lists` provides `Format`, `Format_Into`, `Format_Limited`,
+`Format_Limited_Into`, `Count`, `Counted_Noun`, `Counted_Noun_Into`,
+`Counted_Noun_Source`, `Counted_Noun_Source_Label`, `Validation_Count`,
+`Validation_Summary`, `Field_Problem_Summary`, `Selection_Count`,
+`Remaining_Count`, `Position_Count`, `All_Count`, `None_Count`, `Result_Count`,
+`Showing_Count`, `Page_Count`, `More_Count`, `Others_Count`,
+`Selection_Summary`, `Pagination_Range`, and `Collection_Display` for
+human-readable conjunction/disjunction lists, optional Oxford-comma punctuation,
+counted noun phrases, validation/error summaries, "N others" tails, and
+deterministic compact, summary, or screen-reader collection/page summaries.
+Counted noun options cover numeric, small-word, compact, and article counts,
+zero wording, noun omission, compact thresholds, and deterministic noun-source
+metadata. Validation summary options cover error/warning/notice severity,
+headline-only versus detailed summaries, detail limits, empty-state suppression,
+field labels, and detail-list punctuation.
+
+`Humanize.Frequencies` provides `Times` and `Times_Into` for occurrence-count
+phrasing such as `never`, `once`, `twice`, and `4 times`; overloads accept
+custom singular/plural nouns.
+
+`Humanize.Rates` provides `Pace` and `Pace_Into` for rate phrasing over second,
+minute, hour, day, and week periods; overloads accept custom singular/plural
+nouns. `Pace_Approximate` adds less-than threshold wording.
+
+`Humanize.Strings` provides deterministic helpers for byte-count truncation,
+UTF-8 boundary-safe truncation, word-boundary truncation, slicing, code-point
+counting, grapheme-cluster counting, grapheme-safe truncation/slicing for
+combining and spacing marks, prepended marks, emoji modifiers, emoji/text
+variation selectors, ZWJ emoji sequences, keycaps, regional-indicator flags,
+Hangul Jamo, default-ignorable format characters, and modern East Asian wide
+ranges, display-width estimates, Unicode-aware reading/speaking time
+estimates, word/sentence/paragraph summaries, structured text metrics,
+configurable combined text summaries with caller-selected field order,
+separators, natural/compact/minimal labels, zero omission, ASCII casefolding,
+word truncation, capitalization, title casing, identifier transformations,
+slug generation,
+irregular-aware simple English inflection, smart title casing, whitespace
+normalization, tag stripping, character-radius excerpts, word-context excerpts,
+highlighting, configurable case-insensitive and word-boundary match policies,
+first/all highlight modes, HTML-safe highlighted excerpts, masking,
+opaque-token normalization/grouping/masking, initials, cleaned person names,
+display-name fallback, name-part extraction, handle/email labels, compact
+people lists, safe filename generation,
+basename/title/extension labels, and path shortening with display policies for
+case, separators, extension preservation, hidden files, reserved-name fallbacks,
+stem-length limits, empty fallbacks, title extraction, missing-extension labels,
+and extension-preserving path shortening, search keys, natural sort keys,
+English possessives, best-effort Latin-1 ASCII transliteration, HTML escaping,
+separator cleanup, and line-feed/HTML-break conversion. Title-case
+policy can be configured to preserve acronyms and lowercase small words
+independently, or supplied with caller-owned acronym/small word lists.
+Inflection helpers support expanded simple English irregulars, uncountables,
+classical/common suffix rules, caller-owned paired singular/plural dictionaries,
+dictionary-vs-built-in precedence options, case policy, and source metadata
+that distinguishes dictionary, irregular, uncountable, rule, and unchanged
+paths.
+Identifier helpers include demodulizing, deconstantizing, tableizing,
+classifying, foreign-key naming, and acronym extraction.
+Each helper has a direct bounded `*_Into` wrapper where output is produced.
+
+`Humanize.Parsing` provides `Parse_Bytes`, `Scan_Bytes`, `Parse_Duration`,
+`Scan_Duration`, `Parse_Lenient_Duration`, `Scan_Lenient_Duration`,
+`Parse_Precise_Duration`, `Scan_Precise_Duration`,
+`Parse_Compact_Number`, `Scan_Compact_Number`, `Parse_Bounded_Number`,
+`Scan_Bounded_Number`, `Parse_Frequency`, `Scan_Frequency`, `Parse_Rate`,
+`Scan_Rate`, `Parse_List`, `Scan_List`, `Parse_Percent`, `Scan_Percent`,
+`Parse_Ordinal`, `Scan_Ordinal`, `Parse_Cardinal`, `Scan_Cardinal`,
+`Parse_Unit`, `Scan_Unit`, `Parse_Aspect_Ratio`, `Scan_Aspect_Ratio`,
+`Parse_CSS_Length`, `Scan_CSS_Length`, `Parse_Duration_Range`,
+`Scan_Duration_Range`, `Parse_Countdown`, `Parse_SLA_Window`, `Parse_Age`,
+`Parse_Modified_Ago`, `Parse_Progress`, `Parse_Result_Count`,
+`Parse_Counted_Noun`, `Scan_Counted_Noun`, `Parse_Showing_Count`,
+`Parse_Page_Count`, `Parse_Number_Range`, `Scan_Number_Range`,
+`Parse_Proportion`, `Scan_Proportion`,
+`Parse_ETA`, `Scan_ETA`, `Parse_Retry_In`, `Scan_Retry_In`,
+`Parse_Step_Count`, `Scan_Step_Count`, `Parse_Attempt_Count`,
+`Scan_Attempt_Count`, `Parse_Business_Days`, `Scan_Business_Days`,
+`Parse_Working_Hours`, `Scan_Working_Hours`, `Parse_Recurrence`,
+`Scan_Recurrence`, `Parse_Recurrence_Detail`, `Scan_Recurrence_Detail`,
+`Parse_Throughput_Remaining`,
+`Scan_Throughput_Remaining`, `Parse_Progress_Bar`, `Scan_Progress_Bar`,
+`Parse_Natural_Date`, `Scan_Natural_Date`, `Parse_Natural_Date_Range`,
+`Scan_Natural_Date_Range`, `Parse_Business_Calendar`,
+`Scan_Business_Calendar`, `Apply_Business_Calendar_Rule`,
+`Parse_Business_Calendar_Rules`, `Parse_Scientific_Number`,
+`Scan_Scientific_Number`, `Parse_Currency`, `Scan_Currency`,
+`Parse_Approximate_Currency`, `Scan_Approximate_Currency`,
+`Parse_Approximate_Number`, `Scan_Approximate_Number`, `Parse_Change`,
+`Scan_Change`, `Parse_Number_Comparison`, `Parse_Percent_Comparison`,
+`Parse_File_Size_Comparison`, `Parse_Date_Comparison`,
+`Scan_Date_Comparison`, `Parse_Palette_Contrast_Matrix`,
+`Parse_APCA_Contrast_Label`, `Parse_Color_Vision_Deficiency_Label`,
+`Parse_Color_Accessibility_Summary`, `Parse_RGB_Label`,
+`Parse_RGBA_Label`, `Parse_CSS_Color_Label`, `Parse_Color_Summary`,
+`Parse_HSL_Label`, `Parse_HSV_Label`, `Parse_Color_Bucket_Label`,
+`Parse_Color_Description`, `Parse_Opacity_Label`,
+`Parse_Palette_Summary`, `Parse_Palette_Roles`,
+`Parse_Palette_Harmony_Label`, `Parse_Palette_Contrast_Suggestion`,
+`Parse_Palette_Accessibility_Label`, `Parse_Palette_Mood_Label`,
+`Parse_Advanced_Palette_Summary`, `Parse_Color_Difference_Label`,
+`Parse_Perceptual_Difference_Label`, `Parse_Domain_Summary`,
+`Parse_Queue_Summary`, `Parse_Cache_Summary`, `Parse_File_Size_Summary`,
+`Parse_Transfer_Remaining`, `Parse_Disk_Usage`,
+`Parse_Phrase_Severity_Label`, `Parse_Phrase_Tone_Label`,
+`Parse_Phrase_Domain_Label`, `Parse_Phrase_State_Label`,
+`Parse_Phrase_Key`, `Parse_Phrase_Pack_Summary`,
+`Parse_Supported_Phrase_Locales`, `Parse_Sync_Summary`,
+`Parse_Import_Summary`, `Parse_Export_Summary`,
+`Parse_Validation_Summary`, `Parse_Field_Problem_Summary`,
+`Parse_Selection_Summary`, `Parse_More_Count`,
+`Parse_Pagination_Range`, `Parse_Collection_Display`,
+`Parse_Text_Count_Summary`, `Parse_Word_Count_Summary`,
+`Parse_Sentence_Count_Summary`, `Parse_Paragraph_Count_Summary`,
+`Parse_Text_Time_Label`, `Parse_Reading_Time`, `Parse_Speaking_Time`,
+`Parse_Text_Summary`, `Parse_Mask`, `Parse_Grouped_Token`,
+`Parse_Masked_Token`, `Parse_String_Label`, `Parse_Path_Label`,
+`Parse_Path_Basename`, `Parse_Path_Title`, `Parse_Extension_Label`,
+`Parse_Shortened_Path`, `Parse_Handle_Label`, `Parse_Name_Label`,
+`Parse_Clean_Name`, `Parse_Display_Name`, `Parse_Name_Part`,
+`Parse_Initials`, `Parse_Person_Initials`, `Parse_Possessive_Label`,
+`Parse_Possessive_Name`, `Parse_Email_Local_Part`,
+`Parse_Safe_Filename`, `Parse_Search_Key`, `Parse_Natural_Sort_Key`,
+`Parse_Identifier_Label`, `Parse_Parameterize_Label`,
+`Parse_Dasherize_Label`, `Parse_Underscore_Label`,
+`Parse_Camelize_Label`, `Parse_Transliteration_Label`,
+`Parse_Casefold_Label`, `Parse_Escaped_HTML`, `Parse_NL_To_BR`,
+`Parse_BR_To_NL`, `Parse_Normalized_Whitespace`, `Parse_Squished`,
+`Parse_Stripped_Tags`, `Parse_Preserved_Separator`,
+`Parse_Pluralized_Word`,
+`Parse_Singularized_Word`, `Parse_Person_List`,
+`Parse_Excerpt`, `Parse_Highlight`, `Parse_Highlighted_Excerpt`,
+`Parse_Inflection_Source_Label`,
+`Parse_Compound_Unit`, and `Scan_Compound_Unit`
+for Humanize-style text. Parsing accepts English forms plus shipped-locale
+aliases for common duration/date units, compact suffixes, frequency/rate
+words, list conjunctions, and core natural-day words. Lenient duration parsing
+also accepts natural approximation prefixes such as `almost 2 hours`,
+`just over 3 weeks`, `a little under 1 month`, and `about half an hour`.
+Natural date parsing
+covers deterministic English forms such as `next friday afternoon`,
+`second tuesday in march`,
+`two fridays from now`, `jan 1st`, `monday the 3rd`,
+`early next week`, `mid-march`, `late q2`, `end of next quarter`,
+`end of fy2027`, `start of q3`, `next business day`,
+`3 business days from now`, `2 business days before month end`, `week 32`,
+`q3 2024`, and calendar-aligned fiscal/period labels such as `fy2025 q2`,
+`fy2027 h1`, `first half of 2026`, `s2 2026`, and `h2 2026`; overloads accept
+`Business_Calendar_Rules` so business-day phrases honor one-off holidays,
+recurring holidays, shutdown periods, and configured open weekdays.
+Business-calendar parsing covers deterministic phrases such as
+`holiday 2026-07-06`, `recurring holiday
+december 25`, `half-day 2026-12-24 until 12`,
+`shutdown 2026-12-24 to 2026-12-31`, `business hours monday 9-17`, and
+`next open business hour`; rule parsing turns semicolon or newline separated
+calendar phrases into executable `Humanize.Durations.Business_Calendar_Rules`.
+Detailed recurrence parsing covers deterministic forms such as
+`every other Tuesday`, `first Monday of each month`, `last business day`,
+`every 2 weeks until 2026-12-31`, and recurrence phrases with `from`,
+`until`, and `for N times` clauses.
+`Normalize_Number_Text`, `Normalize_Unit_Text`, and `Normalize_List_Text`
+prepare common user-facing input variants before parsing.
+Parse results report status, value/count, exactness, consumed character count,
+an error position for parser failures where available, and a stable
+`Parse_Error_Kind` diagnostic category when the parser can identify the
+failure. `Diagnostic` maps status/error-position pairs into fallback
+categories, and its three-argument overload preserves parser-supplied
+diagnostics;
+`Diagnostic_Label` and `Diagnostic_Message` expose deterministic user-facing
+diagnostic text. These APIs parse deterministic unit suffixes, aliases, and
+separators; they do not inspect private `i18n` locale data.
+
+`Humanize.Styles` provides compact, verbose, technical, casual, screen-reader,
+CLI, log, dashboard, accessibility, telemetry, and mobile option presets across
+number, byte, datetime, calendar-date, range, list, and unit-style APIs.
+Focused calendar-date presets cover compact badges, fiscal half/year-end,
+academic semester, and early/mid/late month or quarter labels.
+Override helpers let callers derive option records from a preset without
+copying every field, including number fraction digits, byte fraction
+digits/unit system, datetime thresholds, range separators, list Oxford-comma
+policy, calendar-date style/fiscal-year start, and unit style.
+
+`Humanize.Phrases` provides deterministic UI status phrases such as loading,
+saving, saved, failed, overdue, last seen, and updated just now, plus auth,
+billing, workflow, queue, file, validation, empty-state, network, security,
+deployment, health, notification, form, access, sync, transfer, search,
+collaboration, issue, task, CI/CD, support-ticket, payment lifecycle, and
+permission phrases. Phrase enum packs have Humanize-owned text for the shipped
+locale prefixes reported by `Supported_Phrase_Locales`, with hand-written
+English/German/French text and generated-source native text for the other
+shipped prefixes. It also provides generic operational summaries for
+queue/job/run/cache/sync/import/export counts, states, and failure totals.
+File-size, civil-date, absolute-number, and relative-percent comparison
+summaries compose existing Humanize byte, datetime, and number formatting with
+deterministic comparison wording.
+Phrase helpers are Humanize-owned convenience text.
+Severity helpers and phrase-locale metadata expose stable metadata for shipped
+status packs without exposing private `i18n` catalog or plural-rule behavior.
+
+## Catalog Contract
+
+Built-in catalog fragments define only `humanize.*` keys. The shipped native
+locales are:
 
 ```text
-No_Message                             -> ""
-
-Datetime_Now                           -> humanize.datetime.now
-Datetime_Day_Previous                  -> humanize.datetime.day.previous
-Datetime_Day_Current                   -> humanize.datetime.day.current
-Datetime_Day_Next                      -> humanize.datetime.day.next
-
-Datetime_Relative_Second_Past          -> humanize.datetime.relative.second.past
-Datetime_Relative_Second_Future        -> humanize.datetime.relative.second.future
-Datetime_Relative_Minute_Past          -> humanize.datetime.relative.minute.past
-Datetime_Relative_Minute_Future        -> humanize.datetime.relative.minute.future
-Datetime_Relative_Hour_Past            -> humanize.datetime.relative.hour.past
-Datetime_Relative_Hour_Future          -> humanize.datetime.relative.hour.future
-Datetime_Relative_Day_Past             -> humanize.datetime.relative.day.past
-Datetime_Relative_Day_Future           -> humanize.datetime.relative.day.future
-Datetime_Relative_Week_Past            -> humanize.datetime.relative.week.past
-Datetime_Relative_Week_Future          -> humanize.datetime.relative.week.future
-Datetime_Relative_Month_Past           -> humanize.datetime.relative.month.past
-Datetime_Relative_Month_Future         -> humanize.datetime.relative.month.future
-Datetime_Relative_Year_Past            -> humanize.datetime.relative.year.past
-Datetime_Relative_Year_Future          -> humanize.datetime.relative.year.future
-
-Duration_Unit_Second                   -> humanize.duration.unit.second
-Duration_Unit_Minute                   -> humanize.duration.unit.minute
-Duration_Unit_Hour                     -> humanize.duration.unit.hour
-Duration_Unit_Day                      -> humanize.duration.unit.day
-
-Bytes_Byte                             -> humanize.bytes.byte
-Bytes_KB                               -> humanize.bytes.kb
-Bytes_MB                               -> humanize.bytes.mb
-Bytes_GB                               -> humanize.bytes.gb
-Bytes_TB                               -> humanize.bytes.tb
-Bytes_KiB                              -> humanize.bytes.kib
-Bytes_MiB                              -> humanize.bytes.mib
-Bytes_GiB                              -> humanize.bytes.gib
-Bytes_TiB                              -> humanize.bytes.tib
+en da de fr es it pt nl
 ```
 
-### 6.3 `humanize-status.ads`
-
-```ada
-with Ada.Strings.Unbounded;
-with Humanize.Messages;
-
-package Humanize.Status is
-
-   type Status_Code is
-     (Ok,
-      Invalid_Value,
-      Invalid_Options,
-      Missing_Message,
-      Missing_Argument,
-      Invalid_Argument,
-      Render_Error,
-      Runtime_Error,
-      Buffer_Overflow,
-      Internal_Error);
-
-   type Text_Result is record
-      Status : Status_Code := Internal_Error;
-      Text   : Ada.Strings.Unbounded.Unbounded_String;
-      Key    : Humanize.Messages.Message_Id := Humanize.Messages.No_Message;
-   end record;
-
-   function Is_Ok
-     (Item : Text_Result)
-      return Boolean
-   is (Item.Status = Ok);
-
-   function Status_Image
-     (Status : Status_Code)
-      return String;
-
-end Humanize.Status;
-```
-
-Status mapping from `i18n`:
+Complete generated-source catalog fragments are also shipped for:
 
 ```text
-I18N.Result.Success          -> Humanize.Status.Ok
-I18N.Result.Missing_Key      -> Humanize.Status.Missing_Message
-I18N.Result.Missing_Argument -> Humanize.Status.Missing_Argument
-I18N.Result.Invalid_Argument -> Humanize.Status.Invalid_Argument
-I18N.Result.Formatting_Error -> Humanize.Status.Render_Error
-I18N.Result.Execution_Error  -> Humanize.Status.Runtime_Error
-I18N.Result.Buffer_Overflow  -> Humanize.Status.Buffer_Overflow
-I18N.Result.Internal_Error   -> Humanize.Status.Internal_Error
+sv no nb fi pl cs tr ru uk ja ko zh ar hi
 ```
 
-### 6.4 `humanize-contexts.ads`
-
-```ada
-with Ada.Strings.Unbounded;
-with I18N.Locales;
-with I18N.Runtime;
-
-package Humanize.Contexts is
-
-   --  Non-owning reference to a caller-owned I18N runtime.
-   --
-   --  The referenced runtime must outlive every Humanize context that uses it.
-   type Runtime_Access is not null access constant I18N.Runtime.Instance;
-
-   type Context is private;
-
-   function Create
-     (Runtime : Runtime_Access;
-      Locale  : I18N.Locales.Locale_Id)
-      return Context;
-
-   function Locale
-     (Item : Context)
-      return I18N.Locales.Locale_Id;
-
-   function Runtime
-     (Item : Context)
-      return Runtime_Access;
-
-private
-
-   type Context is record
-      Runtime_Ref : Runtime_Access;
-      Locale_Text : Ada.Strings.Unbounded.Unbounded_String;
-   end record;
-
-end Humanize.Contexts;
-```
-
-Context ownership rules:
-
-```text
-Application owns I18N.Runtime.Instance.
-Humanize.Contexts.Context is non-owning.
-The I18N runtime must outlive the Humanize context.
-Humanize does not initialize, finalize, or mutate the runtime during formatting.
-Humanize catalog loading is explicit through Humanize.Catalogs.
-```
-
-Example use:
-
-```ada
-Runtime : aliased I18N.Runtime.Runtime;
-
-Context : Humanize.Contexts.Context :=
-  Humanize.Contexts.Create
-    (Runtime => Runtime'Access,
-     Locale  => "da-DK");
-```
-
-### 6.5 `humanize-catalogs.ads`
-
-```ada
-with I18N.Runtime;
-
-package Humanize.Catalogs is
-
-   --  Load the built-in Humanize v0.1 catalog fragments into Runtime.
-   --
-   --  The default catalog set contains English and Danish entries for every
-   --  required v0.1 Humanize key.
-   --
-   --  Loading is delegated to the public I18N.Runtime.Load_Text operation.
-   --  Duplicate behavior follows the supplied I18N duplicate policy.
-   procedure Load_Defaults
-     (Runtime : in out I18N.Runtime.Instance;
-      Result  : out I18N.Runtime.Load_Result;
-      Policy  : I18N.Runtime.Duplicate_Policy :=
-        I18N.Runtime.Reject_Duplicates);
-
-end Humanize.Catalogs;
-```
-
-Catalog loading policy:
-
-```text
-Default duplicate policy: Reject_Duplicates.
-Applications may explicitly use Keep_First or Override_Previous.
-Humanize never silently overrides application catalog keys.
-Humanize catalog fragments only define humanize.* keys.
-```
-
-### 6.6 `humanize-datetimes.ads`
-
-```ada
-with Ada.Calendar;
-with Humanize.Contexts;
-with Humanize.Status;
-
-package Humanize.Datetimes is
-
-   type Relative_Style is
-     (Auto,
-      Elapsed,
-      Calendar);
-
-   type Datetime_Options is record
-      Style                 : Relative_Style := Auto;
-      Now_Threshold_Seconds : Natural := 45;
-      Use_Calendar_Words    : Boolean := True;
-      Prefer_Weeks          : Boolean := True;
-      Prefer_Months         : Boolean := True;
-   end record;
-
-   Default_Datetime_Options : constant Datetime_Options :=
-     (Style                 => Auto,
-      Now_Threshold_Seconds => 45,
-      Use_Calendar_Words    => True,
-      Prefer_Weeks          => True,
-      Prefer_Months         => True);
-
-   function Relative
-     (Context   : Humanize.Contexts.Context;
-      Value     : Ada.Calendar.Time;
-      Reference : Ada.Calendar.Time;
-      Options   : Datetime_Options := Default_Datetime_Options)
-      return Humanize.Status.Text_Result;
-
-   procedure Relative_Into
-     (Context   : Humanize.Contexts.Context;
-      Value     : Ada.Calendar.Time;
-      Reference : Ada.Calendar.Time;
-      Target    : in out String;
-      Written   : out Natural;
-      Status    : out Humanize.Status.Status_Code;
-      Options   : Datetime_Options := Default_Datetime_Options);
-
-end Humanize.Datetimes;
-```
-
-Datetime v0.1 does not provide an implicit-clock overload. The caller supplies `Reference` explicitly.
-
-### 6.7 `humanize-durations.ads`
-
-```ada
-with Humanize.Contexts;
-with Humanize.Status;
-
-package Humanize.Durations is
-
-   type Duration_Seconds is new Long_Long_Integer;
-
-   type Duration_Unit is
-     (Second,
-      Minute,
-      Hour,
-      Day);
-
-   type Duration_Options is record
-      Largest_Unit  : Duration_Unit := Day;
-      Smallest_Unit : Duration_Unit := Second;
-   end record;
-
-   Default_Duration_Options : constant Duration_Options :=
-     (Largest_Unit  => Day,
-      Smallest_Unit => Second);
-
-   function Format
-     (Context : Humanize.Contexts.Context;
-      Seconds : Duration_Seconds;
-      Options : Duration_Options := Default_Duration_Options)
-      return Humanize.Status.Text_Result;
-
-   procedure Format_Into
-     (Context : Humanize.Contexts.Context;
-      Seconds : Duration_Seconds;
-      Target  : in out String;
-      Written : out Natural;
-      Status  : out Humanize.Status.Status_Code;
-      Options : Duration_Options := Default_Duration_Options);
-
-end Humanize.Durations;
-```
-
-Duration v0.1 renders a single largest useful unit only. Localized list joining is deferred.
-
-### 6.8 `humanize-bytes.ads`
-
-```ada
-with Humanize.Contexts;
-with Humanize.Status;
-
-package Humanize.Bytes is
-
-   type Byte_Count is mod 2 ** 64;
-
-   type Byte_Unit_System is
-     (Binary,
-      Decimal);
-
-   subtype Fraction_Digit_Count is Natural range 0 .. 3;
-
-   type Byte_Options is record
-      Unit_System             : Byte_Unit_System := Binary;
-      Maximum_Fraction_Digits : Fraction_Digit_Count := 1;
-      Suppress_Trailing_Zero  : Boolean := True;
-   end record;
-
-   Default_Byte_Options : constant Byte_Options :=
-     (Unit_System             => Binary,
-      Maximum_Fraction_Digits => 1,
-      Suppress_Trailing_Zero  => True);
-
-   function Format
-     (Context : Humanize.Contexts.Context;
-      Bytes   : Byte_Count;
-      Options : Byte_Options := Default_Byte_Options)
-      return Humanize.Status.Text_Result;
-
-   procedure Format_Into
-     (Context : Humanize.Contexts.Context;
-      Bytes   : Byte_Count;
-      Target  : in out String;
-      Written : out Natural;
-      Status  : out Humanize.Status.Status_Code;
-      Options : Byte_Options := Default_Byte_Options);
-
-end Humanize.Bytes;
-```
-
-## 7. Required Internal Package Specifications
-
-### 7.1 `humanize-selections.ads`
-
-```ada
-private with Ada.Strings.Unbounded;
-with Humanize.Messages;
-
-private package Humanize.Selections is
-
-   subtype Count_Value is Long_Long_Integer range 0 .. Long_Long_Integer'Last;
-
-   type Argument_Kind is
-     (No_Arguments,
-      Count_Argument,
-      Value_Argument);
-
-   type Message_Selection is record
-      Key       : Humanize.Messages.Message_Id := Humanize.Messages.No_Message;
-      Arguments : Argument_Kind := No_Arguments;
-      Count     : Count_Value := 0;
-      Value     : Ada.Strings.Unbounded.Unbounded_String;
-   end record;
-
-   function No_Arg
-     (Key : Humanize.Messages.Message_Id)
-      return Message_Selection;
-
-   function Count
-     (Key   : Humanize.Messages.Message_Id;
-      Value : Count_Value)
-      return Message_Selection;
-
-   function Text_Value
-     (Key   : Humanize.Messages.Message_Id;
-      Value : String)
-      return Message_Selection;
-
-end Humanize.Selections;
-```
-
-Classifiers return `Message_Selection`, never localized text.
-
-### 7.2 `humanize-i18n_rendering.ads`
-
-```ada
-with Humanize.Contexts;
-with Humanize.Messages;
-with Humanize.Selections;
-with Humanize.Status;
-
-private package Humanize.I18N_Rendering is
-
-   function Available
-     (Context : Humanize.Contexts.Context;
-      Key     : Humanize.Messages.Message_Id)
-      return Boolean;
-
-   function Render
-     (Context   : Humanize.Contexts.Context;
-      Selection : Humanize.Selections.Message_Selection)
-      return Humanize.Status.Text_Result;
-
-   procedure Render_Into
-     (Context   : Humanize.Contexts.Context;
-      Selection : Humanize.Selections.Message_Selection;
-      Target    : in out String;
-      Written   : out Natural;
-      Status    : out Humanize.Status.Status_Code);
-
-end Humanize.I18N_Rendering;
-```
-
-`Humanize.I18N_Rendering` is the only package that calls:
-
-```ada
-I18N.Runtime.Render
-I18N.Runtime.Render_Into
-I18N.Runtime.Resolve
-I18N.Arguments.Set_Natural
-I18N.Arguments.Set_Integer
-I18N.Arguments.Set
-I18N.Result.Output_Text
-```
-
-Domain packages must not call `I18N.Runtime` directly.
-
-## 8. Datetime Semantics
-
-### 8.1 Time Model
-
-Humanize v0.1 uses `Ada.Calendar.Time`.
-
-Elapsed differences are computed from:
-
-```ada
-Value - Reference
-```
-
-Calendar-day words such as “yesterday”, “today”, and “tomorrow” are computed by splitting `Ada.Calendar.Time` using `Ada.Calendar.Split`, extracting year/month/day, and comparing proleptic Gregorian day ordinals derived from those split dates.
-
-Humanize v0.1 does not own a time zone database.
-
-A future version may add explicit civil-date/civil-datetime APIs.
-
-### 8.2 Direction
-
-```text
-Value < Reference  -> past
-Value > Reference  -> future
-near Reference     -> now, if within threshold
-```
-
-### 8.3 Elapsed Seconds
-
-`Elapsed_Seconds` is the absolute elapsed duration rounded down toward zero to whole seconds.
-
-### 8.4 Calendar Day Delta
-
-```text
-Day_Delta = Date_Ordinal(Value_Date) - Date_Ordinal(Reference_Date)
-```
-
-Examples:
-
-```text
-Day_Delta = -1 -> previous calendar day
-Day_Delta =  0 -> same calendar day
-Day_Delta =  1 -> next calendar day
-```
-
-### 8.5 Relative Style
-
-`Elapsed`:
-
-```text
-Never use yesterday/today/tomorrow.
-Always use elapsed units after now-threshold handling.
-```
-
-`Calendar`:
-
-```text
-Use yesterday/today/tomorrow for Day_Delta -1, 0, or 1 when calendar words are enabled.
-Otherwise use elapsed units.
-```
-
-`Auto`:
-
-```text
-Use yesterday/tomorrow for Day_Delta -1 or 1 when calendar words are enabled.
-Do not use today for same-day non-now values.
-Same-day non-now values use elapsed units.
-```
-
-This gives practical timestamp behavior:
-
-```text
-4 hours ago -> "4 hours ago"
-```
-
-while still giving calendar-sensitive crossing-midnight behavior:
-
-```text
-Reference: 2026-03-21 00:10
-Value:     2026-03-20 23:55
-Auto:      "yesterday"
-Elapsed:   "15 minutes ago"
-```
-
-### 8.6 Datetime Rule Order
-
-Given `Options`, `Value`, and `Reference`:
-
-```text
-1. If Target buffer lower bound is invalid in bounded API:
-      Invalid_Options
-
-2. If Elapsed_Seconds <= Now_Threshold_Seconds:
-      humanize.datetime.now
-
-3. If Use_Calendar_Words and Style = Calendar:
-      Day_Delta = -1 -> humanize.datetime.day.previous
-      Day_Delta =  0 -> humanize.datetime.day.current
-      Day_Delta =  1 -> humanize.datetime.day.next
-
-4. If Use_Calendar_Words and Style = Auto:
-      Day_Delta = -1 -> humanize.datetime.day.previous
-      Day_Delta =  1 -> humanize.datetime.day.next
-
-5. Otherwise choose elapsed unit:
-      < 60 seconds      -> seconds
-      < 3600 seconds    -> minutes
-      < 86400 seconds   -> hours
-      < 7 days          -> days
-      < 30 days         -> weeks, if Prefer_Weeks
-      < 365 days        -> months, if Prefer_Months
-      otherwise         -> years
-
-6. Direction chooses .past or .future key.
-
-7. Count is floor-toward-zero and never less than 1 for a nonzero elapsed value.
-```
-
-### 8.7 Elapsed Unit Counts
-
-```text
-seconds = Elapsed_Seconds
-minutes = Elapsed_Seconds / 60
-hours   = Elapsed_Seconds / 3600
-days    = Elapsed_Seconds / 86400
-weeks   = days / 7
-months  = days / 30
-years   = days / 365
-```
-
-All divisions are integer floor divisions.
-
-## 9. Datetime Semantic Fallback
-
-Special calendar keys have semantic fallback.
-
-```text
-humanize.datetime.day.previous
-  fallback -> humanize.datetime.relative.day.past, count = 1
-
-humanize.datetime.day.current
-  fallback -> humanize.datetime.now
-
-humanize.datetime.day.next
-  fallback -> humanize.datetime.relative.day.future, count = 1
-```
-
-Fallback is performed by Humanize by checking key availability through `Humanize.I18N_Rendering.Available`.
-
-Generic relative keys do not have further semantic fallback. If missing, return `Missing_Message`.
-
-## 10. Duration Semantics
-
-Duration v0.1 accepts `Duration_Seconds`.
-
-Rules:
-
-```text
-Seconds < 0:
-  Invalid_Value
-
-Largest_Unit < Smallest_Unit:
-  Invalid_Options
-
-Seconds = 0:
-  render Smallest_Unit with count = 0
-
-Seconds > 0:
-  choose the largest unit between Smallest_Unit and Largest_Unit whose whole count is at least 1
-
-If no unit count is at least 1:
-  render Smallest_Unit with count = 0
-```
-
-Unit sizes:
-
-```text
-Second = 1
-Minute = 60
-Hour   = 3600
-Day    = 86400
-```
-
-Examples with default options:
-
-```text
-0      -> 0 seconds
-1      -> 1 second
-59     -> 59 seconds
-60     -> 1 minute
-90     -> 1 minute
-3600   -> 1 hour
-3661   -> 1 hour
-86400  -> 1 day
-```
-
-Multi-unit rendering such as `1 hour, 1 minute` is deferred.
-
-## 11. Byte Formatting Semantics
-
-### 11.1 Unit Systems
-
-Binary:
-
-```text
-1 KiB = 1024
-1 MiB = 1024 ** 2
-1 GiB = 1024 ** 3
-1 TiB = 1024 ** 4
-```
-
-Decimal:
-
-```text
-1 kB = 1000
-1 MB = 1000 ** 2
-1 GB = 1000 ** 3
-1 TB = 1000 ** 4
-```
-
-### 11.2 Unit Selection
-
-If `Bytes < base`, use `humanize.bytes.byte` with `count`.
-
-Otherwise choose the largest unit whose threshold is less than or equal to `Bytes`.
-
-Binary chooses among:
-
-```text
-KiB, MiB, GiB, TiB
-```
-
-Decimal chooses among:
-
-```text
-kB, MB, GB, TB
-```
-
-### 11.3 Numeric Formatting
-
-Humanize v0.1 formats byte-size numeric values internally as locale-neutral ASCII argument text.
-
-Rules:
-
-```text
-Decimal separator: "."
-Grouping: none
-Default maximum fractional digits: 1
-Rounding: nearest, halves away from zero
-Trailing .0: suppressed when Suppress_Trailing_Zero = True
-```
-
-Examples with default options:
-
-```text
-1 byte
-2 bytes
-1024 binary  -> 1 KiB
-1536 binary  -> 1.5 KiB
-1000 decimal -> 1 kB
-1500 decimal -> 1.5 kB
-```
-
-Locale-aware number formatting is deferred to a later version.
-
-## 12. Catalog Schema
-
-Every v0.1 key has a fixed argument contract.
-
-| Key                                        | Required args | Uses plural? |
-| ------------------------------------------ | ------------: | -----------: |
-| `humanize.datetime.now`                    |          none |           no |
-| `humanize.datetime.day.previous`           |          none |           no |
-| `humanize.datetime.day.current`            |          none |           no |
-| `humanize.datetime.day.next`               |          none |           no |
-| `humanize.datetime.relative.second.past`   |       `count` |          yes |
-| `humanize.datetime.relative.second.future` |       `count` |          yes |
-| `humanize.datetime.relative.minute.past`   |       `count` |          yes |
-| `humanize.datetime.relative.minute.future` |       `count` |          yes |
-| `humanize.datetime.relative.hour.past`     |       `count` |          yes |
-| `humanize.datetime.relative.hour.future`   |       `count` |          yes |
-| `humanize.datetime.relative.day.past`      |       `count` |          yes |
-| `humanize.datetime.relative.day.future`    |       `count` |          yes |
-| `humanize.datetime.relative.week.past`     |       `count` |          yes |
-| `humanize.datetime.relative.week.future`   |       `count` |          yes |
-| `humanize.datetime.relative.month.past`    |       `count` |          yes |
-| `humanize.datetime.relative.month.future`  |       `count` |          yes |
-| `humanize.datetime.relative.year.past`     |       `count` |          yes |
-| `humanize.datetime.relative.year.future`   |       `count` |          yes |
-| `humanize.duration.unit.second`            |       `count` |          yes |
-| `humanize.duration.unit.minute`            |       `count` |          yes |
-| `humanize.duration.unit.hour`              |       `count` |          yes |
-| `humanize.duration.unit.day`               |       `count` |          yes |
-| `humanize.bytes.byte`                      |       `count` |          yes |
-| `humanize.bytes.kb`                        |       `value` |           no |
-| `humanize.bytes.mb`                        |       `value` |           no |
-| `humanize.bytes.gb`                        |       `value` |           no |
-| `humanize.bytes.tb`                        |       `value` |           no |
-| `humanize.bytes.kib`                       |       `value` |           no |
-| `humanize.bytes.mib`                       |       `value` |           no |
-| `humanize.bytes.gib`                       |       `value` |           no |
-| `humanize.bytes.tib`                       |       `value` |           no |
-
-`count` is serialized with `I18N.Arguments.Set_Natural` or `Set_Integer`.
-
-`value` is serialized with `I18N.Arguments.Set`.
-
-## 13. Required English Catalog Fragment
-
-```text
-en.humanize.datetime.now = "now"
-en.humanize.datetime.day.previous = "yesterday"
-en.humanize.datetime.day.current = "today"
-en.humanize.datetime.day.next = "tomorrow"
-
-en.humanize.datetime.relative.second.past = "{count, plural, one {# second ago} other {# seconds ago}}"
-en.humanize.datetime.relative.second.future = "{count, plural, one {in # second} other {in # seconds}}"
-en.humanize.datetime.relative.minute.past = "{count, plural, one {# minute ago} other {# minutes ago}}"
-en.humanize.datetime.relative.minute.future = "{count, plural, one {in # minute} other {in # minutes}}"
-en.humanize.datetime.relative.hour.past = "{count, plural, one {# hour ago} other {# hours ago}}"
-en.humanize.datetime.relative.hour.future = "{count, plural, one {in # hour} other {in # hours}}"
-en.humanize.datetime.relative.day.past = "{count, plural, one {# day ago} other {# days ago}}"
-en.humanize.datetime.relative.day.future = "{count, plural, one {in # day} other {in # days}}"
-en.humanize.datetime.relative.week.past = "{count, plural, one {# week ago} other {# weeks ago}}"
-en.humanize.datetime.relative.week.future = "{count, plural, one {in # week} other {in # weeks}}"
-en.humanize.datetime.relative.month.past = "{count, plural, one {# month ago} other {# months ago}}"
-en.humanize.datetime.relative.month.future = "{count, plural, one {in # month} other {in # months}}"
-en.humanize.datetime.relative.year.past = "{count, plural, one {# year ago} other {# years ago}}"
-en.humanize.datetime.relative.year.future = "{count, plural, one {in # year} other {in # years}}"
-
-en.humanize.duration.unit.second = "{count, plural, one {# second} other {# seconds}}"
-en.humanize.duration.unit.minute = "{count, plural, one {# minute} other {# minutes}}"
-en.humanize.duration.unit.hour = "{count, plural, one {# hour} other {# hours}}"
-en.humanize.duration.unit.day = "{count, plural, one {# day} other {# days}}"
-
-en.humanize.bytes.byte = "{count, plural, one {# byte} other {# bytes}}"
-en.humanize.bytes.kb = "{value} kB"
-en.humanize.bytes.mb = "{value} MB"
-en.humanize.bytes.gb = "{value} GB"
-en.humanize.bytes.tb = "{value} TB"
-en.humanize.bytes.kib = "{value} KiB"
-en.humanize.bytes.mib = "{value} MiB"
-en.humanize.bytes.gib = "{value} GiB"
-en.humanize.bytes.tib = "{value} TiB"
-```
-
-## 14. Required Danish Catalog Fragment
-
-```text
-da.humanize.datetime.now = "nu"
-da.humanize.datetime.day.previous = "i går"
-da.humanize.datetime.day.current = "i dag"
-da.humanize.datetime.day.next = "i morgen"
-
-da.humanize.datetime.relative.second.past = "{count, plural, one {for # sekund siden} other {for # sekunder siden}}"
-da.humanize.datetime.relative.second.future = "{count, plural, one {om # sekund} other {om # sekunder}}"
-da.humanize.datetime.relative.minute.past = "{count, plural, one {for # minut siden} other {for # minutter siden}}"
-da.humanize.datetime.relative.minute.future = "{count, plural, one {om # minut} other {om # minutter}}"
-da.humanize.datetime.relative.hour.past = "{count, plural, one {for # time siden} other {for # timer siden}}"
-da.humanize.datetime.relative.hour.future = "{count, plural, one {om # time} other {om # timer}}"
-da.humanize.datetime.relative.day.past = "{count, plural, one {for # dag siden} other {for # dage siden}}"
-da.humanize.datetime.relative.day.future = "{count, plural, one {om # dag} other {om # dage}}"
-da.humanize.datetime.relative.week.past = "{count, plural, one {for # uge siden} other {for # uger siden}}"
-da.humanize.datetime.relative.week.future = "{count, plural, one {om # uge} other {om # uger}}"
-da.humanize.datetime.relative.month.past = "{count, plural, one {for # måned siden} other {for # måneder siden}}"
-da.humanize.datetime.relative.month.future = "{count, plural, one {om # måned} other {om # måneder}}"
-da.humanize.datetime.relative.year.past = "{count, plural, one {for # år siden} other {for # år siden}}"
-da.humanize.datetime.relative.year.future = "{count, plural, one {om # år} other {om # år}}"
-
-da.humanize.duration.unit.second = "{count, plural, one {# sekund} other {# sekunder}}"
-da.humanize.duration.unit.minute = "{count, plural, one {# minut} other {# minutter}}"
-da.humanize.duration.unit.hour = "{count, plural, one {# time} other {# timer}}"
-da.humanize.duration.unit.day = "{count, plural, one {# dag} other {# dage}}"
-
-da.humanize.bytes.byte = "{count, plural, one {# byte} other {# bytes}}"
-da.humanize.bytes.kb = "{value} kB"
-da.humanize.bytes.mb = "{value} MB"
-da.humanize.bytes.gb = "{value} GB"
-da.humanize.bytes.tb = "{value} TB"
-da.humanize.bytes.kib = "{value} KiB"
-da.humanize.bytes.mib = "{value} MiB"
-da.humanize.bytes.gib = "{value} GiB"
-da.humanize.bytes.tib = "{value} TiB"
-```
-
-Humanize v0.1 requires correct `one`/`other` plural behavior for English and Danish through `i18n`.
-
-## 15. Performance Requirements
-
-Humanize v0.1 guarantees:
-
-```text
-Datetime classification: bounded fixed rule checks
-Duration classification: bounded fixed rule checks
-Byte classification: bounded fixed rule checks
-Classification heap allocation: none
-Localized rendering: delegated to I18N
-Convenience result API: may allocate for owned text result
-Bounded API: caller-visible output path uses caller-owned buffer
-```
-
-Humanize shall not parse catalog messages.
-
-Humanize shall not inspect private `i18n` catalog structures.
-
-## 16. Threading and Reentrancy
-
-Humanize formatting operations are reentrant if:
-
-```text
-The supplied I18N runtime is initialized and not being mutated concurrently.
-No task calls I18N.Runtime.Load_*, Initialize, or Finalize concurrently on the same runtime.
-Shared diagnostics callbacks, if any, are externally thread-safe.
-```
-
-Humanize itself shall not maintain mutable global formatting state.
-
-Built-in catalog text constants are read-only.
-
-## 17. Invariants
-
-```text
-HUM-INV-001:
-  Classifiers never return localized text.
-
-HUM-INV-002:
-  Domain packages do not import I18N.Runtime directly.
-
-HUM-INV-003:
-  All I18N status mapping happens in Humanize.I18N_Rendering.
-
-HUM-INV-004:
-  Every public Message_Id except No_Message maps to exactly one catalog key.
-
-HUM-INV-005:
-  Every v0.1 catalog key has English and Danish entries.
-
-HUM-INV-006:
-  Every v0.1 catalog key has a documented argument schema.
-
-HUM-INV-007:
-  Datetime APIs with explicit Reference are deterministic.
-
-HUM-INV-008:
-  Binary and decimal byte units are never mixed.
-
-HUM-INV-009:
-  Humanize does not own or mutate I18N runtime lifetime.
-
-HUM-INV-010:
-  Bounded APIs never report Ok unless the complete output fits in Target.
-```
-
-## 18. Test Requirements
-
-AUnit tests shall cover:
-
-### Datetime
-
-```text
-now threshold
-yesterday in Auto
-tomorrow in Auto
-today in Calendar style
-same-day hours ago in Auto
-Elapsed style disables yesterday/tomorrow
-seconds ago
-minutes ago
-hours ago
-days ago
-weeks ago
-months ago
-years ago
-future seconds/minutes/hours/days
-calendar semantic fallback
-explicit Reference determinism
-```
-
-### Duration
-
-```text
-negative duration -> Invalid_Value
-0 seconds
-1 second
-2 seconds
-59 seconds
-60 seconds
-90 seconds
-1 hour
-1 day
-Smallest_Unit / Largest_Unit invalid combination
-```
-
-### Bytes
-
-```text
-0 bytes
-1 byte
-2 bytes
-1023 binary -> bytes
-1024 binary -> 1 KiB
-1536 binary -> 1.5 KiB
-999 decimal -> bytes
-1000 decimal -> 1 kB
-1500 decimal -> 1.5 kB
-binary/decimal distinction
-fraction suppression
-fraction digit limit
-```
-
-### I18N Integration
-
-```text
-English output through real I18N.Runtime
-Danish output through real I18N.Runtime
-missing key -> Missing_Message
-missing argument -> Missing_Argument
-invalid argument -> Invalid_Argument
-runtime error -> Runtime_Error
-count argument uses strict decimal string
-value argument uses deterministic byte formatter text
-```
-
-### Bounded APIs
-
-```text
-exact-fit buffer
-oversized buffer
-one-character-too-small buffer
-zero-length buffer
-invalid non-1-based buffer
-overflow status
-Written value on success
-Written value on overflow
-Written = 0 on non-overflow failure
-```
-
-### Architecture
-
-```text
-domain packages do not with I18N.Runtime
-no localized strings in classifiers
-every Message_Id has catalog schema coverage
-all v0.1 keys exist in en and da catalog fragments
-```
-
-## 19. Deferred Features
-
-Deferred until v0.2+:
-
-```text
-Humanize.Numbers public API
-ordinals
-compact numbers
-full locale-aware decimal formatting
-multi-unit duration lists
-localized list joining
-explicit Civil_Date / Civil_Date_Time API
-timezone database integration
-full CLDR catalog import
-custom runtime rule plugins
-application-defined domain classifiers
-```
-
-## 20. Implementation Slices
-
-### Slice 1 — Datetime Foundation
-
-Implement:
-
-```text
-Humanize
-Humanize.Messages
-Humanize.Status
-Humanize.Contexts
-Humanize.Selections
-Humanize.I18N_Rendering
-Humanize.Catalogs
-Humanize.Datetimes
-Humanize.Datetime_Classification
-English/Danish datetime catalog entries
-AUnit datetime tests
-AUnit bounded datetime tests
-```
-
-Acceptance:
-
-```text
-Relative datetime works through real I18N.Runtime.
-No domain package imports I18N.Runtime.
-Convenience and bounded APIs both work.
-```
-
-### Slice 2 — Duration
-
-Implement:
-
-```text
-Humanize.Durations
-Humanize.Duration_Classification
-English/Danish duration catalog entries
-AUnit duration tests
-AUnit bounded duration tests
-```
-
-Acceptance:
-
-```text
-Single-largest-unit duration formatting works.
-Negative durations return Invalid_Value.
-Invalid unit options return Invalid_Options.
-```
-
-### Slice 3 — Bytes
-
-Implement:
-
-```text
-Humanize.Bytes
-Humanize.Byte_Classification
-byte numeric formatter
-English/Danish byte catalog entries
-AUnit byte tests
-AUnit bounded byte tests
-```
-
-Acceptance:
-
-```text
-Binary and decimal byte formatting work.
-Byte values use deterministic ASCII numeric argument text.
-Bounded byte rendering reports overflow correctly.
-```
-
-## 21. v0.1 Completion Criteria
-
-Humanize v0.1 is complete when:
-
-```text
-The crate builds as a separate Ada 2022 Alire library crate.
-The crate depends on i18n.
-i18n does not depend on humanize.
-All direct i18n rendering calls are isolated in Humanize.I18N_Rendering.
-Relative datetime works in English and Danish.
-Simple duration formatting works in English and Danish.
-Binary and decimal byte formatting work.
-Convenience and bounded APIs exist for every v0.1 formatter.
-Missing messages and render failures map to Humanize statuses.
-AUnit tests cover all public behavior.
-No localized strings are embedded in rule-selection code.
-Every invariant HUM-INV-001 through HUM-INV-010 is tested or covered by code review.
-```
-
-## 22. v0.2 Additions
-
-Humanize v0.2 extends the v0.1 contract without changing it. New public surface:
-
-* `Humanize.Numbers` — `Ordinal` (locale-aware ordinals via i18n
-  selectordinal: English `21 -> 21st`; German/Danish `21 -> 21.`) and `Compact`
-  (`1200 -> 1.2K`, with localized suffixes), each with convenience and bounded
-  forms.
-* `Humanize.Durations.Format_Components` / `Format_Components_Into` — multi-unit
-  duration rendering (for example `1 hour, 30 minutes`). Components are joined
-  with a `", "` separator.
-* `Humanize.Datetimes.Relative_Civil` / `Relative_Civil_Into` — a civil
-  date/time component API (`Civil_Date_Time`). Impossible civil dates return
-  `Invalid_Value`. No time zone database is owned; components are interpreted in
-  the local zone via `Ada.Calendar`.
-* German (`de`) catalog fragment. Shipped locales: `en`, `da`, `de`.
-
-The architectural boundary is unchanged: classifiers stay pure (HUM-INV-001),
-domain packages (now including `Humanize.Numbers`) do not call `I18N.Runtime`
-directly (HUM-INV-002), and all i18n rendering and status mapping stays in
-`Humanize.I18N_Rendering` (HUM-INV-003).
-
-Still out of scope (deferred beyond v0.2): a time zone database, runtime CLDR
-data import, locale-aware decimal grouping, locale-specific list patterns, and
-runtime rule plugins.
-
-## 23. v0.3 Additions
-
-* Locale-aware numeric value formatting (`Humanize.Number_Formatting`): the
-  Humanize-formatted `{value}` arguments (byte sizes, compact numbers) now use
-  the locale's decimal separator and digit grouping — `en` `1,023.5`, `de`/`da`
-  `1.023,5`, `fr` `1 023,5`. Symbols are resolved by language subtag in a pure
-  helper; count integers still render through i18n unchanged.
-* French (`fr`) catalog fragment; shipped locales: `en`, `da`, `de`, `fr`.
-* Multi-unit duration lists join the final component with the locale conjunction
-  (`humanize.list.and`: "and"/"og"/"und"/"et").
-
-Still out of scope: time zone database, runtime CLDR data import, full CLDR
-list/number patterns (long-form compact, currency, percent), and runtime rule
-plugins.
-
-## 24. v0.4 Additions
-
-* `Humanize.Units` — a new public domain package humanizing whole unit
-  quantities (`Meter`, `Kilometer`, `Gram`, `Kilogram`, `Liter`) with plural
-  forms. Like the other formatters it selects a key and renders through
-  `Humanize.I18N_Rendering`; it never calls `I18N.Runtime` (HUM-INV-002).
-  Fractional quantities are deferred because i18n plural selection is
-  integer-only.
-* Spanish (`es`) and Italian (`it`) catalog fragments. Shipped locales: `en`,
-  `da`, `de`, `fr`, `es`, `it`.
-* Locale-grouped counts: catalog count branches render `{value}` (a
-  locale-grouped image of the count) while still selecting the plural/ordinal
-  category from the raw `{count}`. `Humanize.I18N_Rendering` sets both arguments.
-* Compact tier promotion: when rounding a compact value reaches 1000, the tier
-  is promoted (`999_999` → `1M`, not `1000K`).
-* Gendered ordinals: `Humanize.Numbers.Ordinal` takes an `Ordinal_Gender`
-  (`Masculine`/`Feminine`); Romance locales carry a distinct feminine key
-  (`humanize.number.ordinal.feminine`), others reuse the masculine form.
-
-Still out of scope: time zone database, runtime CLDR import, fractional units,
-long-form compact numbers, currency/percent/scientific formatting, and runtime
-rule plugins.
-
-## 25. v0.5 Additions
-
-* Fractional plural agreement. i18n 1.1 adds an overloaded
-  `I18N.Plurals.Cardinal` taking CLDR operands (i, v, f) and teaches the public
-  render paths to accept decimal plural selectors. Humanize passes a decimal
-  "count" (the ASCII value) alongside the localized "value" via a new
-  `Decimal_Argument` selection, so fractional quantities agree in number
-  (French "1,5 kilometre" singular; English "1.5 kilometers").
-* `Humanize.Units` fractional overloads (`Format`/`Format_Into` taking a
-  `Long_Float`), plus new metric units (centimeter, millimeter, milligram,
-  milliliter).
-* `Humanize.Numbers.Compact` `Style` parameter: Long renders the spelled-out
-  scale word ("1.2 million") with plural agreement.
-* `Humanize.Numbers.Percent` / `Percent_Into`.
-* Portuguese (`pt`). Shipped locales: en, da, de, fr, es, it, pt.
-
-Still out of scope: time zone database, runtime CLDR import, currency and
-scientific-notation formatting, and runtime rule plugins.
+Region-tagged contexts such as `sv-SE`, `nb-NO`, `ja-JP`, and `ar-EG` resolve
+through `i18n` locale fallback to those base fragments.
+
+Generated-source fragments use native script or native Latin orthography for
+the core Humanize date, duration, byte, compact-number, unit, frequency, rate,
+and list words, and use a shared symbol layer for the broad engineering-unit
+tail.
+
+Every non-`No_Message` `Message_Id` must resolve in every shipped locale after
+`Humanize.Catalogs.Load_Defaults`.
+
+Catalog strings are in source constants and are loaded through the public
+`I18N.Runtime.Load_Text` API. Humanize does not parse catalog messages itself and
+does not inspect private `i18n` structures.
+`Humanize.Catalogs.Load_Defaults` defaults to `Reject_Duplicates`; a rejected
+duplicate load is non-destructive, and callers can explicitly pass `Keep_First`
+or `Override_Previous` through to the underlying `i18n` loader.
+
+## Verification Contract
+
+The release checker `check_humanize` is maintainer tooling only. It may depend
+on `../project_tools`; the Humanize library, tests, and examples must not.
+
+The release checker verifies:
+
+* development and release manifest dependency policy;
+* local-pin isolation between `alire.toml`, `alire.release.toml`, and
+  `alire.build.toml`;
+* required files and documentation references;
+* AUnit registration/assertion coverage thresholds;
+* generated-artifact hygiene;
+* Humanize/tooling and Humanize/i18n import boundaries;
+* public GNATdoc tags for public specs;
+* example-main source and documentation inventory;
+* library build, test build, AUnit execution, example build, `alr test`, and
+  GNATdoc generation;
+* empty compiler `.stderr` logs after the release build.
+
+## Non-Goals
+
+Humanize 0.5.0 intentionally does not provide:
+
+* a time zone database;
+* arbitrary CLDR import at application runtime;
+* full CLDR currency-formatting engines; Humanize only provides deterministic
+  currency phrases around caller-supplied codes or symbols;
+* application-defined runtime classifier plugins.

@@ -42,6 +42,23 @@ package body Humanize.Datetime_Classification is
       return Days_From_Civil (Integer (Year), Integer (Month), Integer (Day));
    end Date_Ordinal;
 
+   function Rounded_Count
+     (Elapsed : Long_Long_Integer;
+      Unit    : Long_Long_Integer;
+      Mode    : Humanize.Datetimes.Relative_Rounding_Mode)
+      return Long_Long_Integer
+   is
+   begin
+      case Mode is
+         when Humanize.Datetimes.Round_Down =>
+            return Elapsed / Unit;
+         when Humanize.Datetimes.Round_Nearest =>
+            return (Elapsed + Unit / 2) / Unit;
+         when Humanize.Datetimes.Round_Up =>
+            return (Elapsed + Unit - 1) / Unit;
+      end case;
+   end Rounded_Count;
+
    function Classify
      (Value     : Ada.Calendar.Time;
       Reference : Ada.Calendar.Time;
@@ -113,37 +130,43 @@ package body Humanize.Datetime_Classification is
                then Datetime_Relative_Second_Future
                else Datetime_Relative_Second_Past);
          elsif Elapsed < Seconds_Per_Hour then
-            Count := Elapsed / Seconds_Per_Minute;
+            Count := Rounded_Count
+              (Elapsed, Seconds_Per_Minute, Options.Rounding);
             Key :=
               (if Is_Future
                then Datetime_Relative_Minute_Future
                else Datetime_Relative_Minute_Past);
          elsif Elapsed < Seconds_Per_Day then
-            Count := Elapsed / Seconds_Per_Hour;
+            Count := Rounded_Count
+              (Elapsed, Seconds_Per_Hour, Options.Rounding);
             Key :=
               (if Is_Future
                then Datetime_Relative_Hour_Future
                else Datetime_Relative_Hour_Past);
          elsif Days < 7 then
-            Count := Days;
+            Count := Rounded_Count
+              (Elapsed, Seconds_Per_Day, Options.Rounding);
             Key :=
               (if Is_Future
                then Datetime_Relative_Day_Future
                else Datetime_Relative_Day_Past);
          elsif Days < 30 and then Options.Prefer_Weeks then
-            Count := Days / 7;
+            Count := Rounded_Count
+              (Elapsed, 7 * Seconds_Per_Day, Options.Rounding);
             Key :=
               (if Is_Future
                then Datetime_Relative_Week_Future
                else Datetime_Relative_Week_Past);
          elsif Days < 365 and then Options.Prefer_Months then
-            Count := Days / 30;
+            Count := Rounded_Count
+              (Elapsed, 30 * Seconds_Per_Day, Options.Rounding);
             Key :=
               (if Is_Future
                then Datetime_Relative_Month_Future
                else Datetime_Relative_Month_Past);
          else
-            Count := Days / 365;
+            Count := Rounded_Count
+              (Elapsed, 365 * Seconds_Per_Day, Options.Rounding);
             Key :=
               (if Is_Future
                then Datetime_Relative_Year_Future

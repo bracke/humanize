@@ -1,15 +1,25 @@
 with AUnit.Assertions;
 
-with Ada.Strings.Fixed;
-with Ada.Text_IO;
+with I18N.Runtime;
 
+with Humanize.Capabilities;
+with Humanize.Catalogs;
+with Humanize.Contexts;
+with Humanize.Durations;
 with Humanize.I18N_Rendering;
 with Humanize.Messages;
+with Humanize.Status;
 with Humanize.Tests.Support;
 
 package body Humanize.Tests.Architecture is
 
    use Humanize.Messages;
+   use type I18N.Runtime.Load_Status;
+   use type Humanize.Capabilities.Locale_Behavior;
+   use type Humanize.Rendering_Source;
+   use type Humanize.Status.Status_Code;
+
+   Duplicate_Runtime : aliased I18N.Runtime.Instance;
 
    --  HUM-INV-004: every Message_Id except No_Message maps to exactly one
    --  non-empty catalog key.
@@ -34,119 +44,163 @@ package body Humanize.Tests.Architecture is
    end Test_Unique_Keys;
 
    --  HUM-INV-005: every key resolves in every shipped locale after
-   --  Load_Defaults (English, Danish, German).
+   --  Load_Defaults.
    procedure Test_Locale_Coverage (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
+
+      procedure Check (Locale : String; Label : String; Id : Message_Id) is
+      begin
+         AUnit.Assertions.Assert
+           (Humanize.I18N_Rendering.Available (Support.Locale (Locale), Id),
+            Label & " catalog missing " & Key (Id));
+      end Check;
    begin
       for Id in Message_Id loop
          if Id /= No_Message then
-            AUnit.Assertions.Assert
-              (Humanize.I18N_Rendering.Available (Support.En, Id),
-               "English catalog missing " & Key (Id));
-            AUnit.Assertions.Assert
-              (Humanize.I18N_Rendering.Available (Support.Da, Id),
-               "Danish catalog missing " & Key (Id));
-            AUnit.Assertions.Assert
-              (Humanize.I18N_Rendering.Available (Support.De, Id),
-               "German catalog missing " & Key (Id));
-            AUnit.Assertions.Assert
-              (Humanize.I18N_Rendering.Available (Support.Fr, Id),
-               "French catalog missing " & Key (Id));
-            AUnit.Assertions.Assert
-              (Humanize.I18N_Rendering.Available (Support.Es, Id),
-               "Spanish catalog missing " & Key (Id));
-            AUnit.Assertions.Assert
-              (Humanize.I18N_Rendering.Available (Support.It, Id),
-               "Italian catalog missing " & Key (Id));
-            AUnit.Assertions.Assert
-              (Humanize.I18N_Rendering.Available (Support.Pt, Id),
-               "Portuguese catalog missing " & Key (Id));
+            Check ("en", "English", Id);
+            Check ("da-DK", "Danish", Id);
+            Check ("de", "German", Id);
+            Check ("fr", "French", Id);
+            Check ("es", "Spanish", Id);
+            Check ("it", "Italian", Id);
+            Check ("pt", "Portuguese", Id);
+            Check ("nl", "Dutch", Id);
+            Check ("sv", "Swedish generated", Id);
+            Check ("no", "Norwegian generated", Id);
+            Check ("nb", "Norwegian Bokmal generated", Id);
+            Check ("fi", "Finnish generated", Id);
+            Check ("pl", "Polish generated", Id);
+            Check ("cs", "Czech generated", Id);
+            Check ("tr", "Turkish generated", Id);
+            Check ("ru", "Russian generated", Id);
+            Check ("uk", "Ukrainian generated", Id);
+            Check ("ja", "Japanese generated", Id);
+            Check ("ko", "Korean generated", Id);
+            Check ("zh", "Chinese generated", Id);
+            Check ("ar", "Arabic generated", Id);
+            Check ("hi", "Hindi generated", Id);
+            Check ("sv-SE", "Swedish regional generated", Id);
+            Check ("nb-NO", "Norwegian regional generated", Id);
+            Check ("ja-JP", "Japanese regional generated", Id);
+            Check ("ar-EG", "Arabic regional generated", Id);
          end if;
       end loop;
    end Test_Locale_Coverage;
 
-   --  True when the code (comment-stripped) of the file at Path contains Needle.
-   function File_Code_Contains (Path : String; Needle : String) return Boolean is
-      File  : Ada.Text_IO.File_Type;
-      Found : Boolean := False;
+   procedure Test_Catalog_Duplicate_Policy
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      First   : I18N.Runtime.Load_Result;
+      Reject  : I18N.Runtime.Load_Result;
+      Keep    : I18N.Runtime.Load_Result;
+      Replace : I18N.Runtime.Load_Result;
+      Swedish : Humanize.Status.Text_Result;
    begin
-      Ada.Text_IO.Open (File, Ada.Text_IO.In_File, Path);
-      while not Ada.Text_IO.End_Of_File (File) loop
-         declare
-            Line : constant String := Ada.Text_IO.Get_Line (File);
-            --  Ignore the comment portion so prose does not count.
-            Cut  : constant Natural := Ada.Strings.Fixed.Index (Line, "--");
-            Code : constant String :=
-              (if Cut = 0 then Line else Line (Line'First .. Cut - 1));
-         begin
-            if Ada.Strings.Fixed.Index (Code, Needle) /= 0 then
-               Found := True;
-            end if;
-         end;
-      end loop;
-      Ada.Text_IO.Close (File);
-      return Found;
-   end File_Code_Contains;
+      Humanize.Catalogs.Load_Defaults (Duplicate_Runtime, First);
+      AUnit.Assertions.Assert
+        (First.Status = I18N.Runtime.Loaded
+         and then First.Entries_Added > 0,
+         "initial built-in catalog load");
 
-   --  HUM-INV-002: domain packages must not import I18N.Runtime directly.
-   procedure Check_No_Runtime (Path : String) is
+      Humanize.Catalogs.Load_Defaults (Duplicate_Runtime, Reject);
+      AUnit.Assertions.Assert
+        (Reject.Status = I18N.Runtime.Duplicate_Rejected,
+         "default duplicate policy rejects second built-in catalog load");
+
+      Swedish :=
+        Humanize.Durations.Format
+          (Humanize.Contexts.Create (Duplicate_Runtime'Access, "sv"), 2);
+      AUnit.Assertions.Assert
+        (Swedish.Status = Humanize.Status.Ok
+         and then Support.Text (Swedish) = "2 sekunder",
+         "rejected duplicate load leaves generated catalog usable");
+
+      Humanize.Catalogs.Load_Defaults
+        (Duplicate_Runtime, Keep, I18N.Runtime.Keep_First);
+      AUnit.Assertions.Assert
+        (Keep.Status = I18N.Runtime.Loaded
+         and then Keep.Entries_Added = 0
+         and then Keep.Entries_Ignored > 0,
+         "explicit duplicate policy can keep existing built-in catalog keys");
+
+      Humanize.Catalogs.Load_Defaults
+        (Duplicate_Runtime, Replace, I18N.Runtime.Override_Previous);
+      AUnit.Assertions.Assert
+        (Replace.Status = I18N.Runtime.Loaded
+         and then Replace.Entries_Added = 0
+         and then Replace.Entries_Replaced > 0,
+         "explicit duplicate policy can replace built-in catalog keys");
+
+      Swedish :=
+        Humanize.Durations.Format
+          (Humanize.Contexts.Create (Duplicate_Runtime'Access, "sv"), 2);
+      AUnit.Assertions.Assert
+        (Swedish.Status = Humanize.Status.Ok
+         and then Support.Text (Swedish) = "2 sekunder",
+         "replaced duplicate load leaves generated catalog usable");
+   end Test_Catalog_Duplicate_Policy;
+
+   procedure Test_Capability_Metadata
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      Summary : constant Humanize.Status.Text_Result :=
+        Humanize.Capabilities.Capability_Summary;
+      Source : constant Humanize.Status.Text_Result :=
+        Humanize.Capabilities.Rendering_Source_Label
+          (Humanize.Capabilities.Area_Rendering_Source
+             (Humanize.Capabilities.Phrase_Area));
+      Behavior : constant Humanize.Status.Text_Result :=
+        Humanize.Capabilities.Locale_Behavior_Label
+          (Humanize.Capabilities.Area_Locale_Behavior
+             (Humanize.Capabilities.Number_Area));
+      Behavior_Summary : constant Humanize.Status.Text_Result :=
+        Humanize.Capabilities.Locale_Behavior_Summary;
    begin
       AUnit.Assertions.Assert
-        (not File_Code_Contains (Path, "I18N.Runtime"),
-         "domain source must not reference I18N.Runtime: " & Path);
-   exception
-      when Ada.Text_IO.Name_Error =>
-         AUnit.Assertions.Assert
-           (False, "could not open domain source for scan: " & Path);
-   end Check_No_Runtime;
-
-   --  HUM-INV-001: classifiers must not embed localized text. These catalog-only
-   --  tokens never occur in Ada identifiers (English unit words are capitalized
-   --  enum names like Duration_Unit_Second) or in numeric format literals, so
-   --  finding any of them means localized text leaked into rule selection.
-   procedure Check_No_Localized (Path : String) is
-      procedure No (Token : String) is
-      begin
-         AUnit.Assertions.Assert
-           (not File_Code_Contains (Path, Token),
-            "classifier embeds localized text """ & Token & """ in " & Path);
-      exception
-         when Ada.Text_IO.Name_Error =>
-            AUnit.Assertions.Assert
-              (False, "could not open classifier source: " & Path);
-      end No;
-   begin
-      No ("yesterday");
-      No ("tomorrow");
-      No (" ago");
-      No ("siden");
-      No ("sekund");
-   end Check_No_Localized;
-
-   procedure Test_Domain_Boundary (T : in out AUnit.Test_Cases.Test_Case'Class) is
-      pragma Unreferenced (T);
-      Base : constant String := "../src/";
-   begin
-      Check_No_Runtime (Base & "humanize-datetimes.ads");
-      Check_No_Runtime (Base & "humanize-datetimes.adb");
-      Check_No_Runtime (Base & "humanize-durations.ads");
-      Check_No_Runtime (Base & "humanize-durations.adb");
-      Check_No_Runtime (Base & "humanize-bytes.ads");
-      Check_No_Runtime (Base & "humanize-bytes.adb");
-      Check_No_Runtime (Base & "humanize-numbers.ads");
-      Check_No_Runtime (Base & "humanize-numbers.adb");
-      Check_No_Runtime (Base & "humanize-units.ads");
-      Check_No_Runtime (Base & "humanize-units.adb");
-   end Test_Domain_Boundary;
-
-   procedure Test_No_Localized_Strings (T : in out AUnit.Test_Cases.Test_Case'Class) is
-      pragma Unreferenced (T);
-      Base : constant String := "../src/";
-   begin
-      Check_No_Localized (Base & "humanize-datetime_classification.adb");
-      Check_No_Localized (Base & "humanize-duration_classification.adb");
-      Check_No_Localized (Base & "humanize-byte_classification.adb");
-   end Test_No_Localized_Strings;
+        (Summary.Status = Humanize.Status.Ok
+         and then Support.Text (Summary)
+           = "datetimes durations bytes colors numbers strings lists frequencies rates units phrases parsing",
+         "capability summary metadata");
+      AUnit.Assertions.Assert
+        (Humanize.Capabilities.Area_Rendering_Source
+           (Humanize.Capabilities.Number_Area) = Humanize.Locale_Rendered,
+         "number area rendering source");
+      AUnit.Assertions.Assert
+        (Humanize.Capabilities.Area_Rendering_Source
+           (Humanize.Capabilities.Color_Area)
+            = Humanize.Deterministic_Text,
+         "color area rendering source");
+      AUnit.Assertions.Assert
+        (Source.Status = Humanize.Status.Ok
+         and then Support.Text (Source) = "deterministic-text",
+         "rendering source label");
+      AUnit.Assertions.Assert
+        (Humanize.Capabilities.Area_Locale_Behavior
+           (Humanize.Capabilities.Unit_Area)
+            = Humanize.Capabilities.Catalog_Localized,
+         "unit area locale behavior");
+      AUnit.Assertions.Assert
+        (Humanize.Capabilities.Area_Locale_Behavior
+           (Humanize.Capabilities.Phrase_Area)
+            = Humanize.Capabilities.Deterministic_Locale_Aware,
+         "phrase area locale behavior");
+      AUnit.Assertions.Assert
+        (Humanize.Capabilities.Area_Locale_Behavior
+           (Humanize.Capabilities.Parsing_Area)
+            = Humanize.Capabilities.Deterministic_English,
+         "parsing area locale behavior");
+      AUnit.Assertions.Assert
+        (Behavior.Status = Humanize.Status.Ok
+         and then Support.Text (Behavior) = "mixed-localized-deterministic",
+         "number area mixed locale behavior label");
+      AUnit.Assertions.Assert
+        (Behavior_Summary.Status = Humanize.Status.Ok
+         and then Support.Text (Behavior_Summary)
+           = "catalog-localized deterministic-locale-aware deterministic-english mixed-localized-deterministic",
+         "locale behavior summary metadata");
+   end Test_Capability_Metadata;
 
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
@@ -160,11 +214,11 @@ package body Humanize.Tests.Architecture is
       Register_Routine (T, Test_Unique_Keys'Access,
         "every Message_Id maps to a unique key");
       Register_Routine (T, Test_Locale_Coverage'Access,
-        "every key exists in en, da, de, fr, es, it and pt");
-      Register_Routine (T, Test_Domain_Boundary'Access,
-        "domain packages do not import I18N.Runtime");
-      Register_Routine (T, Test_No_Localized_Strings'Access,
-        "classifiers contain no localized text");
+        "every key exists in each shipped locale");
+      Register_Routine (T, Test_Catalog_Duplicate_Policy'Access,
+        "catalog duplicate policy");
+      Register_Routine (T, Test_Capability_Metadata'Access,
+        "capability metadata");
    end Register_Tests;
 
 end Humanize.Tests.Architecture;

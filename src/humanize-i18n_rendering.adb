@@ -4,8 +4,6 @@ with I18N.Arguments;
 with I18N.Result;
 with I18N.Runtime;
 
-with Humanize.Number_Formatting;
-
 package body Humanize.I18N_Rendering is
 
    use Ada.Strings.Unbounded;
@@ -48,14 +46,15 @@ package body Humanize.I18N_Rendering is
       return Text;
    end Image;
 
-   --  Populate the i18n argument map from a selection. Count selections set both
-   --  "count" (the raw integer, for plural/ordinal selection) and "value" (the
-   --  locale-grouped count, displayed by the catalog via {value}).
+   --  Populate the i18n argument map from a selection. Numeric values are kept
+   --  as strict locale-neutral decimals; catalog messages choose any display
+   --  formatting through public i18n number placeholders.
    procedure Apply_Arguments
      (Args      : in out I18N.Arguments.Arguments;
       Selection : Humanize.Selections.Message_Selection;
       Locale    : String)
    is
+      pragma Unreferenced (Locale);
    begin
       case Selection.Arguments is
          when Humanize.Selections.No_Arguments =>
@@ -64,24 +63,20 @@ package body Humanize.I18N_Rendering is
             I18N.Arguments.Set_Integer
               (Args, "count", Long_Long_Integer (Selection.Count));
             I18N.Arguments.Set
-              (Args, "value",
-               Humanize.Number_Formatting.Localize
-                 (Image (Long_Long_Integer (Selection.Count)),
-                  Humanize.Number_Formatting.Symbols_For (Locale)));
+              (Args, "value", Image (Long_Long_Integer (Selection.Count)));
          when Humanize.Selections.Value_Argument =>
             I18N.Arguments.Set (Args, "value", To_String (Selection.Value));
+         when Humanize.Selections.Value_Suffix_Argument =>
+            I18N.Arguments.Set (Args, "value", To_String (Selection.Value));
+            I18N.Arguments.Set (Args, "suffix", To_String (Selection.Suffix));
          when Humanize.Selections.Decimal_Argument =>
-            --  ASCII decimal selects the plural category ("count"); its locale
-            --  form is the displayed "value".
+            --  ASCII decimal selects the plural category ("count") and is also
+            --  passed to catalog-side number formatting as "value".
             declare
                Ascii : constant String := To_String (Selection.Value);
             begin
                I18N.Arguments.Set (Args, "count", Ascii);
-               I18N.Arguments.Set
-                 (Args, "value",
-                  Humanize.Number_Formatting.Localize
-                    (Ascii,
-                     Humanize.Number_Formatting.Symbols_For (Locale)));
+               I18N.Arguments.Set (Args, "value", Ascii);
             end;
       end case;
    end Apply_Arguments;

@@ -28,10 +28,14 @@ package Humanize.Status is
      (Item : Text_Result)
       return Boolean
    is (Item.Status = Ok);
+   --  @param Item Text result to inspect.
+   --  @return True when Item.Status is Ok.
 
    --  Stable textual name for a status code.
    function Status_Image
      (Status : Status_Code)
       return String;
+   --  @param Status Status code to name.
+   --  @return Stable textual name for Status.
 
 end Humanize.Status;

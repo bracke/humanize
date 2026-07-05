@@ -1,17 +1,39 @@
 with AUnit.Assertions;
 
 with Ada.Calendar;
+with Ada.Strings.Unbounded;
 
 with Humanize.Bytes;
+with Humanize.Capabilities;
 with Humanize.Datetimes;
 with Humanize.Durations;
+with Humanize.Parsing;
+with Humanize.Phrases;
 with Humanize.Status;
 with Humanize.Tests.Support;
+with Humanize.Units;
 
 package body Humanize.Tests.Bounded is
 
    use Humanize.Status;
    use Humanize.Durations;
+
+   procedure Assert_Into_Matches
+     (Expected : Humanize.Status.Text_Result;
+      Buffer   : String;
+      Written  : Natural;
+      Code     : Status_Code;
+      Message  : String)
+   is
+      Text : constant String := Ada.Strings.Unbounded.To_String (Expected.Text);
+   begin
+      AUnit.Assertions.Assert
+         (Expected.Status = Ok
+         and then Code = Ok
+         and then Written = Text'Length
+         and then Buffer (Buffer'First .. Buffer'First + Written - 1) = Text,
+         Message & ", status " & Status_Image (Code));
+   end Assert_Into_Matches;
 
    --  600 seconds -> "10 minutes" (10 characters), a stable fixture.
 
@@ -118,6 +140,113 @@ package body Humanize.Tests.Bounded is
          "bytes bounded render, status " & Status_Image (Code));
    end Test_Bytes_Into;
 
+   procedure Test_Bounded_Audit_Coverage
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      Buffer  : String (1 .. 80);
+      Written : Natural;
+      Code    : Status_Code;
+   begin
+      Humanize.Capabilities.Area_Label_Into
+        (Humanize.Capabilities.Parsing_Area, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Capabilities.Area_Label
+           (Humanize.Capabilities.Parsing_Area),
+         Buffer, Written, Code, "capability area bounded");
+
+      Humanize.Capabilities.Rendering_Source_Label_Into
+        (Humanize.Deterministic_Text, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Capabilities.Rendering_Source_Label
+           (Humanize.Deterministic_Text),
+         Buffer, Written, Code, "rendering source bounded");
+
+      Humanize.Parsing.Normalize_Number_Text_Into
+        ("1_234,5", Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Parsing.Normalize_Number_Text ("1_234,5"),
+         Buffer, Written, Code, "normalize number bounded");
+
+      Humanize.Parsing.Normalize_Unit_Text_Into
+        ("KILO-METERS", Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Parsing.Normalize_Unit_Text ("KILO-METERS"),
+         Buffer, Written, Code, "normalize unit bounded");
+
+      Humanize.Parsing.Normalize_List_Text_Into
+        ("a og b", Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Parsing.Normalize_List_Text ("a og b"),
+         Buffer, Written, Code, "normalize list bounded");
+
+      Humanize.Parsing.Diagnostic_Label_Into
+        (Humanize.Parsing.Expected_Unit, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Parsing.Diagnostic_Label (Humanize.Parsing.Expected_Unit),
+         Buffer, Written, Code, "diagnostic label bounded");
+
+      Step_Count_Into (Support.En, 2, 5, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Step_Count (Support.En, 2, 5),
+         Buffer, Written, Code, "step count bounded");
+
+      Progress_Bar_Into (Support.En, 3, 10, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Progress_Bar (Support.En, 3, 10),
+         Buffer, Written, Code, "progress bar bounded");
+
+      Business_Days_Into (Support.En, 3, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Business_Days (Support.En, 3),
+         Buffer, Written, Code, "business days bounded");
+
+      Recurrence_Into (Support.En, 2, Every_Day, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Recurrence (Support.En, 2, Every_Day),
+         Buffer, Written, Code, "recurrence bounded");
+
+      Humanize.Units.Format_Memory_Bandwidth_Into
+        (Support.En, 1_500_000.0, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Units.Format_Memory_Bandwidth (Support.En, 1_500_000.0),
+         Buffer, Written, Code, "memory bandwidth bounded");
+
+      Humanize.Units.Format_Geographic_Distance_Into
+        (Support.En, 1_500.0, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Units.Format_Geographic_Distance (Support.En, 1_500.0),
+         Buffer, Written, Code, "geographic distance bounded");
+
+      Humanize.Phrases.Severity_Label_Into
+        (Humanize.Phrases.Success_Severity, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Phrases.Severity_Label
+           (Humanize.Phrases.Success_Severity),
+         Buffer, Written, Code, "severity label bounded");
+
+      Humanize.Phrases.CI_Phrase_Into
+        (Support.En, Humanize.Phrases.Pipeline_Passed, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Phrases.CI_Phrase
+           (Support.En, Humanize.Phrases.Pipeline_Passed),
+         Buffer, Written, Code, "CI phrase bounded");
+
+      Humanize.Phrases.Ticket_Phrase_Into
+        (Support.En, Humanize.Phrases.Ticket_Open, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Phrases.Ticket_Phrase
+           (Support.En, Humanize.Phrases.Ticket_Open),
+         Buffer, Written, Code, "ticket phrase bounded");
+
+      Humanize.Phrases.Payment_Lifecycle_Phrase_Into
+        (Support.En, Humanize.Phrases.Payment_Captured, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Phrases.Payment_Lifecycle_Phrase
+           (Support.En, Humanize.Phrases.Payment_Captured),
+         Buffer, Written, Code, "payment phrase bounded");
+   end Test_Bounded_Audit_Coverage;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -136,6 +265,8 @@ package body Humanize.Tests.Bounded is
         "non-overflow failure writes nothing");
       Register_Routine (T, Test_Datetime_Into'Access, "datetime bounded");
       Register_Routine (T, Test_Bytes_Into'Access, "bytes bounded");
+      Register_Routine
+        (T, Test_Bounded_Audit_Coverage'Access, "bounded audit coverage");
    end Register_Tests;
 
 end Humanize.Tests.Bounded;

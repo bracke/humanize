@@ -1,0 +1,1588 @@
+V "GNAT Lib v13"
+A -gnat2022
+P SS ZX
+
+RN
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTION_PROPAGATION
+RV NO_EXCEPTIONS
+RV NO_FLOATING_POINT
+RV NO_IMPLICIT_CONDITIONALS
+RV NO_LOCAL_ALLOCATORS
+RV NO_NESTED_FINALIZATION
+RV NO_SECONDARY_STACK
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DEFAULT_INITIALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLICIT_LOOPS
+RV NO_ELABORATION_CODE
+
+U humanize.colors%b	humanize-colors.adb	29d05f29 OO PK
+W ada%s			ada.ads			ada.ali
+W ada.characters%s	a-charac.ads		a-charac.ali
+W ada.characters.handling%s  a-chahan.adb	a-chahan.ali
+Z ada.exceptions%s	a-except.adb		a-except.ali
+W ada.numerics%s	a-numeri.ads		a-numeri.ali
+W ada.numerics.long_elementary_functions%s  a-nlelfu.ads  a-nlelfu.ali
+W ada.strings%s		a-string.ads		a-string.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W ada.strings.unbounded%s  a-strunb.adb		a-strunb.ali
+W humanize%s		humanize.ads		humanize.ali
+W humanize.decimal_images%s  humanize-decimal_images.adb  humanize-decimal_images.ali
+W humanize.messages%s	humanize-messages.adb	humanize-messages.ali
+Z system%s		system.ads		system.ali
+Z system.concat_2%s	s-conca2.adb		s-conca2.ali
+Z system.concat_3%s	s-conca3.adb		s-conca3.ali
+Z system.concat_4%s	s-conca4.adb		s-conca4.ali
+Z system.concat_5%s	s-conca5.adb		s-conca5.ali
+Z system.concat_6%s	s-conca6.adb		s-conca6.ali
+Z system.concat_7%s	s-conca7.adb		s-conca7.ali
+Z system.concat_9%s	s-conca9.adb		s-conca9.ali
+Z system.fat_lflt%s	s-fatlfl.ads		s-fatlfl.ali
+Z system.finalization_masters%s  s-finmas.adb	s-finmas.ali
+Z system.img_int%s	s-imgint.ads		s-imgint.ali
+Z system.return_stack%s	s-retsta.ads		s-retsta.ali
+Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+Z system.standard_library%s  s-stalib.adb	s-stalib.ali
+Z system.storage_elements%s  s-stoele.adb	s-stoele.ali
+Z system.val_lflt%s	s-vallfl.ads		s-vallfl.ali
+
+U humanize.colors%s	humanize-colors.ads	4ffb6e05 EE NE OO PK
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W humanize%s		humanize.ads		humanize.ali
+W humanize.status%s	humanize-status.adb	humanize-status.ali
+
+D ada.ads		20240521074738 76789da1 ada%s
+D a-assert.ads		20240521074737 ba465f5c ada.assertions%s
+D a-charac.ads		20240521074737 2d3ec45b ada.characters%s
+D a-chahan.ads		20240521074737 278246c0 ada.characters.handling%s
+D a-chlat1.ads		20240521074737 e0d72e76 ada.characters.latin_1%s
+D a-except.ads		20240521074738 2a7d8d70 ada.exceptions%s
+D a-finali.ads		20240521074738 bf4f806b ada.finalization%s
+D a-numeri.ads		20240521074738 84bea7a3 ada.numerics%s
+D a-nubinu.ads		20240521074738 93f1f3d1 ada.numerics.big_numbers%s
+D a-nbnbig.ads		20240521074738 711e0174 ada.numerics.big_numbers.big_integers_ghost%s
+D a-ngelfu.ads		20240521074738 58d8ffc8 ada.numerics.generic_elementary_functions%s
+D a-nlelfu.ads		20240521074738 d3157d1f ada.numerics.long_elementary_functions%s
+D a-stream.ads		20240521074738 119b8fb3 ada.streams%s
+D a-string.ads		20240521074738 90ac6797 ada.strings%s
+D a-strmap.ads		20240521074738 ed8acfdb ada.strings.maps%s
+D a-sttebu.ads		20240521074738 f1ad67a2 ada.strings.text_buffers%s
+D a-strunb.ads		20240521074738 7bfb7010 ada.strings.unbounded%s
+D a-stuten.ads		20240521074738 c6ced0ae ada.strings.utf_encoding%s
+D a-tags.ads		20240521074738 9eaa38c6 ada.tags%s
+D a-unccon.ads		20240521074738 0e9b276f ada.unchecked_conversion%s
+D humanize.ads		20260703193357 ae4af322 humanize%s
+D humanize-colors.ads	20260704210301 bce9a54b humanize.colors%s
+D humanize-colors.adb	20260704210624 5abecda0 humanize.colors%b
+D humanize-decimal_images.ads  20260702210132 058f2866 humanize.decimal_images%s
+D humanize-messages.ads	20260704135231 c1daf3c8 humanize.messages%s
+D humanize-status.ads	20260704135231 5d58386c humanize.status%s
+D interfac.ads		20240521074738 15f799c2 interfaces%s
+D system.ads		20240521074738 426dafb8 system%s
+D s-assert.ads		20240521074738 9c4520c7 system.assertions%s
+D s-atocou.ads		20240521074738 dc18efc3 system.atomic_counters%s
+D s-casuti.ads		20240521074738 cf13d755 system.case_util%s
+D s-conca2.ads		20240521074738 b5fb73f7 system.concat_2%s
+D s-conca3.ads		20240521074738 8a7a19a2 system.concat_3%s
+D s-conca4.ads		20240521074738 33f85f3e system.concat_4%s
+D s-conca5.ads		20240521074738 4099d1db system.concat_5%s
+D s-conca6.ads		20240521074738 8252f108 system.concat_6%s
+D s-conca7.ads		20240521074738 09fd419f system.concat_7%s
+D s-conca9.ads		20240521074738 54efc86b system.concat_9%s
+D s-exctab.ads		20240521074738 91bef6ef system.exception_table%s
+D s-fatgen.ads		20240521074738 d28c6cfe system.fat_gen%s
+D s-fatlfl.ads		20240521074738 378cba9f system.fat_lflt%s
+D s-finmas.ads		20240521074738 bd688734 system.finalization_masters%s
+D s-finroo.ads		20240521074738 4ff27390 system.finalization_root%s
+D s-imagei.ads		20240521074738 c707dfd0 system.image_i%s
+D s-imgint.ads		20240521074738 d4a52a9b system.img_int%s
+D s-memory.ads		20240521074738 5b8432d0 system.memory%s
+D s-parame.ads		20251218205951 1f39ba92 system.parameters%s
+D s-powlfl.ads		20240521074738 ac0852c8 system.powten_lflt%s
+D s-putima.ads		20240521074738 17291fe4 system.put_images%s
+D s-retsta.ads		20240521074738 0f6b06cb system.return_stack%s
+D s-secsta.ads		20240521074738 578279f5 system.secondary_stack%s
+D s-soflin.ads		20240521074738 df77073e system.soft_links%s
+D s-stache.ads		20240521074738 0b81c1fe system.stack_checking%s
+D s-stalib.ads		20240521074738 1c9580f6 system.standard_library%s
+D s-stalib.adb		20240521074738 eb464a47 system.standard_library%b
+D s-stoele.ads		20240521074738 ab5468e4 system.storage_elements%s
+D s-stoele.adb		20240521074738 8f5a9db6 system.storage_elements%b
+D s-stopoo.ads		20240521074738 e9fa2dd8 system.storage_pools%s
+D s-stratt.ads		20240521074738 f7dfd786 system.stream_attributes%s
+D s-traent.ads		20240521074738 c81cbf8c system.traceback_entries%s
+D s-unstyp.ads		20240521074738 fa2a7f59 system.unsigned_types%s
+D s-valint.ads		20240521074738 1f610d7a system.val_int%s
+D s-vallfl.ads		20240521074738 944236a7 system.val_lflt%s
+D s-valrea.ads		20240521074738 f0598c00 system.val_real%s
+D s-valuns.ads		20240521074738 e8a1f424 system.val_uns%s
+D s-valuti.ads		20240521074738 fcd603d8 system.val_util%s
+D s-valuei.ads		20240521074738 11081e09 system.value_i%s
+D s-vaispe.ads		20240521074738 44130d39 system.value_i_spec%s
+D s-valueu.ads		20240521074738 18770347 system.value_u%s
+D s-vauspe.ads		20240521074738 a67b2f28 system.value_u_spec%s
+D s-widuns.ads		20240521074738 866a5800 system.wid_uns%s
+D s-widthu.ads		20240521074738 b32f15e2 system.width_u%s
+G a e
+G c Z s b [parse_hex_color humanize__colors 57 13 none]
+G c Z s b [parse_named_color humanize__colors 65 13 none]
+G c Z s b [parse_css_color humanize__colors 73 13 none]
+G c Z s b [hex_color humanize__colors 82 13 none]
+G c Z s b [hex_color humanize__colors 92 13 none]
+G c Z s b [rgb_label humanize__colors 106 13 none]
+G c Z s b [rgba_label humanize__colors 112 13 none]
+G c Z s b [css_color_label humanize__colors 120 13 none]
+G c Z s b [hsl humanize__colors 126 13 none]
+G c Z s b [hsv humanize__colors 132 13 none]
+G c Z s b [hsl_label humanize__colors 138 13 none]
+G c Z s b [hsv_label humanize__colors 144 13 none]
+G c Z s b [lab humanize__colors 150 13 none]
+G c Z s b [oklab humanize__colors 156 13 none]
+G c Z s b [hue_family_label humanize__colors 162 13 none]
+G c Z s b [saturation_label humanize__colors 168 13 none]
+G c Z s b [temperature_label humanize__colors 174 13 none]
+G c Z s b [chroma_label humanize__colors 180 13 none]
+G c Z s b [color_description humanize__colors 186 13 none]
+G c Z s b [nearest_color_name humanize__colors 192 13 none]
+G c Z s b [palette_summary humanize__colors 198 13 none]
+G c Z s b [palette_roles humanize__colors 204 13 none]
+G c Z s b [palette_harmony_label humanize__colors 210 13 none]
+G c Z s b [palette_contrast_suggestion humanize__colors 216 13 none]
+G c Z s b [palette_accessibility_label humanize__colors 222 13 none]
+G c Z s b [palette_contrast_matrix_label humanize__colors 228 13 none]
+G c Z s b [palette_mood_label humanize__colors 234 13 none]
+G c Z s b [advanced_palette_summary humanize__colors 240 13 none]
+G c Z s b [color_summary humanize__colors 246 13 none]
+G c Z s b [brightness humanize__colors 252 13 none]
+G c Z s b [brightness_label humanize__colors 258 13 none]
+G c Z s b [opacity_label humanize__colors 264 13 none]
+G c Z s b [relative_luminance humanize__colors 270 13 none]
+G c Z s b [contrast_ratio humanize__colors 276 13 none]
+G c Z s b [contrast_level_for humanize__colors 284 13 none]
+G c Z s b [contrast_label humanize__colors 290 13 none]
+G c Z s b [readability_label humanize__colors 298 13 none]
+G c Z s b [apca_contrast humanize__colors 306 13 none]
+G c Z s b [apca_contrast_label humanize__colors 314 13 none]
+G c Z s b [color_vision_deficiency_label humanize__colors 322 13 none]
+G c Z s b [color_accessibility_summary humanize__colors 332 13 none]
+G c Z s b [color_difference humanize__colors 340 13 none]
+G c Z s b [color_difference_label humanize__colors 348 13 none]
+G c Z s b [perceptual_difference humanize__colors 356 13 none]
+G c Z s b [ok_perceptual_difference humanize__colors 364 13 none]
+G c Z s b [perceptual_difference_label humanize__colors 372 13 none]
+G c Z s b [hex_color_into humanize__colors 380 14 none]
+G c Z s b [rgb_label_into humanize__colors 394 14 none]
+G c Z s b [rgba_label_into humanize__colors 404 14 none]
+G c Z s b [css_color_label_into humanize__colors 416 14 none]
+G c Z s b [hsl_label_into humanize__colors 426 14 none]
+G c Z s b [hsv_label_into humanize__colors 436 14 none]
+G c Z s b [hue_family_label_into humanize__colors 446 14 none]
+G c Z s b [saturation_label_into humanize__colors 456 14 none]
+G c Z s b [temperature_label_into humanize__colors 466 14 none]
+G c Z s b [chroma_label_into humanize__colors 476 14 none]
+G c Z s b [color_description_into humanize__colors 486 14 none]
+G c Z s b [nearest_color_name_into humanize__colors 496 14 none]
+G c Z s b [palette_summary_into humanize__colors 506 14 none]
+G c Z s b [palette_roles_into humanize__colors 516 14 none]
+G c Z s b [palette_harmony_label_into humanize__colors 526 14 none]
+G c Z s b [palette_contrast_suggestion_into humanize__colors 536 14 none]
+G c Z s b [palette_accessibility_label_into humanize__colors 546 14 none]
+G c Z s b [palette_contrast_matrix_label_into humanize__colors 556 14 none]
+G c Z s b [palette_mood_label_into humanize__colors 566 14 none]
+G c Z s b [advanced_palette_summary_into humanize__colors 576 14 none]
+G c Z s b [color_summary_into humanize__colors 586 14 none]
+G c Z s b [brightness_label_into humanize__colors 596 14 none]
+G c Z s b [opacity_label_into humanize__colors 606 14 none]
+G c Z s b [contrast_label_into humanize__colors 616 14 none]
+G c Z s b [readability_label_into humanize__colors 628 14 none]
+G c Z s b [apca_contrast_label_into humanize__colors 640 14 none]
+G c Z s b [color_vision_deficiency_label_into humanize__colors 652 14 none]
+G c Z s b [color_accessibility_summary_into humanize__colors 666 14 none]
+G c Z s b [color_difference_label_into humanize__colors 678 14 none]
+G c Z s b [perceptual_difference_label_into humanize__colors 690 14 none]
+G c Z s s [rgb_colorIP humanize__colors 6 9 none]
+G c Z s s [css_colorIP humanize__colors 12 9 none]
+G c Z s s [hsl_colorIP humanize__colors 19 9 none]
+G c Z s s [hsv_colorIP humanize__colors 25 9 none]
+G c Z s s [lab_colorIP humanize__colors 31 9 none]
+G c Z s s [oklab_colorIP humanize__colors 37 9 none]
+G c Z s s [color_listIP humanize__colors 43 9 none]
+G c Z b b [ok_text humanize__colors 12 13 none]
+G c Z b b [copy_text humanize__colors 20 14 none]
+G c Z b b [copy_result humanize__colors 46 14 none]
+G c Z b b [natural_text humanize__colors 61 13 none]
+G c Z b b [lower humanize__colors 67 13 none]
+G c Z b b [trim humanize__colors 72 13 none]
+G c Z b b [starts_with humanize__colors 92 13 none]
+G c Z b b [ends_with humanize__colors 96 13 none]
+G c Z b b [is_space humanize__colors 100 13 none]
+G c Z b b [clamp01 humanize__colors 104 13 none]
+G c Z b b [channel_from_float humanize__colors 115 13 none]
+G c Z b b [channel_from_linear humanize__colors 127 13 none]
+G c Z b b [linear_from_srgb_component humanize__colors 140 13 none]
+G c Z b b [linear_from_rec2020_component humanize__colors 151 13 none]
+G c Z b b [float_text humanize__colors 164 13 none]
+G c Z b b [hex_digit humanize__colors 173 13 none]
+G c Z b b [hex_value humanize__colors 184 13 none]
+G c Z b b [parse_css_hex_color humanize__colors 271 13 none]
+G c Z b b [named_colorIP humanize__colors 364 9 none]
+G c Z b b [extended_named_colorDI humanize__colors 408 9 none]
+G c Z b b [extended_named_colorDA humanize__colors 408 9 none]
+G c Z b b [extended_named_colorDF humanize__colors 408 9 none]
+G c Z b b [extended_named_colorIP humanize__colors 408 9 none]
+G c Z b b [Tcss_named_colorsT177bDI humanize__colors 413 4 none]
+G c Z b b [Tcss_named_colorsT177bDA humanize__colors 413 4 none]
+G c Z b b [Tcss_named_colorsT177bDF humanize__colors 413 4 none]
+G c Z b b [Ttoken_listBIP humanize__colors 585 4 none]
+G c Z b b [Ttoken_listBDI humanize__colors 585 4 none]
+G c Z b b [Ttoken_listBDA humanize__colors 585 4 none]
+G c Z b b [Ttoken_listBDF humanize__colors 585 4 none]
+G c Z b b [parse_component_list humanize__colors 587 13 none]
+G c Z b b [parse_modern_component_list humanize__colors 635 13 none]
+G c Z b b [parse_float humanize__colors 723 13 none]
+G c Z b b [parse_calc humanize__colors 733 13 none]
+G c Z b b [parse_rgb_channel humanize__colors 880 13 none]
+G c Z b b [parse_alpha humanize__colors 930 13 none]
+G c Z b b [parse_hue humanize__colors 972 13 none]
+G c Z b b [parse_percent_or_number humanize__colors 1027 13 none]
+G c Z b b [hue_to_rgb humanize__colors 1058 13 none]
+G c Z b b [hsl_to_rgb humanize__colors 1083 13 none]
+G c Z b b [hwb_to_rgb humanize__colors 1124 13 none]
+G c Z b b [lab_to_rgb humanize__colors 1152 13 none]
+G c Z b b [lch_to_rgb humanize__colors 1198 13 none]
+G c Z b b [oklab_to_rgb humanize__colors 1213 13 none]
+G c Z b b [oklch_to_rgb humanize__colors 1238 13 none]
+G c Z b b [xyz_d65_to_rgb humanize__colors 1253 13 none]
+G c Z b b [xyz_d50_to_rgb humanize__colors 1272 13 none]
+G c Z b b [display_p3_to_rgb humanize__colors 1288 13 none]
+G c Z b b [rec2020_to_rgb humanize__colors 1307 13 none]
+G c Z b b [parse_percent_unit humanize__colors 1326 13 none]
+G c Z b b [parse_function_color humanize__colors 1359 13 none]
+G c Z b b [hex_channel humanize__colors 1662 13 none]
+G c Z b b [round_percent humanize__colors 1796 13 none]
+G c Z b b [distance_squared humanize__colors 1825 13 none]
+G c Z b b [invalid_text humanize__colors 1891 13 none]
+G c Z b b [hex_text humanize__colors 1896 13 none]
+G c Z b b [hue_distance humanize__colors 1901 13 none]
+G c Z b b [linear_rgb_to_xyz_d65 humanize__colors 2245 13 none]
+G c Z b b [clamped_opacity humanize__colors 2432 13 none]
+G c Z b b [linear_channel humanize__colors 2460 13 none]
+G c Z b b [ratio_text humanize__colors 2510 13 none]
+G c Z b b [contrast_level_label humanize__colors 2515 13 none]
+G c Z b b [apca_strength_label humanize__colors 2573 13 none]
+G c Z b b [simulated_cvd humanize__colors 2604 13 none]
+G c Z b b [deficiency_name humanize__colors 2639 13 none]
+G c Z b b [cvd_risk_label humanize__colors 2656 13 none]
+G c Z b b [worst_cvd_risk humanize__colors 2686 13 none]
+G r j text_result [hex_color humanize__colors 82 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [hex_color humanize__colors 92 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [rgb_label humanize__colors 106 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [rgba_label humanize__colors 112 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [rgba_label humanize__colors 112 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [css_color_label humanize__colors 120 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [css_color_label humanize__colors 120 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r c none [hsl_label humanize__colors 138 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [hsl_label humanize__colors 138 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [hsv_label humanize__colors 144 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [hsv_label humanize__colors 144 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [hue_family_label humanize__colors 162 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [saturation_label humanize__colors 168 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [temperature_label humanize__colors 174 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [chroma_label humanize__colors 180 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [color_description humanize__colors 186 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [nearest_color_name humanize__colors 192 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [palette_summary humanize__colors 198 13 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [palette_summary humanize__colors 198 13 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [palette_roles humanize__colors 204 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [palette_harmony_label humanize__colors 210 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [palette_contrast_suggestion humanize__colors 216 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [palette_contrast_suggestion humanize__colors 216 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [palette_accessibility_label humanize__colors 222 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [palette_contrast_matrix_label humanize__colors 228 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [palette_mood_label humanize__colors 234 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [advanced_palette_summary humanize__colors 240 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [color_summary humanize__colors 246 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [brightness_label humanize__colors 258 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [opacity_label humanize__colors 264 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [opacity_label humanize__colors 264 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [contrast_label humanize__colors 290 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [contrast_label humanize__colors 290 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [readability_label humanize__colors 298 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [apca_contrast_label humanize__colors 314 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [apca_contrast_label humanize__colors 314 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [color_vision_deficiency_label humanize__colors 322 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [color_vision_deficiency_label humanize__colors 322 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [color_accessibility_summary humanize__colors 332 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [color_accessibility_summary humanize__colors 332 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [color_difference_label humanize__colors 348 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [color_difference_label humanize__colors 348 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [perceptual_difference_label humanize__colors 372 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [perceptual_difference_label humanize__colors 372 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [hex_color_into humanize__colors 380 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [hex_color_into humanize__colors 380 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [rgb_label_into humanize__colors 394 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [rgb_label_into humanize__colors 394 14 none] [text_resultDF humanize__status 21 9 none]
+G r c none [rgba_label_into humanize__colors 404 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [rgba_label_into humanize__colors 404 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [rgba_label_into humanize__colors 404 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [css_color_label_into humanize__colors 416 14 none] [text_resultDA humanize__status 21 9 none]
+G r c none [css_color_label_into humanize__colors 416 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r k text_result [css_color_label_into humanize__colors 416 14 none] [text_resultDF humanize__status 21 9 none]
+G r c none [hsl_label_into humanize__colors 426 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [hsl_label_into humanize__colors 426 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [hsl_label_into humanize__colors 426 14 none] [text_resultDF humanize__status 21 9 none]
+G r c none [hsv_label_into humanize__colors 436 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [hsv_label_into humanize__colors 436 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [hsv_label_into humanize__colors 436 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [hue_family_label_into humanize__colors 446 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [hue_family_label_into humanize__colors 446 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [saturation_label_into humanize__colors 456 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [saturation_label_into humanize__colors 456 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [temperature_label_into humanize__colors 466 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [temperature_label_into humanize__colors 466 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [chroma_label_into humanize__colors 476 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [chroma_label_into humanize__colors 476 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [color_description_into humanize__colors 486 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [color_description_into humanize__colors 486 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [nearest_color_name_into humanize__colors 496 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [nearest_color_name_into humanize__colors 496 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [palette_summary_into humanize__colors 506 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [palette_summary_into humanize__colors 506 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [palette_roles_into humanize__colors 516 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [palette_roles_into humanize__colors 516 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [palette_harmony_label_into humanize__colors 526 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [palette_harmony_label_into humanize__colors 526 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [palette_contrast_suggestion_into humanize__colors 536 14 none] [text_resultDA humanize__status 21 9 none]
+G r c none [palette_contrast_suggestion_into humanize__colors 536 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r k text_result [palette_contrast_suggestion_into humanize__colors 536 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [palette_accessibility_label_into humanize__colors 546 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [palette_accessibility_label_into humanize__colors 546 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [palette_contrast_matrix_label_into humanize__colors 556 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [palette_contrast_matrix_label_into humanize__colors 556 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [palette_mood_label_into humanize__colors 566 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [palette_mood_label_into humanize__colors 566 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [advanced_palette_summary_into humanize__colors 576 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [advanced_palette_summary_into humanize__colors 576 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [color_summary_into humanize__colors 586 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [color_summary_into humanize__colors 586 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [brightness_label_into humanize__colors 596 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [brightness_label_into humanize__colors 596 14 none] [text_resultDF humanize__status 21 9 none]
+G r c none [opacity_label_into humanize__colors 606 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [opacity_label_into humanize__colors 606 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [opacity_label_into humanize__colors 606 14 none] [text_resultDF humanize__status 21 9 none]
+G r c none [contrast_label_into humanize__colors 616 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [contrast_label_into humanize__colors 616 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [contrast_label_into humanize__colors 616 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [readability_label_into humanize__colors 628 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [readability_label_into humanize__colors 628 14 none] [text_resultDF humanize__status 21 9 none]
+G r c none [apca_contrast_label_into humanize__colors 640 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [apca_contrast_label_into humanize__colors 640 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [apca_contrast_label_into humanize__colors 640 14 none] [text_resultDF humanize__status 21 9 none]
+G r c none [color_vision_deficiency_label_into humanize__colors 652 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [color_vision_deficiency_label_into humanize__colors 652 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [color_vision_deficiency_label_into humanize__colors 652 14 none] [text_resultDF humanize__status 21 9 none]
+G r c none [color_accessibility_summary_into humanize__colors 666 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [color_accessibility_summary_into humanize__colors 666 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [color_accessibility_summary_into humanize__colors 666 14 none] [text_resultDF humanize__status 21 9 none]
+G r c none [color_difference_label_into humanize__colors 678 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [color_difference_label_into humanize__colors 678 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [color_difference_label_into humanize__colors 678 14 none] [text_resultDF humanize__status 21 9 none]
+G r c none [perceptual_difference_label_into humanize__colors 690 14 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [perceptual_difference_label_into humanize__colors 690 14 none] [text_resultDA humanize__status 21 9 none]
+G r k text_result [perceptual_difference_label_into humanize__colors 690 14 none] [text_resultDF humanize__status 21 9 none]
+G r j text_result [ok_text humanize__colors 12 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [float_text humanize__colors 164 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r c none [round_percent humanize__colors 1796 13 none] [decimal_image humanize__decimal_images 7 13 none]
+G r j text_result [invalid_text humanize__colors 1891 13 none] [text_resultDA humanize__status 21 9 none]
+G r j text_result [hex_text humanize__colors 1896 13 none] [text_resultDA humanize__status 21 9 none]
+G r c none [ratio_text humanize__colors 2510 13 none] [decimal_image humanize__decimal_images 7 13 none]
+X 1 ada.ads
+16K9*Ada 20e8 23|1r6 2r6 3r6 4r6 4r33 69r14 128r11 141r11 152r11 1003r31
+. 1158r11 1204r11 1205r46 1244r11 1245r46 2263r11 2303r11 2402r9 2466r17
+. 2564r11 2731r11 2764r11 2779r11
+X 3 a-charac.ads
+16K13*Characters 18e19 23|3r10 69r18
+X 4 a-chahan.ads
+43K24*Handling 455e28 23|3w21 69r29
+275V13*To_Lower{string} 23|69s38
+X 8 a-numeri.ads
+16K13*Numerics 35e17 23|1w10 2r10 128r15 141r15 152r15 1003r35 1158r15 1204r15
+. 1205r50 1244r15 1245r50 2263r15 2303r15 2402r13 2466r21 2564r15 2731r15
+. 2764r15 2779r15
+21N4*Pi 23|1003r44 1205r59 1245r59
+X 11 a-ngelfu.ads
+53V13*Sqrt{long_float} 23|2402s48[12|18] 2739s14[12|18] 2739s51[12|18] 2771s14[12|18]
+. 2786s14[12|18]
+87V14*"**"{long_float} 23|135s25[12|18] 147s18[12|18] 160s18[12|18] 2283s21[12|18]
+. 2316s36[12|18] 2317s36[12|18] 2318s36[12|18] 2466s57[12|18] 2567s36[12|18]
+. 2568s36[12|18]
+95V13*Sin{long_float} 23|1210s19[12|18] 1250s19[12|18]
+105V13*Cos{long_float} 23|1209s19[12|18] 1249s19[12|18]
+X 12 a-nlelfu.ads
+18K22*Long_Elementary_Functions[11|39] 23|2w19 128r24 141r24 152r24 1158r24
+. 1204r24 1244r24 2263r24 2303r24 2402r22 2466r30 2564r24 2731r24 2764r24
+. 2779r24
+X 14 a-string.ads
+16K13*Strings 35e16 23|4r10 4r37
+X 17 a-strunb.ads
+85K21*Unbounded 766e26 23|4w18 4r45
+91R9*Unbounded_String<7|43R9> 745e15 23|409r15 585r56 2138r24 2139r24 2140r24
+95r4*Null_Unbounded_String{91R9} 23|596r28 665r28
+97V13*Length{natural} 23|628s13
+108V13*To_Unbounded_String{91R9} 23|16s20 414s8 415s8 416s8 417s8 418s8 419s8
+. 420s8 421s8 422s8 423s8 424s8 425s8 426s8 427s8 428s8 429s8 430s8 431s8
+. 432s8 433s8 434s8 435s8 436s8 437s8 438s8 439s8 440s8 441s8 442s8 443s8
+. 444s8 445s8 446s8 447s8 448s8 449s8 450s8 451s8 452s8 453s8 454s8 455s8
+. 456s8 457s8 458s8 459s8 460s8 461s8 462s8 463s8 464s8 465s8 466s8 467s8
+. 468s8 469s8 470s8 471s8 472s8 473s8 474s8 475s8 476s8 477s8 478s8 479s8
+. 480s8 481s8 482s8 483s8 484s8 485s8 486s8 487s8 488s8 489s8 490s8 491s8
+. 492s8 493s8 494s8 495s8 496s8 497s8 498s8 499s8 500s8 501s8 502s8 503s8
+. 504s8 505s8 506s8 507s8 508s8 509s8 510s8 511s8 512s8 513s8 514s8 515s8
+. 516s8 517s8 518s8 519s8 520s8 521s8 522s8 523s8 524s8 525s8 526s8 527s8
+. 528s8 529s8 530s8 531s8 532s8 533s8 534s8 535s8 536s8 537s8 538s8 539s8
+. 540s8 541s8 542s8 543s8 544s8 545s8 546s8 547s8 548s8 549s8 550s8 551s8
+. 552s8 553s8 554s8 555s8 556s8 557s8 558s8 559s8 560s8 561s8 612s31 625s25
+. 659s28 2161s15 2165s17 2169s22
+121V13*To_String{string} 23|57s21 576s20 1426s48 1428s18 1430s18 1435s41
+. 1440s45 1497s42 1498s46 1499s46 1504s41 1522s34 1524s18 1526s18 1531s41
+. 1546s34 1548s18 1550s18 1555s41 1571s18 1574s18 1577s18 1583s41 1602s18
+. 1605s18 1607s38 1612s41 1878s36 1898s14 2175s10 2175s36 2176s12 2201s10
+. 2201s44 2202s12 2202s52 2211s10 2212s12 2425s10 2426s12 2427s12 2428s12
+. 2429s12 2722s10 2722s41
+X 21 humanize.ads
+7K9*Humanize 15e13 22|1r6 3r9 60r14 68r14 76r14 86r14 98r14 108r14 115r14
+. 122r14 140r14 146r14 164r14 170r14 176r14 182r14 188r14 194r14 200r14 206r14
+. 212r14 218r14 224r14 230r14 236r14 242r14 248r14 260r14 266r14 293r14 301r14
+. 317r14 326r14 335r14 351r14 375r14 384r23 398r21 409r21 420r21 430r21 440r21
+. 450r21 460r21 470r21 480r21 490r21 500r21 510r21 520r21 530r21 540r21 550r21
+. 560r21 570r21 580r21 590r21 600r21 610r21 621r24 633r24 645r24 658r24 671r24
+. 683r21 695r21 701r5 23|6r6 7r6 9r14 10r13 12r44 15r20 17r20 24r21 29r20
+. 36r20 42r20 47r17 50r21 53r27 170r14 204r14 228r17 234r17 238r20 243r20
+. 248r20 251r17 259r23 264r20 267r17 566r14 572r17 578r20 582r14 1634r14
+. 1645r17 1647r17 1648r45 1654r17 1656r17 1658r17 1677r14 1693r14 1702r14
+. 1714r14 1726r14 1803r14 1815r14 1835r14 1853r14 1862r28 1891r33 1893r25
+. 1912r14 1954r14 2018r14 2043r12 2049r14 2088r14 2131r14 2181r14 2183r26
+. 2185r23 2186r32 2188r24 2190r28 2192r28 2194r37 2196r29 2207r14 2228r14
+. 2331r14 2361r14 2380r14 2398r14 2421r14 2445r14 2449r9 2512r14 2532r14
+. 2544r14 2591r14 2600r18 2673r14 2683r12 2714r14 2716r23 2718r23 2746r14
+. 2792r14 2810r23 2823r21 2834r21 2844r21 2854r21 2864r21 2874r21 2884r21
+. 2894r21 2904r21 2914r21 2924r21 2934r21 2944r21 2954r21 2964r21 2975r21
+. 2986r21 2997r21 3007r21 3017r21 3027r21 3037r21 3048r24 3060r24 3072r24
+. 3085r24 3098r24 3111r21 3123r21 3130r5
+X 22 humanize-colors.ads
+3K18*Colors 21|7k9 22|701l14 701e20 23|9b23 3130l14 3130t20
+4I12*Color_Channel{natural} 7r15 8r15 9r15 93r17 94r17 95r17 23|115r60 123r17
+. 127r61 882r19 1137r29 1368r21 1369r21 1370r21 1663r19 1688r19 1689r19 1690r19
+. 2460r39 2631r29
+6R9*RGB_Color 10e14 13r21 43r52 59r19 67r19 83r17 107r15 113r17 127r15 133r15
+. 139r15 145r15 151r15 157r15 163r15 169r15 175r15 181r15 187r15 193r15 247r15
+. 253r15 259r15 271r15 277r20 278r20 291r20 292r20 299r20 300r20 307r20 308r20
+. 315r20 316r20 323r20 324r20 333r20 334r20 341r15 342r15 349r15 350r15 357r15
+. 358r15 365r15 366r15 373r15 374r15 381r19 395r17 405r17 427r17 437r17 447r17
+. 457r17 467r17 477r17 487r17 497r17 587r17 597r17 617r20 618r20 629r20 630r20
+. 641r20 642r20 653r20 654r20 667r20 668r20 679r17 680r17 691r17 692r17 23|203r19
+. 366r15 410r15 565r19 1087r14 1128r14 1132r23 1156r14 1202r14 1217r14 1242r14
+. 1257r14 1276r14 1292r14 1311r14 1636r13 1674r19 1701r15 1712r17 1739r15
+. 1769r15 1802r15 1814r15 1825r45 1834r15 1874r29 1896r31 2206r15 2216r15
+. 2227r15 2245r44 2260r15 2300r15 2330r15 2360r15 2379r15 2397r15 2420r15
+. 2472r15 2482r20 2483r20 2530r20 2531r20 2542r20 2543r20 2560r20 2561r20
+. 2589r20 2590r20 2605r20 2607r14 2670r20 2671r20 2675r28 2676r28 2687r20
+. 2688r20 2712r20 2713r20 2727r15 2728r15 2744r15 2745r15 2760r15 2761r15
+. 2775r15 2776r15 2790r15 2791r15 2807r19 2820r17 2830r17 2851r17 2861r17
+. 2871r17 2881r17 2891r17 2901r17 2911r17 2921r17 3014r17 3024r17 3044r20
+. 3045r20 3056r20 3057r20 3068r20 3069r20 3080r20 3081r20 3094r20 3095r20
+. 3107r17 3108r17 3119r17 3120r17
+7i7*Red{4I12} 23|240m16 261m19 357m11 1119m10 1139m21 1144m10 1145r31 1193m10
+. 1233m10 1267m10 1445m25 1454m25 1509m32 1682r33 1696m26 1706r39 1718r40
+. 1742r52 1772r52 1826r46 1826r68 1866r33 1875m13 2221r36 2247r28 2305r28
+. 2476r45 2609r52 2616m16 2621m16 2626m16 2732r61 2733r26
+8i7*Green{4I12} 23|245m16 262m19 357m21 1120m10 1139m34 1146m10 1147r31 1194m10
+. 1234m10 1268m10 1446m25 1455m25 1509m44 1683r31 1696m38 1707r32 1719r32
+. 1743r52 1773r52 1827r46 1827r70 1867r33 1876m13 2222r38 2249r28 2307r28
+. 2477r42 2610r52 2617m16 2622m16 2627m16 2734r61 2735r26
+9i7*Blue{4I12} 23|250m16 263m19 357m33 1121m10 1139m49 1148m10 1149r31 1195m10
+. 1235m10 1269m10 1447m25 1456m25 1509m60 1684r31 1696m54 1708r32 1720r32
+. 1744r52 1774r52 1828r46 1828r69 1868r33 1877m13 2223r38 2251r28 2309r28
+. 2478r42 2611r52 2618m16 2623m16 2628m16 2736r61 2737r26
+12R9*CSS_Color 17e14 75r19 121r15 417r17 23|273r19 1361r19 1633r19 1725r15
+. 2841r17
+13r7*Color{6R9} 23|356m10 1444m22 1453m22 1462m22 1468m22 1474m22 1480m22
+. 1509m16 1536m16 1560m16 1588m16 1617m16 1641m13 1650m13 1732r35 1734r34
+14f7*Opacity{long_float} 23|358m10 1448m22 1457m22 1463m22 1469m22 1475m22
+. 1481m22 1510m16 1537m16 1561m16 1592m16 1621m16 1642m13 1651m13 1732r48
+15b7*Has_Opacity{boolean} 23|359m10 1449m22 1458m22 1464m22 1470m22 1476m22
+. 1482m22 1511m16 1538m16 1562m16 1593m16 1622m16 1643m13 1652m13 1731r19
+16b7*Is_Current{boolean} 23|360m10 1450m22 1459m22 1465m22 1471m22 1477m22
+. 1483m22 1512m16 1539m16 1563m16 1594m16 1623m16 1644m13 1653m13 1729r16
+19R9*HSL_Color 23e14 128r14 23|1740r14 1805r24 1962r25 1963r25 2137r24 2333r24
+. 2382r24
+20f7*Hue{long_float} 23|1765m15 1808r37 1974r52 1975r52 1991r44 1991r52 2151r18
+. 2151r39 2153r21 2153r45 2334r44 2383r44
+21f7*Saturation{long_float} 23|1765m27 1809r33 1930r38 1972r16 1987r16 1990r22
+. 2149r47 2150r15 2336r16 2363r50 2385r16
+22f7*Lightness{long_float} 23|1765m46 1810r33 2404r50
+25R9*HSV_Color 29e14 134r14 23|1770r14 1817r24
+26f7*Hue{long_float} 23|1793m15 1820r37
+27f7*Saturation{long_float} 23|1793m27 1821r33
+28f7*Value{long_float} 23|1793m46 1822r33
+31R9*Lab_Color 35e14 152r14 23|2245r62 2261r14 2264r24 2765r20 2766r20
+32f7*Lightness{long_float} 23|2254m10 2266r27 2269r27 2272r27 2294m10 2767r37
+. 2767r51
+33f7*A{long_float} 23|2255m10 2266r57 2269r57 2272r57 2295m10 2768r37 2768r43
+34f7*B{long_float} 23|2256m10 2267r29 2270r29 2273r29 2296m10 2769r37 2769r43
+37R9*OKLab_Color 41e14 158r14 23|2301r14 2400r24 2780r20 2781r20
+38f7*Lightness{long_float} 23|2321m10 2782r37 2782r51
+39f7*A{long_float} 23|2323m10 2403r18 2403r28 2783r37 2783r43
+40f7*B{long_float} 23|2325m10 2403r38 2403r48 2784r37 2784r43
+43A9*Color_List(6R9)<integer> 199r16 205r16 211r16 217r16 223r16 229r16 235r16
+. 241r16 507r17 517r17 527r17 537r17 547r17 557r17 567r17 577r17 23|1852r16
+. 1911r16 1953r16 2017r16 2048r16 2087r16 2130r16 2180r16 2931r17 2941r17
+. 2951r17 2961r17 2972r17 2983r17 2994r17 3004r17
+45E9*Contrast_Level 49e30 286r14 23|2103r33 2496r14 2515r43
+46n7*Contrast_Fail{45E9} 23|2108r24 2506r17 2518r15 2554r15
+47n7*Contrast_Large_Text{45E9} 23|2110r24 2504r17 2520r15 2552r15
+48n7*Contrast_Normal_Text{45E9} 23|2112r24 2502r17 2522r15 2550r15
+49n7*Contrast_Enhanced_Text{45E9} 23|2114r24 2500r17 2524r15 2548r15
+51E9*Color_Vision_Deficiency 55e21 325r20 655r20 23|2606r20 2640r20 2672r20
+. 2692r21 2694r25 3082r20
+52n7*Protanopia{51E9} 23|2614r15 2645r15 2692r48
+53n7*Deuteranopia{51E9} 23|2619r15 2647r15
+54n7*Tritanopia{51E9} 23|2624r15 2649r15
+55n7*Achromatopsia{51E9} 23|2629r15 2651r15
+57V13*Parse_Hex_Color{26|8E9} 58>7 59<7 23|201b13 269l8 269t23
+58a7 Text{string} 23|202b7 206r26 207r35 215r29 219r28 227r10 229r13 236r27
+. 241r27 246r27
+59r7 Color{6R9} 23|203b7 226m7 240m10 245m10 250m10 261m13 262m13 263m13
+65V13*Parse_Named_Color{26|8E9} 66>7 67<7 23|563b13 583l8 583t25 1648s13
+66a7 Text{string} 23|564b7 568r46
+67r7 Color{6R9} 23|565b7 570m7 577m13
+73V13*Parse_CSS_Color{26|8E9} 74>7 75<7 23|1631b13 1660l8 1660t23
+74a7 Text{string} 23|1632b7 1639r23 1646r34 1648r32 1651r45 1652r41 1655r35
+75r7 Color{12R9} 23|1633b7 1638m7 1640m10 1646m40 1646r40 1649m10 1655m41
+. 1655r41
+82V13*Hex_Color{26|21R9} 83>7 84>7 85>7 23|1673b13 1685l8 1685t17 1696s14
+. 1898s25 2211s21 2816s10
+83r7 Color{6R9} 23|1674b7 1682r27 1683r25 1684r25
+84b7 Prefix{boolean} 23|1675b7 1679r34
+85b7 Lowercase{boolean} 23|1676b7 1682r38 1683r38 1684r37
+92V13*Hex_Color{26|21R9} 93>7 94>7 95>7 96>7 97>7 23|1687b13 1698l8 1698t17
+93i7 Red{4I12} 23|1688b7 1696r33
+94i7 Green{4I12} 23|1689b7 1696r47
+95i7 Blue{4I12} 23|1690b7 1696r62
+96b7 Prefix{boolean} 23|1691b7 1697r25
+97b7 Lowercase{boolean} 23|1692b7 1697r33
+106V13*RGB_Label{26|21R9} 107>7 23|1700b13 1709l8 1709t17 1734s17 2212s23
+. 2826s20
+107r7 Color{6R9} 23|1701b7 1706r33 1707r26 1708r26
+112V13*RGBA_Label{26|21R9} 113>7 114>7 23|1711b13 1722l8 1722t18 1732s17
+. 2837s20
+113r7 Color{6R9} 23|1712b7 1718r34 1719r26 1720r26
+114f7 Opacity{long_float} 23|1713b7 1721r33
+120V13*CSS_Color_Label{26|21R9} 121>7 23|1724b13 1736l8 1736t23 2847s20
+121r7 Color{12R9} 23|1725b7 1729r10 1731r13 1732r29 1732r42 1734r28
+126V13*HSL{19R9} 127>7 23|1738b13 1766l8 1766t11 1805s37 1930s17 1971s16
+. 1986s16 1989s22 2147s15 2333s37 2363s38 2382s37 2404s38
+127r7 Color{6R9} 23|1739b7 1742r46 1743r46 1744r46
+132V13*HSV{25R9} 133>7 23|1768b13 1794l8 1794t11 1817s37
+133r7 Color{6R9} 23|1769b7 1772r46 1773r46 1774r46
+138V13*HSL_Label{26|21R9} 139>7 23|1801b13 1811l8 1811t17 2857s20
+139r7 Color{6R9} 23|1802b7 1805r42
+144V13*HSV_Label{26|21R9} 145>7 23|1813b13 1823l8 1823t17 2867s20
+145r7 Color{6R9} 23|1814b7 1817r42
+150V13*Lab{31R9} 151>7 23|2259b13 2297l8 2297t11 2765s33 2766s33
+151r7 Color{6R9} 23|2260b7 2264r60
+156V13*OKLab{37R9} 157>7 23|2299b13 2327l8 2327t13 2400s39 2780s35 2781s35
+157r7 Color{6R9} 23|2300b7 2305r22 2307r22 2309r22
+162V13*Hue_Family_Label{26|21R9} 163>7 23|2329b13 2357l8 2357t24 2427s23
+. 2877s20
+163r7 Color{6R9} 23|2330b7 2333r42
+168V13*Saturation_Label{26|21R9} 169>7 23|2359b13 2376l8 2376t24 2426s23
+. 2887s20
+169r7 Color{6R9} 23|2360b7 2363r43
+174V13*Temperature_Label{26|21R9} 175>7 23|2378b13 2394l8 2394t25 2428s23
+. 2897s20
+175r7 Color{6R9} 23|2379b7 2382r42
+180V13*Chroma_Label{26|21R9} 181>7 23|2396b13 2417l8 2417t20 2429s23 2907s20
+181r7 Color{6R9} 23|2397b7 2400r46 2404r43
+186V13*Color_Description{26|21R9} 187>7 23|2419b13 2430l8 2430t25 2917s20
+187r7 Color{6R9} 23|2420b7 2425r39 2426r41 2427r41 2428r42 2429r37
+192V13*Nearest_Color_Name{26|21R9} 193>7 23|1833b13 1849l8 1849t26 1878s47
+. 2927s20
+193r7 Color{6R9} 23|1834b7 1842r36
+198V13*Palette_Summary{26|21R9} 199>7 23|1851b13 1889l8 1889t23 2937s20
+199a7 Colors{43A9} 23|1852b7 1861r10 1865r20 1875r30 1876r30 1877r30 1886r27
+204V13*Palette_Roles{26|21R9} 205>7 23|1910b13 1950l8 1950t21 2188s55 2947s20
+205a7 Colors{43A9} 23|1911b7 1914r38 1915r38 1916r38 1924r10 1928r20 1929r32
+. 1930r22 1947r36 1948r34 1949r36
+210V13*Palette_Harmony_Label{26|21R9} 211>7 23|1952b13 2014l8 2014t29 2184s9
+. 2957s20
+211a7 Colors{43A9} 23|1953b7 1966r10 1970r20 1985r16 1986r21 1988r31 1989r27
+216V13*Palette_Contrast_Suggestion{26|21R9} 217>7 23|2016b13 2045l8 2045t35
+. 2968s10
+217a7 Colors{43A9} 23|2017b7 2020r32 2021r32 2025r10 2029r16 2030r28 2031r38
+. 2031r50 2041r39 2042r22
+222V13*Palette_Accessibility_Label{26|21R9} 223>7 23|2047b13 2084l8 2084t35
+. 2187s9 2979s10
+223a7 Colors{43A9} 23|2048b7 2056r10 2060r16 2061r28 2063r38 2063r50
+228V13*Palette_Contrast_Matrix_Label{26|21R9} 229>7 23|2086b13 2127l8 2127t37
+. 2990s10
+229a7 Colors{43A9} 23|2087b7 2096r10 2100r16 2101r28 2104r54 2104r66
+234V13*Palette_Mood_Label{26|21R9} 235>7 23|2129b13 2177l8 2177t26 2185s54
+. 3000s20
+235a7 Colors{43A9} 23|2130b7 2142r10 2146r20 2159r54 2160r54
+240V13*Advanced_Palette_Summary{26|21R9} 241>7 23|2179b13 2203l8 2203t32
+. 3010s20
+241a7 Colors{43A9} 23|2180b7 2184r32 2185r74 2187r38 2188r70
+246V13*Color_Summary{26|21R9} 247>7 23|2205b13 2213l8 2213t21 3020s20
+247r7 Color{6R9} 23|2206b7 2211r32 2212r34
+252V13*Brightness{long_float} 253>7 23|1869s42 1870s42 1929s20 2148s45 2215b13
+. 2224l8 2224t18 2230s38
+253r7 Color{6R9} 23|2216b7 2221r30 2222r32 2223r32
+258V13*Brightness_Label{26|21R9} 259>7 23|2226b13 2243l8 2243t24 2425s21
+. 3030s20
+259r7 Color{6R9} 23|2227b7 2230r50
+264V13*Opacity_Label{26|21R9} 265>7 23|2443b13 2458l8 2458t21 3040s20
+265f7 Opacity{long_float} 23|2444b7 2447r57
+270V13*Relative_Luminance{long_float} 271>7 23|2471b13 2479l8 2479t26 2486s34
+. 2487s34 2565s34 2566s34
+271r7 Color{6R9} 23|2472b7 2476r39 2477r36 2478r36
+276V13*Contrast_Ratio{long_float} 277>7 278>7 23|2031s22 2063s22 2104s38
+. 2481b13 2492l8 2492t22 2534s38 2547s32
+277r7 Foreground{6R9} 23|2482b7 2486r54
+278r7 Background{6R9} 23|2483b7 2487r54
+284V13*Contrast_Level_For{45E9} 285>7 23|2104s18 2494b13 2508l8 2508t26 2538s34
+. 2547s12
+285f7 Ratio{long_float} 23|2495b7 2499r10 2501r13 2503r13
+290V13*Contrast_Label{26|21R9} 291>7 292>7 23|2529b13 2539l8 2539t22 2717s9
+. 3052s10
+291r7 Foreground{6R9} 23|2530b7 2534r54
+292r7 Background{6R9} 23|2531b7 2534r66
+298V13*Readability_Label{26|21R9} 299>7 300>7 23|2541b13 2557l8 2557t25 3064s10
+299r7 Foreground{6R9} 23|2542b7 2547r48
+300r7 Background{6R9} 23|2543b7 2547r60
+306V13*APCA_Contrast{long_float} 307>7 308>7 23|2559b13 2571l8 2571t21 2593s42
+307r7 Foreground{6R9} 23|2560b7 2565r54
+308r7 Background{6R9} 23|2561b7 2566r54
+314V13*APCA_Contrast_Label{26|21R9} 315>7 316>7 23|2588b13 2602l8 2602t27
+. 2719s9 3076s10
+315r7 Foreground{6R9} 23|2589b7 2593r57
+316r7 Background{6R9} 23|2590b7 2593r69
+322V13*Color_Vision_Deficiency_Label{26|21R9} 323>7 324>7 325>7 23|2669b13
+. 2684l8 2684t37 3089s10
+323r7 Left{6R9} 23|2670b7 2675r56
+324r7 Right{6R9} 23|2671b7 2676r56
+325e7 Deficiency{51E9} 23|2672b7 2675r62 2676r63 2681r27
+332V13*Color_Accessibility_Summary{26|21R9} 333>7 334>7 23|2711b13 2724l8
+. 2724t35 3102s10
+333r7 Foreground{6R9} 23|2712b7 2717r25 2719r30 2723r35
+334r7 Background{6R9} 23|2713b7 2717r37 2719r42 2723r47
+340V13*Color_Difference{long_float} 341>7 342>7 23|2726b13 2741l8 2741t24
+. 2748s38
+341r7 Left{6R9} 23|2727b7 2732r56 2734r56 2736r56
+342r7 Right{6R9} 23|2728b7 2733r20 2735r20 2737r20
+348V13*Color_Difference_Label{26|21R9} 349>7 350>7 23|2743b13 2757l8 2757t30
+. 3115s10
+349r7 Left{6R9} 23|2744b7 2748r56
+350r7 Right{6R9} 23|2745b7 2748r62
+356V13*Perceptual_Difference{long_float} 357>7 358>7 23|2759b13 2772l8 2772t29
+357r7 Left{6R9} 23|2760b7 2765r38
+358r7 Right{6R9} 23|2761b7 2766r38
+364V13*OK_Perceptual_Difference{long_float} 365>7 366>7 23|2678s9 2697s15
+. 2774b13 2787l8 2787t32 2794s38
+365r7 Left{6R9} 23|2775b7 2780r42
+366r7 Right{6R9} 23|2776b7 2781r42
+372V13*Perceptual_Difference_Label{26|21R9} 373>7 374>7 23|2789b13 2804l8
+. 2804t35 3127s10
+373r7 Left{6R9} 23|2790b7 2794r64
+374r7 Right{6R9} 23|2791b7 2794r70
+380U14*Hex_Color_Into 381>7 382=7 383<7 384<7 385>7 386>7 23|2806b14 2817l8
+. 2817t22
+381r7 Color{6R9} 23|2807b7 2816r21
+382a7 Target{string} 23|2808b7 2816m48
+383i7 Written{natural} 23|2809b7 2816m56
+384e7 Status{26|8E9} 23|2810b7 2816m65
+385b7 Prefix{boolean} 23|2811b7 2816r28
+386b7 Lowercase{boolean} 23|2812b7 2816r36
+394U14*RGB_Label_Into 395>7 396=7 397<7 398<7 23|2819b14 2827l8 2827t22
+395r7 Color{6R9} 23|2820b7 2826r31
+396a7 Target{string} 23|2821b7 2826m39
+397i7 Written{natural} 23|2822b7 2826m47
+398e7 Status{26|8E9} 23|2823b7 2826m56
+404U14*RGBA_Label_Into 405>7 406>7 407=7 408<7 409<7 23|2829b14 2838l8 2838t23
+405r7 Color{6R9} 23|2830b7 2837r32
+406f7 Opacity{long_float} 23|2831b7 2837r39
+407a7 Target{string} 23|2832b7 2837m49
+408i7 Written{natural} 23|2833b7 2837m57
+409e7 Status{26|8E9} 23|2834b7 2837m66
+416U14*CSS_Color_Label_Into 417>7 418=7 419<7 420<7 23|2840b14 2848l8 2848t28
+417r7 Color{12R9} 23|2841b7 2847r37
+418a7 Target{string} 23|2842b7 2847m45
+419i7 Written{natural} 23|2843b7 2847m53
+420e7 Status{26|8E9} 23|2844b7 2847m62
+426U14*HSL_Label_Into 427>7 428=7 429<7 430<7 23|2850b14 2858l8 2858t22
+427r7 Color{6R9} 23|2851b7 2857r31
+428a7 Target{string} 23|2852b7 2857m39
+429i7 Written{natural} 23|2853b7 2857m47
+430e7 Status{26|8E9} 23|2854b7 2857m56
+436U14*HSV_Label_Into 437>7 438=7 439<7 440<7 23|2860b14 2868l8 2868t22
+437r7 Color{6R9} 23|2861b7 2867r31
+438a7 Target{string} 23|2862b7 2867m39
+439i7 Written{natural} 23|2863b7 2867m47
+440e7 Status{26|8E9} 23|2864b7 2867m56
+446U14*Hue_Family_Label_Into 447>7 448=7 449<7 450<7 23|2870b14 2878l8 2878t29
+447r7 Color{6R9} 23|2871b7 2877r38
+448a7 Target{string} 23|2872b7 2877m46
+449i7 Written{natural} 23|2873b7 2877m54
+450e7 Status{26|8E9} 23|2874b7 2877m63
+456U14*Saturation_Label_Into 457>7 458=7 459<7 460<7 23|2880b14 2888l8 2888t29
+457r7 Color{6R9} 23|2881b7 2887r38
+458a7 Target{string} 23|2882b7 2887m46
+459i7 Written{natural} 23|2883b7 2887m54
+460e7 Status{26|8E9} 23|2884b7 2887m63
+466U14*Temperature_Label_Into 467>7 468=7 469<7 470<7 23|2890b14 2898l8 2898t30
+467r7 Color{6R9} 23|2891b7 2897r39
+468a7 Target{string} 23|2892b7 2897m47
+469i7 Written{natural} 23|2893b7 2897m55
+470e7 Status{26|8E9} 23|2894b7 2897m64
+476U14*Chroma_Label_Into 477>7 478=7 479<7 480<7 23|2900b14 2908l8 2908t25
+477r7 Color{6R9} 23|2901b7 2907r34
+478a7 Target{string} 23|2902b7 2907m42
+479i7 Written{natural} 23|2903b7 2907m50
+480e7 Status{26|8E9} 23|2904b7 2907m59
+486U14*Color_Description_Into 487>7 488=7 489<7 490<7 23|2910b14 2918l8 2918t30
+487r7 Color{6R9} 23|2911b7 2917r39
+488a7 Target{string} 23|2912b7 2917m47
+489i7 Written{natural} 23|2913b7 2917m55
+490e7 Status{26|8E9} 23|2914b7 2917m64
+496U14*Nearest_Color_Name_Into 497>7 498=7 499<7 500<7 23|2920b14 2928l8
+. 2928t31
+497r7 Color{6R9} 23|2921b7 2927r40
+498a7 Target{string} 23|2922b7 2927m48
+499i7 Written{natural} 23|2923b7 2927m56
+500e7 Status{26|8E9} 23|2924b7 2927m65
+506U14*Palette_Summary_Into 507>7 508=7 509<7 510<7 23|2930b14 2938l8 2938t28
+507a7 Colors{43A9} 23|2931b7 2937r37
+508a7 Target{string} 23|2932b7 2937m46
+509i7 Written{natural} 23|2933b7 2937m54
+510e7 Status{26|8E9} 23|2934b7 2937m63
+516U14*Palette_Roles_Into 517>7 518=7 519<7 520<7 23|2940b14 2948l8 2948t26
+517a7 Colors{43A9} 23|2941b7 2947r35
+518a7 Target{string} 23|2942b7 2947m44
+519i7 Written{natural} 23|2943b7 2947m52
+520e7 Status{26|8E9} 23|2944b7 2947m61
+526U14*Palette_Harmony_Label_Into 527>7 528=7 529<7 530<7 23|2950b14 2958l8
+. 2958t34
+527a7 Colors{43A9} 23|2951b7 2957r43
+528a7 Target{string} 23|2952b7 2957m52
+529i7 Written{natural} 23|2953b7 2957m60
+530e7 Status{26|8E9} 23|2954b7 2957m69
+536U14*Palette_Contrast_Suggestion_Into 537>7 538=7 539<7 540<7 23|2960b14
+. 2969l8 2969t40
+537a7 Colors{43A9} 23|2961b7 2968r39
+538a7 Target{string} 23|2962b7 2968m48
+539i7 Written{natural} 23|2963b7 2968m56
+540e7 Status{26|8E9} 23|2964b7 2968m65
+546U14*Palette_Accessibility_Label_Into 547>7 548=7 549<7 550<7 23|2971b14
+. 2980l8 2980t40
+547a7 Colors{43A9} 23|2972b7 2979r39
+548a7 Target{string} 23|2973b7 2979m48
+549i7 Written{natural} 23|2974b7 2979m56
+550e7 Status{26|8E9} 23|2975b7 2979m65
+556U14*Palette_Contrast_Matrix_Label_Into 557>7 558=7 559<7 560<7 23|2982b14
+. 2991l8 2991t42
+557a7 Colors{43A9} 23|2983b7 2990r41
+558a7 Target{string} 23|2984b7 2990m50
+559i7 Written{natural} 23|2985b7 2990m58
+560e7 Status{26|8E9} 23|2986b7 2990m67
+566U14*Palette_Mood_Label_Into 567>7 568=7 569<7 570<7 23|2993b14 3001l8
+. 3001t31
+567a7 Colors{43A9} 23|2994b7 3000r40
+568a7 Target{string} 23|2995b7 3000m49
+569i7 Written{natural} 23|2996b7 3000m57
+570e7 Status{26|8E9} 23|2997b7 3000m66
+576U14*Advanced_Palette_Summary_Into 577>7 578=7 579<7 580<7 23|3003b14 3011l8
+. 3011t37
+577a7 Colors{43A9} 23|3004b7 3010r46
+578a7 Target{string} 23|3005b7 3010m55
+579i7 Written{natural} 23|3006b7 3010m63
+580e7 Status{26|8E9} 23|3007b7 3010m72
+586U14*Color_Summary_Into 587>7 588=7 589<7 590<7 23|3013b14 3021l8 3021t26
+587r7 Color{6R9} 23|3014b7 3020r35
+588a7 Target{string} 23|3015b7 3020m43
+589i7 Written{natural} 23|3016b7 3020m51
+590e7 Status{26|8E9} 23|3017b7 3020m60
+596U14*Brightness_Label_Into 597>7 598=7 599<7 600<7 23|3023b14 3031l8 3031t29
+597r7 Color{6R9} 23|3024b7 3030r38
+598a7 Target{string} 23|3025b7 3030m46
+599i7 Written{natural} 23|3026b7 3030m54
+600e7 Status{26|8E9} 23|3027b7 3030m63
+606U14*Opacity_Label_Into 607>7 608=7 609<7 610<7 23|3033b14 3041l8 3041t26
+607f7 Opacity{long_float} 23|3034b7 3040r35
+608a7 Target{string} 23|3035b7 3040m45
+609i7 Written{natural} 23|3036b7 3040m53
+610e7 Status{26|8E9} 23|3037b7 3040m62
+616U14*Contrast_Label_Into 617>7 618>7 619=7 620<7 621<7 23|3043b14 3053l8
+. 3053t27
+617r7 Foreground{6R9} 23|3044b7 3052r26
+618r7 Background{6R9} 23|3045b7 3052r38
+619a7 Target{string} 23|3046b7 3052m51
+620i7 Written{natural} 23|3047b7 3052m59
+621e7 Status{26|8E9} 23|3048b7 3052m68
+628U14*Readability_Label_Into 629>7 630>7 631=7 632<7 633<7 23|3055b14 3065l8
+. 3065t30
+629r7 Foreground{6R9} 23|3056b7 3064r29
+630r7 Background{6R9} 23|3057b7 3064r41
+631a7 Target{string} 23|3058b7 3064m54
+632i7 Written{natural} 23|3059b7 3064m62
+633e7 Status{26|8E9} 23|3060b7 3064m71
+640U14*APCA_Contrast_Label_Into 641>7 642>7 643=7 644<7 645<7 23|3067b14
+. 3077l8 3077t32
+641r7 Foreground{6R9} 23|3068b7 3076r31
+642r7 Background{6R9} 23|3069b7 3076r43
+643a7 Target{string} 23|3070b7 3076m56
+644i7 Written{natural} 23|3071b7 3076m64
+645e7 Status{26|8E9} 23|3072b7 3076m73
+652U14*Color_Vision_Deficiency_Label_Into 653>7 654>7 655>7 656=7 657<7 658<7
+. 23|3079b14 3091l8 3091t42
+653r7 Left{6R9} 23|3080b7 3089r41
+654r7 Right{6R9} 23|3081b7 3089r47
+655e7 Deficiency{51E9} 23|3082b7 3089r54
+656a7 Target{string} 23|3083b7 3090m10
+657i7 Written{natural} 23|3084b7 3090m18
+658e7 Status{26|8E9} 23|3085b7 3090m27
+666U14*Color_Accessibility_Summary_Into 667>7 668>7 669=7 670<7 671<7 23|3093b14
+. 3104l8 3104t40
+667r7 Foreground{6R9} 23|3094b7 3102r39
+668r7 Background{6R9} 23|3095b7 3102r51
+669a7 Target{string} 23|3096b7 3103m10
+670i7 Written{natural} 23|3097b7 3103m18
+671e7 Status{26|8E9} 23|3098b7 3103m27
+678U14*Color_Difference_Label_Into 679>7 680>7 681=7 682<7 683<7 23|3106b14
+. 3116l8 3116t35
+679r7 Left{6R9} 23|3107b7 3115r34
+680r7 Right{6R9} 23|3108b7 3115r40
+681a7 Target{string} 23|3109b7 3115m48
+682i7 Written{natural} 23|3110b7 3115m56
+683e7 Status{26|8E9} 23|3111b7 3115m65
+690U14*Perceptual_Difference_Label_Into 691>7 692>7 693=7 694<7 695<7 23|3118b14
+. 3128l8 3128t40
+691r7 Left{6R9} 23|3119b7 3127r39
+692r7 Right{6R9} 23|3120b7 3127r45
+693a7 Target{string} 23|3121b7 3127m53
+694i7 Written{natural} 23|3122b7 3127m61
+695e7 Status{26|8E9} 23|3123b7 3127m70
+X 23 humanize-colors.adb
+12V13 Ok_Text{26|21R9} 12b13 12>22 18l8 18t15 1681s14 1705s14 1717s14 1730s17
+. 1807s14 1819s14 1848s14 1885s17 1946s14 1980s17 1982s17 2004s17 2006s17
+. 2008s17 2010s17 2012s17 2040s14 2074s17 2078s17 2082s17 2121s14 2174s14
+. 2200s14 2210s14 2233s17 2235s17 2237s17 2239s17 2241s17 2337s17 2339s17
+. 2341s17 2343s17 2345s17 2347s17 2349s17 2351s17 2353s17 2355s17 2366s17
+. 2368s17 2370s17 2372s17 2374s17 2386s17 2388s17 2390s17 2392s17 2407s17
+. 2409s17 2411s17 2413s17 2415s17 2424s14 2457s14 2536s14 2549s20 2551s20
+. 2553s20 2555s20 2599s14 2680s14 2721s14 2756s14 2803s14
+12a22 Text{string} 16r41
+20U14 Copy_Text 20b14 21>7 22=7 23<7 24<7 44l8 44t17 57s10
+21a7 Text{string} 30r13 33r15 33r21 33r35 38r13 39r52 39r72 41r21
+22a7 Target{string} 28r10 30r27 31r13 32m13 32r21 32r37 33r48 35r21 39m13
+. 39r21 39r37
+23i7 Written{natural} 27m7 35m10 41m10
+24e7 Status{26|8E9} 29m10 36m10 42m10
+46U14 Copy_Result 46b14 47>7 48=7 49<7 50<7 59l8 59t19 2815s7 2826s7 2837s7
+. 2847s7 2857s7 2867s7 2877s7 2887s7 2897s7 2907s7 2917s7 2927s7 2937s7 2947s7
+. 2957s7 2967s7 2978s7 2989s7 3000s7 3010s7 3020s7 3030s7 3040s7 3051s7 3063s7
+. 3075s7 3088s7 3101s7 3114s7 3126s7
+47r7 Result{26|21R9} 53r10 55r20 57r32
+48a7 Target{string} 57m46
+49i7 Written{natural} 54m10 57m54
+50e7 Status{26|8E9} 55m10 57m63
+61V13 Natural_Text{string} 61b13 61>27 65l8 65t20 1706s19 1707s12 1708s12
+. 1718s20 1719s12 1720s12 1886s13 2075s13 2075s52 2079s13 2079s51 2122s10
+. 2123s12 2124s12 2125s12 2126s12
+61i27 Value{natural} 62r49
+62a7 Image{string} 64r14 64r21 64r40
+67V13 Lower{string} 67b13 67>20 70l8 70t13 568s33 1364s40 1639s10 1651s32
+. 1652s28
+67a20 Text{string} 69r48
+72V13 Trim{string} 72b13 72>19 90l8 90t12 276s34 568s40 612s52 625s46 659s49
+. 725s34 739s33 885s33 935s33 977s33 1033s33 1331s33 1364s47 1639s17 1651s39
+. 1652s35
+72a19 Text{string} 73r26 74r26 76r10 79r22 79r41 82r36 88r17
+73i7 First{natural} 79r13 79r47 80m10 80r19 82r21 85r10 88r23
+74i7 Last{natural} 82r13 82r42 83m10 83r18 85r18 88r32
+92V13 Starts_With{boolean} 92>26 92>32 869s14 894s13 944s13 982s13 1039s13
+. 1337s13
+92a26 Text{string} 93r7 94r16 94r22 94r36
+92a32 Prefix{string} 93r22 94r49 94r70
+96V13 Ends_With{boolean} 96>24 96>30 869s54 905s13 951s13 987s13 992s13 998s13
+. 1004s13 1042s10 1347s17 1395s37
+96a24 Text{string} 97r7 98r16 98r22 98r55
+96a30 Suffix{string} 97r22 98r34 98r68
+100V13 Is_Space{boolean} 100>23 694s16 744s42
+100e23 Ch{character} 101r7 101r24 102r15 102r47
+104V13 Clamp01{long_float} 104b13 104>22 113l8 113t15 129s34 142s34 153s34
+. 1090s34 1091s34 1130s34 1131s34 1445s54 1446s54 1447s54 1721s24
+104f22 Value{long_float} 106r10 108r13 111r17
+115V13 Channel_From_Float{22|4I12} 115b13 115>33 125l8 125t26 137s14 903s19
+. 914s19 925s19 1119s19 1120s19 1121s19 1137s46 1144s19 1146s19 1148s19 1445s34
+. 1446s34 1447s34 2616s25 2617s25 2618s25 2621s25 2622s25 2623s25 2626s25
+. 2627s25 2628s25 2632s18
+115f33 Value{long_float} 116r64
+116i7 Rounded{integer} 118r10 120r13 123r32
+127V13 Channel_From_Linear{22|4I12} 127b13 127>34 138l8 138t27 1193s19 1194s19
+. 1195s19 1233s19 1234s19 1235s19 1267s19 1268s19 1269s19 1454s34 1455s34
+. 1456s34
+127f34 Value{long_float} 129r43
+129f7 V{long_float} 132r10 133r23 135r30
+130f7 S{long_float} 133m10 135m10 137r34
+140V13 Linear_From_SRGB_Component{long_float} 140b13 140>41 149l8 149t34
+. 1294s34 1295s34 1296s34 2246s34 2248s34 2250s34 2304s34 2306s34 2308s34
+140f41 Value{long_float} 142r43
+142f7 V{long_float} 144r10 145r17 147r24
+151V13 Linear_From_Rec2020_Component{long_float} 151b13 151>44 162l8 162t37
+. 1313s34 1314s34 1315s34
+151f44 Value{long_float} 153r43
+153f7 V{long_float} 157r10 158r17 160r24
+154f7 Alpha{long_float} 160r28 160r43
+155f7 Beta{long_float} 157r20
+164V13 Float_Text{string} 164b13 165>7 166>7 171l8 171t18 1721s12 1798s14
+. 1808s19 1820s19 2756s23 2803s40
+165f7 Value{long_float} 170r53
+166i7 Places{natural} 170r60
+173V13 Hex_Digit{character} 173b13 174>7 175>7 182l8 182t17 1670s20 1670s52
+174i7 Value{natural} 181r43
+175b7 Lowercase{boolean} 179r13
+178a7 Hex_Chars{string} 181r14 181r25
+184V13 Hex_Value{natural} 184b13 184>24 184<40 199l8 199t17 215s18 219s17
+. 236s16 241s16 246s16 283s17 290s18 294s17
+184e24 Ch{character} 186r10 188r32 189r13 191r37 192r13 194r37
+184b40 Valid{boolean} 187m10 190m10 193m10 196m10
+206i7 First{natural} 229r19 230m10 230r19 233r10 235r20 236r33 241r33 246r33
+. 252r20 253r22 255r44 256r44
+207i7 Last{natural} 233r18 235r13 252r13
+208i7 V1{natural} 236m10 240r23 241m10 245r25 246m10 250r24 253m10 258r16
+. 261r26
+209b7 Valid{boolean} 215m43 215r43 216r17 219m46 219r46 220r17 236m41 236r41
+. 237r17 241m45 241r45 242r17 246m45 246r45 247r17
+211V16 Pair{natural} 211b16 211>22 224l11 224t15 253s16 255s38 256s38
+211i22 Index{natural} 215r35 219r34
+212i10 High{natural} 215m10 223r17
+213i10 Low{natural} 219m10 223r29
+255i13 V2{natural} 258r33 262r28
+256i13 V3{natural} 258r50 263r27
+271V13 Parse_CSS_Hex_Color{boolean} 271b13 272>7 273<7 362l8 362t27 1646s13
+272a7 Text{string} 276r40
+273r7 Color{22|12R9} 306m7 355m7
+276a7 Item{string} 277r26 278r35 283r28 290r29 294r28 307r10 309r13
+277i7 First{natural} 309r19 310m10 310r19 313r10 317r19 319r25 323r25 327r25
+. 331r23 332r28 342r24 343r24 344r24 345r23 346r27
+278i7 Last{natural} 313r18 317r12 331r16 345r16
+279b7 Valid{boolean} 283m42 283r42 290m43 290r43 291r17 294m46 294r46 295r17
+. 320r20 324r20 328r20 333r23
+281V16 Digit{natural} 281b16 281>23 284l11 284t16 319s18 323s18 327s18 332s21
+281i23 Index{natural} 283r34
+286V16 Pair{natural} 286b16 286>22 299l11 299t15 342s18 343s18 344s18 346s21
+286i22 Index{natural} 290r35 294r34
+287i10 High{natural} 290m10 298r17
+288i10 Low{natural} 294m10 298r29
+301i7 R{natural} 319m13 337m13 337r18 342m13 348r16 357r18
+302i7 G{natural} 323m13 338m13 338r18 343m13 348r32 357r30
+303i7 B{natural} 327m13 339m13 339r18 344m13 348r48 357r41
+304i7 A{natural} 332m16 340m13 340r18 346m16 348r64 358r37 359r25
+364R9 Named_Color 367e14 388r63
+365p7*Name(string) 1848r55
+366r7*Color{22|6R9} 1842r70
+369a4 Black_Name{string} 389r8
+370a4 Silver_Name{string} 390r8
+371a4 Gray_Name{string} 391r8
+372a4 White_Name{string} 392r8
+373a4 Maroon_Name{string} 393r8
+374a4 Red_Name{string} 394r8
+375a4 Purple_Name{string} 395r8
+376a4 Fuchsia_Name{string} 396r8
+377a4 Green_Name{string} 397r8
+378a4 Lime_Name{string} 398r8
+379a4 Olive_Name{string} 399r8
+380a4 Yellow_Name{string} 400r8
+381a4 Navy_Name{string} 401r8
+382a4 Blue_Name{string} 402r8
+383a4 Teal_Name{string} 403r8
+384a4 Aqua_Name{string} 404r8
+385a4 Orange_Name{string} 405r8
+386a4 Rebecca_Name{string} 406r8
+388a4 Basic_Named_Colors(364R9) 1837r32 1841r20 1842r43 1848r23
+408R9 Extended_Named_Color 411e14 413r61
+409r7*Name{17|91R9} 576r36
+410r7*Color{22|6R9} 577r27
+413a4 CSS_Named_Colors(408R9) 575r19
+568a7 Name{string} 571r10 576r13
+575r11 Item=575:19{408R9} 576r31 577r22
+585A9 Token_List(17|91R9)<integer> 589r20 637r23 1366r21
+587V13 Parse_Component_List{boolean} 587b13 588>7 589<7 590<7 633l8 633t28
+. 1417s20
+588a7 Text{string} 593r26 599r20 600r13 602r16 607r16 612r58 625r52 625r67
+589a7 Tokens{585A9} 596m7 608r24 612m13 621r18 625m7 628r21
+590i7 Count{natural} 597m7 608r16 611m13 611r22 612r21 621r10 624m7 624r16
+. 625r15 627r25
+593i7 Start{natural} 612r64 613m13 625r58
+594i7 Depth{natural} 601m13 601r22 603r16 606m13 606r22 607r44 617r10
+599i11 Index{integer} 600r19 602r22 607r22 612r73 613r22
+627i11 Index{integer} 628r29
+635V13 Parse_Modern_Component_List{boolean} 635b13 636>7 637<7 638<7 639<7
+. 721l8 721t35 1412s20
+636a7 Text{string} 642r31 659r55 669r10 673r20 674r13 676r16 682r16 687r16
+. 694r26 714r13
+637a7 Tokens{585A9} 653r24 659m10 665m7
+638i7 Count{natural} 653r16 658m10 658r19 659r18 666m7 689r52 701r40 719r14
+. 720r41
+639b7 Has_Slash{boolean} 667m7 689r34 692m13 720r23
+642i7 Start{natural} 659r61 679m16 704m16
+643b7 In_Token{boolean} 651r20 660m10 678r20 680m16 700r20 705m16
+644b7 After_Slash{boolean} 693m13 701r19
+645i7 Depth{natural} 674r41 677m13 677r22 683r16 686m13 686r22 687r44 694r49
+. 710r10
+647U17 Push 647b17 647>23 647=39 661l11 661t15 688s13 695s13 714s7
+647i23 Last{natural} 659r70
+647b39 Valid{boolean} 649r17 654m13
+663b7 Valid{boolean} 688m30 688r30 689r20 695m30 695r30 696r20 714m24 714r24
+. 715r14
+673i11 Index{integer} 674r19 676r22 679r25 682r22 687r22 688r19 694r32 695r19
+. 704r25
+723V13 Parse_Float{boolean} 723b13 723>26 723<41 731l8 731t19 780s17 906s17
+. 917s17 952s17 963s17 988s17 993s17 999s17 1005s17 1010s13 1043s17 1049s13
+. 1348s21
+723a26 Text{string} 725r40
+723f41 Value{long_float} 725m7 729m10
+733V13 Parse_Calc{boolean} 733b13 734>7 735>7 736<7 878l8 878t18 895s17 945s17
+. 983s17 1040s17 1338s17
+734a7 Text{string} 739r39
+735f7 Percent_Base{long_float} 785r29
+736f7 Value{long_float} 868m7 873m32 873r32
+739a7 Item{string} 740r25 744r23 744r52 757r20 757r40 757r65 760r23 761r22
+. 761r55 765r20 765r40 765r65 767r23 768r25 768r50 772r26 772r45 776r21 780r30
+. 784r20 784r39 796r20 796r39 802r22 802r40 821r29 821r47 823r43 850r29 850r47
+. 852r43 869r27 869r65 872r14 877r20
+740i7 Pos{natural} 744r16 744r58 745m13 745r20 756r19 757r13 757r46 757r71
+. 758m13 758r20 760r16 761r28 761r61 763m13 763r20 765r13 765r46 765r71 766m13
+. 766r20 767r16 768r31 768r56 770m16 770r23 772r19 772r51 773m16 773r23 776r47
+. 780r45 784r13 784r45 786m13 786r20 796r13 796r45 797m13 797r20 802r16 802r46
+. 806m13 806r20 821r23 821r53 823r49 825m16 825r23 850r23 850r53 852r49 854m16
+. 854r23 872m7 877r14
+742U17 Skip_Spaces 742b17 747l11 747t22 755s10 795s10 801s13 820s13 849s13
+. 876s7
+749V16 Parse_Expression{boolean} 749<34 798s20 842b16 866l11 866t27 873s14
+749f34 Result{long_float} 842b34 845m29 845r29 859m19 859r29 861m19 861r29
+751V16 Parse_Number{boolean} 751b16 751<30 791l11 791t23 809s20
+751f30 Result{long_float} 777m13 781m13 785m13 788m13
+752i10 Start{natural} 756m10 776r13 776r39 780r36
+753f10 Raw{long_float} 780m55 780r55 785r23 788r23
+793V16 Parse_Factor{boolean} 793b16 793<30 811l11 811t23 816s17 826s23
+793f30 Result{long_float} 798m38 798r38 803m16 809m34 809r34
+813V16 Parse_Term{boolean} 813b16 813<28 840l11 840t21 845s17 855s23
+813f28 Result{long_float} 816m31 816r31 830m19 830r29 832m19 835m19 835r29
+814f10 Right{long_float} 826m37 826r37 830r38 831r22 835r38
+823e16 Op{character} 829r19
+843f10 Right{long_float} 855m35 855r35 859r38 861r38
+852e16 Op{character} 858r19
+880V13 Parse_RGB_Channel{boolean} 880b13 881>7 882<7 928l8 928t25 1497s23
+. 1498s27 1499s27
+881a7 Text{string} 885r39
+882i7 Value{22|4I12} 889m10 892m10 896m13 900m13 903m10 907m13 911m13 914m10
+. 918m13 922m13 925m10
+885a7 Item{string} 888r10 891r13 894r26 895r29 905r24 906r30 906r36 906r50
+. 917r30
+886f7 Raw{long_float} 895m42 895r42 899r13 899r31 903r39 906m66 906r66 910r13
+. 910r31 914r39 917m36 917r36 921r13 921r31 925r39
+930V13 Parse_Alpha{boolean} 930b13 931>7 932<7 970l8 970t19 1435s28 1504s28
+. 1531s28 1555s28 1583s28 1612s28
+931a7 Text{string} 935r39
+932f7 Value{long_float} 939m10 942m10 946m13 949m10 953m13 957m13 960m10
+. 964m13 967m10
+935a7 Item{string} 938r10 941r13 944r26 945r29 951r24 952r30 952r36 952r50
+. 963r30
+936f7 Raw{long_float} 945m40 945r40 945r53 945r71 949r19 952m66 952r66 956r13
+. 956r31 960r19 963m36 963r36 963r49 963r67 967r19
+972V13 Parse_Hue{boolean} 972b13 973>7 974<7 1025l8 1025t17 1522s23 1546s23
+. 1607s27
+973a7 Text{string} 977r39
+974f7 Value{long_float} 984m13 989m13 994m13 1000m13 1006m13 1013m10 1023m7
+977a7 Item{string} 980r10 982r26 983r29 987r24 988r30 988r36 988r50 992r24
+. 993r30 993r36 993r50 998r24 999r30 999r36 999r50 1004r24 1005r30 1005r36
+. 1005r50 1010r26
+978f7 Raw{long_float} 981m10 983m42 983r42 988m66 988r66 993m66 993r66 997m10
+. 997r17 999m66 999r66 1003m10 1003r17 1005m66 1005r66 1009m10 1009r17 1010m32
+. 1010r32 1017r13 1018m10 1018r17 1020r13 1021m10 1021r17 1023r16
+1027V13 Parse_Percent_Or_Number{boolean} 1027b13 1028>7 1029>7 1030<7 1056l8
+. 1056t31 1426s23 1427s27 1429s27 1570s23 1573s27 1576s27 1601s23 1604s27
+1028a7 Text{string} 1033r39
+1029f7 Percent_Base{long_float} 1040r35 1047r25
+1030f7 Value{long_float} 1037m10 1040m49 1040r49 1044m13 1047m10 1050m10
+. 1053m10
+1033a7 Item{string} 1036r10 1039r26 1040r29 1042r21 1043r30 1043r36 1043r50
+. 1049r26
+1034f7 Raw{long_float} 1043m66 1043r66 1047r19 1049m32 1049r32 1050r19
+1058V13 Hue_To_RGB{long_float} 1058b13 1059>7 1060>7 1061>7 1081l8 1081t18
+. 1113s15 1114s15 1115s15
+1059f7 P{long_float} 1073r17 1073r26 1077r17 1077r26 1079r17
+1060f7 Q{long_float} 1073r22 1075r17 1077r22
+1061f7 T{long_float} 1064r27
+1064f7 Hue{long_float} 1066r10 1067m10 1067r17 1068r13 1069m10 1069r17 1072r10
+. 1073r37 1074r13 1076r13 1077r44
+1083V13 HSL_To_RGB{22|6R9} 1083b13 1084>7 1085>7 1086>7 1122l8 1122t18 1132s36
+. 1536s31
+1084f7 Hue{long_float} 1089r25
+1085f7 Saturation{long_float} 1090r43
+1086f7 Lightness{long_float} 1091r43
+1089f7 H{long_float} 1098r13 1099m10 1099r15 1101r13 1102m10 1102r15 1104m7
+. 1104r12 1113r33 1114r33 1115r33
+1090f7 S{long_float} 1106r10 1111r43 1111r55 1111r63
+1091f7 L{long_float} 1107r15 1108r15 1109r15 1111r19 1111r32 1111r51 1111r59
+. 1112r21
+1092f7 Q{long_float} 1111m10 1112r25 1113r30 1114r30 1115r30
+1093f7 P{long_float} 1112m10 1113r27 1114r27 1115r27
+1094f7 R{long_float} 1107m10 1113m10 1119r39
+1095f7 G{long_float} 1108m10 1114m10 1120r39
+1096f7 B{long_float} 1109m10 1115m10 1121r39
+1124V13 HWB_To_RGB{22|6R9} 1124b13 1125>7 1126>7 1127>7 1150l8 1150t18 1560s31
+1125f7 Hue{long_float} 1132r48
+1126f7 Whiteness{long_float} 1130r43
+1127f7 Blackness{long_float} 1131r43
+1130f7 W{long_float} 1133r36 1137r66 1145r53 1145r62 1147r55 1147r64 1149r54
+. 1149r63
+1131f7 B{long_float} 1133r40 1145r57 1147r59 1149r58
+1132r7 Base{22|6R9} 1145r26 1147r26 1149r26
+1133f7 Sum{long_float} 1135r10 1137r70
+1137i13 Gray{22|4I12} 1139r28 1139r43 1139r57
+1152V13 Lab_To_RGB{22|6R9} 1152b13 1153>7 1154>7 1155>7 1196l8 1196t18 1207s14
+. 1590s24
+1153f7 Lightness{long_float} 1171r36
+1154f7 A{long_float} 1172r40
+1155f7 B{long_float} 1173r40
+1159f7 Epsilon{long_float} 1164r37
+1160f7 Kappa{long_float} 1167r45
+1162V16 Pivot{long_float} 1162b16 1162>23 1169l11 1169t16 1176s46 1177s46
+. 1178s46
+1162f23 Value{long_float} 1164r13 1164r21 1164r29 1165r20 1165r28 1165r36
+. 1167r29
+1171f7 FY{long_float} 1172r35 1173r35 1177r53
+1172f7 FX{long_float} 1176r53
+1173f7 FZ{long_float} 1178r53
+1176f7 X50{long_float} 1180r21 1182r21 1184r21
+1177f7 Y50{long_float} 1180r39 1182r39 1184r39
+1178f7 Z50{long_float} 1180r57 1182r57 1184r57
+1179f7 X65{long_float} 1186r21 1188r21 1190r21
+1181f7 Y65{long_float} 1186r39 1188r39 1190r39
+1183f7 Z65{long_float} 1186r57 1188r57 1190r57
+1185f7 R{long_float} 1193r40
+1187f7 G{long_float} 1194r40
+1189f7 BL{long_float} 1195r40
+1198V13 LCH_To_RGB{22|6R9} 1198b13 1199>7 1200>7 1201>7 1211l8 1211t18 1619s24
+1199f7 Lightness{long_float} 1208r10
+1200f7 Chroma{long_float} 1209r10 1210r10
+1201f7 Hue{long_float} 1205r40
+1205f7 Radians{long_float} 1209r24 1210r24
+1213V13 OKLab_To_RGB{22|6R9} 1213b13 1214>7 1215>7 1216>7 1236l8 1236t20
+. 1247s14 1591s24
+1214f7 Lightness{long_float} 1219r35 1220r35 1221r35
+1215f7 A{long_float} 1219r62 1220r62 1221r62
+1216f7 B{long_float} 1219r81 1220r81 1221r81
+1219f7 L1{long_float} 1222r35 1222r40 1222r45
+1220f7 M1{long_float} 1223r35 1223r40 1223r45
+1221f7 S1{long_float} 1224r35 1224r40 1224r45
+1222f7 L{long_float} 1225r50 1227r51 1229r51
+1223f7 M{long_float} 1225r69 1227r70 1229r70
+1224f7 S{long_float} 1226r26 1228r26 1230r26
+1225f7 R{long_float} 1233r40
+1227f7 G{long_float} 1234r40
+1229f7 BL{long_float} 1235r40
+1238V13 OKLCH_To_RGB{22|6R9} 1238b13 1239>7 1240>7 1241>7 1251l8 1251t20
+. 1620s24
+1239f7 Lightness{long_float} 1248r10
+1240f7 Chroma{long_float} 1249r10 1250r10
+1241f7 Hue{long_float} 1245r40
+1245f7 Radians{long_float} 1249r24 1250r24
+1253V13 XYZ_D65_To_RGB{22|6R9} 1253b13 1254>7 1255>7 1256>7 1270l8 1270t22
+. 1285s14 1304s14 1323s14 1474s37
+1254f7 X{long_float} 1259r46 1261r47 1263r46
+1255f7 Y{long_float} 1259r62 1261r63 1263r62
+1256f7 Z{long_float} 1260r23 1262r23 1264r23
+1259f7 R{long_float} 1267r40
+1261f7 G{long_float} 1268r40
+1263f7 B{long_float} 1269r40
+1272V13 XYZ_D50_To_RGB{22|6R9} 1272b13 1273>7 1274>7 1275>7 1286l8 1286t22
+. 1480s37
+1273f7 X{long_float} 1279r21 1281r21 1283r21
+1274f7 Y{long_float} 1279r37 1281r37 1283r37
+1275f7 Z{long_float} 1279r53 1281r53 1283r53
+1278f7 X65{long_float} 1285r30
+1280f7 Y65{long_float} 1285r35
+1282f7 Z65{long_float} 1285r40
+1288V13 Display_P3_To_RGB{22|6R9} 1288b13 1289>7 1290>7 1291>7 1305l8 1305t25
+. 1462s37
+1289f7 Red{long_float} 1294r62
+1290f7 Green{long_float} 1295r62
+1291f7 Blue{long_float} 1296r62
+1294f7 R{long_float} 1297r49 1299r49 1301r49
+1295f7 G{long_float} 1297r68 1299r68 1301r68
+1296f7 B{long_float} 1298r26 1300r26 1302r26
+1297f7 X{long_float} 1304r30
+1299f7 Y{long_float} 1304r33
+1301f7 Z{long_float} 1304r36
+1307V13 Rec2020_To_RGB{22|6R9} 1307b13 1308>7 1309>7 1310>7 1324l8 1324t22
+. 1468s37
+1308f7 Red{long_float} 1313r65
+1309f7 Green{long_float} 1314r65
+1310f7 Blue{long_float} 1315r65
+1313f7 R{long_float} 1316r49 1318r49 1320r49
+1314f7 G{long_float} 1316r68 1318r68 1320r68
+1315f7 B{long_float} 1317r26 1319r26 1321r26
+1316f7 X{long_float} 1323r30
+1318f7 Y{long_float} 1323r33
+1320f7 Z{long_float} 1323r36
+1326V13 Parse_Percent_Unit{boolean} 1326b13 1327>7 1328<7 1357l8 1357t26
+. 1523s27 1525s27 1547s27 1549s27
+1327a7 Text{string} 1331r39
+1328f7 Value{long_float} 1335m10 1342m13 1345m10 1352m10 1355m7
+1331a7 Item{string} 1334r10 1337r26 1338r29 1347r28 1348r34 1348r40 1348r54
+1332f7 Raw{long_float} 1338m40 1338r40 1339r20 1340r20 1345r19 1348m70 1348r70
+. 1349r17 1350r17 1355r16
+1359V13 Parse_Function_Color{boolean} 1359b13 1360>7 1361<7 1629l8 1629t28
+. 1655s13
+1360a7 Text{string} 1364r53
+1361r7 Color{22|12R9} 1387m7 1443m19 1452m19 1461m19 1467m19 1473m19 1479m19
+. 1508m13 1535m13 1559m13 1587m13 1616m13
+1364a7 Item{string} 1388r20 1389r13 1395r48 1400r36 1400r42 1401r36 1401r60
+1365i7 Open_Index{natural} 1390m13 1395r10 1400r56 1401r42
+1366a7 Tokens{585A9} 1413m22 1413r22 1417m48 1417r48 1426r59 1428r29 1430r29
+. 1435r52 1440r56 1497r53 1498r57 1499r57 1504r52 1522r45 1524r29 1526r29
+. 1531r52 1546r45 1548r29 1550r29 1555r52 1571r29 1574r29 1577r29 1583r52
+. 1602r29 1605r29 1607r49 1612r52
+1367i7 Count{natural} 1413m30 1413r30 1417m56 1417r56 1422r16 1423r64 1434r16
+. 1449r37 1458r37 1464r37 1470r37 1476r37 1482r37 1490r16 1492r38 1495r35
+. 1503r39 1511r53 1515r16 1517r38 1520r35 1530r39 1538r53 1542r16 1543r64
+. 1554r16 1562r31 1566r16 1567r64 1582r16 1593r31 1597r16 1598r64 1611r16
+. 1622r31
+1368i7 Red{22|4I12} 1497m66 1497r66 1509r39
+1369i7 Green{22|4I12} 1498m70 1498r70 1509r53
+1370i7 Blue{22|4I12} 1499m70 1499r70 1509r68
+1371f7 Hue{long_float} 1522m58 1522r58 1536r43 1546m58 1546r58 1560r43 1607m62
+. 1607r62 1619r55 1620r57
+1372f7 Saturation{long_float} 1524m42 1524r42 1536r48
+1373f7 Lightness{long_float} 1526m42 1526r42 1536r60 1572m18 1572r18 1590r36
+. 1591r38 1603m18 1603r18 1619r36 1620r38
+1374f7 Whiteness{long_float} 1548m42 1548r42 1560r48
+1375f7 Blackness{long_float} 1550m42 1550r42 1560r59
+1376f7 Chroma{long_float} 1606m18 1606r18 1619r47 1620r49
+1377f7 A_Component{long_float} 1575m18 1575r18 1590r47 1591r49
+1378f7 B_Component{long_float} 1578m18 1578r18 1590r60 1591r62
+1379f7 C1{long_float} 1426m77 1426r77 1445r63 1454r55 1462r56 1468r53 1474r53
+. 1480r53
+1380f7 C2{long_float} 1428m47 1428r47 1446r63 1455r55 1462r60 1468r57 1474r57
+. 1480r57
+1381f7 C3{long_float} 1430m47 1430r47 1447r63 1456r55 1462r64 1468r61 1474r61
+. 1480r61
+1382f7 Alpha{long_float} 1435m65 1435r65 1448r37 1457r37 1463r37 1469r37
+. 1475r37 1481r37 1504m65 1504r65 1510r31 1531m65 1531r65 1537r31 1555m65
+. 1555r65 1561r31 1583m65 1583r65 1592r31 1612m65 1612r65 1621r31
+1383b7 Modern{boolean} 1409m10 1411r13 1423r29 1491r51 1495r19 1516r51 1520r19
+. 1543r29 1567r29 1598r29
+1384b7 Has_Slash{boolean} 1413m37 1413r37 1423r45 1491r67 1495r58 1516r67
+. 1520r58 1543r45 1567r45 1598r45
+1385b7 Has_Comma{boolean} 1405m16 1409r24
+1388i11 Index{integer} 1389r19 1390r27
+1400a10 Name{string} 1421r13 1489r16 1489r37 1490r29 1491r29 1503r17 1511r31
+. 1514r16 1514r37 1515r29 1516r29 1530r17 1538r31 1541r16 1565r16 1565r37
+. 1571r46 1574r46 1577r46 1589r22 1596r16 1596r37 1602r46 1605r46 1618r22
+1401a10 Args{string} 1403r20 1413r16 1417r42
+1403e14 Ch=1403:20{character} 1404r16
+1440a16 Profile{string} 1442r19 1451r22 1460r22 1466r22 1472r22 1472r46 1478r22
+1636r7 RGB{22|6R9} 1648m38 1648r38 1650r28
+1662V13 Hex_Channel{string} 1662b13 1663>7 1664>7 1671l8 1671t19 1682s14
+. 1683s12 1684s12
+1663i7 Channel{22|4I12} 1667r32 1668r32
+1664b7 Lowercase{boolean} 1670r35 1670r67
+1667i7 Hi{natural} 1670r31
+1668i7 Lo{natural} 1670r63
+1679a7 P{string} 1682r10
+1742f7 R{long_float} 1745r54 1746r54 1754r21 1757r34 1759r30
+1743f7 G{long_float} 1745r73 1746r73 1755r29 1756r24 1759r34
+1744f7 B{long_float} 1745r76 1746r76 1755r33 1757r30
+1745f7 Max_C{long_float} 1747r38 1750r39 1754r13 1756r16
+1746f7 Min_C{long_float} 1747r46 1750r47
+1747f7 Diff{long_float} 1752r10 1753r17 1755r38 1757r39 1759r39
+1748f7 Hue{long_float} 1755m13 1757m13 1759m13 1761r13 1762m13 1762r20 1765r22
+1749f7 Sat{long_float} 1753m10 1765r41
+1750f7 Light{long_float} 1753r42 1765r59
+1772f7 R{long_float} 1775r54 1776r54 1782r21 1785r34 1787r30
+1773f7 G{long_float} 1775r73 1776r73 1783r29 1784r24 1787r34
+1774f7 B{long_float} 1775r76 1776r76 1783r33 1785r30
+1775f7 Max_C{long_float} 1777r38 1779r42 1779r75 1782r13 1784r16 1793r55
+1776f7 Min_C{long_float} 1777r46
+1777f7 Diff{long_float} 1779r68 1781r10 1783r38 1785r39 1787r39
+1778f7 Hue{long_float} 1783m13 1785m13 1787m13 1789r13 1790m13 1790r20 1793r22
+1779f7 Sat{long_float} 1793r41
+1796V13 Round_Percent{string} 1796b13 1796>28 1799l8 1799t21 1809s12 1810s12
+. 1821s12 1822s12
+1796f28 Value{long_float} 1798r26
+1805r7 Value{22|19R9} 1808r31 1809r27 1810r27
+1817r7 Value{22|25R9} 1820r31 1821r27 1822r27
+1825V13 Distance_Squared{natural} 1825b13 1825>31 1825>37 1831l8 1831t24
+. 1842s18
+1825r31 Left{22|6R9} 1826r41 1827r41 1828r41
+1825r37 Right{22|6R9} 1826r62 1827r64 1828r63
+1826i7 DR{integer} 1830r23 1830r28
+1827i7 DG{integer} 1830r33 1830r38
+1828i7 DB{integer} 1830r43 1830r48
+1837i7 Best_Index{positive} 1845m13 1848r43
+1838i7 Best_Dist{natural} 1843r20 1844m13
+1839i7 Dist{natural} 1842m10 1843r13 1844r26
+1841i11 Index{integer} 1842r63 1845r27
+1855i7 Avg_R{natural} 1866m10 1866r19 1875r22
+1856i7 Avg_G{natural} 1867m10 1867r19 1876r22
+1857i7 Avg_B{natural} 1868m10 1868r19 1877r22
+1858f7 Min_B{long_float} 1869m10 1869r35 1879r50
+1859f7 Max_B{long_float} 1870m10 1870r35 1879r42
+1865r11 Color=1865:20{22|6R9} 1866r27 1867r27 1868r27 1869r54 1870r54
+1874r10 Average{22|6R9} 1878r67
+1878a10 Name{string} 1886r65
+1879f10 Spread{long_float} 1881r16 1882r19
+1880a10 Spread_Label{string} 1887r22
+1891V13 Invalid_Text{26|21R9} 1891b13 1894l8 1894t20 1925s17 1967s17 2026s17
+. 2057s17 2097s17 2143s17
+1896V13 Hex_Text{string} 1896b13 1896>23 1899l8 1899t16 1947s26 1948s24 1949s26
+. 2041s29 2042s12
+1896r23 Color{22|6R9} 1898r36
+1901V13 Hue_Distance{long_float} 1901b13 1901>27 1901>33 1908l8 1908t20 1991s27
+1901f27 Left{long_float} 1902r33
+1901f33 Right{long_float} 1902r40
+1902f7 Diff{long_float} 1904r10 1905m10 1905r26 1907r14
+1914i7 Background_Index{positive} 1934m13 1947r44
+1915i7 Text_Index{positive} 1938m13 1948r42
+1916i7 Accent_Index{positive} 1942m13 1949r44
+1917f7 Best_Light{long_float} 1932r22 1933m13
+1918f7 Best_Dark{long_float} 1936r22 1937m13
+1919f7 Best_Accent{long_float} 1940r28 1941m13
+1920f7 Bright{long_float} 1929m10 1931r44 1932r13 1933r27 1936r13 1937r26
+1921f7 Sat{long_float} 1930m10 1931r26
+1922f7 Accent_Score{long_float} 1931m10 1940r13 1941r28
+1928i11 Index{integer} 1929r40 1930r30 1934r33 1938r27 1942r29
+1956i7 Saturated_Count{natural} 1973m13 1973r32 1979r10 1981r13
+1957f7 Min_Hue{long_float} 1974m13 1974r40 2009r23
+1958f7 Max_Hue{long_float} 1975m13 1975r40 2009r13
+1959f7 Max_Distance{long_float} 1992m19 1992r51 2003r10
+1960b7 Complementary{boolean} 1994m22 2007r13
+1961i7 Triadic_Pairs{natural} 1996m22 1996r39 2005r13
+1962r7 H1{22|19R9} 1971m10 1972r13 1974r49 1975r49 1986m10 1987r13 1991r41
+1963r7 H2{22|19R9} 1989m16 1990r19 1991r49
+1964f7 Diff{long_float} 1991m19 1992r65 1993r22 1993r45 1995r25 1995r47
+1970r11 Color=1970:20{22|6R9} 1971r21
+1985i11 I{integer} 1986r29 1988r22
+1988i17 J{integer} 1989r35
+2020i7 Best_Left{positive} 2034m16 2041r47
+2021i7 Best_Right{positive} 2035m16 2042r30
+2022f7 Best_Ratio{long_float} 2032r24 2033m16 2043r51
+2023f7 Ratio{long_float} 2031m13 2032r16 2033r30
+2029i11 I{integer} 2030r19 2031r46 2034r29
+2030i14 J{integer} 2031r58 2035r30
+2051i7 Normal_Pairs{natural} 2065m16 2065r32 2073r10 2075r27
+2052i7 Large_Pairs{natural} 2068m16 2068r31 2077r13 2079r27
+2053i7 Total_Pairs{natural} 2062m13 2062r28 2075r66 2079r65
+2054f7 Ratio{long_float} 2063m13 2064r16 2067r16
+2060i11 I{integer} 2061r19 2063r46
+2061i14 J{integer} 2063r58
+2090i7 Total{natural} 2106m16 2106r25 2126r26
+2091i7 Fail{natural} 2109m22 2109r30 2125r26
+2092i7 Large{natural} 2111m22 2111r31 2124r26
+2093i7 Normal{natural} 2113m22 2113r32 2123r26
+2094i7 Enhanced{natural} 2115m22 2115r34 2122r24
+2100i11 I{integer} 2101r19 2104r62
+2101i14 J{integer} 2104r74
+2103e16 Level{22|45E9} 2107r21
+2133f7 Avg_Brightness{long_float} 2148m10 2148r28 2159m7 2159r25 2162r13
+. 2163r16
+2134f7 Avg_Saturation{long_float} 2149m10 2149r28 2160m7 2160r25 2166r13
+. 2167r16
+2135i7 Warm_Count{natural} 2152m16 2152r30 2170r13 2171r29
+2136i7 Cool_Count{natural} 2154m16 2154r30 2170r26 2171r16
+2137r7 H{22|19R9} 2147m10 2149r45 2150r13 2151r16 2151r37 2153r19 2153r43
+2138r7 Tone{17|91R9} 2161m7 2175r21
+2139r7 Energy{17|91R9} 2165m7 2175r47
+2140r7 Temperature{17|91R9} 2169m7 2176r23
+2146r11 Color=2146:20{22|6R9} 2147r20 2148r57
+2183r7 Harmony{26|21R9} 2190r10 2191r17 2201r21
+2185r7 Mood{26|21R9} 2192r13 2193r17 2201r55
+2186r7 Accessibility{26|21R9} 2194r13 2195r17 2202r23
+2188r7 Roles{26|21R9} 2196r13 2197r17 2202r63
+2230f7 Value{long_float} 2232r10 2234r13 2236r13 2238r13
+2245V13 Linear_RGB_To_XYZ_D65{22|31R9} 2245b13 2245>36 2257l8 2257t29 2264s37
+2245r36 Color{22|6R9} 2247r22 2249r22 2251r22
+2246f7 R{long_float} 2254r35 2255r35 2256r35
+2248f7 G{long_float} 2254r51 2255r51 2256r51
+2250f7 B{long_float} 2254r67 2255r67 2256r67
+2264r7 XYZ65{22|31R9} 2266r21 2266r51 2267r23 2269r21 2269r51 2270r23 2272r21
+. 2272r51 2273r23
+2265f7 X50{long_float} 2289r42
+2268f7 Y50{long_float} 2290r42
+2271f7 Z50{long_float} 2291r42
+2274f7 XN{long_float} 2289r48
+2275f7 YN{long_float} 2290r48
+2276f7 ZN{long_float} 2291r48
+2277f7 Epsilon{long_float} 2282r21
+2278f7 Kappa{long_float} 2285r21
+2280V16 Pivot{long_float} 2280b16 2280>23 2287l11 2287t16 2289s35 2290s35
+. 2291s35
+2280f23 Value{long_float} 2282r13 2283r26 2285r29
+2289f7 FX{long_float} 2295r32
+2290f7 FY{long_float} 2294r31 2295r37 2296r32
+2291f7 FZ{long_float} 2296r37
+2304f7 R{long_float} 2310r49 2312r49 2314r49
+2306f7 G{long_float} 2310r68 2312r68 2314r68
+2308f7 B{long_float} 2311r26 2313r26 2315r26
+2310f7 L{long_float} 2316r41
+2312f7 M{long_float} 2317r41
+2314f7 S{long_float} 2318r41
+2316f7 L1{long_float} 2321r38 2323r38 2325r38
+2317f7 M1{long_float} 2321r58 2323r58 2325r58
+2318f7 S1{long_float} 2322r28 2324r28 2326r28
+2333r7 Value{22|19R9} 2334r38 2336r10
+2334f7 Hue{long_float} 2338r13 2338r32 2340r13 2342r13 2344r13 2346r13 2348r13
+. 2350r13 2352r13
+2363f7 Value{long_float} 2365r10 2367r13 2369r13 2371r13
+2382r7 Value{22|19R9} 2383r38 2385r10
+2383f7 Hue{long_float} 2387r13 2387r32 2389r13 2389r35
+2400r7 Value{22|37R9} 2403r12 2403r22 2403r32 2403r42
+2401f7 Chroma{long_float} 2406r10 2408r13 2410r13 2412r13
+2404f7 Light{long_float} 2408r36
+2432V13 Clamped_Opacity{long_float} 2432b13 2432>30 2441l8 2441t23 2447s40
+2432f30 Opacity{long_float} 2434r10 2436r13 2439r17
+2447f7 O{long_float} 2449r48 2451r13 2452r16 2453r16 2454r16
+2448a7 Percent{string} 2457r23
+2450a7 Label{string} 2457r40
+2460V13 Linear_Channel{long_float} 2460b13 2460>29 2469l8 2469t22 2476s23
+. 2477s20 2478s20
+2460i29 Channel{22|4I12} 2461r46
+2461f7 C{long_float} 2463r10 2464r17 2467r14
+2486f7 F{long_float} 2488r56 2489r56
+2487f7 B{long_float} 2488r59 2489r59
+2488f7 Lighter{long_float} 2491r15
+2489f7 Darker{long_float} 2491r34
+2510V13 Ratio_Text{string} 2510b13 2510>25 2513l8 2513t18 2537s10
+2510f25 Ratio{long_float} 2512r53
+2515V13 Contrast_Level_Label{string} 2515b13 2515>35 2527l8 2527t28 2538s12
+2515e35 Level{22|45E9} 2517r12
+2534f7 Ratio{long_float} 2537r22 2538r54
+2565f7 F{long_float} 2567r41
+2566f7 B{long_float} 2568r41
+2567f7 Fp{long_float} 2570r20
+2568f7 Bp{long_float} 2570r15
+2573V13 APCA_Strength_Label{string} 2573b13 2573>34 2586l8 2586t27 2601s19
+2573f34 Magnitude{long_float} 2575r10 2577r13 2579r13 2581r13
+2593f7 Score{long_float} 2594r46 2596r13
+2594f7 Magnitude{long_float} 2600r57 2601r40
+2595a7 Polarity{string} 2601r60
+2604V13 Simulated_CVD{22|6R9} 2604b13 2605>7 2606>7 2637l8 2637t21 2675s41
+. 2676s41 2698s18 2699s18
+2605r7 Color{22|6R9} 2609r46 2610r46 2611r46
+2606e7 Deficiency{22|51E9} 2613r12
+2609f7 R{long_float} 2616r53 2617r53 2621r53 2622r53 2626r53 2632r46
+2610f7 G{long_float} 2616r65 2617r65 2618r53 2621r65 2622r65 2623r53 2626r65
+. 2627r53 2628r53 2632r58
+2611f7 B{long_float} 2618r65 2623r65 2627r65 2628r65 2632r70
+2631i16 Y{22|4I12} 2634r24 2634r27 2634r30
+2639V13 Deficiency_Name{string} 2639b13 2640>7 2654l8 2654t23 2681s10 2708s14
+2640e7 Deficiency{22|51E9} 2644r12
+2656V13 CVD_Risk_Label{string} 2656b13 2656>29 2667l8 2667t22 2682s12 2708s46
+2656f29 Difference{long_float} 2658r10 2660r13 2662r13
+2675r7 Sim_Left{22|6R9} 2678r35
+2676r7 Sim_Right{22|6R9} 2678r45
+2677f7 Difference{long_float} 2682r28 2683r51
+2686V13 Worst_CVD_Risk{string} 2686b13 2687>7 2688>7 2709l8 2709t22 2723s19
+2687r7 Foreground{22|6R9} 2698r33
+2688r7 Background{22|6R9} 2699r33
+2691f7 Worst_Delta{long_float} 2701r29 2702m16 2708r62
+2692e7 Worst{22|51E9} 2703m16 2708r31
+2694e11 Deficiency{22|51E9} 2698r45 2699r45 2703r25
+2696f13 Difference{long_float} 2701r16 2702r31
+2716r7 WCAG{26|21R9} 2722r21
+2718r7 APCA{26|21R9} 2722r52
+2732f7 DR{long_float} 2739r20 2739r25
+2734f7 DG{long_float} 2739r30 2739r35
+2736f7 DB{long_float} 2739r40 2739r45
+2748f7 Value{long_float} 2750r13 2751r16 2752r16 2753r16 2756r35
+2749a7 Label{string} 2756r54
+2765r7 L{22|31R9} 2767r35 2768r35 2769r35
+2766r7 R{22|31R9} 2767r49 2768r41 2769r41
+2767f7 DL{long_float} 2771r20 2771r25
+2768f7 DA{long_float} 2771r30 2771r35
+2769f7 DB{long_float} 2771r40 2771r45
+2780r7 L{22|37R9} 2782r35 2783r35 2784r35
+2781r7 R{22|37R9} 2782r49 2783r41 2784r41
+2782f7 DL{long_float} 2786r20 2786r25
+2783f7 DA{long_float} 2786r30 2786r35
+2784f7 DB{long_float} 2786r40 2786r45
+2794f7 Value{long_float} 2796r13 2797r16 2798r16 2799r16 2800r16 2803r52
+2795a7 Label{string} 2803r71
+X 24 humanize-decimal_images.ads
+3K26*Decimal_Images 23|6w15 170r23 2043r21 2449r18 2512r23 2600r27 2683r21
+. 24|13e28
+7V13*Decimal_Image{string} 23|170s38 2043s36 2449s33 2512s38 2600s42 2683s36
+X 25 humanize-messages.ads
+1K18*Messages 23|7w15 17r29 25|139e22
+9n7*No_Message{8E9} 23|17r38
+X 26 humanize-status.ads
+4K18*Status 22|1w15 60r23 68r23 76r23 86r23 98r23 108r23 115r23 122r23 140r23
+. 146r23 164r23 170r23 176r23 182r23 188r23 194r23 200r23 206r23 212r23 218r23
+. 224r23 230r23 236r23 242r23 248r23 260r23 266r23 293r23 301r23 317r23 326r23
+. 335r23 351r23 375r23 384r32 398r30 409r30 420r30 430r30 440r30 450r30 460r30
+. 470r30 480r30 490r30 500r30 510r30 520r30 530r30 540r30 550r30 560r30 570r30
+. 580r30 590r30 600r30 610r30 621r33 633r33 645r33 658r33 671r33 683r30 695r30
+. 23|10r22 12r53 15r29 24r30 29r29 36r29 42r29 47r26 50r30 53r36 204r23 228r26
+. 234r26 238r29 243r29 248r29 251r26 259r32 264r29 267r26 566r23 572r26 578r29
+. 582r23 1634r23 1645r26 1647r26 1648r54 1654r26 1656r26 1658r26 1677r23
+. 1693r23 1702r23 1714r23 1726r23 1803r23 1815r23 1835r23 1853r23 1862r37
+. 1891r42 1893r34 1912r23 1954r23 2018r23 2049r23 2088r23 2131r23 2181r23
+. 2183r35 2185r32 2186r41 2188r33 2190r37 2192r37 2194r46 2196r38 2207r23
+. 2228r23 2331r23 2361r23 2380r23 2398r23 2421r23 2445r23 2532r23 2544r23
+. 2591r23 2673r23 2714r23 2716r32 2718r32 2746r23 2792r23 2810r32 2823r30
+. 2834r30 2844r30 2854r30 2864r30 2874r30 2884r30 2894r30 2904r30 2914r30
+. 2924r30 2934r30 2944r30 2954r30 2964r30 2975r30 2986r30 2997r30 3007r30
+. 3017r30 3027r30 3037r30 3048r33 3060r33 3072r33 3085r33 3098r33 3111r30
+. 3123r30 26|41e20
+8E9*Status_Code 22|60r30 68r30 76r30 384r39 398r37 409r37 420r37 430r37 440r37
+. 450r37 460r37 470r37 480r37 490r37 500r37 510r37 520r37 530r37 540r37 550r37
+. 560r37 570r37 580r37 590r37 600r37 610r37 621r40 633r40 645r40 658r40 671r40
+. 683r37 695r37 23|10r29 24r37 50r37 204r30 566r30 1634r30 2810r39 2823r37
+. 2834r37 2844r37 2854r37 2864r37 2874r37 2884r37 2894r37 2904r37 2914r37
+. 2924r37 2934r37 2944r37 2954r37 2964r37 2975r37 2986r37 2997r37 3007r37
+. 3017r37 3027r37 3037r37 3048r40 3060r40 3072r40 3085r40 3098r40 3111r37
+. 3123r37 26|18e22
+9n7*Ok{8E9} 23|15r36 42r36 53r43 251r33 264r36 572r33 578r36 1645r33 1647r33
+. 1648r61 1654r33 1656r33 2190r44 2192r44 2194r53 2196r45
+10n7*Invalid_Value{8E9} 23|228r33 234r33 238r36 243r36 248r36 259r39 267r33
+. 582r30 1658r33 1862r44 1893r41
+11n7*Invalid_Options{8E9} 23|29r36
+17n7*Buffer_Overflow{8E9} 23|36r36
+21R9*Text_Result 22|86r30 98r30 108r30 115r30 122r30 140r30 146r30 164r30
+. 170r30 176r30 182r30 188r30 194r30 200r30 206r30 212r30 218r30 224r30 230r30
+. 236r30 242r30 248r30 260r30 266r30 293r30 301r30 317r30 326r30 335r30 351r30
+. 375r30 23|12r60 47r33 1677r30 1693r30 1702r30 1714r30 1726r30 1803r30 1815r30
+. 1835r30 1853r30 1891r49 1912r30 1954r30 2018r30 2049r30 2088r30 2131r30
+. 2181r30 2183r42 2185r39 2186r48 2188r40 2207r30 2228r30 2331r30 2361r30
+. 2380r30 2398r30 2421r30 2445r30 2532r30 2544r30 2591r30 2673r30 2714r30
+. 2716r39 2718r39 2746r30 2792r30 26|25e14
+22e7*Status{8E9} 23|15m10 53r17 55r27 1862m18 1893m15 2190r18 2192r18 2194r27
+. 2196r19
+23r7*Text{17|91R9} 23|16m10 57r39 1878r76 1898r43 2201r29 2201r60 2202r37
+. 2202r69 2211r39 2212r41 2425r46 2426r48 2427r48 2428r49 2429r44 2722r26
+. 2722r57
+24e7*Key{25|8E9} 23|17m10
+X 28 system.ads
+67M9*Address
+X 46 s-memory.ads
+51V13*Alloc{28|67M9} 101i<c,__gnat_malloc>22
+66U14*Free 102i<c,__gnat_free>22
+74V13*Realloc{28|67M9} 103i<c,__gnat_realloc>22
+X 55 s-stalib.adb
+87U14 Break_Start 88i<c,__gnat_break_start>22
+

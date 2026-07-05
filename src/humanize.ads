@@ -6,4 +6,10 @@
 --  rules, or catalog rendering -- those belong to i18n.
 package Humanize is
    pragma Preelaborate;
+
+   type Rendering_Source is
+     (Locale_Rendered,
+      Deterministic_Text);
+   --  Locale_Rendered means output is rendered through i18n catalogs.
+   --  Deterministic_Text means Humanize owns the fixed wording directly.
 end Humanize;

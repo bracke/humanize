@@ -29,9 +29,14 @@ package Humanize.Messages is
       Datetime_Relative_Year_Future,
 
       Duration_Unit_Second,
+      Duration_Unit_Millisecond,
+      Duration_Unit_Microsecond,
       Duration_Unit_Minute,
       Duration_Unit_Hour,
       Duration_Unit_Day,
+      Duration_Unit_Week,
+      Duration_Unit_Month,
+      Duration_Unit_Year,
 
       Bytes_Byte,
       Bytes_KB,
@@ -57,6 +62,7 @@ package Humanize.Messages is
       Number_Compact_Long_Trillion,
 
       Number_Percent,
+      Number_Bounded,
 
       Unit_Meter,
       Unit_Kilometer,
@@ -67,8 +73,58 @@ package Humanize.Messages is
       Unit_Milligram,
       Unit_Liter,
       Unit_Milliliter,
+      Unit_Celsius,
+      Unit_Fahrenheit,
+      Unit_Square_Meter,
+      Unit_Hectare,
+      Unit_Kilometer_Per_Hour,
+      Unit_Meter_Per_Second,
+      Unit_Pascal,
+      Unit_Kilopascal,
+      Unit_Joule,
+      Unit_Kilojoule,
+      Unit_Watt,
+      Unit_Kilowatt,
+      Unit_Hertz,
+      Unit_Kilohertz,
+      Unit_Degree,
+      Unit_Mile,
+      Unit_Yard,
+      Unit_Foot,
+      Unit_Inch,
+      Unit_Nautical_Mile,
+      Unit_Acre,
+      Unit_Square_Kilometer,
+      Unit_Cubic_Meter,
+      Unit_Teaspoon,
+      Unit_Tablespoon,
+      Unit_Cup,
+      Unit_Gallon,
+      Unit_Pound,
+      Unit_Ounce,
+      Unit_Stone,
+      Unit_Tonne,
+      Unit_Ton,
 
-      List_And);
+      List_And,
+      List_Other,
+      List_Others,
+
+      Frequency_Never,
+      Frequency_Once,
+      Frequency_Twice,
+      Frequency_Times,
+
+      Rate_Per_Second,
+      Rate_Per_Minute,
+      Rate_Per_Hour,
+      Rate_Per_Day,
+      Rate_Per_Week,
+      Rate_Less_Than_Per_Second,
+      Rate_Less_Than_Per_Minute,
+      Rate_Less_Than_Per_Hour,
+      Rate_Less_Than_Per_Day,
+      Rate_Less_Than_Per_Week);
 
    --  Return the stable catalog key for Id.
    --
@@ -77,5 +133,7 @@ package Humanize.Messages is
    function Key
      (Id : Message_Id)
       return String;
+   --  @param Id Semantic message identifier.
+   --  @return Stable catalog key for Id, or the empty string for No_Message.
 
 end Humanize.Messages;

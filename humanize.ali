@@ -1,0 +1,16 @@
+V "GNAT Lib v13"
+P ZX
+
+RN
+
+U humanize%s		humanize.ads		ae4af322 NE OO PR PK
+
+D humanize.ads		20260703193357 ae4af322 humanize%s
+D system.ads		20240521074738 426dafb8 system%s
+G a e
+X 1 humanize.ads
+7K9*Humanize 15l5 15e13
+10E9*Rendering_Source 12e26
+11n7*Locale_Rendered{10E9}
+12n7*Deterministic_Text{10E9}
+

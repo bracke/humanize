@@ -10,14 +10,20 @@ package body Humanize.Duration_Classification is
          when Second => 1,
          when Minute => 60,
          when Hour   => 3600,
-         when Day    => 86_400);
+         when Day    => 86_400,
+         when Week   => 7 * 86_400,
+         when Month  => 30 * 86_400,
+         when Year   => 365 * 86_400);
 
    function Unit_Key (Unit : Duration_Unit) return Message_Id is
      (case Unit is
          when Second => Duration_Unit_Second,
          when Minute => Duration_Unit_Minute,
          when Hour   => Duration_Unit_Hour,
-         when Day    => Duration_Unit_Day);
+         when Day    => Duration_Unit_Day,
+         when Week   => Duration_Unit_Week,
+         when Month  => Duration_Unit_Month,
+         when Year   => Duration_Unit_Year);
 
    function Selected
      (Unit  : Duration_Unit;

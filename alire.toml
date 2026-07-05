@@ -10,7 +10,7 @@ website = ""
 tags = ["i18n", "humanize", "localization"]
 
 [[depends-on]]
-i18n = "*"
+i18n = ">=1.1.0"
 
 [[pins]]
 i18n = { path = "../i18n" }

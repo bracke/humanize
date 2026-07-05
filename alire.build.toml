@@ -1,0 +1,20 @@
+name = "humanize"
+description = "Localized humanization of datetimes, durations, bytes, numbers, units"
+version = "0.5.0"
+
+authors = ["Bent Bracke"]
+maintainers = ["Bent Bracke <bent@bracke.dk>"]
+maintainers-logins = ["bracke"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = ["i18n", "humanize", "localization"]
+
+[[depends-on]]
+i18n = ">=1.1.0"
+
+[[actions]]
+type = "test"
+command = ["sh", "-c", "cd tests && alr build && ./bin/tests"]
+
+[[pins]]
+i18n = { path = "../i18n" }

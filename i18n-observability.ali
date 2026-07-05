@@ -1,0 +1,133 @@
+V "GNAT Lib v13"
+A -gnat2022
+A -gnatX
+P SS ZX
+
+RN
+RV NO_ACCESS_SUBPROGRAMS
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTIONS
+RV NO_IMPLICIT_CONDITIONALS
+RV NO_PROTECTED_TYPES
+RV NO_SECONDARY_STACK
+RV NO_DEFAULT_INITIALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLICIT_LOOPS
+RV NO_ELABORATION_CODE
+RV MAX_ENTRY_QUEUE_LENGTH=1+
+
+U i18n.observability%b	i18n-observability.adb	47860e3c OO PK IU
+W i18n%s		i18n.ads		i18n.ali
+Z system%s		system.ads		system.ali
+Z system.atomic_primitives%s  s-atopri.adb	s-atopri.ali
+Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+Z system.tasking%s	s-taskin.adb		s-taskin.ali
+Z system.tasking.protected_objects%s  s-taprob.adb  s-taprob.ali
+
+U i18n.observability%s	i18n-observability.ads	1a4fb1b7 EE NE OO PK IU
+W i18n%s		i18n.ads		i18n.ali
+
+D ada.ads		20240521074738 76789da1 ada%s
+D a-except.ads		20240521074738 2a7d8d70 ada.exceptions%s
+D a-unccon.ads		20240521074738 0e9b276f ada.unchecked_conversion%s
+D i18n.ads		20260630205449 fa948552 i18n%s
+D i18n-observability.ads  20260629183815 e0db34e5 i18n.observability%s
+D i18n-observability.adb  20260516093550 a75d3ad9 i18n.observability%b
+D interfac.ads		20240521074738 15f799c2 interfaces%s
+D i-c.ads		20240521074738 5c5a6c17 interfaces.c%s
+D system.ads		20240521074738 426dafb8 system%s
+D s-atacco.ads		20240521074738 903317eb system.address_to_access_conversions%s
+D s-atopri.ads		20240521074738 1b132436 system.atomic_primitives%s
+D s-c_time.ads		20251218205951 535885c5 system.c_time%s
+D s-exctab.ads		20240521074738 91bef6ef system.exception_table%s
+D s-linux.ads		20251218205951 96312dab system.linux%s
+D s-multip.ads		20240521074738 38ac9f73 system.multiprocessors%s
+D s-oscons.ads		20251218205951 ece202eb system.os_constants%s
+D s-osinte.ads		20251218205951 a8f58951 system.os_interface%s
+D s-parame.ads		20251218205951 1f39ba92 system.parameters%s
+D s-secsta.ads		20240521074738 578279f5 system.secondary_stack%s
+D s-soflin.ads		20240521074738 df77073e system.soft_links%s
+D s-stache.ads		20240521074738 0b81c1fe system.stack_checking%s
+D s-stausa.ads		20240521074738 5be75682 system.stack_usage%s
+D s-stalib.ads		20240521074738 1c9580f6 system.standard_library%s
+D s-stoele.ads		20240521074738 ab5468e4 system.storage_elements%s
+D s-tasinf.ads		20240521074737 528dde74 system.task_info%s
+D s-taspri.ads		20240521074737 4ec891e7 system.task_primitives%s
+D s-taskin.ads		20240521074737 0ec7ab0b system.tasking%s
+D s-taprob.ads		20240521074737 acd6094d system.tasking.protected_objects%s
+D s-traent.ads		20240521074738 c81cbf8c system.traceback_entries%s
+D s-unstyp.ads		20240521074738 fa2a7f59 system.unsigned_types%s
+G a e
+G c Z s b [set_trace_callback i18n__observability 34 14 none]
+G c Z s b [current_trace_callback i18n__observability 40 13 none]
+G c Z s b [emit i18n__observability 50 14 none]
+G c Z s b [set_message_key i18n__observability 58 14 none]
+G c Z s b [set_locale i18n__observability 66 14 none]
+G c Z s b [message_key i18n__observability 72 13 none]
+G c Z s b [locale i18n__observability 78 13 none]
+G c Z s s [execution_metadataIP i18n__observability 21 9 none]
+G c Z b b [set i18n__observability__callback_state 4 17 none]
+G c Z b b [get i18n__observability__callback_state 6 16 none]
+G c Z b b [callback_state__setN i18n__observability 4 7 none]
+G c Z b b [callback_state__setP i18n__observability 4 7 none]
+G c Z b b [callback_state__getN i18n__observability 6 7 none]
+G c Z b b [callback_state__getP i18n__observability 6 7 none]
+G c Z b b [callback_stateTVIP i18n__observability 3 4 none]
+G c Z b b [copy_text i18n__observability 28 14 none]
+X 4 i18n.ads
+16K9*I18N 19e9 5|1r17 82r5 6|1r14 121r5
+X 5 i18n-observability.ads
+1K22*Observability 4|16k9 5|82l10 82e23 6|1b19 121l10 121t23
+3E9*Trace_Event_Kind 10e19 13r15 51r15 6|59r15
+4n7*Message_Start{3E9}
+5n7*Op_Text{3E9}
+6n7*Op_Variable{3E9}
+7n7*Op_Plural{3E9}
+8n7*Op_Select{3E9}
+9n7*Op_Ordinal{3E9}
+10n7*Message_End{3E9}
+12P9*Trace_Callback 13>7 14>7 35r12 41r14 6|5r15 7r17 9r20 14r15 21r17 45r12
+. 52r14 62r21
+13e7 Event{3E9}
+14a7 Key{string}
+16i4*Message_Key_Capacity{positive} 22r39
+17i4*Locale_Capacity{positive} 24r39
+21R9*Execution_Metadata 27e14 59r25 67r25 73r18 79r18 6|78r25 89r25 100r18
+. 111r18
+22a7*Message_Key{string} 6|84m29 107r23
+23i7*Message_Key_Last{natural} 6|85m29 104r19 107r50
+24a7*Locale{string} 6|95m29 118r23
+25i7*Locale_Last{natural} 6|96m29 115r19 118r45
+26i7*Depth{natural}
+34U14*Set_Trace_Callback 35>7 6|44b14 49l8 49t26
+35p7 CB{12P9} 6|45b7 48r27
+40V13*Current_Trace_Callback{12P9} 6|51b13 56l8 56t30
+50U14*Emit 51>7 52>7 6|58b14 75l8 75t12
+51e7 Event{3E9} 6|59b7 66r21
+52a7 Key{string} 6|60b7 66r28
+58U14*Set_Message_Key 59=7 60>7 6|77b14 86l8 86t23
+59r7 Metadata{21R9} 6|78b7 84m20 84r20 85m20 85r20
+60a7 Value{string} 6|79b7 83r20
+66U14*Set_Locale 67=7 68>7 6|88b14 97l8 97t18
+67r7 Metadata{21R9} 6|89b7 95m20 95r20 96m20 96r20
+68a7 Value{string} 6|90b7 94r20
+72V13*Message_Key{string} 73>7 6|99b13 108l8 108t19
+73r7 Metadata{21R9} 6|100b7 104r10 107r14 107r41
+78V13*Locale{string} 79>7 6|110b13 119l8 119t14
+79r7 Metadata{21R9} 6|111b7 115r10 118r14 118r36
+X 6 i18n-observability.adb
+3w14 Callback_State 12b19 26l8 26t22 48r7 55r14 62r39
+4U17 Set 5>10 13b17 18l11 18t14 48s22
+5p10 CB{5|12P9} 14b10 17r24
+6V16 Get{5|12P9} 20b16 25l11 25t14 55s29 62s54
+9p7 Current_CB{5|12P9} 17r10 24r17
+28U14 Copy_Text 28b14 29>7 30<7 31<7 42l8 42t17 82s7 93s7
+29a7 Source{string} 36r10 37r36 39r12 39r20 39r36 83r10 94r10
+30a7 Target{string} 35m7 37r51 38m10 38r18 38r34 84r10 95r10
+31i7 Last{natural} 41m7 85r10 96r10
+33i7 Copy_Last{natural} 37m10 38r49 39r51 41r15
+62p7 CB{5|12P9} 64r10 66r13
+X 22 s-stausa.ads
+207U14*Initialize 208i<c,__gnat_stack_usage_initialize>22
+272U14*Output_Results 276i<c,__gnat_stack_usage_output_results>22
+
