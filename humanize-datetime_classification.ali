@@ -1,0 +1,185 @@
+V "GNAT Lib v13"
+A -gnatc
+A -gnat2022
+P NO
+
+RN
+RV NO_CALENDAR
+RV NO_DELAY
+RV NO_FIXED_POINT
+RV NO_LONG_LONG_INTEGERS
+RV NO_ELABORATION_CODE
+
+U humanize.datetime_classification%b  humanize-datetime_classification.adb  026b76de OO PK
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W humanize%s		humanize.ads		humanize.ali
+W humanize.messages%s	humanize-messages.adb	humanize-messages.ali
+
+U humanize.datetime_classification%s  humanize-datetime_classification.ads  a015dcf7 EE OO PK
+W ada%s			ada.ads			ada.ali
+W ada.calendar%s	a-calend.adb		a-calend.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W humanize%s		humanize.ads		humanize.ali
+W humanize.datetimes%s	humanize-datetimes.adb	humanize-datetimes.ali
+W humanize.selections%s	humanize-selections.adb	humanize-selections.ali
+
+D ada.ads		20240521074738 76789da1 ada%s
+D a-calend.ads		20251218205951 e6961b4c ada.calendar%s
+D a-charac.ads		20240521074737 2d3ec45b ada.characters%s
+D a-chlat1.ads		20240521074737 e0d72e76 ada.characters.latin_1%s
+D a-contai.ads		20240521074737 61e5e089 ada.containers%s
+D a-cohata.ads		20240521074737 c4f77997 ada.containers.hash_tables%s
+D a-conhel.ads		20240521074737 46fe1ce3 ada.containers.helpers%s
+D a-cihama.ads		20240521074737 42861819 ada.containers.indefinite_hashed_maps%s
+D a-convec.ads		20240521074737 91fb49f3 ada.containers.vectors%s
+D a-finali.ads		20240521074738 bf4f806b ada.finalization%s
+D a-iteint.ads		20240521074738 49a8bee2 ada.iterator_interfaces%s
+D a-stream.ads		20240521074738 119b8fb3 ada.streams%s
+D a-string.ads		20240521074738 90ac6797 ada.strings%s
+D a-strhas.ads		20240521074738 e06866e7 ada.strings.hash%s
+D a-strmap.ads		20240521074738 ed8acfdb ada.strings.maps%s
+D a-sttebu.ads		20240521074738 f1ad67a2 ada.strings.text_buffers%s
+D a-strunb.ads		20240521074738 7bfb7010 ada.strings.unbounded%s
+D a-stuten.ads		20240521074738 c6ced0ae ada.strings.utf_encoding%s
+D a-unccon.ads		20240521074738 0e9b276f ada.unchecked_conversion%s
+D humanize.ads		20260703193357 ae4af322 humanize%s
+D humanize-contexts.ads	20260704135231 90484d74 humanize.contexts%s
+D humanize-datetime_classification.ads  20260702210132 23609fb3 humanize.datetime_classification%s
+D humanize-datetime_classification.adb  20260704025348 e0d11aa5 humanize.datetime_classification%b
+D humanize-datetimes.ads  20260705095253 981f21f7 humanize.datetimes%s
+D humanize-durations.ads  20260706003954 e85aa164 humanize.durations%s
+D humanize-messages.ads	20260704135231 c1daf3c8 humanize.messages%s
+D humanize-selections.ads  20260702210132 53b68add humanize.selections%s
+D humanize-status.ads	20260704135231 5d58386c humanize.status%s
+D i18n.ads		20260630205449 fa948552 i18n%s
+D i18n-arguments.ads	20260630205449 e9b3e75b i18n.arguments%s
+D i18n-ast.ads		20260701175824 2f31558b i18n.ast%s
+D i18n-compiled.ads	20260701181345 eb3a3ade i18n.compiled%s
+D i18n-diagnostics.ads	20260629183815 cb556ee3 i18n.diagnostics%s
+D i18n-errors.ads	20260629183815 df9fe2a5 i18n.errors%s
+D i18n-locales.ads	20260706004255 009a6e8f i18n.locales%s
+D i18n-result.ads	20260630205449 6bc1a2e0 i18n.result%s
+D i18n-runtime.ads	20260705233714 0d33f77d i18n.runtime%s
+D interfac.ads		20240521074738 15f799c2 interfaces%s
+D system.ads		20240521074738 426dafb8 system%s
+D s-atocou.ads		20240521074738 dc18efc3 system.atomic_counters%s
+D s-finroo.ads		20240521074738 4ff27390 system.finalization_root%s
+D s-unstyp.ads		20240521074738 fa2a7f59 system.unsigned_types%s
+G a e
+G c Z s b [classify humanize__datetime_classification 10 13 none]
+G c Z b b [days_from_civil humanize__datetime_classification 15 13 none]
+G c Z b b [date_ordinal humanize__datetime_classification 32 13 none]
+G c Z b b [rounded_count humanize__datetime_classification 45 13 none]
+G r c none [classify humanize__datetime_classification 10 13 none] [no_arg humanize__selections 29 13 none]
+G r c none [classify humanize__datetime_classification 10 13 none] [count humanize__selections 34 13 none]
+X 1 ada.ads
+16K9*Ada 20e8 22|1r6 11r19 12r19 23|7r13 33r11 36r17 37r17 38r17 39r17 41r7
+. 63r19 64r19
+X 2 a-calend.ads
+36K13*Calendar 402e17 22|1w10 11r23 12r23 23|7r17 33r15 36r21 37r21 38r21
+. 39r21 41r11 63r23 64r23
+42I9*Time<226I9> 22|11r32 12r32 23|7r26 33r24 63r32 64r32
+48I12*Year_Number{integer} 23|36r30
+49I12*Month_Number{integer} 23|37r30
+50I12*Day_Number{integer} 23|38r30
+54O12*Day_Duration{duration} 23|39r30
+72U14*Split 23|41s20
+112V14*"-"{duration} 23|77s28 80s32
+122V14*">"{boolean} 23|78s29
+123V14*">="{boolean} 23|76s16
+226I9 Time_Rep<long_long_integer>
+X 11 a-iteint.ads
+24h9 Forward_Iterator
+32h9 Reversible_Iterator<24R9[9|119]>
+X 20 humanize.ads
+7K9*Humanize 15e13 22|2r6 3r6 8r17 13r19 14r14 16r5 23|1r6 3r14 5r8 6r8 48r17
+. 53r15 55r15 57r15 65r19 66r14 68r16 99r18 108r18 115r18 181r17 185r5
+X 22 humanize-datetime_classification.ads
+8K26*Datetime_Classification 20|7k9 22|16l14 16e37 23|3b23 185l14 185t37
+10V13*Classify{27|20R9} 11>7 12>7 13>7 23|62b13 183l8 183t16
+11i7 Value{2|42I9} 23|63b7 76r10 77r22 78r23 80r34 95r34
+12i7 Reference{2|42I9} 23|64b7 76r19 77r30 78r31 80r22 95r57
+13r7 Options{24|26R9} 23|65b7 90r40 97r10 98r15 134r45 141r43 148r42 153r35
+. 155r46 160r36 162r47 169r48
+X 23 humanize-datetime_classification.adb
+9N4 Seconds_Per_Minute 126r23 134r25
+10N4 Seconds_Per_Hour 132r26 141r25
+11N4 Seconds_Per_Day 122r58 139r26 148r25 155r29 162r30 169r31
+15V13 Days_From_Civil{long_long_integer} 15b13 16>7 17>7 18>7 29l8 29t23
+. 42s14
+16i7 Y{integer} 21r49 21r60
+17i7 M{integer} 21r37 24r37 24r48 24r59
+18i7 D{integer} 25r54
+21i7 Yr{integer} 22r37 22r50 22r58 23r33
+22i7 Era{integer} 23r38 28r33
+23i7 YOE{integer} 26r33 26r45 26r55
+24i7 MP{integer} 25r40
+25i7 DOY{integer} 26r67
+26i7 DOE{integer} 28r68
+32V13 Date_Ordinal{long_long_integer} 32b13 33>7 43l8 43t20 95s20 95s43
+33i7 T{2|42I9} 41r27
+36i7 Year{2|48I12} 41m30 42r40
+37i7 Month{2|49I12} 41m36 42r56
+38i7 Day{2|50I12} 41m43 42r73
+39o7 Seconds{2|54O12} 41m48
+45V13 Rounded_Count{long_long_integer} 45b13 46>7 47>7 48>7 60l8 60t21 133s22
+. 140s22 147s22 154s22 161s22 168s22
+46i7 Elapsed{long_long_integer} 54r20 56r21 58r21
+47i7 Unit{long_long_integer} 54r30 56r31 56r43 58r31 58r43
+48e7 Mode{24|19E9} 52r12
+70o7 Abs_Diff{duration} 77m10 80m10 84r37 85r31
+71i7 Elapsed{long_long_integer} 84m7 85r20 86m10 86r21 90r10 122r48 126r13
+. 127r22 132r16 134r16 139r16 141r16 148r16 155r16 162r16 169r16
+72b7 Is_Future{boolean} 78m10 81m10 129r19 136r19 143r19 150r19 157r19 164r19
+. 171r19
+73i7 Day_Delta{long_long_integer} 95m7 100r19 102r22 104r22 109r19 111r22
+122i10 Days{long_long_integer} 146r16 153r16 160r16
+123i10 Count{long_long_integer} 127m13 133m13 140m13 147m13 154m13 161m13
+. 168m13 177r13 178m13 181r62
+124e10 Key{26|8E9} 128m13 135m13 142m13 149m13 156m13 163m13 170m13 181r44
+X 24 humanize-datetimes.ads
+12K18*Datetimes 22|2w15 13r28 23|48r26 53r24 55r24 57r24 65r28 68r25 99r27
+. 108r27 115r27 24|873e23
+14E9*Relative_Style 23|68r35 24|17e16
+15n7*Auto{14E9} 23|108r37
+16n7*Elapsed{14E9} 23|115r37
+17n7*Calendar{14E9} 23|99r37
+19E9*Relative_Rounding_Mode 23|48r36 24|22e16
+20n7*Round_Down{19E9} 23|53r34
+21n7*Round_Nearest{19E9} 23|55r34
+22n7*Round_Up{19E9} 23|57r34
+26R9*Datetime_Options 22|13r38 23|65r38 24|35e14
+27e7*Style{14E9} 23|98r23
+28i7*Now_Threshold_Seconds{natural} 23|90r48
+29b7*Use_Calendar_Words{boolean} 23|97r18
+30b7*Prefer_Weeks{boolean} 23|153r43
+31b7*Prefer_Months{boolean} 23|160r44
+32e7*Rounding{19E9} 23|134r53 141r51 148r50 155r54 162r55 169r56
+X 26 humanize-messages.ads
+1K18*Messages 23|1w15 5r17 26|139e22
+8E9*Message_Id 23|124r18 26|127e31
+11n7*Datetime_Now{8E9} 23|91r25
+12n7*Datetime_Day_Previous{8E9} 23|101r34 110r34
+13n7*Datetime_Day_Current{8E9} 23|103r34
+14n7*Datetime_Day_Next{8E9} 23|105r34 112r34
+16n7*Datetime_Relative_Second_Past{8E9} 23|131r21
+17n7*Datetime_Relative_Second_Future{8E9} 23|130r21
+18n7*Datetime_Relative_Minute_Past{8E9} 23|138r21
+19n7*Datetime_Relative_Minute_Future{8E9} 23|137r21
+20n7*Datetime_Relative_Hour_Past{8E9} 23|145r21
+21n7*Datetime_Relative_Hour_Future{8E9} 23|144r21
+22n7*Datetime_Relative_Day_Past{8E9} 23|152r21
+23n7*Datetime_Relative_Day_Future{8E9} 23|151r21
+24n7*Datetime_Relative_Week_Past{8E9} 23|159r21
+25n7*Datetime_Relative_Week_Future{8E9} 23|158r21
+26n7*Datetime_Relative_Month_Past{8E9} 23|166r21
+27n7*Datetime_Relative_Month_Future{8E9} 23|165r21
+28n7*Datetime_Relative_Year_Past{8E9} 23|173r21
+29n7*Datetime_Relative_Year_Future{8E9} 23|172r21
+X 27 humanize-selections.ads
+9K26*Selections 22|3w15 14r23 23|6r17 66r23 181r26 27|60e24
+11I12*Count_Value{long_long_integer} 23|181r49
+20R9*Message_Selection 22|14r34 23|66r34 27|26e14
+29V13*No_Arg{20R9} 23|91s17 101s26 103s26 105s26 110s26 112s26
+34V13*Count{20R9} 23|181s37
+

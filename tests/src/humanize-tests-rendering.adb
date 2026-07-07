@@ -487,6 +487,12 @@ package body Humanize.Tests.Rendering is
         Humanize.Lists.Others_Count (Support.En, "Ada", 4);
       Selection_Summary : constant Text_Result :=
         Humanize.Lists.Selection_Summary (Support.En, 0, 5, "item");
+      Filtered : constant Text_Result :=
+        Humanize.Lists.Filtered_Count (Support.En, 3, 10);
+      Filtered_None : constant Text_Result :=
+        Humanize.Lists.Filtered_Count (Support.En, 0, 10, "item", "items");
+      Filtered_All : constant Text_Result :=
+        Humanize.Lists.Filtered_Count (Support.En, 10, 10, "item", "items");
       Page_Range : constant Text_Result :=
         Humanize.Lists.Pagination_Range (Support.En, 21, 40, 153);
       Screen_Display : constant Text_Result :=
@@ -662,6 +668,23 @@ package body Humanize.Tests.Rendering is
          and then Support.Text (Selection_Summary) = "no items selected",
          "selection summary phrase");
       AUnit.Assertions.Assert
+        (Filtered.Status = Ok
+         and then Support.Text (Filtered) = "3 of 10 results match",
+         "filtered count partial phrase");
+      AUnit.Assertions.Assert
+        (Filtered_None.Status = Ok
+         and then Support.Text (Filtered_None) = "no items match",
+         "filtered count none phrase");
+      AUnit.Assertions.Assert
+        (Filtered_All.Status = Ok
+         and then Support.Text (Filtered_All) = "all 10 items match",
+         "filtered count all phrase");
+      Humanize.Lists.Filtered_Count_Into
+        (Support.En, 3, 10, Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "3 of 10 results match",
+         "bounded filtered count");
+      AUnit.Assertions.Assert
         (Page_Range.Status = Ok
          and then Support.Text (Page_Range) = "21-40 of 153 results",
          "pagination range phrase");
@@ -753,7 +776,7 @@ package body Humanize.Tests.Rendering is
         Humanize.Numbers.Compact (Support.Locale ("ru"), 1_200);
       Arabic : constant Text_Result :=
         Humanize.Bytes.Format (Support.Locale ("ar"), 1_024);
-      Symbol_Unit : constant Text_Result :=
+      Engineering_Unit : constant Text_Result :=
         Humanize.Units.Format
           (Support.Locale ("tr"), 2, Humanize.Units.Square_Meter);
       Swedish_Frequency : constant Text_Result :=
@@ -990,8 +1013,8 @@ package body Humanize.Tests.Rendering is
         (Arabic.Status = Ok and then Support.Text (Arabic)'Length > 0,
          "Arabic generated catalog renders bytes");
       Check_Text
-        (Symbol_Unit, "2 m2",
-         "generated catalog renders broad engineering unit symbols");
+        (Engineering_Unit, "2 metrekare",
+         "generated catalog renders broad engineering unit words");
       Check_Text
         (Swedish_Frequency, B ("7476C3A52067C3A56E676572"),
          "Swedish generated catalog renders frequency words");
@@ -1656,6 +1679,50 @@ package body Humanize.Tests.Rendering is
       Payment : constant Text_Result :=
         Humanize.Phrases.Payment_Lifecycle_Phrase
           (Support.En, Humanize.Phrases.Payment_Requires_Action);
+      Backup : constant Text_Result :=
+        Humanize.Phrases.Backup_Phrase
+          (Support.En, Humanize.Phrases.Backup_Stale);
+      Incident : constant Text_Result :=
+        Humanize.Phrases.Incident_Phrase
+          (Support.En, Humanize.Phrases.Incident_Mitigated);
+      Release : constant Text_Result :=
+        Humanize.Phrases.Release_Phrase
+          (Support.En, Humanize.Phrases.Release_Published);
+      Audit : constant Text_Result :=
+        Humanize.Phrases.Audit_Phrase
+          (Support.En, Humanize.Phrases.Audit_Deleted);
+      Flag : constant Text_Result :=
+        Humanize.Phrases.Feature_Flag_Phrase
+          (Support.En, Humanize.Phrases.Flag_Rolling_Out);
+      Webhook : constant Text_Result :=
+        Humanize.Phrases.Webhook_Phrase
+          (Support.En, Humanize.Phrases.Webhook_Failed);
+      API_Key : constant Text_Result :=
+        Humanize.Phrases.API_Key_Phrase
+          (Support.En, Humanize.Phrases.API_Key_Rotated);
+      Quota : constant Text_Result :=
+        Humanize.Phrases.Quota_Phrase
+          (Support.En, Humanize.Phrases.Quota_Exceeded);
+      Invoice : constant Text_Result :=
+        Humanize.Phrases.Invoice_Phrase
+          (Support.En, Humanize.Phrases.Refund_Failed);
+      Database : constant Text_Result :=
+        Humanize.Phrases.Database_Phrase
+          (Support.En, Humanize.Phrases.Database_Replication_Lagging);
+      Spanish_Database : constant Text_Result :=
+        Humanize.Phrases.Database_Phrase
+          (Support.Locale ("es"),
+           Humanize.Phrases.Database_Replication_Lagging);
+      Field_Change : constant Text_Result :=
+        Humanize.Phrases.Field_Change_Summary (Support.En, 2, 1, 1);
+      Field_Diff : constant Text_Result :=
+        Humanize.Phrases.Field_Diff_Summary
+          (Support.En, "title", "draft", "final");
+      Field_Unchanged : constant Text_Result :=
+        Humanize.Phrases.Field_Unchanged_Summary
+          (Support.En, "status", "open");
+      Backup_Key : constant Text_Result :=
+        Humanize.Phrases.Backup_Key (Humanize.Phrases.Backup_Stale);
       Spanish_Saved : constant Text_Result :=
         Humanize.Phrases.Status_Phrase
           (Support.Locale ("es"), Humanize.Phrases.Saved);
@@ -1965,6 +2032,96 @@ package body Humanize.Tests.Rendering is
            (Humanize.Phrases.Ticket_Escalated) = Humanize.Phrases.Danger_Severity,
          "ticket phrase pack");
       AUnit.Assertions.Assert
+        (Backup.Status = Ok
+         and then Support.Text (Backup) = "backup stale"
+         and then Humanize.Phrases.Backup_Severity
+           (Humanize.Phrases.Backup_Stale) = Humanize.Phrases.Warning_Severity
+         and then Backup_Key.Status = Ok
+         and then Support.Text (Backup_Key) = "backup.backup_stale"
+         and then Incident.Status = Ok
+         and then Support.Text (Incident) = "incident mitigated"
+         and then Humanize.Phrases.Incident_Severity
+           (Humanize.Phrases.Incident_Mitigated)
+             = Humanize.Phrases.Warning_Severity
+         and then Release.Status = Ok
+         and then Support.Text (Release) = "release published"
+         and then Humanize.Phrases.Release_Severity
+           (Humanize.Phrases.Release_Published)
+             = Humanize.Phrases.Success_Severity,
+         "operational phrase packs");
+      AUnit.Assertions.Assert
+        (Audit.Status = Ok
+         and then Support.Text (Audit) = "audit entry deleted"
+         and then Humanize.Phrases.Audit_Severity
+           (Humanize.Phrases.Audit_Deleted) =
+             Humanize.Phrases.Warning_Severity
+         and then Flag.Status = Ok
+         and then Support.Text (Flag) = "feature flag rolling out"
+         and then Humanize.Phrases.Feature_Flag_Severity
+           (Humanize.Phrases.Flag_Rolling_Out) =
+             Humanize.Phrases.Info_Severity
+         and then Webhook.Status = Ok
+         and then Support.Text (Webhook) = "webhook failed"
+         and then Humanize.Phrases.Webhook_Severity
+           (Humanize.Phrases.Webhook_Failed) =
+             Humanize.Phrases.Danger_Severity
+         and then API_Key.Status = Ok
+         and then Support.Text (API_Key) = "API key rotated"
+         and then Humanize.Phrases.API_Key_Severity
+           (Humanize.Phrases.API_Key_Rotated) =
+             Humanize.Phrases.Success_Severity
+         and then Quota.Status = Ok
+         and then Support.Text (Quota) = "quota exceeded"
+         and then Humanize.Phrases.Quota_Severity
+           (Humanize.Phrases.Quota_Exceeded) =
+             Humanize.Phrases.Danger_Severity
+         and then Invoice.Status = Ok
+         and then Support.Text (Invoice) = "refund failed"
+         and then Humanize.Phrases.Invoice_Severity
+           (Humanize.Phrases.Refund_Failed) =
+             Humanize.Phrases.Danger_Severity,
+         "SaaS phrase packs");
+      declare
+         Buffer  : String (1 .. 80);
+         Written : Natural;
+         Code    : Humanize.Status.Status_Code;
+      begin
+         Humanize.Phrases.Database_Phrase_Into
+           (Support.En, Humanize.Phrases.Database_Replication_Lagging,
+            Buffer, Written, Code);
+         AUnit.Assertions.Assert
+           (Database.Status = Ok
+            and then Support.Text (Database)
+              = "database replication lagging"
+            and then Humanize.Phrases.Database_Severity
+              (Humanize.Phrases.Database_Replication_Lagging)
+                = Humanize.Phrases.Warning_Severity
+            and then Code = Ok
+            and then Buffer (1 .. Written)
+              = "database replication lagging",
+            "database phrase pack");
+      end;
+      AUnit.Assertions.Assert
+        (Spanish_Database.Status = Ok
+         and then Support.Text (Spanish_Database)
+           = "base de datos replicacion retrasada",
+         "generated database phrase locale");
+      AUnit.Assertions.Assert
+        (Field_Change.Status = Ok
+         and then Support.Text (Field_Change)
+           = "4 fields: 2 changed, 1 added, 1 removed",
+         "field change summary");
+      AUnit.Assertions.Assert
+        (Field_Diff.Status = Ok
+         and then Support.Text (Field_Diff)
+           = "title changed from draft to final",
+         "field diff summary");
+      AUnit.Assertions.Assert
+        (Field_Unchanged.Status = Ok
+         and then Support.Text (Field_Unchanged)
+           = "status unchanged at open",
+         "field unchanged summary");
+      AUnit.Assertions.Assert
         (Payment.Status = Ok
          and then Support.Text (Payment) = "payment requires action"
          and then Humanize.Phrases.Payment_Lifecycle_Severity
@@ -2000,7 +2157,8 @@ package body Humanize.Tests.Rendering is
          and then Support.Text (Phrase_Packs)
            = "ui file validation empty network auth billing workflow queue security "
              & "deployment health notification form access sync transfer search "
-             & "collaboration issue task ci ticket payment summaries "
+             & "collaboration issue task ci ticket payment backup incident release "
+             & "audit flag webhook api_key quota invoice database summaries "
              & "comparisons",
          "phrase pack summary metadata");
       AUnit.Assertions.Assert

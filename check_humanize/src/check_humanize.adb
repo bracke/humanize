@@ -1,5 +1,7 @@
 with Ada.Command_Line;
 with Ada.Directories;
+with Ada.Strings.Fixed;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with Check_Humanize_Policy;
@@ -66,6 +68,35 @@ procedure Check_Humanize is
       Check_Humanize_Policy.Check_Required_Text (Root, Errors);
    end Check_Required_Release_Surface;
 
+   procedure Require_Alire_GNAT_15 is
+      Args   : constant GNAT.OS_Lib.Argument_List :=
+        (1 => new String'("exec"),
+         2 => new String'("--"),
+         3 => new String'("gnatls"),
+         4 => new String'("--version"));
+      Output : Unbounded_String;
+      Status : Integer;
+   begin
+      Status :=
+        Project_Tools.Processes.Run_Status
+          (Label   => "GNAT 15 version check",
+           Dir     => Root,
+           Program => Project_Tools.Processes.Locate_Command ("alr"),
+           Args    => Args,
+           Output  => Output,
+           Quiet   => True);
+
+      if Status /= 0 then
+         Error ("could not run `alr exec -- gnatls --version`");
+         raise Program_Error;
+      elsif Ada.Strings.Fixed.Index (To_String (Output), "GNATLS 15.") = 0 then
+         Error
+           ("wrong Ada compiler: humanize validation must use Alire GNAT 15; got: "
+            & To_String (Output));
+         raise Program_Error;
+      end if;
+   end Require_Alire_GNAT_15;
+
    procedure Run_Locale_Audit_Report is
       Build_Tests_Args : constant GNAT.OS_Lib.Argument_List :=
         (1 => new String'("exec"),
@@ -114,8 +145,7 @@ procedure Check_Humanize is
 begin
    Project_Tools.Processes.Require_Command
      ("alr", "alr executable not found on PATH");
-   Project_Tools.Processes.Require_Command
-     ("gprbuild", "gprbuild executable not found on PATH");
+   Require_Alire_GNAT_15;
 
    if Project_Tools.Processes.Has_Argument ("--release-strict") then
       Check_Strict_Dependency_State;

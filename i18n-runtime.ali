@@ -1,0 +1,1841 @@
+V "GNAT Lib v13"
+A -gnatc
+A -gnat2022
+P NO
+
+RN
+RV NO_ACCESS_SUBPROGRAMS
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_DISPATCH
+RV NO_ENUMERATION_MAPS
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTIONS
+RV NO_IO
+RV NO_LONG_LONG_INTEGERS
+RV NO_NESTED_FINALIZATION
+RV NO_RECURSION
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DEFAULT_INITIALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_ELABORATION_CODE
+RV NO_OBSOLESCENT_FEATURES
+
+U i18n.runtime%b	i18n-runtime.adb	534c1955 OO PK IU
+W ada%s			ada.ads			ada.ali
+W ada.containers%s	a-contai.ads		a-contai.ali
+Z ada.containers.helpers%s  a-conhel.adb	a-conhel.ali
+W ada.directories%s	a-direct.adb		a-direct.ali
+Z ada.finalization%s	a-finali.ads		a-finali.ali
+Z ada.iterator_interfaces%s
+Z ada.streams%s		a-stream.adb		a-stream.ali
+W ada.strings%s		a-string.ads		a-string.ali
+W ada.strings.fixed%s	a-strfix.adb		a-strfix.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W i18n%s		i18n.ads		i18n.ali
+W i18n.ast%s		i18n-ast.adb		i18n-ast.ali
+W i18n.currency%s	i18n-currency.adb	i18n-currency.ali
+W i18n.date_time_format%s  i18n-date_time_format.adb  i18n-date_time_format.ali
+W i18n.extra_format%s	i18n-extra_format.adb	i18n-extra_format.ali
+W i18n.number_format%s	i18n-number_format.adb	i18n-number_format.ali
+W i18n.observability%s	i18n-observability.adb	i18n-observability.ali
+W i18n.parser%s		i18n-parser.adb		i18n-parser.ali
+W i18n.plurals%s	i18n-plurals.adb	i18n-plurals.ali
+W i18n.result%s		i18n-result.adb		i18n-result.ali
+W i18n.runtime_data%s	i18n-runtime_data.adb	i18n-runtime_data.ali
+W i18n.validation%s	i18n-validation.adb	i18n-validation.ali
+
+U i18n.runtime%s	i18n-runtime.ads	ed60fd15 EE OO PK IU
+W ada%s			ada.ads			ada.ali
+W ada.containers%s	a-contai.ads		a-contai.ali
+Z ada.containers.hash_tables%s  a-cohata.ads	a-cohata.ali
+Z ada.containers.helpers%s  a-conhel.adb	a-conhel.ali
+W ada.containers.indefinite_hashed_maps%s
+W ada.containers.vectors%s
+Z ada.finalization%s	a-finali.ads		a-finali.ali
+Z ada.iterator_interfaces%s
+Z ada.streams%s		a-stream.adb		a-stream.ali
+W ada.strings%s		a-string.ads		a-string.ali
+W ada.strings.hash%s	a-strhas.adb		a-strhas.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W ada.strings.unbounded%s  a-strunb.adb		a-strunb.ali
+W i18n%s		i18n.ads		i18n.ali
+W i18n.arguments%s	i18n-arguments.adb	i18n-arguments.ali
+W i18n.ast%s		i18n-ast.adb		i18n-ast.ali
+W i18n.compiled%s	i18n-compiled.adb	i18n-compiled.ali
+W i18n.diagnostics%s	i18n-diagnostics.adb	i18n-diagnostics.ali
+W i18n.errors%s		i18n-errors.adb		i18n-errors.ali
+W i18n.locales%s	i18n-locales.adb	i18n-locales.ali
+W i18n.result%s		i18n-result.adb		i18n-result.ali
+
+D ada.ads		20240521074738 76789da1 ada%s
+D a-calend.ads		20251218205951 e6961b4c ada.calendar%s
+D a-charac.ads		20240521074737 2d3ec45b ada.characters%s
+D a-chlat1.ads		20240521074737 e0d72e76 ada.characters.latin_1%s
+D a-contai.ads		20240521074737 61e5e089 ada.containers%s
+D a-cohata.ads		20240521074737 c4f77997 ada.containers.hash_tables%s
+D a-conhel.ads		20240521074737 46fe1ce3 ada.containers.helpers%s
+D a-cihama.ads		20240521074737 42861819 ada.containers.indefinite_hashed_maps%s
+D a-convec.ads		20240521074737 91fb49f3 ada.containers.vectors%s
+D a-direct.ads		20240521074738 467e87a1 ada.directories%s
+D a-finali.ads		20240521074738 bf4f806b ada.finalization%s
+D a-ioexce.ads		20240521074738 40018c65 ada.io_exceptions%s
+D a-iteint.ads		20240521074738 49a8bee2 ada.iterator_interfaces%s
+D a-stream.ads		20240521074738 119b8fb3 ada.streams%s
+D a-string.ads		20240521074738 90ac6797 ada.strings%s
+D a-strfix.ads		20240521074738 d8832344 ada.strings.fixed%s
+D a-strhas.ads		20240521074738 e06866e7 ada.strings.hash%s
+D a-strmap.ads		20240521074738 ed8acfdb ada.strings.maps%s
+D a-strsea.ads		20240521074738 2d394feb ada.strings.search%s
+D a-sttebu.ads		20240521074738 f1ad67a2 ada.strings.text_buffers%s
+D a-strunb.ads		20240521074738 7bfb7010 ada.strings.unbounded%s
+D a-stuten.ads		20240521074738 c6ced0ae ada.strings.utf_encoding%s
+D a-textio.ads		20240521074738 5c2c6153 ada.text_io%s
+D a-unccon.ads		20240521074738 0e9b276f ada.unchecked_conversion%s
+D i18n.ads		20260630205449 fa948552 i18n%s
+D i18n-arguments.ads	20260630205449 e9b3e75b i18n.arguments%s
+D i18n-ast.ads		20260701175824 2f31558b i18n.ast%s
+D i18n-compiled.ads	20260701181345 eb3a3ade i18n.compiled%s
+D i18n-currency.ads	20260701183939 f4017bb8 i18n.currency%s
+D i18n-date_time_format.ads  20260701183940 52c05bff i18n.date_time_format%s
+D i18n-diagnostics.ads	20260629183815 cb556ee3 i18n.diagnostics%s
+D i18n-errors.ads	20260629183815 df9fe2a5 i18n.errors%s
+D i18n-extra_format.ads	20260701183940 5767f6a7 i18n.extra_format%s
+D i18n-locales.ads	20260706004255 009a6e8f i18n.locales%s
+D i18n-number_format.ads  20260701183940 84aea701 i18n.number_format%s
+D i18n-observability.ads  20260629183815 e0db34e5 i18n.observability%s
+D i18n-parser.ads	20260704111146 6be991cb i18n.parser%s
+D i18n-plurals.ads	20260704225444 ad807e9e i18n.plurals%s
+D i18n-result.ads	20260630205449 6bc1a2e0 i18n.result%s
+D i18n-runtime.ads	20260705233714 0d33f77d i18n.runtime%s
+D i18n-runtime.adb	20260705232814 e675a3f2 i18n.runtime%b
+D i18n-runtime_data.ads	20260705091928 ee467fd1 i18n.runtime_data%s
+D i18n-validation.ads	20260629183815 137bcd10 i18n.validation%s
+D interfac.ads		20240521074738 15f799c2 interfaces%s
+D i-cstrea.ads		20240521074738 e53d8b8e interfaces.c_streams%s
+D system.ads		20240521074738 426dafb8 system%s
+D s-atocou.ads		20240521074738 dc18efc3 system.atomic_counters%s
+D s-crtl.ads		20240521074738 8a0692f8 system.crtl%s
+D s-ficobl.ads		20240521074738 dc5161d4 system.file_control_block%s
+D s-finroo.ads		20240521074738 4ff27390 system.finalization_root%s
+D s-parame.ads		20251218205951 1f39ba92 system.parameters%s
+D s-unstyp.ads		20240521074738 fa2a7f59 system.unsigned_types%s
+D s-wchcon.ads		20240521074738 d9032363 system.wch_con%s
+G a e
+G c Z s b [initialize i18n__runtime 91 14 none]
+G c Z s b [initialize_binary_file i18n__runtime 112 14 none]
+G c Z s b [load i18n__runtime 126 14 none]
+G c Z s b [render i18n__runtime 143 13 none]
+G c Z s b [is_valid i18n__runtime 154 13 none]
+G c Z s b [finalize i18n__runtime 162 14 none]
+G c Z s b [load_file i18n__runtime 217 14 none]
+G c Z s b [load_binary_file i18n__runtime 233 14 none]
+G c Z s b [load_text i18n__runtime 249 14 none]
+G c Z s b [validate_catalog_file i18n__runtime 277 13 none]
+G c Z s b [validate_binary_catalog_file i18n__runtime 285 13 none]
+G c Z s b [validate_catalog_text i18n__runtime 294 13 none]
+G c Z s b [validate_binary_catalog_text i18n__runtime 308 13 none]
+G c Z s b [load_data_text i18n__runtime 410 13 none]
+G c Z s b [load_data_file i18n__runtime 419 13 none]
+G c Z s b [clear_runtime_data i18n__runtime 424 14 none]
+G c Z s s [resolved_locale i18n__runtime 451 13 none]
+G c Z s b [resolve i18n__runtime 465 13 none]
+G c Z s b [render_into i18n__runtime 492 14 none]
+G c Z s s [has_element i18n__runtime__catalog_vectors 115 13 515_4]
+G c Z s s [empty i18n__runtime__catalog_vectors 125 13 515_4]
+G c Z s s [Oeq i18n__runtime__catalog_vectors 127 24 515_4]
+G c Z s s [to_vector i18n__runtime__catalog_vectors 136 13 515_4]
+G c Z s s [to_vector i18n__runtime__catalog_vectors 139 13 515_4]
+G c Z s s [Oconcat i18n__runtime__catalog_vectors 145 13 515_4]
+G c Z s s [Oconcat i18n__runtime__catalog_vectors 149 13 515_4]
+G c Z s s [Oconcat i18n__runtime__catalog_vectors 153 13 515_4]
+G c Z s s [Oconcat i18n__runtime__catalog_vectors 157 13 515_4]
+G c Z s s [capacity i18n__runtime__catalog_vectors 161 13 515_4]
+G c Z s s [reserve_capacity i18n__runtime__catalog_vectors 164 14 515_4]
+G c Z s s [length i18n__runtime__catalog_vectors 175 13 515_4]
+G c Z s s [set_length i18n__runtime__catalog_vectors 178 14 515_4]
+G c Z s s [is_empty i18n__runtime__catalog_vectors 187 13 515_4]
+G c Z s s [clear i18n__runtime__catalog_vectors 190 14 515_4]
+G c Z s s [to_cursor i18n__runtime__catalog_vectors 194 13 515_4]
+G c Z s s [to_index i18n__runtime__catalog_vectors 201 13 515_4]
+G c Z s s [element i18n__runtime__catalog_vectors 206 13 515_4]
+G c Z s s [element i18n__runtime__catalog_vectors 213 13 515_4]
+G c Z s s [replace_element i18n__runtime__catalog_vectors 217 14 515_4]
+G c Z s s [replace_element i18n__runtime__catalog_vectors 228 14 515_4]
+G c Z s s [query_element i18n__runtime__catalog_vectors 239 14 515_4]
+G c Z s s [query_element i18n__runtime__catalog_vectors 250 14 515_4]
+G c Z s s [update_element i18n__runtime__catalog_vectors 259 14 515_4]
+G c Z s s [update_element i18n__runtime__catalog_vectors 276 14 515_4]
+G c Z s s [constant_reference i18n__runtime__catalog_vectors 303 13 515_4]
+G c Z s s [reference i18n__runtime__catalog_vectors 308 13 515_4]
+G c Z s s [constant_reference i18n__runtime__catalog_vectors 313 13 515_4]
+G c Z s s [reference i18n__runtime__catalog_vectors 318 13 515_4]
+G c Z s s [assign i18n__runtime__catalog_vectors 323 14 515_4]
+G c Z s s [copy i18n__runtime__catalog_vectors 325 13 515_4]
+G c Z s s [move i18n__runtime__catalog_vectors 327 14 515_4]
+G c Z s s [new_vector i18n__runtime__catalog_vectors 333 13 515_4]
+G c Z s s [insert_vector i18n__runtime__catalog_vectors 337 14 515_4]
+G c Z s s [insert_vector i18n__runtime__catalog_vectors 361 14 515_4]
+G c Z s s [insert_vector i18n__runtime__catalog_vectors 378 14 515_4]
+G c Z s s [insert i18n__runtime__catalog_vectors 396 14 515_4]
+G c Z s s [insert i18n__runtime__catalog_vectors 404 14 515_4]
+G c Z s s [insert i18n__runtime__catalog_vectors 412 14 515_4]
+G c Z s s [insert i18n__runtime__catalog_vectors 421 14 515_4]
+G c Z s s [insert i18n__runtime__catalog_vectors 438 14 515_4]
+G c Z s s [prepend_vector i18n__runtime__catalog_vectors 449 14 515_4]
+G c Z s s [prepend i18n__runtime__catalog_vectors 459 14 515_4]
+G c Z s s [append_vector i18n__runtime__catalog_vectors 466 14 515_4]
+G c Z s s [append i18n__runtime__catalog_vectors 476 14 515_4]
+G c Z s s [append i18n__runtime__catalog_vectors 483 14 515_4]
+G c Z s s [insert_space i18n__runtime__catalog_vectors 486 14 515_4]
+G c Z s s [insert_space i18n__runtime__catalog_vectors 503 14 515_4]
+G c Z s s [delete i18n__runtime__catalog_vectors 514 14 515_4]
+G c Z s s [delete i18n__runtime__catalog_vectors 524 14 515_4]
+G c Z s s [delete_first i18n__runtime__catalog_vectors 533 14 515_4]
+G c Z s s [delete_last i18n__runtime__catalog_vectors 538 14 515_4]
+G c Z s s [reverse_elements i18n__runtime__catalog_vectors 546 14 515_4]
+G c Z s s [swap i18n__runtime__catalog_vectors 549 14 515_4]
+G c Z s s [swap i18n__runtime__catalog_vectors 554 14 515_4]
+G c Z s s [first_index i18n__runtime__catalog_vectors 560 13 515_4]
+G c Z s s [first i18n__runtime__catalog_vectors 563 13 515_4]
+G c Z s s [first_element i18n__runtime__catalog_vectors 567 13 515_4]
+G c Z s s [last_index i18n__runtime__catalog_vectors 570 13 515_4]
+G c Z s s [last i18n__runtime__catalog_vectors 574 13 515_4]
+G c Z s s [last_element i18n__runtime__catalog_vectors 578 13 515_4]
+G c Z s s [next i18n__runtime__catalog_vectors 581 13 515_4]
+G c Z s s [next i18n__runtime__catalog_vectors 587 14 515_4]
+G c Z s s [previous i18n__runtime__catalog_vectors 590 13 515_4]
+G c Z s s [previous i18n__runtime__catalog_vectors 596 14 515_4]
+G c Z s s [find_index i18n__runtime__catalog_vectors 599 13 515_4]
+G c Z s s [find i18n__runtime__catalog_vectors 609 13 515_4]
+G c Z s s [reverse_find_index i18n__runtime__catalog_vectors 623 13 515_4]
+G c Z s s [reverse_find i18n__runtime__catalog_vectors 635 13 515_4]
+G c Z s s [contains i18n__runtime__catalog_vectors 649 13 515_4]
+G c Z s s [iterate i18n__runtime__catalog_vectors 654 14 515_4]
+G c Z s s [reverse_iterate i18n__runtime__catalog_vectors 662 14 515_4]
+G c Z s s [iterate i18n__runtime__catalog_vectors 669 13 515_4]
+G c Z s s [iterate i18n__runtime__catalog_vectors 672 13 515_4]
+G c Z s s [adjust i18n__runtime__catalog_vectors__implementation 90 28 726_4_515_4]
+G c Z s s [finalize i18n__runtime__catalog_vectors__implementation 93 28 726_4_515_4]
+G c Z s s [zero_counts i18n__runtime__catalog_vectors__implementation 96 17 726_4_515_4]
+G c Z s s [busy i18n__runtime__catalog_vectors__implementation 100 17 726_4_515_4]
+G c Z s s [unbusy i18n__runtime__catalog_vectors__implementation 104 17 726_4_515_4]
+G c Z s s [lock i18n__runtime__catalog_vectors__implementation 108 17 726_4_515_4]
+G c Z s s [unlock i18n__runtime__catalog_vectors__implementation 112 17 726_4_515_4]
+G c Z s s [tc_check i18n__runtime__catalog_vectors__implementation 116 17 726_4_515_4]
+G c Z s s [te_check i18n__runtime__catalog_vectors__implementation 120 17 726_4_515_4]
+G c Z s s [is_busy i18n__runtime__catalog_vectors__implementation 136 16 726_4_515_4]
+G c Z s s [is_locked i18n__runtime__catalog_vectors__implementation 140 16 726_4_515_4]
+G c Z s s [initialize i18n__runtime__catalog_vectors__implementation 161 28 726_4_515_4]
+G c Z s s [finalize i18n__runtime__catalog_vectors__implementation 162 28 726_4_515_4]
+G c Z s s [initialize i18n__runtime__catalog_vectors__implementation 167 28 726_4_515_4]
+G c Z s s [finalize i18n__runtime__catalog_vectors__implementation 168 28 726_4_515_4]
+G c Z s s [put_image i18n__runtime__catalog_vectors 747 14 515_4]
+G c Z s s [adjust i18n__runtime__catalog_vectors 750 25 515_4]
+G c Z s s [finalize i18n__runtime__catalog_vectors 751 25 515_4]
+G c Z s s [write i18n__runtime__catalog_vectors 753 14 515_4]
+G c Z s s [read i18n__runtime__catalog_vectors 759 14 515_4]
+G c Z s s [read i18n__runtime__catalog_vectors 773 14 515_4]
+G c Z s s [write i18n__runtime__catalog_vectors 779 14 515_4]
+G c Z s s [write i18n__runtime__catalog_vectors 798 14 515_4]
+G c Z s s [read i18n__runtime__catalog_vectors 804 14 515_4]
+G c Z s s [write i18n__runtime__catalog_vectors 820 14 515_4]
+G c Z s s [read i18n__runtime__catalog_vectors 826 14 515_4]
+G c Z s s [pseudo_reference i18n__runtime__catalog_vectors 840 13 515_4]
+G c Z s s [get_element_access i18n__runtime__catalog_vectors 849 13 515_4]
+G c Z s s [finalize i18n__runtime__catalog_vectors 865 25 515_4]
+G c Z s s [first i18n__runtime__catalog_vectors 867 24 515_4]
+G c Z s s [last i18n__runtime__catalog_vectors 868 24 515_4]
+G c Z s s [next i18n__runtime__catalog_vectors 870 24 515_4]
+G c Z s s [previous i18n__runtime__catalog_vectors 874 24 515_4]
+G c Z s s [empty i18n__runtime__index_maps 73 13 523_4]
+G c Z s s [has_element i18n__runtime__index_maps 79 13 523_4]
+G c Z s s [Oeq i18n__runtime__index_maps 85 24 523_4]
+G c Z s s [capacity i18n__runtime__index_maps 96 13 523_4]
+G c Z s s [reserve_capacity i18n__runtime__index_maps 100 14 523_4]
+G c Z s s [length i18n__runtime__index_maps 110 13 523_4]
+G c Z s s [is_empty i18n__runtime__index_maps 113 13 523_4]
+G c Z s s [clear i18n__runtime__index_maps 116 14 523_4]
+G c Z s s [key i18n__runtime__index_maps 119 13 523_4]
+G c Z s s [element i18n__runtime__index_maps 122 13 523_4]
+G c Z s s [replace_element i18n__runtime__index_maps 125 14 523_4]
+G c Z s s [query_element i18n__runtime__index_maps 131 14 523_4]
+G c Z s s [update_element i18n__runtime__index_maps 138 14 523_4]
+G c Z s s [constant_reference i18n__runtime__index_maps 155 13 523_4]
+G c Z s s [reference i18n__runtime__index_maps 160 13 523_4]
+G c Z s s [constant_reference i18n__runtime__index_maps 165 13 523_4]
+G c Z s s [reference i18n__runtime__index_maps 170 13 523_4]
+G c Z s s [assign i18n__runtime__index_maps 175 14 523_4]
+G c Z s s [copy i18n__runtime__index_maps 177 13 523_4]
+G c Z s s [move i18n__runtime__index_maps 179 14 523_4]
+G c Z s s [insert i18n__runtime__index_maps 183 14 523_4]
+G c Z s s [insert i18n__runtime__index_maps 201 14 523_4]
+G c Z s s [include i18n__runtime__index_maps 212 14 523_4]
+G c Z s s [replace i18n__runtime__index_maps 223 14 523_4]
+G c Z s s [exclude i18n__runtime__index_maps 234 14 523_4]
+G c Z s s [delete i18n__runtime__index_maps 243 14 523_4]
+G c Z s s [delete i18n__runtime__index_maps 251 14 523_4]
+G c Z s s [first i18n__runtime__index_maps 257 13 523_4]
+G c Z s s [next i18n__runtime__index_maps 261 13 523_4]
+G c Z s s [next i18n__runtime__index_maps 269 14 523_4]
+G c Z s s [find i18n__runtime__index_maps 272 13 523_4]
+G c Z s s [contains i18n__runtime__index_maps 278 13 523_4]
+G c Z s s [element i18n__runtime__index_maps 281 13 523_4]
+G c Z s s [equivalent_keys i18n__runtime__index_maps 284 13 523_4]
+G c Z s s [equivalent_keys i18n__runtime__index_maps 288 13 523_4]
+G c Z s s [equivalent_keys i18n__runtime__index_maps 292 13 523_4]
+G c Z s s [iterate i18n__runtime__index_maps 296 14 523_4]
+G c Z s s [iterate i18n__runtime__index_maps 301 13 523_4]
+G c Z s s [adjust i18n__runtime__index_maps__ht_types__implementation 90 28 58_7_331_4_523_4]
+G c Z s s [finalize i18n__runtime__index_maps__ht_types__implementation 93 28 58_7_331_4_523_4]
+G c Z s s [zero_counts i18n__runtime__index_maps__ht_types__implementation 96 17 58_7_331_4_523_4]
+G c Z s s [busy i18n__runtime__index_maps__ht_types__implementation 100 17 58_7_331_4_523_4]
+G c Z s s [unbusy i18n__runtime__index_maps__ht_types__implementation 104 17 58_7_331_4_523_4]
+G c Z s s [lock i18n__runtime__index_maps__ht_types__implementation 108 17 58_7_331_4_523_4]
+G c Z s s [unlock i18n__runtime__index_maps__ht_types__implementation 112 17 58_7_331_4_523_4]
+G c Z s s [tc_check i18n__runtime__index_maps__ht_types__implementation 116 17 58_7_331_4_523_4]
+G c Z s s [te_check i18n__runtime__index_maps__ht_types__implementation 120 17 58_7_331_4_523_4]
+G c Z s s [is_busy i18n__runtime__index_maps__ht_types__implementation 136 16 58_7_331_4_523_4]
+G c Z s s [is_locked i18n__runtime__index_maps__ht_types__implementation 140 16 58_7_331_4_523_4]
+G c Z s s [initialize i18n__runtime__index_maps__ht_types__implementation 161 28 58_7_331_4_523_4]
+G c Z s s [finalize i18n__runtime__index_maps__ht_types__implementation 162 28 58_7_331_4_523_4]
+G c Z s s [initialize i18n__runtime__index_maps__ht_types__implementation 167 28 58_7_331_4_523_4]
+G c Z s s [finalize i18n__runtime__index_maps__ht_types__implementation 168 28 58_7_331_4_523_4]
+G c Z s s [put_image i18n__runtime__index_maps 338 14 523_4]
+G c Z s s [adjust i18n__runtime__index_maps 341 25 523_4]
+G c Z s s [finalize i18n__runtime__index_maps 343 25 523_4]
+G c Z s s [write i18n__runtime__index_maps 349 14 523_4]
+G c Z s s [read i18n__runtime__index_maps 355 14 523_4]
+G c Z s s [write i18n__runtime__index_maps 384 14 523_4]
+G c Z s s [read i18n__runtime__index_maps 390 14 523_4]
+G c Z s s [write i18n__runtime__index_maps 409 14 523_4]
+G c Z s s [read i18n__runtime__index_maps 415 14 523_4]
+G c Z s s [write i18n__runtime__index_maps 431 14 523_4]
+G c Z s s [read i18n__runtime__index_maps 437 14 523_4]
+G c Z s s [pseudo_reference i18n__runtime__index_maps 447 13 523_4]
+G c Z s s [get_element_access i18n__runtime__index_maps 454 13 523_4]
+G c Z s s [finalize i18n__runtime__index_maps 470 25 523_4]
+G c Z s s [first i18n__runtime__index_maps 472 24 523_4]
+G c Z s s [next i18n__runtime__index_maps 474 24 523_4]
+G c Z b b [trimmed i18n__runtime 28 13 none]
+G c Z b b [unquote i18n__runtime 33 13 none]
+G c Z b b [canonical_locale i18n__runtime 46 13 none]
+G c Z b b [dot_index i18n__runtime 51 13 none]
+G c Z b b [equals_index i18n__runtime 61 13 none]
+G c Z b b [composite i18n__runtime 73 13 none]
+G c Z b b [line_suffix i18n__runtime 79 13 none]
+G c Z b b [has_element i18n__runtime__line_vectors 115 13 92_4]
+G c Z b b [empty i18n__runtime__line_vectors 125 13 92_4]
+G c Z b b [Oeq i18n__runtime__line_vectors 127 24 92_4]
+G c Z b b [to_vector i18n__runtime__line_vectors 136 13 92_4]
+G c Z b b [to_vector i18n__runtime__line_vectors 139 13 92_4]
+G c Z b b [Oconcat i18n__runtime__line_vectors 145 13 92_4]
+G c Z b b [Oconcat i18n__runtime__line_vectors 149 13 92_4]
+G c Z b b [Oconcat i18n__runtime__line_vectors 153 13 92_4]
+G c Z b b [Oconcat i18n__runtime__line_vectors 157 13 92_4]
+G c Z b b [capacity i18n__runtime__line_vectors 161 13 92_4]
+G c Z b b [reserve_capacity i18n__runtime__line_vectors 164 14 92_4]
+G c Z b b [length i18n__runtime__line_vectors 175 13 92_4]
+G c Z b b [set_length i18n__runtime__line_vectors 178 14 92_4]
+G c Z b b [is_empty i18n__runtime__line_vectors 187 13 92_4]
+G c Z b b [clear i18n__runtime__line_vectors 190 14 92_4]
+G c Z b b [to_cursor i18n__runtime__line_vectors 194 13 92_4]
+G c Z b b [to_index i18n__runtime__line_vectors 201 13 92_4]
+G c Z b b [element i18n__runtime__line_vectors 206 13 92_4]
+G c Z b b [element i18n__runtime__line_vectors 213 13 92_4]
+G c Z b b [replace_element i18n__runtime__line_vectors 217 14 92_4]
+G c Z b b [replace_element i18n__runtime__line_vectors 228 14 92_4]
+G c Z b b [query_element i18n__runtime__line_vectors 239 14 92_4]
+G c Z b b [query_element i18n__runtime__line_vectors 250 14 92_4]
+G c Z b b [update_element i18n__runtime__line_vectors 259 14 92_4]
+G c Z b b [update_element i18n__runtime__line_vectors 276 14 92_4]
+G c Z b b [constant_reference i18n__runtime__line_vectors 303 13 92_4]
+G c Z b b [reference i18n__runtime__line_vectors 308 13 92_4]
+G c Z b b [constant_reference i18n__runtime__line_vectors 313 13 92_4]
+G c Z b b [reference i18n__runtime__line_vectors 318 13 92_4]
+G c Z b b [assign i18n__runtime__line_vectors 323 14 92_4]
+G c Z b b [copy i18n__runtime__line_vectors 325 13 92_4]
+G c Z b b [move i18n__runtime__line_vectors 327 14 92_4]
+G c Z b b [new_vector i18n__runtime__line_vectors 333 13 92_4]
+G c Z b b [insert_vector i18n__runtime__line_vectors 337 14 92_4]
+G c Z b b [insert_vector i18n__runtime__line_vectors 361 14 92_4]
+G c Z b b [insert_vector i18n__runtime__line_vectors 378 14 92_4]
+G c Z b b [insert i18n__runtime__line_vectors 396 14 92_4]
+G c Z b b [insert i18n__runtime__line_vectors 404 14 92_4]
+G c Z b b [insert i18n__runtime__line_vectors 412 14 92_4]
+G c Z b b [insert i18n__runtime__line_vectors 421 14 92_4]
+G c Z b b [insert i18n__runtime__line_vectors 438 14 92_4]
+G c Z b b [prepend_vector i18n__runtime__line_vectors 449 14 92_4]
+G c Z b b [prepend i18n__runtime__line_vectors 459 14 92_4]
+G c Z b b [append_vector i18n__runtime__line_vectors 466 14 92_4]
+G c Z b b [append i18n__runtime__line_vectors 476 14 92_4]
+G c Z b b [append i18n__runtime__line_vectors 483 14 92_4]
+G c Z b b [insert_space i18n__runtime__line_vectors 486 14 92_4]
+G c Z b b [insert_space i18n__runtime__line_vectors 503 14 92_4]
+G c Z b b [delete i18n__runtime__line_vectors 514 14 92_4]
+G c Z b b [delete i18n__runtime__line_vectors 524 14 92_4]
+G c Z b b [delete_first i18n__runtime__line_vectors 533 14 92_4]
+G c Z b b [delete_last i18n__runtime__line_vectors 538 14 92_4]
+G c Z b b [reverse_elements i18n__runtime__line_vectors 546 14 92_4]
+G c Z b b [swap i18n__runtime__line_vectors 549 14 92_4]
+G c Z b b [swap i18n__runtime__line_vectors 554 14 92_4]
+G c Z b b [first_index i18n__runtime__line_vectors 560 13 92_4]
+G c Z b b [first i18n__runtime__line_vectors 563 13 92_4]
+G c Z b b [first_element i18n__runtime__line_vectors 567 13 92_4]
+G c Z b b [last_index i18n__runtime__line_vectors 570 13 92_4]
+G c Z b b [last i18n__runtime__line_vectors 574 13 92_4]
+G c Z b b [last_element i18n__runtime__line_vectors 578 13 92_4]
+G c Z b b [next i18n__runtime__line_vectors 581 13 92_4]
+G c Z b b [next i18n__runtime__line_vectors 587 14 92_4]
+G c Z b b [previous i18n__runtime__line_vectors 590 13 92_4]
+G c Z b b [previous i18n__runtime__line_vectors 596 14 92_4]
+G c Z b b [find_index i18n__runtime__line_vectors 599 13 92_4]
+G c Z b b [find i18n__runtime__line_vectors 609 13 92_4]
+G c Z b b [reverse_find_index i18n__runtime__line_vectors 623 13 92_4]
+G c Z b b [reverse_find i18n__runtime__line_vectors 635 13 92_4]
+G c Z b b [contains i18n__runtime__line_vectors 649 13 92_4]
+G c Z b b [iterate i18n__runtime__line_vectors 654 14 92_4]
+G c Z b b [reverse_iterate i18n__runtime__line_vectors 662 14 92_4]
+G c Z b b [iterate i18n__runtime__line_vectors 669 13 92_4]
+G c Z b b [iterate i18n__runtime__line_vectors 672 13 92_4]
+G c Z b b [adjust i18n__runtime__line_vectors__implementation 90 28 726_4_92_4]
+G c Z b b [finalize i18n__runtime__line_vectors__implementation 93 28 726_4_92_4]
+G c Z b b [zero_counts i18n__runtime__line_vectors__implementation 96 17 726_4_92_4]
+G c Z b b [busy i18n__runtime__line_vectors__implementation 100 17 726_4_92_4]
+G c Z b b [unbusy i18n__runtime__line_vectors__implementation 104 17 726_4_92_4]
+G c Z b b [lock i18n__runtime__line_vectors__implementation 108 17 726_4_92_4]
+G c Z b b [unlock i18n__runtime__line_vectors__implementation 112 17 726_4_92_4]
+G c Z b b [tc_check i18n__runtime__line_vectors__implementation 116 17 726_4_92_4]
+G c Z b b [te_check i18n__runtime__line_vectors__implementation 120 17 726_4_92_4]
+G c Z b b [is_busy i18n__runtime__line_vectors__implementation 136 16 726_4_92_4]
+G c Z b b [is_locked i18n__runtime__line_vectors__implementation 140 16 726_4_92_4]
+G c Z b b [initialize i18n__runtime__line_vectors__implementation 161 28 726_4_92_4]
+G c Z b b [finalize i18n__runtime__line_vectors__implementation 162 28 726_4_92_4]
+G c Z b b [initialize i18n__runtime__line_vectors__implementation 167 28 726_4_92_4]
+G c Z b b [finalize i18n__runtime__line_vectors__implementation 168 28 726_4_92_4]
+G c Z b b [put_image i18n__runtime__line_vectors 747 14 92_4]
+G c Z b b [adjust i18n__runtime__line_vectors 750 25 92_4]
+G c Z b b [finalize i18n__runtime__line_vectors 751 25 92_4]
+G c Z b b [write i18n__runtime__line_vectors 753 14 92_4]
+G c Z b b [read i18n__runtime__line_vectors 759 14 92_4]
+G c Z b b [read i18n__runtime__line_vectors 773 14 92_4]
+G c Z b b [write i18n__runtime__line_vectors 779 14 92_4]
+G c Z b b [write i18n__runtime__line_vectors 798 14 92_4]
+G c Z b b [read i18n__runtime__line_vectors 804 14 92_4]
+G c Z b b [write i18n__runtime__line_vectors 820 14 92_4]
+G c Z b b [read i18n__runtime__line_vectors 826 14 92_4]
+G c Z b b [pseudo_reference i18n__runtime__line_vectors 840 13 92_4]
+G c Z b b [get_element_access i18n__runtime__line_vectors 849 13 92_4]
+G c Z b b [finalize i18n__runtime__line_vectors 865 25 92_4]
+G c Z b b [first i18n__runtime__line_vectors 867 24 92_4]
+G c Z b b [last i18n__runtime__line_vectors 868 24 92_4]
+G c Z b b [next i18n__runtime__line_vectors 870 24 92_4]
+G c Z b b [previous i18n__runtime__line_vectors 874 24 92_4]
+G c Z b b [read_file_lines i18n__runtime 96 14 none]
+G c Z b b [split_text_lines i18n__runtime 133 13 none]
+G c Z b b [add_load_diagnostic i18n__runtime 165 14 none]
+G c Z b b [decode_binary_catalog i18n__runtime 171 13 none]
+G c Z b b [compile_one i18n__runtime 315 14 none]
+G c Z b b [has_element i18n__runtime__staged_vectors 115 13 364_4]
+G c Z b b [empty i18n__runtime__staged_vectors 125 13 364_4]
+G c Z b b [Oeq i18n__runtime__staged_vectors 127 24 364_4]
+G c Z b b [to_vector i18n__runtime__staged_vectors 136 13 364_4]
+G c Z b b [to_vector i18n__runtime__staged_vectors 139 13 364_4]
+G c Z b b [Oconcat i18n__runtime__staged_vectors 145 13 364_4]
+G c Z b b [Oconcat i18n__runtime__staged_vectors 149 13 364_4]
+G c Z b b [Oconcat i18n__runtime__staged_vectors 153 13 364_4]
+G c Z b b [Oconcat i18n__runtime__staged_vectors 157 13 364_4]
+G c Z b b [capacity i18n__runtime__staged_vectors 161 13 364_4]
+G c Z b b [reserve_capacity i18n__runtime__staged_vectors 164 14 364_4]
+G c Z b b [length i18n__runtime__staged_vectors 175 13 364_4]
+G c Z b b [set_length i18n__runtime__staged_vectors 178 14 364_4]
+G c Z b b [is_empty i18n__runtime__staged_vectors 187 13 364_4]
+G c Z b b [clear i18n__runtime__staged_vectors 190 14 364_4]
+G c Z b b [to_cursor i18n__runtime__staged_vectors 194 13 364_4]
+G c Z b b [to_index i18n__runtime__staged_vectors 201 13 364_4]
+G c Z b b [element i18n__runtime__staged_vectors 206 13 364_4]
+G c Z b b [element i18n__runtime__staged_vectors 213 13 364_4]
+G c Z b b [replace_element i18n__runtime__staged_vectors 217 14 364_4]
+G c Z b b [replace_element i18n__runtime__staged_vectors 228 14 364_4]
+G c Z b b [query_element i18n__runtime__staged_vectors 239 14 364_4]
+G c Z b b [query_element i18n__runtime__staged_vectors 250 14 364_4]
+G c Z b b [update_element i18n__runtime__staged_vectors 259 14 364_4]
+G c Z b b [update_element i18n__runtime__staged_vectors 276 14 364_4]
+G c Z b b [constant_reference i18n__runtime__staged_vectors 303 13 364_4]
+G c Z b b [reference i18n__runtime__staged_vectors 308 13 364_4]
+G c Z b b [constant_reference i18n__runtime__staged_vectors 313 13 364_4]
+G c Z b b [reference i18n__runtime__staged_vectors 318 13 364_4]
+G c Z b b [assign i18n__runtime__staged_vectors 323 14 364_4]
+G c Z b b [copy i18n__runtime__staged_vectors 325 13 364_4]
+G c Z b b [move i18n__runtime__staged_vectors 327 14 364_4]
+G c Z b b [new_vector i18n__runtime__staged_vectors 333 13 364_4]
+G c Z b b [insert_vector i18n__runtime__staged_vectors 337 14 364_4]
+G c Z b b [insert_vector i18n__runtime__staged_vectors 361 14 364_4]
+G c Z b b [insert_vector i18n__runtime__staged_vectors 378 14 364_4]
+G c Z b b [insert i18n__runtime__staged_vectors 396 14 364_4]
+G c Z b b [insert i18n__runtime__staged_vectors 404 14 364_4]
+G c Z b b [insert i18n__runtime__staged_vectors 412 14 364_4]
+G c Z b b [insert i18n__runtime__staged_vectors 421 14 364_4]
+G c Z b b [insert i18n__runtime__staged_vectors 438 14 364_4]
+G c Z b b [prepend_vector i18n__runtime__staged_vectors 449 14 364_4]
+G c Z b b [prepend i18n__runtime__staged_vectors 459 14 364_4]
+G c Z b b [append_vector i18n__runtime__staged_vectors 466 14 364_4]
+G c Z b b [append i18n__runtime__staged_vectors 476 14 364_4]
+G c Z b b [append i18n__runtime__staged_vectors 483 14 364_4]
+G c Z b b [insert_space i18n__runtime__staged_vectors 486 14 364_4]
+G c Z b b [insert_space i18n__runtime__staged_vectors 503 14 364_4]
+G c Z b b [delete i18n__runtime__staged_vectors 514 14 364_4]
+G c Z b b [delete i18n__runtime__staged_vectors 524 14 364_4]
+G c Z b b [delete_first i18n__runtime__staged_vectors 533 14 364_4]
+G c Z b b [delete_last i18n__runtime__staged_vectors 538 14 364_4]
+G c Z b b [reverse_elements i18n__runtime__staged_vectors 546 14 364_4]
+G c Z b b [swap i18n__runtime__staged_vectors 549 14 364_4]
+G c Z b b [swap i18n__runtime__staged_vectors 554 14 364_4]
+G c Z b b [first_index i18n__runtime__staged_vectors 560 13 364_4]
+G c Z b b [first i18n__runtime__staged_vectors 563 13 364_4]
+G c Z b b [first_element i18n__runtime__staged_vectors 567 13 364_4]
+G c Z b b [last_index i18n__runtime__staged_vectors 570 13 364_4]
+G c Z b b [last i18n__runtime__staged_vectors 574 13 364_4]
+G c Z b b [last_element i18n__runtime__staged_vectors 578 13 364_4]
+G c Z b b [next i18n__runtime__staged_vectors 581 13 364_4]
+G c Z b b [next i18n__runtime__staged_vectors 587 14 364_4]
+G c Z b b [previous i18n__runtime__staged_vectors 590 13 364_4]
+G c Z b b [previous i18n__runtime__staged_vectors 596 14 364_4]
+G c Z b b [find_index i18n__runtime__staged_vectors 599 13 364_4]
+G c Z b b [find i18n__runtime__staged_vectors 609 13 364_4]
+G c Z b b [reverse_find_index i18n__runtime__staged_vectors 623 13 364_4]
+G c Z b b [reverse_find i18n__runtime__staged_vectors 635 13 364_4]
+G c Z b b [contains i18n__runtime__staged_vectors 649 13 364_4]
+G c Z b b [iterate i18n__runtime__staged_vectors 654 14 364_4]
+G c Z b b [reverse_iterate i18n__runtime__staged_vectors 662 14 364_4]
+G c Z b b [iterate i18n__runtime__staged_vectors 669 13 364_4]
+G c Z b b [iterate i18n__runtime__staged_vectors 672 13 364_4]
+G c Z b b [adjust i18n__runtime__staged_vectors__implementation 90 28 726_4_364_4]
+G c Z b b [finalize i18n__runtime__staged_vectors__implementation 93 28 726_4_364_4]
+G c Z b b [zero_counts i18n__runtime__staged_vectors__implementation 96 17 726_4_364_4]
+G c Z b b [busy i18n__runtime__staged_vectors__implementation 100 17 726_4_364_4]
+G c Z b b [unbusy i18n__runtime__staged_vectors__implementation 104 17 726_4_364_4]
+G c Z b b [lock i18n__runtime__staged_vectors__implementation 108 17 726_4_364_4]
+G c Z b b [unlock i18n__runtime__staged_vectors__implementation 112 17 726_4_364_4]
+G c Z b b [tc_check i18n__runtime__staged_vectors__implementation 116 17 726_4_364_4]
+G c Z b b [te_check i18n__runtime__staged_vectors__implementation 120 17 726_4_364_4]
+G c Z b b [is_busy i18n__runtime__staged_vectors__implementation 136 16 726_4_364_4]
+G c Z b b [is_locked i18n__runtime__staged_vectors__implementation 140 16 726_4_364_4]
+G c Z b b [initialize i18n__runtime__staged_vectors__implementation 161 28 726_4_364_4]
+G c Z b b [finalize i18n__runtime__staged_vectors__implementation 162 28 726_4_364_4]
+G c Z b b [initialize i18n__runtime__staged_vectors__implementation 167 28 726_4_364_4]
+G c Z b b [finalize i18n__runtime__staged_vectors__implementation 168 28 726_4_364_4]
+G c Z b b [put_image i18n__runtime__staged_vectors 747 14 364_4]
+G c Z b b [adjust i18n__runtime__staged_vectors 750 25 364_4]
+G c Z b b [finalize i18n__runtime__staged_vectors 751 25 364_4]
+G c Z b b [write i18n__runtime__staged_vectors 753 14 364_4]
+G c Z b b [read i18n__runtime__staged_vectors 759 14 364_4]
+G c Z b b [read i18n__runtime__staged_vectors 773 14 364_4]
+G c Z b b [write i18n__runtime__staged_vectors 779 14 364_4]
+G c Z b b [write i18n__runtime__staged_vectors 798 14 364_4]
+G c Z b b [read i18n__runtime__staged_vectors 804 14 364_4]
+G c Z b b [write i18n__runtime__staged_vectors 820 14 364_4]
+G c Z b b [read i18n__runtime__staged_vectors 826 14 364_4]
+G c Z b b [pseudo_reference i18n__runtime__staged_vectors 840 13 364_4]
+G c Z b b [get_element_access i18n__runtime__staged_vectors 849 13 364_4]
+G c Z b b [finalize i18n__runtime__staged_vectors 865 25 364_4]
+G c Z b b [first i18n__runtime__staged_vectors 867 24 364_4]
+G c Z b b [last i18n__runtime__staged_vectors 868 24 364_4]
+G c Z b b [next i18n__runtime__staged_vectors 870 24 364_4]
+G c Z b b [previous i18n__runtime__staged_vectors 874 24 364_4]
+G c Z b b [free_staged i18n__runtime 368 14 none]
+G c Z b b [is_valid_locale i18n__runtime 398 13 none]
+G c Z b b [is_valid_key i18n__runtime 424 13 none]
+G c Z b b [stage_lines i18n__runtime 446 14 none]
+G c Z b b [commit_append i18n__runtime 576 14 none]
+G c Z b b [commit_override i18n__runtime 596 14 none]
+G c Z b b [apply_staged i18n__runtime 616 14 none]
+G c Z b b [parse_default_locale_line i18n__runtime 695 14 none]
+G c Z b b [detect_default_locale i18n__runtime 729 13 none]
+G c Z b b [public_failure i18n__runtime 772 13 none]
+G c Z b b [add_runtime_diagnostic i18n__runtime 783 14 none]
+G c Z b b [is_decimal_integer i18n__runtime 820 13 none]
+G c Z b b [integer_image_no_leading_space i18n__runtime 844 13 none]
+G c Z b b [substitute_number i18n__runtime 856 13 none]
+G c Z b b [split_decimal i18n__runtime 877 14 none]
+G c Z b b [classify_plural_argument i18n__runtime 931 14 none]
+G c Z b b [render_public_nodes i18n__runtime 988 14 none]
+G c Z b b [render_compiled i18n__runtime 1429 13 none]
+G c Z b b [append_bounded i18n__runtime 1473 14 none]
+G c Z b b [append_text_bounded i18n__runtime 1491 14 none]
+G c Z b b [render_bounded_nodes i18n__runtime 1516 14 none]
+G c Z b b [index_lookup i18n__runtime 1931 14 none]
+G c Z b b [resolve_entry i18n__runtime 1951 14 none]
+G c Z b b [reset_defaults i18n__runtime 1997 14 none]
+G c Z b b [ingest_strict i18n__runtime 2009 14 none]
+G c Z b b [ingest_lines i18n__runtime 2160 14 none]
+G c Z b b [validate_lines i18n__runtime 2323 13 none]
+G r c none [initialize i18n__runtime 91 14 none] [clear i18n__compiled 121 14 none]
+G r c none [initialize i18n__runtime 91 14 none] [free i18n__ast 281 14 none]
+G r c none [initialize i18n__runtime 91 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [initialize i18n__runtime 91 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [initialize i18n__runtime 91 14 none] [parse i18n__parser 41 13 none]
+G r c none [initialize i18n__runtime 91 14 none] [validate i18n__validation 14 13 none]
+G r c none [initialize i18n__runtime 91 14 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [initialize_binary_file i18n__runtime 112 14 none] [clear i18n__compiled 121 14 none]
+G r c none [initialize_binary_file i18n__runtime 112 14 none] [free i18n__ast 281 14 none]
+G r c none [initialize_binary_file i18n__runtime 112 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [initialize_binary_file i18n__runtime 112 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [initialize_binary_file i18n__runtime 112 14 none] [parse i18n__parser 41 13 none]
+G r c none [initialize_binary_file i18n__runtime 112 14 none] [validate i18n__validation 14 13 none]
+G r c none [initialize_binary_file i18n__runtime 112 14 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [load i18n__runtime 126 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [load i18n__runtime 126 14 none] [free i18n__ast 281 14 none]
+G r c none [load i18n__runtime 126 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [load i18n__runtime 126 14 none] [parse i18n__parser 41 13 none]
+G r c none [load i18n__runtime 126 14 none] [validate i18n__validation 14 13 none]
+G r c none [load i18n__runtime 126 14 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [render i18n__runtime 143 13 none] [failure i18n__result 92 13 none]
+G r c none [render i18n__runtime 143 13 none] [canonicalize i18n__locales 51 13 none]
+G r c none [render i18n__runtime 143 13 none] [parent i18n__locales 610 13 none]
+G r c none [render i18n__runtime 143 13 none] [emit i18n__observability 50 14 none]
+G r c none [render i18n__runtime 143 13 none] [has i18n__arguments 114 13 none]
+G r c none [render i18n__runtime 143 13 none] [get i18n__arguments 124 13 none]
+G r c none [render i18n__runtime 143 13 none] [add i18n__diagnostics 111 14 none]
+G r c none [render i18n__runtime 143 13 none] [format_into i18n__number_format 7 14 none]
+G r c none [render i18n__runtime 143 13 none] [format_date_into i18n__date_time_format 5 14 none]
+G r c none [render i18n__runtime 143 13 none] [format_time_into i18n__date_time_format 14 14 none]
+G r c none [render i18n__runtime 143 13 none] [format_date_time_into i18n__date_time_format 23 14 none]
+G r c none [render i18n__runtime 143 13 none] [format_into i18n__currency 7 14 none]
+G r c none [render i18n__runtime 143 13 none] [format_into i18n__extra_format 17 14 none]
+G r c none [render i18n__runtime 143 13 none] [cardinal i18n__plurals 55 13 none]
+G r c none [render i18n__runtime 143 13 none] [cardinal i18n__plurals 68 13 none]
+G r c none [render i18n__runtime 143 13 none] [branch_body i18n__ast 108 13 none]
+G r c none [render i18n__runtime 143 13 none] [has_branch i18n__ast 98 13 none]
+G r c none [render i18n__runtime 143 13 none] [ordinal i18n__plurals 80 13 none]
+G r c none [render i18n__runtime 143 13 none] [to_output_view i18n__result 69 13 none]
+G r c none [finalize i18n__runtime 162 14 none] [clear i18n__compiled 121 14 none]
+G r c none [finalize i18n__runtime 162 14 none] [free i18n__ast 281 14 none]
+G r c none [load_file i18n__runtime 217 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [load_file i18n__runtime 217 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [load_file i18n__runtime 217 14 none] [free i18n__ast 281 14 none]
+G r c none [load_file i18n__runtime 217 14 none] [parse i18n__parser 41 13 none]
+G r c none [load_file i18n__runtime 217 14 none] [validate i18n__validation 14 13 none]
+G r c none [load_file i18n__runtime 217 14 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [load_binary_file i18n__runtime 233 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [load_binary_file i18n__runtime 233 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [load_binary_file i18n__runtime 233 14 none] [free i18n__ast 281 14 none]
+G r c none [load_binary_file i18n__runtime 233 14 none] [parse i18n__parser 41 13 none]
+G r c none [load_binary_file i18n__runtime 233 14 none] [validate i18n__validation 14 13 none]
+G r c none [load_binary_file i18n__runtime 233 14 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [load_text i18n__runtime 249 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [load_text i18n__runtime 249 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [load_text i18n__runtime 249 14 none] [free i18n__ast 281 14 none]
+G r c none [load_text i18n__runtime 249 14 none] [parse i18n__parser 41 13 none]
+G r c none [load_text i18n__runtime 249 14 none] [validate i18n__validation 14 13 none]
+G r c none [load_text i18n__runtime 249 14 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [validate_catalog_file i18n__runtime 277 13 none] [add i18n__diagnostics 111 14 none]
+G r c none [validate_catalog_file i18n__runtime 277 13 none] [canonicalize i18n__locales 51 13 none]
+G r c none [validate_catalog_file i18n__runtime 277 13 none] [free i18n__ast 281 14 none]
+G r c none [validate_catalog_file i18n__runtime 277 13 none] [parse i18n__parser 41 13 none]
+G r c none [validate_catalog_file i18n__runtime 277 13 none] [validate i18n__validation 14 13 none]
+G r c none [validate_catalog_file i18n__runtime 277 13 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [validate_binary_catalog_file i18n__runtime 285 13 none] [add i18n__diagnostics 111 14 none]
+G r c none [validate_binary_catalog_file i18n__runtime 285 13 none] [canonicalize i18n__locales 51 13 none]
+G r c none [validate_binary_catalog_file i18n__runtime 285 13 none] [free i18n__ast 281 14 none]
+G r c none [validate_binary_catalog_file i18n__runtime 285 13 none] [parse i18n__parser 41 13 none]
+G r c none [validate_binary_catalog_file i18n__runtime 285 13 none] [validate i18n__validation 14 13 none]
+G r c none [validate_binary_catalog_file i18n__runtime 285 13 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [validate_catalog_text i18n__runtime 294 13 none] [canonicalize i18n__locales 51 13 none]
+G r c none [validate_catalog_text i18n__runtime 294 13 none] [add i18n__diagnostics 111 14 none]
+G r c none [validate_catalog_text i18n__runtime 294 13 none] [free i18n__ast 281 14 none]
+G r c none [validate_catalog_text i18n__runtime 294 13 none] [parse i18n__parser 41 13 none]
+G r c none [validate_catalog_text i18n__runtime 294 13 none] [validate i18n__validation 14 13 none]
+G r c none [validate_catalog_text i18n__runtime 294 13 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [validate_binary_catalog_text i18n__runtime 308 13 none] [add i18n__diagnostics 111 14 none]
+G r c none [validate_binary_catalog_text i18n__runtime 308 13 none] [canonicalize i18n__locales 51 13 none]
+G r c none [validate_binary_catalog_text i18n__runtime 308 13 none] [free i18n__ast 281 14 none]
+G r c none [validate_binary_catalog_text i18n__runtime 308 13 none] [parse i18n__parser 41 13 none]
+G r c none [validate_binary_catalog_text i18n__runtime 308 13 none] [validate i18n__validation 14 13 none]
+G r c none [validate_binary_catalog_text i18n__runtime 308 13 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [load_data_text i18n__runtime 410 13 none] [load_text i18n__runtime_data 10 13 none]
+G r c none [load_data_file i18n__runtime 419 13 none] [add i18n__diagnostics 111 14 none]
+G r c none [load_data_file i18n__runtime 419 13 none] [load_text i18n__runtime_data 10 13 none]
+G r c none [clear_runtime_data i18n__runtime 424 14 none] [clear i18n__runtime_data 8 14 none]
+G r c none [resolve i18n__runtime 465 13 none] [canonicalize i18n__locales 51 13 none]
+G r c none [resolve i18n__runtime 465 13 none] [parent i18n__locales 610 13 none]
+G r c none [render_into i18n__runtime 492 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [render_into i18n__runtime 492 14 none] [parent i18n__locales 610 13 none]
+G r c none [render_into i18n__runtime 492 14 none] [emit i18n__observability 50 14 none]
+G r c none [render_into i18n__runtime 492 14 none] [has i18n__arguments 114 13 none]
+G r c none [render_into i18n__runtime 492 14 none] [get i18n__arguments 124 13 none]
+G r c none [render_into i18n__runtime 492 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [render_into i18n__runtime 492 14 none] [format_into i18n__number_format 7 14 none]
+G r c none [render_into i18n__runtime 492 14 none] [format_date_into i18n__date_time_format 5 14 none]
+G r c none [render_into i18n__runtime 492 14 none] [format_time_into i18n__date_time_format 14 14 none]
+G r c none [render_into i18n__runtime 492 14 none] [format_date_time_into i18n__date_time_format 23 14 none]
+G r c none [render_into i18n__runtime 492 14 none] [format_into i18n__currency 7 14 none]
+G r c none [render_into i18n__runtime 492 14 none] [format_into i18n__extra_format 17 14 none]
+G r c none [render_into i18n__runtime 492 14 none] [cardinal i18n__plurals 55 13 none]
+G r c none [render_into i18n__runtime 492 14 none] [cardinal i18n__plurals 68 13 none]
+G r c none [render_into i18n__runtime 492 14 none] [branch_body i18n__ast 108 13 none]
+G r c none [render_into i18n__runtime 492 14 none] [has_branch i18n__ast 98 13 none]
+G r c none [render_into i18n__runtime 492 14 none] [ordinal i18n__plurals 80 13 none]
+G r c none [canonical_locale i18n__runtime 46 13 none] [canonicalize i18n__locales 51 13 none]
+G r c none [add_load_diagnostic i18n__runtime 165 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [decode_binary_catalog i18n__runtime 171 13 none] [add i18n__diagnostics 111 14 none]
+G r c none [compile_one i18n__runtime 315 14 none] [parse i18n__parser 41 13 none]
+G r c none [compile_one i18n__runtime 315 14 none] [free i18n__ast 281 14 none]
+G r c none [compile_one i18n__runtime 315 14 none] [validate i18n__validation 14 13 none]
+G r c none [free_staged i18n__runtime 368 14 none] [free i18n__ast 281 14 none]
+G r c none [stage_lines i18n__runtime 446 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [stage_lines i18n__runtime 446 14 none] [free i18n__ast 281 14 none]
+G r c none [stage_lines i18n__runtime 446 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [stage_lines i18n__runtime 446 14 none] [parse i18n__parser 41 13 none]
+G r c none [stage_lines i18n__runtime 446 14 none] [validate i18n__validation 14 13 none]
+G r c none [stage_lines i18n__runtime 446 14 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [commit_override i18n__runtime 596 14 none] [free i18n__ast 281 14 none]
+G r c none [apply_staged i18n__runtime 616 14 none] [free i18n__ast 281 14 none]
+G r c none [parse_default_locale_line i18n__runtime 695 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [detect_default_locale i18n__runtime 729 13 none] [canonicalize i18n__locales 51 13 none]
+G r c none [public_failure i18n__runtime 772 13 none] [to_output_view i18n__result 69 13 none]
+G r c none [add_runtime_diagnostic i18n__runtime 783 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [classify_plural_argument i18n__runtime 931 14 none] [cardinal i18n__plurals 55 13 none]
+G r c none [classify_plural_argument i18n__runtime 931 14 none] [cardinal i18n__plurals 68 13 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [emit i18n__observability 50 14 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [has i18n__arguments 114 13 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [get i18n__arguments 124 13 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [format_into i18n__number_format 7 14 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [format_date_into i18n__date_time_format 5 14 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [format_time_into i18n__date_time_format 14 14 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [format_date_time_into i18n__date_time_format 23 14 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [format_into i18n__currency 7 14 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [format_into i18n__extra_format 17 14 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [cardinal i18n__plurals 55 13 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [cardinal i18n__plurals 68 13 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [branch_body i18n__ast 108 13 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [has_branch i18n__ast 98 13 none]
+G r c none [render_public_nodes i18n__runtime 988 14 none] [ordinal i18n__plurals 80 13 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [emit i18n__observability 50 14 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [has i18n__arguments 114 13 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [get i18n__arguments 124 13 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [add i18n__diagnostics 111 14 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [format_into i18n__number_format 7 14 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [format_date_into i18n__date_time_format 5 14 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [format_time_into i18n__date_time_format 14 14 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [format_date_time_into i18n__date_time_format 23 14 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [format_into i18n__currency 7 14 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [format_into i18n__extra_format 17 14 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [cardinal i18n__plurals 55 13 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [cardinal i18n__plurals 68 13 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [branch_body i18n__ast 108 13 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [has_branch i18n__ast 98 13 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [ordinal i18n__plurals 80 13 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [to_output_view i18n__result 69 13 none]
+G r c none [render_compiled i18n__runtime 1429 13 none] [failure i18n__result 92 13 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [emit i18n__observability 50 14 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [has i18n__arguments 114 13 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [get i18n__arguments 124 13 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [format_into i18n__number_format 7 14 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [format_date_into i18n__date_time_format 5 14 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [format_time_into i18n__date_time_format 14 14 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [format_date_time_into i18n__date_time_format 23 14 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [format_into i18n__currency 7 14 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [format_into i18n__extra_format 17 14 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [cardinal i18n__plurals 55 13 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [cardinal i18n__plurals 68 13 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [branch_body i18n__ast 108 13 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [has_branch i18n__ast 98 13 none]
+G r c none [render_bounded_nodes i18n__runtime 1516 14 none] [ordinal i18n__plurals 80 13 none]
+G r c none [resolve_entry i18n__runtime 1951 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [resolve_entry i18n__runtime 1951 14 none] [parent i18n__locales 610 13 none]
+G r c none [ingest_strict i18n__runtime 2009 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [ingest_strict i18n__runtime 2009 14 none] [free i18n__ast 281 14 none]
+G r c none [ingest_strict i18n__runtime 2009 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [ingest_strict i18n__runtime 2009 14 none] [parse i18n__parser 41 13 none]
+G r c none [ingest_strict i18n__runtime 2009 14 none] [validate i18n__validation 14 13 none]
+G r c none [ingest_strict i18n__runtime 2009 14 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [ingest_lines i18n__runtime 2160 14 none] [canonicalize i18n__locales 51 13 none]
+G r c none [ingest_lines i18n__runtime 2160 14 none] [add i18n__diagnostics 111 14 none]
+G r c none [ingest_lines i18n__runtime 2160 14 none] [free i18n__ast 281 14 none]
+G r c none [ingest_lines i18n__runtime 2160 14 none] [parse i18n__parser 41 13 none]
+G r c none [ingest_lines i18n__runtime 2160 14 none] [validate i18n__validation 14 13 none]
+G r c none [ingest_lines i18n__runtime 2160 14 none] [to_diagnostic_kind i18n__errors 94 13 none]
+G r c none [validate_lines i18n__runtime 2323 13 none] [canonicalize i18n__locales 51 13 none]
+G r c none [validate_lines i18n__runtime 2323 13 none] [add i18n__diagnostics 111 14 none]
+G r c none [validate_lines i18n__runtime 2323 13 none] [free i18n__ast 281 14 none]
+G r c none [validate_lines i18n__runtime 2323 13 none] [parse i18n__parser 41 13 none]
+G r c none [validate_lines i18n__runtime 2323 13 none] [validate i18n__validation 14 13 none]
+G r c none [validate_lines i18n__runtime 2323 13 none] [to_diagnostic_kind i18n__errors 94 13 none]
+X 1 ada.ads
+16K9*Ada 20e8 40|1r14 2r14 3r14 4r14 503r8 515r35 523r30 526r26 41|1r6 2r6
+. 3r6 4r6 30r14 30r44 92r32 101r14 106r14 108r13 109r16 110r16 115r7 116r32
+. 118r17 119r45 122r7 126r13 127r13 364r34
+X 5 a-contai.ads
+16K13*Containers 28e19 40|1r18 2r18 515r39 523r34 41|92r36 364r38
+19M9*Hash_Type
+22I9*Count_Type<integer>
+X 8 a-cihama.ads
+42+9 Key_Type 40|524r7
+43+9 Element_Type 40|525r7
+45V18 Hash{5|19M9} 40|526r7
+46V18 Equivalent_Keys{boolean} 40|527r7
+49k24*Indefinite_Hashed_Maps 478e42 40|2w29 523r45
+56R9*Map<11|43R9> 40|540r40[523] 41|635r31[40|523] 2353r33[40|523]
+116U14*Clear 41|2712s18[40|523]
+201U14*Insert 41|590s18[40|523] 647s24[40|523] 2370s21[40|523]
+278V13*Contains{boolean} 41|642s33[40|523] 642s62[40|523] 658s53[40|523]
+. 1940s21[40|523] 2361s24[40|523]
+281V13*Element{integer} 41|680s42[40|523] 1942s28[40|523]
+X 9 a-convec.ads
+62I9 Index_Type 40|516r7 41|93r7 365r7
+63+9 Element_Type 40|517r7 41|94r7 366r7
+74k24*Vectors 878e27 40|1w29 515r50 41|92r47 364r49
+81I12*Extended_Index{integer}
+91R9*Vector<11|43R9> 40|539r45[515] 41|99r32[92] 133r66[92] 134r30[92] 172r34[92]
+. 174r38[92] 368r58[364] 447r37[92] 450r43[364] 618r40[364] 730r28[92] 2011r34[92]
+. 2015r36[364] 2057r32[92] 2096r34[92] 2097r34[92] 2139r32[92] 2162r29[92]
+. 2167r42[364] 2236r28[92] 2267r30[92] 2268r30[92] 2304r37[92] 2324r34[92]
+. 2329r36[364] 2393r29[92] 2417r30[92] 2418r30[92] 2464r30[92] 2510r29[92]
+175V13*Length{5|22I9} 41|223s25[92] 264s25[92] 2381s45[364]
+187V13*Is_Empty{boolean} 41|2085s23[40|515] 2131s23[40|515]
+190U14*Clear 41|103s13[92] 129s16[92] 221s15[92] 304s18[92] 381s14[364] 456s14[364]
+. 2711s20[40|515]
+206V13*Element{21|91R9} 41|230s27[92] 235s39[92] 239s30[92] 241s39[92] 245s30[92]
+. 247s39[92] 248s44[92] 253s30[92] 255s39[92] 260s30[92] 271s36[92] 276s60[92]
+. 297s35[92] 372s40[364] 464s41[92] 602s48[40|515] 655s43[364] 2565s41[40|515]
+. 2656s41[40|515] 2701s47[40|515]
+217U14*Replace_Element 41|377s23[364] 609s20[40|515] 689s20[364] 2706s29[40|515]
+483U14*Append 41|119s16[92] 142s19[92] 144s19[92] 297s21[92] 558s38[364]
+. 584s20[40|515]
+560V13*First_Index{integer} 41|370s23[364] 460s24[92] 653s23[364] 2699s29[40|515]
+570V13*Last_Index{81I12[41|92]} 41|275s37[92] 296s34[92] 370s45[364] 460s45[92]
+. 592s23[40|515] 653s45[364] 2699s57[40|515]
+X 10 a-direct.ads
+76K13*Directories 524e20 41|1w10 106r18 108r17 109r20 110r20
+303n34*Ordinary_File{303E9} 41|110r32
+310V13*Exists{boolean} 41|106s30
+316V13*Kind{303E9} 41|109s32
+X 13 a-iteint.ads
+24h9 Forward_Iterator
+32h9 Reversible_Iterator<24R9[9|119]>
+X 15 a-string.ads
+16K13*Strings 35e16 40|3r18 4r18 503r12 526r30 41|2w10 3r10 30r18 30r48
+33n37*Both{33E9} 41|30r56
+X 16 a-strfix.ads
+49K21*Fixed 1433e22 41|3w18 30r26
+1156V13*Trim{string} 41|30s32
+X 17 a-strhas.ads
+18V22*Hash{5|19M9} 40|3w26 526r38
+X 21 a-strunb.ads
+85K21*Unbounded 766e26 40|4w26 503r20
+91R9*Unbounded_String<11|43R9> 745e15 40|509r21 510r21 511r21 541r29 41|94r23
+. 135r17 273r24 357r16 358r16 359r16 497r37 498r37 578r16 579r16 580r16 599r16
+. 699r15 859r16 936r22 991r30 1231r36 1435r21 1760r36 1956r29 1960r19 2174r27
+. 2511r16 2551r25 2584r25 2632r25
+95r4*Null_Unbounded_String{91R9} 41|146r21 941r19 1962r26
+97V13*Length{natural} 41|158s10 518s38 519s38 1451s13
+108V13*To_Unbounded_String{91R9} 40|541s49 41|119s24 142s27 503s33 505s38
+. 510s33 513s33 536s30 562s47 710s15 722s15 956s15 964s15 977s28 1960s39
+. 1977s24 2002s9 2194s37 2714s9
+121V13*To_String{string} 41|138s33 230s10 235s22 239s13 241s22 245s13 247s22
+. 248s27 253s13 255s22 260s13 271s19 276s43 281s38 464s24 520s59 521s56 537s51
+. 551s37 591s21 591s41 640s32 640s54 657s26 657s48 711s10 736s49 871s14 1009s37
+. 1015s44 1029s44 1043s42 1068s44 1083s45 1092s45 1101s45 1126s45 1127s45
+. 1167s44 1198s40 1222s44 1294s54 1305s44 1348s44 1463s56 1538s19 1542s44
+. 1558s44 1572s42 1597s44 1612s45 1621s45 1630s45 1655s45 1656s45 1696s44
+. 1727s40 1751s44 1817s37 1827s44 1863s44 1966s30 1974s36 1981s10 1983s19
+. 2026s28 2072s43 2118s43 2202s28 2359s29 2359s51 2366s22 2524s26 2528s36
+. 2567s28 2597s36 2663s28
+140U14*Append 41|276s16 865s13 1006s16 1020s22 1056s28 1115s28 1154s28 1211s28
+. 2524s10
+148U14*Append 41|154s13 863s13 867s13 2525s10
+243V14*"="{boolean} 9|65i19
+X 23 a-textio.ads
+58K13*Text_IO 787e16 41|4w10 101r18 115r11 116r36 118r21 119r49 122r11 126r17
+. 127r17
+66P9*File_Type 41|101r26
+68n23*In_File{68E9} 41|116r44
+114U14*Open 41|115s19
+115p7 File{66P9} 41|116r10
+116e7 Mode{68E9} 41|116r24
+117a7 Name{string} 41|116r53
+130U14*Close 41|122s19 127s25
+174V13*Is_Open{boolean} 41|126s25
+341V13*End_Of_File{boolean} 41|118s29
+549V13*Get_Line{string} 41|119s57
+X 25 i18n.ads
+16K9*I18N 19e9 40|6r6 7r6 8r6 9r6 11r14 12r14 13r14 69r9 145r19 147r19 148r14
+. 199r26 270r21 326r21 453r14 467r16 494r19 496r19 499r23 512r21 531r29 531r55
+. 536r29 541r70 545r5 41|6r6 6r20 7r6 8r6 9r6 10r6 11r6 11r23 12r6 13r6 14r6
+. 15r6 16r6 18r14 22r13 48r14 166r28 167r21 175r28 225r26 232r26 237r26 243r26
+. 251r26 257r26 266r26 285r35 306r26 317r20 319r20 321r16 326r20 329r13 331r22
+. 336r39 337r12 340r13 349r16 361r16 375r16 386r28 387r21 392r7 452r28 453r31
+. 458r16 474r38 480r31 525r34 531r40 540r43 542r43 548r37 581r16 600r15 605r10
+. 668r22 717r30 765r14 773r21 774r21 775r14 779r25 784r28 785r21 788r17 789r9
+. 790r36 793r15 794r21 796r15 797r21 799r15 800r21 802r15 803r21 805r15 805r45
+. 806r21 808r15 808r37 812r7 935r22 940r19 954r25 962r25 976r18 989r23 990r23
+. 992r30 993r30 998r17 1001r30 1004r18 1005r16 1005r41 1013r18 1017r19 1018r22
+. 1019r22 1020r38 1022r32 1027r18 1031r19 1032r22 1033r22 1035r50 1040r25
+. 1041r42 1050r38 1053r38 1060r32 1065r18 1065r41 1066r18 1070r19 1071r22
+. 1072r22 1074r50 1079r43 1080r28 1081r45 1088r46 1089r28 1090r45 1098r28
+. 1099r45 1109r38 1112r38 1119r32 1124r18 1129r19 1130r22 1131r22 1133r50
+. 1138r25 1139r45 1148r38 1151r38 1158r32 1163r18 1163r45 1164r18 1164r41
+. 1165r18 1169r40 1172r30 1173r35 1174r30 1175r35 1176r30 1177r35 1178r30
+. 1179r35 1181r35 1185r19 1186r22 1187r22 1189r50 1194r25 1196r40 1205r38
+. 1208r38 1215r32 1220r18 1224r19 1224r44 1225r26 1226r32 1230r36 1237r40
+. 1244r38 1249r33 1255r40 1257r39 1264r44 1266r44 1268r44 1270r44 1272r44
+. 1274r44 1283r44 1303r18 1307r19 1307r44 1308r26 1309r32 1314r27 1316r27
+. 1317r44 1319r33 1321r30 1324r40 1327r38 1346r18 1350r19 1350r44 1351r26
+. 1352r32 1357r27 1360r38 1371r42 1372r33 1376r39 1377r42 1379r42 1381r42
+. 1383r42 1385r42 1398r44 1416r38 1430r19 1431r19 1433r14 1436r21 1436r50
+. 1437r21 1439r7 1439r32 1447r7 1447r32 1449r20 1451r31 1454r28 1458r30 1462r28
+. 1463r28 1468r17 1468r38 1517r23 1518r23 1522r30 1523r30 1528r17 1531r30
+. 1534r18 1535r16 1535r41 1540r18 1544r19 1545r22 1546r22 1549r25 1551r32
+. 1556r18 1560r19 1561r22 1562r22 1564r50 1569r25 1570r42 1581r38 1589r32
+. 1594r18 1594r41 1595r18 1599r19 1600r22 1601r22 1603r50 1608r43 1609r28
+. 1610r45 1617r46 1618r28 1619r45 1627r28 1628r45 1640r38 1648r32 1653r18
+. 1658r19 1659r22 1660r22 1662r50 1667r25 1668r45 1679r38 1687r32 1692r18
+. 1692r45 1693r18 1693r41 1694r18 1698r40 1701r30 1702r35 1703r30 1704r35
+. 1705r30 1706r35 1707r30 1708r35 1710r35 1714r19 1715r22 1716r22 1718r50
+. 1723r25 1725r40 1736r38 1744r32 1749r18 1753r19 1753r44 1754r26 1755r32
+. 1759r36 1764r40 1771r38 1776r33 1782r40 1784r39 1791r44 1793r44 1795r44
+. 1797r44 1799r44 1801r44 1810r44 1825r18 1829r19 1829r44 1830r26 1831r32
+. 1836r27 1838r27 1839r44 1841r33 1843r30 1846r40 1849r38 1861r18 1865r19
+. 1865r44 1866r26 1867r32 1870r32 1872r32 1878r30 1881r36 1882r27 1885r33
+. 1886r36 1888r36 1890r36 1892r36 1894r36 1907r38 1916r38 1974r15 2000r21
+. 2002r30 2017r21 2018r21 2047r24 2066r24 2087r24 2099r21 2107r24 2113r24
+. 2133r24 2149r24 2169r27 2186r28 2189r42 2248r33 2280r33 2331r21 2363r42
+. 2398r33 2423r33 2488r10 2517r10 2518r33 2537r7 2546r19 2548r19 2548r52
+. 2555r17 2555r38 2570r14 2570r35 2573r17 2573r38 2578r16 2624r19 2626r19
+. 2629r23 2638r20 2644r20 2651r24 2651r53 2652r24 2654r10 2654r35 2664r10
+. 2664r35 2666r24 2671r23 2674r23 2680r20 2695r21 2696r7 2704r16 2714r30
+. 2718r5
+X 26 i18n-arguments.ads
+39K14*Arguments 163e19 40|6w11 147r24 496r24 41|990r28 1019r27 1020r43 1033r27
+. 1041r47 1072r27 1081r50 1090r50 1099r50 1131r27 1139r50 1187r27 1196r45
+. 1225r31 1237r45 1249r38 1308r31 1314r32 1351r31 1357r32 1431r24 1518r28
+. 1546r27 1549r30 1562r27 1570r47 1601r27 1610r50 1619r50 1628r50 1660r27
+. 1668r50 1716r27 1725r45 1754r31 1764r45 1776r38 1830r31 1836r32 1866r31
+. 1870r37 1878r35 2548r24 2626r24
+41R9*Arguments 161e14 40|147r34 496r34 41|990r38 1431r34 1518r38 2548r34
+. 2626r34
+114V13*Has{boolean} 41|1019s37 1033s37 1072s37 1131s37 1187s37 1225s41 1308s41
+. 1351s41 1546s37 1562s37 1601s37 1660s37 1716s37 1754s41 1830s41 1866s41
+124V13*Get{string} 41|1020s53 1041s57 1081s60 1090s60 1099s60 1139s60 1196s55
+. 1237s55 1249s48 1314s42 1357s42 1549s40 1570s57 1610s60 1619s60 1628s60
+. 1668s60 1725s55 1764s55 1776s48 1836s42 1870s47 1878s45
+X 27 i18n-ast.ads
+3K22*AST 284e13 40|13w19 512r26 41|6w11 6r25 317r25 321r21 329r18 340r18
+. 361r21 375r21 540r48 581r21 600r20 605r15 668r27 989r28 998r22 1004r23
+. 1013r23 1027r23 1065r23 1065r46 1066r23 1079r48 1088r51 1124r23 1163r23
+. 1163r50 1164r23 1164r46 1165r23 1172r35 1174r35 1176r35 1178r35 1220r23
+. 1255r45 1257r44 1303r23 1316r32 1317r49 1319r38 1321r35 1324r45 1346r23
+. 1371r47 1372r38 1430r24 1517r28 1528r22 1534r23 1540r23 1556r23 1594r23
+. 1594r46 1595r23 1608r48 1617r51 1653r23 1692r23 1692r50 1693r23 1693r46
+. 1694r23 1701r35 1703r35 1705r35 1707r35 1749r23 1782r45 1784r44 1825r23
+. 1838r32 1839r49 1841r38 1843r35 1846r45 1861r23 1881r41 1882r32 2704r21
+8n7*Text{7E9} 41|1004r27 1534r27
+9n7*Variable{7E9} 41|1013r27 1540r27
+10n7*Number{7E9} 41|1027r27 1556r27
+11n7*Date_Format{7E9} 41|1065r27 1079r52 1594r27 1608r52
+12n7*Time_Format{7E9} 41|1065r50 1088r55 1594r50 1617r55
+13n7*Date_Time_Format{7E9} 41|1066r27 1595r27
+14n7*Currency{7E9} 41|1124r27 1653r27
+15n7*Duration_Format{7E9} 41|1163r27 1172r39 1692r27 1701r39
+16n7*Byte_Size_Format{7E9} 41|1163r54 1174r39 1692r54 1703r39
+17n7*Unit_Format{7E9} 41|1164r27 1176r39 1693r27 1705r39
+18n7*Relative_Time_Format{7E9} 41|1164r50 1178r39 1693r50 1707r39
+19n7*List_Format{7E9} 41|1165r27 1694r27
+20n7*Plural{7E9} 41|1220r27 1749r27
+21n7*Select_Node{7E9} 41|1303r27 1825r27
+22n7*SelectOrdinal{7E9} 41|1346r27 1861r27
+25P9*Node_Access(24R9) 40|512r30 41|317r29 321r25 361r25 540r52 581r25 600r24
+. 989r32 998r26 1255r49 1317r53 1371r51 1430r28 1517r32 1528r26 1782r49 1839r53
+. 1881r45
+28P9*Branch_Access(27R9)
+55e7*Kind{7E9} 41|1003r23 1079r36 1088r39 1171r35 1533r23 1608r36 1617r39
+. 1700r35
+56r7*Text{21|91R9} 41|1009r56 1538r38
+57r7*Name{21|91R9} 41|1015r63 1029r63 1068r63 1126r64 1167r63 1222r63 1305r63
+. 1348r63 1542r63 1558r63 1597r63 1655r64 1696r63 1751r63 1827r63 1863r63
+58r7*Currency_Code{21|91R9} 41|1043r61 1083r64 1092r64 1101r64 1127r64 1198r59
+. 1572r61 1612r64 1621r64 1630r64 1656r64 1727r59
+59i7*Plural_Offset{long_long_integer} 41|1239r48 1766r48
+60p7*Plural_Zero{25P9} 41|1265r50 1792r50
+61p7*One{25P9} 41|1267r50 1794r50
+62p7*Plural_Two{25P9} 41|1269r50 1796r50
+63p7*Plural_Few{25P9} 41|1271r50 1798r50
+64p7*Plural_Many{25P9} 41|1273r50 1800r50
+65p7*Other{25P9} 41|1275r50 1279r52 1802r50 1806r52
+66p7*Plural_Exact{28P9} 41|1258r50 1785r50
+67p7*Branches{28P9} 41|1316r56 1319r63 1321r60 1325r51 1838r56 1841r63 1843r60
+. 1847r51
+68p7*Ord_Zero{25P9} 41|1378r58 1887r52
+69p7*Ord_One{25P9} 41|1380r58 1889r52
+70p7*Ord_Two{25P9} 41|1382r58 1891r52
+71p7*Ord_Few{25P9} 41|1384r58 1893r52
+72p7*Ord_Many{25P9} 41|1386r58 1895r52
+73p7*Ord_Other{25P9} 41|1388r58 1394r52 1897r52 1903r46
+74p7*Ord_Exact{28P9} 41|1373r44 1882r57
+75p7*Next{25P9} 41|1423r29 1923r29
+98V13*Has_Branch{boolean} 41|1316s36 1324s49 1838s36 1846s49
+108V13*Branch_Body{25P9} 41|1257s48 1319s42 1321s39 1372s42 1784s48 1841s42
+. 1843s39 1882s36
+281U14*Free 41|329s22 340s22 375s25 605s19 668s31 2704s25
+X 28 i18n-compiled.ads
+4K22*Compiled 206e18 40|12w19 536r34 41|2696r12
+86R9*Compiled_Message 200e14 40|536r43
+121U14*Clear 41|2696s21
+X 29 i18n-currency.ads
+1K22*Currency 16e18 41|7w11 1133r55 1138r30 1662r55 1667r30
+3N4*Max_Formatted_Length 41|1133r64 1662r64
+7U14*Format_Into 41|1138s39 1667s39
+8a7 Amount_Text{string} 41|1139r28 1668r28
+9a7 Currency_Code{string} 41|1140r28 1669r28
+10a7 Locale{string} 41|1141r28 1670r28
+11a7 Target{string} 41|1142r28 1671r28
+12i7 Last{natural} 41|1143r28 1672r28
+13b7 Ok{boolean} 41|1144r28 1673r28
+14b7 Overflow{boolean} 41|1145r28 1674r28
+X 30 i18n-date_time_format.ads
+1K22*Date_Time_Format 32e26 41|8w11 1074r55 1080r33 1089r33 1098r33 1603r55
+. 1609r33 1618r33 1627r33
+3N4*Max_Formatted_Length 41|1074r72 1603r72
+5U14*Format_Date_Into 41|1080s50 1609s50
+6a7 Value_Text{string} 41|1081r31 1610r31
+7a7 Locale{string} 41|1082r31 1611r31
+8a7 Style{string} 41|1083r31 1612r31
+9a7 Target{string} 41|1084r31 1613r31
+10i7 Last{natural} 41|1085r31 1614r31
+11b7 Ok{boolean} 41|1086r31 1615r31
+12b7 Overflow{boolean} 41|1087r31 1616r31
+14U14*Format_Time_Into 41|1089s50 1618s50
+15a7 Value_Text{string} 41|1090r31 1619r31
+16a7 Locale{string} 41|1091r31 1620r31
+17a7 Style{string} 41|1092r31 1621r31
+18a7 Target{string} 41|1093r31 1622r31
+19i7 Last{natural} 41|1094r31 1623r31
+20b7 Ok{boolean} 41|1095r31 1624r31
+21b7 Overflow{boolean} 41|1096r31 1625r31
+23U14*Format_Date_Time_Into 41|1098s50 1627s50
+24a7 Value_Text{string} 41|1099r31 1628r31
+25a7 Locale{string} 41|1100r31 1629r31
+26a7 Style{string} 41|1101r31 1630r31
+27a7 Target{string} 41|1102r31 1631r31
+28i7 Last{natural} 41|1103r31 1632r31
+29b7 Ok{boolean} 41|1104r31 1633r31
+30b7 Overflow{boolean} 41|1105r31 1634r31
+X 31 i18n-diagnostics.ads
+30K14*Diagnostics 167e21 40|7w11 199r31 270r26 326r26 41|166r33 167r26 175r33
+. 225r31 232r31 237r31 243r31 251r31 257r31 266r31 285r40 306r31 386r33 387r26
+. 392r12 453r36 474r43 525r39 774r26 784r33 788r22 789r14 794r26 797r26 800r26
+. 803r26 806r26 812r12 993r35 1437r26 1523r35 2018r26 2099r26 2189r47 2248r38
+. 2280r38 2363r47 2398r38 2423r38 2517r15 2518r38 2652r29
+59E9*Diagnostic_Kind 66e24 41|167r38 387r38 788r34
+60n7*Parse_Error{59E9} 41|225r43 232r43 257r43 306r43 474r55 789r26 806r38
+. 2248r50 2280r50 2398r50 2423r50 2518r50
+61n7*Validation_Error{59E9} 41|237r43 243r43 251r43 266r43 285r52 525r51
+. 2189r59 2363r59
+62n7*Missing_Variable{59E9} 41|794r38
+63n7*Missing_Branch{59E9} 41|800r38
+65n7*Invalid_Selector{59E9} 41|797r38
+66n7*Overflow_Warning{59E9} 41|803r38
+88R9*Diagnostic_List 91e14 40|199r43 270r38 326r38 41|166r45 175r45 386r45
+. 453r48 774r38 784r45 993r47 1437r38 1523r47 2018r38 2099r38 2652r41
+111U14*Add 41|392s24 812s24 2517s27
+112r7 List{88R9} 41|393r10 813r10
+113e7 Kind{59E9} 41|393r31 813r31
+114a7 Message{string} 41|393r45 813r45
+115a7 Key{string} 41|393r65 813r65
+X 32 i18n-errors.ads
+5K22*Errors 98e16 40|11w19 531r34 531r60 41|319r25 331r27 336r44 349r21 452r33
+. 458r21 480r36 531r45 542r48 548r42 717r35 2000r26 2017r26 2047r29 2066r29
+. 2087r29 2107r29 2113r29 2133r29 2149r29 2169r32 2331r26 2695r26
+8E9*Error_Kind 16e25 40|531r41 41|319r32 452r40 542r55 2017r33 2169r39 2331r33
+9n7*Parse_Error{8E9} 40|531r67 41|331r34 349r28 458r28 480r43 2000r33 2066r36
+. 2107r36 2149r36 2695r33
+10n7*Validation_Error{8E9} 41|531r52 717r42 2047r36 2087r36 2113r36 2133r36
+35R9*Result 40e14 41|336r51
+36b7*Ok{boolean} 41|339r35
+38e7*Error{8E9} 41|342r40
+94V13*To_Diagnostic_Kind{31|59E9} 41|548s49
+X 33 i18n-extra_format.ads
+1K22*Extra_Format 27e22 41|9w11 1169r45 1173r40 1175r40 1177r40 1179r40 1181r40
+. 1189r55 1194r30 1698r45 1702r40 1704r40 1706r40 1708r40 1710r40 1718r55
+. 1723r30
+3N4*Max_Formatted_Length 41|1189r68 1718r68
+5E9*Extra_Kind 10e12 41|1169r58 1698r58
+6n7*Duration{5E9} 41|1173r53 1702r53
+7n7*Byte_Size{5E9} 41|1175r53 1704r53
+8n7*Unit{5E9} 41|1177r53 1706r53
+9n7*Relative_Time{5E9} 41|1179r53 1708r53
+10n7*List{5E9} 41|1181r53 1710r53
+17U14*Format_Into 41|1194s43 1723s43
+18e7 Kind{5E9} 41|1195r28 1724r28
+19a7 Value{string} 41|1196r28 1725r28
+20a7 Locale{string} 41|1197r28 1726r28
+21a7 Option{string} 41|1198r28 1727r28
+22a7 Target{string} 41|1199r28 1728r28
+23i7 Last{natural} 41|1200r28 1729r28
+24b7 Ok{boolean} 41|1201r28 1730r28
+25b7 Overflow{boolean} 41|1202r28 1731r28
+X 34 i18n-locales.ads
+27K14*Locales 616e17 40|8w11 145r24 453r19 467r21 494r24 541r75 41|48r19
+. 765r19 1974r20 2002r35 2186r33 2546r24 2578r21 2624r24 2714r35
+32A12*Locale_Id{string}<integer> 40|145r32 453r27 467r29 494r32 41|2546r32
+. 2578r29 2624r32
+41a4*Default_Locale_Name{string} 40|541r83 41|765r27 2002r43 2186r41 2714r43
+51V13*Canonicalize{string} 41|48s27
+610V13*Parent{string} 41|1974s28
+X 35 i18n-number_format.ads
+1K22*Number_Format 16e23 41|10w11 1035r55 1040r30 1564r55 1569r30
+3N4*Max_Formatted_Length 41|1035r69 1564r69
+7U14*Format_Into 41|1040s44 1569s44
+8a7 Value_Text{string} 41|1041r28 1570r28
+9a7 Locale{string} 41|1042r28 1571r28
+10a7 Style{string} 41|1043r28 1572r28
+11a7 Target{string} 41|1044r28 1573r28
+12i7 Last{natural} 41|1045r28 1574r28
+13b7 Ok{boolean} 41|1046r28 1575r28
+14b7 Overflow{boolean} 41|1047r28 1576r28
+X 36 i18n-observability.ads
+1K22*Observability 82e23 41|13w11 1005r21 1005r46 1017r24 1018r27 1031r24
+. 1032r27 1070r24 1071r27 1129r24 1130r27 1185r24 1186r27 1224r24 1224r49
+. 1307r24 1307r49 1350r24 1350r49 1439r12 1439r37 1447r12 1447r37 1535r21
+. 1535r46 1544r24 1545r27 1560r24 1561r27 1599r24 1600r27 1658r24 1659r27
+. 1714r24 1715r27 1753r24 1753r49 1829r24 1829r49 1865r24 1865r49 2654r15
+. 2654r40 2664r15 2664r40
+4n7*Message_Start{3E9} 41|1439r51 2654r54
+5n7*Op_Text{3E9} 41|1005r60 1535r60
+6n7*Op_Variable{3E9} 41|1018r41 1032r41 1071r41 1130r41 1186r41 1545r41 1561r41
+. 1600r41 1659r41 1715r41
+7n7*Op_Plural{3E9} 41|1224r63 1753r63
+8n7*Op_Select{3E9} 41|1307r63 1829r63
+9n7*Op_Ordinal{3E9} 41|1350r63 1865r63
+10n7*Message_End{3E9} 41|1447r51 2664r54
+50U14*Emit 41|1005s35 1017s38 1031s38 1070s38 1129s38 1185s38 1224s38 1307s38
+. 1350s38 1439s26 1447s26 1535s35 1544s38 1560s38 1599s38 1658s38 1714s38
+. 1753s38 1829s38 1865s38 2654s29 2664s29
+X 37 i18n-parser.ads
+3K22*Parser 45e16 41|12w11 326r25
+41V13*Parse{27|25P9} 41|326s32
+X 38 i18n-plurals.ads
+39K14*Plurals 85e17 41|14w11 22r18 935r27 940r24 954r30 962r30 976r23 1230r41
+. 1264r49 1266r49 1268r49 1270r49 1272r49 1274r49 1376r44 1377r47 1379r47
+. 1381r47 1383r47 1385r47 1759r41 1791r49 1793r49 1795r49 1797r49 1799r49
+. 1801r49 1885r38 1886r41 1888r41 1890r41 1892r41 1894r41
+42E9*Plural_Category 48e13 41|22r26 935r35 1230r49 1759r49
+43n7*Zero{42E9} 41|1264r57 1377r55 1791r57 1886r49
+44n7*One{42E9} 41|1266r57 1379r55 1793r57 1888r49
+45n7*Two{42E9} 41|1268r57 1381r55 1795r57 1890r49
+46n7*Few{42E9} 41|1270r57 1383r55 1797r57 1892r49
+47n7*Many{42E9} 41|1272r57 1385r55 1799r57 1894r49
+48n7*Other{42E9} 41|940r32 1274r57 1801r57
+55V13*Cardinal{42E9} 41|954s38 962s38
+68V13*Cardinal{42E9} 41|976s31
+80V13*Ordinal{42E9} 41|1376s52 1885s46
+X 39 i18n-result.ads
+31K14*Result 101e16 40|9w11 148r19 499r28 41|11w11 11r28 773r26 775r19 779r30
+. 785r26 790r41 793r20 796r20 799r20 802r20 805r20 805r50 808r20 808r42 992r35
+. 1001r35 1022r37 1050r43 1053r43 1060r37 1109r43 1112r43 1119r37 1148r43
+. 1151r43 1158r37 1205r43 1208r43 1215r37 1226r37 1244r43 1283r49 1309r37
+. 1327r43 1352r37 1360r43 1398r49 1416r43 1433r19 1436r26 1436r55 1449r25
+. 1451r36 1454r33 1458r35 1462r33 1463r33 1468r22 1468r43 1522r35 1531r35
+. 1551r37 1581r43 1589r37 1640r43 1648r37 1679r43 1687r37 1736r43 1744r37
+. 1755r37 1771r43 1810r49 1831r37 1849r43 1867r37 1872r37 1907r43 1916r43
+. 2548r57 2555r22 2555r43 2570r19 2570r40 2573r22 2573r43 2629r28 2638r25
+. 2644r25 2651r29 2651r58 2666r29 2671r28 2674r28 2680r25
+34E9*Render_Status 42e22 40|499r35 41|773r33 785r33 790r48 992r42 1436r33
+. 1522r42 2629r35 2651r36
+35n7*Success{34E9} 41|808r27 1001r42 1436r62 1449r32 1462r40 1531r42 2651r65
+. 2666r36 2674r35
+36n7*Missing_Key{34E9} 41|808r49 2570r47 2644r32
+37n7*Missing_Argument{34E9} 41|793r27 1022r44 1060r44 1119r44 1158r44 1215r44
+. 1226r44 1309r44 1352r44 1551r44 1589r44 1648r44 1687r44 1744r44 1755r44
+. 1831r44 1867r44
+38n7*Invalid_Argument{34E9} 41|796r27 1053r50 1112r50 1151r50 1208r50 1244r50
+. 1360r50 1416r50 1581r50 1640r50 1679r50 1736r50 1771r50 1872r44 1916r50
+39n7*Formatting_Error{34E9} 41|799r27 1283r56 1327r50 1398r56 1810r56 1849r50
+. 1907r50
+40n7*Execution_Error{34E9} 41|805r27 2555r50 2638r32
+41n7*Buffer_Overflow{34E9} 41|802r27 1050r50 1109r50 1148r50 1205r50 1454r40
+. 1458r42 2671r35
+42n7*Internal_Error{34E9} 41|805r57 1468r50 2573r50 2680r32
+44i4*Max_Output_Length{positive} 41|1451r43
+59R9*Render_Result 63e14 40|148r26 41|775r26 1433r26 2548r64
+60e7*Status{34E9} 41|778m10 1462m13
+61r7*Text{50R9} 41|779m10 1463m13
+62r7*Diagnostics{31|88R9} 41|780m10 1464m13
+69V13*To_Output_View{50R9} 41|779s37 1463s40
+92V13*Failure{59R9} 41|1468s29 2555s29 2570s26 2573s29
+X 40 i18n-runtime.ads
+69K14*Runtime 25|16k9 40|508E9 545l10 545e17 41|18b19 2718l10 2718t17
+71R9*Runtime 72r24 91p14 92r29 112p14 113r29 126p14 127r29 143p13 154p13
+. 155r14 162p14 163r21 217p14 233p14 249p14 465p13 492p14 529c9 543e14 41|577r23
+. 597r22 617r25 695r55 1932r16 1952r25 1997r44 2010r28 2055r40 2092r29 2137r34
+. 2161r23 2687r30 2692r38
+72R12*Instance{71R9} 144r19 218r23 234r23 250r28 466r16 493r19 41|2230r23
+. 2261r23 2298r28 2545r19 2577r16 2623r19
+91U14*Initialize 92=7 93>7 41|2055b14 2089l8 2089t18
+92r7 Item{71R9} 41|2055b26 2060m17 2061m23 2065m10 2066m10 2072m37 2073r24
+. 2076r14 2080m22 2085r10 2086m10 2087m10
+93a7 Catalog_Path{string} 41|2055b49 2063r24 2080r35
+112U14*Initialize_Binary_File 113=7 114>7 41|2091b14 2135l8 2135t30
+113r7 Item{71R9} 41|2092b7 2101m17 2102m23 2106m10 2107m10 2112m10 2113m10
+. 2118m37 2119r24 2122r14 2126m22 2131r10 2132m10 2133m10
+114a7 Catalog_Path{string} 41|2093b7 2104r24 2110r27 2126r37
+126U14*Load 127=7 128>7 41|2137b14 2154l8 2154t12
+127r7 Item{71R9} 41|2137b20 2142r14 2148m10 2149m10 2153m22
+128a7 Catalog_Path{string} 41|2137b43 2146r24 2153r35
+143V13*Render{39|59R9} 144>7 145>7 146>7 147>7 41|2544b13 2574l8 2574t14
+144r7 Item{72R12} 41|2545b7 2554r14 2558r22 2565r28
+145a7 Locale{34|32A12} 41|2546b7 2558r28
+146a7 Key{string} 41|2547b7 2558r36
+147r7 Arguments{26|41R9} 41|2548b7 2566r28
+154V13*Is_Valid{boolean} 155>7 41|2687b13 2690l8 2690t16
+155r7 Item{71R9} 41|2687b23 2689r14
+162U14*Finalize 163=7 41|2060s7 2101s7 2692b14 2716l8 2716t16
+163r7 Item{71R9} 41|2692b24 2694m7 2695m7 2696m28 2696r28 2697m7 2699r16
+. 2699r44 2701r34 2706m16 2706r16 2711m7 2711r7 2712m7 2712r7 2713m7 2715m7
+171E9*Duplicate_Policy 174e25 221r16 237r16 254r21 41|619r18 2164r16 2233r16
+. 2264r16 2302r21
+172n7*Reject_Duplicates{171E9} 221r36 237r36 254r41 41|631r19 661r21 2042r24
+. 2233r36 2264r36 2302r41
+173n7*Keep_First{171E9} 41|666r21
+174n7*Override_Previous{171E9} 41|677r21
+177E9*Load_Status 182e23 195r26 41|620r22 2019r21 2170r27
+178n7*Loaded{177E9} 41|629r17 2045r20 2223r19
+179n7*Source_Not_Found{177E9} 41|2250r27 2282r27
+180n7*Invalid_Catalog{177E9} 195r41 41|2191r36 2211r27 2238r28 2257r27 2270r28
+. 2287r27 2294r27 2306r28 2316r27
+181n7*Duplicate_Rejected{177E9} 41|644r32
+182n7*Runtime_Invalid{177E9} 41|2241r27 2273r27 2309r27
+194R9*Load_Result 200e14 220r20 236r20 253r25 41|2165r23 2232r20 2263r20
+. 2301r25
+195e7*Status{177E9} 41|2191m26 2211m17 2218m14 2238m18 2241m17 2250m17 2257m17
+. 2270m18 2273m17 2282m17 2287m17 2294m17 2306m18 2309m17 2316m17
+196i7*Entries_Added{natural} 41|2219m14 2238m45 2270m45 2306m45
+197i7*Entries_Replaced{natural} 41|2220m14
+198i7*Entries_Ignored{natural} 41|2221m14
+199r7*Diagnostics{31|88R9} 41|2189m29 2207m35 2248m20 2280m20 2285m49
+217U14*Load_File 218=7 219>7 220<7 221>7 41|2229b14 2258l8 2258t17
+218r7 Item{72R12} 41|2230b7 2240r14 2254m21
+219a7 Path{string} 41|2231b7 2245r24 2249r39 2254r34
+220r7 Result{194R9} 41|2232b7 2238m7 2241m10 2248m13 2248r13 2250m10 2254m48
+. 2257m10
+221e7 Policy{171E9} 41|2233b7 2254r40
+233U14*Load_Binary_File 234=7 235>7 236<7 237>7 41|2260b14 2295l8 2295t24
+234r7 Item{72R12} 41|2261b7 2272r14 2291m21
+235a7 Path{string} 41|2262b7 2277r24 2281r46 2285r27 2291r36
+236r7 Result{194R9} 41|2263b7 2270m7 2273m10 2280m13 2280r13 2282m10 2285m42
+. 2285r42 2287m10 2291m50 2294m10
+237e7 Policy{171E9} 41|2264b7 2291r42
+249U14*Load_Text 250=7 251>7 252>7 253<7 254>7 41|2297b14 2317l8 2317t17
+250r7 Item{72R12} 41|2298b7 2308r14 2313m21
+251a7 Source_Name{string} 41|2299b7 2313r34
+252a7 Text{string} 41|2300b7 2304r65
+253r7 Result{194R9} 41|2301b7 2306m7 2309m10 2313m55 2316m10
+254e7 Policy{171E9} 41|2302b7 2313r47
+267R9*Catalog_Validation_Result 271e14 279r14 287r14 297r14 311r14 41|2326r14
+. 2328r21 2389r14 2391r16 2413r14 2415r17 2444r14 2451r22 2461r14 2463r17
+268b7*Valid{boolean} 41|2345m17 2376m20 2382m14 2400m17 2407m17 2425m17 2430m17
+. 2437m17 2453m20 2470m17 2477m14
+269i7*Entry_Count{natural} 41|2381m14
+270r7*Diagnostics{31|88R9} 41|2341m35 2363m29 2398m20 2423m20 2428m49 2468m25
+277V13*Validate_Catalog_File{267R9} 278>7 41|2387b13 2409l8 2409t29
+278a7 Path{string} 41|2388b7 2395r24 2399r39 2404r37
+285V13*Validate_Binary_Catalog_File{267R9} 286>7 41|2411b13 2439l8 2439t36
+286a7 Path{string} 41|2412b7 2420r24 2424r46 2428r27 2434r39
+294V13*Validate_Catalog_Text{267R9} 295>7 296>7 41|2441b13 2456l8 2456t29
+295a7 Source_Name{string} 41|2442b7 2447r55
+296a7 Text{string} 41|2443b7 2447r48
+308V13*Validate_Binary_Catalog_Text{267R9} 309>7 310>7 41|2458b13 2479l8
+. 2479t36
+309a7 Source_Name{string} 41|2459b7 2467r43 2474r39
+310a7 Text{string} 41|2460b7 2467r36
+318E9*Data_Load_Status 321e20 325r21
+319n7*Data_Loaded{318E9} 41|2493r27
+320n7*Data_Source_Not_Found{318E9} 41|2516r27
+321n7*Invalid_Data{318E9} 325r41 41|2495r27 2501r27 2531r27
+324R9*Data_Load_Result 327e14 413r14 421r14 41|2484r14 2486r16 2507r14 2512r16
+325e7*Status{318E9} 41|2493m17 2495m17 2501m17 2516m17 2531m17
+326r7*Diagnostics{31|88R9} 41|2491m35 2518m20
+410V13*Load_Data_Text{324R9} 411>7 412>7 41|2481b13 2503l8 2503t22 2528s14
+411a7 Source_Name{string} 41|2482b7 2489r28
+412a7 Text{string} 41|2483b7 2490r28
+419V13*Load_Data_File{324R9} 420>7 41|2505b13 2533l8 2533t22
+420a7 Path{string} 41|2506b7 2514r24 2519r44 2528r30
+424U14*Clear_Runtime_Data 41|2535b14 2538l8 2538t26
+431E9*Resolve_Status 434e23 441r30
+432n7*Found{431E9} 41|2595r27
+433n7*Missing_Key{431E9} 441r48 41|2608r27
+434n7*Runtime_Invalid{431E9} 41|2588r27 2617r30
+436N4*Max_Resolved_Locale_Length 442r43 444r49 41|2599r38
+440R9*Resolve_Result 445e14 452r14 469r14 41|2580r14 2582r25 2615r22
+441e7*Status{431E9} 41|2588m17 2595m17 2608m17 2617m20
+442a7*Resolved_Locale_Text{string} 454r13 41|2602m23
+444i7*Resolved_Locale_Last{integer} 454r45 41|2605m20
+451V13*Resolved_Locale{34|32A12} 452>7
+452r7 Item{440R9} 454r8 454r40
+465V13*Resolve{440R9} 466>7 467>7 468>7 41|2576b13 2620l8 2620t15
+466r7 Item{72R12} 41|2577b7 2587r14 2592r22
+467a7 Locale{34|32A12} 41|2578b7 2592r28
+468a7 Key{string} 41|2579b7 2592r36
+492U14*Render_Into 493>7 494>7 495>7 496>7 497=7 498<7 499<7 41|2622b14 2681l8
+. 2681t19
+493r7 Item{72R12} 41|2623b7 2637r14 2642r22 2656r28
+494a7 Locale{34|32A12} 41|2624b7 2642r28
+495a7 Key{string} 41|2625b7 2642r36
+496r7 Arguments{26|41R9} 41|2626b7 2657r28
+497a7 Target{string} 41|2627b7 2658m28 2670r47 2673r47
+498i7 Last{natural} 41|2628b7 2635m7 2667m13 2670m13 2673m13 2679m10
+499e7 Status{39|34E9} 41|2629b7 2638m10 2644m10 2668m13 2671m13 2674m13 2680m10
+508R9 Catalog_Entry 513e14 517r23 41|585r10 602r18 2701r17
+509r7*Locale{21|91R9} 41|586m13
+510r7*Message_Key{21|91R9} 41|587m13
+511r7*Source{21|91R9} 41|588m13 607m16
+512p7*Root{27|25P9} 41|589m13 604r19 605m34 608m16 2565r55 2656r55 2703r18
+. 2704m33 2705m18
+515K12 Catalog_Vectors[9|74] 539r29
+523K12 Index_Maps[8|49] 540r29 41|635r20 2353r22
+530b7*Valid{boolean} 41|716m21 1999m12 2035m15 2046m15 2065m15 2073r29 2076r19
+. 2086m15 2106m15 2112m15 2119r29 2122r19 2132m15 2142r19 2148m15 2240r19
+. 2272r19 2308r19 2554r19 2587r19 2637r19 2689r19 2694m12
+531e7*Error{32|8E9} 41|717m21 2000m12 2036m15 2047m15 2066m15 2087m15 2107m15
+. 2113m15 2133m15 2149m15 2695m12
+536r7*Message{28|86R9} 41|2696m33
+537b7*Has_Message{boolean} 41|2697m12
+539r7*Catalog{9|91R9[515]} 41|584m12 592r15 602r40 609m12 2085r15 2131r15
+. 2565r33 2656r33 2699r21 2699r49 2701r39 2706m21 2711m12
+540r7*Index{8|56R9[523]} 41|590m12 642r27 658r47 680r36 1940r15 1942r22 2712m12
+541r7*Default_Locale{21|91R9} 41|721m18 1981r26 1983r35 1985r37 2001m12 2026r44
+. 2174r52 2224m15 2713m12
+542b7*Default_Locale_Seen{boolean} 41|715r21 723m18 2003m12 2182r19 2225m15
+. 2715m12
+X 41 i18n-runtime.adb
+20e4 Escaped_Number_Sign{character} 862r17 1501r17
+28V13 Trimmed{string} 28b13 28>22 31l8 31t15 34s30 235s13 241s13 247s13 248s18
+. 255s13 271s10 276s34 464s15 486s24 697s34 710s36 736s40 745s27 1938s44
+. 1938s62
+28a22 Text{string} 30r38
+33V13 Unquote{string} 33b13 33>22 40s17 44l8 44t15 490s30 713s40 751s33
+33a22 Text{string} 34r39
+34a7 T{string} 36r10 36r33 36r36 36r60 36r63 40r26 40r29 40r44 43r14
+46V13 Canonical_Locale{string} 46b13 46>31 49l8 49t24 504s36 537s33 722s36
+. 754s41 1959s38
+46a31 Text{string} 48r41
+51V13 Dot_Index{natural} 51b13 51>24 59l8 59t17 491s50
+51a24 Text{string} 53r20 54r13
+53i11 Index{integer} 54r19 55r20
+61V13 Equals_Index{natural} 61b13 61>27 69l8 69t20 470s44 705s13 740s44
+61a27 Text{string} 63r20 64r13
+63i11 Index{integer} 64r19 65r20
+73V13 Composite{string} 73b13 73>24 73>41 76l8 76t17 591s10 640s21 657s15
+. 1938s33 2359s18
+73a24 Locale{string} 75r14
+73a41 Key{string} 75r43
+79V13 Line_Suffix{string} 79b13 79>26 86l8 86t19 476s27 527s50 550s39 2365s24
+79i26 Line{natural} 81r10 85r42
+92K12 Line_Vectors[9|74] 99r19 133r53 134r17 172r21 174r25 447r24 730r15
+. 2011r21 2057r19 2096r21 2097r21 2139r19 2162r16 2236r15 2267r17 2268r17
+. 2304r24 2324r21 2393r16 2417r17 2418r17 2464r17 2510r16
+96U14 Read_File_Lines 96b14 97>7 98<7 99<7 131l8 131t23 2063s7 2104s7 2146s7
+. 2245s7 2277s7 2395s7 2420s7 2514s7
+97a7 Path{string} 106r38 109r38 116r61
+98b7 Found{boolean} 104m7 123m7 130m10
+99r7 Lines{9|91R9[92]} 103m7 103r7 119m10 119r10 129m10 129r10
+101p7 File{23|66P9} 116m18 116r18 118r42 119r67 122m26 122r26 126r34 127m32
+. 127r32
+133V13 Split_Text_Lines{9|91R9[92]} 133b13 133>31 163l8 163t24 292s27 2304s47
+. 2447s30 2467s18
+133a31 Text{string} 150r16
+134r7 Lines{9|91R9[92]} 142m13 142r13 144m13 144r13 162r14
+135r7 Current{21|91R9} 138r44 144r27 146m10 154m21 154r21 158r18
+137U17 Flush 137b17 147l11 147t16 152s13 159s10
+138a10 S{string} 141r13 141r35 141r38 142r48 142r51 142r62
+150e11 C{character} 151r13 154r30
+165U14 Add_Load_Diagnostic 166=7 167>7 168>7 169>7 224s10 231s10 236s10 242s10
+. 250s10 256s10 265s10 284s19 305s10 385b14 394l8 394t27 473s22 523s31 546s34
+. 2188s19 2247s10 2279s10 2362s19 2397s10 2422s10
+166r7 Diagnostics{31|88R9} 386b7 393m18
+167e7 Kind{31|59E9} 387b7 393r39
+168a7 Message{string} 388b7 393r56
+169a7 Key{string} 389b7 393r72
+171V13 Decode_Binary_Catalog{boolean} 171b13 172>7 173>7 174<7 175=7 309l8
+. 309t29 2109s17 2284s17 2427s17 2466s14
+172r7 Lines{9|91R9[92]} 223r19 230r21 235r33 239r24 241r33 245r24 247r33
+. 248r38 253r24 255r33 260r24 264r19 271r30 275r31 276r54 296r28 297r29
+173a7 Source_Name{string} 226r57 233r50 238r63 244r59 252r61 259r15 267r53
+. 287r24 307r53
+174r7 Payload{9|91R9[92]} 221m7 221r7 292m16 297m13 297r13 304m10 304r10
+175r7 Diagnostics{31|88R9} 225m13 232m13 237m13 243m13 251m13 257m13 266m13
+. 285m22 306m13
+178i7 Header_Count{natural} 223r35 264r35
+180V16 Hex_Value{integer} 180b16 180>27 191l11 191t20 204s18 206s18
+180e27 Item{character} 182r13 183r35 184r16 185r40 186r16 187r40
+193V16 Decode_Hex_Payload{string} 193b16 193>36 219l11 219t29 281s18
+193a36 Text{string} 194r32 197r13 197r37 201r29 204r29 204r35 206r29 206r35
+194a10 Result{string} 213m16 218r17
+195i10 Out_Pos{natural} 212m16 212r27 213r24
+201i14 Index{integer} 204r48 206r48
+203i16 High{integer} 208r19 214r33
+205i16 Low{integer} 208r36 214r45
+273r13 Hex_Text{21|91R9} 276m24 276r24 281r49
+275i17 Index{integer} 276r69
+280a16 Decoded{string} 283r19 292r45
+296i14 Index{integer} 297r44
+315U14 Compile_One 315b14 316>7 317<7 318<7 319<7 350l8 350t19 544s31
+316a7 Source{string} 326r39
+317p7 Root{27|25P9} 323m7 347m7
+318b7 Ok{boolean} 330m13 341m13 348m7
+319e7 Error{32|8E9} 331m13 342m13 349m7
+321p7 Parsed{27|25P9} 326m10 329m28 329r28 337r38 340m28 340r28 347r15
+336r10 Validation_Result{32|35R9} 339r17 342r22
+356R9 Staged_Entry 362e14 366r23 372r17 559r34 655r20
+357r7*Locale{21|91R9} 560m37 640r45 657r39 662r42 672r45 683r45 2359r42
+358r7*Key{21|91R9} 561m37 640r67 657r61 662r52 672r55 683r55 2359r64 2366r35
+359r7*Source{21|91R9} 562m37 662r59 672r62 680r60 683r62
+360i7*Line{natural} 563m37 2365r39
+361p7*Root{27|25P9} 374r18 375m33 376m18 564m37 662r69 664m21 668m39 669m24
+. 672r72 674m24 680r70 683r72 686m21
+364K12 Staged_Vectors[9|74] 368r43 450r28 618r25 2015r21 2167r27 2329r21
+368U14 Free_Staged 368b14 368=27 382l8 382t19 478s22 529s31 552s34 2034s10
+. 2043s7 2210s10 2216s7 2344s10 2375s13 2383s7
+368r27 Staged{9|91R9[364]} 370r16 370r38 372r33 377m16 377r16 381m7 381r7
+370i11 I{integer} 372r49 377r40
+372r13 E{356R9} 374r16 375m31 375r31 376m16 377r43
+398V13 Is_Valid_Locale{boolean} 398b13 398>30 419l8 419t23 520s42 2187s23
+398a30 Text{string} 401r10 405r16
+399b7 After_Hyphen{boolean} 407r16 410m13 412m13 418r18
+405e11 C{character} 406r13 411r16
+424V13 Is_Valid_Key{boolean} 424b13 424>27 440l8 440t20 521s42
+424a27 Text{string} 426r10 427r17 427r23 428r17 428r23 433r16
+433e11 C{character} 434r13
+446U14 Stage_Lines 446b14 447>7 448>7 449>7 450<7 451<7 452<7 453=7 573l8
+. 573t19 2024s7 2200s7 2334s7
+447r7 Lines{9|91R9[92]} 460r18 460r39 464r35 2025r10 2201r10 2335r10
+448a7 Default_Locale{string} 504r54 2026r10 2202r10 2336r10
+449a7 Source_Name{string} 475r55 527r36 549r65 2027r10 2203r10 2337r10
+450r7 Staged{9|91R9[364]} 456m7 456r7 478m35 529m44 552m47 558m31 558r31
+. 2028r10 2204r10 2338r10
+451b7 Ok{boolean} 457m7 479m22 530m31 553m34 2029r10 2205r10 2339r10
+452e7 Error{32|8E9} 458m7 480m22 531m31 554m34 2030r10 2206r10 2340r10
+453r7 Diagnostics{31|88R9} 474m25 524m34 547m37 2031r10 2207r10 2341r10
+460i11 Idx{integer} 462r44 464r50
+462i13 Line_No{positive} 476r40 527r63 550r52 563r47
+463a13 Clean{string} 466r16 466r41 466r48 470r58 472r42 477r25 486r33 486r40
+. 488r33 490r39 490r56
+470i19 Eq{natural} 472r22 472r37 486r55 488r28 490r46
+485a22 Name{string} 491r61 493r25 505r59 506r40 506r65 511r36 511r42 514r36
+. 514r53 528r34
+487a22 Value{string} 544r44 562r68
+491i22 Dot{natural} 501r31 506r34 506r59 511r56 514r42
+497r28 Locale{21|91R9} 502m31 509m31 518r46 520r70 535m28 537r62 560r47
+498r28 Key{21|91R9} 505m31 512m31 519r46 521r67 551r48 561r47
+499b28 Valid_Split{boolean} 507m31 517r35
+540p31 Root{27|25P9} 544m51 544r51 564r47
+541b31 Msg_Ok{boolean} 544m57 545r38
+542e31 Msg_Error{32|8E9} 544m65 548r69 554r43
+576U14 Commit_Append 576b14 577=7 578>7 579>7 580>7 581>7 593l8 593t21 662s19
+. 672s22 683s22
+577r7 Item{40|71R9} 584m7 584r7 590m7 590r7 592r10
+578r7 Locale{21|91R9} 586r28 591r32
+579r7 Key{21|91R9} 587r28 591r52
+580r7 Source{21|91R9} 588r28
+581p7 Root{27|25P9} 589r28
+596U14 Commit_Override 596b14 597=7 598>7 599>7 600>7 610l8 610t23 679s22
+597r7 Item{40|71R9} 602r35 609m7 609r7
+598i7 Idx{natural} 602r57 609r37
+599r7 Source{21|91R9} 607r26
+600p7 Root{27|25P9} 608r24
+602r7 Existing{40|508R9} 604r10 605m25 605r25 607m7 608m7 609r42
+616U14 Apply_Staged 616b14 617=7 618=7 619>7 620<7 621<7 622<7 623<7 692l8
+. 692t20 2041s7 2215s7
+617r7 Item{40|71R9} 642r22 658r42 662m34 672m37 680m25 680r31 683m37
+618r7 Staged{9|91R9[364]} 637r22 653r16 653r38 655r36 689m13 689r13
+619e7 Policy{40|171E9} 631r10 660r18
+620e7 Status{40|177E9} 629m7 644m22
+621i7 Added{natural} 626m7 663m19 663r28 673m22 673r31 684m22 684r31
+622i7 Replaced{natural} 627m7 681m22 681r34
+623i7 Ignored{natural} 628m7 670m22 670r33
+635r13 Seen{8|56R9[40|523]} 642r57 647m19 647r19
+637r17 E{356R9} 640r43 640r65
+639a19 Comp{string} 642r43 642r72 647r32
+653i11 I{integer} 655r52 689r37
+655r13 E{356R9} 657r37 657r59 662r40 662r50 662r57 662r67 664m19 668m37 668r37
+. 669m22 672r43 672r53 672r60 672r70 674m22 680r58 680r68 683r43 683r53 683r60
+. 683r70 686m19 689r40
+656a13 Comp{string} 658r63 680r51
+658b13 Exists{boolean} 667r22 678r22
+695U14 Parse_Default_Locale_Line 695b14 695=41 695>64 726l8 726t33 2072s10
+. 2118s10
+695r41 Item{40|71R9} 715r16 716m16 717m16 721m13 723m13
+695a64 Line{string} 697r43
+697a7 Clean{string} 701r10 701r35 701r42 705r27 706r30 710r45 710r52 713r49
+. 713r66
+698i7 Eq{natural} 705m7 706r10 706r25 710r67 713r56
+699r7 Name{21|91R9} 710m7 711r21
+713a13 Value{string} 715r49 722r54
+729V13 Detect_Default_Locale{string} 729b13 730>7 766l8 766t29 2184s43 2332s40
+730r7 Lines{9|91R9[92]} 734r18
+734r11 Raw{21|91R9} 736r60
+736a13 Clean{string} 738r16 738r42 738r49 740r58 742r45 745r36 745r43 747r67
+. 751r42 751r59
+740i19 Eq{natural} 742r22 742r39 745r58 747r61 751r49
+744a25 Name{string} 747r28
+750a31 Value{string} 753r34 754r59
+772V13 Public_Failure{39|59R9} 772b13 773>7 774>7 781l8 781t22 1450s17 1457s12
+773e7 Status{39|34E9} 778r25 1450r33 1458r15
+774r7 Diagnostics{31|88R9} 780r25 1450r51 1459r15
+783U14 Add_Runtime_Diagnostic 783b14 784=7 785>7 786>7 814l8 814t30 1023s22
+. 1051s28 1054s28 1061s22 1110s28 1113s28 1120s22 1149s28 1152s28 1159s22
+. 1206s28 1209s28 1216s22 1227s22 1245s28 1284s34 1310s22 1328s28 1353s22
+. 1361s28 1399s34 1417s28 1452s10 1552s22 1582s28 1590s22 1641s28 1649s22
+. 1680s28 1688s22 1737s28 1745s22 1756s22 1772s28 1811s34 1832s22 1850s28
+. 1868s22 1873s22 1908s28 1917s28
+784r7 Diagnostics{31|88R9} 813m18 1453r13
+785e7 Status{39|34E9} 790r69 792r12 1454r13
+786a7 Key{string} 813r72 1455r13
+788e7 Kind{31|59E9} 794m13 797m13 800m13 803m13 806m13 813r39
+790a7 Message{string} 813r56
+820V13 Is_Decimal_Integer{boolean} 820b13 820>33 842l8 842t26 945s17 958s13
+. 1251s37 1359s32 1778s37 1869s29
+820a33 Text{string} 823r10 827r16 828r10 828r37 829r13 835r29 836r13
+821i7 Start{positive} 827m7 828r16 828r43 832m10 832r19 835r20
+835i11 Index{integer} 836r19
+844V13 Integer_Image_No_Leading_Space{string} 844b13 845>7 854l8 854t38 956s36
+. 964s36 1252s39 1367s33 1779s39 1880s27
+845i7 Value{long_long_integer} 847r59
+847a7 Image{string} 849r10 849r36 849r43 850r17 850r24 850r43 853r14
+856V13 Substitute_Number{string} 856b13 857>7 857>22 857>44 872l8 872t25
+. 1008s19
+857a7 Text{string} 861r16 1009r22
+857a22 Number_Text{string} 865r29 1010r22
+857b44 Active{boolean} 864r33 1011r22
+859r7 Result{21|91R9} 863m21 863r21 865m21 865r21 867m21 867r21 871r25
+861e11 C{character} 862r13 864r16 867r29
+877U14 Split_Decimal 877b14 878>7 879<7 880<7 881<7 882<7 926l8 926t21 973s13
+878a7 Text{string} 884r26 892r10 896r10 896r37 897r13 903r29 904r13 909r16
+. 915r52 919r51 920r26 921r51 921r68
+879i7 Integer_Part{long_long_integer} 887m7 919m7
+880i7 Fraction_Digits{natural} 888m7 920m7
+881i7 Fraction_Value{long_long_integer} 889m7 921m7
+882b7 Valid{boolean} 890m7 922m7 925m10
+884i7 Start{natural} 896r16 896r43 900m10 900r19 903r20 915r32 919r57
+885i7 Dot{natural} 905r16 908m13 915r10 915r26 915r46 919r66 920r38 921r57
+903i11 Index{integer} 904r19 908r20 909r22
+931U14 Classify_Plural_Argument 931b14 932>7 933>7 934>7 935<7 936<7 937<7
+. 986l8 986t32 1236s25 1763s25
+932a7 Raw{string} 945r37 951r76 958r33 960r76 973r28 977r49 1237r28 1764r28
+933a7 Locale{string} 954r48 962r48 976r41 1238r28 1765r28
+934i7 Offset{long_long_integer} 944r10 952r62 1239r28 1766r28
+935e7 Category{38|42E9} 940m7 954m13 962m13 975m16 1240r28 1767r28
+936r7 Rendered{21|91R9} 941m7 955m13 963m13 977m16 1241r28 1768r28
+937b7 Valid{boolean} 942m7 946m13 979m16 985m10 1242r28 1769r28
+951i13 Value{long_long_integer} 952r54
+952i13 Adjusted{long_long_integer} 954r56 956r68
+960i13 Value{long_long_integer} 962r56 964r68
+968i13 I_Part{long_long_integer} 973m33 976r49
+969i13 Digit_Count{natural} 973m41 976r57
+970i13 F_Val{long_long_integer} 973m54 976r70
+971b13 OK{boolean} 973m61 974r16
+988U14 Render_Public_Nodes 988b14 989>7 990>7 991=7 992=7 993=7 994>7 995>7
+. 996>7 1287s34 1332s28 1402s34 1425l8 1425t27 1440s7
+989p7 Root{27|25P9} 998r41 1288r37 1333r31 1403r37 1441r10
+990r7 Arguments{26|41R9} 1019r42 1020r58 1033r42 1041r62 1072r42 1081r65
+. 1090r65 1099r65 1131r42 1139r65 1187r42 1196r60 1225r46 1237r60 1249r53
+. 1289r37 1289r54 1308r46 1314r47 1334r31 1334r48 1351r46 1357r47 1404r37
+. 1404r54 1442r10
+991r7 Output{21|91R9} 1007m19 1020m30 1056m36 1115m36 1154m36 1211m36 1290r37
+. 1290m54 1335r31 1335m48 1405r37 1405m54 1443r10
+992e7 Status{39|34E9} 1001r20 1022m22 1023r59 1050m28 1051r65 1053m28 1054r65
+. 1060m22 1061r59 1109m28 1110r65 1112m28 1113r65 1119m22 1120r59 1148m28
+. 1149r65 1151m28 1152r65 1158m22 1159r59 1205m28 1206r65 1208m28 1209r65
+. 1215m22 1216r59 1226m22 1227r59 1244m28 1245r65 1283m34 1285r50 1291r37
+. 1291m54 1309m22 1310r59 1327m28 1328r65 1336r31 1336m48 1352m22 1353r59
+. 1360m28 1361r65 1398m34 1400r50 1406r37 1406m54 1416m28 1417r65 1444r10
+993r7 Diagnostics{31|88R9} 1023m46 1051m52 1054m52 1061m46 1110m52 1113m52
+. 1120m46 1149m52 1152m52 1159m46 1206m52 1209m52 1216m46 1227m46 1245m52
+. 1285m37 1292r37 1292m54 1310m46 1328m52 1337r31 1337m48 1353m46 1361m52
+. 1400m37 1407r37 1407m54 1417m52 1445r10
+994a7 Locale{string} 1042r42 1082r45 1091r45 1100r45 1141r45 1197r40 1238r40
+. 1293r37 1293r54 1338r31 1338r48 1376r61 1408r37 1408r54 1446r10
+995a7 Number_Text{string} 1010r37 1294r37 1339r31 1339r48 1409r37
+996b7 Number_Active{boolean} 1011r37 1295r37 1340r31 1340r48 1410r37
+998p7 Current{27|25P9} 1000r13 1003r15 1009r48 1015r55 1029r55 1043r53 1068r55
+. 1079r28 1083r56 1088r31 1092r56 1101r56 1126r56 1127r56 1167r55 1171r27
+. 1198r51 1222r55 1239r40 1258r42 1265r42 1267r42 1269r42 1271r42 1273r42
+. 1275r42 1279r44 1305r55 1316r48 1319r55 1321r52 1325r43 1348r55 1373r36
+. 1378r50 1380r50 1382r50 1384r50 1386r50 1388r50 1394r44 1423m10 1423r21
+1015a19 Key{string} 1018r54 1019r53 1020r69 1023r67
+1029a19 Key{string} 1032r54 1033r53 1041r73 1051r73 1054r73 1061r67
+1035a25 Formatted{string} 1044m42 1044r42 1056r44
+1036i25 Last{natural} 1045m42 1055r31 1056r60
+1037b25 Ok{boolean} 1046m42 1052r35
+1038b25 Overflow{boolean} 1047m42 1049r28
+1068a19 Key{string} 1071r54 1072r53 1081r76 1090r76 1099r76 1110r73 1113r73
+. 1120r67
+1074a25 Formatted{string} 1084m45 1084r45 1093m45 1093r45 1102m45 1102r45
+. 1115r44
+1075i25 Last{natural} 1085m45 1094m45 1103m45 1114r31 1115r60
+1076b25 Ok{boolean} 1086m45 1095m45 1104m45 1111r35
+1077b25 Overflow{boolean} 1087m45 1096m45 1105m45 1108r28
+1126a19 Key{string} 1130r54 1131r53 1139r76 1149r73 1152r73 1159r67
+1127a19 Code{string} 1140r45
+1133a25 Formatted{string} 1142m45 1142r45 1154r44
+1134i25 Last{natural} 1143m45 1153r31 1154r60
+1135b25 Ok{boolean} 1144m45 1150r35
+1136b25 Overflow{boolean} 1145m45 1147r28
+1167a19 Key{string} 1186r54 1187r53 1196r71 1206r73 1209r73 1216r67
+1169V28 Kind{33|5E9} 1169b28 1183l23 1183t27 1195s40
+1189a25 Formatted{string} 1199m40 1199r40 1211r44
+1190i25 Last{natural} 1200m40 1210r31 1211r60
+1191b25 Ok{boolean} 1201m40 1207r35
+1192b25 Overflow{boolean} 1202m40 1204r28
+1222a19 Key{string} 1224r74 1225r57 1227r67 1237r71 1245r73 1249r64 1285r58
+1230e25 Category{38|42E9} 1240m40 1263r42
+1231r25 Rendered{21|91R9} 1241m40 1294r65
+1232b25 Valid{boolean} 1242m40 1243r32
+1248a31 Raw_Value{string} 1251r57 1253r67
+1250a31 Exact_Key{string} 1256r37 1258r64
+1255p31 Branch{27|25P9} 1261r34 1262m34 1278r34 1279m34 1282r34 1288r54
+1305a19 Key{string} 1307r74 1308r57 1310r67 1314r58 1328r73
+1313a25 Value{string} 1316r66 1319r73
+1315b25 Matched{boolean} 1318r31 1323r32
+1317p25 Branch{27|25P9} 1329r31 1333r48
+1348a19 Key{string} 1350r75 1351r57 1353r67 1357r58 1361r73 1400r58 1417r73
+1356a25 Raw{string} 1359r52 1365r58
+1364i31 Value{long_long_integer} 1367r65 1376r69
+1366a31 Rendered{string} 1373r55 1409r54
+1371p31 Branch{27|25P9} 1375r34 1378m40 1380m40 1382m40 1384m40 1386m40 1388m40
+. 1393r34 1394m34 1397r34 1403r54
+1429V13 Render_Compiled{39|59R9} 1429b13 1430>7 1431>7 1432>7 1469l8 1469t23
+. 2564s12
+1430p7 Root{27|25P9} 1441r25 2565r15
+1431r7 Arguments{26|41R9} 1442r25 2566r15
+1432a7 Locale{string} 1446r25 2567r15
+1435r7 Output{21|91R9} 1443m25 1443r25 1451r21 1463r67
+1436e7 Status{39|34E9} 1444m25 1444r25 1449r10 1450r43
+1437r7 Diagnostics{31|88R9} 1445m25 1445r25 1450r66 1453m28 1453r28 1459r30
+. 1464r28
+1473U14 Append_Bounded 1473b14 1474=7 1475=7 1476=7 1477>7 1488l8 1488t22
+. 1502s13 1504s13 1506s13 1547s22 1584s28 1643s28 1682s28 1739s28
+1474a7 Target{string} 1481r22 1485m10 1485r18
+1475i7 Count{natural} 1481r13 1485r33 1486m10 1486r19
+1476b7 Overflow{boolean} 1482m13
+1477a7 Text{string} 1480r16
+1480e11 C{character} 1485r43
+1491U14 Append_Text_Bounded 1491b14 1492=7 1493=7 1494=7 1495>7 1496>7 1497>7
+. 1510l8 1510t27 1536s16
+1492a7 Target{string} 1502m29 1504m29 1506m29
+1493i7 Count{natural} 1502m37 1504m37 1506m37
+1494b7 Overflow{boolean} 1502m44 1504m44 1506m44 1508r20
+1495a7 Text{string} 1500r16
+1496a7 Number_Text{string} 1504r54
+1497b7 Number_Active{boolean} 1503r33
+1500e11 C{character} 1501r13 1503r16 1506r60
+1516U14 Render_Bounded_Nodes 1516b14 1517>7 1518>7 1519=7 1520=7 1521=7 1522=7
+. 1523=7 1524>7 1525>7 1526>7 1814s34 1852s28 1910s28 1925l8 1925t28 2655s10
+1517p7 Root{27|25P9} 1528r41 2656r13
+1518r7 Arguments{26|41R9} 1546r42 1549r45 1562r42 1570r62 1601r42 1610r65
+. 1619r65 1628r65 1660r42 1668r65 1716r42 1725r60 1754r46 1764r60 1776r53
+. 1815r45 1830r46 1836r47 1853r39 1866r46 1870r52 1878r50 1911r39 2657r13
+1519a7 Target{string} 1537m19 1548m25 1585m31 1644m31 1683m31 1740m31 1815m56
+. 1853m50 1911m50 2658r13
+1520i7 Count{natural} 1537m27 1548m33 1585m39 1644m39 1683m39 1740m39 1815m64
+. 1853m58 1911m58 2659r13
+1521b7 Overflow{boolean} 1531r58 1537m34 1548m40 1579m28 1585m46 1638m28
+. 1644m46 1677m28 1683m46 1734m28 1740m46 1815m71 1853m65 1911m65 2660r13
+1522e7 Status{39|34E9} 1531r20 1551m22 1552r59 1581m28 1582r65 1589m22 1590r59
+. 1640m28 1641r65 1648m22 1649r59 1679m28 1680r65 1687m22 1688r59 1736m28
+. 1737r65 1744m22 1745r59 1755m22 1756r59 1771m28 1772r65 1810m34 1812r50
+. 1816m37 1831m22 1832r59 1849m28 1850r65 1854m31 1867m22 1868r59 1872m22
+. 1873r59 1907m28 1908r65 1912m31 1916m28 1917r65 2661r13
+1523r7 Diagnostics{31|88R9} 1552m46 1582m52 1590m46 1641m52 1649m46 1680m52
+. 1688m46 1737m52 1745m46 1756m46 1772m52 1812m37 1816m45 1832m46 1850m52
+. 1854m39 1868m46 1873m46 1908m52 1912m39 1917m52 2662r13
+1524a7 Locale{string} 1571r42 1611r45 1620r45 1629r45 1670r45 1726r40 1765r40
+. 1816r58 1854r52 1885r55 1912r52 2663r13
+1525a7 Number_Text{string} 1538r45 1854r60
+1526b7 Number_Active{boolean} 1538r58 1855r31
+1528p7 Current{27|25P9} 1530r13 1533r15 1538r30 1542r55 1558r55 1572r53 1597r55
+. 1608r28 1612r56 1617r31 1621r56 1630r56 1655r56 1656r56 1696r55 1700r27
+. 1727r51 1751r55 1766r40 1785r42 1792r42 1794r42 1796r42 1798r42 1800r42
+. 1802r42 1806r44 1827r55 1838r48 1841r55 1843r52 1847r43 1863r55 1882r49
+. 1887r44 1889r44 1891r44 1893r44 1895r44 1897r44 1903r38 1923m10 1923r21
+1542a19 Key{string} 1545r54 1546r53 1549r56 1552r67
+1558a19 Key{string} 1561r54 1562r53 1570r73 1582r73 1590r67
+1564a25 Formatted{string} 1573m42 1573r42 1585r56
+1565i25 Last{natural} 1574m42 1583r31 1585r72
+1566b25 Ok{boolean} 1575m42 1580r35
+1567b25 Format_Overflow{boolean} 1576m42 1578r28
+1597a19 Key{string} 1600r54 1601r53 1610r76 1619r76 1628r76 1641r73 1649r67
+1603a25 Formatted{string} 1613m45 1613r45 1622m45 1622r45 1631m45 1631r45
+. 1644r56
+1604i25 Last{natural} 1614m45 1623m45 1632m45 1642r31 1644r72
+1605b25 Ok{boolean} 1615m45 1624m45 1633m45 1639r35
+1606b25 Format_Overflow{boolean} 1616m45 1625m45 1634m45 1637r28
+1655a19 Key{string} 1659r54 1660r53 1668r76 1680r73 1688r67
+1656a19 Code{string} 1669r45
+1662a25 Formatted{string} 1671m45 1671r45 1683r56
+1663i25 Last{natural} 1672m45 1681r31 1683r72
+1664b25 Ok{boolean} 1673m45 1678r35
+1665b25 Format_Overflow{boolean} 1674m45 1676r28
+1696a19 Key{string} 1715r54 1716r53 1725r71 1737r73 1745r67
+1698V28 Kind{33|5E9} 1698b28 1712l23 1712t27 1724s40
+1718a25 Formatted{string} 1728m40 1728r40 1740r56
+1719i25 Last{natural} 1729m40 1738r31 1740r72
+1720b25 Ok{boolean} 1730m40 1735r35
+1721b25 Format_Overflow{boolean} 1731m40 1733r28
+1751a19 Key{string} 1753r74 1754r57 1756r67 1764r71 1772r73 1776r64 1812r58
+1759e25 Category{38|42E9} 1767m40 1790r42
+1760r25 Rendered{21|91R9} 1768m40 1817r48
+1761b25 Valid{boolean} 1769m40 1770r32
+1775a31 Raw_Value{string} 1778r57 1780r67
+1777a31 Exact_Key{string} 1783r37 1785r64
+1782p31 Branch{27|25P9} 1788r34 1789m34 1805r34 1806m34 1809r34 1815r37
+1827a19 Key{string} 1829r74 1830r57 1832r67 1836r58 1850r73
+1835a25 Value{string} 1838r66 1841r73
+1837b25 Matched{boolean} 1840r31 1845r32
+1839p25 Branch{27|25P9} 1851r31 1853r31
+1863a19 Key{string} 1865r75 1866r57 1868r67 1870r63 1873r67 1878r61 1908r73
+. 1917r73
+1876i25 Value{long_long_integer} 1880r59 1885r63
+1879a25 Rendered{string} 1882r68 1912r60
+1881p25 Branch{27|25P9} 1884r28 1887m34 1889m34 1891m34 1893m34 1895m34 1897m34
+. 1902r28 1903m28 1906r28 1911r31
+1931U14 Index_Lookup 1931b14 1932>7 1933>7 1934>7 1935<7 1936<7 1947l8 1947t20
+. 1966s10 1982s10
+1932r7 Item{40|71R9} 1940r10 1942r17
+1933a7 Locale{string} 1938r53
+1934a7 Key{string} 1938r71
+1935b7 Hit{boolean} 1941m10 1944m10
+1936i7 Idx{natural} 1942m10 1945m10
+1938a7 Comp{string} 1940r31 1942r37
+1951U14 Resolve_Entry 1951b14 1952>7 1953>7 1954>7 1955<7 1956<7 1957<7 1991l8
+. 1991t21 2558s7 2592s7 2642s7
+1952r7 Item{40|71R9} 1966r24 1981r21 1983r13 1983r30 1985r32
+1953a7 Locale{string} 1959r56
+1954a7 Key{string} 1966r51 1983r52
+1955b7 Hit{boolean} 1966m56 1967r13 1983m57 1984r13 1990m7
+1956r7 Resolved_Locale{21|91R9} 1962m7 1968m13 1985m13
+1957i7 Idx{natural} 1963m7 1966m61 1983m62
+1959a7 Requested{string} 1960r60 1981r45
+1960r7 Current{21|91R9} 1966r41 1968r32 1974r47 1977m13
+1973a13 Parent{string} 1976r23 1977r45
+1997U14 Reset_Defaults 1997b14 1997=30 2004l8 2004t22 2061s7 2102s7
+1997r30 Item{40|71R9} 1999m7 2000m7 2001m7 2003m7
+2009U14 Ingest_Strict 2009b14 2010=7 2011>7 2012>7 2013<7 2053l8 2053t21
+. 2080s7 2126s7 2153s7
+2010r7 Item{40|71R9} 2026r39 2035m10 2036m10 2042m10 2046m10 2047m10
+2011r7 Lines{9|91R9[92]} 2025r28
+2012a7 Source_Name{string} 2027r28
+2013b7 Succeeded{boolean} 2037m10 2048m10 2052m7
+2015r7 Staged{9|91R9[364]} 2028m28 2034m23 2034r23 2042m16 2042r16 2043m20
+. 2043r20
+2016b7 Stage_Ok{boolean} 2029m28 2033r14
+2017e7 Stage_Error{32|8E9} 2030m28 2036r24
+2018r7 Diagnostics{31|88R9} 2031m28 2031r28
+2019e7 Status{40|177E9} 2042m43 2045r10
+2020i7 Added{natural} 2042m51
+2021i7 Replaced{natural} 2042m58
+2022i7 Ignored{natural} 2042m68
+2056b7 Found{boolean} 2063m38 2064r14
+2057r7 Lines{9|91R9[92]} 2063m45 2071r18 2080r28
+2058b7 Succeeded{boolean} 2080m49 2081r14
+2071r11 Raw{21|91R9} 2072r54
+2095b7 Found{boolean} 2104m38 2105r14
+2096r7 Lines{9|91R9[92]} 2104m45 2110r20
+2097r7 Payload{9|91R9[92]} 2110m41 2110r41 2117r18 2126r28
+2098b7 Succeeded{boolean} 2126m51 2127r14
+2099r7 Diagnostics{31|88R9} 2110m50 2110r50
+2117r11 Raw{21|91R9} 2118r54
+2138b7 Found{boolean} 2146m38 2147r14
+2139r7 Lines{9|91R9[92]} 2146m45 2153r28
+2140b7 Succeeded{boolean} 2153m49
+2160U14 Ingest_Lines 2160b14 2161=7 2162>7 2163>7 2164>7 2165=7 2227l8 2227t20
+. 2254s7 2291s7 2313s7
+2161r7 Item{40|71R9} 2174r47 2182r14 2215m21 2224m10 2225m10
+2162r7 Lines{9|91R9[92]} 2184r66 2201r28
+2163a7 Source_Name{string} 2190r53 2203r28
+2164e7 Policy{40|171E9} 2215r35
+2165r7 Result{40|194R9} 2189m22 2189r22 2191m19 2207m28 2207r28 2211m10 2218m7
+. 2219m7 2220m7 2221m7
+2167r7 Staged{9|91R9[364]} 2204m28 2210m23 2210r23 2215m27 2215r27 2216m20
+. 2216r20
+2168b7 Stage_Ok{boolean} 2205m28 2209r14
+2169e7 Stage_Error{32|8E9} 2206m28
+2170e7 Status{40|177E9} 2215m43 2218r24 2223r10
+2171i7 Added{natural} 2215m51 2219r31
+2172i7 Replaced{natural} 2215m58 2220r34
+2173i7 Ignored{natural} 2215m68 2221r33
+2174r7 Effective_Default{21|91R9} 2194m16 2202r39 2224r33
+2175b7 Set_Default{boolean} 2195m16 2223r35
+2184a13 Detected{string} 2186r16 2187r40 2190r66 2194r58
+2235b7 Found{boolean} 2245m30 2246r14
+2236r7 Lines{9|91R9[92]} 2245m37 2254r27
+2266b7 Found{boolean} 2277m30 2278r14
+2267r7 Lines{9|91R9[92]} 2277m37 2285r20
+2268r7 Payload{9|91R9[92]} 2285m33 2285r33 2291r27
+2304r7 Lines{9|91R9[92]} 2313r27
+2323V13 Validate_Lines{40|267R9} 2323b13 2324>7 2325>7 2385l8 2385t22 2404s14
+. 2434s14 2447s14 2474s14
+2324r7 Lines{9|91R9[92]} 2332r63 2335r28
+2325a7 Source_Name{string} 2337r28 2364r56
+2328r7 Result{40|267R9} 2341m28 2341r28 2345m10 2346r17 2363m22 2363r22 2376m13
+. 2377r20 2381m7 2382m7 2384r14
+2329r7 Staged{9|91R9[364]} 2338m28 2344m23 2344r23 2356r19 2375m26 2375r26
+. 2381r38 2383m20 2383r20
+2330b7 Stage_Ok{boolean} 2339m28 2343r14
+2331e7 Stage_Error{32|8E9} 2340m28
+2332a7 Default{string} 2336r28
+2353r10 Seen{8|56R9[40|523]} 2361r19 2370m16 2370r16
+2354b10 Duplicate{boolean} 2367m19 2374r13
+2356r14 E{356R9} 2359r40 2359r62 2365r37 2366r33
+2358a16 Comp{string} 2361r34 2370r29
+2391r7 Result{40|267R9} 2398m13 2398r13 2400m10 2401r17 2407m10 2408r17
+2392b7 Found{boolean} 2395m30 2396r14
+2393r7 Lines{9|91R9[92]} 2395m37 2404r30
+2415r7 Result{40|267R9} 2423m13 2423r13 2425m10 2426r17 2428m42 2428r42 2430m10
+. 2431r17 2437m10 2438r17
+2416b7 Found{boolean} 2420m30 2421r14
+2417r7 Lines{9|91R9[92]} 2420m37 2428r20
+2418r7 Payload{9|91R9[92]} 2428m33 2428r33 2434r30
+2451r13 Result{40|267R9} 2453m13 2454r20
+2463r7 Result{40|267R9} 2468m18 2468r18 2470m10 2471r17 2477m7 2478r14
+2464r7 Payload{9|91R9[92]} 2467m56 2467r56 2474r30
+2486r7 Result{40|324R9} 2491m28 2491r28 2493m10 2495m10 2498r14 2501m10 2502r17
+2509b7 Found{boolean} 2514m30 2515r14
+2510r7 Lines{9|91R9[92]} 2514m37 2523r19
+2511r7 Buffer{21|91R9} 2524m18 2524r18 2525m18 2525r18 2528r47
+2512r7 Result{40|324R9} 2516m10 2518m13 2518r13 2520r17 2531m10 2532r17
+2523r11 Line{21|91R9} 2524r37
+2550b7 Hit{boolean} 2558m41 2560r10
+2551r7 Resolved_Locale{21|91R9} 2558m46 2567r39
+2552i7 Idx{natural} 2558m63 2565r50
+2582r7 Result{40|440R9} 2588m10 2589r17 2595m10 2602m16 2605m13 2608m10 2611r14
+2583b7 Hit{boolean} 2592m41 2594r10
+2584r7 Resolved_Locale{21|91R9} 2592m46 2597r47
+2585i7 Idx{natural} 2592m63
+2597a13 S{string} 2599r28 2603r18 2603r21 2603r32
+2598i13 N{natural} 2601r16 2602r50 2603r42 2605r44
+2615r13 Failed{40|440R9} 2617m13 2618r20
+2631b7 Hit{boolean} 2642m41 2643r14
+2632r7 Resolved_Locale{21|91R9} 2642m46 2663r39
+2633i7 Idx{natural} 2642m63 2656r50
+2649i10 Count{natural} 2659m28 2659r28 2670r25 2670r62 2673r25 2673r62
+2650b10 Overflow{boolean} 2660m28 2660r28 2669r16
+2651e10 RStatus{39|34E9} 2661m28 2661r28 2666r13 2668r23
+2652r10 Diagnostics{31|88R9} 2662m28 2662r28
+2699i11 I{integer} 2701r56 2706r46
+2701r13 E{40|508R9} 2703r16 2704m31 2704r31 2705m16 2706r49
+X 42 i18n-runtime_data.ads
+3K22*Runtime_Data 41|15w11 2488r15 2537r12 42|138e22
+8U14*Clear 41|2537s25
+10V13*Load_Text{boolean} 41|2488s28
+11a7 Source_Name{string} 41|2489r13
+12a7 Text{string} 41|2490r13
+13r7 Diagnostics{31|88R9} 41|2491r13
+X 43 i18n-validation.ads
+4K22*Validation 41|16w11 337r17 43|18e20
+14V13*Validate{32|35R9} 41|337s28
+

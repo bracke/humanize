@@ -16,6 +16,11 @@ package Humanize.Strings is
      (Preserve_Acronyms => True,
       Lowercase_Small_Words => True);
 
+   type Editorial_Title_Style is
+     (AP_Title,
+      Chicago_Title,
+      Sentence_Title);
+
    type Identifier_Options is record
       Preserve_Acronyms : Boolean := True;
    end record;
@@ -121,6 +126,18 @@ package Humanize.Strings is
       Separator => '/',
       Preserve_Extension => False);
 
+   subtype File_Mode_Value is Natural range 0 .. 8#7777#;
+
+   type File_Mode_Kind is
+     (Mode_Only,
+      Regular_File,
+      Directory_File,
+      Symlink_File,
+      Character_Device,
+      Block_Device,
+      FIFO_File,
+      Socket_File);
+
    type Inflection_Source is
      (Dictionary_Inflection,
       Irregular_Inflection,
@@ -131,6 +148,21 @@ package Humanize.Strings is
    type Inflection_Rule_Order is
      (Dictionary_First,
       Built_In_First);
+
+   type Inflection_Language is
+     (English_Inflection,
+      Danish_Inflection,
+      German_Inflection,
+      French_Inflection,
+      Spanish_Inflection,
+      Italian_Inflection,
+      Portuguese_Inflection,
+      Dutch_Inflection,
+      Swedish_Inflection,
+      Norwegian_Inflection,
+      Norwegian_Bokmal_Inflection,
+      Finnish_Inflection,
+      Turkish_Inflection);
 
    type Inflection_Options is record
       Rule_Order    : Inflection_Rule_Order := Dictionary_First;
@@ -344,6 +376,14 @@ package Humanize.Strings is
    --  @param Acronyms Space/comma-separated acronym words to preserve.
    --  @param Small_Words Space/comma-separated small words to lowercase.
    --  @return Title-cased text using caller-supplied word lists.
+
+   function Editorial_Title
+     (Text  : String;
+      Style : Editorial_Title_Style := AP_Title)
+      return Humanize.Status.Text_Result;
+   --  @param Text Input text.
+   --  @param Style Editorial title style preset.
+   --  @return Title text using the selected editorial capitalization policy.
 
    function NL_To_BR
      (Text : String)
@@ -726,6 +766,42 @@ package Humanize.Strings is
    --  @param Options Maximum length, ellipsis marker, and path separator.
    --  @return Compact path preserving the beginning and final component.
 
+   function Symbolic_File_Mode
+     (Mode : File_Mode_Value;
+      Kind : File_Mode_Kind := Mode_Only)
+      return Humanize.Status.Text_Result;
+   --  @param Mode Unix permission mode bits, including optional special bits.
+   --  @param Kind Optional file-kind prefix for ls-style symbolic output.
+   --  @return Symbolic mode such as "rwxr-xr-x" or "-rwsr-xr-t".
+
+   function Octal_File_Mode
+     (Mode            : File_Mode_Value;
+      Include_Special : Boolean := False;
+      Prefix          : Boolean := False)
+      return Humanize.Status.Text_Result;
+   --  @param Mode Unix permission mode bits, including optional special bits.
+   --  @param Include_Special Always include the special-bit octal digit.
+   --  @param Prefix Prefix the octal label with "0".
+   --  @return Octal mode such as "755", "4755", or "0755".
+
+   function File_Mode_Summary
+     (Mode : File_Mode_Value;
+      Kind : File_Mode_Kind := Mode_Only)
+      return Humanize.Status.Text_Result;
+   --  @param Mode Unix permission mode bits, including optional special bits.
+   --  @param Kind Optional file kind to include in the summary.
+   --  @return Human-readable owner/group/others permission summary.
+
+   function Parse_File_Mode
+     (Text : String;
+      Mode : out File_Mode_Value;
+      Kind : out File_Mode_Kind)
+      return Humanize.Status.Status_Code;
+   --  @param Text Octal or symbolic Unix mode text.
+   --  @param Mode Parsed mode bits when the result is Ok.
+   --  @param Kind Parsed kind prefix, or Mode_Only when none is present.
+   --  @return Ok for valid octal or symbolic mode text.
+
    function Search_Key
      (Text : String)
       return Humanize.Status.Text_Result;
@@ -896,6 +972,28 @@ package Humanize.Strings is
    --  @param Options Inflection precedence and case policy.
    --  @return Singular form using the requested policy.
 
+   function Pluralize_In_Language
+     (Word     : String;
+      Language : Inflection_Language)
+      return Humanize.Status.Text_Result;
+   --  @param Word Singular noun in Language.
+   --  @param Language Deterministic built-in inflection rule set.
+   --  @return Plural form using the requested language rule set.
+
+   function Singularize_In_Language
+     (Word     : String;
+      Language : Inflection_Language)
+      return Humanize.Status.Text_Result;
+   --  @param Word Plural noun in Language.
+   --  @param Language Deterministic built-in inflection rule set.
+   --  @return Singular form using the requested language rule set.
+
+   function Inflection_Language_Label
+     (Language : Inflection_Language)
+      return Humanize.Status.Text_Result;
+   --  @param Language Inflection rule-set identifier.
+   --  @return Stable lowercase language label.
+
    function Pluralize_Source
      (Word      : String;
       Singulars : String := "";
@@ -980,6 +1078,12 @@ package Humanize.Strings is
    --  @param Text UTF-8-compatible input text.
    --  @return Approximate monospace width by grapheme cluster.
 
+   function ANSI_Display_Width
+     (Text : String)
+      return Natural;
+   --  @param Text UTF-8-compatible input text that may contain ANSI escapes.
+   --  @return Approximate monospace width ignoring ANSI escape sequences.
+
    function Truncate_UTF8
      (Text      : String;
       Max_Chars : Natural;
@@ -1019,6 +1123,124 @@ package Humanize.Strings is
    --  @param Max_Chars Maximum output grapheme-cluster length including Ellipsis.
    --  @param Ellipsis Suffix used when truncating.
    --  @return Grapheme-cluster-safe truncated text.
+
+   function Truncate_Display_Width
+     (Text      : String;
+      Max_Width : Natural;
+      Ellipsis  : String := "...")
+      return Humanize.Status.Text_Result;
+   --  @param Text UTF-8-compatible input text.
+   --  @param Max_Width Maximum monospace display width including Ellipsis.
+   --  @param Ellipsis Suffix used when truncating.
+   --  @return Grapheme-safe text truncated by approximate display width.
+
+   function Truncate_ANSI_Display_Width
+     (Text      : String;
+      Max_Width : Natural;
+      Ellipsis  : String := "...")
+      return Humanize.Status.Text_Result;
+   --  @param Text UTF-8-compatible input text that may contain ANSI escapes.
+   --  @param Max_Width Maximum monospace display width including Ellipsis.
+   --  @param Ellipsis Suffix used when truncating.
+   --  @return ANSI-preserving grapheme-safe text truncated by display width.
+
+   function Wrap_Display_Width
+     (Text      : String;
+      Max_Width : Positive;
+      Indent    : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Text UTF-8-compatible input text.
+   --  @param Max_Width Maximum monospace display width for each output line.
+   --  @param Indent Spaces to prepend after inserted line breaks.
+   --  @return Grapheme-safe text wrapped by approximate display width.
+
+   function Wrap_ANSI_Display_Width
+     (Text      : String;
+      Max_Width : Positive;
+      Indent    : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Text UTF-8-compatible input text that may contain ANSI escapes.
+   --  @param Max_Width Maximum monospace display width for each output line.
+   --  @param Indent Spaces to prepend after inserted line breaks.
+   --  @return ANSI-preserving grapheme-safe text wrapped by display width.
+
+   function Key_Value_Line
+     (Key       : String;
+      Value     : String;
+      Separator : String := ": ")
+      return Humanize.Status.Text_Result;
+   --  @param Key Display key.
+   --  @param Value Display value.
+   --  @param Separator Text between key and value.
+   --  @return Single key/value terminal line.
+
+   function Aligned_Key_Value_Line
+     (Key       : String;
+      Value     : String;
+      Key_Width : Natural;
+      Separator : String := " : ")
+      return Humanize.Status.Text_Result;
+   --  @param Key Display key.
+   --  @param Value Display value.
+   --  @param Key_Width Minimum display width for the key.
+   --  @param Separator Text between key and value.
+   --  @return Single aligned key/value terminal line.
+
+   function Table_Row_2
+     (Left       : String;
+      Right      : String;
+      Left_Width : Natural;
+      Separator  : String := "  ")
+      return Humanize.Status.Text_Result;
+   --  @param Left Left cell text.
+   --  @param Right Right cell text.
+   --  @param Left_Width Minimum display width for the left cell.
+   --  @param Separator Text between cells.
+   --  @return ANSI-aware two-column terminal row.
+
+   function Table_Row_3
+     (Left         : String;
+      Middle       : String;
+      Right        : String;
+      Left_Width   : Natural;
+      Middle_Width : Natural;
+      Separator    : String := "  ")
+      return Humanize.Status.Text_Result;
+   --  @param Left Left cell text.
+   --  @param Middle Middle cell text.
+   --  @param Right Right cell text.
+   --  @param Left_Width Minimum display width for the left cell.
+   --  @param Middle_Width Minimum display width for the middle cell.
+   --  @param Separator Text between cells.
+   --  @return ANSI-aware three-column terminal row.
+
+   function Table_2
+     (Left_Column  : Name_List;
+      Right_Column : Name_List;
+      Left_Width   : Natural;
+      Separator    : String := "  ")
+      return Humanize.Status.Text_Result;
+   --  @param Left_Column Left column cells.
+   --  @param Right_Column Right column cells.
+   --  @param Left_Width Minimum display width for the left column.
+   --  @param Separator Text between cells.
+   --  @return Newline-separated ANSI-aware two-column terminal table.
+
+   function Table_3
+     (Left_Column   : Name_List;
+      Middle_Column : Name_List;
+      Right_Column  : Name_List;
+      Left_Width    : Natural;
+      Middle_Width  : Natural;
+      Separator     : String := "  ")
+      return Humanize.Status.Text_Result;
+   --  @param Left_Column Left column cells.
+   --  @param Middle_Column Middle column cells.
+   --  @param Right_Column Right column cells.
+   --  @param Left_Width Minimum display width for the left column.
+   --  @param Middle_Width Minimum display width for the middle column.
+   --  @param Separator Text between cells.
+   --  @return Newline-separated ANSI-aware three-column terminal table.
 
    function Grapheme_Slice
      (Text       : String;
@@ -1109,6 +1331,164 @@ package Humanize.Strings is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Ellipsis Suffix used when truncating.
+
+   procedure Truncate_Display_Width_Into
+     (Text      : String;
+      Max_Width : Natural;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Ellipsis  : String := "...");
+   --  @param Text UTF-8-compatible input text.
+   --  @param Max_Width Maximum monospace display width including Ellipsis.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Ellipsis Suffix used when truncating.
+
+   procedure Truncate_ANSI_Display_Width_Into
+     (Text      : String;
+      Max_Width : Natural;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Ellipsis  : String := "...");
+   --  @param Text UTF-8-compatible input text that may contain ANSI escapes.
+   --  @param Max_Width Maximum monospace display width including Ellipsis.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Ellipsis Suffix used when truncating.
+
+   procedure Wrap_Display_Width_Into
+     (Text      : String;
+      Max_Width : Positive;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Indent    : Natural := 0);
+   --  @param Text UTF-8-compatible input text.
+   --  @param Max_Width Maximum monospace display width for each output line.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Indent Spaces to prepend after inserted line breaks.
+
+   procedure Wrap_ANSI_Display_Width_Into
+     (Text      : String;
+      Max_Width : Positive;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Indent    : Natural := 0);
+   --  @param Text UTF-8-compatible input text that may contain ANSI escapes.
+   --  @param Max_Width Maximum monospace display width for each output line.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Indent Spaces to prepend after inserted line breaks.
+
+   procedure Key_Value_Line_Into
+     (Key       : String;
+      Value     : String;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Separator : String := ": ");
+   --  @param Key Display key.
+   --  @param Value Display value.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Separator Text between key and value.
+
+   procedure Aligned_Key_Value_Line_Into
+     (Key       : String;
+      Value     : String;
+      Key_Width : Natural;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Separator : String := " : ");
+   --  @param Key Display key.
+   --  @param Value Display value.
+   --  @param Key_Width Minimum display width for the key.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Separator Text between key and value.
+
+   procedure Table_Row_2_Into
+     (Left       : String;
+      Right      : String;
+      Left_Width : Natural;
+      Target     : in out String;
+      Written    : out Natural;
+      Status     : out Humanize.Status.Status_Code;
+      Separator  : String := "  ");
+   --  @param Left Left cell text.
+   --  @param Right Right cell text.
+   --  @param Left_Width Minimum display width for the left cell.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Separator Text between cells.
+
+   procedure Table_Row_3_Into
+     (Left         : String;
+      Middle       : String;
+      Right        : String;
+      Left_Width   : Natural;
+      Middle_Width : Natural;
+      Target       : in out String;
+      Written      : out Natural;
+      Status       : out Humanize.Status.Status_Code;
+      Separator    : String := "  ");
+   --  @param Left Left cell text.
+   --  @param Middle Middle cell text.
+   --  @param Right Right cell text.
+   --  @param Left_Width Minimum display width for the left cell.
+   --  @param Middle_Width Minimum display width for the middle cell.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Separator Text between cells.
+
+   procedure Table_2_Into
+     (Left_Column  : Name_List;
+      Right_Column : Name_List;
+      Left_Width   : Natural;
+      Target       : in out String;
+      Written      : out Natural;
+      Status       : out Humanize.Status.Status_Code;
+      Separator    : String := "  ");
+   --  @param Left_Column Left column cells.
+   --  @param Right_Column Right column cells.
+   --  @param Left_Width Minimum display width for the left column.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Separator Text between cells.
+
+   procedure Table_3_Into
+     (Left_Column   : Name_List;
+      Middle_Column : Name_List;
+      Right_Column  : Name_List;
+      Left_Width    : Natural;
+      Middle_Width  : Natural;
+      Target        : in out String;
+      Written       : out Natural;
+      Status        : out Humanize.Status.Status_Code;
+      Separator     : String := "  ");
+   --  @param Left_Column Left column cells.
+   --  @param Middle_Column Middle column cells.
+   --  @param Right_Column Right column cells.
+   --  @param Left_Width Minimum display width for the left column.
+   --  @param Middle_Width Minimum display width for the middle column.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Separator Text between cells.
 
    procedure Grapheme_Slice_Into
      (Text       : String;
@@ -1206,6 +1586,18 @@ package Humanize.Strings is
    --  @param Text Input text.
    --  @param Acronyms Space/comma-separated acronym words to preserve.
    --  @param Small_Words Space/comma-separated small words to lowercase.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Editorial_Title_Into
+     (Text    : String;
+      Style   : Editorial_Title_Style;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Text Input text.
+   --  @param Style Editorial title style preset.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -1543,6 +1935,44 @@ package Humanize.Strings is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Options Maximum length, ellipsis marker, and path separator.
+
+   procedure Symbolic_File_Mode_Into
+     (Mode    : File_Mode_Value;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Kind    : File_Mode_Kind := Mode_Only);
+   --  @param Mode Unix permission mode bits, including optional special bits.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Kind Optional file-kind prefix for ls-style symbolic output.
+
+   procedure Octal_File_Mode_Into
+     (Mode            : File_Mode_Value;
+      Target          : in out String;
+      Written         : out Natural;
+      Status          : out Humanize.Status.Status_Code;
+      Include_Special : Boolean := False;
+      Prefix          : Boolean := False);
+   --  @param Mode Unix permission mode bits, including optional special bits.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Include_Special Always include the special-bit octal digit.
+   --  @param Prefix Prefix the octal label with "0".
+
+   procedure File_Mode_Summary_Into
+     (Mode    : File_Mode_Value;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Kind    : File_Mode_Kind := Mode_Only);
+   --  @param Mode Unix permission mode bits, including optional special bits.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Kind Optional file kind to include in the summary.
 
    procedure Search_Key_Into
      (Text    : String;
@@ -1990,6 +2420,40 @@ package Humanize.Strings is
    --  @param Singulars Optional dictionary singular list.
    --  @param Plurals Optional dictionary plural list.
    --  @param Options Inflection precedence and case policy.
+
+   procedure Pluralize_In_Language_Into
+     (Word     : String;
+      Language : Inflection_Language;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code);
+   --  @param Word Singular noun in Language.
+   --  @param Language Deterministic built-in inflection rule set.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Singularize_In_Language_Into
+     (Word     : String;
+      Language : Inflection_Language;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code);
+   --  @param Word Plural noun in Language.
+   --  @param Language Deterministic built-in inflection rule set.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Inflection_Language_Label_Into
+     (Language : Inflection_Language;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code);
+   --  @param Language Inflection rule-set identifier.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
 
    procedure Copy_Into
      (Result  : Humanize.Status.Text_Result;

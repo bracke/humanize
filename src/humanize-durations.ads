@@ -50,6 +50,27 @@ package Humanize.Durations is
      (Largest_Unit  => Year,
       Smallest_Unit => Second);
 
+   type Duration_Render_Metadata is record
+      Status          : Humanize.Status.Status_Code := Humanize.Status.Ok;
+      Negative        : Boolean := False;
+      Years           : Natural := 0;
+      Months          : Natural := 0;
+      Weeks           : Natural := 0;
+      Days            : Natural := 0;
+      Hours           : Natural := 0;
+      Minutes         : Natural := 0;
+      Seconds         : Natural := 0;
+      Component_Count : Natural := 0;
+   end record;
+
+   function Format_Metadata
+     (Seconds : Duration_Seconds;
+      Options : Duration_Options := Default_Duration_Options)
+      return Duration_Render_Metadata;
+   --  @param Seconds Duration in seconds.
+   --  @param Options Largest/smallest unit policy used for decomposition.
+   --  @return Machine-readable duration decomposition metadata.
+
    type Duration_Phrase_Style is (Natural_Wording, Compact_Label);
 
    type Duration_Phrase_Options is record
@@ -62,6 +83,46 @@ package Humanize.Durations is
    type Recurrence_Unit is (Every_Second, Every_Minute, Every_Hour, Every_Day,
                             Every_Week, Every_Month, Every_Quarter,
                             Every_Year);
+
+   type Schedule_Kind is
+     (Schedule_Interval,
+      Schedule_Weekday,
+      Schedule_Weekday_Set,
+      Schedule_Ordinal_Weekday,
+      Schedule_Business_Day);
+
+   type Weekday_Set is array (Positive range 1 .. 7) of Boolean;
+
+   Weekdays : constant Weekday_Set :=
+     [1 .. 5 => True, 6 .. 7 => False];
+   Weekends : constant Weekday_Set :=
+     [1 .. 5 => False, 6 .. 7 => True];
+   Every_Day_Set : constant Weekday_Set := [others => True];
+
+   type Schedule_Options is record
+      Kind        : Schedule_Kind := Schedule_Interval;
+      Every       : Positive := 1;
+      Unit        : Recurrence_Unit := Every_Day;
+      Weekday     : Natural range 0 .. 7 := 0;
+      Weekdays    : Weekday_Set := Every_Day_Set;
+      Ordinal     : Integer range -1 .. 5 := 0;
+      Has_Time    : Boolean := False;
+      Hour        : Natural := 0;
+      Minute      : Natural := 0;
+      Use_12_Hour : Boolean := False;
+   end record;
+
+   Default_Schedule_Options : constant Schedule_Options :=
+     (Kind        => Schedule_Interval,
+      Every       => 1,
+      Unit        => Every_Day,
+      Weekday     => 0,
+      Weekdays    => Every_Day_Set,
+      Ordinal     => 0,
+      Has_Time    => False,
+      Hour        => 0,
+      Minute      => 0,
+      Use_12_Hour => False);
 
    type Natural_Duration_Style is
      (Plain_Duration,
@@ -95,6 +156,17 @@ package Humanize.Durations is
 
    Default_Natural_Duration_Options : constant Natural_Duration_Options :=
      (Style => Plain_Duration);
+
+   type Natural_Duration_Threshold_Preset is
+     (Threshold_Default,
+      Threshold_Rails,
+      Threshold_Django,
+      Threshold_Conversational);
+
+   type Duration_Distance_Direction is
+     (Duration_Distance_Plain,
+      Duration_Distance_Past,
+      Duration_Distance_Future);
 
    type Detailed_Duration_Options is record
       Max_Components   : Positive := 2;
@@ -219,6 +291,13 @@ package Humanize.Durations is
         Break_Start_Hour => 0,
         Break_End_Hour   => 0);
 
+   type Business_Calendar_Preset is
+     (Business_Weekdays_9_To_5,
+      Business_Weekdays_8_To_4,
+      Business_Extended_Weekdays,
+      Business_Seven_Days,
+      Business_Closed);
+
    subtype Business_Calendar_Rule_Capacity is Natural range 0 .. 256;
 
    type Business_Calendar_Rules
@@ -267,6 +346,184 @@ package Humanize.Durations is
    --  @param Month Month of the yearly recurring holiday.
    --  @param Day Day of the yearly recurring holiday.
    --  @return Ok, Invalid_Value, or Buffer_Overflow.
+
+   function Add_Observed_Holiday
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number;
+      Month : Ada.Calendar.Month_Number;
+      Day   : Ada.Calendar.Day_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @param Month Fixed holiday month.
+   --  @param Day Fixed holiday day.
+   --  @return Adds Friday for Saturday holidays and Monday for Sunday holidays.
+
+   function Add_Nth_Weekday_Holiday
+     (Rules   : in out Business_Calendar_Rules;
+      Year    : Ada.Calendar.Year_Number;
+      Month   : Ada.Calendar.Month_Number;
+      Weekday : Natural;
+      Ordinal : Integer)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @param Month Holiday month.
+   --  @param Weekday ISO weekday, Monday = 1.
+   --  @param Ordinal 1 through 5, or -1 for the last weekday in the month.
+   --  @return Adds the computed holiday date as a one-off holiday.
+
+   function Add_US_Federal_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds observed US federal holidays for the given year.
+
+   function Add_TARGET2_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds TARGET2 closing days for the given year.
+
+   function Add_UK_Bank_Holidays_England_Wales
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds UK England/Wales bank holidays for the given year.
+
+   function Add_Canada_Federal_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common observed Canadian federal holidays.
+
+   function Add_Germany_Public_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common nationwide German public holidays.
+
+   function Add_France_Public_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common French public holidays.
+
+   function Add_NYSE_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common NYSE market holidays.
+
+   function Add_ASX_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common ASX market holidays.
+
+   function Add_JPX_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common JPX/TSE market holidays.
+
+   function Add_SIX_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common SIX Swiss Exchange market holidays.
+
+   function Add_SGX_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common SGX market holidays.
+
+   function Add_HKEX_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common HKEX market holidays.
+
+   function Add_NSE_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common NSE India market holidays.
+
+   function Add_B3_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common B3 Brazil market holidays.
+
+   function Add_BMV_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common BMV Mexico market holidays.
+
+   function Add_Australia_National_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common Australian national public holidays.
+
+   function Add_Japan_Public_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common Japanese public holidays.
+
+   function Add_Switzerland_Common_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common Swiss public holidays.
+
+   function Add_Singapore_Public_Holidays
+     (Rules : in out Business_Calendar_Rules;
+      Year  : Ada.Calendar.Year_Number)
+      return Humanize.Status.Status_Code;
+   --  @param Rules Business calendar rule set to update.
+   --  @param Year Holiday year.
+   --  @return Adds common Singapore public holidays.
 
    function Add_Half_Day
      (Rules    : in out Business_Calendar_Rules;
@@ -323,6 +580,132 @@ package Humanize.Durations is
       return Shutdown_Period_List;
    --  @param Rules Business calendar rules.
    --  @return Active shutdown-period slice.
+
+   function Business_Calendar_Options_For
+     (Preset : Business_Calendar_Preset)
+      return Advanced_Business_Calendar_Options;
+   --  @param Preset Named business-hours preset.
+   --  @return Advanced calendar options for the preset.
+
+   function Business_Calendar_Rules_For
+     (Preset : Business_Calendar_Preset)
+      return Business_Calendar_Rules;
+   --  @param Preset Named business-hours preset.
+   --  @return Empty rule set using the preset's business-hours options.
+
+   function US_Federal_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with observed US federal holidays.
+
+   function TARGET2_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with TARGET2 closing days.
+
+   function UK_England_Wales_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with UK England/Wales bank holidays.
+
+   function Canada_Federal_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with Canadian federal holidays.
+
+   function Germany_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common German public holidays.
+
+   function France_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common French public holidays.
+
+   function NYSE_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common NYSE market holidays.
+
+   function ASX_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common ASX market holidays.
+
+   function JPX_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common JPX/TSE market holidays.
+
+   function SIX_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common SIX market holidays.
+
+   function SGX_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common SGX market holidays.
+
+   function HKEX_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common HKEX market holidays.
+
+   function NSE_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common NSE India market holidays.
+
+   function B3_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common B3 Brazil market holidays.
+
+   function BMV_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common BMV Mexico market holidays.
+
+   function Australia_National_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common Australian national holidays.
+
+   function Japan_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common Japanese public holidays.
+
+   function Switzerland_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common Swiss holidays.
+
+   function Singapore_Business_Calendar_Rules
+     (Year : Ada.Calendar.Year_Number)
+      return Business_Calendar_Rules;
+   --  @param Year Holiday year.
+   --  @return Weekday 9-to-5 rules with common Singapore public holidays.
 
    --  Convenience API: humanize Seconds, owned result.
    function Format
@@ -744,6 +1127,111 @@ package Humanize.Durations is
    --  @param Unit Recurrence unit.
    --  @return Recurrence phrase such as "every 2 days".
 
+   function Schedule
+     (Context : Humanize.Contexts.Context;
+      Options : Schedule_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Options Schedule phrase policy.
+   --  @return Schedule phrase such as "every weekday at 09:00" or
+   --    "first Monday of each month".
+
+   function Weekly_Schedule
+     (Context     : Humanize.Contexts.Context;
+      Weekdays    : Weekday_Set;
+      Every       : Positive := 1;
+      Has_Time    : Boolean := False;
+      Hour        : Natural := 0;
+      Minute      : Natural := 0;
+      Use_12_Hour : Boolean := False)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Weekdays Weekday set.
+   --  @param Every Week interval count.
+   --  @param Has_Time True to append a clock time.
+   --  @param Hour Clock hour when Has_Time is True.
+   --  @param Minute Clock minute when Has_Time is True.
+   --  @param Use_12_Hour True to render 12-hour time.
+   --  @return Weekly schedule phrase.
+
+   function Every_Other_Weekday_Schedule
+     (Context     : Humanize.Contexts.Context;
+      Weekday     : Natural;
+      Has_Time    : Boolean := False;
+      Hour        : Natural := 0;
+      Minute      : Natural := 0;
+      Use_12_Hour : Boolean := False)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Weekday ISO weekday, Monday = 1.
+   --  @param Has_Time True to append a clock time.
+   --  @param Hour Clock hour when Has_Time is True.
+   --  @param Minute Clock minute when Has_Time is True.
+   --  @param Use_12_Hour True to render 12-hour time.
+   --  @return Every-other-week schedule phrase for a weekday.
+
+   function Monthly_Day_Schedule
+     (Context     : Humanize.Contexts.Context;
+      Day         : Natural;
+      Has_Time    : Boolean := False;
+      Hour        : Natural := 0;
+      Minute      : Natural := 0;
+      Use_12_Hour : Boolean := False)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Day Day of month.
+   --  @param Has_Time True to append a clock time.
+   --  @param Hour Clock hour when Has_Time is True.
+   --  @param Minute Clock minute when Has_Time is True.
+   --  @param Use_12_Hour True to render 12-hour time.
+   --  @return Monthly day schedule phrase.
+
+   function Last_Business_Day_Schedule
+     (Context     : Humanize.Contexts.Context;
+      Has_Time    : Boolean := False;
+      Hour        : Natural := 0;
+      Minute      : Natural := 0;
+      Use_12_Hour : Boolean := False)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Has_Time True to append a clock time.
+   --  @param Hour Clock hour when Has_Time is True.
+   --  @param Minute Clock minute when Has_Time is True.
+   --  @param Use_12_Hour True to render 12-hour time.
+   --  @return Last-business-day schedule phrase.
+
+   function Business_Day_Schedule
+     (Context     : Humanize.Contexts.Context;
+      Ordinal     : Integer;
+      Has_Time    : Boolean := False;
+      Hour        : Natural := 0;
+      Minute      : Natural := 0;
+      Use_12_Hour : Boolean := False)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Ordinal 1 through 5, or -1 for the last business day.
+   --  @param Has_Time True to append a clock time.
+   --  @param Hour Clock hour when Has_Time is True.
+   --  @param Minute Clock minute when Has_Time is True.
+   --  @param Use_12_Hour True to render 12-hour time.
+   --  @return Ordinal-business-day schedule phrase.
+
+   function Cron_Schedule
+     (Context : Humanize.Contexts.Context;
+      Minute  : String;
+      Hour    : String;
+      Day     : String;
+      Month   : String;
+      Weekday : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Minute Cron minute field.
+   --  @param Hour Cron hour field.
+   --  @param Day Cron day-of-month field.
+   --  @param Month Cron month field.
+   --  @param Weekday Cron day-of-week field.
+   --  @return Deterministic schedule phrase for common cron forms.
+
    function Natural_Duration
      (Context : Humanize.Contexts.Context;
       Seconds : Duration_Seconds;
@@ -766,6 +1254,29 @@ package Humanize.Durations is
    --  @param Options Natural wording style.
    --  @param Approximation Threshold policy for approximate styles.
    --  @return Natural duration phrase using caller-selected thresholds.
+
+   function Natural_Duration
+     (Context : Humanize.Contexts.Context;
+      Seconds : Duration_Seconds;
+      Preset  : Natural_Duration_Threshold_Preset)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Seconds Duration in seconds.
+   --  @param Preset Named natural threshold policy.
+   --  @return Natural duration phrase using a common threshold preset.
+
+   function Duration_Distance
+     (Context   : Humanize.Contexts.Context;
+      Seconds   : Duration_Seconds;
+      Direction : Duration_Distance_Direction := Duration_Distance_Plain;
+      Preset    : Natural_Duration_Threshold_Preset := Threshold_Default)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Seconds Absolute duration in seconds.
+   --  @param Direction Optional past/future wrapper.
+   --  @param Preset Named natural threshold policy.
+   --  @return Phrase such as "less than a minute", "3 days ago", or
+   --    "in over a year".
 
    function Natural_Duration_Detailed
      (Context : Humanize.Contexts.Context;
@@ -1262,6 +1773,36 @@ package Humanize.Durations is
    --  @param Options Natural wording style.
    --  @param Approximation Threshold policy for approximate styles.
 
+   procedure Natural_Duration_Into
+     (Context : Humanize.Contexts.Context;
+      Seconds : Duration_Seconds;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Preset  : Natural_Duration_Threshold_Preset);
+   --  @param Context Formatting context.
+   --  @param Seconds Duration in seconds.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Preset Named natural threshold policy.
+
+   procedure Duration_Distance_Into
+     (Context   : Humanize.Contexts.Context;
+      Seconds   : Duration_Seconds;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Direction : Duration_Distance_Direction := Duration_Distance_Plain;
+      Preset    : Natural_Duration_Threshold_Preset := Threshold_Default);
+   --  @param Context Formatting context.
+   --  @param Seconds Absolute duration in seconds.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Direction Optional past/future wrapper.
+   --  @param Preset Named natural threshold policy.
+
    procedure Natural_Duration_Detailed_Into
      (Context : Humanize.Contexts.Context;
       Seconds : Duration_Seconds;
@@ -1359,6 +1900,138 @@ package Humanize.Durations is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Schedule_Into
+     (Context : Humanize.Contexts.Context;
+      Options : Schedule_Options;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Options Schedule phrase policy.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Weekly_Schedule_Into
+     (Context     : Humanize.Contexts.Context;
+      Weekdays    : Weekday_Set;
+      Target      : in out String;
+      Written     : out Natural;
+      Status      : out Humanize.Status.Status_Code;
+      Every       : Positive := 1;
+      Has_Time    : Boolean := False;
+      Hour        : Natural := 0;
+      Minute      : Natural := 0;
+      Use_12_Hour : Boolean := False);
+   --  @param Context Formatting context.
+   --  @param Weekdays Weekday set.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Every Week interval count.
+   --  @param Has_Time True to append a clock time.
+   --  @param Hour Clock hour when Has_Time is True.
+   --  @param Minute Clock minute when Has_Time is True.
+   --  @param Use_12_Hour True to render 12-hour time.
+
+   procedure Every_Other_Weekday_Schedule_Into
+     (Context     : Humanize.Contexts.Context;
+      Weekday     : Natural;
+      Target      : in out String;
+      Written     : out Natural;
+      Status      : out Humanize.Status.Status_Code;
+      Has_Time    : Boolean := False;
+      Hour        : Natural := 0;
+      Minute      : Natural := 0;
+      Use_12_Hour : Boolean := False);
+   --  @param Context Formatting context.
+   --  @param Weekday ISO weekday, Monday = 1.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Has_Time True to append a clock time.
+   --  @param Hour Clock hour when Has_Time is True.
+   --  @param Minute Clock minute when Has_Time is True.
+   --  @param Use_12_Hour True to render 12-hour time.
+
+   procedure Monthly_Day_Schedule_Into
+     (Context     : Humanize.Contexts.Context;
+      Day         : Natural;
+      Target      : in out String;
+      Written     : out Natural;
+      Status      : out Humanize.Status.Status_Code;
+      Has_Time    : Boolean := False;
+      Hour        : Natural := 0;
+      Minute      : Natural := 0;
+      Use_12_Hour : Boolean := False);
+   --  @param Context Formatting context.
+   --  @param Day Day of month.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Has_Time True to append a clock time.
+   --  @param Hour Clock hour when Has_Time is True.
+   --  @param Minute Clock minute when Has_Time is True.
+   --  @param Use_12_Hour True to render 12-hour time.
+
+   procedure Last_Business_Day_Schedule_Into
+     (Context     : Humanize.Contexts.Context;
+      Target      : in out String;
+      Written     : out Natural;
+      Status      : out Humanize.Status.Status_Code;
+      Has_Time    : Boolean := False;
+      Hour        : Natural := 0;
+      Minute      : Natural := 0;
+      Use_12_Hour : Boolean := False);
+   --  @param Context Formatting context.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Has_Time True to append a clock time.
+   --  @param Hour Clock hour when Has_Time is True.
+   --  @param Minute Clock minute when Has_Time is True.
+   --  @param Use_12_Hour True to render 12-hour time.
+
+   procedure Business_Day_Schedule_Into
+     (Context     : Humanize.Contexts.Context;
+      Ordinal     : Integer;
+      Target      : in out String;
+      Written     : out Natural;
+      Status      : out Humanize.Status.Status_Code;
+      Has_Time    : Boolean := False;
+      Hour        : Natural := 0;
+      Minute      : Natural := 0;
+      Use_12_Hour : Boolean := False);
+   --  @param Context Formatting context.
+   --  @param Ordinal 1 through 5, or -1 for the last business day.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Has_Time True to append a clock time.
+   --  @param Hour Clock hour when Has_Time is True.
+   --  @param Minute Clock minute when Has_Time is True.
+   --  @param Use_12_Hour True to render 12-hour time.
+
+   procedure Cron_Schedule_Into
+     (Context : Humanize.Contexts.Context;
+      Minute  : String;
+      Hour    : String;
+      Day     : String;
+      Month   : String;
+      Weekday : String;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Minute Cron minute field.
+   --  @param Hour Cron hour field.
+   --  @param Day Cron day-of-month field.
+   --  @param Month Cron month field.
+   --  @param Weekday Cron day-of-week field.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Business_Date_Label_Into
      (Context : Humanize.Contexts.Context;
       Start   : Ada.Calendar.Time;
@@ -1452,5 +2125,21 @@ package Humanize.Durations is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Options Per-weekday work-hour and break policy.
+
+   procedure Business_Calendar_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Start   : Ada.Calendar.Time;
+      Hours   : Natural;
+      Rules   : Business_Calendar_Rules;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Start Starting calendar instant.
+   --  @param Hours Working hours to add.
+   --  @param Rules Executable business calendar rules.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
 
 end Humanize.Durations;

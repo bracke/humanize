@@ -42,7 +42,8 @@ package body Humanize.Tests.Compatibility is
 
    type Locale_Code is
      (L_En, L_Da, L_De, L_Fr, L_Es, L_It, L_Pt, L_Nl, L_Sv, L_No, L_Nb,
-      L_Fi, L_Pl, L_Cs, L_Tr, L_Ru, L_Uk, L_Ja, L_Ko, L_Zh, L_Ar, L_Hi);
+      L_Fi, L_Pl, L_Cs, L_Tr, L_Ro, L_Lt, L_Sl, L_Id, L_Ms, L_Eo, L_Vi,
+      L_Sw, L_Af, L_Hu, L_Sk, L_Ru, L_Uk, L_Ja, L_Ko, L_Zh, L_Ar, L_Hi);
 
    function Locale_Name (Code : Locale_Code) return String is
    begin
@@ -62,6 +63,17 @@ package body Humanize.Tests.Compatibility is
          when L_Pl => return "pl";
          when L_Cs => return "cs";
          when L_Tr => return "tr";
+         when L_Ro => return "ro";
+         when L_Lt => return "lt";
+         when L_Sl => return "sl";
+         when L_Id => return "id";
+         when L_Ms => return "ms";
+         when L_Eo => return "eo";
+         when L_Vi => return "vi";
+         when L_Sw => return "sw";
+         when L_Af => return "af";
+         when L_Hu => return "hu";
+         when L_Sk => return "sk";
          when L_Ru => return "ru";
          when L_Uk => return "uk";
          when L_Ja => return "ja";

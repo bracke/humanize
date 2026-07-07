@@ -1,0 +1,294 @@
+V "GNAT Lib v13"
+A -gnatc
+A -gnat2022
+P NO
+
+RN
+RV NO_ALLOCATORS
+RV NO_LOCAL_ALLOCATORS
+RV NO_LONG_LONG_INTEGERS
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_ELABORATION_CODE
+
+U i18n.compiled%b	i18n-compiled.adb	303ae993 OO PK IU
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W i18n%s		i18n.ads		i18n.ali
+
+U i18n.compiled%s	i18n-compiled.ads	e1b016f6 EE OO PK IU
+W ada%s			ada.ads			ada.ali
+W ada.containers%s	a-contai.ads		a-contai.ali
+Z ada.containers.helpers%s  a-conhel.adb	a-conhel.ali
+W ada.containers.vectors%s
+Z ada.finalization%s	a-finali.ads		a-finali.ali
+Z ada.iterator_interfaces%s
+Z ada.streams%s		a-stream.adb		a-stream.ali
+W ada.strings%s		a-string.ads		a-string.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W i18n%s		i18n.ads		i18n.ali
+
+D ada.ads		20240521074738 76789da1 ada%s
+D a-contai.ads		20240521074737 61e5e089 ada.containers%s
+D a-conhel.ads		20240521074737 46fe1ce3 ada.containers.helpers%s
+D a-convec.ads		20240521074737 91fb49f3 ada.containers.vectors%s
+D a-finali.ads		20240521074738 bf4f806b ada.finalization%s
+D a-iteint.ads		20240521074738 49a8bee2 ada.iterator_interfaces%s
+D a-stream.ads		20240521074738 119b8fb3 ada.streams%s
+D a-string.ads		20240521074738 90ac6797 ada.strings%s
+D a-sttebu.ads		20240521074738 f1ad67a2 ada.strings.text_buffers%s
+D a-stuten.ads		20240521074738 c6ced0ae ada.strings.utf_encoding%s
+D a-unccon.ads		20240521074738 0e9b276f ada.unchecked_conversion%s
+D i18n.ads		20260630205449 fa948552 i18n%s
+D i18n-compiled.ads	20260701181345 eb3a3ade i18n.compiled%s
+D i18n-compiled.adb	20260515131738 db00d34d i18n.compiled%b
+D interfac.ads		20240521074738 15f799c2 interfaces%s
+D system.ads		20240521074738 426dafb8 system%s
+D s-atocou.ads		20240521074738 dc18efc3 system.atomic_counters%s
+D s-finroo.ads		20240521074738 4ff27390 system.finalization_root%s
+G a e
+G c Z s b [op_count i18n__compiled 98 13 none]
+G c Z s b [last_index i18n__compiled 104 13 none]
+G c Z s b [element i18n__compiled 111 13 none]
+G c Z s b [clear i18n__compiled 121 14 none]
+G c Z s b [reference i18n__compiled 128 13 none]
+G c Z s b [set_reference i18n__compiled 136 14 none]
+G c Z s b [op_count i18n__compiled 142 13 none]
+G c Z s b [last_index i18n__compiled 148 13 none]
+G c Z s b [element i18n__compiled 155 13 none]
+G c Z s b [append i18n__compiled 164 14 none]
+G c Z s b [replace_element i18n__compiled 173 14 none]
+G c Z s b [freeze i18n__compiled 182 13 none]
+G c Z s s [has_element i18n__compiled__op_vectors 115 13 188_4]
+G c Z s s [empty i18n__compiled__op_vectors 125 13 188_4]
+G c Z s s [Oeq i18n__compiled__op_vectors 127 24 188_4]
+G c Z s s [to_vector i18n__compiled__op_vectors 136 13 188_4]
+G c Z s s [to_vector i18n__compiled__op_vectors 139 13 188_4]
+G c Z s s [Oconcat i18n__compiled__op_vectors 145 13 188_4]
+G c Z s s [Oconcat i18n__compiled__op_vectors 149 13 188_4]
+G c Z s s [Oconcat i18n__compiled__op_vectors 153 13 188_4]
+G c Z s s [Oconcat i18n__compiled__op_vectors 157 13 188_4]
+G c Z s s [capacity i18n__compiled__op_vectors 161 13 188_4]
+G c Z s s [reserve_capacity i18n__compiled__op_vectors 164 14 188_4]
+G c Z s s [length i18n__compiled__op_vectors 175 13 188_4]
+G c Z s s [set_length i18n__compiled__op_vectors 178 14 188_4]
+G c Z s s [is_empty i18n__compiled__op_vectors 187 13 188_4]
+G c Z s s [clear i18n__compiled__op_vectors 190 14 188_4]
+G c Z s s [to_cursor i18n__compiled__op_vectors 194 13 188_4]
+G c Z s s [to_index i18n__compiled__op_vectors 201 13 188_4]
+G c Z s s [element i18n__compiled__op_vectors 206 13 188_4]
+G c Z s s [element i18n__compiled__op_vectors 213 13 188_4]
+G c Z s s [replace_element i18n__compiled__op_vectors 217 14 188_4]
+G c Z s s [replace_element i18n__compiled__op_vectors 228 14 188_4]
+G c Z s s [query_element i18n__compiled__op_vectors 239 14 188_4]
+G c Z s s [query_element i18n__compiled__op_vectors 250 14 188_4]
+G c Z s s [update_element i18n__compiled__op_vectors 259 14 188_4]
+G c Z s s [update_element i18n__compiled__op_vectors 276 14 188_4]
+G c Z s s [constant_reference i18n__compiled__op_vectors 303 13 188_4]
+G c Z s s [reference i18n__compiled__op_vectors 308 13 188_4]
+G c Z s s [constant_reference i18n__compiled__op_vectors 313 13 188_4]
+G c Z s s [reference i18n__compiled__op_vectors 318 13 188_4]
+G c Z s s [assign i18n__compiled__op_vectors 323 14 188_4]
+G c Z s s [copy i18n__compiled__op_vectors 325 13 188_4]
+G c Z s s [move i18n__compiled__op_vectors 327 14 188_4]
+G c Z s s [new_vector i18n__compiled__op_vectors 333 13 188_4]
+G c Z s s [insert_vector i18n__compiled__op_vectors 337 14 188_4]
+G c Z s s [insert_vector i18n__compiled__op_vectors 361 14 188_4]
+G c Z s s [insert_vector i18n__compiled__op_vectors 378 14 188_4]
+G c Z s s [insert i18n__compiled__op_vectors 396 14 188_4]
+G c Z s s [insert i18n__compiled__op_vectors 404 14 188_4]
+G c Z s s [insert i18n__compiled__op_vectors 412 14 188_4]
+G c Z s s [insert i18n__compiled__op_vectors 421 14 188_4]
+G c Z s s [insert i18n__compiled__op_vectors 438 14 188_4]
+G c Z s s [prepend_vector i18n__compiled__op_vectors 449 14 188_4]
+G c Z s s [prepend i18n__compiled__op_vectors 459 14 188_4]
+G c Z s s [append_vector i18n__compiled__op_vectors 466 14 188_4]
+G c Z s s [append i18n__compiled__op_vectors 476 14 188_4]
+G c Z s s [append i18n__compiled__op_vectors 483 14 188_4]
+G c Z s s [insert_space i18n__compiled__op_vectors 486 14 188_4]
+G c Z s s [insert_space i18n__compiled__op_vectors 503 14 188_4]
+G c Z s s [delete i18n__compiled__op_vectors 514 14 188_4]
+G c Z s s [delete i18n__compiled__op_vectors 524 14 188_4]
+G c Z s s [delete_first i18n__compiled__op_vectors 533 14 188_4]
+G c Z s s [delete_last i18n__compiled__op_vectors 538 14 188_4]
+G c Z s s [reverse_elements i18n__compiled__op_vectors 546 14 188_4]
+G c Z s s [swap i18n__compiled__op_vectors 549 14 188_4]
+G c Z s s [swap i18n__compiled__op_vectors 554 14 188_4]
+G c Z s s [first_index i18n__compiled__op_vectors 560 13 188_4]
+G c Z s s [first i18n__compiled__op_vectors 563 13 188_4]
+G c Z s s [first_element i18n__compiled__op_vectors 567 13 188_4]
+G c Z s s [last_index i18n__compiled__op_vectors 570 13 188_4]
+G c Z s s [last i18n__compiled__op_vectors 574 13 188_4]
+G c Z s s [last_element i18n__compiled__op_vectors 578 13 188_4]
+G c Z s s [next i18n__compiled__op_vectors 581 13 188_4]
+G c Z s s [next i18n__compiled__op_vectors 587 14 188_4]
+G c Z s s [previous i18n__compiled__op_vectors 590 13 188_4]
+G c Z s s [previous i18n__compiled__op_vectors 596 14 188_4]
+G c Z s s [find_index i18n__compiled__op_vectors 599 13 188_4]
+G c Z s s [find i18n__compiled__op_vectors 609 13 188_4]
+G c Z s s [reverse_find_index i18n__compiled__op_vectors 623 13 188_4]
+G c Z s s [reverse_find i18n__compiled__op_vectors 635 13 188_4]
+G c Z s s [contains i18n__compiled__op_vectors 649 13 188_4]
+G c Z s s [iterate i18n__compiled__op_vectors 654 14 188_4]
+G c Z s s [reverse_iterate i18n__compiled__op_vectors 662 14 188_4]
+G c Z s s [iterate i18n__compiled__op_vectors 669 13 188_4]
+G c Z s s [iterate i18n__compiled__op_vectors 672 13 188_4]
+G c Z s s [adjust i18n__compiled__op_vectors__implementation 90 28 726_4_188_4]
+G c Z s s [finalize i18n__compiled__op_vectors__implementation 93 28 726_4_188_4]
+G c Z s s [zero_counts i18n__compiled__op_vectors__implementation 96 17 726_4_188_4]
+G c Z s s [busy i18n__compiled__op_vectors__implementation 100 17 726_4_188_4]
+G c Z s s [unbusy i18n__compiled__op_vectors__implementation 104 17 726_4_188_4]
+G c Z s s [lock i18n__compiled__op_vectors__implementation 108 17 726_4_188_4]
+G c Z s s [unlock i18n__compiled__op_vectors__implementation 112 17 726_4_188_4]
+G c Z s s [tc_check i18n__compiled__op_vectors__implementation 116 17 726_4_188_4]
+G c Z s s [te_check i18n__compiled__op_vectors__implementation 120 17 726_4_188_4]
+G c Z s s [is_busy i18n__compiled__op_vectors__implementation 136 16 726_4_188_4]
+G c Z s s [is_locked i18n__compiled__op_vectors__implementation 140 16 726_4_188_4]
+G c Z s s [initialize i18n__compiled__op_vectors__implementation 161 28 726_4_188_4]
+G c Z s s [finalize i18n__compiled__op_vectors__implementation 162 28 726_4_188_4]
+G c Z s s [initialize i18n__compiled__op_vectors__implementation 167 28 726_4_188_4]
+G c Z s s [finalize i18n__compiled__op_vectors__implementation 168 28 726_4_188_4]
+G c Z s s [put_image i18n__compiled__op_vectors 747 14 188_4]
+G c Z s s [adjust i18n__compiled__op_vectors 750 25 188_4]
+G c Z s s [finalize i18n__compiled__op_vectors 751 25 188_4]
+G c Z s s [write i18n__compiled__op_vectors 753 14 188_4]
+G c Z s s [read i18n__compiled__op_vectors 759 14 188_4]
+G c Z s s [read i18n__compiled__op_vectors 773 14 188_4]
+G c Z s s [write i18n__compiled__op_vectors 779 14 188_4]
+G c Z s s [write i18n__compiled__op_vectors 798 14 188_4]
+G c Z s s [read i18n__compiled__op_vectors 804 14 188_4]
+G c Z s s [write i18n__compiled__op_vectors 820 14 188_4]
+G c Z s s [read i18n__compiled__op_vectors 826 14 188_4]
+G c Z s s [pseudo_reference i18n__compiled__op_vectors 840 13 188_4]
+G c Z s s [get_element_access i18n__compiled__op_vectors 849 13 188_4]
+G c Z s s [finalize i18n__compiled__op_vectors 865 25 188_4]
+G c Z s s [first i18n__compiled__op_vectors 867 24 188_4]
+G c Z s s [last i18n__compiled__op_vectors 868 24 188_4]
+G c Z s s [next i18n__compiled__op_vectors 870 24 188_4]
+G c Z s s [previous i18n__compiled__op_vectors 874 24 188_4]
+X 1 ada.ads
+16K9*Ada 20e8 13|1r6 2r6 43r16 76r23 77r23 188r30
+X 2 a-contai.ads
+16K13*Containers 28e19 13|1w10 2r10 43r20 76r27 77r27 188r34
+19M9*Hash_Type 13|43r31 76r38 77r38
+22I9*Count_Type<integer>
+X 4 a-convec.ads
+62I9 Index_Type 13|189r7
+63+9 Element_Type 13|190r7
+74k24*Vectors 878e27 13|2w21 188r45
+81I12*Extended_Index{integer}
+91R9*Vector<5|43R9> 13|203r24[188]
+175V13*Length{2|22I9} 14|64s33[13|188]
+187V13*Is_Empty{boolean} 14|72s20[13|188]
+206V13*Element{13|60R9} 14|85s24[13|188] 121s39[13|188]
+217U14*Replace_Element 14|102s17[13|188]
+483U14*Append 14|93s17[13|188]
+570V13*Last_Index{81I12[13|188]} 14|76s33[13|188]
+X 6 a-iteint.ads
+24h9 Forward_Iterator
+32h9 Reversible_Iterator<24R9[4|119]>
+X 12 i18n.ads
+16K9*I18N 19e9 13|4r17 206r5 14|1r14 130r5
+X 13 i18n-compiled.ads
+4K22*Compiled 12|16k9 13|188E12 206l10 206e18 14|1b19 130l10 130t18
+6E9*Op_Kind 22e19 61r14
+7n7*Text{6E9} 61r25
+8n7*Var{6E9}
+9n7*Number{6E9}
+10n7*Date_Format{6E9}
+11n7*Time_Format{6E9}
+12n7*Date_Time_Format{6E9}
+13n7*Currency{6E9}
+14n7*Duration_Format{6E9}
+15n7*Byte_Size_Format{6E9}
+16n7*Unit_Format{6E9}
+17n7*Relative_Time_Format{6E9}
+18n7*List_Format{6E9}
+19n7*Jump_Plural{6E9}
+20n7*Jump_Select{6E9}
+21n7*Jump_Ordinal{6E9}
+22n7*Stop_Branch{6E9}
+24I12*Op_Index{natural} 35r16 44r16 66r23 67r23 68r23 69r23 70r23 71r23 74r23
+. 75r23 78r23
+31P9*Interned_String(string) 42r16 62r20 63r14 64r23
+33R9*Exact_Target 36e14 38r60
+34i7*Value{long_long_integer}
+35i7*Target{24I12}
+38A9*Exact_Target_Array(33R9)<integer> 39r54
+39P9*Exact_Target_Array_Access(38A9) 72r23
+41R9*Select_Target 45e14 47r61
+42p7*Name{31P9}
+43m7*Hash{2|19M9}
+44i7*Target{24I12}
+47A9*Select_Target_Array(41R9)<integer> 48r55
+48P9*Select_Target_Array_Access(47A9) 73r24
+60R9*Op 81e14 114r14 158r14 166r15 176r15 190r23 192r50 14|30r14 82r14 90r15
+. 99r15
+61e7*Kind{6E9}
+62p7*Text_Value{31P9}
+63p7*Key{31P9}
+64p7*Currency_Code{31P9}
+65i7*Plural_Offset{long_long_integer}
+66i7*Zero_Target{24I12}
+67i7*One_Target{24I12}
+68i7*Two_Target{24I12}
+69i7*Few_Target{24I12}
+70i7*Many_Target{24I12}
+71i7*Other_Target{24I12}
+72p7*Exact_Targets{39P9}
+73p7*Select_Targets{48P9}
+74i7*Male_Target{24I12}
+75i7*Female_Target{24I12}
+76m7*Male_Hash{2|19M9}
+77m7*Female_Hash{2|19M9}
+78i7*End_Target{24I12}
+79b7*Substitute_Number_Sign{boolean}
+80b7*Restores_Number_Context{boolean}
+86R9*Compiled_Message 99r13 105r13 112r15 122r20 129r13 137r17 184r14 198c9
+. 200e14 14|4r13 16r13 28r15 37r20 44r13 52r17 107r14 112r25 124r26
+90R9*Message_Reference 130r14 138r13 194c9 196e14 14|45r14 53r13
+94R9*Builder 143r15 149r15 156r15 165r22 174r22 183r15 202c9 204e14 14|60r15
+. 68r15 80r15 89r22 97r22 106r15
+98V13*Op_Count{natural} 99>7 14|3b13 13l8 13t16
+99r7 Msg{86R9} 14|4b7 8r10 12r14
+104V13*Last_Index{natural} 105>7 14|15b13 25l8 25t18
+105r7 Msg{86R9} 14|16b7 20r10 24r14
+111V13*Element{60R9} 112>7 113>7 14|27b13 34l8 34t15
+112r7 Msg{86R9} 14|28b7 33r14
+113i7 Index{positive} 14|29b7 33r27
+121U14*Clear 122=7 14|36b14 41l8 41t13
+122r7 Msg{86R9} 14|37b7 40m7
+128V13*Reference{90R9} 129>7 14|43b13 49l8 49t17
+129r7 Msg{86R9} 14|44b7 48r22
+136U14*Set_Reference 137<7 138>7 14|51b14 57l8 57t21
+137r7 Msg{86R9} 14|52b7 56m7
+138r7 Ref{90R9} 14|53b7 56r18
+142V13*Op_Count{natural} 143>7 14|59b13 65l8 65t16 109s35
+143r7 Build{94R9} 14|60b7 64r23
+148V13*Last_Index{natural} 149>7 14|67b13 77l8 77t18
+149r7 Build{94R9} 14|68b7 72r10 76r23
+155V13*Element{60R9} 156>7 157>7 14|79b13 86l8 86t15
+156r7 Build{94R9} 14|80b7 85r14
+157i7 Index{positive} 14|81b7 85r33
+164U14*Append 165=7 166>7 14|88b14 94l8 94t14
+165r7 Build{94R9} 14|89b7 93m7 93r7
+166r7 Item{60R9} 14|90b7 93r25
+173U14*Replace_Element 174=7 175>7 176>7 14|96b14 103l8 103t23
+174r7 Build{94R9} 14|97b7 102m7 102r7
+175i7 Index{positive} 14|98b7 102r34
+176r7 Item{60R9} 14|99b7 102r41
+182V13*Freeze{86R9} 183>7 14|105b13 128l8 128t14
+183r7 Build{94R9} 14|106b7 109r45 121r29
+188K12 Op_Vectors[4|74] 203r13
+192A9 Op_Array(60R9)<integer> 193r51 14|118r17 125r31
+193P9 Operation_Array_Access(192A9) 195r13 199r13
+195p7*Ops{193P9} 14|48m15 56r22
+199p7*Ops{193P9} 14|8r14 12r18 20r14 24r18 33r18 40m11 48r26 56m11 113m19
+. 125m20
+203r7*Ops{4|91R9[188]} 14|64r29 72r16 76r29 85r20 93m13 102m13 121r35
+X 14 i18n-compiled.adb
+109i7 Count{natural} 111r10 118r32
+112r17 Empty{13|86R9} 113m13
+118a10 Temp{13|192A9} 120r23 121m13 125r41
+120i14 Index{integer} 121r19 121r48
+124r17 Frozen{13|86R9} 125m13
+

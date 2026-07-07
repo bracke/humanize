@@ -1,6 +1,7 @@
 with AUnit.Assertions;
 
 with Humanize.Contexts;
+with Humanize.Numbers;
 with Humanize.Status;
 with Humanize.Units;
 with Humanize.Tests.Support;
@@ -235,6 +236,10 @@ package body Humanize.Tests.Units is
         (Support.Text (Format_Latency (Support.En, 2_500.0)) = "2.5 ms",
          "latency selector");
       AUnit.Assertions.Assert
+        (Support.Text (Format_Database_Throughput (Support.En, 12_500.0))
+         = "12.5 k ops/s",
+         "database throughput selector");
+      AUnit.Assertions.Assert
         (Support.Text (Format_CPU_Load (Support.En, 87.5)) = "87.5 % CPU",
          "CPU load selector");
       AUnit.Assertions.Assert
@@ -272,6 +277,61 @@ package body Humanize.Tests.Units is
          = "1.5 kilometers",
          "geographic distance selector");
       AUnit.Assertions.Assert
+        (Support.Text
+           (Format_Length
+              (Support.En, 1609.344,
+               Measurement_Options'
+                 (System       => US_Customary_System,
+                  Number_Style => Humanize.Numbers.Default_Number_Options)))
+         = "1 mile",
+         "explicit US customary length selector");
+      AUnit.Assertions.Assert
+        (Support.Text
+           (Format_Mass
+              (Support.En, 907.18474,
+               Measurement_Options'
+                 (System       => US_Customary_System,
+                  Number_Style => Humanize.Numbers.Default_Number_Options)))
+         = "2 pounds",
+         "explicit US customary mass selector");
+      AUnit.Assertions.Assert
+        (Support.Text
+           (Format_Volume
+              (Support.En, 0.2365882365,
+               Measurement_Options'
+                 (System       => Cooking_US_System,
+                  Number_Style => Humanize.Numbers.Default_Number_Options)))
+         = "1 cup",
+         "US cooking volume selector");
+      AUnit.Assertions.Assert
+        (Support.Text
+           (Format_Temperature
+              (Support.En, 0.0,
+               Measurement_Options'
+                 (System       => US_Customary_System,
+                  Number_Style => Humanize.Numbers.Default_Number_Options)))
+         = "32 degrees Fahrenheit",
+         "US customary temperature selector");
+      AUnit.Assertions.Assert
+        (Support.Text
+           (Format_Cooking_Temperature
+              (Support.En, 350.0,
+               Measurement_Options'
+                 (System       => Metric_System,
+                  Number_Style => Humanize.Numbers.Default_Number_Options)))
+         = "176.7 degrees Celsius",
+         "metric cooking temperature selector");
+      AUnit.Assertions.Assert
+        (Support.Text
+           (Format_Geographic_Distance
+              (Support.Locale ("en-US"), 1609.344,
+               Default_Measurement_Options))
+         = "1 mile",
+         "en-US locale-default geographic distance selector");
+      AUnit.Assertions.Assert
+        (Support.Text (Format (Support.Locale ("sk"), 5, Meter)) = "5 metrov",
+         "Slovak many-form unit selector");
+      AUnit.Assertions.Assert
         (Support.Text (Format (Support.En, 5, Kilometer, Style => Abbreviated))
          = "5 km",
          "abbreviated unit style");
@@ -288,6 +348,12 @@ package body Humanize.Tests.Units is
          AUnit.Assertions.Assert
            (Code = Ok and then Buffer (1 .. Written) = "72 kilometers per hour",
             "bounded speed selector");
+         Format_Geographic_Distance_Into
+           (Support.Locale ("en-US"), 1609.344, Buffer, Written, Code,
+            Default_Measurement_Options);
+         AUnit.Assertions.Assert
+           (Code = Ok and then Buffer (1 .. Written) = "1 mile",
+            "bounded locale-default geographic distance selector");
       end;
    end Test_Automatic_Selection;
 

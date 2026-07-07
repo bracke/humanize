@@ -1,0 +1,166 @@
+V "GNAT Lib v13"
+A -gnatc
+A -gnat2022
+P NO
+
+RN
+RV NO_LONG_LONG_INTEGERS
+RV NO_NESTED_FINALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_ELABORATION_CODE
+
+U humanize.frequencies%b  humanize-frequencies.adb  49da50f2 OO PK
+W ada%s			ada.ads			ada.ali
+W ada.strings%s		a-string.ads		a-string.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W ada.strings.unbounded%s  a-strunb.adb		a-strunb.ali
+W humanize%s		humanize.ads		humanize.ali
+W humanize.i18n_rendering%s  humanize-i18n_rendering.adb  humanize-i18n_rendering.ali
+W humanize.messages%s	humanize-messages.adb	humanize-messages.ali
+W humanize.selections%s	humanize-selections.adb	humanize-selections.ali
+
+U humanize.frequencies%s  humanize-frequencies.ads  90c0a146 EE OO PK
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W humanize%s		humanize.ads		humanize.ali
+W humanize.contexts%s	humanize-contexts.adb	humanize-contexts.ali
+W humanize.status%s	humanize-status.adb	humanize-status.ali
+
+D ada.ads		20240521074738 76789da1 ada%s
+D a-charac.ads		20240521074737 2d3ec45b ada.characters%s
+D a-chlat1.ads		20240521074737 e0d72e76 ada.characters.latin_1%s
+D a-contai.ads		20240521074737 61e5e089 ada.containers%s
+D a-cohata.ads		20240521074737 c4f77997 ada.containers.hash_tables%s
+D a-conhel.ads		20240521074737 46fe1ce3 ada.containers.helpers%s
+D a-cihama.ads		20240521074737 42861819 ada.containers.indefinite_hashed_maps%s
+D a-convec.ads		20240521074737 91fb49f3 ada.containers.vectors%s
+D a-finali.ads		20240521074738 bf4f806b ada.finalization%s
+D a-iteint.ads		20240521074738 49a8bee2 ada.iterator_interfaces%s
+D a-stream.ads		20240521074738 119b8fb3 ada.streams%s
+D a-string.ads		20240521074738 90ac6797 ada.strings%s
+D a-strhas.ads		20240521074738 e06866e7 ada.strings.hash%s
+D a-strmap.ads		20240521074738 ed8acfdb ada.strings.maps%s
+D a-sttebu.ads		20240521074738 f1ad67a2 ada.strings.text_buffers%s
+D a-strunb.ads		20240521074738 7bfb7010 ada.strings.unbounded%s
+D a-stuten.ads		20240521074738 c6ced0ae ada.strings.utf_encoding%s
+D a-unccon.ads		20240521074738 0e9b276f ada.unchecked_conversion%s
+D humanize.ads		20260703193357 ae4af322 humanize%s
+D humanize-contexts.ads	20260704135231 90484d74 humanize.contexts%s
+D humanize-frequencies.ads  20260702210132 f39a277c humanize.frequencies%s
+D humanize-frequencies.adb  20260702210132 633159a5 humanize.frequencies%b
+D humanize-i18n_rendering.ads  20260702210132 30e6272e humanize.i18n_rendering%s
+D humanize-messages.ads	20260704135231 c1daf3c8 humanize.messages%s
+D humanize-selections.ads  20260702210132 53b68add humanize.selections%s
+D humanize-status.ads	20260704135231 5d58386c humanize.status%s
+D i18n.ads		20260630205449 fa948552 i18n%s
+D i18n-arguments.ads	20260630205449 e9b3e75b i18n.arguments%s
+D i18n-ast.ads		20260701175824 2f31558b i18n.ast%s
+D i18n-compiled.ads	20260701181345 eb3a3ade i18n.compiled%s
+D i18n-diagnostics.ads	20260629183815 cb556ee3 i18n.diagnostics%s
+D i18n-errors.ads	20260629183815 df9fe2a5 i18n.errors%s
+D i18n-locales.ads	20260706004255 009a6e8f i18n.locales%s
+D i18n-result.ads	20260630205449 6bc1a2e0 i18n.result%s
+D i18n-runtime.ads	20260705233714 0d33f77d i18n.runtime%s
+D interfac.ads		20240521074738 15f799c2 interfaces%s
+D system.ads		20240521074738 426dafb8 system%s
+D s-atocou.ads		20240521074738 dc18efc3 system.atomic_counters%s
+D s-finroo.ads		20240521074738 4ff27390 system.finalization_root%s
+D s-unstyp.ads		20240521074738 fa2a7f59 system.unsigned_types%s
+G a e
+G c Z s b [times humanize__frequencies 8 13 none]
+G c Z s b [times humanize__frequencies 16 13 none]
+G c Z s b [times_into humanize__frequencies 28 14 none]
+G c Z s b [times_into humanize__frequencies 40 14 none]
+G c Z b b [copy_text humanize__frequencies 10 14 none]
+G r c none [times humanize__frequencies 8 13 none] [no_arg humanize__selections 29 13 none]
+G r c none [times humanize__frequencies 8 13 none] [count humanize__selections 34 13 none]
+G r c none [times humanize__frequencies 8 13 none] [render humanize__i18n_rendering 21 13 none]
+G r c none [times_into humanize__frequencies 28 14 none] [no_arg humanize__selections 29 13 none]
+G r c none [times_into humanize__frequencies 28 14 none] [count humanize__selections 34 13 none]
+G r c none [times_into humanize__frequencies 28 14 none] [render humanize__i18n_rendering 21 13 none]
+X 1 ada.ads
+16K9*Ada 20e8 22|1r6 1r33
+X 10 a-iteint.ads
+24h9 Forward_Iterator
+32h9 Reversible_Iterator<24R9[8|119]>
+X 12 a-string.ads
+16K13*Strings 35e16 22|1r10 1r37
+X 16 a-strunb.ads
+85K21*Unbounded 766e26 22|1w18 1r45
+108V13*To_Unbounded_String{91R9} 22|79s20
+121V13*To_String{string} 22|96s21 112s18
+X 19 humanize.ads
+7K9*Humanize 15e13 21|1r6 2r6 5r9 9r17 11r14 17r18 21r14 29r17 33r21 41r18
+. 47r22 55r5 22|3r6 4r6 5r6 7r14 8r13 14r21 19r20 26r20 32r20 37r17 39r14
+. 41r11 42r19 46r26 48r26 50r26 53r15 54r35 57r14 61r18 65r14 78r20 80r20
+. 84r17 88r21 90r25 92r27 101r18 107r22 109r25 114r5
+X 20 humanize-contexts.ads
+5K18*Contexts 46e22 21|1w15 9r26 17r27 29r26 41r27 22|37r26 61r27 84r26 101r27
+14R9*Context 44e14 21|9r35 17r36 29r35 41r36 22|37r35 61r36 84r35 101r36
+X 21 humanize-frequencies.ads
+5K18*Frequencies 19|7k9 21|55l14 55e25 22|7b23 114l14 114t25
+6I12*Occurrence_Count{long_long_integer} 10r17 18r18 30r17 42r18 22|38r17
+. 62r18 68r39 85r17 102r18
+8V13*Times{26|21R9} 9>7 10>7 22|36b13 58l8 58t13 90s56
+9r7 Context{20|14R9} 22|37b7 57r46
+10i7 Count{6I12} 22|38b7 44r12 54r68
+16V13*Times{26|21R9} 17>7 18>7 19>7 20>7 22|60b13 81l8 81t13 110s9
+17r7 Context{20|14R9} 22|61b7 67r28
+18i7 Count{6I12} 22|62b7 68r63 71r15
+19a7 Singular{string} 22|63b7 73r32
+20a7 Plural{string} 22|64b7 72r33 74r33 75r41
+28U14*Times_Into 29>7 30>7 31=7 32<7 33<7 22|83b14 98l8 98t18
+29r7 Context{20|14R9} 22|84b7 90r63
+30i7 Count{6I12} 22|85b7 90r72
+31a7 Target{string} 22|86b7 96m46
+32i7 Written{natural} 22|87b7 93m10 96m54
+33e7 Status{26|8E9} 22|88b7 94m10 96m63
+40U14*Times_Into 41>7 42>7 43>7 44>7 45=7 46<7 47<7 22|100b14 113l8 113t18
+41r7 Context{20|14R9} 22|101b7 110r16
+42i7 Count{6I12} 22|102b7 110r25
+43a7 Singular{string} 22|103b7 110r32
+44a7 Plural{string} 22|104b7 110r42
+45a7 Target{string} 22|105b7 112m43
+46i7 Written{natural} 22|106b7 112m51
+47e7 Status{26|8E9} 22|107b7 112m60
+X 22 humanize-frequencies.adb
+10U14 Copy_Text 10b14 11>7 12=7 13<7 14<7 34l8 34t17 96s10 112s7
+11a7 Text{string} 20r13 23r15 23r21 23r35 28r13 29r52 29r72 31r21
+12a7 Target{string} 18r10 20r27 21r13 22m13 22r21 22r37 23r48 25r21 29m13
+. 29r21 29r37
+13i7 Written{natural} 17m7 25m10 31m10
+14e7 Status{26|8E9} 19m10 26m10 32m10
+42r7 Selection{25|20R9} 46m13 48m13 50m13 52m13 57r55
+68a7 Count_Text{string} 69r39 69r51 69r75
+69a7 Clean{string} 75r27
+70a7 Text{string} 79r41
+90r7 Result{26|21R9} 92r10 94r20 96r32
+109r7 Result{26|21R9} 112r29
+X 23 humanize-i18n_rendering.ads
+11K26*I18N_Rendering 22|3w15 57r23 23|35e28
+21V13*Render{26|21R9} 22|57s38
+X 24 humanize-messages.ads
+1K18*Messages 22|4w15 41r20 80r29 24|139e22
+9n7*No_Message{8E9} 22|80r38
+113n7*Frequency_Never{8E9} 22|46r54
+114n7*Frequency_Once{8E9} 22|48r54
+115n7*Frequency_Twice{8E9} 22|50r54
+116n7*Frequency_Times{8E9} 22|54r18
+X 25 humanize-selections.ads
+9K26*Selections 22|5w15 42r28 46r35 48r35 50r35 53r24 54r44 25|60e24
+11I12*Count_Value{long_long_integer} 22|54r55
+20R9*Message_Selection 22|42r39 25|26e14
+29V13*No_Arg{20R9} 22|46s46 48s46 50s46
+34V13*Count{20R9} 22|53s35
+X 26 humanize-status.ads
+4K18*Status 21|2w15 11r23 21r23 33r30 47r31 22|8r22 14r30 19r29 26r29 32r29
+. 39r23 65r23 78r29 88r30 90r34 92r36 107r31 109r34 26|41e20
+8E9*Status_Code 21|33r37 47r38 22|8r29 14r37 88r37 107r38 26|18e22
+9n7*Ok{8E9} 22|32r36 78r36 92r43
+11n7*Invalid_Options{8E9} 22|19r36
+17n7*Buffer_Overflow{8E9} 22|26r36
+21R9*Text_Result 21|11r30 21r30 22|39r30 65r30 90r41 109r41 26|25e14
+22e7*Status{8E9} 22|78m10 92r17 94r27
+23r7*Text{16|91R9} 22|79m10 96r39 112r36
+24e7*Key{24|8E9} 22|80m10
+

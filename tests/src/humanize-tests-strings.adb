@@ -9,6 +9,7 @@ with Humanize.Tests.Support;
 package body Humanize.Tests.Strings is
    use Humanize.Status;
    use Ada.Strings.Unbounded;
+   use type Humanize.Strings.File_Mode_Kind;
    use type Humanize.Strings.Inflection_Source;
 
    procedure Check
@@ -28,6 +29,40 @@ package body Humanize.Tests.Strings is
       LF : constant String := [1 => ASCII.LF];
       CR : constant String := [1 => ASCII.CR];
       AE : constant String := Character'Val (16#C3#) & Character'Val (16#A6#);
+      Greek_Athens : constant String :=
+        Character'Val (16#CE#) & Character'Val (16#91#)
+        & Character'Val (16#CE#) & Character'Val (16#B8#)
+        & Character'Val (16#CE#) & Character'Val (16#AE#)
+        & Character'Val (16#CE#) & Character'Val (16#BD#)
+        & Character'Val (16#CE#) & Character'Val (16#B1#);
+      Cyrillic_Moscow : constant String :=
+        Character'Val (16#D0#) & Character'Val (16#9C#)
+        & Character'Val (16#D0#) & Character'Val (16#BE#)
+        & Character'Val (16#D1#) & Character'Val (16#81#)
+        & Character'Val (16#D0#) & Character'Val (16#BA#)
+        & Character'Val (16#D0#) & Character'Val (16#B2#)
+        & Character'Val (16#D0#) & Character'Val (16#B0#);
+      Hebrew_Abgd : constant String :=
+        Character'Val (16#D7#) & Character'Val (16#90#)
+        & Character'Val (16#D7#) & Character'Val (16#91#)
+        & Character'Val (16#D7#) & Character'Val (16#92#)
+        & Character'Val (16#D7#) & Character'Val (16#93#);
+      Arabic_Slam : constant String :=
+        Character'Val (16#D8#) & Character'Val (16#B3#)
+        & Character'Val (16#D9#) & Character'Val (16#84#)
+        & Character'Val (16#D8#) & Character'Val (16#A7#)
+        & Character'Val (16#D9#) & Character'Val (16#85#);
+      Armenian_Hay : constant String :=
+        Character'Val (16#D5#) & Character'Val (16#B0#)
+        & Character'Val (16#D5#) & Character'Val (16#A1#)
+        & Character'Val (16#D5#) & Character'Val (16#B5#);
+      Georgian_Abg : constant String :=
+        Character'Val (16#E1#) & Character'Val (16#83#)
+        & Character'Val (16#90#)
+        & Character'Val (16#E1#) & Character'Val (16#83#)
+        & Character'Val (16#91#)
+        & Character'Val (16#E1#) & Character'Val (16#83#)
+        & Character'Val (16#92#);
       E_Acute : constant String :=
         Character'Val (16#C3#) & Character'Val (16#A9#);
       Combining_Acute : constant String :=
@@ -99,6 +134,16 @@ package body Humanize.Tests.Strings is
         & Character'Val (16#E1#) & Character'Val (16#86#)
         & Character'Val (16#A8#);
       UTF8_Text : constant String := "h" & AE & "llo";
+      L_Stroke : constant String :=
+        Character'Val (16#C5#) & Character'Val (16#81#);
+      O_Acute : constant String :=
+        Character'Val (16#C3#) & Character'Val (16#B3#);
+      Z_Acute : constant String :=
+        Character'Val (16#C5#) & Character'Val (16#BA#);
+      C_Caron : constant String :=
+        Character'Val (16#C4#) & Character'Val (16#8C#);
+      Red_Start : constant String := ASCII.ESC & "[31m";
+      Reset : constant String := ASCII.ESC & "[0m";
       Grapheme_Text : constant String :=
         "e" & Combining_Acute & " "
         & Thumbs_Up & Medium_Skin_Tone & Family_Emoji & Flag_DK & Keycap_One;
@@ -114,6 +159,9 @@ package body Humanize.Tests.Strings is
       Buffer : String (1 .. 96);
       Written : Natural;
       Code : Status_Code;
+      Parsed_Mode : Humanize.Strings.File_Mode_Value;
+      Parsed_Kind : Humanize.Strings.File_Mode_Kind;
+      Parse_Status : Status_Code;
    begin
       Check
         (Humanize.Strings.Truncate ("long text is good for you", 19),
@@ -139,6 +187,18 @@ package body Humanize.Tests.Strings is
         (Humanize.Strings.Title_Case_With_Word_Lists
            ("gpu status by api", "gpu api", "by"),
          "GPU Status by API", "custom title-case word lists");
+      Check
+        (Humanize.Strings.Editorial_Title
+           ("api status over the url", Humanize.Strings.AP_Title),
+         "API Status Over the URL", "AP editorial title");
+      Check
+        (Humanize.Strings.Editorial_Title
+           ("api status over the url", Humanize.Strings.Chicago_Title),
+         "API Status over the URL", "Chicago editorial title");
+      Check
+        (Humanize.Strings.Editorial_Title
+           ("  API STATUS over   THE url  ", Humanize.Strings.Sentence_Title),
+         "Api status over the url", "sentence editorial title");
       Check
         (Humanize.Strings.NL_To_BR ("one" & LF & "two"),
          "one<br/>two", "nl to br");
@@ -503,6 +563,66 @@ package body Humanize.Tests.Strings is
              Preserve_Extension => True)),
          "~strings.adb", "shorten path preserving extension");
       Check
+        (Humanize.Strings.Symbolic_File_Mode (8#0755#),
+         "rwxr-xr-x", "symbolic file mode");
+      Check
+        (Humanize.Strings.Symbolic_File_Mode
+           (8#4755#, Humanize.Strings.Regular_File),
+         "-rwsr-xr-x", "symbolic file mode setuid");
+      Check
+        (Humanize.Strings.Symbolic_File_Mode
+           (8#1777#, Humanize.Strings.Directory_File),
+         "drwxrwxrwt", "symbolic file mode sticky directory");
+      Check
+        (Humanize.Strings.Octal_File_Mode (8#0755#),
+         "755", "octal file mode compact");
+      Check
+        (Humanize.Strings.Octal_File_Mode
+           (8#0755#, Include_Special => True, Prefix => True),
+         "0755", "octal file mode full prefixed");
+      Check
+        (Humanize.Strings.Octal_File_Mode (8#4755#),
+         "4755", "octal file mode special compact");
+      Check
+        (Humanize.Strings.File_Mode_Summary
+           (8#0640#, Humanize.Strings.Regular_File),
+         "file, owner read/write; group read; others no access",
+         "file mode summary");
+      Check
+        (Humanize.Strings.File_Mode_Summary
+           (8#1777#, Humanize.Strings.Directory_File),
+         "directory, owner read/write/execute; group read/write/execute; "
+         & "others read/write/execute; sticky",
+         "file mode summary special");
+      Parse_Status :=
+        Humanize.Strings.Parse_File_Mode
+          ("-rwsr-xr-x", Parsed_Mode, Parsed_Kind);
+      AUnit.Assertions.Assert
+        (Parse_Status = Ok
+         and then Parsed_Mode = 8#4755#
+         and then Parsed_Kind = Humanize.Strings.Regular_File,
+         "parse symbolic file mode");
+      Parse_Status :=
+        Humanize.Strings.Parse_File_Mode ("0755", Parsed_Mode, Parsed_Kind);
+      AUnit.Assertions.Assert
+        (Parse_Status = Ok
+         and then Parsed_Mode = 8#0755#
+         and then Parsed_Kind = Humanize.Strings.Mode_Only,
+         "parse octal file mode");
+      Parse_Status :=
+        Humanize.Strings.Parse_File_Mode
+          ("rwxr-xr-x", Parsed_Mode, Parsed_Kind);
+      AUnit.Assertions.Assert
+        (Parse_Status = Ok
+         and then Parsed_Mode = 8#0755#
+         and then Parsed_Kind = Humanize.Strings.Mode_Only,
+         "parse symbolic mode without kind");
+      Parse_Status :=
+        Humanize.Strings.Parse_File_Mode
+          ("rwxr-xr-q", Parsed_Mode, Parsed_Kind);
+      AUnit.Assertions.Assert
+        (Parse_Status = Invalid_Value, "reject invalid symbolic file mode");
+      Check
         (Humanize.Strings.Search_Key ("  File_02-final.TXT "),
          "file 02 final txt", "search key");
       AUnit.Assertions.Assert
@@ -626,6 +746,18 @@ package body Humanize.Tests.Strings is
         (Humanize.Strings.Singularize ("lice"),
          "louse", "singularize expanded irregular");
       Check
+        (Humanize.Strings.Pluralize ("salesman"),
+         "salesmen", "pluralize compound man irregular");
+      Check
+        (Humanize.Strings.Singularize ("policewomen"),
+         "policewoman", "singularize compound woman irregular");
+      Check
+        (Humanize.Strings.Pluralize ("brother"),
+         "brethren", "pluralize traditional irregular");
+      Check
+        (Humanize.Strings.Singularize ("kine"),
+         "cow", "singularize traditional irregular");
+      Check
         (Humanize.Strings.Pluralize ("Person"),
          "People", "pluralize preserves title case irregular");
       Check
@@ -668,6 +800,12 @@ package body Humanize.Tests.Strings is
         (Humanize.Strings.Singularize ("news"),
          "news", "singularize uncountable");
       Check
+        (Humanize.Strings.Pluralize ("software"),
+         "software", "pluralize technical uncountable");
+      Check
+        (Humanize.Strings.Singularize ("metadata"),
+         "metadata", "singularize technical uncountable");
+      Check
         (Humanize.Strings.Pluralize ("analysis"),
          "analyses", "pluralize is to es");
       Check
@@ -685,6 +823,18 @@ package body Humanize.Tests.Strings is
       Check
         (Humanize.Strings.Singularize ("media"),
          "medium", "singularize media");
+      Check
+        (Humanize.Strings.Pluralize ("corpus"),
+         "corpora", "pluralize corpus");
+      Check
+        (Humanize.Strings.Singularize ("genera"),
+         "genus", "singularize genera");
+      Check
+        (Humanize.Strings.Pluralize ("schema"),
+         "schemata", "pluralize schema");
+      Check
+        (Humanize.Strings.Singularize ("vertebrae"),
+         "vertebra", "singularize vertebrae");
       Check
         (Humanize.Strings.Pluralize ("cactus"),
          "cacti", "pluralize us to i");
@@ -715,6 +865,102 @@ package body Humanize.Tests.Strings is
       Check
         (Humanize.Strings.Singularize ("heroes"),
          "hero", "singularize selected oes");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("bil", Humanize.Strings.Danish_Inflection),
+         "biler", "Danish pluralize regular");
+      Check
+        (Humanize.Strings.Singularize_In_Language
+           ("biler", Humanize.Strings.Danish_Inflection),
+         "bil", "Danish singularize regular");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("Kind", Humanize.Strings.German_Inflection),
+         "Kinder", "German pluralize irregular preserves case");
+      Check
+        (Humanize.Strings.Singularize_In_Language
+           ("Frauen", Humanize.Strings.German_Inflection),
+         "Frau", "German singularize irregular preserves case");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("journal", Humanize.Strings.French_Inflection),
+         "journaux", "French pluralize al to aux");
+      Check
+        (Humanize.Strings.Singularize_In_Language
+           ("bateaux", Humanize.Strings.French_Inflection),
+         "bateau", "French singularize eaux");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("luz", Humanize.Strings.Spanish_Inflection),
+         "luces", "Spanish pluralize z to ces");
+      Check
+        (Humanize.Strings.Singularize_In_Language
+           ("libros", Humanize.Strings.Spanish_Inflection),
+         "libro", "Spanish singularize vowel s");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("banco", Humanize.Strings.Italian_Inflection),
+         "banchi", "Italian pluralize hard co to chi");
+      Check
+        (Humanize.Strings.Singularize_In_Language
+           ("ragazze", Humanize.Strings.Italian_Inflection),
+         "ragazza", "Italian singularize e to a");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("animal", Humanize.Strings.Portuguese_Inflection),
+         "animais", "Portuguese pluralize l to is");
+      Check
+        (Humanize.Strings.Singularize_In_Language
+           ("homens", Humanize.Strings.Portuguese_Inflection),
+         "homem", "Portuguese singularize irregular");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("kind", Humanize.Strings.Dutch_Inflection),
+         "kinderen", "Dutch pluralize irregular");
+      Check
+        (Humanize.Strings.Singularize_In_Language
+           ("boeken", Humanize.Strings.Dutch_Inflection),
+         "boek", "Dutch singularize en");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("flicka", Humanize.Strings.Swedish_Inflection),
+         "flickor", "Swedish pluralize a to or");
+      Check
+        (Humanize.Strings.Singularize_In_Language
+           ("bilar", Humanize.Strings.Swedish_Inflection),
+         "bil", "Swedish singularize ar");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("bok", Humanize.Strings.Norwegian_Bokmal_Inflection),
+         "boker", "Norwegian Bokmal pluralize regular");
+      Check
+        (Humanize.Strings.Singularize_In_Language
+           ("boker", Humanize.Strings.Norwegian_Bokmal_Inflection),
+         "bok", "Norwegian Bokmal singularize regular");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("talo", Humanize.Strings.Finnish_Inflection),
+         "talot", "Finnish pluralize nominative t");
+      Check
+        (Humanize.Strings.Singularize_In_Language
+           ("talot", Humanize.Strings.Finnish_Inflection),
+         "talo", "Finnish singularize nominative t");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("kitap", Humanize.Strings.Turkish_Inflection),
+         "kitaplar", "Turkish pluralize back-vowel harmony");
+      Check
+        (Humanize.Strings.Pluralize_In_Language
+           ("ev", Humanize.Strings.Turkish_Inflection),
+         "evler", "Turkish pluralize front-vowel harmony");
+      Check
+        (Humanize.Strings.Singularize_In_Language
+           ("evler", Humanize.Strings.Turkish_Inflection),
+         "ev", "Turkish singularize front-vowel harmony");
+      Check
+        (Humanize.Strings.Inflection_Language_Label
+           (Humanize.Strings.Norwegian_Bokmal_Inflection),
+         "nb", "inflection language label");
       AUnit.Assertions.Assert
         (Humanize.Strings.Pluralize_Source
            ("schema", "schema corpus", "schemata corpora")
@@ -767,6 +1013,12 @@ package body Humanize.Tests.Strings is
       AUnit.Assertions.Assert
         (Code = Ok and then Buffer (1 .. Written) = "long text...",
          "truncate into");
+      Humanize.Strings.Editorial_Title_Into
+        ("api status over the url", Humanize.Strings.Chicago_Title,
+         Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "API Status over the URL",
+         "editorial title into");
       Humanize.Strings.Highlight_Into
         ("alpha beta", "beta", Buffer, Written, Code);
       AUnit.Assertions.Assert
@@ -847,6 +1099,24 @@ package body Humanize.Tests.Strings is
         (Code = Ok
          and then Buffer (1 .. Written) = "/home/~/humanize-strings.adb",
          "shorten path into");
+      Humanize.Strings.Symbolic_File_Mode_Into
+        (8#2750#, Buffer, Written, Code, Humanize.Strings.Directory_File);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "drwxr-s---",
+         "symbolic file mode into");
+      Humanize.Strings.Octal_File_Mode_Into
+        (8#0755#, Buffer, Written, Code,
+         Include_Special => True, Prefix => True);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "0755",
+         "octal file mode into");
+      Humanize.Strings.File_Mode_Summary_Into
+        (8#0600#, Buffer, Written, Code, Humanize.Strings.Regular_File);
+      AUnit.Assertions.Assert
+        (Code = Ok
+         and then Buffer (1 .. Written)
+           = "file, owner read/write; group no access; others no access",
+         "file mode summary into");
       Humanize.Strings.Safe_Filename_Into
         ("CON.txt", Buffer, Written, Code,
          (Separator              => '-',
@@ -932,6 +1202,12 @@ package body Humanize.Tests.Strings is
       AUnit.Assertions.Assert
         (Code = Ok and then Buffer (1 .. Written) = "person",
          "singularize options into");
+      Humanize.Strings.Pluralize_In_Language_Into
+        ("journal", Humanize.Strings.French_Inflection,
+         Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "journaux",
+         "pluralize language into");
       AUnit.Assertions.Assert
         (Humanize.Strings.UTF8_Length (UTF8_Text) = 5,
          "UTF-8 length counts code points");
@@ -1014,6 +1290,10 @@ package body Humanize.Tests.Strings is
         (Humanize.Strings.Grapheme_Display_Width
            (Devanagari_Ka & Devanagari_Vowel_I) = 1,
          "grapheme display width collapses spacing marks");
+      AUnit.Assertions.Assert
+        (Humanize.Strings.ANSI_Display_Width
+           (Red_Start & "ab" & Family_Emoji & Reset) = 4,
+         "ANSI display width ignores color escapes");
       Check
         (Humanize.Strings.Truncate_Graphemes
            ("a" & "e" & Combining_Acute & "b" & "c", 3, "."),
@@ -1022,6 +1302,87 @@ package body Humanize.Tests.Strings is
         (Humanize.Strings.Truncate_Graphemes
            ("a" & Family_Emoji & "b" & "c", 3, "."),
          "a" & Family_Emoji & ".", "grapheme truncate keeps ZWJ emoji");
+      Check
+        (Humanize.Strings.Truncate_Display_Width
+           ("ab" & World & "cd", 6, "."),
+         "ab" & World (World'First .. World'First + 2) & ".",
+         "display-width truncate keeps CJK boundary");
+      Check
+        (Humanize.Strings.Truncate_Display_Width
+           ("a" & Family_Emoji & "bc", 4, "."),
+         "a" & Family_Emoji & ".",
+         "display-width truncate keeps emoji cluster");
+      Check
+        (Humanize.Strings.Truncate_ANSI_Display_Width
+           (Red_Start & "ab" & Family_Emoji & "cd" & Reset, 5, "."),
+         Red_Start & "ab" & Family_Emoji & ".",
+         "ANSI display-width truncate keeps escape and emoji");
+      Check
+        (Humanize.Strings.Wrap_Display_Width
+           ("ab" & World & " cd", 5, Indent => 2),
+         "ab" & World (World'First .. World'First + 2)
+         & ASCII.LF & "  " & World (World'First + 3 .. World'Last)
+         & " " & ASCII.LF & "  cd",
+         "display-width wrap keeps CJK boundaries");
+      Check
+        (Humanize.Strings.Wrap_ANSI_Display_Width
+           (Red_Start & "abcd" & Reset & " ef", 4),
+         Red_Start & "abcd" & Reset & ASCII.LF & "ef",
+         "ANSI display-width wrap ignores escape width");
+      Check
+        (Humanize.Strings.Key_Value_Line ("Status", "ok"),
+         "Status: ok",
+         "key value line");
+      Check
+        (Humanize.Strings.Aligned_Key_Value_Line ("ID", "42", 6),
+         "ID     : 42",
+         "aligned key value line");
+      Check
+        (Humanize.Strings.Table_Row_2 ("Name", "Alice", 8),
+         "Name      Alice",
+         "two-column table row");
+      Check
+        (Humanize.Strings.Table_Row_3 ("ID", "Name", "42", 4, 6),
+         "ID    Name    42",
+         "three-column table row");
+      Check
+        (Humanize.Strings.Table_2
+           ([To_Unbounded_String ("Name"), To_Unbounded_String ("Plan")],
+            [To_Unbounded_String ("Alice"), To_Unbounded_String ("Pro")],
+            6),
+         "Name    Alice" & ASCII.LF & "Plan    Pro",
+         "two-column table");
+      Check
+        (Humanize.Strings.Table_3
+           ([To_Unbounded_String ("ID"), To_Unbounded_String ("Role")],
+            [To_Unbounded_String ("Name"), To_Unbounded_String ("Admin")],
+            [To_Unbounded_String ("42"), To_Unbounded_String ("yes")],
+            4, 6),
+         "ID    Name    42" & ASCII.LF & "Role  Admin   yes",
+         "three-column table");
+      Check
+        (Humanize.Strings.Transliterate_ASCII
+           (L_Stroke & O_Acute & "d" & Z_Acute & " " & C_Caron & "esko"),
+         "Lodz Cesko",
+         "Latin Extended transliteration");
+      Check
+        (Humanize.Strings.Transliterate_ASCII (Greek_Athens),
+         "Athina", "Greek transliteration");
+      Check
+        (Humanize.Strings.Transliterate_ASCII (Cyrillic_Moscow),
+         "Moskva", "Cyrillic transliteration");
+      Check
+        (Humanize.Strings.Transliterate_ASCII (Hebrew_Abgd),
+         "abgd", "Hebrew transliteration");
+      Check
+        (Humanize.Strings.Transliterate_ASCII (Arabic_Slam),
+         "slam", "Arabic transliteration");
+      Check
+        (Humanize.Strings.Transliterate_ASCII (Armenian_Hay),
+         "hay", "Armenian transliteration");
+      Check
+        (Humanize.Strings.Transliterate_ASCII (Georgian_Abg),
+         "abg", "Georgian transliteration");
       Check
         (Humanize.Strings.Grapheme_Slice
            ("a" & "e" & Combining_Acute & Family_Emoji & "z", 2, 3),
@@ -1046,6 +1407,44 @@ package body Humanize.Tests.Strings is
       AUnit.Assertions.Assert
         (Code = Ok and then Buffer (1 .. Written) = "a" & Family_Emoji & ".",
          "grapheme truncate into");
+      Humanize.Strings.Truncate_Display_Width_Into
+        ("a" & Family_Emoji & "bc", 4, Buffer, Written, Code, ".");
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "a" & Family_Emoji & ".",
+         "display-width truncate into");
+      Humanize.Strings.Truncate_ANSI_Display_Width_Into
+        (Red_Start & "ab" & Family_Emoji & "cd" & Reset,
+         5, Buffer, Written, Code, ".");
+      AUnit.Assertions.Assert
+        (Code = Ok
+         and then Buffer (1 .. Written) = Red_Start & "ab" & Family_Emoji & ".",
+         "ANSI display-width truncate into");
+      Humanize.Strings.Wrap_ANSI_Display_Width_Into
+        (Red_Start & "abcd" & Reset & " ef", 4, Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok
+         and then Buffer (1 .. Written) =
+           Red_Start & "abcd" & Reset & ASCII.LF & "ef",
+         "ANSI display-width wrap into");
+      Humanize.Strings.Aligned_Key_Value_Line_Into
+        ("ID", "42", 6, Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "ID     : 42",
+         "aligned key value line into");
+      Humanize.Strings.Table_Row_3_Into
+        ("ID", "Name", "42", 4, 6, Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "ID    Name    42",
+         "three-column table row into");
+      Humanize.Strings.Table_2_Into
+        ([To_Unbounded_String ("Name"), To_Unbounded_String ("Plan")],
+         [To_Unbounded_String ("Alice"), To_Unbounded_String ("Pro")],
+         6, Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok
+         and then Buffer (1 .. Written) =
+           "Name    Alice" & ASCII.LF & "Plan    Pro",
+         "two-column table into");
       Humanize.Strings.Grapheme_Slice_Into
         ("a" & "e" & Combining_Acute & Family_Emoji & "z",
          2, 3, Buffer, Written, Code);

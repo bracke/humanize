@@ -670,6 +670,31 @@ package body Humanize.Lists is
       end if;
    end Selection_Summary;
 
+   function Filtered_Count
+     (Context  : Humanize.Contexts.Context;
+      Matching : Natural;
+      Total    : Natural;
+      Singular : String := "result";
+      Plural   : String := "results")
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+      Noun : constant String := Noun_For (Total, Singular, Plural);
+   begin
+      if Matching = 0 then
+         return Ok ("no " & Noun & " match");
+      elsif Matching = Total then
+         return Ok
+           ("all " & No_Space (Natural'Image (Total)) & " "
+            & Noun & " match");
+      else
+         return Ok
+           (No_Space (Natural'Image (Matching)) & " of "
+            & No_Space (Natural'Image (Total)) & " "
+            & Noun & " match");
+      end if;
+   end Filtered_Count;
+
    function Pagination_Range
      (Context  : Humanize.Contexts.Context;
       First    : Natural;
@@ -1011,6 +1036,22 @@ package body Humanize.Lists is
         (Selection_Summary (Context, Selected, Total, Singular, Plural),
          Target, Written, Status);
    end Selection_Summary_Into;
+
+   procedure Filtered_Count_Into
+     (Context  : Humanize.Contexts.Context;
+      Matching : Natural;
+      Total    : Natural;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code;
+      Singular : String := "result";
+      Plural   : String := "results")
+   is
+   begin
+      Copy_Result
+        (Filtered_Count (Context, Matching, Total, Singular, Plural),
+         Target, Written, Status);
+   end Filtered_Count_Into;
 
    procedure Pagination_Range_Into
      (Context  : Humanize.Contexts.Context;

@@ -207,6 +207,21 @@ begin
         ("  tolerance rng : "
          & Text (Humanize.Numbers.Tolerance_Range (English, 10, 2)));
       Put_Line
+        ("  decimal range : "
+         & Text
+             (Humanize.Numbers.Decimal_Range
+                (English, 1.25, 3.5,
+                 (Maximum_Fraction_Digits => 2,
+                  Suppress_Trailing_Zero => True))));
+      Put_Line
+        ("  decimal words : "
+         & Text
+             (Humanize.Numbers.Decimal_Range_Words
+                (English, 1.25, 3.5, 2)));
+      Put_Line
+        ("  uncertainty   : "
+         & Text (Humanize.Numbers.Uncertainty_Label (English, 12.3, 0.4)));
+      Put_Line
         ("  threshold     : "
          & Text
              (Humanize.Numbers.Threshold
@@ -237,6 +252,11 @@ begin
         ("  auth phrase   : "
          & Text (Humanize.Phrases.Auth_Phrase
                    (English, Humanize.Phrases.Session_Expired)));
+      Put_Line
+        ("  db phrase es  : "
+         & Text (Humanize.Phrases.Database_Phrase
+                   (Spanish,
+                    Humanize.Phrases.Database_Replication_Lagging)));
       Put_Line
         ("  security      : "
          & Text (Humanize.Phrases.Security_Phrase
@@ -344,6 +364,15 @@ begin
                 (English,
                  Ada.Calendar.Time_Of (2026, 7, 3, 16.0 * 3_600.0),
                  2)));
+      Put_Line
+        ("  target2 date  : "
+         & Text
+             (Humanize.Durations.Business_Calendar_Label
+                (English,
+                 Ada.Calendar.Time_Of (2026, 4, 2, 0.0),
+                 16,
+                 Humanize.Durations.TARGET2_Business_Calendar_Rules
+                   (2026))));
       Put_Line
         ("  range         : "
          & Text
@@ -579,6 +608,11 @@ begin
                 (Humanize.Parsing.Scan_Duration_Range
                    ("1 hour-2 hours window").Consumed));
          Put_Line
+           ("  parse uncert  : consumed"
+            & Natural'Image
+                (Humanize.Parsing.Scan_Uncertainty_Label
+                   ("12.3 +/- 0.4 measured").Consumed));
+         Put_Line
            ("  parse date    : consumed"
             & Natural'Image
                 (Humanize.Parsing.Scan_Natural_Date
@@ -588,6 +622,11 @@ begin
             & Natural'Image
                 (Humanize.Parsing.Scan_Natural_Date
                    (Reference, "next friday afternoon; preview").Consumed));
+         Put_Line
+           ("  parse bus wkdy: consumed"
+            & Natural'Image
+                (Humanize.Parsing.Scan_Natural_Date
+                   (Reference, "next business friday; preview").Consumed));
          Put_Line
            ("  parse business: consumed"
             & Natural'Image
@@ -615,6 +654,21 @@ begin
                 (Humanize.Parsing.Parse_Retry_In
                    ("retrying in 10 seconds").Value));
          Put_Line
+           ("  parse op      : state"
+            & Humanize.Phrases.Backup_Status'Image
+                (Humanize.Parsing.Parse_Operational_Phrase
+                   ("backup stale").Backup_Status));
+         Put_Line
+           ("  parse db op   : state"
+            & Humanize.Phrases.Database_Status'Image
+                (Humanize.Parsing.Parse_Operational_Phrase
+                   ("database replication lagging").Database_Status));
+         Put_Line
+           ("  parse fields  : changed"
+            & Natural'Image
+                (Humanize.Parsing.Parse_Field_Change_Summary
+                   ("4 fields: 2 changed, 1 added, 1 removed").Changed));
+         Put_Line
            ("  parse lenient : seconds"
             & Humanize.Durations.Duration_Seconds'Image
                 (Humanize.Parsing.Parse_Lenient_Duration
@@ -629,6 +683,42 @@ begin
             & Natural'Image
                 (Humanize.Parsing.Scan_Recurrence_Detail
                    (Reference, "every other Tuesday; cached").Weekday));
+         Put_Line
+           ("  recur window  : start"
+            & Natural'Image
+                (Humanize.Parsing.Parse_Recurrence_Detail
+                   (Reference,
+                    "every 15 minutes between 09:00 and 17:00")
+                 .Window_Start_Hour));
+         Put_Line
+           ("  scan cron     : consumed"
+            & Natural'Image
+                (Humanize.Parsing.Scan_Cron_Schedule
+                   ("0 9 * * 1-5; cached").Consumed));
+         Put_Line
+           ("  cron quartz   : year"
+            & Natural'Image
+                (Humanize.Parsing.Parse_Cron_Schedule
+                   ("30 15 8 15 JAN ? 2027").Year));
+         Put_Line
+           ("  scan db ops   : consumed"
+            & Natural'Image
+                (Humanize.Parsing.Scan_Database_Throughput
+                   ("12.5 k ops/s; cached").Consumed));
+         Put_Line
+           ("  scan latency  : consumed"
+            & Natural'Image
+                (Humanize.Parsing.Scan_Latency
+                   ("2.5 ms; cached").Consumed));
+         Put_Line
+           ("  parse membw   : value"
+            & Long_Float'Image
+                (Humanize.Parsing.Parse_Memory_Bandwidth
+                   ("12.5 GB/s").Value));
+         Put_Line
+           ("  parse iops    : value"
+            & Long_Float'Image
+                (Humanize.Parsing.Parse_IOPS ("42 k IOPS").Value));
          declare
             Bad_Bytes : constant Humanize.Parsing.Byte_Parse_Result :=
               Humanize.Parsing.Parse_Bytes ("42 widgets");
@@ -655,6 +745,11 @@ begin
                & Buffer (Buffer'First .. Buffer'First + Written - 1));
          end;
          Put_Line
+           ("  byte metadata : "
+            & Humanize.Bytes.Byte_Render_Unit'Image
+                (Humanize.Bytes.Format_Metadata
+                   (1536, Humanize.Bytes.Binary_Byte_Options).Unit));
+         Put_Line
            ("  capability    : "
             & Text
                 (Humanize.Capabilities.Area_Label
@@ -669,6 +764,9 @@ begin
             & Text
                 (Humanize.Strings.Title_Case_Smart
                    ("api status and url rules")));
+         Put_Line
+           ("  table row     : "
+            & Text (Humanize.Strings.Table_Row_2 ("Name", "Ada", 8)));
          Put_Line
            ("  title options : "
             & Text
@@ -856,6 +954,23 @@ begin
                    ("h" & Character'Val (16#C3#)
                     & Character'Val (16#A6#) & "llo")));
          Put_Line
+           ("  translit am   : "
+            & Text
+                (Humanize.Strings.Transliterate_ASCII
+                   (Character'Val (16#D5#) & Character'Val (16#B0#)
+                    & Character'Val (16#D5#) & Character'Val (16#A1#)
+                    & Character'Val (16#D5#) & Character'Val (16#B5#))));
+         Put_Line
+           ("  translit ka   : "
+            & Text
+                (Humanize.Strings.Transliterate_ASCII
+                   (Character'Val (16#E1#) & Character'Val (16#83#)
+                    & Character'Val (16#90#)
+                    & Character'Val (16#E1#) & Character'Val (16#83#)
+                    & Character'Val (16#91#)
+                    & Character'Val (16#E1#) & Character'Val (16#83#)
+                    & Character'Val (16#92#))));
+         Put_Line
            ("  foreign key   : "
             & Text (Humanize.Strings.Foreign_Key ("Humanize.Person")));
          Put_Line
@@ -878,6 +993,16 @@ begin
                 (Humanize.Phrases.Severity_Label
                    (Humanize.Phrases.Security_Severity
                       (Humanize.Phrases.Token_Expired))));
+         Put_Line
+           ("  backup key    : "
+            & Text
+                (Humanize.Phrases.Backup_Key
+                   (Humanize.Phrases.Backup_Stale)));
+         Put_Line
+           ("  field diff    : "
+             & Text
+                (Humanize.Phrases.Field_Diff_Summary
+                   (English, "email", "old@example.com", "new@example.com")));
          Put_Line
            ("  ci phrase     : "
             & Text

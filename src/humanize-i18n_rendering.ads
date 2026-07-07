@@ -16,6 +16,13 @@ private package Humanize.I18N_Rendering is
       Key     : Humanize.Messages.Message_Id)
       return Boolean;
 
+   --  Return a context backed by Humanize's built-in catalog runtime. Loaded is
+   --  False if the built-in catalog could not be loaded.
+   function Default_Context
+     (Locale : String;
+      Loaded : out Boolean)
+      return Humanize.Contexts.Context;
+
    --  Render Selection through the context's runtime, returning an owned text
    --  result.
    function Render

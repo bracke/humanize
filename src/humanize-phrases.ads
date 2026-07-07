@@ -222,6 +222,73 @@ package Humanize.Phrases is
       Payment_Requires_Action,
       Payment_Expired);
 
+   type Backup_Status is
+     (Backup_Running,
+      Backup_Completed,
+      Backup_Failed,
+      Backup_Stale);
+
+   type Incident_Status is
+     (Incident_Investigating,
+      Incident_Identified,
+      Incident_Mitigated,
+      Incident_Resolved);
+
+   type Release_Status is
+     (Release_Drafting,
+      Release_Ready,
+      Release_Published,
+      Release_Rolled_Back);
+
+   type Audit_Status is
+     (Audit_Created,
+      Audit_Updated,
+      Audit_Deleted,
+      Audit_Restored);
+
+   type Feature_Flag_Status is
+     (Flag_Enabled,
+      Flag_Disabled,
+      Flag_Rolling_Out,
+      Flag_Rolled_Back);
+
+   type Webhook_Status is
+     (Webhook_Pending,
+      Webhook_Delivered,
+      Webhook_Failed,
+      Webhook_Retrying);
+
+   type API_Key_Status is
+     (API_Key_Active,
+      API_Key_Revoked,
+      API_Key_Expired,
+      API_Key_Rotated);
+
+   type Quota_Status is
+     (Quota_Available,
+      Quota_Near_Limit,
+      Quota_Exceeded,
+      Quota_Reset);
+
+   type Invoice_Status is
+     (Invoice_Draft,
+      Invoice_Sent,
+      Invoice_Paid,
+      Invoice_Refunded,
+      Invoice_Overdue,
+      Refund_Failed);
+
+   type Database_Status is
+     (Database_Online,
+      Database_Offline,
+      Database_Degraded,
+      Database_Migrating,
+      Database_Migration_Failed,
+      Database_Replicating,
+      Database_Replication_Lagging,
+      Database_Backup_Running,
+      Database_Backup_Failed);
+
    type Summary_Domain is
      (Queue_Domain,
       Job_Domain,
@@ -505,6 +572,55 @@ package Humanize.Phrases is
    --  @param Status Payment lifecycle phrase.
    --  @return Stable severity category for the phrase.
 
+   function Backup_Severity
+     (Status : Backup_Status)
+      return Phrase_Severity;
+   --  @param Status Backup phrase.
+   --  @return Stable severity category for the phrase.
+
+   function Incident_Severity
+     (Status : Incident_Status)
+      return Phrase_Severity;
+   --  @param Status Incident phrase.
+   --  @return Stable severity category for the phrase.
+
+   function Release_Severity
+     (Status : Release_Status)
+      return Phrase_Severity;
+   --  @param Status Release phrase.
+   --  @return Stable severity category for the phrase.
+
+   function Audit_Severity (Status : Audit_Status) return Phrase_Severity;
+   --  @param Status Audit phrase.
+   --  @return Stable severity category for the phrase.
+
+   function Feature_Flag_Severity
+     (Status : Feature_Flag_Status) return Phrase_Severity;
+   --  @param Status Feature-flag phrase.
+   --  @return Stable severity category for the phrase.
+
+   function Webhook_Severity (Status : Webhook_Status) return Phrase_Severity;
+   --  @param Status Webhook phrase.
+   --  @return Stable severity category for the phrase.
+
+   function API_Key_Severity (Status : API_Key_Status) return Phrase_Severity;
+   --  @param Status API-key phrase.
+   --  @return Stable severity category for the phrase.
+
+   function Quota_Severity (Status : Quota_Status) return Phrase_Severity;
+   --  @param Status Quota phrase.
+   --  @return Stable severity category for the phrase.
+
+   function Invoice_Severity (Status : Invoice_Status) return Phrase_Severity;
+   --  @param Status Invoice/refund phrase.
+   --  @return Stable severity category for the phrase.
+
+   function Database_Severity
+     (Status : Database_Status)
+      return Phrase_Severity;
+   --  @param Status Database/storage phrase.
+   --  @return Stable severity category for the phrase.
+
    function Supported_Phrase_Locales
      return Humanize.Status.Text_Result;
    --  @return Space-separated shipped locale prefixes with phrase-pack text.
@@ -531,6 +647,60 @@ package Humanize.Phrases is
      (Status : Payment_Lifecycle_Status)
       return Humanize.Status.Text_Result;
    --  @param Status Payment lifecycle phrase.
+   --  @return Stable machine key for the phrase.
+
+   function Backup_Key
+     (Status : Backup_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Status Backup phrase.
+   --  @return Stable machine key for the phrase.
+
+   function Incident_Key
+     (Status : Incident_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Status Incident phrase.
+   --  @return Stable machine key for the phrase.
+
+   function Release_Key
+     (Status : Release_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Status Release phrase.
+   --  @return Stable machine key for the phrase.
+
+   function Audit_Key
+     (Status : Audit_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Status Audit phrase.
+   --  @return Stable machine key for the phrase.
+
+   function Feature_Flag_Key
+     (Status : Feature_Flag_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Status Feature-flag phrase.
+   --  @return Stable machine key for the phrase.
+
+   function Webhook_Key
+     (Status : Webhook_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Status Webhook phrase.
+   --  @return Stable machine key for the phrase.
+
+   function API_Key_Key
+     (Status : API_Key_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Status API-key phrase.
+   --  @return Stable machine key for the phrase.
+
+   function Quota_Key
+     (Status : Quota_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Status Quota phrase.
+   --  @return Stable machine key for the phrase.
+
+   function Invoice_Key
+     (Status : Invoice_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Status Invoice/refund phrase.
    --  @return Stable machine key for the phrase.
 
    function Status_Phrase
@@ -564,6 +734,144 @@ package Humanize.Phrases is
    --  @param Context Formatting context.
    --  @param Status Payment lifecycle phrase to render.
    --  @return Deterministic phrase text.
+
+   function Backup_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Backup_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Status Backup phrase to render.
+   --  @return Deterministic phrase text.
+
+   function Incident_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Incident_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Status Incident phrase to render.
+   --  @return Deterministic phrase text.
+
+   function Release_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Release_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Status Release phrase to render.
+   --  @return Deterministic phrase text.
+
+   function Audit_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Audit_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Status Audit phrase to render.
+   --  @return Deterministic phrase text.
+
+   function Feature_Flag_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Feature_Flag_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Status Feature-flag phrase to render.
+   --  @return Deterministic phrase text.
+
+   function Webhook_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Webhook_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Status Webhook phrase to render.
+   --  @return Deterministic phrase text.
+
+   function API_Key_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : API_Key_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Status API-key phrase to render.
+   --  @return Deterministic phrase text.
+
+   function Quota_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Quota_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Status Quota phrase to render.
+   --  @return Deterministic phrase text.
+
+   function Invoice_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Invoice_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Status Invoice/refund phrase to render.
+   --  @return Deterministic phrase text.
+
+   function Database_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Database_Status)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Status Database/storage phrase to render.
+   --  @return Deterministic phrase text.
+
+   function Field_Change_Summary
+     (Context  : Humanize.Contexts.Context;
+      Changed  : Natural;
+      Added    : Natural;
+      Removed  : Natural;
+      Singular : String := "field";
+      Plural   : String := "fields")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Changed Count of modified fields.
+   --  @param Added Count of added fields.
+   --  @param Removed Count of removed fields.
+   --  @param Singular Singular unit label.
+   --  @param Plural Plural unit label.
+   --  @return Compact deterministic change summary.
+
+   function Field_Diff_Summary
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Before  : String;
+      After   : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Field Field name.
+   --  @param Before Previous value label.
+   --  @param After New value label.
+   --  @return Deterministic field-level change summary.
+
+   function Field_Added_Summary
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Field Field name.
+   --  @param Value Added value label.
+   --  @return Deterministic field-added summary.
+
+   function Field_Removed_Summary
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Field Field name.
+   --  @param Value Removed value label.
+   --  @return Deterministic field-removed summary.
+
+   function Field_Unchanged_Summary
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Field Field name.
+   --  @param Value Current value label.
+   --  @return Deterministic unchanged-field summary.
 
    procedure Status_Phrase_Into
      (Context : Humanize.Contexts.Context;
@@ -609,6 +917,204 @@ package Humanize.Phrases is
       Code    : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Status Payment lifecycle phrase to render.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Backup_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Backup_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Status Backup phrase to render.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Incident_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Incident_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Status Incident phrase to render.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Release_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Release_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Status Release phrase to render.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Audit_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Audit_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Status Audit phrase to render.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Feature_Flag_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Feature_Flag_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Status Feature-flag phrase to render.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Webhook_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Webhook_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Status Webhook phrase to render.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure API_Key_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : API_Key_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Status API-key phrase to render.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Quota_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Quota_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Status Quota phrase to render.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Invoice_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Invoice_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Status Invoice/refund phrase to render.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Database_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Database_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Status Database/storage phrase to render.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Field_Change_Summary_Into
+     (Context  : Humanize.Contexts.Context;
+      Changed  : Natural;
+      Added    : Natural;
+      Removed  : Natural;
+      Singular : String;
+      Plural   : String;
+      Target   : in out String;
+      Written  : out Natural;
+      Code     : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Changed Count of modified fields.
+   --  @param Added Count of added fields.
+   --  @param Removed Count of removed fields.
+   --  @param Singular Singular unit label.
+   --  @param Plural Plural unit label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Field_Diff_Summary_Into
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Before  : String;
+      After   : String;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Field Field name.
+   --  @param Before Previous value label.
+   --  @param After New value label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Field_Added_Summary_Into
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Field Field name.
+   --  @param Value Added value label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Field_Removed_Summary_Into
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Field Field name.
+   --  @param Value Removed value label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Field_Unchanged_Summary_Into
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Field Field name.
+   --  @param Value Current value label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Code Humanize status for the operation.
@@ -893,6 +1399,36 @@ package Humanize.Phrases is
       Written : out Natural;
       Code    : out Humanize.Status.Status_Code);
    --  @param Status Payment lifecycle phrase.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Backup_Key_Into
+     (Status  : Backup_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Status Backup phrase.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Incident_Key_Into
+     (Status  : Incident_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Status Incident phrase.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Code Humanize status for the operation.
+
+   procedure Release_Key_Into
+     (Status  : Release_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code);
+   --  @param Status Release phrase.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Code Humanize status for the operation.

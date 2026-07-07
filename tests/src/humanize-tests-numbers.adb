@@ -49,6 +49,25 @@ package body Humanize.Tests.Numbers is
    U_S_Cedilla : constant String :=
      Character'Val (16#C5#) & Character'Val (16#9F#);
 
+   function U (Code : Natural) return String is
+   begin
+      if Code <= 16#7F# then
+         return String'(1 => Character'Val (Code));
+      elsif Code <= 16#7FF# then
+         return Character'Val (16#C0# + Code / 64)
+           & Character'Val (16#80# + Code mod 64);
+      elsif Code <= 16#FFFF# then
+         return Character'Val (16#E0# + Code / 4_096)
+           & Character'Val (16#80# + (Code / 64) mod 64)
+           & Character'Val (16#80# + Code mod 64);
+      else
+         return Character'Val (16#F0# + Code / 262_144)
+           & Character'Val (16#80# + (Code / 4_096) mod 64)
+           & Character'Val (16#80# + (Code / 64) mod 64)
+           & Character'Val (16#80# + Code mod 64);
+      end if;
+   end U;
+
    procedure Check_Ordinal_F
      (Context  : Humanize.Contexts.Context;
       Value    : Natural;
@@ -178,6 +197,24 @@ package body Humanize.Tests.Numbers is
         Locale_Cardinal (Support.Locale ("fi-FI"), 2_345);
       Turkish_Cardinal : constant Text_Result :=
         Locale_Cardinal (Support.Locale ("tr-TR"), 2_345);
+      Polish_Cardinal : constant Text_Result :=
+        Locale_Cardinal (Support.Locale ("pl"), 2_345);
+      Czech_Cardinal : constant Text_Result :=
+        Locale_Cardinal (Support.Locale ("cs"), 2_345);
+      Russian_Cardinal : constant Text_Result :=
+        Locale_Cardinal (Support.Locale ("ru"), 2_345);
+      Ukrainian_Cardinal : constant Text_Result :=
+        Locale_Cardinal (Support.Locale ("uk"), 2_345);
+      Japanese_Cardinal : constant Text_Result :=
+        Locale_Cardinal (Support.Locale ("ja"), 2_345);
+      Korean_Cardinal : constant Text_Result :=
+        Locale_Cardinal (Support.Locale ("ko"), 2_345);
+      Chinese_Cardinal : constant Text_Result :=
+        Locale_Cardinal (Support.Locale ("zh"), 2_345);
+      Arabic_Cardinal : constant Text_Result :=
+        Locale_Cardinal (Support.Locale ("ar"), 2_345);
+      Hindi_Cardinal : constant Text_Result :=
+        Locale_Cardinal (Support.Locale ("hi"), 2_345);
       Scientific : constant Text_Result :=
         Scientific_Notation (Support.En, 1_234_000.0,
                              (Maximum_Fraction_Digits => 2,
@@ -205,6 +242,14 @@ package body Humanize.Tests.Numbers is
         Decimal_Words (Support.Locale ("fi"), 12.5, 2);
       Turkish_Decimal_Text : constant Text_Result :=
         Decimal_Words (Support.Locale ("tr"), 12.5, 2);
+      Polish_Decimal_Text : constant Text_Result :=
+        Decimal_Words (Support.Locale ("pl"), 12.5, 2);
+      Japanese_Decimal_Text : constant Text_Result :=
+        Decimal_Words (Support.Locale ("ja"), 12.5, 2);
+      Arabic_Decimal_Text : constant Text_Result :=
+        Decimal_Words (Support.Locale ("ar"), 12.5, 2);
+      Hindi_Decimal_Text : constant Text_Result :=
+        Decimal_Words (Support.Locale ("hi"), 12.5, 2);
       Fraction_Text : constant Text_Result :=
         Fraction_Words (Support.En, 3, 4);
       French_Fraction_Text : constant Text_Result :=
@@ -217,6 +262,14 @@ package body Humanize.Tests.Numbers is
         Fraction_Words (Support.Locale ("fi"), 3, 4);
       Turkish_Fraction_Text : constant Text_Result :=
         Fraction_Words (Support.Locale ("tr"), 3, 4);
+      Polish_Fraction_Text : constant Text_Result :=
+        Fraction_Words (Support.Locale ("pl"), 3, 4);
+      Japanese_Fraction_Text : constant Text_Result :=
+        Fraction_Words (Support.Locale ("ja"), 3, 4);
+      Arabic_Fraction_Text : constant Text_Result :=
+        Fraction_Words (Support.Locale ("ar"), 3, 4);
+      Hindi_Fraction_Text : constant Text_Result :=
+        Fraction_Words (Support.Locale ("hi"), 3, 4);
       Ordinal_Text : constant Text_Result :=
         Ordinal_Words (Support.En, 21);
       German_Ordinal_Text : constant Text_Result :=
@@ -237,14 +290,48 @@ package body Humanize.Tests.Numbers is
         Ordinal_Words (Support.Nl, 12);
       Swedish_Ordinal_Twelve : constant Text_Result :=
         Ordinal_Words (Support.Locale ("sv"), 12);
+      Swedish_Ordinal_Thirty : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("sv"), 30);
       Norwegian_Ordinal_Twelve : constant Text_Result :=
         Ordinal_Words (Support.Locale ("no"), 12);
       Finnish_Ordinal_Twelve : constant Text_Result :=
         Ordinal_Words (Support.Locale ("fi"), 12);
       Turkish_Ordinal_Twelve : constant Text_Result :=
         Ordinal_Words (Support.Locale ("tr"), 12);
+      Turkish_Ordinal_Thirty : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("tr"), 30);
+      Polish_Ordinal_Twelve : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("pl"), 12);
+      Polish_Ordinal_Twenty_One : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("pl"), 21);
+      Polish_Ordinal_Thirty : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("pl"), 30);
+      Polish_Ordinal_One_Twenty_One : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("pl"), 121);
+      Polish_Ordinal_Two_Thousand_Three_Forty_Five : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("pl"), 2_345);
+      Czech_Ordinal_Twenty_One : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("cs"), 21);
+      Czech_Ordinal_Thirty : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("cs"), 30);
+      Russian_Ordinal_Twenty_One : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("ru"), 21);
+      Japanese_Ordinal_Twelve : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("ja"), 12);
+      Arabic_Ordinal_Twelve : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("ar"), 12);
+      Arabic_Ordinal_Twenty_One : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("ar"), 21);
+      Hindi_Ordinal_Twelve : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("hi"), 12);
+      Hindi_Ordinal_Twenty_One : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("hi"), 21);
       Currency_Text : constant Text_Result :=
         Currency_Words (Support.En, 12.50, "dollar", "cent", 2);
+      German_Currency_Text : constant Text_Result :=
+        Currency_Words (Support.De, 12.50, "Euro", "Cent", 2);
+      Danish_Currency_Text : constant Text_Result :=
+        Currency_Words (Support.Da, 12.50, "krone", U_O_Acute & "re", 2);
       Percent_Text : constant Text_Result :=
         Percent_Words (Support.En, 12.5, 1);
       Accessible_Text : constant Text_Result :=
@@ -259,7 +346,7 @@ package body Humanize.Tests.Numbers is
           (Spellout_Locale_Tier_For (Support.Locale ("sv-SE")));
       Fallback_Tier : constant Text_Result :=
         Spellout_Locale_Tier_Label
-          (Spellout_Locale_Tier_For (Support.Locale ("pl")));
+          (Spellout_Locale_Tier_For (Support.Locale ("zz")));
    begin
       AUnit.Assertions.Assert
         (Four.Status = Ok and then Support.Text (Four) = "four",
@@ -401,6 +488,56 @@ package body Humanize.Tests.Numbers is
              & U_S_Cedilla,
          "generated Turkish locale cardinal");
       AUnit.Assertions.Assert
+        (Polish_Cardinal.Status = Ok
+         and then Support.Text (Polish_Cardinal)
+           = "dwa tysi" & U (16#105#) & "ce trzysta czterdzie"
+             & U (16#15B#) & "ci pi" & U (16#119#) & U (16#107#),
+         "generated Polish locale cardinal");
+      AUnit.Assertions.Assert
+        (Czech_Cardinal.Status = Ok
+         and then Support.Text (Czech_Cardinal)
+           = "dva tis" & U (16#ED#) & "ce t" & U (16#159#)
+             & "i sta " & U (16#10D#) & "ty" & U (16#159#)
+             & "icet p" & U (16#11B#) & "t",
+         "generated Czech locale cardinal");
+      AUnit.Assertions.Assert
+        (Russian_Cardinal.Status = Ok
+         and then Support.Text (Russian_Cardinal)'Length > 0,
+         "generated Russian locale cardinal");
+      AUnit.Assertions.Assert
+        (Ukrainian_Cardinal.Status = Ok
+         and then Support.Text (Ukrainian_Cardinal)'Length > 0,
+         "generated Ukrainian locale cardinal");
+      AUnit.Assertions.Assert
+        (Japanese_Cardinal.Status = Ok
+         and then Support.Text (Japanese_Cardinal)
+           = U (16#4E8C#) & U (16#5343#) & U (16#4E09#)
+             & U (16#767E#) & U (16#56DB#) & U (16#5341#)
+             & U (16#4E94#),
+         "generated Japanese locale cardinal");
+      AUnit.Assertions.Assert
+        (Korean_Cardinal.Status = Ok
+         and then Support.Text (Korean_Cardinal)
+           = U (16#C774#) & U (16#CC9C#) & U (16#C0BC#)
+             & U (16#BC31#) & U (16#C0AC#) & U (16#C2ED#)
+             & U (16#C624#),
+         "generated Korean locale cardinal");
+      AUnit.Assertions.Assert
+        (Chinese_Cardinal.Status = Ok
+         and then Support.Text (Chinese_Cardinal)
+           = U (16#4E8C#) & U (16#5343#) & U (16#4E09#)
+             & U (16#767E#) & U (16#56DB#) & U (16#5341#)
+             & U (16#4E94#),
+         "generated Chinese locale cardinal");
+      AUnit.Assertions.Assert
+        (Arabic_Cardinal.Status = Ok
+         and then Support.Text (Arabic_Cardinal)'Length > 0,
+         "generated Arabic locale cardinal");
+      AUnit.Assertions.Assert
+        (Hindi_Cardinal.Status = Ok
+         and then Support.Text (Hindi_Cardinal)'Length > 0,
+         "generated Hindi locale cardinal");
+      AUnit.Assertions.Assert
         (Scientific.Status = Ok and then Support.Text (Scientific) = "1.23e6",
          "scientific notation");
       AUnit.Assertions.Assert
@@ -450,6 +587,26 @@ package body Humanize.Tests.Numbers is
              & " s" & U_I_Dotless & "f" & U_I_Dotless & "r",
          "generated Turkish decimal words");
       AUnit.Assertions.Assert
+        (Polish_Decimal_Text.Status = Ok
+         and then Support.Text (Polish_Decimal_Text)
+           = "dwana" & U (16#15B#) & "cie przecinek pi"
+             & U (16#119#) & U (16#107#) & " zero",
+         "generated Polish decimal words");
+      AUnit.Assertions.Assert
+        (Japanese_Decimal_Text.Status = Ok
+         and then Support.Text (Japanese_Decimal_Text)
+           = U (16#5341#) & U (16#4E8C#) & " " & U (16#70B9#)
+             & " " & U (16#4E94#) & " " & U (16#96F6#),
+         "generated Japanese decimal words");
+      AUnit.Assertions.Assert
+        (Arabic_Decimal_Text.Status = Ok
+         and then Support.Text (Arabic_Decimal_Text)'Length > 0,
+         "generated Arabic decimal words");
+      AUnit.Assertions.Assert
+        (Hindi_Decimal_Text.Status = Ok
+         and then Support.Text (Hindi_Decimal_Text)'Length > 0,
+         "generated Hindi decimal words");
+      AUnit.Assertions.Assert
         (Fraction_Text.Status = Ok
          and then Support.Text (Fraction_Text) = "three quarters",
          "fraction words");
@@ -476,6 +633,25 @@ package body Humanize.Tests.Numbers is
          and then Support.Text (Turkish_Fraction_Text)
            = "d" & U_O_Umlaut & "rtte " & U_U_Umlaut & U_C_Cedilla,
          "generated Turkish fraction words");
+      AUnit.Assertions.Assert
+        (Polish_Fraction_Text.Status = Ok
+         and then Support.Text (Polish_Fraction_Text)
+           = "trzy czwarte",
+         "generated Polish fraction words");
+      AUnit.Assertions.Assert
+        (Japanese_Fraction_Text.Status = Ok
+         and then Support.Text (Japanese_Fraction_Text)
+           = U (16#56DB#) & U (16#5206#) & U (16#4E4B#)
+             & U (16#4E00#) & U (16#4E09#),
+         "generated Japanese fraction words");
+      AUnit.Assertions.Assert
+        (Arabic_Fraction_Text.Status = Ok
+         and then Support.Text (Arabic_Fraction_Text)'Length > 0,
+         "generated Arabic fraction words");
+      AUnit.Assertions.Assert
+        (Hindi_Fraction_Text.Status = Ok
+         and then Support.Text (Hindi_Fraction_Text)'Length > 0,
+         "generated Hindi fraction words");
       AUnit.Assertions.Assert
         (Ordinal_Text.Status = Ok
          and then Support.Text (Ordinal_Text) = "twenty-first",
@@ -520,6 +696,10 @@ package body Humanize.Tests.Numbers is
          and then Support.Text (Swedish_Ordinal_Twelve) = "tolfte",
          "generated Swedish direct teen ordinal words");
       AUnit.Assertions.Assert
+        (Swedish_Ordinal_Thirty.Status = Ok
+         and then Support.Text (Swedish_Ordinal_Thirty) = "trettionde",
+         "generated Swedish exact tens ordinal words");
+      AUnit.Assertions.Assert
         (Norwegian_Ordinal_Twelve.Status = Ok
          and then Support.Text (Norwegian_Ordinal_Twelve) = "tolvte",
          "generated Norwegian direct teen ordinal words");
@@ -532,9 +712,85 @@ package body Humanize.Tests.Numbers is
          and then Support.Text (Turkish_Ordinal_Twelve) = "on ikinci",
          "generated Turkish direct teen ordinal words");
       AUnit.Assertions.Assert
+        (Turkish_Ordinal_Thirty.Status = Ok
+         and then Support.Text (Turkish_Ordinal_Thirty) = "otuzuncu",
+         "generated Turkish exact tens ordinal words");
+      AUnit.Assertions.Assert
+        (Polish_Ordinal_Twelve.Status = Ok
+         and then Support.Text (Polish_Ordinal_Twelve) = "dwunasty",
+         "generated Polish direct teen ordinal words");
+      AUnit.Assertions.Assert
+        (Polish_Ordinal_Twenty_One.Status = Ok
+         and then Support.Text (Polish_Ordinal_Twenty_One)
+           = "dwadzie" & U (16#15B#) & "cia pierwszy",
+         "generated Polish compound ordinal words");
+      AUnit.Assertions.Assert
+        (Polish_Ordinal_Thirty.Status = Ok
+         and then Support.Text (Polish_Ordinal_Thirty) = "trzydziesty",
+         "generated Polish exact tens ordinal words");
+      AUnit.Assertions.Assert
+        (Polish_Ordinal_One_Twenty_One.Status = Ok
+         and then Support.Text (Polish_Ordinal_One_Twenty_One)
+           = "sto dwadzie" & U (16#15B#) & "cia pierwszy",
+         "generated Polish hundreds compound ordinal words");
+      AUnit.Assertions.Assert
+        (Polish_Ordinal_Two_Thousand_Three_Forty_Five.Status = Ok
+         and then Support.Text (Polish_Ordinal_Two_Thousand_Three_Forty_Five)
+           = "dwa tysi" & U (16#105#) & "ce trzysta czterdzie"
+             & U (16#15B#) & "ci pi" & U (16#105#) & "ty",
+         "generated Polish thousands compound ordinal words");
+      AUnit.Assertions.Assert
+        (Czech_Ordinal_Twenty_One.Status = Ok
+         and then Support.Text (Czech_Ordinal_Twenty_One)
+           = "dvacet prvn" & U (16#ED#),
+         "generated Czech compound ordinal words");
+      AUnit.Assertions.Assert
+        (Czech_Ordinal_Thirty.Status = Ok
+         and then Support.Text (Czech_Ordinal_Thirty)
+           = "t" & U (16#159#) & "ic" & U (16#E1#) & "t" & U (16#FD#),
+         "generated Czech exact tens ordinal words");
+      AUnit.Assertions.Assert
+        (Russian_Ordinal_Twenty_One.Status = Ok
+         and then Support.Text (Russian_Ordinal_Twenty_One)
+           /= Support.Text (Locale_Cardinal (Support.Locale ("ru"), 21)),
+         "generated Russian compound ordinal words differ from cardinal");
+      AUnit.Assertions.Assert
+        (Japanese_Ordinal_Twelve.Status = Ok
+         and then Support.Text (Japanese_Ordinal_Twelve)
+           = U (16#7B2C#) & U (16#5341#) & U (16#4E8C#),
+         "generated Japanese ordinal words");
+      AUnit.Assertions.Assert
+        (Arabic_Ordinal_Twelve.Status = Ok
+         and then Support.Text (Arabic_Ordinal_Twelve)'Length > 0,
+         "generated Arabic ordinal words");
+      AUnit.Assertions.Assert
+        (Arabic_Ordinal_Twenty_One.Status = Ok
+         and then Support.Text (Arabic_Ordinal_Twenty_One)
+           /= Support.Text (Locale_Cardinal (Support.Locale ("ar"), 21)),
+         "generated Arabic compound ordinal words differ from cardinal");
+      AUnit.Assertions.Assert
+        (Hindi_Ordinal_Twelve.Status = Ok
+         and then Support.Text (Hindi_Ordinal_Twelve)'Length > 0,
+         "generated Hindi ordinal words");
+      AUnit.Assertions.Assert
+        (Hindi_Ordinal_Twenty_One.Status = Ok
+         and then Support.Text (Hindi_Ordinal_Twenty_One)
+           /= Support.Text (Locale_Cardinal (Support.Locale ("hi"), 21)),
+         "generated Hindi compound ordinal words differ from cardinal");
+      AUnit.Assertions.Assert
         (Currency_Text.Status = Ok
          and then Support.Text (Currency_Text) = "twelve dollars and fifty cents",
          "currency words");
+      AUnit.Assertions.Assert
+        (German_Currency_Text.Status = Ok
+         and then Support.Text (German_Currency_Text)
+           = "zw" & U_O_Umlaut & "lf Euro und f" & U_U_Umlaut & "nfzig Cent",
+         "localized German currency words");
+      AUnit.Assertions.Assert
+        (Danish_Currency_Text.Status = Ok
+         and then Support.Text (Danish_Currency_Text)
+           = "tolv krone og halvtreds " & U_O_Acute & "re",
+         "localized Danish currency words");
       AUnit.Assertions.Assert
         (Percent_Text.Status = Ok
          and then Support.Text (Percent_Text) = "twelve point five percent",
@@ -548,7 +804,9 @@ package body Humanize.Tests.Numbers is
          and then Support.Text (Spellout_Meta)
            = "deterministic-en locale-cardinal locale-decimal "
              & "locale-fraction locale-ordinal generated-locale-spellout "
-             & "sv-no-nb-fi-tr signed-cardinal currency percent editorial",
+             & "sv-no-nb-fi-tr-pl-cs-ru-uk-ja-ko-zh-ar-hi "
+             & "ro-lt-sl-id-ms-eo-vi-sw-af-hu-sk "
+             & "signed-cardinal currency percent editorial",
          "spellout coverage metadata");
       AUnit.Assertions.Assert
         (Spellout_Locale_Tier_For (Support.En) = English_Spellout,
@@ -562,8 +820,56 @@ package body Humanize.Tests.Numbers is
          "generated spellout tier metadata");
       AUnit.Assertions.Assert
         (Spellout_Locale_Tier_For (Support.Locale ("pl"))
+           = Generated_Locale_Spellout,
+         "Polish generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("ro-RO"))
+           = Generated_Locale_Spellout,
+         "newer generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("lt"))
+           = Generated_Locale_Spellout,
+         "Lithuanian generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("sl"))
+           = Generated_Locale_Spellout,
+         "Slovenian generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("id"))
+           = Generated_Locale_Spellout,
+         "Indonesian generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("ms"))
+           = Generated_Locale_Spellout,
+         "Malay generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("eo"))
+           = Generated_Locale_Spellout,
+         "Esperanto generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("vi"))
+           = Generated_Locale_Spellout,
+         "Vietnamese generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("sw"))
+           = Generated_Locale_Spellout,
+         "Swahili generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("af"))
+           = Generated_Locale_Spellout,
+         "Afrikaans generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("hu"))
+           = Generated_Locale_Spellout,
+         "Hungarian generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("sk"))
+           = Generated_Locale_Spellout,
+         "Slovak generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("zz"))
            = English_Fallback_Spellout,
-         "fallback spellout tier metadata");
+         "unknown fallback spellout tier metadata");
       AUnit.Assertions.Assert
         (English_Tier.Status = Ok
          and then Support.Text (English_Tier) = "english-spellout",
@@ -849,6 +1155,35 @@ package body Humanize.Tests.Numbers is
         Qualified_Range (Support.En, 7, 3);
       Tolerance_Text : constant Text_Result :=
         Tolerance_Range (Support.En, 10, 2);
+      Decimal_Range_Text : constant Text_Result :=
+        Decimal_Range (Support.En, 1.25, 3.5,
+                       (Maximum_Fraction_Digits => 2,
+                        Suppress_Trailing_Zero => True));
+      Decimal_Range_Meta : constant Number_Render_Metadata :=
+        Decimal_Range_Metadata
+          (1.25, 3.5,
+           (Maximum_Fraction_Digits => 2,
+            Suppress_Trailing_Zero => True));
+      Decimal_Range_Word_Text : constant Text_Result :=
+        Decimal_Range_Words (Support.En, 1.25, 3.5, 2);
+      Invalid_Decimal_Range : constant Text_Result :=
+        Decimal_Range (Support.En, 3.5, 1.25);
+      Plus_Minus_Uncertainty : constant Text_Result :=
+        Uncertainty_Label (Support.En, 12.3, 0.4);
+      Uncertainty_Meta : constant Number_Render_Metadata :=
+        Uncertainty_Metadata (12.3, 0.4, Style => Interval_Uncertainty);
+      Uncertainty_Word_Text : constant Text_Result :=
+        Uncertainty_Words (Support.En, 12.3, 0.4, 1);
+      Parenthesized_Uncertainty_Text : constant Text_Result :=
+        Uncertainty_Label
+          (Support.En, 12.3, 0.4,
+           Style => Parenthesized_Uncertainty);
+      Interval_Uncertainty_Text : constant Text_Result :=
+        Uncertainty_Label
+          (Support.En, 12.3, 0.4,
+           Style => Interval_Uncertainty);
+      Invalid_Uncertainty : constant Text_Result :=
+        Uncertainty_Label (Support.En, 12.3, -0.4);
       Threshold_Text : constant Text_Result :=
         Threshold (Support.En, 10, At_Least_Threshold);
       Threshold_Max : constant Text_Result :=
@@ -971,6 +1306,51 @@ package body Humanize.Tests.Numbers is
          and then Support.Text (Tolerance_Text) = "10 +/- 2",
          "tolerance range");
       AUnit.Assertions.Assert
+        (Decimal_Range_Text.Status = Ok
+         and then Support.Text (Decimal_Range_Text) = "1.25 to 3.5",
+         "decimal range");
+      AUnit.Assertions.Assert
+        (Decimal_Range_Meta.Status = Ok
+         and then Decimal_Range_Meta.Kind = Rendered_Decimal_Range
+         and then abs (Decimal_Range_Meta.Low - 1.25) < 0.0001
+         and then Decimal_Range_Meta.Fraction_Digits = 2,
+         "decimal range metadata");
+      AUnit.Assertions.Assert
+        (Decimal_Range_Word_Text.Status = Ok
+         and then Support.Text (Decimal_Range_Word_Text)
+           = "one point two five to three point five zero",
+         "decimal range words");
+      AUnit.Assertions.Assert
+        (Invalid_Decimal_Range.Status = Invalid_Value,
+         "decimal range rejects reversed bounds");
+      AUnit.Assertions.Assert
+        (Plus_Minus_Uncertainty.Status = Ok
+         and then Support.Text (Plus_Minus_Uncertainty) = "12.3 +/- 0.4",
+         "plus-minus uncertainty label");
+      AUnit.Assertions.Assert
+        (Uncertainty_Meta.Status = Ok
+         and then Uncertainty_Meta.Kind = Rendered_Uncertainty
+         and then Uncertainty_Meta.Style = Interval_Uncertainty
+         and then abs (Uncertainty_Meta.Low - 11.9) < 0.0001,
+         "uncertainty metadata");
+      AUnit.Assertions.Assert
+        (Uncertainty_Word_Text.Status = Ok
+         and then Support.Text (Uncertainty_Word_Text)
+           = "twelve point three plus or minus zero point four",
+         "uncertainty words");
+      AUnit.Assertions.Assert
+        (Parenthesized_Uncertainty_Text.Status = Ok
+         and then Support.Text (Parenthesized_Uncertainty_Text)
+           = "12.3 (+/- 0.4)",
+         "parenthesized uncertainty label");
+      AUnit.Assertions.Assert
+        (Interval_Uncertainty_Text.Status = Ok
+         and then Support.Text (Interval_Uncertainty_Text) = "11.9 to 12.7",
+         "interval uncertainty label");
+      AUnit.Assertions.Assert
+        (Invalid_Uncertainty.Status = Invalid_Value,
+         "uncertainty rejects negative delta");
+      AUnit.Assertions.Assert
         (Threshold_Text.Status = Ok
          and then Support.Text (Threshold_Text) = "at least 10"
          and then Threshold_Max.Status = Ok
@@ -1046,7 +1426,7 @@ package body Humanize.Tests.Numbers is
          "percent change");
       AUnit.Assertions.Assert
         (German_Percent_Change.Status = Ok
-         and then Support.Text (German_Percent_Change) = "up 12,5%",
+         and then Support.Text (German_Percent_Change) = "plus 12,5%",
          "percent change uses localized percent rendering");
       AUnit.Assertions.Assert
         (Percent_Delta_Text.Status = Ok
@@ -1083,6 +1463,36 @@ package body Humanize.Tests.Numbers is
       AUnit.Assertions.Assert
         (Code = Ok and then Buffer (1 .. Written) = "down 12.5%",
          "bounded percent change");
+      Decimal_Range_Into
+        (Support.En, 1.25, 3.5, Buffer, Written, Code,
+         (Maximum_Fraction_Digits => 2,
+          Suppress_Trailing_Zero => True));
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "1.25 to 3.5",
+         "bounded decimal range");
+      Uncertainty_Label_Into
+        (Support.En, 12.3, 0.4, Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "12.3 +/- 0.4",
+         "bounded uncertainty label");
+      declare
+         Word_Buffer : String (1 .. 80);
+      begin
+         Decimal_Range_Words_Into
+           (Support.En, 1.25, 3.5, Word_Buffer, Written, Code, 2);
+         AUnit.Assertions.Assert
+           (Code = Ok
+            and then Word_Buffer (1 .. Written)
+              = "one point two five to three point five zero",
+            "bounded decimal range words");
+         Uncertainty_Words_Into
+           (Support.En, 12.3, 0.4, Word_Buffer, Written, Code, 1);
+         AUnit.Assertions.Assert
+           (Code = Ok
+            and then Word_Buffer (1 .. Written)
+              = "twelve point three plus or minus zero point four",
+            "bounded uncertainty words");
+      end;
    end Test_Number_Bounded;
 
    procedure Test_Roman (T : in out AUnit.Test_Cases.Test_Case'Class) is

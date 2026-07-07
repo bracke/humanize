@@ -13,7 +13,8 @@ package Humanize.Capabilities is
       Rate_Area,
       Unit_Area,
       Phrase_Area,
-      Parsing_Area);
+      Parsing_Area,
+      Metadata_Area);
 
    type Locale_Behavior is
      (Catalog_Localized,

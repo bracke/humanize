@@ -314,6 +314,20 @@ package Humanize.Lists is
    --  @param Plural Optional plural noun.
    --  @return Selection phrase with none/all special cases.
 
+   function Filtered_Count
+     (Context  : Humanize.Contexts.Context;
+      Matching : Natural;
+      Total    : Natural;
+      Singular : String := "result";
+      Plural   : String := "results")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Matching Number of items matching the active filter.
+   --  @param Total Total available count before filtering.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
+   --  @return Filter phrase such as "3 of 10 results match".
+
    function Pagination_Range
      (Context  : Humanize.Contexts.Context;
       First    : Natural;
@@ -639,6 +653,24 @@ package Humanize.Lists is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Plural Optional plural noun.
+
+   procedure Filtered_Count_Into
+     (Context  : Humanize.Contexts.Context;
+      Matching : Natural;
+      Total    : Natural;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code;
+      Singular : String := "result";
+      Plural   : String := "results");
+   --  @param Context Formatting context.
+   --  @param Matching Number of items matching the active filter.
+   --  @param Total Total available count before filtering.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
 
    procedure Pagination_Range_Into
      (Context  : Humanize.Contexts.Context;

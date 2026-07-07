@@ -45,6 +45,9 @@ Numbers / multi-unit (English):
   number range  : between 3 and 7
   inclusive rng : 3 to 7 inclusive
   tolerance rng : 10 +/- 2
+  decimal range : 1.25 to 3.5
+  decimal words : one point two five to three point five zero
+  uncertainty   : 12.3 +/- 0.4
   threshold     : at least 10
   range status  : 5 is within 3-7
   proportion    : 3 out of 10
@@ -53,6 +56,7 @@ Numbers / multi-unit (English):
   status phrase : loading
   file phrase   : uploading
   auth phrase   : session expired
+  db phrase es  : base de datos replicacion retrasada
   security      : token expired
   health        : degraded
   issue         : merged
@@ -75,6 +79,7 @@ Numbers / multi-unit (English):
   business date : 2026-07-07
   calendar date : Saturday, March 21, 2026
   business hour : 2026-07-06
+  target2 date  : 2026-04-07
   range         : Mar 21-23
   calendar range: Mar 21-23, 2026
   calendar diff : in 1 year, 1 month and 10 days
@@ -117,20 +122,34 @@ Numbers / multi-unit (English):
   parse sci     : consumed 6
   parse roman   : consumed 6
   parse range   : consumed 14
+  parse uncert  : consumed 12
   parse date    : consumed 7
   parse richdate: consumed 21
+  parse bus wkdy: consumed 20
   parse business: consumed 26
   parse rules   : holidays 1
   parse progress: total 10
   parse prop    : total 4
   parse retry   : seconds 10
+  parse op      : stateBACKUP_STALE
+  parse db op   : stateDATABASE_REPLICATION_LAGGING
+  parse fields  : changed 2
   parse lenient : seconds 5400
   scan retry    : consumed 22
   parse recur   : weekday 2
+  recur window  : start 9
+  scan cron     : consumed 11
+  cron quartz   : year 2027
+  scan db ops   : consumed 12
+  scan latency  : consumed 6
+  parse membw   : value 1.25000000000000E+01
+  parse iops    : value 4.20000000000000E+01
   parse diag    : expected a unit at position 4
   bounded       : 1.2M
+  byte metadata : BYTE_UNIT_KIB
   capability    : parsing / deterministic-text
   smart title   : API Status and URL Rules
+  table row     : Name      Ada
   title options : Api Status And Url Rules
   title lists   : GPU Status by API
   utf8 slice    : æll
@@ -159,10 +178,14 @@ Numbers / multi-unit (English):
   search key    : file 02 final txt
   natural sort  : TRUE
   translit      : haello
+  translit am   : hay
+  translit ka   : abg
   foreign key   : person_id
   display name  : @ada
   people        : Ada Lovelace, Grace Hopper and 1 other
   severity      : danger
+  backup key    : backup.backup_stale
+  field diff    : email changed from old@example.com to new@example.com
   ci phrase     : pipeline failed
   ticket phrase : ticket escalated
   payment phrase: payment requires action

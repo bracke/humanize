@@ -84,6 +84,11 @@ package Humanize.Numbers is
       Include_Low_Only,
       Include_High_Only);
 
+   type Uncertainty_Style is
+     (Plus_Minus_Uncertainty,
+      Parenthesized_Uncertainty,
+      Interval_Uncertainty);
+
    type Threshold_Direction is
      (At_Least_Threshold,
       More_Than_Threshold,
@@ -266,6 +271,22 @@ package Humanize.Numbers is
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
+
+   function Parse_Deterministic_Cardinal
+     (Text  : String;
+      Value : out Long_Long_Integer)
+      return Boolean;
+   --  @param Text Exact deterministic cardinal words emitted by Humanize.
+   --  @param Value Parsed non-negative or negative value.
+   --  @return True when Text matches a shipped Humanize spellout locale.
+
+   function Parse_Deterministic_Ordinal
+     (Text  : String;
+      Value : out Natural)
+      return Boolean;
+   --  @param Text Exact deterministic ordinal words emitted by Humanize.
+   --  @param Value Parsed ordinal value.
+   --  @return True when Text matches a shipped Humanize spellout locale.
 
    function Currency_Words
      (Context       : Humanize.Contexts.Context;
@@ -669,6 +690,93 @@ package Humanize.Numbers is
    --  @param Options Separator and spacing policy.
    --  @return Approximate number range such as "about 10-20".
 
+   function Decimal_Range
+     (Context : Humanize.Contexts.Context;
+      Low     : Long_Float;
+      High    : Long_Float;
+      Options : Number_Options := Default_Number_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Low Lower decimal bound.
+   --  @param High Upper decimal bound.
+   --  @param Options Decimal formatting policy.
+   --  @return Decimal range phrase such as "1.2 to 3.4".
+
+   type Number_Render_Kind is
+     (Rendered_Decimal_Range,
+      Rendered_Uncertainty);
+
+   type Number_Render_Metadata is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Kind   : Number_Render_Kind := Rendered_Decimal_Range;
+      Low    : Long_Float := 0.0;
+      High   : Long_Float := 0.0;
+      Value  : Long_Float := 0.0;
+      Uncertainty : Long_Float := 0.0;
+      Fraction_Digits : Natural range 0 .. 3 := 1;
+      Style : Uncertainty_Style := Plus_Minus_Uncertainty;
+   end record;
+
+   function Decimal_Range_Metadata
+     (Low     : Long_Float;
+      High    : Long_Float;
+      Options : Number_Options := Default_Number_Options)
+      return Number_Render_Metadata;
+   --  @param Low Lower decimal bound.
+   --  @param High Upper decimal bound.
+   --  @param Options Decimal formatting policy.
+   --  @return Machine-readable metadata for a decimal range render.
+
+   function Uncertainty_Metadata
+     (Value       : Long_Float;
+      Uncertainty : Long_Float;
+      Options     : Number_Options := Default_Number_Options;
+      Style       : Uncertainty_Style := Plus_Minus_Uncertainty)
+      return Number_Render_Metadata;
+   --  @param Value Center value.
+   --  @param Uncertainty Non-negative symmetric uncertainty.
+   --  @param Options Decimal formatting policy.
+   --  @param Style Output style for the uncertainty.
+   --  @return Machine-readable metadata for an uncertainty render.
+
+   function Uncertainty_Label
+     (Context     : Humanize.Contexts.Context;
+      Value       : Long_Float;
+      Uncertainty : Long_Float;
+      Options     : Number_Options := Default_Number_Options;
+      Style       : Uncertainty_Style := Plus_Minus_Uncertainty)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Value Center value.
+   --  @param Uncertainty Non-negative symmetric uncertainty.
+   --  @param Options Decimal formatting policy.
+   --  @param Style Output style for the uncertainty.
+   --  @return Label such as "12.3 +/- 0.4" or "11.9 to 12.7".
+
+   function Decimal_Range_Words
+     (Context         : Humanize.Contexts.Context;
+      Low             : Long_Float;
+      High            : Long_Float;
+      Fraction_Digits : Natural := 2)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Low Lower decimal bound.
+   --  @param High Upper decimal bound.
+   --  @param Fraction_Digits Digits to spell after the decimal point.
+   --  @return Spelled decimal range phrase.
+
+   function Uncertainty_Words
+     (Context         : Humanize.Contexts.Context;
+      Value           : Long_Float;
+      Uncertainty     : Long_Float;
+      Fraction_Digits : Natural := 1)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Value Center value.
+   --  @param Uncertainty Non-negative symmetric uncertainty.
+   --  @param Fraction_Digits Digits to spell after the decimal point.
+   --  @return Spelled uncertainty phrase.
+
    function Under_Number
      (Context : Humanize.Contexts.Context;
       Value   : Long_Long_Integer)
@@ -920,6 +1028,72 @@ package Humanize.Numbers is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Options Separator and spacing policy.
+
+   procedure Decimal_Range_Into
+     (Context : Humanize.Contexts.Context;
+      Low     : Long_Float;
+      High    : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Number_Options := Default_Number_Options);
+   --  @param Context Formatting context.
+   --  @param Low Lower decimal bound.
+   --  @param High Upper decimal bound.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Decimal formatting policy.
+
+   procedure Uncertainty_Label_Into
+     (Context     : Humanize.Contexts.Context;
+      Value       : Long_Float;
+      Uncertainty : Long_Float;
+      Target      : in out String;
+      Written     : out Natural;
+      Status      : out Humanize.Status.Status_Code;
+      Options     : Number_Options := Default_Number_Options;
+      Style       : Uncertainty_Style := Plus_Minus_Uncertainty);
+   --  @param Context Formatting context.
+   --  @param Value Center value.
+   --  @param Uncertainty Non-negative symmetric uncertainty.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Decimal formatting policy.
+   --  @param Style Output style for the uncertainty.
+
+   procedure Decimal_Range_Words_Into
+     (Context         : Humanize.Contexts.Context;
+      Low             : Long_Float;
+      High            : Long_Float;
+      Target          : in out String;
+      Written         : out Natural;
+      Status          : out Humanize.Status.Status_Code;
+      Fraction_Digits : Natural := 2);
+   --  @param Context Formatting context.
+   --  @param Low Lower decimal bound.
+   --  @param High Upper decimal bound.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Fraction_Digits Digits to spell after the decimal point.
+
+   procedure Uncertainty_Words_Into
+     (Context         : Humanize.Contexts.Context;
+      Value           : Long_Float;
+      Uncertainty     : Long_Float;
+      Target          : in out String;
+      Written         : out Natural;
+      Status          : out Humanize.Status.Status_Code;
+      Fraction_Digits : Natural := 1);
+   --  @param Context Formatting context.
+   --  @param Value Center value.
+   --  @param Uncertainty Non-negative symmetric uncertainty.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Fraction_Digits Digits to spell after the decimal point.
 
    procedure Under_Number_Into
      (Context : Humanize.Contexts.Context;

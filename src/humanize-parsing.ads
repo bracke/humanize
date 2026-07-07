@@ -151,6 +151,20 @@ package Humanize.Parsing is
       Error : Parse_Error_Kind := No_Parse_Error;
    end record;
 
+   type Palette_Metadata_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Color_Count : Natural := 0;
+      Pair_Count : Natural := 0;
+      Enhanced : Natural := 0;
+      Normal : Natural := 0;
+      Large_Only : Natural := 0;
+      Fail : Natural := 0;
+      Exact  : Boolean := False;
+      Consumed : Natural := 0;
+      Error_Position : Natural := 0;
+      Error : Parse_Error_Kind := No_Parse_Error;
+   end record;
+
    type APCA_Label_Parse_Result is record
       Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
       Score  : Long_Float := 0.0;
@@ -316,6 +330,20 @@ package Humanize.Parsing is
       Error : Parse_Error_Kind := No_Parse_Error;
    end record;
 
+   type Contrast_Remediation_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Recommended_Color : Humanize.Colors.RGB_Color := (others => 0);
+      Has_Recommended_Color : Boolean := False;
+      Ratio : Long_Float := 0.0;
+      Target : String (1 .. 48) := [others => ' '];
+      Target_Length : Natural := 0;
+      Already_Passes : Boolean := False;
+      Exact  : Boolean := False;
+      Consumed : Natural := 0;
+      Error_Position : Natural := 0;
+      Error : Parse_Error_Kind := No_Parse_Error;
+   end record;
+
    type Domain_Summary_Parse_Result is record
       Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
       Domain : String (1 .. 32) := [others => ' '];
@@ -399,6 +427,82 @@ package Humanize.Parsing is
       Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
       Locale_Count : Natural := 0;
       Has_Generated_Locales : Boolean := False;
+      Exact  : Boolean := False;
+      Consumed : Natural := 0;
+      Error_Position : Natural := 0;
+      Error : Parse_Error_Kind := No_Parse_Error;
+   end record;
+
+   type Operational_Phrase_Domain is
+     (Backup_Phrase_Domain,
+      Incident_Phrase_Domain,
+      Release_Phrase_Domain,
+      Payment_Lifecycle_Phrase_Domain,
+      Audit_Phrase_Domain,
+      Feature_Flag_Phrase_Domain,
+      Webhook_Phrase_Domain,
+      API_Key_Phrase_Domain,
+      Quota_Phrase_Domain,
+      Invoice_Phrase_Domain,
+      Database_Phrase_Domain);
+
+   type Operational_Phrase_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Domain : Operational_Phrase_Domain := Backup_Phrase_Domain;
+      Backup_Status : Humanize.Phrases.Backup_Status :=
+        Humanize.Phrases.Backup_Running;
+      Incident_Status : Humanize.Phrases.Incident_Status :=
+        Humanize.Phrases.Incident_Investigating;
+      Release_Status : Humanize.Phrases.Release_Status :=
+        Humanize.Phrases.Release_Drafting;
+      Payment_Lifecycle_Status : Humanize.Phrases.Payment_Lifecycle_Status :=
+        Humanize.Phrases.Payment_Authorized;
+      Audit_Status : Humanize.Phrases.Audit_Status :=
+        Humanize.Phrases.Audit_Created;
+      Feature_Flag_Status : Humanize.Phrases.Feature_Flag_Status :=
+        Humanize.Phrases.Flag_Enabled;
+      Webhook_Status : Humanize.Phrases.Webhook_Status :=
+        Humanize.Phrases.Webhook_Pending;
+      API_Key_Status : Humanize.Phrases.API_Key_Status :=
+        Humanize.Phrases.API_Key_Active;
+      Quota_Status : Humanize.Phrases.Quota_Status :=
+        Humanize.Phrases.Quota_Available;
+      Invoice_Status : Humanize.Phrases.Invoice_Status :=
+        Humanize.Phrases.Invoice_Draft;
+      Database_Status : Humanize.Phrases.Database_Status :=
+        Humanize.Phrases.Database_Online;
+      Exact  : Boolean := False;
+      Consumed : Natural := 0;
+      Error_Position : Natural := 0;
+      Error : Parse_Error_Kind := No_Parse_Error;
+   end record;
+
+   type Field_Change_Summary_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Total   : Natural := 0;
+      Changed : Natural := 0;
+      Added   : Natural := 0;
+      Removed : Natural := 0;
+      Unit : String (1 .. 32) := [others => ' '];
+      Unit_Length : Natural := 0;
+      Exact  : Boolean := False;
+      Consumed : Natural := 0;
+      Error_Position : Natural := 0;
+      Error : Parse_Error_Kind := No_Parse_Error;
+   end record;
+
+   type Field_State_Change_Kind is
+     (Field_State_Added,
+      Field_State_Removed,
+      Field_State_Unchanged);
+
+   type Field_State_Summary_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Kind : Field_State_Change_Kind := Field_State_Added;
+      Field : String (1 .. 64) := [others => ' '];
+      Field_Length : Natural := 0;
+      Value : String (1 .. 160) := [others => ' '];
+      Value_Length : Natural := 0;
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
@@ -695,6 +799,18 @@ package Humanize.Parsing is
       Error : Parse_Error_Kind := No_Parse_Error;
    end record;
 
+   type File_Mode_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Mode : Humanize.Strings.File_Mode_Value := 0;
+      Kind : Humanize.Strings.File_Mode_Kind := Humanize.Strings.Mode_Only;
+      Symbolic : Boolean := False;
+      Octal : Boolean := False;
+      Exact  : Boolean := False;
+      Consumed : Natural := 0;
+      Error_Position : Natural := 0;
+      Error : Parse_Error_Kind := No_Parse_Error;
+   end record;
+
    type Email_Local_Part_Parse_Result is record
       Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
       Value : String (1 .. 160) := [others => ' '];
@@ -821,6 +937,30 @@ package Humanize.Parsing is
       Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
       Low    : Long_Long_Integer := 0;
       High   : Long_Long_Integer := 0;
+      Exact  : Boolean := False;
+      Consumed : Natural := 0;
+      Error_Position : Natural := 0;
+      Error : Parse_Error_Kind := No_Parse_Error;
+   end record;
+
+   type Decimal_Range_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Low    : Long_Float := 0.0;
+      High   : Long_Float := 0.0;
+      Exact  : Boolean := False;
+      Consumed : Natural := 0;
+      Error_Position : Natural := 0;
+      Error : Parse_Error_Kind := No_Parse_Error;
+   end record;
+
+   type Uncertainty_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Value  : Long_Float := 0.0;
+      Uncertainty : Long_Float := 0.0;
+      Low    : Long_Float := 0.0;
+      High   : Long_Float := 0.0;
+      Style  : Humanize.Numbers.Uncertainty_Style :=
+        Humanize.Numbers.Plus_Minus_Uncertainty;
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
@@ -963,6 +1103,7 @@ package Humanize.Parsing is
    type Recurrence_Parse_Kind is
      (Recurrence_Interval,
       Recurrence_Weekday,
+      Recurrence_Weekday_Set,
       Recurrence_Ordinal_Weekday,
       Recurrence_Business_Day);
 
@@ -973,13 +1114,36 @@ package Humanize.Parsing is
       Unit   : Humanize.Durations.Recurrence_Unit :=
         Humanize.Durations.Every_Day;
       Weekday : Natural range 0 .. 7 := 0;
+      Weekdays : Humanize.Durations.Weekday_Set :=
+        Humanize.Durations.Every_Day_Set;
       Ordinal : Integer range -1 .. 5 := 0;
+      Day_Of_Month : Natural range 0 .. 31 := 0;
+      Month_Of_Year : Natural range 0 .. 12 := 0;
+      Has_Second : Boolean := False;
+      Second     : Natural range 0 .. 59 := 0;
+      Has_Year   : Boolean := False;
+      Year       : Natural := 0;
+      Is_Last_Day_Of_Month : Boolean := False;
+      Is_Nearest_Weekday   : Boolean := False;
+      Is_Last_Weekday      : Boolean := False;
+      Nth_Weekday          : Natural range 0 .. 5 := 0;
+      Has_Time : Boolean := False;
+      Hour     : Natural range 0 .. 23 := 0;
+      Minute   : Natural range 0 .. 59 := 0;
       Has_Start_Date : Boolean := False;
       Start_Date     : Ada.Calendar.Time := Ada.Calendar.Clock;
       Has_End_Date   : Boolean := False;
       End_Date       : Ada.Calendar.Time := Ada.Calendar.Clock;
       Has_Occurrences : Boolean := False;
       Occurrences     : Natural := 0;
+      Has_Time_Window : Boolean := False;
+      Window_Start_Hour   : Natural range 0 .. 23 := 0;
+      Window_Start_Minute : Natural range 0 .. 59 := 0;
+      Window_End_Hour     : Natural range 0 .. 23 := 0;
+      Window_End_Minute   : Natural range 0 .. 59 := 0;
+      Has_Excluded_Weekdays : Boolean := False;
+      Excluded_Weekdays : Humanize.Durations.Weekday_Set :=
+        [others => False];
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
@@ -1103,7 +1267,8 @@ package Humanize.Parsing is
    function Parse_Duration
      (Text : String)
       return Duration_Parse_Result;
-   --  @param Text Duration text such as "2 hours, 30 minutes".
+   --  @param Text Duration text such as "2 hours, 30 minutes" or ISO 8601
+   --    duration text such as "PT1H30M" and "P2W".
    --  @return Parsed duration in seconds.
 
    function Scan_Duration
@@ -1133,7 +1298,8 @@ package Humanize.Parsing is
    --    "next friday afternoon", "second tuesday in march",
    --    "two fridays from now", "jan 1st", "monday the 3rd",
    --    "end of next quarter", "end of fy2027", "start of q3",
-   --    "week 32", "3 business days from now", or
+   --    "week 32", ISO dates such as "2024-02-29", "2024-060",
+   --    and "2024-W09-4", "3 business days from now", or
    --    "2 business days before month end".
    --  @return Parsed calendar date.
 
@@ -1173,7 +1339,8 @@ package Humanize.Parsing is
    --  @param Text Range phrase such as "this week", "next 2 weeks",
    --    "q3 2024", "late q2", "early next week", "mid-march",
    --    "fy2025 q2", "fy2027 h1", "first half of 2026",
-   --    "s2 2026", "h2 2026", or "week 32".
+   --    "s2 2026", "h2 2026", "week 32", or ISO week labels such as
+   --    "2024-W09".
    --  @return Parsed start and end dates as date-start calendar instants.
 
    function Parse_Natural_Date_Range
@@ -1400,6 +1567,18 @@ package Humanize.Parsing is
    --    "first Monday of each month", or "every 2 weeks until 2026-12-31".
    --  @return Parsed structured recurrence metadata.
 
+   function Parse_Cron_Schedule
+     (Text : String)
+      return Recurrence_Parse_Result;
+   --  @param Text Five-field cron expression such as "0 9 * * 1-5".
+   --  @return Parsed structured schedule metadata for common cron forms.
+
+   function Scan_Cron_Schedule
+     (Text : String)
+      return Recurrence_Parse_Result;
+   --  @param Text Text beginning with a cron or rendered schedule phrase.
+   --  @return Parsed schedule metadata and consumed prefix length.
+
    function Scan_Recurrence
      (Text : String)
       return Number_Parse_Result;
@@ -1441,7 +1620,8 @@ package Humanize.Parsing is
    function Parse_Precise_Duration
      (Text : String)
       return Precise_Duration_Parse_Result;
-   --  @param Text Duration text such as "1 second and 500 milliseconds".
+   --  @param Text Duration text such as "1 second and 500 milliseconds" or
+   --    ISO 8601 duration text such as "PT1.5S".
    --  @return Parsed duration in microseconds.
 
    function Scan_Precise_Duration
@@ -1511,6 +1691,18 @@ package Humanize.Parsing is
    --  @param Text Approximate number such as "about 42" or "under 10".
    --  @return Parsed target number.
 
+   function Parse_Editorial_Number
+     (Text : String)
+      return Number_Parse_Result;
+   --  @param Text Editorial number text such as "seven", "1,200", or "42%".
+   --  @return Parsed editorial integer value, with percent sign accepted.
+
+   function Parse_Currency_Words
+     (Text : String)
+      return Currency_Parse_Result;
+   --  @param Text Worded currency such as "twelve dollars and fifty cents".
+   --  @return Parsed amount and major-unit label.
+
    function Scan_Approximate_Number
      (Text : String)
       return Number_Parse_Result;
@@ -1565,6 +1757,12 @@ package Humanize.Parsing is
    --  @param Text Palette contrast matrix label.
    --  @return Parsed enhanced/normal/large-only/fail counts.
 
+   function Parse_Palette_Metadata_Label
+     (Text : String)
+      return Palette_Metadata_Parse_Result;
+   --  @param Text Palette metadata label emitted by Humanize.Colors.
+   --  @return Parsed color count, pair count, and contrast buckets.
+
    function Parse_APCA_Contrast_Label
      (Text : String)
       return APCA_Label_Parse_Result;
@@ -1582,6 +1780,18 @@ package Humanize.Parsing is
       return Color_Accessibility_Parse_Result;
    --  @param Text Combined contrast/APCA/CVD accessibility summary.
    --  @return Parsed WCAG contrast, APCA, and CVD summary metadata.
+
+   function Parse_Alpha_Contrast_Label
+     (Text : String)
+      return Color_Difference_Label_Parse_Result;
+   --  @param Text Alpha contrast label emitted by Humanize.Colors.
+   --  @return Parsed contrast ratio and level after alpha compositing.
+
+   function Parse_Contrast_Remediation_Label
+     (Text : String)
+      return Contrast_Remediation_Parse_Result;
+   --  @param Text Contrast remediation label emitted by Humanize.Colors.
+   --  @return Parsed suggested color, ratio, target, and pass metadata.
 
    function Parse_RGB_Label
      (Text : String)
@@ -1738,6 +1948,24 @@ package Humanize.Parsing is
       return Phrase_Locales_Parse_Result;
    --  @param Text Supported phrase locale list emitted by Humanize.Phrases.
    --  @return Parsed locale count and generated-locale flag.
+
+   function Parse_Operational_Phrase
+     (Text : String)
+      return Operational_Phrase_Parse_Result;
+   --  @param Text Operational phrase text (for example, "backup stale").
+   --  @return Parsed operational phrase domain and status metadata.
+
+   function Parse_Field_Change_Summary
+     (Text : String)
+      return Field_Change_Summary_Parse_Result;
+   --  @param Text Field change summary emitted by Humanize.Phrases.
+   --  @return Parsed total, changed, added, removed, and unit metadata.
+
+   function Parse_Field_State_Summary
+     (Text : String)
+      return Field_State_Summary_Parse_Result;
+   --  @param Text Field added/removed/unchanged summary.
+   --  @return Parsed field state-change kind, field, and value labels.
 
    function Parse_Sync_Summary
      (Text : String)
@@ -1932,6 +2160,12 @@ package Humanize.Parsing is
       return Excerpt_Parse_Result;
    --  @param Text Shortened-path output.
    --  @return Parsed ellipsis and retained path metadata.
+
+   function Parse_File_Mode_Label
+     (Text : String)
+      return File_Mode_Parse_Result;
+   --  @param Text Octal or symbolic Unix file mode output.
+   --  @return Parsed file mode bits and optional file-kind prefix.
 
    function Parse_Handle_Label
      (Text : String)
@@ -2175,10 +2409,59 @@ package Humanize.Parsing is
    --  @param Text Number range such as "1-5" or "between 3 and 7".
    --  @return Parsed lower and upper bounds.
 
+   function Parse_Decimal_Range
+     (Text : String)
+      return Decimal_Range_Parse_Result;
+   --  @param Text Decimal range such as "1.2 to 3.4".
+   --  @return Parsed lower and upper bounds.
+
+   function Parse_Decimal_Range_Words
+     (Text : String)
+      return Decimal_Range_Parse_Result;
+   --  @param Text Worded decimal range such as "one point two to three".
+   --  @return Parsed lower and upper bounds.
+
+   function Parse_Fraction_Words
+     (Text : String)
+      return Proportion_Parse_Result;
+   --  @param Text Fraction words such as "one half" or "three quarters".
+   --  @return Parsed numerator and denominator.
+
+   function Parse_Uncertainty_Label
+     (Text : String)
+      return Uncertainty_Parse_Result;
+   --  @param Text Uncertainty label such as "12.3 +/- 0.4",
+   --    "12.3 (+/- 0.4)", or "11.9 to 12.7".
+   --  @return Parsed center value, symmetric uncertainty, and bounds.
+
+   function Parse_Uncertainty_Words
+     (Text : String)
+      return Uncertainty_Parse_Result;
+   --  @param Text Worded uncertainty such as "one plus or minus zero point one".
+   --  @return Parsed center value, symmetric uncertainty, and bounds.
+
+   function Parse_Percent_Words
+     (Text : String)
+      return Float_Parse_Result;
+   --  @param Text Percent words such as "twelve point five percent".
+   --  @return Parsed percent value.
+
+   function Scan_Uncertainty_Label
+     (Text : String)
+      return Uncertainty_Parse_Result;
+   --  @param Text Text beginning with an uncertainty label.
+   --  @return Parsed uncertainty label and consumed prefix length.
+
    function Scan_Number_Range
      (Text : String)
       return Number_Range_Parse_Result;
    --  @param Text Text beginning with a number range.
+   --  @return Parsed bounds and consumed prefix length.
+
+   function Scan_Decimal_Range
+     (Text : String)
+      return Decimal_Range_Parse_Result;
+   --  @param Text Text beginning with a decimal range.
    --  @return Parsed bounds and consumed prefix length.
 
    function Parse_Proportion
@@ -2311,6 +2594,320 @@ package Humanize.Parsing is
       return Compound_Unit_Parse_Result;
    --  @param Text Compound unit such as "2.5 ms" or "42 k IOPS".
    --  @return Parsed value and deterministic unit suffix.
+
+   function Parse_Database_Throughput
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Database throughput such as "12.5 k ops/s".
+   --  @return Parsed throughput amount and normalized ops/s unit label.
+
+   function Scan_Database_Throughput
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a database throughput quantity.
+   --  @return Parsed throughput amount, unit label, and consumed prefix length.
+
+   function Parse_Data_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Data rate such as "1.5 MB/s".
+   --  @return Parsed decimal byte-rate amount and unit label.
+
+   function Scan_Data_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a decimal byte-rate quantity.
+   --  @return Parsed data-rate amount, unit label, and consumed prefix length.
+
+   function Parse_Bit_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Bit rate such as "1.5 Mbit/s".
+   --  @return Parsed bit-rate amount and unit label.
+
+   function Scan_Bit_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a bit-rate quantity.
+   --  @return Parsed bit-rate amount, unit label, and consumed prefix length.
+
+   function Parse_Binary_Data_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Binary data rate such as "1.5 MiB/s".
+   --  @return Parsed binary byte-rate amount and unit label.
+
+   function Scan_Binary_Data_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a binary byte-rate quantity.
+   --  @return Parsed binary data-rate amount, unit label, and consumed prefix length.
+
+   function Parse_Memory_Bandwidth
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Memory bandwidth such as "12.5 GB/s".
+   --  @return Parsed bandwidth amount and normalized byte-rate unit label.
+
+   function Scan_Memory_Bandwidth
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a memory-bandwidth quantity.
+   --  @return Parsed bandwidth amount, unit label, and consumed prefix length.
+
+   function Parse_Latency
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Latency such as "2.5 ms".
+   --  @return Parsed latency amount and normalized time unit label.
+
+   function Scan_Latency
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a latency quantity.
+   --  @return Parsed latency amount, unit label, and consumed prefix length.
+
+   function Parse_IOPS
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Storage IOPS such as "42 k IOPS".
+   --  @return Parsed IOPS amount and normalized IOPS unit label.
+
+   function Scan_IOPS
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with an IOPS quantity.
+   --  @return Parsed IOPS amount, unit label, and consumed prefix length.
+
+   function Parse_Density
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Density such as "12.5 kg/m3".
+   --  @return Parsed density amount and unit label.
+
+   function Scan_Density
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Acceleration
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Acceleration such as "9.8 m/s2".
+   --  @return Parsed acceleration amount and unit label.
+
+   function Scan_Acceleration
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Torque
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Torque such as "12 N m".
+   --  @return Parsed torque amount and unit label.
+
+   function Scan_Torque
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Fuel_Economy
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Fuel economy such as "5.5 L/100 km".
+   --  @return Parsed fuel-economy amount and unit label.
+
+   function Scan_Fuel_Economy
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Flow_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Flow rate such as "500 mL/s".
+   --  @return Parsed flow-rate amount and unit label.
+
+   function Scan_Flow_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Electric_Current
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Current such as "500 mA".
+   --  @return Parsed current amount and unit label.
+
+   function Scan_Electric_Current
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Voltage
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Voltage such as "12 V".
+   --  @return Parsed voltage amount and unit label.
+
+   function Scan_Voltage
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Pixel_Density
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Pixel density such as "326 ppi".
+   --  @return Parsed pixel-density amount and unit label.
+
+   function Scan_Pixel_Density
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Electric_Resistance
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Resistance such as "4.7 kohm".
+   --  @return Parsed resistance amount and unit label.
+
+   function Scan_Electric_Resistance
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Electric_Capacitance
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Capacitance such as "4.7 uF".
+   --  @return Parsed capacitance amount and unit label.
+
+   function Scan_Electric_Capacitance
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Electric_Inductance
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Inductance such as "4.7 mH".
+   --  @return Parsed inductance amount and unit label.
+
+   function Scan_Electric_Inductance
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Concentration
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Concentration such as "2.5 mol/L".
+   --  @return Parsed concentration amount and unit label.
+
+   function Scan_Concentration
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Fuel_Efficiency_MPG
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Fuel efficiency such as "30 mpg".
+   --  @return Parsed MPG amount and unit label.
+
+   function Scan_Fuel_Efficiency_MPG
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_CPU_Load
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text CPU load such as "82.5 % CPU".
+   --  @return Parsed CPU-load amount and unit label.
+
+   function Scan_CPU_Load
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Battery
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Battery level such as "37 % battery".
+   --  @return Parsed battery amount and unit label.
+
+   function Scan_Battery
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Screen_Size
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Screen size such as "13 in screen".
+   --  @return Parsed screen-size amount and unit label.
+
+   function Scan_Screen_Size
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Typography_Size
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Typography size such as "12 pt".
+   --  @return Parsed typography-size amount and unit label.
+
+   function Scan_Typography_Size
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Audio_Level
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Audio level such as "-6 dB".
+   --  @return Parsed audio-level amount and unit label.
+
+   function Scan_Audio_Level
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Signal_Strength
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Signal strength such as "-67 dBm".
+   --  @return Parsed signal-strength amount and unit label.
+
+   function Scan_Signal_Strength
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Storage_Endurance
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Storage endurance such as "600 TBW".
+   --  @return Parsed storage-endurance amount and unit label.
+
+   function Scan_Storage_Endurance
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Refresh_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Refresh rate such as "144 Hz refresh".
+   --  @return Parsed refresh-rate amount and unit label.
+
+   function Scan_Refresh_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Luminance
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Luminance such as "1000 nits".
+   --  @return Parsed luminance amount and unit label.
+
+   function Scan_Luminance
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+
+   function Parse_Print_Resolution
+     (Text : String)
+      return Compound_Unit_Parse_Result;
+   --  @param Text Print resolution such as "300 dpi".
+   --  @return Parsed print-resolution amount and unit label.
+
+   function Scan_Print_Resolution
+     (Text : String)
+      return Compound_Unit_Parse_Result;
 
    function Scan_Compound_Unit
      (Text : String)

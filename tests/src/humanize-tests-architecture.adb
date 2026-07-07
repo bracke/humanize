@@ -72,6 +72,17 @@ package body Humanize.Tests.Architecture is
             Check ("pl", "Polish generated", Id);
             Check ("cs", "Czech generated", Id);
             Check ("tr", "Turkish generated", Id);
+            Check ("ro", "Romanian generated", Id);
+            Check ("lt", "Lithuanian generated", Id);
+            Check ("sl", "Slovenian generated", Id);
+            Check ("id", "Indonesian generated", Id);
+            Check ("ms", "Malay generated", Id);
+            Check ("eo", "Esperanto generated", Id);
+            Check ("vi", "Vietnamese generated", Id);
+            Check ("sw", "Swahili generated", Id);
+            Check ("af", "Afrikaans generated", Id);
+            Check ("hu", "Hungarian generated", Id);
+            Check ("sk", "Slovak generated", Id);
             Check ("ru", "Russian generated", Id);
             Check ("uk", "Ukrainian generated", Id);
             Check ("ja", "Japanese generated", Id);
@@ -161,7 +172,7 @@ package body Humanize.Tests.Architecture is
       AUnit.Assertions.Assert
         (Summary.Status = Humanize.Status.Ok
          and then Support.Text (Summary)
-           = "datetimes durations bytes colors numbers strings lists frequencies rates units phrases parsing",
+           = "datetimes durations bytes colors numbers strings lists frequencies rates units phrases parsing metadata",
          "capability summary metadata");
       AUnit.Assertions.Assert
         (Humanize.Capabilities.Area_Rendering_Source

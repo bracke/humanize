@@ -10,6 +10,9 @@ website = ""
 tags = ["i18n", "humanize", "localization"]
 
 [[depends-on]]
+gnat_native = "=15.2.1"
+
+[[depends-on]]
 i18n = ">=1.1.0"
 
 [[actions]]

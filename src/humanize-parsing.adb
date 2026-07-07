@@ -3,6 +3,9 @@ with Ada.Calendar.Formatting;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 
+with Humanize.Contexts;
+with Humanize.Datetimes;
+with Humanize.I18N_Rendering;
 with Humanize.Messages;
 
 package body Humanize.Parsing is
@@ -11,6 +14,22 @@ package body Humanize.Parsing is
    use type Humanize.Colors.RGB_Color;
    use type Ada.Calendar.Time;
    use Ada.Strings.Unbounded;
+
+   Rendered_Unit_Alias_Cache_Loaded : Boolean := False;
+
+   Max_Rendered_Unit_Aliases : constant Positive := 6_000;
+
+   type Rendered_Unit_Alias_Entry is record
+      Label : Unbounded_String;
+      Unit  : Humanize.Units.Unit_Kind := Humanize.Units.Meter;
+   end record;
+
+   type Rendered_Unit_Alias_Array is
+     array (Positive range <>) of Rendered_Unit_Alias_Entry;
+
+   Rendered_Unit_Alias_Cache :
+     Rendered_Unit_Alias_Array (1 .. Max_Rendered_Unit_Aliases);
+   Rendered_Unit_Alias_Count : Natural := 0;
 
    function Trim (Text : String) return String is
      (Ada.Strings.Fixed.Trim (Text, Ada.Strings.Both));
@@ -54,6 +73,278 @@ package body Humanize.Parsing is
 
       return Result;
    end B;
+
+   function U (Code : Natural) return String is
+   begin
+      if Code <= 16#7F# then
+         return String'(1 => Character'Val (Code));
+      elsif Code <= 16#7FF# then
+         return Character'Val (16#C0# + Code / 64)
+           & Character'Val (16#80# + Code mod 64);
+      elsif Code <= 16#FFFF# then
+         return Character'Val (16#E0# + Code / 4_096)
+           & Character'Val (16#80# + (Code / 64) mod 64)
+           & Character'Val (16#80# + Code mod 64);
+      else
+         return Character'Val (16#F0# + Code / 262_144)
+           & Character'Val (16#80# + (Code / 4_096) mod 64)
+           & Character'Val (16#80# + (Code / 64) mod 64)
+           & Character'Val (16#80# + Code mod 64);
+      end if;
+   end U;
+
+   function Rendered_Natural_Date_Canonical (Text : String) return String is
+      Locale_Count : constant Positive := 33;
+      type Locale_Array is array (Positive range <>) of access constant String;
+
+      En : aliased constant String := "en";
+      Da : aliased constant String := "da";
+      De : aliased constant String := "de";
+      Fr : aliased constant String := "fr";
+      Es : aliased constant String := "es";
+      It : aliased constant String := "it";
+      Pt : aliased constant String := "pt";
+      Nl : aliased constant String := "nl";
+      Sv : aliased constant String := "sv";
+      No : aliased constant String := "no";
+      Nb : aliased constant String := "nb";
+      Fi : aliased constant String := "fi";
+      Pl : aliased constant String := "pl";
+      Cs : aliased constant String := "cs";
+      Tr : aliased constant String := "tr";
+      Ru : aliased constant String := "ru";
+      Uk : aliased constant String := "uk";
+      Ja : aliased constant String := "ja";
+      Ko : aliased constant String := "ko";
+      Zh : aliased constant String := "zh";
+      Ar : aliased constant String := "ar";
+      Hi : aliased constant String := "hi";
+      Ro : aliased constant String := "ro";
+      Lt : aliased constant String := "lt";
+      Sl : aliased constant String := "sl";
+      Id : aliased constant String := "id";
+      Ms : aliased constant String := "ms";
+      Eo : aliased constant String := "eo";
+      Vi : aliased constant String := "vi";
+      Sw : aliased constant String := "sw";
+      Af : aliased constant String := "af";
+      Hu : aliased constant String := "hu";
+      Sk : aliased constant String := "sk";
+
+      Locales : constant Locale_Array (1 .. Locale_Count) :=
+        [En'Access, Da'Access, De'Access, Fr'Access, Es'Access, It'Access,
+         Pt'Access, Nl'Access, Sv'Access, No'Access, Nb'Access, Fi'Access,
+         Pl'Access, Cs'Access, Tr'Access, Ru'Access, Uk'Access, Ja'Access,
+         Ko'Access, Zh'Access, Ar'Access, Hi'Access, Ro'Access, Lt'Access,
+         Sl'Access, Id'Access, Ms'Access, Eo'Access, Vi'Access, Sw'Access,
+         Af'Access, Hu'Access, Sk'Access];
+
+      Today : constant Humanize.Datetimes.Civil_Date_Time :=
+        (Year => 2026, Month => 3, Day => 21, others => 0);
+      Values : constant array (Positive range 1 .. 3)
+        of Humanize.Datetimes.Civil_Date_Time :=
+          [(Year => 2026, Month => 3, Day => 20, others => 0),
+           Today,
+           (Year => 2026, Month => 3, Day => 22, others => 0)];
+      Item : constant String := Lower (Trim (Text));
+      Runtime_Loaded : Boolean;
+
+      function Canonical (Index : Positive) return String is
+      begin
+         case Index is
+            when 1 => return "yesterday";
+            when 2 => return "today";
+            when others => return "tomorrow";
+         end case;
+      end Canonical;
+   begin
+      if Item'Length = 0 then
+         return Item;
+      end if;
+
+      for Locale of Locales loop
+         declare
+            Context : constant Humanize.Contexts.Context :=
+              Humanize.I18N_Rendering.Default_Context
+                (Locale.all, Runtime_Loaded);
+         begin
+            if not Runtime_Loaded then
+               return Item;
+            end if;
+
+            for Index in Values'Range loop
+               declare
+                  Rendered : constant Humanize.Status.Text_Result :=
+                    Humanize.Datetimes.Natural_Day
+                      (Context, Values (Index), Today);
+               begin
+                  if Rendered.Status = Humanize.Status.Ok
+                    and then Lower (Trim (To_String (Rendered.Text))) = Item
+                  then
+                     return Canonical (Index);
+                  end if;
+               end;
+            end loop;
+         end;
+      end loop;
+
+      return Item;
+   exception
+      when others =>
+         return Lower (Trim (Text));
+   end Rendered_Natural_Date_Canonical;
+
+   Alias_Separator : constant String := [1 => ASCII.LF];
+
+   type Unit_Alias_Group is record
+      Unit    : Humanize.Units.Unit_Kind;
+      Aliases : not null access constant String;
+   end record;
+
+   type Unit_Alias_Group_Array is
+     array (Positive range <>) of Unit_Alias_Group;
+
+   type Frequency_Alias_Group is record
+      Count   : Humanize.Frequencies.Occurrence_Count;
+      Aliases : not null access constant String;
+   end record;
+
+   type Frequency_Alias_Group_Array is
+     array (Positive range <>) of Frequency_Alias_Group;
+
+   function Has_Alias
+     (Item    : String;
+      Aliases : String)
+      return Boolean
+   is
+      First : Natural := Aliases'First;
+      Last  : Natural;
+
+      function Hex_Alias_Matches (Hex : String) return Boolean is
+         function Nibble (C : Character) return Natural is
+         begin
+            case C is
+               when '0' .. '9' =>
+                  return Character'Pos (C) - Character'Pos ('0');
+               when 'A' .. 'F' =>
+                  return 10 + Character'Pos (C) - Character'Pos ('A');
+               when 'a' .. 'f' =>
+                  return 10 + Character'Pos (C) - Character'Pos ('a');
+               when others =>
+                  return 0;
+            end case;
+         end Nibble;
+      begin
+         if Hex'Length mod 2 /= 0
+           or else Item'Length /= Hex'Length / 2
+         then
+            return False;
+         end if;
+
+         for Index in Item'Range loop
+            declare
+               Hex_Index : constant Natural :=
+                 Hex'First + 2 * (Index - Item'First);
+               Value : constant Character :=
+                 Character'Val
+                   (Nibble (Hex (Hex_Index)) * 16
+                    + Nibble (Hex (Hex_Index + 1)));
+            begin
+               if Item (Index) /= Value then
+                  return False;
+               end if;
+            end;
+         end loop;
+
+         return True;
+      end Hex_Alias_Matches;
+   begin
+      while First <= Aliases'Last loop
+         Last := First;
+         while Last <= Aliases'Last
+           and then Aliases (Last) /= ASCII.LF
+         loop
+            Last := Last + 1;
+         end loop;
+
+         if Last > First
+           and then Aliases (First) = '#'
+           and then Hex_Alias_Matches (Aliases (First + 1 .. Last - 1))
+         then
+            return True;
+         elsif Aliases (First .. Last - 1) = Item then
+            return True;
+         end if;
+
+         First := Last + 1;
+      end loop;
+
+      return False;
+   end Has_Alias;
+
+   function Alias_Prefix_Length
+     (Item    : String;
+      Aliases : String)
+      return Natural
+   is
+      First : Natural := Aliases'First;
+      Last  : Natural;
+   begin
+      while First <= Aliases'Last loop
+         Last := First;
+         while Last <= Aliases'Last
+           and then Aliases (Last) /= ASCII.LF
+         loop
+            Last := Last + 1;
+         end loop;
+
+         if Last > First
+           and then Item'Length >= Last - First
+           and then Item (Item'First .. Item'First + (Last - First) - 1)
+             = Aliases (First .. Last - 1)
+         then
+            return Last - First;
+         end if;
+
+         First := Last + 1;
+      end loop;
+
+      return 0;
+   end Alias_Prefix_Length;
+
+   function Lookup_Unit_Alias
+     (Item   : String;
+      Groups : Unit_Alias_Group_Array;
+      Unit   : out Humanize.Units.Unit_Kind)
+      return Boolean
+   is
+   begin
+      for Group of Groups loop
+         if Has_Alias (Item, Group.Aliases.all) then
+            Unit := Group.Unit;
+            return True;
+         end if;
+      end loop;
+
+      return False;
+   end Lookup_Unit_Alias;
+
+   function Lookup_Frequency_Alias
+     (Item   : String;
+      Groups : Frequency_Alias_Group_Array;
+      Count  : out Humanize.Frequencies.Occurrence_Count)
+      return Boolean
+   is
+   begin
+      for Group of Groups loop
+         if Has_Alias (Item, Group.Aliases.all) then
+            Count := Group.Count;
+            return True;
+         end if;
+      end loop;
+
+      return False;
+   end Lookup_Frequency_Alias;
 
    function Upper (Text : String) return String is
       Result : String (Text'Range);
@@ -217,14 +508,30 @@ package body Humanize.Parsing is
          return 3;
       elsif Starts_At (Low, Index, "ve ") then
          return 3;
+      elsif Starts_At (Low, Index, "na ") then
+         return 3;
       elsif Starts_At (Low, Index, "y ") then
          return 2;
       elsif Starts_At (Low, Index, "i ") then
          return 2;
+      elsif Starts_At (Low, Index, "ir ") then
+         return 3;
+      elsif Starts_At (Low, Index, "in ") then
+         return 3;
+      elsif Starts_At (Low, Index, "va ") then
+         return 3;
+      elsif Starts_At (Low, Index, "dan ") then
+         return 4;
+      elsif Starts_At (Low, Index, "kaj ") then
+         return 4;
       elsif Starts_At (Low, Index, "e ") then
          return 2;
+      elsif Starts_At (Low, Index, "es ") then
+         return 3;
       elsif Starts_At (Low, Index, "a ") then
          return 2;
+      elsif Starts_At (Low, Index, B ("C8996920")) then
+         return 3;
       elsif Starts_At (Low, Index, B ("D0B820")) then
          return 3;
       elsif Starts_At (Low, Index, B ("D19620")) then
@@ -661,6 +968,29 @@ package body Humanize.Parsing is
    begin
       if U = "byte" or else U = "bytes" or else U = "b" then
          return 1.0;
+      elsif U = "bytes"
+        or else U = "byte"
+        or else U = "byt" or else U = "bytes"
+        or else U = "octet" or else U = "octets"
+        or else U = "byte" or else U = "bytes"
+        or else U = "bajt" or else U = "bajty"
+        or else U = "baitas" or else U = "baitai"
+        or else U = "bait"
+        or else U = "baiti"
+        or else U = "bajto" or else U = "bajtoj"
+        or else U = "tavu" or else U = "tavua"
+        or else U = "bayt"
+        or else U = "greep"
+        or else U = B ("D0B1D0B0D0B9D182")
+        or else U = B ("D0B1D0B0D0B9D182D0B0")
+        or else U = B ("D0B1D0B0D0B9D182D196D0B2")
+        or else U = B ("E38390E382A4E38388")
+        or else U = B ("EBB094EC9DB4ED8AB8")
+        or else U = B ("E5AD97E88A82")
+        or else U = B ("D8A8D8A7D98AD8AA")
+        or else U = B ("E0A4ACE0A4BEE0A487E0A49F")
+      then
+         return 1.0;
       elsif U = "kb" then
          return 1_000.0;
       elsif U = "mb" then
@@ -744,7 +1074,7 @@ package body Humanize.Parsing is
            (Status => Humanize.Status.Ok,
             Value  => Humanize.Bytes.Byte_Count (Rounded),
             Exact  => Long_Float (Rounded) = Amount * Multiplier,
-            Consumed => Item'Length,
+            Consumed => Trim (Text)'Length,
             Error_Position => 0,
          Error => No_Parse_Error);
       exception
@@ -812,6 +1142,65 @@ package body Humanize.Parsing is
          others => <>);
    end Scan_Bytes;
 
+   function Generated_Duration_Seconds
+     (Unit : String)
+      return Long_Long_Integer
+   is
+      U : constant String := Lower (Trim (Unit));
+   begin
+      if U = B ("D0BCD0B8D0BDD183D182D18B")
+        or else U = B ("D185D0B2D0B8D0BBD0B8D0BDD0B8")
+        or else U = B ("E58886E9929F")
+      then
+         return 60;
+      elsif U = B ("D187D0B0D181D0B0")
+        or else U = B ("D0B3D0BED0B4D0B8D0BDD0B8")
+        or else U = B ("E69982E99693")
+        or else U = B ("E5B08FE697B6")
+        or else U = B ("EC8B9CEAB084")
+        or else U = B ("D8B3D8A7D8B9D8A7D8AA")
+        or else U = B ("E0A498E0A482E0A49FE0A587")
+      then
+         return 3_600;
+      elsif U = B ("D0B4D0BDD18F")
+        or else U = B ("D0B4D0BDD196")
+        or else U = B ("E5A4A9")
+        or else U = B ("EC9DBC")
+        or else U = B ("D8A3D98AD8A7D985")
+        or else U = B ("E0A4A6E0A4BFE0A4A8")
+      then
+         return 86_400;
+      elsif U = B ("D0BDD0B5D0B4D0B5D0BBD0B8")
+        or else U = B ("D182D0B8D0B6D0BDD196")
+        or else U = B ("E980B1")
+        or else U = B ("E591A8")
+        or else U = B ("ECA3BC")
+        or else U = B ("D8A3D8B3D8A7D8A8D98AD8B9")
+        or else U = B ("E0A4B8E0A4AAE0A58DE0A4A4E0A4BEE0A4B9")
+      then
+         return 7 * 86_400;
+      elsif U = B ("D0BCD0B5D181D18FD186D0B0")
+        or else U = B ("D0BCD196D181D18FD186D196")
+        or else U = B ("E3818BE69C88")
+        or else U = B ("E4B8AAE69C88")
+        or else U = B ("EAB09CEC9B94")
+        or else U = B ("D8A3D8B4D987D8B1")
+        or else U = B ("E0A4AEE0A4B9E0A580E0A4A8E0A587")
+      then
+         return 30 * 86_400;
+      elsif U = B ("D0B3D0BED0B4D0B0")
+        or else U = B ("D180D0BED0BAD0B8")
+        or else U = B ("E5B9B4")
+        or else U = B ("EB8584")
+        or else U = B ("D8B3D986D988D8A7D8AA")
+        or else U = B ("E0A4B8E0A4BEE0A4B2")
+      then
+         return 365 * 86_400;
+      else
+         return 0;
+      end if;
+   end Generated_Duration_Seconds;
+
    function Unit_Seconds (Unit : String) return Long_Long_Integer is
       U : constant String := Lower (Trim (Unit));
    begin
@@ -825,6 +1214,14 @@ package body Humanize.Parsing is
         or else U = "sekunti" or else U = "sekuntia"
         or else U = "sekunda" or else U = "sekundy"
         or else U = "sekundas" or else U = "saniye"
+        or else U = "secunde" or else U = "detik"
+        or else U = "sekundo"
+        or else U = "sekundoj" or else U = "giay"
+        or else U = "sekunde" or else U = "sekonde"
+        or else U = "sekondes" or else U = "masodperc"
+        or else U = B ("736563756E64C483")
+        or else U = B ("73656B756E64C497")
+        or else U = B ("73656B756E64C49773")
         or else U = B ("D181D0B5D0BAD183D0BDD0B4D0B0")
         or else U = B ("D181D0B5D0BAD183D0BDD0B4D18B")
         or else U = B ("D181D0B5D0BAD183D0BDD0B4")
@@ -846,6 +1243,11 @@ package body Humanize.Parsing is
         or else U = "minuutti" or else U = "minuuttia"
         or else U = "minuta" or else U = "minuty"
         or else U = "dakika"
+        or else U = "minute" or else U = "menit"
+        or else U = "minit" or else U = "minutoj"
+        or else U = "phut" or else U = "perc"
+        or else U = B ("6D696E7574C497")
+        or else U = B ("6D696E7574C49773")
         or else U = B ("D0BCD0B8D0BDD183D182D0B0")
         or else U = B ("D0BCD0B8D0BDD183D182D18B")
         or else U = B ("D185D0B2D0B8D0BBD0B8D0BDD0B0")
@@ -871,6 +1273,13 @@ package body Humanize.Parsing is
         or else U = "godzina" or else U = "godziny"
         or else U = "hodina" or else U = "hodiny"
         or else U = "saat"
+        or else U = "ore" or else U = "valanda"
+        or else U = "valandos" or else U = "ura"
+        or else U = "ure" or else U = "jam"
+        or else U = "horo" or else U = "horoj"
+        or else U = "gio" or else U = "saa"
+        or else U = "ora"
+        or else U = B ("6F72C483")
         or else U = B ("D187D0B0D181")
         or else U = B ("D187D0B0D181D0B0")
         or else U = B ("D0B3D0BED0B4D0B8D0BDD0B0")
@@ -895,8 +1304,15 @@ package body Humanize.Parsing is
         or else U = "dagar" or else U = "paiva" or else U = "paivaa"
         or else U = B ("70C3A46976C3A4")
         or else U = B ("70C3A46976C3A4C3A4")
+        or else U = B ("70C3A46976C3A46E")
         or else U = "dzien" or else U = "dni" or else U = "den" or else U = "dny"
         or else U = "gun" or else U = B ("67C3BC6E")
+        or else U = "zi" or else U = "zile"
+        or else U = "diena" or else U = "dienos"
+        or else U = "dan" or else U = "hari"
+        or else U = "tago" or else U = "tagoj"
+        or else U = "ngay" or else U = "siku"
+        or else U = "dae" or else U = "nap"
         or else U = B ("D0B4D0B5D0BDD18C")
         or else U = B ("D0B4D0BDD18F")
         or else U = B ("D0B4D0B5D0BDD18C")
@@ -909,7 +1325,10 @@ package body Humanize.Parsing is
         or else U = B ("E0A4A6E0A4BFE0A4A8")
       then
          return 86_400;
+      elsif U = "fortnight" or else U = "fortnights" then
+         return 14 * 86_400;
       elsif U = "week" or else U = "weeks" or else U = "w"
+        or else U = "weken"
         or else U = "uge" or else U = "uger"
         or else U = "uke" or else U = "uker"
         or else U = "woche" or else U = "wochen"
@@ -922,7 +1341,18 @@ package body Humanize.Parsing is
         or else U = "tygodnie"
         or else U = "tyden" or else U = B ("74C3BD64656E")
         or else U = "tydny"
+        or else U = B ("74C3BD646E79")
         or else U = "hafta"
+        or else U = B ("73C4837074C4836DC3A26EC483")
+        or else U = B ("73C4837074C4836DC3A26E69")
+        or else U = B ("736176616974C497")
+        or else U = B ("736176616974C49773")
+        or else U = "teden" or else U = "tedni"
+        or else U = "minggu" or else U = "semajno"
+        or else U = "semajnoj" or else U = "tuan"
+        or else U = "wiki" or else U = "weke"
+        or else U = "het" or else U = "tyzden"
+        or else U = "tyzdne"
         or else U = B ("D0BDD0B5D0B4D0B5D0BBD18F")
         or else U = B ("D0BDD0B5D0B4D0B5D0BBD0B8")
         or else U = B ("D0BDD0B5D0B4D0B5D0BBD18E")
@@ -949,8 +1379,22 @@ package body Humanize.Parsing is
         or else U = B ("6DC3A56E6164") or else U = B ("6DC3A56E61646572")
         or else U = "kuukausi" or else U = "kuukautta"
         or else U = "miesiac" or else U = "miesiace"
+        or else U = B ("6D69657369C48563")
+        or else U = B ("6D69657369C4856365")
         or else U = "mesic" or else U = "mesice"
+        or else U = B ("6DC49B73C3AD63")
+        or else U = B ("6DC49B73C3AD6365")
         or else U = "ay"
+        or else U = B ("6C756EC483")
+        or else U = "luni"
+        or else U = B ("6DC4976E756F")
+        or else U = B ("6DC4976E6573696169")
+        or else U = "mesec" or else U = "meseci"
+        or else U = "bulan" or else U = "monato"
+        or else U = "monatoj" or else U = "thang"
+        or else U = "mwezi" or else U = "miezi"
+        or else U = "maande" or else U = "honap"
+        or else U = "mesiac" or else U = "mesiace"
         or else U = B ("D0BCD0B5D181D18FD186")
         or else U = B ("D0BCD0B5D181D18FD186D18B")
         or else U = B ("D0BCD196D181D18FD186D18C")
@@ -968,12 +1412,20 @@ package body Humanize.Parsing is
         or else U = "jahr" or else U = "jahre" or else U = "jahren"
         or else U = "an" or else U = "ans"
         or else U = "ano" or else U = "anos"
+        or else U = B ("61C3B16F") or else U = B ("61C3B16F73")
         or else U = "anno" or else U = "anni"
         or else U = "jaar"
         or else U = "ar" or else U = B ("C3A572")
         or else U = "vuosi" or else U = "vuotta"
         or else U = "rok" or else U = "lata" or else U = "let"
+        or else U = "roky"
         or else U = "yil" or else B ("79C4B16C") = U
+        or else U = "ani" or else U = "metai"
+        or else U = "leto" or else U = "leta"
+        or else U = "tahun" or else U = "jaro"
+        or else U = "jaroj" or else U = "nam"
+        or else U = "mwaka" or else U = "miaka"
+        or else U = "ev"
         or else U = B ("D0B3D0BED0B4")
         or else U = B ("D0B3D0BED0B4D0B0")
         or else U = B ("D180D196D0BA")
@@ -985,7 +1437,7 @@ package body Humanize.Parsing is
       then
          return 365 * 86_400;
       else
-         return 0;
+         return Generated_Duration_Seconds (U);
       end if;
    end Unit_Seconds;
 
@@ -1016,6 +1468,193 @@ package body Humanize.Parsing is
       end if;
    end Unit_Microseconds;
 
+   function Parse_ISO_Duration
+     (Text  : String;
+      Value : out Long_Long_Integer)
+      return Boolean
+   is
+      Item : constant String := Trim (Text);
+      Index : Natural;
+      Total : Long_Float := 0.0;
+      Seen  : Boolean := False;
+      In_Time : Boolean := False;
+
+      function Designator_Seconds (Ch : Character) return Long_Float is
+      begin
+         case Ch is
+            when 'Y' =>
+               return Long_Float (365 * 86_400);
+            when 'M' =>
+               return (if In_Time then 60.0 else Long_Float (30 * 86_400));
+            when 'W' =>
+               return Long_Float (7 * 86_400);
+            when 'D' =>
+               return 86_400.0;
+            when 'H' =>
+               return 3_600.0;
+            when 'S' =>
+               return 1.0;
+            when others =>
+               return 0.0;
+         end case;
+      end Designator_Seconds;
+   begin
+      Value := 0;
+      if Item'Length < 3 or else Item (Item'First) /= 'P' then
+         return False;
+      end if;
+
+      Index := Item'First + 1;
+      while Index <= Item'Last loop
+         if Item (Index) = 'T' then
+            if In_Time then
+               return False;
+            end if;
+            In_Time := True;
+            Index := Index + 1;
+         else
+            declare
+               Number_First : constant Natural := Index;
+               Amount : Long_Float;
+               Unit_Seconds : Long_Float;
+            begin
+               while Index <= Item'Last
+                 and then (Is_Digit (Item (Index))
+                           or else Item (Index) = '.'
+                           or else Item (Index) = ',')
+               loop
+                  Index := Index + 1;
+               end loop;
+
+               if Index = Number_First
+                 or else Index > Item'Last
+                 or else not Numeric_Value
+                   (Item (Number_First .. Index - 1), Amount)
+               then
+                  return False;
+               end if;
+
+               Unit_Seconds := Designator_Seconds (Item (Index));
+               if Unit_Seconds = 0.0
+                 or else Amount < 0.0
+                 or else (In_Time and then Item (Index) in 'Y' | 'W' | 'D')
+                 or else ((not In_Time) and then Item (Index) in 'H' | 'S')
+               then
+                  return False;
+               end if;
+
+               Total := Total + Amount * Unit_Seconds;
+               Seen := True;
+               Index := Index + 1;
+            end;
+         end if;
+      end loop;
+
+      if not Seen then
+         return False;
+      end if;
+
+      Value := Rounded_Nonnegative (Total);
+      return Value >= 0;
+   exception
+      when others =>
+         return False;
+   end Parse_ISO_Duration;
+
+   function Parse_ISO_Duration_Microseconds
+     (Text  : String;
+      Value : out Long_Long_Integer)
+      return Boolean
+   is
+      Item : constant String := Trim (Text);
+      Index : Natural;
+      Total : Long_Float := 0.0;
+      Seen  : Boolean := False;
+      In_Time : Boolean := False;
+
+      function Designator_Microseconds (Ch : Character) return Long_Float is
+      begin
+         case Ch is
+            when 'Y' =>
+               return Long_Float (365 * 86_400) * 1_000_000.0;
+            when 'M' =>
+               return (if In_Time then 60_000_000.0
+                       else Long_Float (30 * 86_400) * 1_000_000.0);
+            when 'W' =>
+               return Long_Float (7 * 86_400) * 1_000_000.0;
+            when 'D' =>
+               return 86_400_000_000.0;
+            when 'H' =>
+               return 3_600_000_000.0;
+            when 'S' =>
+               return 1_000_000.0;
+            when others =>
+               return 0.0;
+         end case;
+      end Designator_Microseconds;
+   begin
+      Value := 0;
+      if Item'Length < 3 or else Item (Item'First) /= 'P' then
+         return False;
+      end if;
+
+      Index := Item'First + 1;
+      while Index <= Item'Last loop
+         if Item (Index) = 'T' then
+            if In_Time then
+               return False;
+            end if;
+            In_Time := True;
+            Index := Index + 1;
+         else
+            declare
+               Number_First : constant Natural := Index;
+               Amount : Long_Float;
+               Unit_Micros : Long_Float;
+            begin
+               while Index <= Item'Last
+                 and then (Is_Digit (Item (Index))
+                           or else Item (Index) = '.'
+                           or else Item (Index) = ',')
+               loop
+                  Index := Index + 1;
+               end loop;
+
+               if Index = Number_First
+                 or else Index > Item'Last
+                 or else not Numeric_Value
+                   (Item (Number_First .. Index - 1), Amount)
+               then
+                  return False;
+               end if;
+
+               Unit_Micros := Designator_Microseconds (Item (Index));
+               if Unit_Micros = 0.0
+                 or else Amount < 0.0
+                 or else (In_Time and then Item (Index) in 'Y' | 'W' | 'D')
+                 or else ((not In_Time) and then Item (Index) in 'H' | 'S')
+               then
+                  return False;
+               end if;
+
+               Total := Total + Amount * Unit_Micros;
+               Seen := True;
+               Index := Index + 1;
+            end;
+         end if;
+      end loop;
+
+      if not Seen then
+         return False;
+      end if;
+
+      Value := Rounded_Nonnegative (Total);
+      return Value >= 0;
+   exception
+      when others =>
+         return False;
+   end Parse_ISO_Duration_Microseconds;
+
    function Parse_Duration
      (Text : String)
       return Duration_Parse_Result
@@ -1027,6 +1666,29 @@ package body Humanize.Parsing is
    begin
       if Source'Length = 0 then
          return (Status => Humanize.Status.Invalid_Argument, Value => 0, others => <>);
+      end if;
+
+      if Source'Length > 0 and then Source (Source'First) = 'P' then
+         declare
+            ISO_Total : Long_Long_Integer;
+         begin
+            if Parse_ISO_Duration (Source, ISO_Total) then
+               return
+                 (Status => Humanize.Status.Ok,
+                  Value  => Humanize.Durations.Duration_Seconds (ISO_Total),
+                  Exact  => True,
+                  Consumed => Trim (Text)'Length,
+                  Error_Position => 0,
+                  Error => No_Parse_Error);
+            else
+               return
+                 (Status => Humanize.Status.Invalid_Argument,
+                  Value => 0,
+                  Error_Position => Source'First,
+                  Error => Unsupported_Form,
+                  others => <>);
+            end if;
+         end;
       end if;
 
       while Index <= Source'Last loop
@@ -1112,7 +1774,7 @@ package body Humanize.Parsing is
         (Status => Humanize.Status.Ok,
          Value  => Humanize.Durations.Duration_Seconds (Total),
          Exact  => True,
-         Consumed => Source'Length,
+         Consumed => Trim (Text)'Length,
          Error_Position => 0,
          Error => No_Parse_Error);
    end Parse_Duration;
@@ -1211,9 +1873,44 @@ package body Humanize.Parsing is
       return Duration_Parse_Result
    is
       Normal : constant String := Lenient_Duration_Text (Text);
+      Item   : constant String := Lower (Trim (Text));
    begin
       if Normal'Length = 0 then
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
+      elsif Item in "couple of seconds" | "a couple of seconds" then
+         return Parse_Duration ("2 seconds");
+      elsif Item in "few seconds" | "a few seconds" then
+         return Parse_Duration ("3 seconds");
+      elsif Item = "several seconds" then
+         return Parse_Duration ("7 seconds");
+      elsif Item in "couple of minutes" | "a couple of minutes" then
+         return Parse_Duration ("2 minutes");
+      elsif Item in "few minutes" | "a few minutes" then
+         return Parse_Duration ("3 minutes");
+      elsif Item = "several minutes" then
+         return Parse_Duration ("7 minutes");
+      elsif Item in "couple of hours" | "a couple of hours" then
+         return Parse_Duration ("2 hours");
+      elsif Item in "few hours" | "a few hours" then
+         return Parse_Duration ("3 hours");
+      elsif Item = "several hours" then
+         return Parse_Duration ("7 hours");
+      elsif Item in "couple of days" | "a couple of days" then
+         return Parse_Duration ("2 days");
+      elsif Item in "few days" | "a few days" then
+         return Parse_Duration ("3 days");
+      elsif Item = "several days" then
+         return Parse_Duration ("7 days");
+      elsif Item in "couple of weeks" | "a couple of weeks" then
+         return Parse_Duration ("2 weeks");
+      elsif Item in "few weeks" | "a few weeks" then
+         return Parse_Duration ("3 weeks");
+      elsif Item = "several weeks" then
+         return Parse_Duration ("7 weeks");
+      elsif Normal = "a fortnight" or else Normal = "an fortnight"
+        or else Normal = "fortnight"
+      then
+         return Parse_Duration ("2 weeks");
       else
          return Parse_Duration (Normal);
       end if;
@@ -1411,13 +2108,90 @@ package body Humanize.Parsing is
       end if;
    end Weekday_Value;
 
-   function Weekday_Value_Flexible (Text : String) return Natural is
+   function Localized_Weekday_Value (Text : String) return Natural is
       Item : constant String := Lower (Trim (Text));
    begin
       if Weekday_Value (Item) /= 0 then
          return Weekday_Value (Item);
+      elsif Item = "mandag" or else Item = "montag" or else Item = "lundi"
+        or else Item = "lunes" or else Item = "luned" & U (16#EC#)
+        or else Item = "segunda-feira" or else Item = "maandag"
+        or else Item = "m" & U (16#E5#) & "ndag"
+        or else Item = "maanantai"
+        or else Item = "poniedzia" & U (16#142#) & "ek"
+        or else Item = "pond" & U (16#11B#) & "l" & U (16#ED#)
+        or else Item = "pazartesi"
+      then
+         return 1;
+      elsif Item = "tirsdag" or else Item = "dienstag" or else Item = "mardi"
+        or else Item = "martes" or else Item = "marted" & U (16#EC#)
+        or else Item = "ter" & U (16#E7#) & "a-feira"
+        or else Item = "dinsdag" or else Item = "tisdag"
+        or else Item = "tiistai" or else Item = "wtorek"
+        or else Item = U (16#FA#) & "ter" & U (16#FD#)
+        or else Item = "sal" & U (16#131#)
+      then
+         return 2;
+      elsif Item = "onsdag" or else Item = "mittwoch"
+        or else Item = "mercredi"
+        or else Item = "mi" & U (16#E9#) & "rcoles"
+        or else Item = "mercoled" & U (16#EC#)
+        or else Item = "quarta-feira" or else Item = "woensdag"
+        or else Item = "keskiviikko"
+        or else Item = U (16#15B#) & "roda"
+        or else Item = "st" & U (16#159#) & "eda"
+        or else Item = U (16#E7#) & "ar" & U (16#15F#) & "amba"
+      then
+         return 3;
+      elsif Item = "torsdag" or else Item = "donnerstag"
+        or else Item = "jeudi" or else Item = "jueves"
+        or else Item = "gioved" & U (16#EC#)
+        or else Item = "quinta-feira" or else Item = "donderdag"
+        or else Item = "torstai" or else Item = "czwartek"
+        or else Item = U (16#10D#) & "tvrtek"
+        or else Item = "per" & U (16#15F#) & "embe"
+      then
+         return 4;
+      elsif Item = "fredag" or else Item = "freitag"
+        or else Item = "vendredi" or else Item = "viernes"
+        or else Item = "venerd" & U (16#EC#)
+        or else Item = "sexta-feira" or else Item = "vrijdag"
+        or else Item = "perjantai"
+        or else Item = "pi" & U (16#105#) & "tek"
+        or else Item = "p" & U (16#E1#) & "tek"
+        or else Item = "cuma"
+      then
+         return 5;
+      elsif Item = "l" & U (16#F8#) & "rdag" or else Item = "samstag"
+        or else Item = "samedi"
+        or else Item = "s" & U (16#E1#) & "bado"
+        or else Item = "sabato" or else Item = "zaterdag"
+        or else Item = "l" & U (16#F6#) & "rdag"
+        or else Item = "lauantai" or else Item = "sobota"
+        or else Item = "cumartesi"
+      then
+         return 6;
+      elsif Item = "s" & U (16#F8#) & "ndag" or else Item = "sonntag"
+        or else Item = "dimanche" or else Item = "domingo"
+        or else Item = "domenica" or else Item = "zondag"
+        or else Item = "s" & U (16#F6#) & "ndag"
+        or else Item = "sunnuntai" or else Item = "niedziela"
+        or else Item = "ned" & U (16#11B#) & "le"
+        or else Item = "pazar"
+      then
+         return 7;
+      else
+         return 0;
+      end if;
+   end Localized_Weekday_Value;
+
+   function Weekday_Value_Flexible (Text : String) return Natural is
+      Item : constant String := Lower (Trim (Text));
+   begin
+      if Localized_Weekday_Value (Item) /= 0 then
+         return Localized_Weekday_Value (Item);
       elsif Item'Length > 1 and then Item (Item'Last) = 's' then
-         return Weekday_Value (Item (Item'First .. Item'Last - 1));
+         return Localized_Weekday_Value (Item (Item'First .. Item'Last - 1));
       else
          return 0;
       end if;
@@ -1543,8 +2317,14 @@ package body Humanize.Parsing is
       if Item = "a" or else Item = "an" or else Item = "one" then
          Value := 1;
          return True;
+      elsif Item = "couple" or else Item = "a couple" then
+         Value := 2;
+         return True;
       elsif Item = "two" then
          Value := 2;
+         return True;
+      elsif Item = "few" or else Item = "a few" then
+         Value := 3;
          return True;
       elsif Item = "three" then
          Value := 3;
@@ -1557,6 +2337,9 @@ package body Humanize.Parsing is
          return True;
       elsif Item = "six" then
          Value := 6;
+         return True;
+      elsif Item = "several" then
+         Value := 7;
          return True;
       elsif Item = "seven" then
          Value := 7;
@@ -1579,14 +2362,16 @@ package body Humanize.Parsing is
    end Parse_Natural_Count;
 
    type Date_Unit_Kind is
-     (No_Date_Unit, Day_Date_Unit, Week_Date_Unit, Month_Date_Unit,
-      Year_Date_Unit);
+     (No_Date_Unit, Day_Date_Unit, Week_Date_Unit, Fortnight_Date_Unit,
+      Month_Date_Unit, Year_Date_Unit);
 
    function Date_Unit (Unit : String) return Date_Unit_Kind is
       U : constant String := Lower (Trim (Unit));
    begin
       if Unit_Seconds (U) = 86_400 then
          return Day_Date_Unit;
+      elsif Unit_Seconds (U) = 14 * 86_400 then
+         return Fortnight_Date_Unit;
       elsif Unit_Seconds (U) = 7 * 86_400 then
          return Week_Date_Unit;
       elsif Unit_Seconds (U) = 30 * 86_400 then
@@ -1615,6 +2400,8 @@ package body Humanize.Parsing is
          return Add_Calendar_Days (Base, Count);
       elsif Kind = Week_Date_Unit then
          return Add_Calendar_Days (Base, Count * 7);
+      elsif Kind = Fortnight_Date_Unit then
+         return Add_Calendar_Days (Base, Count * 14);
       elsif Kind = Month_Date_Unit then
          return Add_Months (Base, Count);
       elsif Kind = Year_Date_Unit then
@@ -1636,6 +2423,16 @@ package body Humanize.Parsing is
         or else Item = B ("74C3A46EC3A4C3A46E")
         or else Item = B ("647A69C59B")
         or else Item = "dnes" or else Item = B ("627567C3BC6E")
+        or else Item = B ("617374C4837A69")
+        or else Item = B ("C5A169616E6469656E")
+        or else Item = "danes"
+        or else Item = "hari ini"
+        or else Item = "hom nay"
+        or else Item = "leo"
+        or else Item = "vandag"
+        or else Item = "ma"
+        or else Item = "dnes"
+        or else Item = B ("686F646961C5AD")
         or else Item = B ("D181D0B5D0B3D0BED0B4D0BDD18F")
         or else Item = B ("D181D18CD0BED0B3D0BED0B4D0BDD196")
         or else Item = B ("E4BB8AE697A5")
@@ -1650,7 +2447,19 @@ package body Humanize.Parsing is
         or else Item = "domani" or else Item = B ("616D616E68C3A3")
         or else Item = "imorgon" or else Item = "huomenna"
         or else Item = "jutro" or else Item = B ("7AC3AD747261")
+        or else Item = "rytoj"
+        or else Item = "jutri"
+        or else Item = "besok"
+        or else Item = "esok"
+        or else Item = "ngay mai"
+        or else Item = "kesho"
+        or else Item = "more"
+        or else Item = "holnap"
+        or else Item = "zajtra"
+        or else Item = B ("6DC3B472")
+        or else Item = B ("6D6F726761C5AD")
         or else Item = B ("796172C4B16E") or else Item = B ("796172C4B16E")
+        or else Item = B ("6DC3A2696E65")
         or else Item = B ("D0B7D0B0D0B2D182D180D0B0")
         or else Item = B ("D0B7D0B0D0B2D182D180D0B0")
         or else Item = B ("E6988EE697A5")
@@ -1658,12 +2467,27 @@ package body Humanize.Parsing is
         or else Item = B ("E6988EE5A4A9")
         or else Item = B ("D8BAD8AFD98B")
         or else Item = B ("D8BAD8AFD98BD8A7")
+        or else Item = B ("E0A495E0A4B2")
       then
          return "tomorrow";
       elsif Item = "yesterday" or else Item = B ("692067C3A572")
         or else Item = "gestern" or else Item = "hier" or else Item = "ayer"
         or else Item = "ieri" or else Item = "ontem" or else Item = "gisteren"
         or else Item = B ("6967C3A572") or else Item = "eilen"
+        or else Item = "vakar"
+        or else Item = "vceraj"
+        or else Item = B ("76C48D6572616A")
+        or else Item = "kemarin"
+        or else Item = "semalam"
+        or else Item = B ("6869657261C5AD")
+        or else Item = B ("68696572C483C5AD")
+        or else Item = B ("68696572C485C5AD")
+        or else Item = B ("68696572C485AD")
+        or else Item = "hom qua"
+        or else Item = "jana"
+        or else Item = "gister"
+        or else Item = "tegnap"
+        or else Item = "vcera"
         or else Item = "wczoraj" or else Item = B ("76C48D657261")
         or else Item = B ("64C3BC6E")
         or else Item = B ("D0B2D187D0B5D180D0B0")
@@ -1691,26 +2515,100 @@ package body Humanize.Parsing is
         or else Starts_With (Item, "en ") or else Starts_With (Item, "tra ")
         or else Starts_With (Item, "em ") or else Starts_With (Item, "over ")
         or else Starts_With (Item, "za ")
+        or else Starts_With (Item, "po ")
+        or else Starts_With (Item, "dalam ")
+        or else Starts_With (Item, "post ")
+        or else Starts_With (Item, "trong ")
+        or else Starts_With (Item, "oor ")
+        or else Starts_With (Item, "o ")
+        or else Starts_With (Item, B ("C3AE6E20"))
+        or else Starts_With (Item, B ("C48D657A20"))
+        or else Starts_With (Item, B ("D187D0B5D180D0B5D0B720"))
+        or else Starts_With (Item, B ("E5868DE8BF8720"))
+        or else Starts_With (Item, B ("E38182E381A820"))
+        or else Starts_With (Item, B ("D8AED984D8A7D98420"))
       then
          declare
             Space : constant Natural := Find_Substring (Item, " ");
          begin
             return "in " & Item (Space + 1 .. Item'Last);
          end;
+      elsif Starts_With (Item, "dentro de ") then
+         return "in " & Item (Item'First + 10 .. Item'Last);
+      elsif Starts_With (Item, "baada ya ") then
+         return "in " & Item (Item'First + 9 .. Item'Last);
+      elsif Starts_With (Item, "ennyi ido mulva: ") then
+         return "in " & Item (Item'First + 17 .. Item'Last);
+      elsif Ends_With (Item, " kuluttua") then
+         return "in " & Item (Item'First .. Item'Last - 9);
+      elsif Ends_With (Item, " sonra") then
+         return "in " & Item (Item'First .. Item'Last - 6);
+      elsif Ends_With (Item, B ("20ED9B84")) then
+         return "in " & Item (Item'First .. Item'Last - 4);
+      elsif Ends_With (Item, B ("20E0A4ACE0A4BEE0A4A6")) then
+         return "in " & Item (Item'First .. Item'Last - 10);
       elsif Starts_With (Item, "hace ") then
          return Item (Item'First + 5 .. Item'Last) & " ago";
+      elsif Starts_With (Item, "il y a ") then
+         return Item (Item'First + 7 .. Item'Last) & " ago";
+      elsif Starts_With (Item, B ("68C3A120")) then
+         return Item (Item'First + 4 .. Item'Last) & " ago";
       elsif Starts_With (Item, "vor ") then
          return Item (Item'First + 4 .. Item'Last) & " ago";
+      elsif Starts_With (Item, "for ") and then Ends_With (Item, " siden") then
+         return Item (Item'First + 4 .. Item'Last - 6) & " ago";
       elsif Ends_With (Item, " siden") then
+         return Item (Item'First .. Item'Last - 6) & " ago";
+      elsif Ends_With (Item, B ("20C3AE6E2075726DC483")) then
+         return Item (Item'First .. Item'Last - 9) & " ago";
+      elsif Ends_With (Item, B ("2070726965C5A1")) then
+         return Item (Item'First .. Item'Last - 7) & " ago";
+      elsif Ends_With (Item, " nazaj") then
+         return Item (Item'First .. Item'Last - 6) & " ago";
+      elsif Ends_With (Item, " yang lalu") then
+         return Item (Item'First .. Item'Last - 10) & " ago";
+      elsif Ends_With (Item, " iliyopita") then
+         return Item (Item'First .. Item'Last - 10) & " ago";
+      elsif Ends_With (Item, B ("20616E7461C5AD65")) then
+         return Item (Item'First .. Item'Last - 8) & " ago";
+      elsif Ends_With (Item, " truoc") then
+         return Item (Item'First .. Item'Last - 6) & " ago";
+      elsif Ends_With (Item, " sedan") then
+         return Item (Item'First .. Item'Last - 6) & " ago";
+      elsif Ends_With (Item, " sitten") then
+         return Item (Item'First .. Item'Last - 7) & " ago";
+      elsif Ends_With (Item, B ("20C3B66E6365")) then
          return Item (Item'First .. Item'Last - 6) & " ago";
       elsif Ends_With (Item, " geleden") then
          return Item (Item'First .. Item'Last - 8) & " ago";
+      elsif Ends_With (Item, " gelede") then
+         return Item (Item'First .. Item'Last - 7) & " ago";
+      elsif Ends_With (Item, " ezelott") then
+         return Item (Item'First .. Item'Last - 8) & " ago";
+      elsif Starts_With (Item, "pred ") then
+         return Item (Item'First + 5 .. Item'Last) & " ago";
+      elsif Ends_With (Item, " dozadu") then
+         return Item (Item'First .. Item'Last - 7) & " ago";
       elsif Ends_With (Item, " temu") then
          return Item (Item'First .. Item'Last - 5) & " ago";
+      elsif Ends_With (Item, " fa") then
+         return Item (Item'First .. Item'Last - 3) & " ago";
       elsif Ends_With (Item, B ("20D0BDD0B0D0B7D0B0D0B4")) then
          return Item (Item'First .. Item'Last - 11) & " ago";
+      elsif Ends_With (Item, B ("207A70C49B74")) then
+         return Item (Item'First .. Item'Last - 6) & " ago";
+      elsif Ends_With (Item, B ("20D182D0BED0BCD183")) then
+         return Item (Item'First .. Item'Last - 9) & " ago";
+      elsif Ends_With (Item, B ("E5898D")) then
+         return Item (Item'First .. Item'Last - 3) & " ago";
+      elsif Ends_With (Item, B ("20ECA084")) then
+         return Item (Item'First .. Item'Last - 4) & " ago";
+      elsif Ends_With (Item, B ("20D985D986D8B0")) then
+         return Item (Item'First .. Item'Last - 7) & " ago";
+      elsif Ends_With (Item, B ("20E0A4AAE0A4B9E0A4B2E0A587")) then
+         return Item (Item'First .. Item'Last - 13) & " ago";
       else
-         return Item;
+         return Rendered_Natural_Date_Canonical (Item);
       end if;
    end Canonical_Natural_Date_Text;
 
@@ -1722,6 +2620,33 @@ package body Humanize.Parsing is
    is
       Item  : constant String := Trim (Text);
       Space : Natural := 0;
+
+      function Try_Split
+        (Split_At : Natural;
+         Value : out Integer;
+         Target_Unit : out Unbounded_String)
+         return Boolean
+      is
+         Count_Text : constant String :=
+           Trim (Item (Item'First .. Split_At - 1));
+         Unit_Text  : constant String :=
+           Trim (Item (Split_At + 1 .. Item'Last));
+      begin
+         if Unit_Text'Length = 0 then
+            return False;
+         elsif Ends_With (Count_Text, " of")
+           and then Parse_Natural_Count
+             (Count_Text (Count_Text'First .. Count_Text'Last - 3), Value)
+         then
+            Target_Unit := To_Unbounded_String (Unit_Text);
+            return True;
+         elsif Parse_Natural_Count (Count_Text, Value) then
+            Target_Unit := To_Unbounded_String (Unit_Text);
+            return True;
+         else
+            return False;
+         end if;
+      end Try_Split;
    begin
       for Index in Item'Range loop
          if Item (Index) = ' ' then
@@ -1732,12 +2657,19 @@ package body Humanize.Parsing is
 
       if Space = 0 or else Space = Item'First or else Space = Item'Last then
          return False;
-      elsif not Parse_Natural_Count (Item (Item'First .. Space - 1), Count) then
-         return False;
-      else
-         Unit := To_Unbounded_String (Item (Space + 1 .. Item'Last));
-         return True;
       end if;
+
+      for Index in reverse Item'Range loop
+         if Item (Index) = ' '
+           and then Index /= Item'First
+           and then Index /= Item'Last
+           and then Try_Split (Index, Count, Unit)
+         then
+            return True;
+         end if;
+      end loop;
+
+      return False;
    end Split_Count_Unit;
 
    function Parse_ISO_Date (Text : String; Value : out Ada.Calendar.Time) return Boolean is
@@ -1778,6 +2710,106 @@ package body Humanize.Parsing is
       when others =>
          return False;
    end Parse_ISO_Date;
+
+   function Parse_ISO_Ordinal_Date
+     (Text  : String;
+      Value : out Ada.Calendar.Time)
+      return Boolean
+   is
+      Item : constant String := Trim (Text);
+      Year : Integer;
+      Ordinal : Integer;
+   begin
+      if Item'Length /= 8
+        or else Item (Item'First + 4) /= '-'
+      then
+         return False;
+      end if;
+
+      Year := Integer'Value (Item (Item'First .. Item'First + 3));
+      Ordinal := Integer'Value (Item (Item'First + 5 .. Item'Last));
+      if Year not in Integer (Ada.Calendar.Year_Number'First) ..
+        Integer (Ada.Calendar.Year_Number'Last)
+        or else Ordinal < 1
+        or else Ordinal >
+          (if Days_In_Month (Ada.Calendar.Year_Number (Year), 2) = 29
+           then 366
+           else 365)
+      then
+         return False;
+      end if;
+
+      Value := Add_Calendar_Days
+        (Ada.Calendar.Time_Of
+           (Ada.Calendar.Year_Number (Year), 1, 1, 0.0),
+         Ordinal - 1);
+      return True;
+   exception
+      when others =>
+         return False;
+   end Parse_ISO_Ordinal_Date;
+
+   function ISO_Week_One_Start
+     (Year : Ada.Calendar.Year_Number)
+      return Ada.Calendar.Time
+   is
+      Jan_4 : constant Ada.Calendar.Time :=
+        Ada.Calendar.Time_Of (Year, 1, 4, 0.0);
+      Day : constant Natural :=
+        Weekday_Number (Ada.Calendar.Formatting.Day_Of_Week (Jan_4));
+   begin
+      return Add_Calendar_Days (Jan_4, 1 - Integer (Day));
+   end ISO_Week_One_Start;
+
+   function Parse_ISO_Week_Date
+     (Text  : String;
+      Value : out Ada.Calendar.Time)
+      return Boolean
+   is
+      Item : constant String := Trim (Text);
+      Year : Integer;
+      Week : Integer;
+      Day  : Integer := 1;
+      Start : Ada.Calendar.Time;
+      Next_Start : Ada.Calendar.Time;
+   begin
+      if Item'Length not in 8 | 10
+        or else Item (Item'First + 4) /= '-'
+        or else Item (Item'First + 5) not in 'W' | 'w'
+      then
+         return False;
+      end if;
+      if Item'Length = 10 and then Item (Item'First + 8) /= '-' then
+         return False;
+      end if;
+
+      Year := Integer'Value (Item (Item'First .. Item'First + 3));
+      Week := Integer'Value (Item (Item'First + 6 .. Item'First + 7));
+      if Item'Length = 10 then
+         Day := Integer'Value (Item (Item'Last .. Item'Last));
+      end if;
+
+      if Year not in Integer (Ada.Calendar.Year_Number'First) ..
+        Integer (Ada.Calendar.Year_Number'Last)
+        or else Week not in 1 .. 53
+        or else Day not in 1 .. 7
+      then
+         return False;
+      end if;
+
+      Start := ISO_Week_One_Start (Ada.Calendar.Year_Number (Year));
+      if Year = Integer (Ada.Calendar.Year_Number'Last) then
+         Next_Start := Add_Calendar_Days (Start, 53 * 7);
+      else
+         Next_Start :=
+           ISO_Week_One_Start (Ada.Calendar.Year_Number (Year + 1));
+      end if;
+      Value := Add_Calendar_Days (Start, (Week - 1) * 7 + Day - 1);
+      return Value < Next_Start;
+   exception
+      when others =>
+         return False;
+   end Parse_ISO_Week_Date;
 
    function Parse_Month_Name_Date
      (Reference : Ada.Calendar.Time;
@@ -2332,6 +3364,72 @@ package body Humanize.Parsing is
       return Boolean
    is
       Item : constant String := Lower (Trim (Text));
+
+      function Parse_Natural_Text
+        (Source : String;
+         Value  : out Natural)
+         return Boolean
+      is
+      begin
+         if Source'Length = 0 then
+            return False;
+         end if;
+         for Index in Source'Range loop
+            if not Is_Digit (Source (Index)) then
+               return False;
+            end if;
+         end loop;
+         Value := Natural'Value (Source);
+         return True;
+      exception
+         when others =>
+            Value := 0;
+            return False;
+      end Parse_Natural_Text;
+
+      function Parse_Clock
+        (Source : String;
+         Has_PM : Boolean;
+         Has_AM : Boolean)
+         return Boolean
+      is
+         Clock_Text : constant String := Trim (Source);
+         Colon : constant Natural := Find_Substring (Clock_Text, ":");
+         Hour : Natural := 0;
+         Minute : Natural := 0;
+      begin
+         if Colon = 0 then
+            if not Parse_Natural_Text (Clock_Text, Hour) then
+               return False;
+            end if;
+         else
+            if not Parse_Natural_Text
+              (Clock_Text (Clock_Text'First .. Colon - 1), Hour)
+              or else not Parse_Natural_Text
+                (Clock_Text (Colon + 1 .. Clock_Text'Last), Minute)
+            then
+               return False;
+            end if;
+         end if;
+
+         if Minute > 59 then
+            return False;
+         elsif Has_AM or else Has_PM then
+            if Hour < 1 or else Hour > 12 then
+               return False;
+            end if;
+            if Has_AM and then Hour = 12 then
+               Hour := 0;
+            elsif Has_PM and then Hour < 12 then
+               Hour := Hour + 12;
+            end if;
+         elsif Hour > 23 then
+            return False;
+         end if;
+
+         Seconds := Ada.Calendar.Day_Duration (Hour * 3_600 + Minute * 60);
+         return True;
+      end Parse_Clock;
    begin
       if Item = "morning" then
          Seconds := 9.0 * 3_600.0;
@@ -2341,10 +3439,22 @@ package body Humanize.Parsing is
          Seconds := 18.0 * 3_600.0;
       elsif Item = "night" then
          Seconds := 21.0 * 3_600.0;
-      elsif Item = "noon" then
+      elsif Item = "noon" or else Item = "around noon"
+        or else Item = "about noon"
+      then
          Seconds := 12.0 * 3_600.0;
       elsif Item = "midnight" then
          Seconds := 0.0;
+      elsif Ends_With (Item, " pm") then
+         return Parse_Clock (Item (Item'First .. Item'Last - 3), True, False);
+      elsif Ends_With (Item, " am") then
+         return Parse_Clock (Item (Item'First .. Item'Last - 3), False, True);
+      elsif Ends_With (Item, "pm") then
+         return Parse_Clock (Item (Item'First .. Item'Last - 2), True, False);
+      elsif Ends_With (Item, "am") then
+         return Parse_Clock (Item (Item'First .. Item'Last - 2), False, True);
+      elsif Find_Substring (Item, ":") /= 0 then
+         return Parse_Clock (Item, False, False);
       else
          return False;
       end if;
@@ -2381,7 +3491,18 @@ package body Humanize.Parsing is
             begin
                if Head'Length > 0 and then Time_Of_Day_Seconds (Tail, Seconds)
                then
-                  Prefix := To_Unbounded_String (Head);
+                  if Ends_With (Head, " at") then
+                     Prefix := To_Unbounded_String
+                       (Trim (Head (Head'First .. Head'Last - 3)));
+                  elsif Ends_With (Head, " around") then
+                     Prefix := To_Unbounded_String
+                       (Trim (Head (Head'First .. Head'Last - 7)));
+                  elsif Ends_With (Head, " about") then
+                     Prefix := To_Unbounded_String
+                       (Trim (Head (Head'First .. Head'Last - 6)));
+                  else
+                     Prefix := To_Unbounded_String (Head);
+                  end if;
                   return True;
                end if;
             end;
@@ -2763,6 +3884,60 @@ package body Humanize.Parsing is
       Unit   : Unbounded_String;
       Prefix : Unbounded_String;
       Seconds : Ada.Calendar.Day_Duration;
+
+      function Business_Month_Start
+        (Direction : Integer)
+         return Ada.Calendar.Time
+      is
+         Candidate : Ada.Calendar.Time :=
+           Add_Months (Month_Start (Base), Direction);
+      begin
+         for Attempt in 1 .. 31 loop
+            if Humanize.Durations.Is_Business_Day (Candidate, Rules) then
+               return Candidate;
+            end if;
+            Candidate := Add_Calendar_Days (Candidate, 1);
+         end loop;
+         return Candidate;
+      end Business_Month_Start;
+
+      function Business_Month_End
+        (Direction : Integer)
+         return Ada.Calendar.Time
+      is
+         Candidate : Ada.Calendar.Time :=
+           Add_Calendar_Days
+             (Add_Months (Month_Start (Base), Direction + 1), -1);
+      begin
+         for Attempt in 1 .. 31 loop
+            if Humanize.Durations.Is_Business_Day (Candidate, Rules) then
+               return Candidate;
+            end if;
+            Candidate := Add_Calendar_Days (Candidate, -1);
+         end loop;
+         return Candidate;
+      end Business_Month_End;
+
+      function Business_Month_Direction
+        (Phrase : String;
+         Direction : out Integer)
+         return Boolean
+      is
+         Phrase_Text : constant String := Trim (Phrase);
+      begin
+         if Phrase_Text = "this business month" then
+            Direction := 0;
+         elsif Phrase_Text = "next business month" then
+            Direction := 1;
+         elsif Phrase_Text = "last business month"
+           or else Phrase_Text = "previous business month"
+         then
+            Direction := -1;
+         else
+            return False;
+         end if;
+         return True;
+      end Business_Month_Direction;
    begin
       if Item'Length = 0 then
          return
@@ -2783,6 +3958,8 @@ package body Humanize.Parsing is
             end if;
          end;
       elsif Parse_ISO_Date (Item, Parsed)
+        or else Parse_ISO_Ordinal_Date (Item, Parsed)
+        or else Parse_ISO_Week_Date (Item, Parsed)
         or else Parse_Month_Name_Date (Reference, Item, Parsed)
         or else Parse_Month_Day_Ordinal_Date (Reference, Item, Parsed)
       then
@@ -2817,6 +3994,16 @@ package body Humanize.Parsing is
       elsif Parse_Weekday_Day_Ordinal_Date (Reference, Item, Parsed) then
          return Date_Result (Parsed, Item'Length);
       elsif Starts_With (Item, "start of ")
+        and then Business_Month_Direction
+          (Item (Item'First + 9 .. Item'Last), Count)
+      then
+         return Date_Result (Business_Month_Start (Count), Item'Length);
+      elsif Starts_With (Item, "end of ")
+        and then Business_Month_Direction
+          (Item (Item'First + 7 .. Item'Last), Count)
+      then
+         return Date_Result (Business_Month_End (Count), Item'Length);
+      elsif Starts_With (Item, "start of ")
         and then Boundary_Date
           (Reference, Item (Item'First + 9 .. Item'Last), False, Parsed)
       then
@@ -2841,6 +4028,51 @@ package body Humanize.Parsing is
           (Reference, Item (Item'First .. Item'Last - 4), True, Parsed)
       then
          return Date_Result (Parsed, Item'Length);
+      elsif (Starts_With (Item, "next business ")
+             or else Starts_With (Item, "last business ")
+             or else Starts_With (Item, "this business "))
+        and then Item /= "next business day"
+        and then Item /= "last business day"
+      then
+         declare
+            Direction : constant Integer :=
+              (if Starts_With (Item, "last business ") then -1
+               elsif Starts_With (Item, "next business ") then 1
+               else 0);
+            Phrase_Body : constant String :=
+              Item (Item'First + 14 .. Item'Last);
+            Target : constant Natural := Weekday_Value (Phrase_Body);
+            Candidate : Ada.Calendar.Time := Base;
+            Step : constant Integer := (if Direction < 0 then -1 else 1);
+         begin
+            if Target = 0 then
+               return
+                 (Status => Humanize.Status.Invalid_Argument,
+                  Error_Position => Item'First + 14,
+                  others => <>);
+            end if;
+
+            if Direction /= 0 then
+               Candidate := Add_Calendar_Days (Candidate, Step);
+            end if;
+
+            for Attempt in 1 .. 370 loop
+               if Weekday_Number
+                 (Ada.Calendar.Formatting.Day_Of_Week (Candidate)) = Target
+                 and then Humanize.Durations.Is_Business_Day
+                   (Candidate, Rules)
+               then
+                  return Date_Result (Candidate, Item'Length);
+               end if;
+               Candidate := Add_Calendar_Days (Candidate, Step);
+            end loop;
+
+            return
+              (Status => Humanize.Status.Invalid_Value,
+               Error => Out_Of_Range,
+               Error_Position => Item'First,
+               others => <>);
+         end;
       elsif Item = "next business day" then
          return Date_Result
            (Humanize.Durations.Add_Business_Days (Base, 1, Rules),
@@ -2884,6 +4116,12 @@ package body Humanize.Parsing is
       elsif Boundary_Date (Reference, Item, False, Parsed)
       then
          return Date_Result (Parsed, Item'Length);
+      elsif Starts_With (Item, "in a few ")
+        and then Known_Date_Unit (Item (Item'First + 9 .. Item'Last))
+      then
+         return Date_Result
+           (Unit_Days (Base, 3, Item (Item'First + 9 .. Item'Last)),
+            Item'Length);
       elsif Starts_With (Item, "in ")
         and then Split_Count_Unit
           (Item (Item'First + 3 .. Item'Last), Count, Unit)
@@ -2902,6 +4140,90 @@ package body Humanize.Parsing is
         and then Known_Date_Unit (To_String (Unit))
       then
          return Date_Result (Unit_Days (Base, Count, To_String (Unit)), Item'Length);
+      elsif Ends_With (Item, " after next") then
+         declare
+            Weekday_Text : constant String :=
+              Trim (Item (Item'First .. Item'Last - 11));
+            Target : constant Natural := Weekday_Value_Flexible (Weekday_Text);
+         begin
+            if Target = 0 then
+               return
+                 (Status => Humanize.Status.Invalid_Argument,
+                  Error => Expected_Unit,
+                  Error_Position => Item'First,
+                  others => <>);
+            end if;
+            return Date_Result
+              (Repeated_Weekday_Date (Base, 2, Target), Item'Length);
+         end;
+      elsif Ends_With (Item, " before next") then
+         declare
+            Weekday_Text : constant String :=
+              Trim (Item (Item'First .. Item'Last - 12));
+            Target : constant Natural := Weekday_Value_Flexible (Weekday_Text);
+         begin
+            if Target = 0 then
+               return
+                 (Status => Humanize.Status.Invalid_Argument,
+                  Error => Expected_Unit,
+                  Error_Position => Item'First,
+                  others => <>);
+            end if;
+            return Date_Result
+              (Add_Calendar_Days (Repeated_Weekday_Date (Base, 1, Target), -7),
+               Item'Length);
+         end;
+      elsif Starts_With (Item, "next month on ")
+        or else Starts_With (Item, "this month on ")
+        or else Starts_With (Item, "last month on ")
+      then
+         declare
+            Direction : constant Integer :=
+              (if Starts_With (Item, "next ") then 1
+               elsif Starts_With (Item, "last ") then -1
+               else 0);
+            Day_Text_First : constant Natural :=
+              (if Starts_With (Item, "this ") then Item'First + 14
+               else Item'First + 14);
+            Raw_Day_Text : constant String :=
+              Item (Day_Text_First .. Item'Last);
+            Day_Text : constant String :=
+              (if Starts_With (Raw_Day_Text, "the ")
+               then Raw_Day_Text (Raw_Day_Text'First + 4 .. Raw_Day_Text'Last)
+               else Raw_Day_Text);
+            Error_At : constant Natural :=
+              (if Starts_With (Raw_Day_Text, "the ")
+               then Day_Text_First + 4
+               else Day_Text_First);
+            Day_Number : constant Integer :=
+              Ordinal_Value (Day_Text);
+            Target_Month : constant Ada.Calendar.Time :=
+              Add_Months (Month_Start (Base), Direction);
+            Year : Ada.Calendar.Year_Number;
+            Month : Ada.Calendar.Month_Number;
+            Current_Day : Ada.Calendar.Day_Number;
+            Ignored : Ada.Calendar.Day_Duration;
+         begin
+            if Day_Number < 1 or else Day_Number > 31 then
+               return
+                  (Status => Humanize.Status.Invalid_Argument,
+                  Error => Expected_Number,
+                  Error_Position => Error_At,
+                  others => <>);
+            end if;
+            Ada.Calendar.Split (Target_Month, Year, Month, Current_Day, Ignored);
+            return Date_Result
+              (Ada.Calendar.Time_Of
+                 (Year, Month, Ada.Calendar.Day_Number (Day_Number), 0.0),
+               Item'Length);
+         exception
+            when others =>
+               return
+                  (Status => Humanize.Status.Invalid_Value,
+                  Error => Out_Of_Range,
+                  Error_Position => Error_At,
+                  others => <>);
+         end;
       elsif Starts_With (Item, "next ") or else Starts_With (Item, "last ")
         or else Starts_With (Item, "this ")
       then
@@ -3220,6 +4542,18 @@ package body Humanize.Parsing is
            (Status => Humanize.Status.Invalid_Argument,
             Error_Position => Text'First,
             others => <>);
+      elsif Item'Length = 8
+        and then Item (Item'First + 4) = '-'
+        and then Item (Item'First + 5) in 'W' | 'w'
+      then
+         declare
+            Low : Ada.Calendar.Time;
+         begin
+            if Parse_ISO_Week_Date (Item, Low) then
+               return Date_Range_Result
+                 (Low, Add_Calendar_Days (Low, 7), Item'Length);
+            end if;
+         end;
       elsif Item = "today" or else Item = "tomorrow" or else Item = "yesterday"
         or else Item = "now"
       then
@@ -3272,6 +4606,29 @@ package body Humanize.Parsing is
          begin
             return Date_Range_Result
               (Low, Add_Calendar_Days (Low, 2), Item'Length);
+         end;
+      elsif Item = "this business week" then
+         declare
+            Low : constant Ada.Calendar.Time := Week_Start (Base);
+         begin
+            return Date_Range_Result
+              (Low, Add_Calendar_Days (Low, 5), Item'Length);
+         end;
+      elsif Item = "next business week" then
+         declare
+            Low : constant Ada.Calendar.Time :=
+              Add_Calendar_Days (Week_Start (Base), 7);
+         begin
+            return Date_Range_Result
+              (Low, Add_Calendar_Days (Low, 5), Item'Length);
+         end;
+      elsif Item = "last business week" then
+         declare
+            Low : constant Ada.Calendar.Time :=
+              Add_Calendar_Days (Week_Start (Base), -7);
+         begin
+            return Date_Range_Result
+              (Low, Add_Calendar_Days (Low, 5), Item'Length);
          end;
       elsif Item = "this month" then
          return Date_Range_Result
@@ -4341,6 +5698,12 @@ package body Humanize.Parsing is
          others => <>);
    end Scan_Counted_Noun;
 
+   function Parse_Number_And_Tail
+     (Text   : String;
+      Value  : out Long_Float;
+      Tail   : out Unbounded_String)
+      return Boolean;
+
    function Parse_Number_Range
      (Text : String)
       return Number_Range_Parse_Result
@@ -4460,6 +5823,469 @@ package body Humanize.Parsing is
          Error => No_Parse_Error);
    end Parse_Number_Range;
 
+   function Parse_Decimal_Range
+     (Text : String)
+      return Decimal_Range_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+      Join : constant Natural := Find_Substring (Item, " to ");
+      Low_Value : Long_Float := 0.0;
+      High_Value : Long_Float := 0.0;
+   begin
+      if Item'Length = 0 then
+         return
+           (Status => Humanize.Status.Invalid_Argument,
+            Error_Position => Text'First,
+            Error => Empty_Input,
+            others => <>);
+      end if;
+
+      if Join = 0 then
+         return
+           (Status => Humanize.Status.Invalid_Argument,
+            Error_Position => Item'First,
+            Error => Expected_Separator,
+            others => <>);
+      end if;
+
+      if not Numeric_Value (Trim (Item (Item'First .. Join - 1)), Low_Value)
+        or else not Numeric_Value
+          (Trim (Item (Join + 4 .. Item'Last)), High_Value)
+      then
+         return
+           (Status => Humanize.Status.Invalid_Argument,
+            Error_Position => Join + 4,
+            Error => Expected_Number,
+            others => <>);
+      end if;
+
+      if High_Value < Low_Value then
+         return
+           (Status => Humanize.Status.Invalid_Value,
+            Error => Out_Of_Range,
+            others => <>);
+      end if;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Low => Low_Value,
+         High => High_Value,
+         Exact => True,
+         Consumed => Item'Length,
+         Error_Position => 0,
+         Error => No_Parse_Error);
+   end Parse_Decimal_Range;
+
+   function Parse_Digit_Word
+     (Text  : String;
+      Digit : out Natural)
+      return Boolean
+   is
+      Item : constant String := Lower (Trim (Text));
+   begin
+      if Item = "zero" then
+         Digit := 0;
+      elsif Item = "one" then
+         Digit := 1;
+      elsif Item = "two" then
+         Digit := 2;
+      elsif Item = "three" then
+         Digit := 3;
+      elsif Item = "four" then
+         Digit := 4;
+      elsif Item = "five" then
+         Digit := 5;
+      elsif Item = "six" then
+         Digit := 6;
+      elsif Item = "seven" then
+         Digit := 7;
+      elsif Item = "eight" then
+         Digit := 8;
+      elsif Item = "nine" then
+         Digit := 9;
+      else
+         return False;
+      end if;
+      return True;
+   end Parse_Digit_Word;
+
+   function Parse_Decimal_Words_Value
+     (Text  : String;
+      Value : out Long_Float)
+      return Boolean
+   is
+      Item : constant String := Lower (Trim (Text));
+      Point : constant Natural := Find_Substring (Item, " point ");
+      Whole : Long_Long_Integer := 0;
+      Fraction : Long_Float := 0.0;
+      Scale : Long_Float := 10.0;
+      Position : Natural;
+      Negative : constant Boolean := Starts_With (Item, "minus ");
+      Body_First : constant Natural :=
+        (if Negative then Item'First + 6 else Item'First);
+   begin
+      if Item'Length = 0 then
+         return False;
+      elsif Point = 0 then
+         if not Humanize.Numbers.Parse_Deterministic_Cardinal
+           (Item (Body_First .. Item'Last), Whole)
+         then
+            return False;
+         end if;
+         Value := Long_Float (Whole);
+      else
+         if not Humanize.Numbers.Parse_Deterministic_Cardinal
+           (Item (Body_First .. Point - 1), Whole)
+         then
+            return False;
+         end if;
+
+         Position := Point + 7;
+         while Position <= Item'Last loop
+            declare
+               Space : constant Natural :=
+                 Find_Substring (Item (Position .. Item'Last), " ");
+               Stop : constant Natural :=
+                 (if Space = 0 then Item'Last else Space - 1);
+               Digit : Natural;
+            begin
+               if not Parse_Digit_Word (Item (Position .. Stop), Digit) then
+                  return False;
+               end if;
+               Fraction := Fraction + Long_Float (Digit) / Scale;
+               Scale := Scale * 10.0;
+               Position := Stop + 2;
+            end;
+         end loop;
+         Value := Long_Float (Whole) + Fraction;
+      end if;
+
+      if Negative then
+         Value := -Value;
+      end if;
+      return True;
+   exception
+      when others =>
+         Value := 0.0;
+         return False;
+   end Parse_Decimal_Words_Value;
+
+   function Parse_Decimal_Range_Words
+     (Text : String)
+      return Decimal_Range_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+      Join : constant Natural := Find_Substring (Item, " to ");
+      Low_Value : Long_Float := 0.0;
+      High_Value : Long_Float := 0.0;
+   begin
+      if Join = 0 then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Separator,
+                 Error_Position => Text'First,
+                 others => <>);
+      elsif not Parse_Decimal_Words_Value
+        (Item (Item'First .. Join - 1), Low_Value)
+        or else not Parse_Decimal_Words_Value
+          (Item (Join + 4 .. Item'Last), High_Value)
+      then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Number,
+                 Error_Position => Join + 4,
+                 others => <>);
+      elsif High_Value < Low_Value then
+         return (Status => Humanize.Status.Invalid_Value,
+                 Error => Out_Of_Range,
+                 others => <>);
+      end if;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Low => Low_Value,
+         High => High_Value,
+         Exact => True,
+         Consumed => Item'Length,
+         Error_Position => 0,
+         Error => No_Parse_Error);
+   end Parse_Decimal_Range_Words;
+
+   function Parse_Fraction_Denominator_Word
+     (Text        : String;
+      Denominator : out Natural)
+      return Boolean
+   is
+      Item : constant String := Lower (Trim (Text));
+   begin
+      if Item = "half" or else Item = "halves" then
+         Denominator := 2;
+      elsif Item = "third" or else Item = "thirds" then
+         Denominator := 3;
+      elsif Item = "quarter" or else Item = "quarters"
+        or else Item = "fourth" or else Item = "fourths"
+      then
+         Denominator := 4;
+      elsif Item = "fifth" or else Item = "fifths" then
+         Denominator := 5;
+      elsif Item = "sixth" or else Item = "sixths" then
+         Denominator := 6;
+      elsif Item = "seventh" or else Item = "sevenths" then
+         Denominator := 7;
+      elsif Item = "eighth" or else Item = "eighths" then
+         Denominator := 8;
+      elsif Item = "ninth" or else Item = "ninths" then
+         Denominator := 9;
+      elsif Item = "tenth" or else Item = "tenths" then
+         Denominator := 10;
+      else
+         return False;
+      end if;
+      return True;
+   end Parse_Fraction_Denominator_Word;
+
+   function Parse_Fraction_Words
+     (Text : String)
+      return Proportion_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+      Space : Natural := 0;
+      Numerator : Long_Long_Integer := 0;
+      Denominator : Natural := 0;
+   begin
+      for Index in reverse Item'Range loop
+         if Item (Index) = ' ' then
+            Space := Index;
+            exit;
+         end if;
+      end loop;
+
+      if Space = 0 then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Separator,
+                 Error_Position => Text'First,
+                 others => <>);
+      elsif not Humanize.Numbers.Parse_Deterministic_Cardinal
+        (Item (Item'First .. Space - 1), Numerator)
+        or else Numerator < 0
+        or else not Parse_Fraction_Denominator_Word
+          (Item (Space + 1 .. Item'Last), Denominator)
+      then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Number,
+                 Error_Position => Item'First,
+                 others => <>);
+      end if;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Count => Natural (Numerator),
+         Total => Denominator,
+         Exact => True,
+         Consumed => Item'Length,
+         Error_Position => 0,
+         Error => No_Parse_Error);
+   end Parse_Fraction_Words;
+
+   function Parse_Percent_Words
+     (Text : String)
+      return Float_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+      Suffix : constant String := " percent";
+      Value : Long_Float := 0.0;
+   begin
+      if not Ends_With (Item, Suffix) then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Unit,
+                 Error_Position => Text'First,
+                 others => <>);
+      elsif not Parse_Decimal_Words_Value
+        (Item (Item'First .. Item'Last - Suffix'Length), Value)
+      then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Number,
+                 Error_Position => Text'First,
+                 others => <>);
+      end if;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Value => Value,
+         Exact => True,
+         Consumed => Item'Length,
+         Error_Position => 0,
+         Error => No_Parse_Error);
+   end Parse_Percent_Words;
+
+   function Parse_Uncertainty_Label
+     (Text : String)
+      return Uncertainty_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+      Center : Long_Float := 0.0;
+      Amount : Long_Float := 0.0;
+      Low_Value : Long_Float := 0.0;
+      High_Value : Long_Float := 0.0;
+      Tail : Unbounded_String;
+      Join : Natural := 0;
+   begin
+      if Item'Length = 0 then
+         return
+           (Status => Humanize.Status.Invalid_Argument,
+            Error_Position => Text'First,
+            Error => Empty_Input,
+            others => <>);
+      end if;
+
+      if Parse_Number_And_Tail (Item, Center, Tail) then
+         declare
+            Tail_Text : constant String := Trim (To_String (Tail));
+         begin
+            if Starts_With (Tail_Text, "+/- ") then
+               if Tail_Text'Length >= 5
+                 and then Numeric_Value
+                   (Trim (Tail_Text (5 .. Tail_Text'Last)), Amount)
+                 and then Amount >= 0.0
+               then
+                  return
+                    (Status => Humanize.Status.Ok,
+                     Value => Center,
+                     Uncertainty => Amount,
+                     Low => Center - Amount,
+                     High => Center + Amount,
+                     Style => Humanize.Numbers.Plus_Minus_Uncertainty,
+                     Exact => True,
+                     Consumed => Item'Length,
+                     Error_Position => 0,
+                     Error => No_Parse_Error);
+               end if;
+            elsif Starts_With (Tail_Text, "(+/- ")
+              and then Tail_Text'Length >= 7
+              and then Tail_Text (Tail_Text'Last) = ')'
+            then
+               declare
+                  Inner : constant String :=
+                    Tail_Text (6 .. Tail_Text'Last - 1);
+               begin
+                  if Numeric_Value (Trim (Inner), Amount)
+                    and then Amount >= 0.0
+                  then
+                     return
+                       (Status => Humanize.Status.Ok,
+                        Value => Center,
+                        Uncertainty => Amount,
+                        Low => Center - Amount,
+                        High => Center + Amount,
+                        Style => Humanize.Numbers.Parenthesized_Uncertainty,
+                        Exact => True,
+                        Consumed => Item'Length,
+                        Error_Position => 0,
+                        Error => No_Parse_Error);
+                  end if;
+               end;
+            end if;
+         end;
+      end if;
+
+      Join := Find_Substring (Item, " to ");
+      if Join /= 0
+        and then Numeric_Value (Trim (Item (Item'First .. Join - 1)), Low_Value)
+        and then Numeric_Value
+          (Trim (Item (Join + 4 .. Item'Last)), High_Value)
+      then
+         if High_Value < Low_Value then
+            return
+              (Status => Humanize.Status.Invalid_Value,
+               Error => Out_Of_Range,
+               others => <>);
+         end if;
+
+         return
+           (Status => Humanize.Status.Ok,
+            Value => (Low_Value + High_Value) / 2.0,
+            Uncertainty => (High_Value - Low_Value) / 2.0,
+            Low => Low_Value,
+            High => High_Value,
+            Style => Humanize.Numbers.Interval_Uncertainty,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error);
+      end if;
+
+      return
+        (Status => Humanize.Status.Invalid_Argument,
+         Error_Position => Text'First,
+         Error => Expected_Separator,
+         others => <>);
+   end Parse_Uncertainty_Label;
+
+   function Parse_Uncertainty_Words
+     (Text : String)
+      return Uncertainty_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+      Mark : constant String := " plus or minus ";
+      Join : constant Natural := Find_Substring (Item, Mark);
+      Center : Long_Float := 0.0;
+      Amount : Long_Float := 0.0;
+   begin
+      if Join = 0 then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Separator,
+                 Error_Position => Text'First,
+                 others => <>);
+      elsif not Parse_Decimal_Words_Value
+        (Item (Item'First .. Join - 1), Center)
+        or else not Parse_Decimal_Words_Value
+          (Item (Join + Mark'Length .. Item'Last), Amount)
+        or else Amount < 0.0
+      then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Number,
+                 Error_Position => Join + Mark'Length,
+                 others => <>);
+      end if;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Value => Center,
+         Uncertainty => Amount,
+         Low => Center - Amount,
+         High => Center + Amount,
+         Style => Humanize.Numbers.Plus_Minus_Uncertainty,
+         Exact => True,
+         Consumed => Item'Length,
+         Error_Position => 0,
+         Error => No_Parse_Error);
+   end Parse_Uncertainty_Words;
+
+   function Scan_Uncertainty_Label
+     (Text : String)
+      return Uncertainty_Parse_Result
+   is
+      Last : constant Natural := Scan_End (Text);
+   begin
+      if Text'Length = 0 or else Last < Text'First then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error_Position => Text'First,
+                 others => <>);
+      end if;
+
+      for Stop in reverse Text'First .. Last loop
+         declare
+            Result : constant Uncertainty_Parse_Result :=
+              Parse_Uncertainty_Label (Text (Text'First .. Stop));
+         begin
+            if Result.Status = Humanize.Status.Ok then
+               return Result;
+            end if;
+         end;
+      end loop;
+      return (Status => Humanize.Status.Invalid_Argument,
+              Error_Position => Text'First,
+              others => <>);
+   end Scan_Uncertainty_Label;
+
    function Scan_Number_Range
      (Text : String)
       return Number_Range_Parse_Result
@@ -4487,6 +6313,34 @@ package body Humanize.Parsing is
               Error_Position => Text'First,
               others => <>);
    end Scan_Number_Range;
+
+   function Scan_Decimal_Range
+     (Text : String)
+      return Decimal_Range_Parse_Result
+   is
+      Last : constant Natural := Scan_End (Text);
+   begin
+      if Text'Length = 0 or else Last < Text'First then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error_Position => Text'First,
+                 others => <>);
+      end if;
+
+      for Stop in reverse Text'First .. Last loop
+         declare
+            Result : constant Decimal_Range_Parse_Result :=
+              Parse_Decimal_Range (Text (Text'First .. Stop));
+         begin
+            if Result.Status = Humanize.Status.Ok then
+               return Result;
+            end if;
+         end;
+      end loop;
+
+      return (Status => Humanize.Status.Invalid_Argument,
+              Error_Position => Text'First,
+              others => <>);
+   end Scan_Decimal_Range;
 
    function Parse_Proportion
      (Text : String)
@@ -4846,6 +6700,34 @@ package body Humanize.Parsing is
          return 5;
       elsif Item = "last" then
          return -1;
+      elsif Item = "primo" or else Item = "primer"
+        or else Item = "primeiro" or else Item = "eerste"
+        or else Item = "f" & U (16#F8#) & "rste"
+        or else Item = "erster"
+      then
+         return 1;
+      elsif Item = "secondo" or else Item = "segundo" or else Item = "tweede"
+        or else Item = "anden" or else Item = "zweiter"
+      then
+         return 2;
+      elsif Item = "terzo" or else Item = "tercer"
+        or else Item = "terceiro" or else Item = "derde"
+        or else Item = "tredje" or else Item = "dritter"
+      then
+         return 3;
+      elsif Item = "quarto" or else Item = "cuarto" or else Item = "vierde"
+        or else Item = "fjerde" or else Item = "vierter"
+      then
+         return 4;
+      elsif Item = "quinto" or else Item = "vijfde" or else Item = "femte"
+        or else Item = "f" & U (16#FC#) & "nfter"
+      then
+         return 5;
+      elsif Item = "ultimo" or else Item = "laatste"
+        or else Item = "sidste" or else Item = "letzter"
+        or else Item = U (16#FA#) & "ltimo"
+      then
+         return -1;
       else
          return 0;
       end if;
@@ -4857,7 +6739,9 @@ package body Humanize.Parsing is
       Unit    : Humanize.Durations.Recurrence_Unit;
       Consumed : Natural;
       Weekday : Natural := 0;
-      Ordinal : Integer := 0)
+      Ordinal : Integer := 0;
+      Weekdays : Humanize.Durations.Weekday_Set :=
+        Humanize.Durations.Every_Day_Set)
       return Recurrence_Parse_Result
    is
    begin
@@ -4867,6 +6751,7 @@ package body Humanize.Parsing is
          Every => Every,
          Unit => Unit,
          Weekday => Weekday,
+         Weekdays => Weekdays,
          Ordinal => Ordinal,
          Exact => True,
          Consumed => Consumed,
@@ -4878,17 +6763,177 @@ package body Humanize.Parsing is
       return Recurrence_Parse_Result
    is
       Item : constant String := Lower (Trim (Core));
-      Prefix : constant String := "every ";
+      Prefix_Length : Natural := 0;
       Space  : Natural := 0;
       Of_Pos : Natural := 0;
       Count  : Integer;
       Unit   : Humanize.Durations.Recurrence_Unit;
       Weekday : Natural;
       Ordinal : Integer;
+      Polish_Every : constant String := "ka" & U (16#17C#) & "dy ";
+      Czech_Every  : constant String :=
+        "ka" & U (16#17E#) & "d" & U (16#FD#) & " ";
+      Every_Prefixes : constant String :=
+        "every " & ASCII.LF
+        & "hver " & ASCII.LF
+        & "chaque " & ASCII.LF
+        & "cada " & ASCII.LF
+        & "ogni " & ASCII.LF
+        & "elke " & ASCII.LF
+        & "varje " & ASCII.LF
+        & "joka " & ASCII.LF
+        & Polish_Every & ASCII.LF
+        & Czech_Every & ASCII.LF
+        & "her ";
+      Weekday_Set_Aliases : constant String :=
+        "weekday" & ASCII.LF
+        & "weekdays" & ASCII.LF
+        & "hverdag" & ASCII.LF
+        & "wochentag" & ASCII.LF
+        & "jour ouvrable" & ASCII.LF
+        & "d" & U (16#ED#) & "a laborable" & ASCII.LF
+        & "giorno feriale" & ASCII.LF
+        & "dia " & U (16#FA#) & "til" & ASCII.LF
+        & "werkdag" & ASCII.LF
+        & "vardag" & ASCII.LF
+        & "virkedag" & ASCII.LF
+        & "arkip" & U (16#E4#) & "iv" & U (16#E4#) & ASCII.LF
+        & "dzie" & U (16#144#) & " roboczy" & ASCII.LF
+        & "pracovn" & U (16#ED#) & " den" & ASCII.LF
+        & "i" & U (16#15F#) & " g" & U (16#FC#) & "n"
+          & U (16#FC#);
+
+      function Parse_Natural (S : String; N : out Natural) return Boolean is
+         V : Natural := 0;
+      begin
+         if S'Length = 0 then
+            return False;
+         end if;
+
+         for Ch of S loop
+            if Ch not in '0' .. '9' then
+               return False;
+            end if;
+            V := V * 10 + Character'Pos (Ch) - Character'Pos ('0');
+         end loop;
+
+         N := V;
+         return True;
+      end Parse_Natural;
+
+      function Monthly_Day_Result
+        (Day : Natural)
+         return Recurrence_Parse_Result
+      is
+         Result : Recurrence_Parse_Result :=
+           Recurrence_Result
+             (Recurrence_Interval, 1, Humanize.Durations.Every_Month,
+              Item'Length);
+      begin
+         Result.Day_Of_Month := Day;
+         return Result;
+      end Monthly_Day_Result;
    begin
+      if Starts_With (Item, "day ") then
+         declare
+            Tail : constant String :=
+              Trim (Item (Item'First + 4 .. Item'Last));
+            Space : Natural := 0;
+            Day : Natural := 0;
+         begin
+            for Index in Tail'Range loop
+               if Tail (Index) = ' ' then
+                  Space := Index;
+                  exit;
+               end if;
+            end loop;
+            if Space /= 0
+              and then Parse_Natural (Tail (Tail'First .. Space - 1), Day)
+              and then Day in 1 .. 31
+              and then
+                (Trim (Tail (Space + 1 .. Tail'Last)) = "of each month"
+                 or else Trim (Tail (Space + 1 .. Tail'Last)) = "of every month")
+            then
+               return Monthly_Day_Result (Day);
+            end if;
+         end;
+      elsif Starts_With (Item, "giorno ") then
+         declare
+            Tail : constant String :=
+              Trim (Item (Item'First + 7 .. Item'Last));
+            Space : Natural := 0;
+            Day : Natural := 0;
+         begin
+            for Index in Tail'Range loop
+               if Tail (Index) = ' ' then
+                  Space := Index;
+                  exit;
+               end if;
+            end loop;
+            if Space /= 0
+              and then Parse_Natural (Tail (Tail'First .. Space - 1), Day)
+              and then Day in 1 .. 31
+              and then Trim (Tail (Space + 1 .. Tail'Last)) = "di ogni mese"
+            then
+               return Monthly_Day_Result (Day);
+            end if;
+         end;
+      elsif Starts_With (Item, "p" & U (16#E4#) & "iv" & U (16#E4#) & " ") then
+         declare
+            Prefix : constant String := "p" & U (16#E4#) & "iv" & U (16#E4#) & " ";
+            Tail : constant String :=
+              Trim (Item (Item'First + Prefix'Length .. Item'Last));
+            Space : Natural := 0;
+            Day : Natural := 0;
+         begin
+            for Index in Tail'Range loop
+               if Tail (Index) = ' ' then
+                  Space := Index;
+                  exit;
+               end if;
+            end loop;
+            if Space /= 0
+              and then Parse_Natural (Tail (Tail'First .. Space - 1), Day)
+              and then Day in 1 .. 31
+              and then Trim (Tail (Space + 1 .. Tail'Last)) = "joka kuukausi"
+            then
+               return Monthly_Day_Result (Day);
+            end if;
+         end;
+      else
+         declare
+            Dot : Natural := 0;
+            Day : Natural := 0;
+         begin
+            for Index in Item'Range loop
+               if Item (Index) = '.' then
+                  Dot := Index;
+                  exit;
+               elsif Item (Index) not in '0' .. '9' then
+                  exit;
+               end if;
+            end loop;
+            if Dot /= 0
+              and then Parse_Natural (Item (Item'First .. Dot - 1), Day)
+              and then Day in 1 .. 31
+              and then
+                (Trim (Item (Dot + 1 .. Item'Last)) =
+                   "dzie" & U (16#144#) & " ka" & U (16#17C#)
+                   & "dego miesi" & U (16#105#) & "ca"
+                 or else Trim (Item (Dot + 1 .. Item'Last)) =
+                   "hver m" & U (16#E5#) & "ned")
+            then
+               return Monthly_Day_Result (Day);
+            end if;
+         end;
+      end if;
+
       if Item = "last business day"
         or else Item = "last business day of each month"
         or else Item = "last business day of every month"
+        or else Item = "last weekday"
+        or else Item = "last weekday of each month"
+        or else Item = "last weekday of every month"
       then
          return Recurrence_Result
            (Recurrence_Business_Day, 1, Humanize.Durations.Every_Month,
@@ -4899,6 +6944,21 @@ package body Humanize.Parsing is
       if Of_Pos = 0 then
          Of_Pos := Find_Substring (Item, " of every month");
       end if;
+      if Of_Pos = 0 then
+         Of_Pos := Find_Substring (Item, " di ogni mese");
+      end if;
+      if Of_Pos = 0 then
+         Of_Pos := Find_Substring (Item, " de cada mes");
+      end if;
+      if Of_Pos = 0 then
+         Of_Pos := Find_Substring (Item, " de cada m" & U (16#EA#) & "s");
+      end if;
+      if Of_Pos = 0 then
+         Of_Pos := Find_Substring (Item, " van elke maand");
+      end if;
+      if Of_Pos = 0 then
+         Of_Pos := Find_Substring (Item, " joka kuukausi");
+      end if;
       if Of_Pos /= 0 then
          for Index in Item'First .. Of_Pos - 1 loop
             if Item (Index) = ' ' then
@@ -4908,6 +6968,18 @@ package body Humanize.Parsing is
          end loop;
          if Space /= 0 then
             Ordinal := Recurrence_Ordinal_Value (Item (Item'First .. Space - 1));
+            if Ordinal /= 0
+              and then
+                (Trim (Item (Space + 1 .. Of_Pos - 1)) = "business day"
+                 or else Trim (Item (Space + 1 .. Of_Pos - 1)) =
+                   "business days")
+            then
+               return Recurrence_Result
+                 (Recurrence_Business_Day, 1,
+                  Humanize.Durations.Every_Month, Item'Length,
+                  Ordinal => Ordinal);
+            end if;
+
             Weekday := Weekday_Value_Flexible (Item (Space + 1 .. Of_Pos - 1));
             if Ordinal /= 0 and then Weekday /= 0 then
                return Recurrence_Result
@@ -4918,13 +6990,36 @@ package body Humanize.Parsing is
          end if;
       end if;
 
-      if not Starts_With (Item, Prefix) then
+      Prefix_Length := Alias_Prefix_Length (Item, Every_Prefixes);
+
+      if Prefix_Length = 0 then
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
       end if;
 
       declare
-         Rest : constant String := Trim (Item (Item'First + Prefix'Length .. Item'Last));
+         Rest : constant String :=
+           Trim (Item (Item'First + Prefix_Length .. Item'Last));
       begin
+         if Has_Alias (Rest, Weekday_Set_Aliases) then
+            return Recurrence_Result
+              (Recurrence_Weekday_Set, 1, Humanize.Durations.Every_Week,
+               Item'Length, Weekdays => Humanize.Durations.Weekdays);
+         elsif Rest = "weekend" or else Rest = "weekends" then
+            return Recurrence_Result
+              (Recurrence_Weekday_Set, 1, Humanize.Durations.Every_Week,
+               Item'Length, Weekdays => Humanize.Durations.Weekends);
+         elsif Rest = "business day" or else Rest = "business days" then
+            return Recurrence_Result
+              (Recurrence_Business_Day, 1, Humanize.Durations.Every_Day,
+               Item'Length);
+         elsif Rest = "last weekday"
+           or else Rest = "last business day"
+         then
+            return Recurrence_Result
+              (Recurrence_Business_Day, 1, Humanize.Durations.Every_Month,
+               Item'Length, Ordinal => -1);
+         end if;
+
          if Starts_With (Rest, "other ") then
             declare
                Tail : constant String := Trim (Rest (Rest'First + 6 .. Rest'Last));
@@ -4980,11 +7075,218 @@ package body Humanize.Parsing is
       Core_Last : Natural := Item'Last;
       Result : Recurrence_Parse_Result;
       Clause_Pos : Natural;
+      At_Pos : Natural;
+      At_Length : Natural := 0;
+      Time_Last : Natural;
       Parsed_Date : Date_Parse_Result;
       Count : Integer;
+      Has_Time : Boolean := False;
+      Hour : Natural := 0;
+      Minute : Natural := 0;
+      Has_Time_Window : Boolean := False;
+      Window_Start_Hour : Natural := 0;
+      Window_Start_Minute : Natural := 0;
+      Window_End_Hour : Natural := 0;
+      Window_End_Minute : Natural := 0;
+      Has_Excluded_Weekdays : Boolean := False;
+      Excluded_Weekdays : Humanize.Durations.Weekday_Set := [others => False];
+      Time_Marker_Aliases : constant String :=
+        " at " & ASCII.LF
+        & " kl. " & ASCII.LF
+        & " um " & ASCII.LF
+        & " alle " & ASCII.LF
+        & " klo " & ASCII.LF
+        & " o " & ASCII.LF
+        & " a las " & ASCII.LF
+        & " " & U (16#E0#) & " " & ASCII.LF
+        & " " & U (16#E0#) & "s ";
+
+      function Parse_Time (Value : String) return Boolean is
+         T : constant String := Trim (Value);
+         Colon : Natural := 0;
+         H : Natural := 0;
+         M : Natural := 0;
+
+         function Parse_Natural (S : String; N : out Natural) return Boolean is
+            V : Natural := 0;
+         begin
+            if S'Length = 0 then
+               return False;
+            end if;
+
+            for Ch of S loop
+               if Ch not in '0' .. '9' then
+                  return False;
+               end if;
+               V := V * 10 + Character'Pos (Ch) - Character'Pos ('0');
+            end loop;
+
+            N := V;
+            return True;
+         end Parse_Natural;
+      begin
+         for Index in T'Range loop
+            if T (Index) = ':' then
+               Colon := Index;
+               exit;
+            end if;
+         end loop;
+
+         if Colon = 0 then
+            if not Parse_Natural (T, H) or else H > 23 then
+               return False;
+            end if;
+            Hour := H;
+            Minute := 0;
+            return True;
+         end if;
+
+         if not Parse_Natural (T (T'First .. Colon - 1), H)
+           or else not Parse_Natural (T (Colon + 1 .. T'Last), M)
+           or else H > 23
+           or else M > 59
+         then
+            return False;
+         end if;
+
+         Hour := H;
+         Minute := M;
+         return True;
+      end Parse_Time;
+
+      procedure Find_Time_Marker
+        (Position : out Natural;
+         Length   : out Natural)
+      is
+         First : Natural := Time_Marker_Aliases'First;
+         Last  : Natural;
+
+         procedure Consider (Pattern : String) is
+            Candidate : constant Natural := Find_Substring (Item, Pattern);
+         begin
+            if Candidate /= 0 and then Candidate >= Position then
+               Position := Candidate;
+               Length := Pattern'Length;
+            end if;
+         end Consider;
+      begin
+         Position := 0;
+         Length := 0;
+
+         while First <= Time_Marker_Aliases'Last loop
+            Last := First;
+            while Last <= Time_Marker_Aliases'Last
+              and then Time_Marker_Aliases (Last) /= ASCII.LF
+            loop
+               Last := Last + 1;
+            end loop;
+
+            if Last > First then
+               Consider (Time_Marker_Aliases (First .. Last - 1));
+            end if;
+
+            First := Last + 1;
+         end loop;
+      end Find_Time_Marker;
    begin
       if Item'Length = 0 then
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
+      end if;
+
+      Clause_Pos := Find_Substring (Item, " except ");
+      if Clause_Pos /= 0 then
+         declare
+            Tail_Last : Natural := Item'Last;
+            Weekday : Natural := 0;
+         begin
+            declare
+               From_Pos : constant Natural := Find_Substring (Item, " from ");
+               Until_Pos : constant Natural := Find_Substring (Item, " until ");
+               For_Pos : constant Natural := Find_Substring (Item, " for ");
+               Between_Pos : constant Natural := Find_Substring (Item, " between ");
+            begin
+               if From_Pos /= 0 and then From_Pos > Clause_Pos then
+                  Tail_Last := Natural'Min (Tail_Last, From_Pos - 1);
+               end if;
+               if Until_Pos /= 0 and then Until_Pos > Clause_Pos then
+                  Tail_Last := Natural'Min (Tail_Last, Until_Pos - 1);
+               end if;
+               if For_Pos /= 0 and then For_Pos > Clause_Pos then
+                  Tail_Last := Natural'Min (Tail_Last, For_Pos - 1);
+               end if;
+               if Between_Pos /= 0 and then Between_Pos > Clause_Pos then
+                  Tail_Last := Natural'Min (Tail_Last, Between_Pos - 1);
+               end if;
+            end;
+
+            if Tail_Last < Clause_Pos + 8 then
+               return (Status => Humanize.Status.Invalid_Argument, others => <>);
+            end if;
+            Weekday := Weekday_Value_Flexible
+              (Item (Clause_Pos + 8 .. Tail_Last));
+            if Weekday = 0 then
+               return (Status => Humanize.Status.Invalid_Argument, others => <>);
+            end if;
+            Has_Excluded_Weekdays := True;
+            Excluded_Weekdays (Weekday) := True;
+            Core_Last := Natural'Min (Core_Last, Clause_Pos - 1);
+         end;
+      end if;
+
+      Clause_Pos := Find_Substring (Item, " between ");
+      if Clause_Pos /= 0 then
+         declare
+            Tail_Last : Natural := Item'Last;
+            And_Pos : Natural := 0;
+            Start_H : Natural := 0;
+            Start_M : Natural := 0;
+            End_H : Natural := 0;
+            End_M : Natural := 0;
+         begin
+            declare
+               From_Pos : constant Natural := Find_Substring (Item, " from ");
+               Until_Pos : constant Natural := Find_Substring (Item, " until ");
+               For_Pos : constant Natural := Find_Substring (Item, " for ");
+               Except_Pos : constant Natural := Find_Substring (Item, " except ");
+            begin
+               if From_Pos /= 0 and then From_Pos > Clause_Pos then
+                  Tail_Last := Natural'Min (Tail_Last, From_Pos - 1);
+               end if;
+               if Until_Pos /= 0 and then Until_Pos > Clause_Pos then
+                  Tail_Last := Natural'Min (Tail_Last, Until_Pos - 1);
+               end if;
+               if For_Pos /= 0 and then For_Pos > Clause_Pos then
+                  Tail_Last := Natural'Min (Tail_Last, For_Pos - 1);
+               end if;
+               if Except_Pos /= 0 and then Except_Pos > Clause_Pos then
+                  Tail_Last := Natural'Min (Tail_Last, Except_Pos - 1);
+               end if;
+            end;
+
+            And_Pos := Find_Substring
+              (Item (Clause_Pos + 9 .. Tail_Last), " and ");
+            if And_Pos = 0 then
+               return (Status => Humanize.Status.Invalid_Argument, others => <>);
+            end if;
+
+            if not Parse_Time (Item (Clause_Pos + 9 .. And_Pos - 1)) then
+               return (Status => Humanize.Status.Invalid_Argument, others => <>);
+            end if;
+            Start_H := Hour;
+            Start_M := Minute;
+            if not Parse_Time (Item (And_Pos + 5 .. Tail_Last)) then
+               return (Status => Humanize.Status.Invalid_Argument, others => <>);
+            end if;
+            End_H := Hour;
+            End_M := Minute;
+
+            Has_Time_Window := True;
+            Window_Start_Hour := Start_H;
+            Window_Start_Minute := Start_M;
+            Window_End_Hour := End_H;
+            Window_End_Minute := End_M;
+            Core_Last := Natural'Min (Core_Last, Clause_Pos - 1);
+         end;
       end if;
 
       Clause_Pos := Find_Substring (Item, " for ");
@@ -5029,6 +7331,32 @@ package body Humanize.Parsing is
          Core_Last := Natural'Min (Core_Last, Clause_Pos - 1);
       end if;
 
+      Find_Time_Marker (At_Pos, At_Length);
+      if At_Pos /= 0 then
+         Time_Last := Item'Last;
+         Clause_Pos := Find_Substring (Item, " from ");
+         if Clause_Pos /= 0 and then Clause_Pos > At_Pos then
+            Time_Last := Natural'Min (Time_Last, Clause_Pos - 1);
+         end if;
+         Clause_Pos := Find_Substring (Item, " until ");
+         if Clause_Pos /= 0 and then Clause_Pos > At_Pos then
+            Time_Last := Natural'Min (Time_Last, Clause_Pos - 1);
+         end if;
+         Clause_Pos := Find_Substring (Item, " for ");
+         if Clause_Pos /= 0 and then Clause_Pos > At_Pos then
+            Time_Last := Natural'Min (Time_Last, Clause_Pos - 1);
+         end if;
+
+         if Time_Last < At_Pos + At_Length
+           or else not Parse_Time (Item (At_Pos + At_Length .. Time_Last))
+         then
+            return (Status => Humanize.Status.Invalid_Argument, others => <>);
+         end if;
+
+         Has_Time := True;
+         Core_Last := Natural'Min (Core_Last, At_Pos - 1);
+      end if;
+
       if Core_Last < Item'First then
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
       end if;
@@ -5036,6 +7364,32 @@ package body Humanize.Parsing is
       Result := Parse_Recurrence_Core (Item (Item'First .. Core_Last));
       if Result.Status /= Humanize.Status.Ok then
          return Result;
+      end if;
+
+      if Has_Time then
+         Result.Has_Time := True;
+         Result.Hour := Hour;
+         Result.Minute := Minute;
+      end if;
+
+      if Has_Time_Window then
+         Result.Has_Time_Window := True;
+         Result.Window_Start_Hour := Window_Start_Hour;
+         Result.Window_Start_Minute := Window_Start_Minute;
+         Result.Window_End_Hour := Window_End_Hour;
+         Result.Window_End_Minute := Window_End_Minute;
+      end if;
+
+      if Has_Excluded_Weekdays then
+         Result.Has_Excluded_Weekdays := True;
+         Result.Excluded_Weekdays := Excluded_Weekdays;
+         if Result.Kind = Recurrence_Weekday_Set then
+            for Day in Result.Weekdays'Range loop
+               if Result.Excluded_Weekdays (Day) then
+                  Result.Weekdays (Day) := False;
+               end if;
+            end loop;
+         end if;
       end if;
 
       Clause_Pos := Find_Substring (Item, " from ");
@@ -5119,6 +7473,537 @@ package body Humanize.Parsing is
          Error_Position => 0,
          Error => No_Parse_Error);
    end Parse_Recurrence;
+
+   function Parse_Cron_Schedule
+     (Text : String)
+      return Recurrence_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+      Field_Start : Natural := Item'First;
+      Field_Count : Natural := 0;
+      Fields : array (Positive range 1 .. 7) of Unbounded_String :=
+        [others => To_Unbounded_String ("")];
+
+      function Parse_Natural (S : String; N : out Natural) return Boolean is
+         V : Natural := 0;
+      begin
+         if S'Length = 0 then
+            return False;
+         end if;
+
+         for Ch of S loop
+            if Ch not in '0' .. '9' then
+               return False;
+            end if;
+            V := V * 10 + Character'Pos (Ch) - Character'Pos ('0');
+         end loop;
+
+         N := V;
+         return True;
+      end Parse_Natural;
+
+      function Cron_Weekday (S : String) return Natural is
+      begin
+         if S = "1" or else S = "mon" or else S = "monday" then
+            return 1;
+         elsif S = "2" or else S = "tue" or else S = "tuesday" then
+            return 2;
+         elsif S = "3" or else S = "wed" or else S = "wednesday" then
+            return 3;
+         elsif S = "4" or else S = "thu" or else S = "thursday" then
+            return 4;
+         elsif S = "5" or else S = "fri" or else S = "friday" then
+            return 5;
+         elsif S = "6" or else S = "sat" or else S = "saturday" then
+            return 6;
+         elsif S = "0" or else S = "7"
+           or else S = "sun" or else S = "sunday"
+         then
+            return 7;
+         else
+            return 0;
+         end if;
+      end Cron_Weekday;
+
+      function Cron_Month (S : String) return Natural is
+      begin
+         if S = "1" or else S = "jan" or else S = "january" then
+            return 1;
+         elsif S = "2" or else S = "feb" or else S = "february" then
+            return 2;
+         elsif S = "3" or else S = "mar" or else S = "march" then
+            return 3;
+         elsif S = "4" or else S = "apr" or else S = "april" then
+            return 4;
+         elsif S = "5" or else S = "may" then
+            return 5;
+         elsif S = "6" or else S = "jun" or else S = "june" then
+            return 6;
+         elsif S = "7" or else S = "jul" or else S = "july" then
+            return 7;
+         elsif S = "8" or else S = "aug" or else S = "august" then
+            return 8;
+         elsif S = "9" or else S = "sep" or else S = "september" then
+            return 9;
+         elsif S = "10" or else S = "oct" or else S = "october" then
+            return 10;
+         elsif S = "11" or else S = "nov" or else S = "november" then
+            return 11;
+         elsif S = "12" or else S = "dec" or else S = "december" then
+            return 12;
+         else
+            return 0;
+         end if;
+      end Cron_Month;
+
+      function Is_Any (S : String) return Boolean is
+      begin
+         return S = "*" or else S = "?";
+      end Is_Any;
+
+      function Parse_Step
+        (S    : String;
+         Step : out Natural)
+         return Boolean
+      is
+         Slash : Natural := 0;
+      begin
+         for Index in S'Range loop
+            if S (Index) = '/' then
+               Slash := Index;
+               exit;
+            end if;
+         end loop;
+
+         if Slash = 0 or else Slash = S'Last then
+            return False;
+         elsif S (S'First .. Slash - 1) /= "*"
+           and then S (S'First .. Slash - 1) /= "?"
+           and then S (S'First .. Slash - 1) /= "0"
+         then
+            return False;
+         elsif not Parse_Natural (S (Slash + 1 .. S'Last), Step)
+           or else Step = 0
+         then
+            return False;
+         end if;
+
+         return True;
+      end Parse_Step;
+
+      function Parse_Weekday_Field
+        (S       : String;
+         Days    : out Humanize.Durations.Weekday_Set;
+         Single  : out Natural;
+         Is_List : out Boolean)
+         return Boolean
+      is
+         Part_Start : Natural := S'First;
+         Count      : Natural := 0;
+
+         function Add_Part (Part : String) return Boolean is
+            Dash : Natural := 0;
+            First_Day : Natural;
+            Last_Day  : Natural;
+
+            procedure Mark_Range (A, B : Natural) is
+            begin
+               if A <= B then
+                  for Day in A .. B loop
+                     Days (Day) := True;
+                  end loop;
+               else
+                  for Day in A .. 7 loop
+                     Days (Day) := True;
+                  end loop;
+                  for Day in 1 .. B loop
+                     Days (Day) := True;
+                  end loop;
+               end if;
+            end Mark_Range;
+         begin
+            if Part'Length = 0 then
+               return False;
+            end if;
+
+            for Index in Part'Range loop
+               if Part (Index) = '-' then
+                  Dash := Index;
+                  exit;
+               end if;
+            end loop;
+
+            if Dash /= 0 then
+               if Dash = Part'First or else Dash = Part'Last then
+                  return False;
+               end if;
+               First_Day := Cron_Weekday (Part (Part'First .. Dash - 1));
+               Last_Day := Cron_Weekday (Part (Dash + 1 .. Part'Last));
+               if First_Day = 0 or else Last_Day = 0 then
+                  return False;
+               end if;
+               Mark_Range (First_Day, Last_Day);
+               Count := Count + 2;
+            else
+               First_Day := Cron_Weekday (Part);
+               if First_Day = 0 then
+                  return False;
+               end if;
+               Days (First_Day) := True;
+               Single := First_Day;
+               Count := Count + 1;
+            end if;
+
+            return True;
+         end Add_Part;
+      begin
+         Days := [others => False];
+         Single := 0;
+         Is_List := False;
+
+         if Is_Any (S) then
+            Days := Humanize.Durations.Every_Day_Set;
+            return True;
+         end if;
+
+         for Index in S'Range loop
+            if S (Index) = ',' then
+               if not Add_Part (S (Part_Start .. Index - 1)) then
+                  return False;
+               end if;
+               Is_List := True;
+               Part_Start := Index + 1;
+            end if;
+         end loop;
+
+         if Part_Start <= S'Last then
+            if not Add_Part (S (Part_Start .. S'Last)) then
+               return False;
+            end if;
+         else
+            return False;
+         end if;
+
+         if Count /= 1 then
+            Single := 0;
+         end if;
+         return True;
+      end Parse_Weekday_Field;
+
+      function Parse_Last_Weekday
+        (S       : String;
+         Weekday : out Natural)
+         return Boolean
+      is
+      begin
+         Weekday := 0;
+         if S'Length < 2 or else S (S'Last) /= 'l' then
+            return False;
+         end if;
+
+         Weekday := Cron_Weekday (S (S'First .. S'Last - 1));
+         return Weekday /= 0;
+      end Parse_Last_Weekday;
+
+      function Parse_Nth_Weekday
+        (S       : String;
+         Weekday : out Natural;
+         Nth     : out Natural)
+         return Boolean
+      is
+         Hash : Natural := 0;
+      begin
+         Weekday := 0;
+         Nth := 0;
+         for Index in S'Range loop
+            if S (Index) = '#' then
+               Hash := Index;
+               exit;
+            end if;
+         end loop;
+
+         if Hash = 0 or else Hash = S'First or else Hash = S'Last then
+            return False;
+         end if;
+
+         Weekday := Cron_Weekday (S (S'First .. Hash - 1));
+         return Weekday /= 0
+           and then Parse_Natural (S (Hash + 1 .. S'Last), Nth)
+           and then Nth in 1 .. 5;
+      end Parse_Nth_Weekday;
+
+      function Parse_Nearest_Weekday_Day
+        (S   : String;
+         Day : out Natural)
+         return Boolean
+      is
+      begin
+         Day := 0;
+         if S'Length < 2 or else S (S'Last) /= 'w' then
+            return False;
+         end if;
+
+         return Parse_Natural (S (S'First .. S'Last - 1), Day)
+           and then Day in 1 .. 31;
+      end Parse_Nearest_Weekday_Day;
+
+      function Is_Every_Day
+        (Days : Humanize.Durations.Weekday_Set)
+         return Boolean
+      is
+      begin
+         for Day in Days'Range loop
+            if not Days (Day) then
+               return False;
+            end if;
+         end loop;
+         return True;
+      end Is_Every_Day;
+
+      Minute_Value : Natural := 0;
+      Hour_Value : Natural := 0;
+      Day_Value : Natural := 0;
+      Month_Value : Natural := 0;
+      Weekday_Value : Natural := 0;
+      Nth_Value : Natural := 0;
+      Second_Value : Natural := 0;
+      Year_Value : Natural := 0;
+      Step_Value : Natural := 0;
+      Result : Recurrence_Parse_Result;
+   begin
+      if Item'Length = 0 then
+         return (Status => Humanize.Status.Invalid_Argument, others => <>);
+      end if;
+
+      for Index in Item'Range loop
+         if Item (Index) = ' ' then
+            if Field_Start < Index then
+               Field_Count := Field_Count + 1;
+               if Field_Count > 7 then
+                  return Parse_Recurrence_Detail (Ada.Calendar.Clock, Item);
+               end if;
+               Fields (Field_Count) :=
+                 To_Unbounded_String (Item (Field_Start .. Index - 1));
+            end if;
+            Field_Start := Index + 1;
+         end if;
+      end loop;
+
+      if Field_Start <= Item'Last then
+         Field_Count := Field_Count + 1;
+         if Field_Count > 7 then
+            return Parse_Recurrence_Detail (Ada.Calendar.Clock, Item);
+         end if;
+         Fields (Field_Count) :=
+           To_Unbounded_String (Item (Field_Start .. Item'Last));
+      end if;
+
+      if Field_Count not in 5 .. 7 then
+         return Parse_Recurrence_Detail (Ada.Calendar.Clock, Item);
+      end if;
+
+      declare
+         Offset : constant Natural := (if Field_Count = 5 then 0 else 1);
+         S : constant String :=
+           (if Field_Count = 5 then "" else To_String (Fields (1)));
+         M : constant String := To_String (Fields (1 + Offset));
+         H : constant String := To_String (Fields (2 + Offset));
+         D : constant String := To_String (Fields (3 + Offset));
+         Mo : constant String := To_String (Fields (4 + Offset));
+         W : constant String := To_String (Fields (5 + Offset));
+         Y : constant String :=
+           (if Field_Count = 7 then To_String (Fields (7)) else "");
+      begin
+         if Field_Count >= 6 then
+            if not Parse_Natural (S, Second_Value) or else Second_Value > 59 then
+               return Parse_Recurrence_Detail (Ada.Calendar.Clock, Item);
+            end if;
+         end if;
+
+         if Field_Count = 7 then
+            if Is_Any (Y) then
+               null;
+            elsif not Parse_Natural (Y, Year_Value) then
+               return Parse_Recurrence_Detail (Ada.Calendar.Clock, Item);
+            end if;
+         end if;
+
+         if Is_Any (M) and then Is_Any (H) and then Is_Any (D)
+           and then Is_Any (Mo) and then Is_Any (W)
+         then
+            Result := Recurrence_Result
+              (Recurrence_Interval, 1, Humanize.Durations.Every_Minute,
+               Item'Length);
+            if Field_Count >= 6 then
+               Result.Has_Second := True;
+               Result.Second := Second_Value;
+            end if;
+            if Field_Count = 7 and then not Is_Any (Y) then
+               Result.Has_Year := True;
+               Result.Year := Year_Value;
+            end if;
+            return Result;
+         end if;
+
+         if Parse_Step (M, Step_Value) and then Step_Value <= 59
+           and then Is_Any (H) and then Is_Any (D) and then Is_Any (Mo)
+           and then Is_Any (W)
+         then
+            Result := Recurrence_Result
+              (Recurrence_Interval, Positive (Step_Value),
+               Humanize.Durations.Every_Minute, Item'Length);
+            if Field_Count >= 6 then
+               Result.Has_Second := True;
+               Result.Second := Second_Value;
+            end if;
+            if Field_Count = 7 and then not Is_Any (Y) then
+               Result.Has_Year := True;
+               Result.Year := Year_Value;
+            end if;
+            return Result;
+         end if;
+
+         if not Parse_Natural (M, Minute_Value) or else Minute_Value > 59 then
+            return (Status => Humanize.Status.Invalid_Argument, others => <>);
+         end if;
+
+         if Is_Any (H) and then Is_Any (D) and then Is_Any (Mo)
+           and then Is_Any (W)
+         then
+            Result := Recurrence_Result
+              (Recurrence_Interval, 1, Humanize.Durations.Every_Hour,
+               Item'Length);
+            Result.Has_Time := True;
+            Result.Minute := Minute_Value;
+            return Result;
+         end if;
+
+         if Parse_Step (H, Step_Value) and then Step_Value <= 23
+           and then Is_Any (D) and then Is_Any (Mo) and then Is_Any (W)
+         then
+            Result := Recurrence_Result
+              (Recurrence_Interval, Positive (Step_Value),
+               Humanize.Durations.Every_Hour, Item'Length);
+            Result.Has_Time := True;
+            Result.Minute := Minute_Value;
+            return Result;
+         elsif not Parse_Natural (H, Hour_Value) or else Hour_Value > 23 then
+            return (Status => Humanize.Status.Invalid_Argument, others => <>);
+         end if;
+
+         if Parse_Step (D, Step_Value) and then Step_Value <= 31
+           and then Is_Any (Mo) and then Is_Any (W)
+         then
+            Result := Recurrence_Result
+              (Recurrence_Interval, Positive (Step_Value),
+               Humanize.Durations.Every_Day, Item'Length);
+         elsif Is_Any (D) and then Is_Any (Mo) and then Is_Any (W) then
+            Result := Recurrence_Result
+              (Recurrence_Interval, 1, Humanize.Durations.Every_Day,
+               Item'Length);
+         elsif Is_Any (D) and then Is_Any (Mo) then
+            declare
+               Days : Humanize.Durations.Weekday_Set;
+               Is_List : Boolean;
+            begin
+               if Parse_Last_Weekday (W, Weekday_Value) then
+                  Result := Recurrence_Result
+                    (Recurrence_Ordinal_Weekday, 1,
+                     Humanize.Durations.Every_Month, Item'Length,
+                     Weekday => Weekday_Value, Ordinal => -1);
+                  Result.Is_Last_Weekday := True;
+               elsif Parse_Nth_Weekday (W, Weekday_Value, Nth_Value) then
+                  Result := Recurrence_Result
+                    (Recurrence_Ordinal_Weekday, 1,
+                     Humanize.Durations.Every_Month, Item'Length,
+                     Weekday => Weekday_Value, Ordinal => Integer (Nth_Value));
+                  Result.Nth_Weekday := Nth_Value;
+               elsif not Parse_Weekday_Field (W, Days, Weekday_Value, Is_List)
+                 or else Is_Every_Day (Days)
+               then
+                  return
+                    (Status => Humanize.Status.Invalid_Argument,
+                     others => <>);
+               elsif Weekday_Value /= 0 and then not Is_List then
+                  Result := Recurrence_Result
+                    (Recurrence_Weekday, 1, Humanize.Durations.Every_Week,
+                     Item'Length, Weekday => Weekday_Value);
+               else
+                  Result := Recurrence_Result
+                    (Recurrence_Weekday_Set, 1,
+                     Humanize.Durations.Every_Week, Item'Length,
+                     Weekdays => Days);
+               end if;
+            end;
+         elsif Is_Any (W)
+           and then (D = "l"
+                     or else Parse_Nearest_Weekday_Day (D, Day_Value)
+                     or else (Parse_Natural (D, Day_Value)
+                              and then Day_Value in 1 .. 31))
+         then
+            Month_Value := (if Is_Any (Mo) then 0 else Cron_Month (Mo));
+            if (not Is_Any (Mo)) and then Month_Value = 0 then
+               return (Status => Humanize.Status.Invalid_Argument, others => <>);
+            end if;
+            Result := Recurrence_Result
+              (Recurrence_Interval, 1,
+               (if Month_Value = 0
+                then Humanize.Durations.Every_Month
+                else Humanize.Durations.Every_Year),
+               Item'Length);
+            if D = "l" then
+               Result.Is_Last_Day_Of_Month := True;
+            else
+               Result.Day_Of_Month := Day_Value;
+               Result.Is_Nearest_Weekday := D (D'Last) = 'w';
+            end if;
+            Result.Month_Of_Year := Month_Value;
+         else
+            return (Status => Humanize.Status.Invalid_Argument, others => <>);
+         end if;
+
+         Result.Has_Time := True;
+         Result.Hour := Hour_Value;
+         Result.Minute := Minute_Value;
+         if Field_Count >= 6 then
+            Result.Has_Second := True;
+            Result.Second := Second_Value;
+         end if;
+         if Field_Count = 7 and then not Is_Any (Y) then
+            Result.Has_Year := True;
+            Result.Year := Year_Value;
+         end if;
+         return Result;
+      end;
+   exception
+      when others =>
+         return (Status => Humanize.Status.Invalid_Value, others => <>);
+   end Parse_Cron_Schedule;
+
+   function Scan_Cron_Schedule
+     (Text : String)
+      return Recurrence_Parse_Result
+   is
+      Last : constant Natural := Scan_End (Text);
+   begin
+      if Last < Text'First then
+         return (Status => Humanize.Status.Invalid_Argument, others => <>);
+      end if;
+
+      for Stop in reverse Text'First .. Last loop
+         declare
+            Result : Recurrence_Parse_Result :=
+              Parse_Cron_Schedule (Text (Text'First .. Stop));
+         begin
+            if Result.Status = Humanize.Status.Ok then
+               Result.Consumed := Stop - Text'First + 1;
+               return Result;
+            end if;
+         end;
+      end loop;
+
+      return (Status => Humanize.Status.Invalid_Argument, others => <>);
+   end Scan_Cron_Schedule;
 
    function Parse_Throughput_Remaining
      (Text : String)
@@ -5377,6 +8262,30 @@ package body Humanize.Parsing is
          return (Status => Humanize.Status.Invalid_Argument, Value => 0, others => <>);
       end if;
 
+      if Source'Length > 0 and then Source (Source'First) = 'P' then
+         declare
+            ISO_Total : Long_Long_Integer;
+         begin
+            if Parse_ISO_Duration_Microseconds (Source, ISO_Total) then
+               return
+                 (Status => Humanize.Status.Ok,
+                  Value =>
+                    Humanize.Durations.Duration_Microseconds (ISO_Total),
+                  Exact => True,
+                  Consumed => Source'Length,
+                  Error_Position => 0,
+                  Error => No_Parse_Error);
+            else
+               return
+                 (Status => Humanize.Status.Invalid_Argument,
+                  Value => 0,
+                  Error_Position => Source'First,
+                  Error => Unsupported_Form,
+                  others => <>);
+            end if;
+         end;
+      end if;
+
       while Index <= Source'Last loop
          while Index <= Source'Last
            and then (Source (Index) = ' ' or else Source (Index) = ',')
@@ -5505,6 +8414,12 @@ package body Humanize.Parsing is
         or else U = "tusen" or else U = "tuhat"
         or else U = "tysiac" or else U = "tys."
         or else U = "tisic" or else U = "tis." or else U = "bin"
+        or else U = "mii" or else U = B ("C5AB6B7374")
+        or else U = B ("74C5AB6B7374616E746973")
+        or else U = "ribu" or else U = "rb"
+        or else U = "nghin" or else U = "elfu"
+        or else U = "duisend" or else U = "ezer"
+        or else U = "e"
         or else U = B ("D182D18BD181D18FD187D0B0")
         or else U = B ("D182D18BD181D18FD187D0B8")
         or else U = B ("D182D18BD1812E")
@@ -5534,6 +8449,11 @@ package body Humanize.Parsing is
         or else U = "miljoen" or else U = "miljoner"
         or else U = "miljoona" or else U = "miliony"
         or else U = "milion" or else U = "milyon"
+        or else U = "milioane" or else U = "milijonas"
+        or else U = "milijon" or else U = "juta"
+        or else U = "jt" or else U = "trieu" or else U = "tr"
+        or else U = "milioni" or else U = "miljoen"
+        or else U = "millio"
         or else U = B ("D0BCD0B8D0BBD0BBD0B8D0BED0BD")
         or else U = B ("D0BCD0B8D0BBD0BBD0B8D0BED0BDD0B0")
         or else U = B ("D0BCD0BBD0BD")
@@ -5554,6 +8474,11 @@ package body Humanize.Parsing is
         or else U = B ("62696C68C3B56573")
         or else U = "miljard" or else U = "miljardi"
         or else U = "miliard" or else U = "milyar"
+        or else U = "mld" or else U = "mld."
+        or else U = "mlrd." or else U = "miliarde"
+        or else U = "milijardas" or else U = "milijarda"
+        or else U = "miliar"
+        or else U = "bilioni" or else U = "milliard"
         or else U = B ("D0BCD0B8D0BBD0BBD0B8D0B0D180D0B4")
         or else U = B ("D0BCD196D0BBD18CD18FD180D0B4")
         or else U = B ("E58D81E58484")
@@ -5564,6 +8489,11 @@ package body Humanize.Parsing is
       elsif U = "trillion" or else U = "billionen"
         or else U = "biljoner" or else U = "biljoona"
         or else U = "bilion" or else U = "trilyon"
+        or else U = "bln." or else U = "bln"
+        or else U = "trln." or else U = "trilijonas"
+        or else U = "bilijon" or else U = "triliun"
+        or else U = "trilion" or else U = "nghin ty"
+        or else U = "tril" or else U = "billio"
         or else U = B ("D182D180D0B8D0BBD0BBD0B8D0BED0BD")
         or else U = B ("D182D180D0B8D0BBD18CD0B9D0BED0BD")
         or else U = B ("E58586")
@@ -5746,6 +8676,7 @@ package body Humanize.Parsing is
       Amount : Long_Float;
       Total : Integer := 0;
       Index : Natural := Item'First;
+      Locale_Value : Long_Long_Integer := 0;
    begin
       if Item'Length = 0 then
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
@@ -5779,6 +8710,17 @@ package body Humanize.Parsing is
                  Small_English_Number (Item (Start .. Index - 1));
             begin
                if Part < 0 then
+                  if Humanize.Numbers.Parse_Deterministic_Cardinal
+                       (Item, Locale_Value)
+                  then
+                     return
+                       (Status => Humanize.Status.Ok,
+                        Value => Locale_Value,
+                        Exact => True,
+                        Consumed => Item'Length,
+                        Error_Position => 0,
+                        Error => No_Parse_Error);
+                  end if;
                   return (Status => Humanize.Status.Invalid_Argument,
                           Error_Position => Start,
                           others => <>);
@@ -6121,6 +9063,153 @@ package body Humanize.Parsing is
       when others =>
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Parse_Approximate_Number;
+
+   function Strip_Grouping (Text : String) return String is
+      Result : String (1 .. Text'Length);
+      Last : Natural := 0;
+   begin
+      for Char of Text loop
+         if Char /= ',' and then Char /= '_' and then Char /= ' ' then
+            Last := Last + 1;
+            Result (Last) := Char;
+         end if;
+      end loop;
+      return Result (1 .. Last);
+   end Strip_Grouping;
+
+   function Parse_Editorial_Number
+     (Text : String)
+      return Number_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+      Number_Text : constant String :=
+        (if Item'Length > 0 and then Item (Item'Last) = '%'
+         then Trim (Item (Item'First .. Item'Last - 1))
+         else Item);
+      Value : Long_Long_Integer := 0;
+      Numeric : constant String := Strip_Grouping (Number_Text);
+   begin
+      if Number_Text'Length = 0 then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Empty_Input,
+                 Error_Position => Text'First,
+                 others => <>);
+      elsif Humanize.Numbers.Parse_Deterministic_Cardinal
+        (Number_Text, Value)
+      then
+         null;
+      else
+         begin
+            Value := Long_Long_Integer'Value (Numeric);
+         exception
+            when others =>
+               return (Status => Humanize.Status.Invalid_Argument,
+                       Error => Expected_Number,
+                       Error_Position => Text'First,
+                       others => <>);
+         end;
+      end if;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Value => Value,
+         Exact => True,
+         Consumed => Item'Length,
+         Error_Position => 0,
+         Error => No_Parse_Error);
+   end Parse_Editorial_Number;
+
+   function Singular_Unit (Text : String) return String is
+      Item : constant String := Lower (Trim (Text));
+   begin
+      if Item'Length > 1 and then Item (Item'Last) = 's' then
+         return Item (Item'First .. Item'Last - 1);
+      else
+         return Item;
+      end if;
+   end Singular_Unit;
+
+   function Parse_Worded_Noun_Count
+     (Text       : String;
+      Count      : out Long_Long_Integer;
+      Unit       : out String;
+      Unit_Last  : out Natural)
+      return Boolean
+   is
+      Item : constant String := Lower (Trim (Text));
+      Space : Natural := 0;
+   begin
+      Count := 0;
+      Unit := [others => ' '];
+      Unit_Last := 0;
+      for Index in reverse Item'Range loop
+         if Item (Index) = ' ' then
+            Space := Index;
+            exit;
+         end if;
+      end loop;
+      if Space = 0
+        or else not Humanize.Numbers.Parse_Deterministic_Cardinal
+          (Item (Item'First .. Space - 1), Count)
+      then
+         return False;
+      end if;
+      Store (Singular_Unit (Item (Space + 1 .. Item'Last)), Unit, Unit_Last);
+      return Unit_Last > 0;
+   end Parse_Worded_Noun_Count;
+
+   function Parse_Currency_Words
+     (Text : String)
+      return Currency_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+      Join : constant Natural := Find_Substring (Item, " and ");
+      Whole : Long_Long_Integer := 0;
+      Minor : Long_Long_Integer := 0;
+      Major_Unit : String (1 .. 16) := [others => ' '];
+      Major_Length : Natural := 0;
+      Minor_Unit : String (1 .. 16) := [others => ' '];
+      Minor_Length : Natural := 0;
+   begin
+      if Item'Length = 0 then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Empty_Input,
+                 Error_Position => Text'First,
+                 others => <>);
+      elsif Join = 0 then
+         if not Parse_Worded_Noun_Count
+           (Item, Whole, Major_Unit, Major_Length)
+         then
+            return (Status => Humanize.Status.Invalid_Argument,
+                    Error => Expected_Number,
+                    Error_Position => Text'First,
+                    others => <>);
+         end if;
+      else
+         if not Parse_Worded_Noun_Count
+           (Item (Item'First .. Join - 1), Whole, Major_Unit, Major_Length)
+           or else not Parse_Worded_Noun_Count
+             (Item (Join + 5 .. Item'Last), Minor, Minor_Unit, Minor_Length)
+         then
+            return (Status => Humanize.Status.Invalid_Argument,
+                    Error => Expected_Number,
+                    Error_Position => Join + 5,
+                    others => <>);
+         end if;
+      end if;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Amount => Long_Float (Whole) + Long_Float (Minor) / 100.0,
+         Code => Major_Unit,
+         Code_Length => Major_Length,
+         Approximate => False,
+         Exact => True,
+         Consumed => Item'Length,
+         Error_Position => 0,
+         Error => No_Parse_Error,
+         others => <>);
+   end Parse_Currency_Words;
 
    function Scan_Approximate_Number
      (Text : String)
@@ -6749,6 +9838,69 @@ package body Humanize.Parsing is
          Error => No_Parse_Error);
    end Parse_Palette_Contrast_Matrix;
 
+   function Parse_Palette_Metadata_Label
+     (Text : String)
+      return Palette_Metadata_Parse_Result
+   is
+      Item : constant String := Trim (Text);
+      Colors_Mark : constant String := " colors, ";
+      Pairs_Mark : constant String := " pairs: ";
+      Enhanced_Mark : constant String := " enhanced, ";
+      Normal_Mark : constant String := " normal, ";
+      Large_Mark : constant String := " large-only, ";
+      Fail_Mark : constant String := " fail";
+      A : constant Natural := Find_Substring (Item, Colors_Mark);
+      B : constant Natural := Find_Substring (Item, Pairs_Mark);
+      C : constant Natural := Find_Substring (Item, Enhanced_Mark);
+      D : constant Natural := Find_Substring (Item, Normal_Mark);
+      E : constant Natural := Find_Substring (Item, Large_Mark);
+      F : constant Natural := Find_Substring (Item, Fail_Mark);
+      Color_Count : Natural;
+      Pair_Count : Natural;
+      Enhanced : Natural;
+      Normal : Natural;
+      Large : Natural;
+      Fail : Natural;
+   begin
+      if A = 0 or else B = 0 or else C = 0 or else D = 0
+        or else E = 0 or else F = 0
+        or else not Parse_Natural_Field (Item (Item'First .. A - 1), Color_Count)
+        or else not Parse_Natural_Field
+          (Item (A + Colors_Mark'Length .. B - 1), Pair_Count)
+        or else not Parse_Natural_Field
+          (Item (B + Pairs_Mark'Length .. C - 1), Enhanced)
+        or else not Parse_Natural_Field
+          (Item (C + Enhanced_Mark'Length .. D - 1), Normal)
+        or else not Parse_Natural_Field
+          (Item (D + Normal_Mark'Length .. E - 1), Large)
+        or else not Parse_Natural_Field
+          (Item (E + Large_Mark'Length .. F - 1), Fail)
+      then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Number,
+                 others => <>);
+      end if;
+
+      if Enhanced + Normal + Large + Fail /= Pair_Count then
+         return (Status => Humanize.Status.Invalid_Value,
+                 Error => Out_Of_Range,
+                 others => <>);
+      end if;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Color_Count => Color_Count,
+         Pair_Count => Pair_Count,
+         Enhanced => Enhanced,
+         Normal => Normal,
+         Large_Only => Large,
+         Fail => Fail,
+         Exact => True,
+         Consumed => Item'Length,
+         Error_Position => 0,
+         Error => No_Parse_Error);
+   end Parse_Palette_Metadata_Label;
+
    function Parse_APCA_Contrast_Label
      (Text : String)
       return APCA_Label_Parse_Result
@@ -6879,17 +10031,34 @@ package body Humanize.Parsing is
    is
       Item : constant String := Trim (Text);
       Ratio_Mark : constant Natural := Find_Substring (Item, ":1 ");
-      Contrast_Mark : constant String := " contrast";
-      End_Mark : constant Natural := Find_Substring (Item, Contrast_Mark);
    begin
-      if Ratio_Mark = 0 or else End_Mark = 0
+      if Ratio_Mark = 0
         or else not Numeric_Value (Item (Item'First .. Ratio_Mark - 1), Ratio)
       then
          return False;
       end if;
 
-      Store (Item (Ratio_Mark + 3 .. End_Mark - 1), Level, Level_Length);
-      return True;
+      declare
+         Label : constant String := Trim (Item (Ratio_Mark + 3 .. Item'Last));
+         Canonical : constant String := Lower (Label);
+      begin
+         if Canonical'Length = 0 then
+            return False;
+         elsif Ends_With (Canonical, " contrast") then
+            Store
+              (Canonical (Canonical'First
+               .. Canonical'Last - String'(" contrast")'Length),
+               Level, Level_Length);
+         elsif Ends_With (Canonical, "-text contrast") then
+            Store
+              (Canonical (Canonical'First
+               .. Canonical'Last - String'("-text contrast")'Length),
+               Level, Level_Length);
+         else
+            Store (Label, Level, Level_Length);
+         end if;
+         return True;
+      end;
    end Parse_Contrast_Label;
 
    function Parse_Color_Accessibility_Summary
@@ -6941,6 +10110,144 @@ package body Humanize.Parsing is
       when others =>
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Color_Accessibility_Summary;
+
+   function Parse_Alpha_Contrast_Label
+     (Text : String)
+      return Color_Difference_Label_Parse_Result
+   is
+      Item : constant String := Trim (Text);
+      Suffix : constant String := " after alpha compositing";
+      Ratio : Long_Float;
+      Level_Buffer : String (1 .. 48);
+      Level_Length : Natural;
+   begin
+      if not Ends_With (Lower (Item), Suffix)
+        or else not Parse_Contrast_Label
+          (Item (Item'First .. Item'Last - Suffix'Length),
+           Ratio, Level_Buffer, Level_Length)
+      then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Separator,
+                 others => <>);
+      end if;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Value => Ratio,
+         Label => Level_Buffer,
+         Label_Length => Level_Length,
+         Perceptual => False,
+         Exact => True,
+         Consumed => Item'Length,
+         Error_Position => 0,
+         Error => No_Parse_Error);
+   exception
+      when others =>
+         return (Status => Humanize.Status.Invalid_Argument, others => <>);
+   end Parse_Alpha_Contrast_Label;
+
+   function Parse_Contrast_Remediation_Label
+     (Text : String)
+      return Contrast_Remediation_Parse_Result
+   is
+      Item : constant String := Trim (Text);
+      Low  : constant String := Lower (Item);
+      Meets_Prefix : constant String := "current foreground meets ";
+      Meets_Mark : constant String := " contrast at ";
+      Use_Prefix : constant String := "use ";
+      For_Mark : constant String := " for ";
+      Contrast_Suffix : constant String := " contrast";
+      At_Pos : Natural;
+      For_Pos : Natural;
+      Ratio : Long_Float;
+      Target_Buffer : String (1 .. 48);
+      Target_Length : Natural;
+      Color : Humanize.Colors.RGB_Color := (others => 0);
+      Has_Color : Boolean := False;
+   begin
+      if Starts_With (Low, Meets_Prefix) then
+         At_Pos := Find_Substring (Low, Meets_Mark);
+         if At_Pos = 0
+           or else not Numeric_Value
+             (Item (At_Pos + Meets_Mark'Length .. Item'Last - 2), Ratio)
+         then
+            return (Status => Humanize.Status.Invalid_Argument,
+                    Error => Expected_Number,
+                    Error_Position =>
+                      (if At_Pos = 0
+                       then Item'First + Meets_Prefix'Length
+                       else At_Pos + Meets_Mark'Length),
+                    others => <>);
+         end if;
+         Store
+           (Item (Item'First + Meets_Prefix'Length .. At_Pos - 1),
+            Target_Buffer, Target_Length);
+         return
+           (Status => Humanize.Status.Ok,
+            Recommended_Color => Color,
+            Has_Recommended_Color => False,
+            Ratio => Ratio,
+            Target => Target_Buffer,
+            Target_Length => Target_Length,
+            Already_Passes => True,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error);
+      elsif Starts_With (Low, Use_Prefix) then
+         For_Pos := Find_Substring (Low, For_Mark);
+         if For_Pos = 0
+           or else Humanize.Colors.Parse_Hex_Color
+             (Item (Item'First + Use_Prefix'Length .. For_Pos - 1), Color)
+             /= Humanize.Status.Ok
+         then
+            return (Status => Humanize.Status.Invalid_Argument,
+                    Error => Expected_Unit,
+                    Error_Position => Item'First + Use_Prefix'Length,
+                    others => <>);
+         end if;
+         Has_Color := True;
+         declare
+            Rest : constant String :=
+              Item (For_Pos + For_Mark'Length .. Item'Last);
+            Rest_Low : constant String := Lower (Rest);
+            Space : constant Natural := Find_Substring (Rest, " ");
+         begin
+            if Space = 0
+              or else not Ends_With (Rest_Low, Contrast_Suffix)
+              or else not Numeric_Value
+                (Rest (Rest'First .. Space - 3), Ratio)
+            then
+               return (Status => Humanize.Status.Invalid_Argument,
+                       Error => Expected_Number,
+                       Error_Position => Rest'First,
+                       others => <>);
+            end if;
+            Store
+              (Rest (Space + 1 .. Rest'Last - Contrast_Suffix'Length),
+               Target_Buffer, Target_Length);
+         end;
+         return
+           (Status => Humanize.Status.Ok,
+            Recommended_Color => Color,
+            Has_Recommended_Color => Has_Color,
+            Ratio => Ratio,
+            Target => Target_Buffer,
+            Target_Length => Target_Length,
+            Already_Passes => False,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error);
+      else
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Unsupported_Form,
+                 others => <>);
+      end if;
+   exception
+      when others =>
+         return (Status => Humanize.Status.Invalid_Argument, others => <>);
+   end Parse_Contrast_Remediation_Label;
 
    function Parse_Float_Field
      (Text  : String;
@@ -7481,15 +10788,9 @@ package body Humanize.Parsing is
       return Parse_Model_Label (Text, "hsv");
    end Parse_HSV_Label;
 
-   function Parse_Color_Bucket_Label
-     (Text : String)
-      return Color_Bucket_Label_Parse_Result
-   is
-      Item : constant String := Lower (Trim (Text));
-      Label_Buffer : String (1 .. 48);
-      Label_Length : Natural;
+   function Is_Color_Bucket_Label (Item : String) return Boolean is
    begin
-      if Item not in "very dark" | "dark" | "medium brightness" | "light"
+      return Item in "very dark" | "dark" | "medium brightness" | "light"
         | "very light" | "neutral" | "red" | "orange" | "yellow" | "green"
         | "cyan" | "blue" | "purple" | "magenta" | "desaturated" | "muted"
         | "saturated" | "vivid" | "neutral temperature" | "warm" | "cool"
@@ -7499,7 +10800,55 @@ package body Humanize.Parsing is
         | "teal" | "aqua" | "rebeccapurple" | "neutral palette"
         | "single-accent palette" | "monochrome palette" | "triadic palette"
         | "complementary palette" | "analogous palette" | "varied palette"
-      then
+        | "meget mork" | "mork" | "middel lysstyrke" | "meget lys"
+        | "rod" | "gul" | "gron" | "bla" | "lilla" | "desatureret"
+        | "dampet" | "mattet" | "kraftig" | "neutral temperatur"
+        | "varm" | "kolig" | "balanceret temperatur" | "gralig"
+        | "blod" | "moderat chroma" | "hoj chroma"
+        | "sehr dunkel" | "dunkel" | "mittlere helligkeit" | "hell"
+        | "sehr hell" | "rot" | "gelb" | "gruen" | "blau" | "violett"
+        | "entsaettigt" | "gedaempft" | "gesaettigt" | "kraeftig"
+        | "neutrale temperatur" | "kuehl" | "ausgeglichene temperatur"
+        | "graeulich" | "pastell" | "weich" | "mittleres chroma"
+        | "hohes chroma"
+        | "tres sombre" | "sombre" | "luminosite moyenne" | "clair"
+        | "tres clair" | "neutre" | "rouge" | "jaune" | "vert"
+        | "violet" | "desature" | "attenue" | "sature" | "vif"
+        | "temperature neutre" | "chaud" | "froid"
+        | "temperature equilibree" | "grisatre" | "doux"
+        | "chroma modere" | "chroma eleve"
+        | "muy oscuro" | "oscuro" | "brillo medio" | "claro"
+        | "muy claro" | "rojo" | "naranja" | "amarillo" | "verde"
+        | "cian" | "azul" | "purpura" | "desaturado" | "apagado"
+        | "saturado" | "vivo" | "temperatura neutral" | "calido"
+        | "frio" | "temperatura equilibrada" | "grisaceo" | "suave"
+        | "croma moderado" | "croma alto"
+        | "molto scuro" | "scuro" | "luminosita media" | "chiaro"
+        | "molto chiaro" | "neutro" | "rosso" | "arancione"
+        | "giallo" | "ciano" | "blu" | "viola" | "smorzato"
+        | "saturo" | "vivido" | "temperatura neutra" | "caldo"
+        | "freddo" | "temperatura bilanciata" | "grigiastro"
+        | "pastello" | "morbido"
+        | "muito escuro" | "escuro" | "brilho medio" | "muito claro"
+        | "vermelho" | "amarelo" | "dessaturado" | "legivel"
+        | "quente" | "temperatura equilibrada" | "acinzentado" | "macio"
+        | "zeer donker" | "donker" | "gemiddelde helderheid"
+        | "licht" | "zeer licht" | "neutraal" | "rood" | "oranje"
+        | "geel" | "groen" | "cyaan" | "blauw" | "paars"
+        | "onverzadigd" | "gedempt" | "verzadigd" | "levendig"
+        | "neutrale temperatuur" | "koel" | "gebalanceerde temperatuur"
+        | "grijzig" | "zacht" | "matige chroma" | "hoge chroma";
+   end Is_Color_Bucket_Label;
+
+   function Parse_Color_Bucket_Label
+     (Text : String)
+      return Color_Bucket_Label_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+      Label_Buffer : String (1 .. 48);
+      Label_Length : Natural;
+   begin
+      if not Is_Color_Bucket_Label (Item) then
          return (Status => Humanize.Status.Invalid_Argument,
                  Error_Position => (if Item'Length = 0 then Text'First else Item'First),
                  Error => Unsupported_Form,
@@ -7920,20 +11269,45 @@ package body Humanize.Parsing is
       return Color_Difference_Label_Parse_Result
    is
       Item : constant String := Lower (Trim (Text));
-      Prefix : constant String := "oklab delta ";
+      OKLab_Prefix : constant String := "oklab delta ";
+      CIE76_Prefix : constant String := "cie76 delta ";
+      CIE94_Prefix : constant String := "cie94 delta ";
+      CIE94_Textile_Prefix : constant String := "cie94 textile delta ";
+      CIEDE2000_Prefix : constant String := "ciede2000 delta ";
       Comma : constant Natural := Find_Substring (Item, ", ");
       Difference : Long_Float;
       Label_Buffer : String (1 .. 48);
       Label_Length : Natural;
+      Number_First : Natural := 0;
    begin
-      if not Starts_With (Item, Prefix) or else Comma = 0
-        or else not Parse_Float_Field
-          (Item (Item'First + Prefix'Length .. Comma - 1), Difference)
+      if Starts_With (Item, OKLab_Prefix) then
+         Number_First := Item'First + OKLab_Prefix'Length;
+      elsif Starts_With (Item, CIE76_Prefix) then
+         Number_First := Item'First + CIE76_Prefix'Length;
+      elsif Starts_With (Item, CIE94_Prefix) then
+         Number_First := Item'First + CIE94_Prefix'Length;
+      elsif Starts_With (Item, CIE94_Textile_Prefix) then
+         Number_First := Item'First + CIE94_Textile_Prefix'Length;
+      elsif Starts_With (Item, CIEDE2000_Prefix) then
+         Number_First := Item'First + CIEDE2000_Prefix'Length;
+      end if;
+
+      if Number_First = 0 or else Comma = 0
+        or else Number_First > Comma - 1
       then
          return (Status => Humanize.Status.Invalid_Argument,
                  Error => Expected_Number,
                  others => <>);
       end if;
+
+      if not Parse_Float_Field
+        (Item (Number_First .. Comma - 1), Difference)
+      then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Number,
+                 others => <>);
+      end if;
+
       Store (Item (Comma + 2 .. Item'Last), Label_Buffer, Label_Length);
       return
         (Status => Humanize.Status.Ok,
@@ -8367,6 +11741,730 @@ package body Humanize.Parsing is
          Error_Position => 0,
          Error => No_Parse_Error);
    end Parse_Supported_Phrase_Locales;
+
+   function Parse_Operational_Phrase
+     (Text : String)
+      return Operational_Phrase_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+   begin
+      if Item'Length = 0 then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Empty_Input,
+                 others => <>);
+      elsif Item = "backup running" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Backup_Phrase_Domain,
+            Backup_Status => Humanize.Phrases.Backup_Running,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "backup completed" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Backup_Phrase_Domain,
+            Backup_Status => Humanize.Phrases.Backup_Completed,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "backup failed" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Backup_Phrase_Domain,
+            Backup_Status => Humanize.Phrases.Backup_Failed,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "backup stale" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Backup_Phrase_Domain,
+            Backup_Status => Humanize.Phrases.Backup_Stale,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "investigating incident" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Incident_Phrase_Domain,
+            Incident_Status => Humanize.Phrases.Incident_Investigating,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "incident identified" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Incident_Phrase_Domain,
+            Incident_Status => Humanize.Phrases.Incident_Identified,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "incident mitigated" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Incident_Phrase_Domain,
+            Incident_Status => Humanize.Phrases.Incident_Mitigated,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "incident resolved" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Incident_Phrase_Domain,
+            Incident_Status => Humanize.Phrases.Incident_Resolved,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "release drafting" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Release_Phrase_Domain,
+            Release_Status => Humanize.Phrases.Release_Drafting,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "release ready" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Release_Phrase_Domain,
+            Release_Status => Humanize.Phrases.Release_Ready,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "release published" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Release_Phrase_Domain,
+            Release_Status => Humanize.Phrases.Release_Published,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "release rolled back" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Release_Phrase_Domain,
+            Release_Status => Humanize.Phrases.Release_Rolled_Back,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "payment authorized" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Payment_Lifecycle_Phrase_Domain,
+            Payment_Lifecycle_Status =>
+              Humanize.Phrases.Payment_Authorized,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "payment captured" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Payment_Lifecycle_Phrase_Domain,
+            Payment_Lifecycle_Status =>
+              Humanize.Phrases.Payment_Captured,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "payment refunded" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Payment_Lifecycle_Phrase_Domain,
+            Payment_Lifecycle_Status =>
+              Humanize.Phrases.Payment_Refunded,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "payment disputed" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Payment_Lifecycle_Phrase_Domain,
+            Payment_Lifecycle_Status =>
+              Humanize.Phrases.Payment_Disputed,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "payment requires action" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Payment_Lifecycle_Phrase_Domain,
+            Payment_Lifecycle_Status =>
+              Humanize.Phrases.Payment_Requires_Action,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "payment expired" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Payment_Lifecycle_Phrase_Domain,
+            Payment_Lifecycle_Status =>
+              Humanize.Phrases.Payment_Expired,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "audit entry created" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Audit_Phrase_Domain,
+            Audit_Status => Humanize.Phrases.Audit_Created,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "audit entry updated" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Audit_Phrase_Domain,
+            Audit_Status => Humanize.Phrases.Audit_Updated,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "audit entry deleted" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Audit_Phrase_Domain,
+            Audit_Status => Humanize.Phrases.Audit_Deleted,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "audit entry restored" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Audit_Phrase_Domain,
+            Audit_Status => Humanize.Phrases.Audit_Restored,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "feature flag enabled" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Feature_Flag_Phrase_Domain,
+            Feature_Flag_Status => Humanize.Phrases.Flag_Enabled,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "feature flag disabled" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Feature_Flag_Phrase_Domain,
+            Feature_Flag_Status => Humanize.Phrases.Flag_Disabled,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "feature flag rolling out" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Feature_Flag_Phrase_Domain,
+            Feature_Flag_Status => Humanize.Phrases.Flag_Rolling_Out,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "feature flag rolled back" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Feature_Flag_Phrase_Domain,
+            Feature_Flag_Status => Humanize.Phrases.Flag_Rolled_Back,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "webhook pending" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Webhook_Phrase_Domain,
+            Webhook_Status => Humanize.Phrases.Webhook_Pending,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "webhook delivered" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Webhook_Phrase_Domain,
+            Webhook_Status => Humanize.Phrases.Webhook_Delivered,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "webhook failed" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Webhook_Phrase_Domain,
+            Webhook_Status => Humanize.Phrases.Webhook_Failed,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "webhook retrying" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Webhook_Phrase_Domain,
+            Webhook_Status => Humanize.Phrases.Webhook_Retrying,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "api key active" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => API_Key_Phrase_Domain,
+            API_Key_Status => Humanize.Phrases.API_Key_Active,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "api key revoked" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => API_Key_Phrase_Domain,
+            API_Key_Status => Humanize.Phrases.API_Key_Revoked,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "api key expired" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => API_Key_Phrase_Domain,
+            API_Key_Status => Humanize.Phrases.API_Key_Expired,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "api key rotated" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => API_Key_Phrase_Domain,
+            API_Key_Status => Humanize.Phrases.API_Key_Rotated,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "quota available" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Quota_Phrase_Domain,
+            Quota_Status => Humanize.Phrases.Quota_Available,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "quota near limit" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Quota_Phrase_Domain,
+            Quota_Status => Humanize.Phrases.Quota_Near_Limit,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "quota exceeded" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Quota_Phrase_Domain,
+            Quota_Status => Humanize.Phrases.Quota_Exceeded,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "quota reset" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Quota_Phrase_Domain,
+            Quota_Status => Humanize.Phrases.Quota_Reset,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "invoice draft" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Invoice_Phrase_Domain,
+            Invoice_Status => Humanize.Phrases.Invoice_Draft,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "invoice sent" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Invoice_Phrase_Domain,
+            Invoice_Status => Humanize.Phrases.Invoice_Sent,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "invoice paid" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Invoice_Phrase_Domain,
+            Invoice_Status => Humanize.Phrases.Invoice_Paid,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "invoice refunded" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Invoice_Phrase_Domain,
+            Invoice_Status => Humanize.Phrases.Invoice_Refunded,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "invoice overdue" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Invoice_Phrase_Domain,
+            Invoice_Status => Humanize.Phrases.Invoice_Overdue,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "refund failed" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Invoice_Phrase_Domain,
+            Invoice_Status => Humanize.Phrases.Refund_Failed,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "database online" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Database_Phrase_Domain,
+            Database_Status => Humanize.Phrases.Database_Online,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "database offline" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Database_Phrase_Domain,
+            Database_Status => Humanize.Phrases.Database_Offline,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "database degraded" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Database_Phrase_Domain,
+            Database_Status => Humanize.Phrases.Database_Degraded,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "database migrating" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Database_Phrase_Domain,
+            Database_Status => Humanize.Phrases.Database_Migrating,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "database migration failed" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Database_Phrase_Domain,
+            Database_Status => Humanize.Phrases.Database_Migration_Failed,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "database replicating" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Database_Phrase_Domain,
+            Database_Status => Humanize.Phrases.Database_Replicating,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "database replication lagging" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Database_Phrase_Domain,
+            Database_Status => Humanize.Phrases.Database_Replication_Lagging,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "database backup running" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Database_Phrase_Domain,
+            Database_Status => Humanize.Phrases.Database_Backup_Running,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      elsif Item = "database backup failed" then
+         return
+           (Status => Humanize.Status.Ok,
+            Domain => Database_Phrase_Domain,
+            Database_Status => Humanize.Phrases.Database_Backup_Failed,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error,
+            others => <>);
+      else
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Unsupported_Form,
+                 Error_Position => Text'First,
+                 others => <>);
+      end if;
+   end Parse_Operational_Phrase;
+
+   function Parse_Field_Change_Summary
+     (Text : String)
+      return Field_Change_Summary_Parse_Result
+   is
+      Item : constant String := Lower (Trim (Text));
+      Colon : constant Natural := Find_Substring (Item, ": ");
+      Changed_Mark : constant String := " changed, ";
+      Added_Mark : constant String := " added, ";
+      Removed_Mark : constant String := " removed";
+      Changed_At : Natural := 0;
+      Added_At : Natural := 0;
+      Removed_At : Natural := 0;
+      Total : Natural := 0;
+      Changed : Natural := 0;
+      Added : Natural := 0;
+      Removed : Natural := 0;
+      Unit : String (1 .. 32) := [others => ' '];
+      Unit_Length : Natural := 0;
+      First_Space : Natural := 0;
+   begin
+      if Item'Length = 0 then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Empty_Input,
+                 others => <>);
+      elsif Colon = 0 then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Separator,
+                 Error_Position => Text'First,
+                 others => <>);
+      end if;
+
+      for Index in Item'First .. Colon - 1 loop
+         if Item (Index) = ' ' then
+            First_Space := Index;
+            exit;
+         end if;
+      end loop;
+
+      if First_Space = 0
+        or else not Parse_Two_Naturals
+          (Item (Item'First .. First_Space - 1), "0", Total, Removed)
+      then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Number,
+                 Error_Position => Text'First,
+                 others => <>);
+      end if;
+      Removed := 0;
+
+      declare
+         Unit_Text : constant String := Trim (Item (First_Space + 1 .. Colon - 1));
+      begin
+         Unit_Length := Natural'Min (Unit_Text'Length, Unit'Length);
+         if Unit_Length > 0 then
+            Unit (1 .. Unit_Length) :=
+              Unit_Text (Unit_Text'First .. Unit_Text'First + Unit_Length - 1);
+         end if;
+      end;
+
+      Changed_At := Find_Substring (Item, Changed_Mark);
+      Added_At := Find_Substring (Item, Added_Mark);
+      Removed_At := Find_Substring (Item, Removed_Mark);
+      if Changed_At = 0 or else Added_At = 0 or else Removed_At = 0 then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Separator,
+                 Error_Position => Colon + 2,
+                 others => <>);
+      end if;
+
+      if not Parse_Two_Naturals
+        (Trim (Item (Colon + 2 .. Changed_At - 1)),
+         Trim (Item (Changed_At + Changed_Mark'Length .. Added_At - 1)),
+         Changed, Added)
+        or else not Parse_Two_Naturals
+          (Trim (Item (Added_At + Added_Mark'Length .. Removed_At - 1)),
+           "0", Removed, Total)
+      then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Number,
+                 Error_Position => Colon + 2,
+                 others => <>);
+      end if;
+      Total := Changed + Added + Removed;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Total => Total,
+         Changed => Changed,
+         Added => Added,
+         Removed => Removed,
+         Unit => Unit,
+         Unit_Length => Unit_Length,
+         Exact => True,
+         Consumed => Item'Length,
+         Error_Position => 0,
+         Error => No_Parse_Error);
+   end Parse_Field_Change_Summary;
+
+   function Parse_Field_State_Summary
+     (Text : String)
+      return Field_State_Summary_Parse_Result
+   is
+      Item : constant String := Trim (Text);
+
+      function Result
+        (Kind : Field_State_Change_Kind;
+         Mark : String;
+         Tail_Adjust : Natural := 0)
+         return Field_State_Summary_Parse_Result
+      is
+         Marker_Pos : constant Natural := Find_Substring (Item, Mark);
+         Field_Buffer : String (1 .. 64) := [others => ' '];
+         Value_Buffer : String (1 .. 160) := [others => ' '];
+         Field_Length : Natural := 0;
+         Value_Length : Natural := 0;
+         Last : Natural := Item'Last;
+      begin
+         if Marker_Pos = 0 or else Marker_Pos = Item'First then
+            return (Status => Humanize.Status.Invalid_Argument,
+                    Error => Expected_Separator,
+                    Error_Position => Item'First,
+                    others => <>);
+         end if;
+
+         if Tail_Adjust > 0 then
+            if Last < Tail_Adjust or else Item (Last) /= ')' then
+               return (Status => Humanize.Status.Invalid_Argument,
+                       Error => Expected_Separator,
+                       Error_Position => Item'Last,
+                       others => <>);
+            end if;
+            Last := Last - Tail_Adjust;
+         end if;
+
+         Store (Trim (Item (Item'First .. Marker_Pos - 1)),
+                Field_Buffer, Field_Length);
+         Store (Trim (Item (Marker_Pos + Mark'Length .. Last)),
+                Value_Buffer, Value_Length);
+
+         return
+           (Status => Humanize.Status.Ok,
+            Kind => Kind,
+            Field => Field_Buffer,
+            Field_Length => Field_Length,
+            Value => Value_Buffer,
+            Value_Length => Value_Length,
+            Exact => True,
+            Consumed => Item'Length,
+            Error_Position => 0,
+            Error => No_Parse_Error);
+      end Result;
+   begin
+      if Item'Length = 0 then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Empty_Input,
+                 others => <>);
+      elsif Find_Substring (Item, " added as ") /= 0 then
+         return Result (Field_State_Added, " added as ");
+      elsif Find_Substring (Item, " removed (was ") /= 0 then
+         return Result (Field_State_Removed, " removed (was ", 1);
+      elsif Find_Substring (Item, " unchanged at ") /= 0 then
+         return Result (Field_State_Unchanged, " unchanged at ");
+      else
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Unsupported_Form,
+                 Error_Position => Item'First,
+                 others => <>);
+      end if;
+   end Parse_Field_State_Summary;
 
    function Parse_Domain_With_Expected
      (Text     : String;
@@ -9744,6 +13842,57 @@ package body Humanize.Parsing is
       return Parse_Excerpt (Text, "~");
    end Parse_Shortened_Path;
 
+   function Parse_File_Mode_Label
+     (Text : String)
+      return File_Mode_Parse_Result
+   is
+      Item : constant String := Trim (Text);
+      Mode : Humanize.Strings.File_Mode_Value;
+      Kind : Humanize.Strings.File_Mode_Kind;
+      Code : Humanize.Status.Status_Code;
+      Looks_Octal : Boolean := False;
+      Looks_Symbolic : Boolean := False;
+   begin
+      if Item'Length = 0 then
+         return
+           (Status => Humanize.Status.Invalid_Argument,
+            Error_Position => Text'First,
+            Error => Empty_Input,
+            others => <>);
+      end if;
+
+      Looks_Octal := True;
+      for Ch of Item loop
+         if Ch not in '0' .. '7' then
+            Looks_Octal := False;
+            exit;
+         end if;
+      end loop;
+      Looks_Symbolic := Item'Length in 9 | 10;
+
+      Code := Humanize.Strings.Parse_File_Mode (Item, Mode, Kind);
+      if Code /= Humanize.Status.Ok then
+         return
+           (Status => Code,
+            Error_Position => Item'First,
+            Error =>
+              (if Looks_Octal or else Looks_Symbolic then Expected_Number
+               else Unsupported_Form),
+            others => <>);
+      end if;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Mode => Mode,
+         Kind => Kind,
+         Symbolic => not Looks_Octal,
+         Octal => Looks_Octal,
+         Exact => True,
+         Consumed => Item'Length,
+         Error_Position => 0,
+         Error => No_Parse_Error);
+   end Parse_File_Mode_Label;
+
    function Parse_Handle_Label
      (Text : String)
       return String_Label_Parse_Result
@@ -10742,6 +14891,150 @@ package body Humanize.Parsing is
          others => <>);
    end Scan_Bounded_Number;
 
+   Frequency_Never_Aliases : aliased constant String :=
+      "never"
+      & Alias_Separator & "aldrig"
+      & Alias_Separator & "aldri"
+      & Alias_Separator & "nie"
+      & Alias_Separator & "jamais"
+      & Alias_Separator & "nunca"
+      & Alias_Separator & "mai"
+      & Alias_Separator & "nooit"
+      & Alias_Separator & "ei koskaan"
+      & Alias_Separator & "nigdy"
+      & Alias_Separator & "nikdy"
+      & Alias_Separator & "asla"
+      & Alias_Separator & "#6E6963696F646174C483"
+      & Alias_Separator & "niekada"
+      & Alias_Separator & "nikoli"
+      & Alias_Separator & "tidak pernah"
+      & Alias_Separator & "neniam"
+      & Alias_Separator & "khong bao gio"
+      & Alias_Separator & "kamwe"
+      & Alias_Separator & "nooit"
+      & Alias_Separator & "soha"
+      & Alias_Separator & "#D0BDD0B8D0BAD0BED0B3D0B4D0B0"
+      & Alias_Separator & "#D0BDD196D0BAD0BED0BBD0B8"
+      & Alias_Separator & "#E381AAE38197"
+      & Alias_Separator & "#EC9786EC9D8C"
+      & Alias_Separator & "#E4BB8EE4B88D"
+      & Alias_Separator & "#D8A3D8A8D8AFD98BD8A7"
+      & Alias_Separator & "#E0A495E0A4ADE0A58020E0A4A8E0A4B9E0A580E0A482";
+
+   Frequency_Once_Aliases : aliased constant String :=
+      "once"
+      & Alias_Separator & "#C3A96E2067616E67"
+      & Alias_Separator & "einmal"
+      & Alias_Separator & "une fois"
+      & Alias_Separator & "una vez"
+      & Alias_Separator & "una volta"
+      & Alias_Separator & "uma vez"
+      & Alias_Separator & "een keer"
+      & Alias_Separator & "eenmaal"
+      & Alias_Separator & "en gang"
+      & Alias_Separator & "#656E2067C3A56E67"
+      & Alias_Separator & "kerran"
+      & Alias_Separator & "raz"
+      & Alias_Separator & "#6A65646E6F75"
+      & Alias_Separator & "bir kez"
+      & Alias_Separator & "#6F20646174C483"
+      & Alias_Separator & "#7669656EC485206B617274C485"
+      & Alias_Separator & "enkrat"
+      & Alias_Separator & "sekali"
+      & Alias_Separator & "unufoje"
+      & Alias_Separator & "mot lan"
+      & Alias_Separator & "mara moja"
+      & Alias_Separator & "een keer"
+      & Alias_Separator & "egyszer"
+      & Alias_Separator & "#D0BED0B4D0B8D0BD20D180D0B0D0B7"
+      & Alias_Separator & "#D0BED0B4D0B8D0BD20D180D0B0D0B7"
+      & Alias_Separator & "#E4B880E59B9E"
+      & Alias_Separator & "#ED959C20EBB288"
+      & Alias_Separator & "#E4B880E6ACA1"
+      & Alias_Separator & "#D985D8B1D8A920D988D8A7D8ADD8AFD8A9"
+      & Alias_Separator & "#E0A48FE0A49520E0A4ACE0A4BEE0A4B0";
+
+   Frequency_Twice_Aliases : aliased constant String :=
+      "twice"
+      & Alias_Separator & "to gange"
+      & Alias_Separator & "to ganger"
+      & Alias_Separator & "zweimal"
+      & Alias_Separator & "deux fois"
+      & Alias_Separator & "dos veces"
+      & Alias_Separator & "due volte"
+      & Alias_Separator & "duas vezes"
+      & Alias_Separator & "twee keer"
+      & Alias_Separator & "tweemaal"
+      & Alias_Separator & "#7476C3A52067C3A56E676572"
+      & Alias_Separator & "kaksi kertaa"
+      & Alias_Separator & "kahdesti"
+      & Alias_Separator & "dwa razy"
+      & Alias_Separator & "#6476616B72C3A174"
+      & Alias_Separator & "iki kez"
+      & Alias_Separator & "#646520646F75C483206F7269"
+      & Alias_Separator & "du kartus"
+      & Alias_Separator & "dvakrat"
+      & Alias_Separator & "dua kali"
+      & Alias_Separator & "dufoje"
+      & Alias_Separator & "hai lan"
+      & Alias_Separator & "mara mbili"
+      & Alias_Separator & "twee keer"
+      & Alias_Separator & "ketszer"
+      & Alias_Separator & "#D0B4D0B2D0B020D180D0B0D0B7D0B0"
+      & Alias_Separator & "#D0B4D0B2D0B020D180D0B0D0B7D0B8"
+      & Alias_Separator & "#E4BA8CE59B9E"
+      & Alias_Separator & "#EB919020EBB288"
+      & Alias_Separator & "#E4B8A4E6ACA1"
+      & Alias_Separator & "#D985D8B1D8AAD98AD986"
+      & Alias_Separator & "#E0A4A6E0A58B20E0A4ACE0A4BEE0A4B0";
+
+   Frequency_Count_Aliases : constant Frequency_Alias_Group_Array :=
+     [(0, Frequency_Never_Aliases'Access),
+      (1, Frequency_Once_Aliases'Access),
+      (2, Frequency_Twice_Aliases'Access)];
+
+   Frequency_Count_Unit_Aliases : aliased constant String :=
+      "time"
+      & Alias_Separator & "times"
+      & Alias_Separator & "gang"
+      & Alias_Separator & "gange"
+      & Alias_Separator & "ganger"
+      & Alias_Separator & "mal"
+      & Alias_Separator & "#67C3A56E676572"
+      & Alias_Separator & "fois"
+      & Alias_Separator & "vez"
+      & Alias_Separator & "veces"
+      & Alias_Separator & "vezes"
+      & Alias_Separator & "volta"
+      & Alias_Separator & "volte"
+      & Alias_Separator & "keer"
+      & Alias_Separator & "kertaa"
+      & Alias_Separator & "razy"
+      & Alias_Separator & "#6B72C3A174"
+      & Alias_Separator & "kez"
+      & Alias_Separator & "ori"
+      & Alias_Separator & "kartas"
+      & Alias_Separator & "kartai"
+      & Alias_Separator & "krat"
+      & Alias_Separator & "kali"
+      & Alias_Separator & "fojo"
+      & Alias_Separator & "fojoj"
+      & Alias_Separator & "lan"
+      & Alias_Separator & "mara"
+      & Alias_Separator & "alkalom"
+      & Alias_Separator & "#D180D0B0D0B7"
+      & Alias_Separator & "#D180D0B0D0B7D0B0"
+      & Alias_Separator & "#D180D0B0D0B7D0B8"
+      & Alias_Separator & "#E59B9E"
+      & Alias_Separator & "#EBB288"
+      & Alias_Separator & "#E6ACA1"
+      & Alias_Separator & "#D985D8B1D8A9"
+      & Alias_Separator & "#D985D8B1D8A7D8AA"
+      & Alias_Separator & "#E0A4ACE0A4BEE0A4B0";
+
+   function Is_Frequency_Count_Unit (Unit : String) return Boolean is
+     (Has_Alias (Unit, Frequency_Count_Unit_Aliases));
+
    function Parse_Frequency
      (Text : String)
       return Frequency_Parse_Result
@@ -10750,65 +15043,21 @@ package body Humanize.Parsing is
       Last_Number : Natural := Item'First - 1;
       Amount : Long_Float;
    begin
-      if Item = "never" or else Item = "aldrig" or else Item = "aldri"
-        or else Item = "nie"
-        or else Item = "jamais" or else Item = "nunca" or else Item = "mai"
-        or else Item = "nooit" or else Item = "ei koskaan"
-        or else Item = "nigdy" or else Item = "nikdy" or else Item = "asla"
-        or else Item = B ("D0BDD0B8D0BAD0BED0B3D0B4D0B0")
-        or else Item = B ("D0BDD196D0BAD0BED0BBD0B8")
-        or else Item = B ("E381AAE38197")
-        or else Item = B ("EC9786EC9D8C")
-        or else Item = B ("E4BB8EE4B88D")
-        or else Item = B ("D8A3D8A8D8AFD98BD8A7")
-        or else Item = B ("E0A495E0A4ADE0A58020E0A4A8E0A4B9E0A580E0A482")
-      then
-         return (Status => Humanize.Status.Ok, Count => 0,
-                 Exact => True, Consumed => Item'Length,
-                 Error_Position => 0,
-         Error => No_Parse_Error);
-      elsif Item = "once" or else Item = B ("C3A96E2067616E67")
-        or else Item = "einmal" or else Item = "une fois"
-        or else Item = "una vez" or else Item = "una volta"
-        or else Item = "uma vez" or else Item = "een keer"
-        or else Item = "eenmaal" or else Item = "en gang"
-        or else Item = B ("656E2067C3A56E67")
-        or else Item = "kerran" or else Item = "raz"
-        or else Item = B ("6A65646E6F75")
-        or else Item = "bir kez" or else Item = B ("D0BED0B4D0B8D0BD20D180D0B0D0B7")
-        or else Item = B ("D0BED0B4D0B8D0BD20D180D0B0D0B7")
-        or else Item = B ("E4B880E59B9E")
-        or else Item = B ("ED959C20EBB288")
-        or else Item = B ("E4B880E6ACA1")
-        or else Item = B ("D985D8B1D8A920D988D8A7D8ADD8AFD8A9")
-        or else Item = B ("E0A48FE0A49520E0A4ACE0A4BEE0A4B0")
-      then
-         return (Status => Humanize.Status.Ok, Count => 1,
-                 Exact => True, Consumed => Item'Length,
-                 Error_Position => 0,
-         Error => No_Parse_Error);
-      elsif Item = "twice" or else Item = "to gange" or else Item = "to ganger"
-        or else Item = "zweimal"
-        or else Item = "deux fois" or else Item = "dos veces"
-        or else Item = "due volte" or else Item = "duas vezes"
-        or else Item = "twee keer" or else Item = "tweemaal"
-        or else Item = B ("7476C3A52067C3A56E676572")
-        or else Item = "kaksi kertaa" or else Item = "kahdesti"
-        or else Item = "dwa razy"
-        or else Item = B ("6476616B72C3A174")
-        or else Item = "iki kez" or else Item = B ("D0B4D0B2D0B020D180D0B0D0B7D0B0")
-        or else Item = B ("D0B4D0B2D0B020D180D0B0D0B7D0B8")
-        or else Item = B ("E4BA8CE59B9E")
-        or else Item = B ("EB919020EBB288")
-        or else Item = B ("E4B8A4E6ACA1")
-        or else Item = B ("D985D8B1D8AAD98AD986")
-        or else Item = B ("E0A4A6E0A58B20E0A4ACE0A4BEE0A4B0")
-      then
-         return (Status => Humanize.Status.Ok, Count => 2,
-                 Exact => True, Consumed => Item'Length,
-                 Error_Position => 0,
-         Error => No_Parse_Error);
-      end if;
+      declare
+         Alias_Count : Humanize.Frequencies.Occurrence_Count;
+      begin
+         if Lookup_Frequency_Alias
+              (Item, Frequency_Count_Aliases, Alias_Count)
+         then
+            return
+              (Status => Humanize.Status.Ok,
+               Count => Alias_Count,
+               Exact => True,
+               Consumed => Item'Length,
+               Error_Position => 0,
+               Error => No_Parse_Error);
+         end if;
+      end;
 
       for Index in Item'Range loop
          if Is_Digit (Item (Index)) or else Item (Index) = ','
@@ -10837,27 +15086,7 @@ package body Humanize.Parsing is
                   Unit  : constant String := Trim (Item (Space + 1 .. Item'Last));
                begin
                   if Count.Status = Humanize.Status.Ok
-                    and then (Unit = "time" or else Unit = "times"
-                              or else Unit = "gang" or else Unit = "gange"
-                              or else Unit = "ganger"
-                              or else Unit = "mal"
-                              or else Unit = B ("67C3A56E676572")
-                              or else Unit = "fois" or else Unit = "vez"
-                              or else Unit = "veces" or else Unit = "vezes"
-                              or else Unit = "volta"
-                              or else Unit = "volte" or else Unit = "keer"
-                              or else Unit = "kertaa" or else Unit = "razy"
-                              or else Unit = B ("6B72C3A174")
-                              or else Unit = "kez"
-                              or else Unit = B ("D180D0B0D0B7")
-                              or else Unit = B ("D180D0B0D0B7D0B0")
-                              or else Unit = B ("D180D0B0D0B7D0B8")
-                              or else Unit = B ("E59B9E")
-                              or else Unit = B ("EBB288")
-                              or else Unit = B ("E6ACA1")
-                              or else Unit = B ("D985D8B1D8A9")
-                              or else Unit = B ("D985D8B1D8A7D8AA")
-                              or else Unit = B ("E0A4ACE0A4BEE0A4B0"))
+                    and then Is_Frequency_Count_Unit (Unit)
                     and then Count.Value >= 0
                   then
                      return
@@ -10888,28 +15117,7 @@ package body Humanize.Parsing is
            Long_Long_Integer (Long_Float'Rounding (Amount));
       begin
          if Rounded < 0
-           or else not
-             (Unit = "time" or else Unit = "times"
-              or else Unit = "gang" or else Unit = "gange"
-              or else Unit = "ganger"
-              or else Unit = "mal"
-              or else Unit = B ("67C3A56E676572")
-              or else Unit = "fois" or else Unit = "vez"
-              or else Unit = "veces" or else Unit = "vezes"
-              or else Unit = "volta"
-              or else Unit = "volte" or else Unit = "keer"
-              or else Unit = "kertaa" or else Unit = "razy"
-              or else Unit = B ("6B72C3A174")
-              or else Unit = "kez"
-              or else Unit = B ("D180D0B0D0B7")
-              or else Unit = B ("D180D0B0D0B7D0B0")
-              or else Unit = B ("D180D0B0D0B7D0B8")
-              or else Unit = B ("E59B9E")
-              or else Unit = B ("EBB288")
-              or else Unit = B ("E6ACA1")
-              or else Unit = B ("D985D8B1D8A9")
-              or else Unit = B ("D985D8B1D8A7D8AA")
-              or else Unit = B ("E0A4ACE0A4BEE0A4B0"))
+           or else not Is_Frequency_Count_Unit (Unit)
          then
             return (Status => Humanize.Status.Invalid_Argument, others => <>);
          end if;
@@ -10991,12 +15199,23 @@ package body Humanize.Parsing is
       elsif Item = "week" or else Item = "weeks" or else Item = "wk"
         or else Item = "w"
         or else Item = "uge"
+        or else Item = "vecka"
+        or else Item = "uke"
         or else Item = "woche"
         or else Item = "semaine"
         or else Item = "semana"
         or else Item = "settimana"
+        or else Item = B ("7479647A6965C584")
+        or else Item = "tygodnie"
+        or else Item = B ("74C3BD64656E")
+        or else Item = B ("74C3BD646E79")
         or else Item = "viikossa"
+        or else Item = B ("736176616974C499")
+        or else Item = "teden"
+        or else Item = "tednu"
         or else Item = "haftada"
+        or else Item = "hetente"
+        or else Item = "seminggu"
         or else Item = B ("E6AF8EE980B1")
         or else Item = B ("E6AF8FE591A8")
         or else Item = B ("ECA3BCEBA788EB8BA4")
@@ -11036,7 +15255,9 @@ package body Humanize.Parsing is
       end if;
 
       return Try (" per ") or else Try (" pro ") or else Try (" par ")
-        or else Try (" por ") or else Try (" na ") or else Try (" za ")
+        or else Try (" por ") or else Try (" pe ") or else Try (" na ")
+        or else Try (" kwa ") or else Try (" po ") or else Try (" moi ")
+        or else Try (" za ")
         or else Try (" a ") or else Try (" al ") or else Try (" alla ")
         or else Try (" cada ")
         or else Try (B ("20D0B220"))
@@ -11159,10 +15380,20 @@ package body Humanize.Parsing is
                        (Raw_Rest
                           (Raw_Rest'First + Approx'Length .. Raw_Rest'Last))
                      else Raw_Rest);
+                  Less_Prefix : constant String := B ("E5B091E4BA8E20");
+                  Has_Less_Prefix : constant Boolean :=
+                    Starts_With (Rest, Less_Prefix);
                   Is_Less : constant Boolean :=
-                    Less_Suffix'Length > 0 and then Ends_With (Rest, Less_Suffix);
+                    Has_Less_Prefix
+                    or else
+                      (Less_Suffix'Length > 0
+                       and then Ends_With (Rest, Less_Suffix));
                   Frequency_Text : constant String :=
-                    (if Is_Less
+                    (if Has_Less_Prefix
+                     then Trim
+                       (Rest
+                          (Rest'First + Less_Prefix'Length .. Rest'Last))
+                     elsif Is_Less
                      then Trim
                        (Rest
                           (Rest'First
@@ -11190,6 +15421,1700 @@ package body Humanize.Parsing is
       return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Period_First_Rate;
 
+   pragma Style_Checks (Off);
+
+   Generated_Unit_Alias_01 : aliased constant String :=
+      "#E382B0E383A9E383A0"
+      & Alias_Separator & "#EAB7B8EB9EA8"
+      & Alias_Separator & "#E5858B"
+      & Alias_Separator & "#D8BAD8B1D8A7D985D8A7D8AA"
+      & Alias_Separator & "#E0A497E0A58DE0A4B0E0A4BEE0A4AE"
+      ;
+
+   Generated_Unit_Alias_02 : aliased constant String :=
+      "#E3839FE383AAE382B0E383A9E383A0"
+      & Alias_Separator & "#EBB080EBA6ACEAB7B8EB9EA8"
+      & Alias_Separator & "#E6AFABE5858B"
+      & Alias_Separator & "#D985D984D98AD8BAD8B1D8A7D985D8A7D8AA"
+      & Alias_Separator & "#E0A4AEE0A4BFE0A4B2E0A580E0A497E0A58DE0A4B0E0A4BEE0A4AE"
+      ;
+
+   Generated_Unit_Alias_03 : aliased constant String :=
+      "#E383AAE38383E38388E383AB"
+      & Alias_Separator & "#EBA6ACED84B0"
+      & Alias_Separator & "#E58D87"
+      & Alias_Separator & "#D984D8AAD8B1D8A7D8AA"
+      & Alias_Separator & "#E0A4B2E0A580E0A49FE0A4B0"
+      ;
+
+   Generated_Unit_Alias_04 : aliased constant String :=
+      "#E3839FE383AAE383AAE38383E38388E383AB"
+      & Alias_Separator & "#EBB080EBA6ACEBA6ACED84B0"
+      & Alias_Separator & "#E6AFABE58D87"
+      & Alias_Separator & "#D985D984D98AD984D8AAD8B1D8A7D8AA"
+      & Alias_Separator & "#E0A4AEE0A4BFE0A4B2E0A580E0A4B2E0A580E0A49FE0A4B0"
+      ;
+
+   Generated_Unit_Alias_05 : aliased constant String :=
+      "#EC84BCED8BB0EBAFB8ED84B0"
+      & Alias_Separator & "#D8B3D986D8AAD98AD985D8AAD8B1D8A7D8AA"
+      & Alias_Separator & "#E0A4B8E0A587E0A482E0A49FE0A580E0A4AEE0A580E0A49FE0A4B0"
+      ;
+
+   Generated_Unit_Alias_06 : aliased constant String :=
+      "#EBB080EBA6ACEBAFB8ED84B0"
+      & Alias_Separator & "#D985D984D98AD985D8AAD8B1D8A7D8AA"
+      & Alias_Separator & "#E0A4AEE0A4BFE0A4B2E0A580E0A4AEE0A580E0A49FE0A4B0"
+      ;
+
+   Generated_Unit_Alias_07 : aliased constant String :=
+      "#D0B3D180D0B0D0B4D183D18120D0A6D0B5D0BBD18CD181D0B8D18F"
+      & Alias_Separator & "#D0B3D180D0B0D0B4D183D181D18B20D0A6D0B5D0BBD18CD181D0B8D18F"
+      & Alias_Separator & "#D0B3D180D0B0D0B4D183D18120D0A6D0B5D0BBD18CD181D196D18F"
+      & Alias_Separator & "#D0B3D180D0B0D0B4D183D181D0B820D0A6D0B5D0BBD18CD181D196D18F"
+      & Alias_Separator & "#E382BBE383ABE382B7E382A6E382B9E5BAA6"
+      & Alias_Separator & "#EC84ADEC94A8EB8F84"
+      & Alias_Separator & "#E69184E6B08FE5BAA6"
+      & Alias_Separator & "#D8AFD8B1D8ACD8A7D8AA20D985D8A6D988D98AD8A9"
+      & Alias_Separator & "#E0A4A1E0A4BFE0A497E0A58DE0A4B0E0A58020E0A4B8E0A587E0A4B2E0A58DE0A4B8E0A4BFE0A4AFE0A4B8"
+      ;
+
+   Generated_Unit_Alias_08 : aliased constant String :=
+      "#D0B3D180D0B0D0B4D183D18120D0A4D0B0D180D0B5D0BDD0B3D0B5D0B9D182D0B0"
+      & Alias_Separator & "#D0B3D180D0B0D0B4D183D181D18B20D0A4D0B0D180D0B5D0BDD0B3D0B5D0B9D182D0B0"
+      & Alias_Separator & "#D0B3D180D0B0D0B4D183D18120D0A4D0B0D180D0B5D0BDD0B3D0B5D0B9D182D0B0"
+      & Alias_Separator & "#D0B3D180D0B0D0B4D183D181D0B820D0A4D0B0D180D0B5D0BDD0B3D0B5D0B9D182D0B0"
+      & Alias_Separator & "#E88FAFE6B08FE5BAA6"
+      & Alias_Separator & "#ED9994EC94A8EB8F84"
+      & Alias_Separator & "#E58D8EE6B08FE5BAA6"
+      & Alias_Separator & "#D8AFD8B1D8ACD8A7D8AA20D981D987D8B1D986D987D8A7D98AD8AA"
+      & Alias_Separator & "#E0A4A1E0A4BFE0A497E0A58DE0A4B0E0A58020E0A4ABE0A4BEE0A4B0E0A587E0A4A8E0A4B9E0A4BEE0A487E0A49F"
+      ;
+
+   Generated_Unit_Alias_09 : aliased constant String :=
+      "#D0BAD0B2D0B0D0B4D180D0B0D182D0BDD18BD0B920D0BCD0B5D182D180"
+      & Alias_Separator & "#D0BAD0B2D0B0D0B4D180D0B0D182D0BDD18BD0B520D0BCD0B5D182D180D18B"
+      & Alias_Separator & "#D0BAD0B2D0B0D0B4D180D0B0D182D0BDD0B8D0B920D0BCD0B5D182D180"
+      & Alias_Separator & "#D0BAD0B2D0B0D0B4D180D0B0D182D0BDD19620D0BCD0B5D182D180D0B8"
+      & Alias_Separator & "#E5B9B3E696B9E383A1E383BCE38388E383AB"
+      & Alias_Separator & "#ECA09CEAB3B1EBAFB8ED84B0"
+      & Alias_Separator & "#E5B9B3E696B9E7B1B3"
+      & Alias_Separator & "#D8A3D985D8AAD8A7D8B120D985D8B1D8A8D8B9D8A9"
+      & Alias_Separator & "#E0A4B5E0A4B0E0A58DE0A49720E0A4AEE0A580E0A49FE0A4B0"
+      ;
+
+   Generated_Unit_Alias_10 : aliased constant String :=
+      "#D0B3D0B5D0BAD182D0B0D180"
+      & Alias_Separator & "#D0B3D0B5D0BAD182D0B0D180D18B"
+      & Alias_Separator & "#D0B3D0B5D0BAD182D0B0D180D0B8"
+      & Alias_Separator & "#E38398E382AFE382BFE383BCE383AB"
+      & Alias_Separator & "#ED97A5ED8380EBA5B4"
+      & Alias_Separator & "#E585ACE9A1B7"
+      & Alias_Separator & "#D987D983D8AAD8A7D8B1D8A7D8AA"
+      & Alias_Separator & "#E0A4B9E0A587E0A495E0A58DE0A49FE0A587E0A4AFE0A4B0"
+      ;
+
+   Generated_Unit_Alias_11 : aliased constant String :=
+      "#D0BAD0B8D0BBD0BED0BCD0B5D182D180D18B20D0B220D187D0B0D181"
+      & Alias_Separator & "#D0BAD196D0BBD0BED0BCD0B5D182D180D0B820D0B7D0B020D0B3D0BED0B4D0B8D0BDD183"
+      & Alias_Separator & "#E382ADE383ADE383A1E383BCE38388E383ABE6AF8EE69982"
+      & Alias_Separator & "#EC8B9CEAB084EB8BB920ED82ACEBA19CEBAFB8ED84B0"
+      & Alias_Separator & "#E58D83E7B1B3E6AF8FE5B08FE697B6"
+      & Alias_Separator & "#D983D98AD984D988D985D8AAD8B1D8A7D8AA20D981D98A20D8A7D984D8B3D8A7D8B9D8A9"
+      & Alias_Separator & "#E0A495E0A4BFE0A4B2E0A58BE0A4AEE0A580E0A49FE0A4B020E0A4AAE0A58DE0A4B0E0A4A4E0A4BF20E0A498E0A482E0A49FE0A4BE"
+      ;
+
+   Generated_Unit_Alias_12 : aliased constant String :=
+      "#D0BCD0B5D182D180D18B20D0B220D181D0B5D0BAD183D0BDD0B4D183"
+      & Alias_Separator & "#D0BCD0B5D182D180D0B820D0B7D0B020D181D0B5D0BAD183D0BDD0B4D183"
+      & Alias_Separator & "#E383A1E383BCE38388E383ABE6AF8EE7A792"
+      & Alias_Separator & "#ECB488EB8BB920EBAFB8ED84B0"
+      & Alias_Separator & "#E7B1B3E6AF8FE7A792"
+      & Alias_Separator & "#D8A3D985D8AAD8A7D8B120D981D98A20D8A7D984D8ABD8A7D986D98AD8A9"
+      & Alias_Separator & "#E0A4AEE0A580E0A49FE0A4B020E0A4AAE0A58DE0A4B0E0A4A4E0A4BF20E0A4B8E0A587E0A495E0A482E0A4A1"
+      ;
+
+   Generated_Unit_Alias_13 : aliased constant String :=
+      "#D0BFD0B0D181D0BAD0B0D0BBD18C"
+      & Alias_Separator & "#D0BFD0B0D181D0BAD0B0D0BBD0B8"
+      & Alias_Separator & "#D0BFD0B0D181D0BAD0B0D0BBD196"
+      & Alias_Separator & "#E38391E382B9E382ABE383AB"
+      & Alias_Separator & "#ED8C8CEC8AA4ECB9BC"
+      & Alias_Separator & "#E5B895E696AFE58DA1"
+      & Alias_Separator & "#D8A8D8A7D8B3D983D8A7D984"
+      & Alias_Separator & "#E0A4AAE0A4BEE0A4B8E0A58DE0A495E0A4B2"
+      ;
+
+   Generated_Unit_Alias_14 : aliased constant String :=
+      "#D0BAD0B8D0BBD0BED0BFD0B0D181D0BAD0B0D0BBD18C"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0BFD0B0D181D0BAD0B0D0BBD0B8"
+      & Alias_Separator & "#D0BAD196D0BBD0BED0BFD0B0D181D0BAD0B0D0BBD196"
+      & Alias_Separator & "#E382ADE383ADE38391E382B9E382ABE383AB"
+      & Alias_Separator & "#ED82ACEBA19CED8C8CEC8AA4ECB9BC"
+      & Alias_Separator & "#E58D83E5B895"
+      & Alias_Separator & "#D983D98AD984D988D8A8D8A7D8B3D983D8A7D984"
+      & Alias_Separator & "#E0A495E0A4BFE0A4B2E0A58BE0A4AAE0A4BEE0A4B8E0A58DE0A495E0A4B2"
+      ;
+
+   Generated_Unit_Alias_15 : aliased constant String :=
+      "#D0B4D0B6D0BED183D0BBD18C"
+      & Alias_Separator & "#D0B4D0B6D0BED183D0BBD0B8"
+      & Alias_Separator & "#D0B4D0B6D0BED183D0BBD196"
+      & Alias_Separator & "#E382B8E383A5E383BCE383AB"
+      & Alias_Separator & "#ECA484"
+      & Alias_Separator & "#E784A6E880B3"
+      & Alias_Separator & "#D8ACD988D984D8A7D8AA"
+      & Alias_Separator & "#E0A49CE0A582E0A4B2"
+      ;
+
+   Generated_Unit_Alias_16 : aliased constant String :=
+      "#D0BAD0B8D0BBD0BED0B4D0B6D0BED183D0BBD18C"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0B4D0B6D0BED183D0BBD0B8"
+      & Alias_Separator & "#D0BAD196D0BBD0BED0B4D0B6D0BED183D0BBD196"
+      & Alias_Separator & "#E382ADE383ADE382B8E383A5E383BCE383AB"
+      & Alias_Separator & "#ED82ACEBA19CECA484"
+      & Alias_Separator & "#E58D83E784A6"
+      & Alias_Separator & "#D983D98AD984D988D8ACD988D984D8A7D8AA"
+      & Alias_Separator & "#E0A495E0A4BFE0A4B2E0A58BE0A49CE0A582E0A4B2"
+      ;
+
+   Generated_Unit_Alias_17 : aliased constant String :=
+      "#D0B2D0B0D182D182"
+      & Alias_Separator & "#D0B2D0B0D182D182D18B"
+      & Alias_Separator & "#D0B2D0B0D182D0B8"
+      & Alias_Separator & "#E383AFE38383E38388"
+      & Alias_Separator & "#EC9980ED8AB8"
+      & Alias_Separator & "#E793A6E789B9"
+      & Alias_Separator & "#D988D8A7D8B7D8A7D8AA"
+      & Alias_Separator & "#E0A4B5E0A4BEE0A49F"
+      ;
+
+   Generated_Unit_Alias_18 : aliased constant String :=
+      "#D0BAD0B8D0BBD0BED0B2D0B0D182D182"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0B2D0B0D182D182D18B"
+      & Alias_Separator & "#D0BAD196D0BBD0BED0B2D0B0D182D0B8"
+      & Alias_Separator & "#E382ADE383ADE383AFE38383E38388"
+      & Alias_Separator & "#ED82ACEBA19CEC9980ED8AB8"
+      & Alias_Separator & "#E58D83E793A6"
+      & Alias_Separator & "#D983D98AD984D988D988D8A7D8B7D8A7D8AA"
+      & Alias_Separator & "#E0A495E0A4BFE0A4B2E0A58BE0A4B5E0A4BEE0A49F"
+      ;
+
+   Generated_Unit_Alias_19 : aliased constant String :=
+      "#D0B3D0B5D180D186"
+      & Alias_Separator & "#D0B3D0B5D180D186D18B"
+      & Alias_Separator & "#D0B3D0B5D180D186D0B8"
+      & Alias_Separator & "#E38398E383ABE38384"
+      & Alias_Separator & "#ED97A4EBA5B4ECB8A0"
+      & Alias_Separator & "#E8B5ABE585B9"
+      & Alias_Separator & "#D987D8B1D8AAD8B2"
+      & Alias_Separator & "#E0A4B9E0A4B0E0A58DE0A49FE0A58DE0A49C"
+      ;
+
+   Generated_Unit_Alias_20 : aliased constant String :=
+      "#D0BAD0B8D0BBD0BED0B3D0B5D180D186"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0B3D0B5D180D186D18B"
+      & Alias_Separator & "#D0BAD196D0BBD0BED0B3D0B5D180D186D0B8"
+      & Alias_Separator & "#E382ADE383ADE38398E383ABE38384"
+      & Alias_Separator & "#ED82ACEBA19CED97A4EBA5B4ECB8A0"
+      & Alias_Separator & "#E58D83E8B5AB"
+      & Alias_Separator & "#D983D98AD984D988D987D8B1D8AAD8B2"
+      & Alias_Separator & "#E0A495E0A4BFE0A4B2E0A58BE0A4B9E0A4B0E0A58DE0A49FE0A58DE0A49C"
+      ;
+
+   Generated_Unit_Alias_21 : aliased constant String :=
+      "#D0B3D180D0B0D0B4D183D181"
+      & Alias_Separator & "#D0B3D180D0B0D0B4D183D181D18B"
+      & Alias_Separator & "#D0B3D180D0B0D0B4D183D181D0B8"
+      & Alias_Separator & "#E5BAA6"
+      & Alias_Separator & "#EB8F84"
+      & Alias_Separator & "#D8AFD8B1D8ACD8A7D8AA"
+      & Alias_Separator & "#E0A4A1E0A4BFE0A497E0A58DE0A4B0E0A580"
+      ;
+
+   Generated_Unit_Alias_22 : aliased constant String :=
+      "#D0BCD0B8D0BBD18F"
+      & Alias_Separator & "#D0BCD0B8D0BBD0B8"
+      & Alias_Separator & "#D0BCD0B8D0BBD196"
+      & Alias_Separator & "#E3839EE382A4E383AB"
+      & Alias_Separator & "#EBA788EC9DBC"
+      & Alias_Separator & "#E88BB1E9878C"
+      & Alias_Separator & "#D8A3D985D98AD8A7D984"
+      & Alias_Separator & "#E0A4AEE0A580E0A4B2"
+      ;
+
+   Generated_Unit_Alias_23 : aliased constant String :=
+      "#D18FD180D0B4"
+      & Alias_Separator & "#D18FD180D0B4D18B"
+      & Alias_Separator & "#D18FD180D0B4D0B8"
+      & Alias_Separator & "#E383A4E383BCE38389"
+      & Alias_Separator & "#EC95BCEB939C"
+      & Alias_Separator & "#E7A081"
+      & Alias_Separator & "#D98AD8A7D8B1D8AFD8A7D8AA"
+      & Alias_Separator & "#E0A497E0A49C"
+      ;
+
+   Generated_Unit_Alias_24 : aliased constant String :=
+      "#D184D183D182"
+      & Alias_Separator & "#D184D183D182D18B"
+      & Alias_Separator & "#D184D183D182D0B8"
+      & Alias_Separator & "#E38395E382A3E383BCE38388"
+      & Alias_Separator & "#ED94BCED8AB8"
+      & Alias_Separator & "#E88BB1E5B0BA"
+      & Alias_Separator & "#D8A3D982D8AFD8A7D985"
+      & Alias_Separator & "#E0A4ABE0A581E0A49F"
+      ;
+
+   Generated_Unit_Alias_25 : aliased constant String :=
+      "#D0B4D18ED0B9D0BC"
+      & Alias_Separator & "#D0B4D18ED0B9D0BCD18B"
+      & Alias_Separator & "#D0B4D18ED0B9D0BCD0B8"
+      & Alias_Separator & "#E382A4E383B3E38381"
+      & Alias_Separator & "#EC9DB8ECB998"
+      & Alias_Separator & "#E88BB1E5AFB8"
+      & Alias_Separator & "#D8A8D988D8B5D8A7D8AA"
+      & Alias_Separator & "#E0A487E0A482E0A49A"
+      ;
+
+   Generated_Unit_Alias_26 : aliased constant String :=
+      "#D0BCD0BED180D181D0BAD0B0D18F20D0BCD0B8D0BBD18F"
+      & Alias_Separator & "#D0BCD0BED180D181D0BAD0B8D0B520D0BCD0B8D0BBD0B8"
+      & Alias_Separator & "#D0BCD0BED180D181D18CD0BAD0B020D0BCD0B8D0BBD18F"
+      & Alias_Separator & "#D0BCD0BED180D181D18CD0BAD19620D0BCD0B8D0BBD196"
+      & Alias_Separator & "#E6B5B7E9878C"
+      & Alias_Separator & "#ED95B4EBA6AC"
+      & Alias_Separator & "#D985D98AD98420D8A8D8ADD8B1D98A"
+      & Alias_Separator & "#D8A3D985D98AD8A7D98420D8A8D8ADD8B1D98AD8A9"
+      & Alias_Separator & "#E0A4B8E0A4AEE0A581E0A4A6E0A58DE0A4B0E0A58020E0A4AEE0A580E0A4B2"
+      ;
+
+   Generated_Unit_Alias_27 : aliased constant String :=
+      "#D0B0D0BAD180"
+      & Alias_Separator & "#D0B0D0BAD180D18B"
+      & Alias_Separator & "#D0B0D0BAD180D0B8"
+      & Alias_Separator & "#E382A8E383BCE382ABE383BC"
+      & Alias_Separator & "#EC9790EC9DB4ECBBA4"
+      & Alias_Separator & "#E88BB1E4BAA9"
+      & Alias_Separator & "#D8A3D981D8AFD986D8A9"
+      & Alias_Separator & "#E0A48FE0A495E0A4A1E0A4BC"
+      ;
+
+   Generated_Unit_Alias_28 : aliased constant String :=
+      "#D0BAD0B2D0B0D0B4D180D0B0D182D0BDD18BD0B920D0BAD0B8D0BBD0BED0BCD0B5D182D180"
+      & Alias_Separator & "#D0BAD0B2D0B0D0B4D180D0B0D182D0BDD18BD0B520D0BAD0B8D0BBD0BED0BCD0B5D182D180D18B"
+      & Alias_Separator & "#D0BAD0B2D0B0D0B4D180D0B0D182D0BDD0B8D0B920D0BAD196D0BBD0BED0BCD0B5D182D180"
+      & Alias_Separator & "#D0BAD0B2D0B0D0B4D180D0B0D182D0BDD19620D0BAD196D0BBD0BED0BCD0B5D182D180D0B8"
+      & Alias_Separator & "#E5B9B3E696B9E382ADE383ADE383A1E383BCE38388E383AB"
+      & Alias_Separator & "#ECA09CEAB3B1ED82ACEBA19CEBAFB8ED84B0"
+      & Alias_Separator & "#E5B9B3E696B9E58D83E7B1B3"
+      & Alias_Separator & "#D983D98AD984D988D985D8AAD8B1D8A7D8AA20D985D8B1D8A8D8B9D8A9"
+      & Alias_Separator & "#E0A4B5E0A4B0E0A58DE0A49720E0A495E0A4BFE0A4B2E0A58BE0A4AEE0A580E0A49FE0A4B0"
+      ;
+
+   Generated_Unit_Alias_29 : aliased constant String :=
+      "#D0BAD183D0B1D0B8D187D0B5D181D0BAD0B8D0B920D0BCD0B5D182D180"
+      & Alias_Separator & "#D0BAD183D0B1D0B8D187D0B5D181D0BAD0B8D0B520D0BCD0B5D182D180D18B"
+      & Alias_Separator & "#D0BAD183D0B1D196D187D0BDD0B8D0B920D0BCD0B5D182D180"
+      & Alias_Separator & "#D0BAD183D0B1D196D187D0BDD19620D0BCD0B5D182D180D0B8"
+      & Alias_Separator & "#E7AB8BE696B9E383A1E383BCE38388E383AB"
+      & Alias_Separator & "#EC84B8ECA09CEAB3B1EBAFB8ED84B0"
+      & Alias_Separator & "#E7AB8BE696B9E7B1B3"
+      & Alias_Separator & "#D8A3D985D8AAD8A7D8B120D985D983D8B9D8A8D8A9"
+      & Alias_Separator & "#E0A498E0A4A820E0A4AEE0A580E0A49FE0A4B0"
+      ;
+
+   Generated_Unit_Alias_30 : aliased constant String :=
+      "#D187D0B0D0B9D0BDD0B0D18F20D0BBD0BED0B6D0BAD0B0"
+      & Alias_Separator & "#D187D0B0D0B9D0BDD18BD0B520D0BBD0BED0B6D0BAD0B8"
+      & Alias_Separator & "#D187D0B0D0B9D0BDD0B020D0BBD0BED0B6D0BAD0B0"
+      & Alias_Separator & "#D187D0B0D0B9D0BDD19620D0BBD0BED0B6D0BAD0B8"
+      & Alias_Separator & "#E5B08FE38195E38198"
+      & Alias_Separator & "#ED8BB0EC8AA4ED91BC"
+      & Alias_Separator & "#E88CB6E58C99"
+      & Alias_Separator & "#D985D984D8A7D8B9D98220D8B5D8BAD98AD8B1D8A9"
+      & Alias_Separator & "#E0A49AE0A4AEE0A58DE0A4AEE0A49A"
+      ;
+
+   Generated_Unit_Alias_31 : aliased constant String :=
+      "#D181D182D0BED0BBD0BED0B2D0B0D18F20D0BBD0BED0B6D0BAD0B0"
+      & Alias_Separator & "#D181D182D0BED0BBD0BED0B2D18BD0B520D0BBD0BED0B6D0BAD0B8"
+      & Alias_Separator & "#D181D182D0BED0BBD0BED0B2D0B020D0BBD0BED0B6D0BAD0B0"
+      & Alias_Separator & "#D181D182D0BED0BBD0BED0B2D19620D0BBD0BED0B6D0BAD0B8"
+      & Alias_Separator & "#E5A4A7E38195E38198"
+      & Alias_Separator & "#ED858CEC9DB4EBB894EC8AA4ED91BC"
+      & Alias_Separator & "#E6B1A4E58C99"
+      & Alias_Separator & "#D985D984D8A7D8B9D98220D983D8A8D98AD8B1D8A9"
+      & Alias_Separator & "#E0A4ACE0A4A1E0A4BCE0A58720E0A49AE0A4AEE0A58DE0A4AEE0A49A"
+      ;
+
+   Generated_Unit_Alias_32 : aliased constant String :=
+      "#D187D0B0D188D0BAD0B0"
+      & Alias_Separator & "#D187D0B0D188D0BAD0B8"
+      & Alias_Separator & "#E382ABE38383E38397"
+      & Alias_Separator & "#ECBBB5"
+      & Alias_Separator & "#E69DAF"
+      & Alias_Separator & "#D8A3D983D988D8A7D8A8"
+      & Alias_Separator & "#E0A495E0A4AA"
+      ;
+
+   Generated_Unit_Alias_33 : aliased constant String :=
+      "#D0B3D0B0D0BBD0BBD0BED0BD"
+      & Alias_Separator & "#D0B3D0B0D0BBD0BBD0BED0BDD18B"
+      & Alias_Separator & "#D0B3D0B0D0BBD0BED0BDD0B8"
+      & Alias_Separator & "#E382ACE383ADE383B3"
+      & Alias_Separator & "#EAB0A4EB9FB0"
+      & Alias_Separator & "#E58AA0E4BB91"
+      & Alias_Separator & "#D8BAD8A7D984D988D986D8A7D8AA"
+      & Alias_Separator & "#E0A497E0A588E0A4B2E0A4A8"
+      ;
+
+   Generated_Unit_Alias_34 : aliased constant String :=
+      "#D184D183D0BDD182"
+      & Alias_Separator & "#D184D183D0BDD182D18B"
+      & Alias_Separator & "#D184D183D0BDD182D0B8"
+      & Alias_Separator & "#E3839DE383B3E38389"
+      & Alias_Separator & "#ED8C8CEC9AB4EB939C"
+      & Alias_Separator & "#E7A385"
+      & Alias_Separator & "#D8A3D8B1D8B7D8A7D984"
+      & Alias_Separator & "#E0A4AAE0A4BEE0A489E0A482E0A4A1"
+      ;
+
+   Generated_Unit_Alias_35 : aliased constant String :=
+      "#D183D0BDD186D0B8D18F"
+      & Alias_Separator & "#D183D0BDD186D0B8D0B8"
+      & Alias_Separator & "#D183D0BDD186D196D197"
+      & Alias_Separator & "#E382AAE383B3E382B9"
+      & Alias_Separator & "#EC98A8EC8AA4"
+      & Alias_Separator & "#E79B8EE58FB8"
+      & Alias_Separator & "#D8A3D988D986D8B5D8A7D8AA"
+      & Alias_Separator & "#E0A494E0A482E0A4B8"
+      ;
+
+   Generated_Unit_Alias_36 : aliased constant String :=
+      "#D181D182D0BED183D0BD"
+      & Alias_Separator & "#D181D182D0BED183D0BDD18B"
+      & Alias_Separator & "#D181D182D0BED183D0BDD0B8"
+      & Alias_Separator & "#E382B9E38388E383BCE383B3"
+      & Alias_Separator & "#EC8AA4ED86A4"
+      & Alias_Separator & "#E88BB1E79FB3"
+      & Alias_Separator & "#D8B3D8AAD988D986"
+      & Alias_Separator & "#E0A4B8E0A58DE0A49FE0A58BE0A4A8"
+      ;
+
+   Generated_Unit_Alias_37 : aliased constant String :=
+      "#D182D0BED0BDD0BDD0B0"
+      & Alias_Separator & "#D182D0BED0BDD0BDD18B"
+      & Alias_Separator & "#D182D0BED0BDD0BDD0B8"
+      & Alias_Separator & "#E38388E383B3"
+      & Alias_Separator & "#ED86A4"
+      & Alias_Separator & "#E590A8"
+      & Alias_Separator & "#D8A3D8B7D986D8A7D98620D985D8AAD8B1D98AD8A9"
+      & Alias_Separator & "#E0A49FE0A4A8"
+      ;
+
+   Generated_Unit_Alias_38 : aliased constant String :=
+      "#D182D0BED0BDD0BDD0B0"
+      & Alias_Separator & "#D182D0BED0BDD0BDD18B"
+      & Alias_Separator & "#D182D0BED0BDD0BDD0B8"
+      & Alias_Separator & "#E382B7E383A7E383BCE38388E38388E383B3"
+      & Alias_Separator & "#EC87BCED8AB8ED86A4"
+      & Alias_Separator & "#E79FADE590A8"
+      & Alias_Separator & "#D8A3D8B7D986D8A7D986"
+      & Alias_Separator & "#E0A49BE0A58BE0A49FE0A58720E0A49FE0A4A8"
+      ;
+
+   Generated_Unit_Aliases : constant Unit_Alias_Group_Array :=
+     [
+      (Unit => Humanize.Units.Gram, Aliases => Generated_Unit_Alias_01'Access),
+      (Unit => Humanize.Units.Milligram, Aliases => Generated_Unit_Alias_02'Access),
+      (Unit => Humanize.Units.Liter, Aliases => Generated_Unit_Alias_03'Access),
+      (Unit => Humanize.Units.Milliliter, Aliases => Generated_Unit_Alias_04'Access),
+      (Unit => Humanize.Units.Centimeter, Aliases => Generated_Unit_Alias_05'Access),
+      (Unit => Humanize.Units.Millimeter, Aliases => Generated_Unit_Alias_06'Access),
+      (Unit => Humanize.Units.Celsius, Aliases => Generated_Unit_Alias_07'Access),
+      (Unit => Humanize.Units.Fahrenheit, Aliases => Generated_Unit_Alias_08'Access),
+      (Unit => Humanize.Units.Square_Meter, Aliases => Generated_Unit_Alias_09'Access),
+      (Unit => Humanize.Units.Hectare, Aliases => Generated_Unit_Alias_10'Access),
+      (Unit => Humanize.Units.Kilometer_Per_Hour, Aliases => Generated_Unit_Alias_11'Access),
+      (Unit => Humanize.Units.Meter_Per_Second, Aliases => Generated_Unit_Alias_12'Access),
+      (Unit => Humanize.Units.Pascal, Aliases => Generated_Unit_Alias_13'Access),
+      (Unit => Humanize.Units.Kilopascal, Aliases => Generated_Unit_Alias_14'Access),
+      (Unit => Humanize.Units.Joule, Aliases => Generated_Unit_Alias_15'Access),
+      (Unit => Humanize.Units.Kilojoule, Aliases => Generated_Unit_Alias_16'Access),
+      (Unit => Humanize.Units.Watt, Aliases => Generated_Unit_Alias_17'Access),
+      (Unit => Humanize.Units.Kilowatt, Aliases => Generated_Unit_Alias_18'Access),
+      (Unit => Humanize.Units.Hertz, Aliases => Generated_Unit_Alias_19'Access),
+      (Unit => Humanize.Units.Kilohertz, Aliases => Generated_Unit_Alias_20'Access),
+      (Unit => Humanize.Units.Degree, Aliases => Generated_Unit_Alias_21'Access),
+      (Unit => Humanize.Units.Mile, Aliases => Generated_Unit_Alias_22'Access),
+      (Unit => Humanize.Units.Yard, Aliases => Generated_Unit_Alias_23'Access),
+      (Unit => Humanize.Units.Foot, Aliases => Generated_Unit_Alias_24'Access),
+      (Unit => Humanize.Units.Inch, Aliases => Generated_Unit_Alias_25'Access),
+      (Unit => Humanize.Units.Nautical_Mile, Aliases => Generated_Unit_Alias_26'Access),
+      (Unit => Humanize.Units.Acre, Aliases => Generated_Unit_Alias_27'Access),
+      (Unit => Humanize.Units.Square_Kilometer, Aliases => Generated_Unit_Alias_28'Access),
+      (Unit => Humanize.Units.Cubic_Meter, Aliases => Generated_Unit_Alias_29'Access),
+      (Unit => Humanize.Units.Teaspoon, Aliases => Generated_Unit_Alias_30'Access),
+      (Unit => Humanize.Units.Tablespoon, Aliases => Generated_Unit_Alias_31'Access),
+      (Unit => Humanize.Units.Cup, Aliases => Generated_Unit_Alias_32'Access),
+      (Unit => Humanize.Units.Gallon, Aliases => Generated_Unit_Alias_33'Access),
+      (Unit => Humanize.Units.Pound, Aliases => Generated_Unit_Alias_34'Access),
+      (Unit => Humanize.Units.Ounce, Aliases => Generated_Unit_Alias_35'Access),
+      (Unit => Humanize.Units.Stone, Aliases => Generated_Unit_Alias_36'Access),
+      (Unit => Humanize.Units.Tonne, Aliases => Generated_Unit_Alias_37'Access),
+      (Unit => Humanize.Units.Ton, Aliases => Generated_Unit_Alias_38'Access)
+     ];
+
+   Unit_Alias_01 : aliased constant String :=
+      "m"
+      & Alias_Separator & "meter"
+      & Alias_Separator & "meters"
+      & Alias_Separator & "metre"
+      & Alias_Separator & "metres"
+      & Alias_Separator & "#6DC3A8747265"
+      & Alias_Separator & "#6DC3A874726573"
+      & Alias_Separator & "meter"
+      & Alias_Separator & "metri"
+      & Alias_Separator & "metrai"
+      & Alias_Separator & "#6D65747269C3A4"
+      & Alias_Separator & "metroj"
+      & Alias_Separator & "metro"
+      & Alias_Separator & "metros"
+      & Alias_Separator & "met"
+      & Alias_Separator & "mita"
+      & Alias_Separator & "metr"
+      & Alias_Separator & "metry"
+      & Alias_Separator & "#6D657472C3B377"
+      & Alias_Separator & "#6D657472C5AF"
+      & Alias_Separator & "metreler"
+      & Alias_Separator & "#D0BCD0B5D182D180"
+      & Alias_Separator & "#D0BCD0B5D182D180D0B0"
+      & Alias_Separator & "#D0BCD0B5D182D180D0BED0B2"
+      & Alias_Separator & "#D0BCD0B5D182D180D18B"
+      & Alias_Separator & "#D0BCD0B5D182D180D0B8"
+      & Alias_Separator & "#D0BCD0B5D182D180D196D0B2"
+      & Alias_Separator & "#E383A1E383BCE38388E383AB"
+      & Alias_Separator & "#EBAFB8ED84B0"
+      & Alias_Separator & "#E7B1B3"
+      & Alias_Separator & "#D985D8AAD8B1"
+      & Alias_Separator & "#D8A3D985D8AAD8A7D8B1"
+      & Alias_Separator & "#E0A4AEE0A580E0A49FE0A4B0"
+      ;
+
+   Unit_Alias_02 : aliased constant String :=
+      "km"
+      & Alias_Separator & "kilometer"
+      & Alias_Separator & "kilometers"
+      & Alias_Separator & "kilometre"
+      & Alias_Separator & "kilometres"
+      & Alias_Separator & "#6B696C6F6DC3A8747265"
+      & Alias_Separator & "#6B696C6F6DC3A874726573"
+      & Alias_Separator & "kilometro"
+      & Alias_Separator & "kilometros"
+      & Alias_Separator & "kilometrai"
+      & Alias_Separator & "kilometroj"
+      & Alias_Separator & "#6B696CC3B36D6574726F"
+      & Alias_Separator & "#6B696CC3B36D6574726F73"
+      & Alias_Separator & "kilomita"
+      & Alias_Separator & "#7175696CC3B46D6574726F"
+      & Alias_Separator & "#7175696CC3B46D6574726F73"
+      & Alias_Separator & "#7175696CC3B36D6574726F"
+      & Alias_Separator & "#7175696CC3B36D6574726F73"
+      & Alias_Separator & "chilometro"
+      & Alias_Separator & "chilometri"
+      & Alias_Separator & "kilometri"
+      & Alias_Separator & "kilometr"
+      & Alias_Separator & "kilomet"
+      & Alias_Separator & "kilometry"
+      & Alias_Separator & "#6B696C6F6D657472C3B377"
+      & Alias_Separator & "#6B696C6F6D657472C5AF"
+      & Alias_Separator & "#6B696C6F6D65747269C3A4"
+      & Alias_Separator & "kilometreler"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0BCD0B5D182D180"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0BCD0B5D182D180D0B0"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0BCD0B5D182D180D0BED0B2"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0BCD0B5D182D180D18B"
+      & Alias_Separator & "#D0BAD196D0BBD0BED0BCD0B5D182D180"
+      & Alias_Separator & "#D0BAD196D0BBD0BED0BCD0B5D182D180D0B8"
+      & Alias_Separator & "#D0BAD196D0BBD0BED0BCD0B5D182D180D196D0B2"
+      & Alias_Separator & "#E382ADE383ADE383A1E383BCE38388E383AB"
+      & Alias_Separator & "#ED82ACEBA19CEBAFB8ED84B0"
+      & Alias_Separator & "#E58D83E7B1B3"
+      & Alias_Separator & "#D983D98AD984D988D985D8AAD8B1"
+      & Alias_Separator & "#D983D98AD984D988D985D8AAD8B1D8A7D8AA"
+      & Alias_Separator & "#E0A495E0A4BFE0A4B2E0A58BE0A4AEE0A580E0A49FE0A4B0"
+      ;
+
+   Unit_Alias_03 : aliased constant String :=
+      "cm"
+      & Alias_Separator & "centimeter"
+      & Alias_Separator & "centimeters"
+      & Alias_Separator & "centimetre"
+      & Alias_Separator & "centimetres"
+      & Alias_Separator & "zentimeter"
+      & Alias_Separator & "#63656E74696DC3A8747265"
+      & Alias_Separator & "#63656E74696DC3A874726573"
+      & Alias_Separator & "centimetro"
+      & Alias_Separator & "centimetri"
+      & Alias_Separator & "centimetrai"
+      & Alias_Separator & "centimetroj"
+      & Alias_Separator & "centimetros"
+      & Alias_Separator & "#63656E74C3AD6D6574726F"
+      & Alias_Separator & "#63656E74C3AD6D6574726F73"
+      & Alias_Separator & "centimetr"
+      & Alias_Separator & "centimetry"
+      & Alias_Separator & "senttimetri"
+      & Alias_Separator & "sentimeter"
+      & Alias_Separator & "sentimeters"
+      & Alias_Separator & "xentimet"
+      & Alias_Separator & "sentimita"
+      & Alias_Separator & "#73656E7474696D65747269C3A4"
+      & Alias_Separator & "santimetre"
+      & Alias_Separator & "#63656E74796D657472C3B377"
+      & Alias_Separator & "#63656E74696D657472C5AF"
+      & Alias_Separator & "#D181D0B0D0BDD182D0B8D0BCD0B5D182D180"
+      & Alias_Separator & "#D181D0B0D0BDD182D0B8D0BCD0B5D182D180D0B0"
+      & Alias_Separator & "#D181D0B0D0BDD182D0B8D0BCD0B5D182D180D0BED0B2"
+      & Alias_Separator & "#D181D0B0D0BDD182D0B8D0BCD0B5D182D180D18B"
+      & Alias_Separator & "#D181D0B0D0BDD182D0B8D0BCD0B5D182D180D0B8"
+      & Alias_Separator & "#D181D0B0D0BDD182D0B8D0BCD0B5D182D180D196D0B2"
+      & Alias_Separator & "#E382BBE383B3E38381E383A1E383BCE38388E383AB"
+      & Alias_Separator & "#E58E98E7B1B3"
+      ;
+
+   Unit_Alias_04 : aliased constant String :=
+      "mm"
+      & Alias_Separator & "millimeter"
+      & Alias_Separator & "millimeters"
+      & Alias_Separator & "millimetre"
+      & Alias_Separator & "millimetres"
+      & Alias_Separator & "#6D696C6C696DC3A8747265"
+      & Alias_Separator & "#6D696C6C696DC3A874726573"
+      & Alias_Separator & "milimetro"
+      & Alias_Separator & "milimetros"
+      & Alias_Separator & "#6D696CC3AD6D6574726F"
+      & Alias_Separator & "#6D696CC3AD6D6574726F73"
+      & Alias_Separator & "millimetro"
+      & Alias_Separator & "millimetri"
+      & Alias_Separator & "milimetri"
+      & Alias_Separator & "milimetrai"
+      & Alias_Separator & "milimetroj"
+      & Alias_Separator & "milimetr"
+      & Alias_Separator & "milimeter"
+      & Alias_Separator & "milimetry"
+      & Alias_Separator & "milimetre"
+      & Alias_Separator & "milimet"
+      & Alias_Separator & "milimita"
+      & Alias_Separator & "#6D696C6C696D65747269C3A4"
+      & Alias_Separator & "#6D696C696D657472C3B377"
+      & Alias_Separator & "#6D696C696D657472C5AF"
+      & Alias_Separator & "#D0BCD0B8D0BBD0BBD0B8D0BCD0B5D182D180"
+      & Alias_Separator & "#D0BCD0B8D0BBD0BBD0B8D0BCD0B5D182D180D0B0"
+      & Alias_Separator & "#D0BCD0B8D0BBD0BBD0B8D0BCD0B5D182D180D0BED0B2"
+      & Alias_Separator & "#D0BCD0B8D0BBD0BBD0B8D0BCD0B5D182D180D18B"
+      & Alias_Separator & "#D0BCD196D0BBD196D0BCD0B5D182D180"
+      & Alias_Separator & "#D0BCD196D0BBD196D0BCD0B5D182D180D0B8"
+      & Alias_Separator & "#D0BCD196D0BBD196D0BCD0B5D182D180D196D0B2"
+      & Alias_Separator & "#E3839FE383AAE383A1E383BCE38388E383AB"
+      & Alias_Separator & "#E6AFABE7B1B3"
+      ;
+
+   Unit_Alias_05 : aliased constant String :=
+      "g"
+      & Alias_Separator & "gram"
+      & Alias_Separator & "grams"
+      & Alias_Separator & "gramme"
+      & Alias_Separator & "grammes"
+      & Alias_Separator & "gramm"
+      & Alias_Separator & "gramo"
+      & Alias_Separator & "gramos"
+      & Alias_Separator & "grammo"
+      & Alias_Separator & "grammi"
+      & Alias_Separator & "grame"
+      & Alias_Separator & "gramai"
+      & Alias_Separator & "grami"
+      & Alias_Separator & "gramoj"
+      & Alias_Separator & "grama"
+      & Alias_Separator & "gramas"
+      & Alias_Separator & "gam"
+      & Alias_Separator & "gramu"
+      & Alias_Separator & "gramy"
+      & Alias_Separator & "gramma"
+      & Alias_Separator & "grammaa"
+      & Alias_Separator & "#6772616DC3B377"
+      & Alias_Separator & "#6772616DC5AF"
+      & Alias_Separator & "#D0B3D180D0B0D0BC"
+      & Alias_Separator & "#D0B3D180D0B0D0BCD0BC"
+      & Alias_Separator & "#D0B3D180D0B0D0BCD0B8"
+      & Alias_Separator & "#D0B3D180D0B0D0BCD196D0B2"
+      & Alias_Separator & "#D0B3D180D0B0D0BCD0BCD0B0"
+      & Alias_Separator & "#D0B3D180D0B0D0BCD0BCD0BED0B2"
+      ;
+
+   Unit_Alias_06 : aliased constant String :=
+      "kg"
+      & Alias_Separator & "kilogram"
+      & Alias_Separator & "kilograms"
+      & Alias_Separator & "kilogramm"
+      & Alias_Separator & "kilogramme"
+      & Alias_Separator & "kilogrammes"
+      & Alias_Separator & "kilogramo"
+      & Alias_Separator & "kilogramos"
+      & Alias_Separator & "chilogrammo"
+      & Alias_Separator & "chilogrammi"
+      & Alias_Separator & "quilograma"
+      & Alias_Separator & "quilogramas"
+      & Alias_Separator & "kilograme"
+      & Alias_Separator & "kilogramai"
+      & Alias_Separator & "kilogrami"
+      & Alias_Separator & "kilogramoj"
+      & Alias_Separator & "kilogam"
+      & Alias_Separator & "kilogramu"
+      & Alias_Separator & "kilogrammaa"
+      & Alias_Separator & "kilogramy"
+      & Alias_Separator & "kilogramlar"
+      & Alias_Separator & "#6B696C6F6772616DC3B377"
+      & Alias_Separator & "#6B696C6F6772616DC5AF"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0B3D180D0B0D0BC"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0B3D180D0B0D0BCD0BCD0B0"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0B3D180D0B0D0BCD0BCD0BED0B2"
+      & Alias_Separator & "#D0BAD0B8D0BBD0BED0B3D180D0B0D0BCD18B"
+      & Alias_Separator & "#D0BAD196D0BBD0BED0B3D180D0B0D0BC"
+      & Alias_Separator & "#D0BAD196D0BBD0BED0B3D180D0B0D0BCD0B8"
+      & Alias_Separator & "#D0BAD196D0BBD0BED0B3D180D0B0D0BCD196D0B2"
+      & Alias_Separator & "#E382ADE383ADE382B0E383A9E383A0"
+      & Alias_Separator & "#ED82ACEBA19CEAB7B8EBA7A8"
+      & Alias_Separator & "#ED82ACEBA19CEAB7B8EB9EA8"
+      & Alias_Separator & "#E58D83E5858B"
+      & Alias_Separator & "#D983D98AD984D988D8ACD8B1D8A7D985"
+      & Alias_Separator & "#D983D98AD984D988D8ACD8B1D8A7D985D8A7D8AA"
+      & Alias_Separator & "#D983D98AD984D988D8BAD8B1D8A7D985"
+      & Alias_Separator & "#D983D98AD984D988D8BAD8B1D8A7D985D8A7D8AA"
+      & Alias_Separator & "#E0A495E0A4BFE0A4B2E0A58BE0A497E0A58DE0A4B0E0A4BEE0A4AE"
+      ;
+
+   Unit_Alias_07 : aliased constant String :=
+      "mg"
+      & Alias_Separator & "milligram"
+      & Alias_Separator & "milligrams"
+      & Alias_Separator & "milligramme"
+      & Alias_Separator & "milligrammes"
+      & Alias_Separator & "milligramm"
+      & Alias_Separator & "miligramo"
+      & Alias_Separator & "miligramos"
+      & Alias_Separator & "milligrammo"
+      & Alias_Separator & "milligrammi"
+      & Alias_Separator & "miligrame"
+      & Alias_Separator & "miligramai"
+      & Alias_Separator & "miligrami"
+      & Alias_Separator & "miligramoj"
+      & Alias_Separator & "miligrama"
+      & Alias_Separator & "miligramas"
+      & Alias_Separator & "miligram"
+      & Alias_Separator & "miligam"
+      & Alias_Separator & "miligramu"
+      & Alias_Separator & "miligramy"
+      & Alias_Separator & "milligramma"
+      & Alias_Separator & "milligrammaa"
+      & Alias_Separator & "#6D696C696772616DC3B377"
+      & Alias_Separator & "#6D696C696772616DC5AF"
+      & Alias_Separator & "#D0BCD0B8D0BBD0BBD0B8D0B3D180D0B0D0BCD0BC"
+      & Alias_Separator & "#D0BCD0B8D0BBD0BBD0B8D0B3D180D0B0D0BCD0BCD0B0"
+      & Alias_Separator & "#D0BCD0B8D0BBD0BBD0B8D0B3D180D0B0D0BCD0BCD0BED0B2"
+      & Alias_Separator & "#D0BCD196D0BBD196D0B3D180D0B0D0BC"
+      & Alias_Separator & "#D0BCD196D0BBD196D0B3D180D0B0D0BCD0B8"
+      & Alias_Separator & "#D0BCD196D0BBD196D0B3D180D0B0D0BCD196D0B2"
+      ;
+
+   Unit_Alias_08 : aliased constant String :=
+      "l"
+      & Alias_Separator & "liter"
+      & Alias_Separator & "liters"
+      & Alias_Separator & "litre"
+      & Alias_Separator & "litres"
+      & Alias_Separator & "litri"
+      & Alias_Separator & "litrai"
+      & Alias_Separator & "litroj"
+      & Alias_Separator & "litro"
+      & Alias_Separator & "litros"
+      & Alias_Separator & "litraa"
+      & Alias_Separator & "litr"
+      & Alias_Separator & "litry"
+      & Alias_Separator & "lit"
+      & Alias_Separator & "lita"
+      & Alias_Separator & "#6C697472C3B377"
+      & Alias_Separator & "#6C697472C5AF"
+      & Alias_Separator & "litreler"
+      & Alias_Separator & "litra"
+      & Alias_Separator & "#D0BBD0B8D182D180"
+      & Alias_Separator & "#D0BBD0B8D182D180D0B0"
+      & Alias_Separator & "#D0BBD0B8D182D180D0BED0B2"
+      & Alias_Separator & "#D0BBD0B8D182D180D18B"
+      & Alias_Separator & "#D0BBD196D182D180"
+      & Alias_Separator & "#D0BBD196D182D180D0B8"
+      & Alias_Separator & "#D0BBD196D182D180D196D0B2"
+      & Alias_Separator & "#E383AAE38383E38388E383AB"
+      & Alias_Separator & "#EBA6ACED84B0"
+      & Alias_Separator & "#E58D87"
+      & Alias_Separator & "#D984D8AAD8B1"
+      & Alias_Separator & "#D984D8AAD8B1D8A7D8AA"
+      & Alias_Separator & "#E0A4B2E0A580E0A49FE0A4B0"
+      ;
+
+   Unit_Alias_09 : aliased constant String :=
+      "ml"
+      & Alias_Separator & "milliliter"
+      & Alias_Separator & "milliliters"
+      & Alias_Separator & "millilitre"
+      & Alias_Separator & "millilitres"
+      & Alias_Separator & "mililitro"
+      & Alias_Separator & "mililitros"
+      & Alias_Separator & "millilitro"
+      & Alias_Separator & "millilitri"
+      & Alias_Separator & "mililitri"
+      & Alias_Separator & "mililitrai"
+      & Alias_Separator & "mililitroj"
+      & Alias_Separator & "mililitr"
+      & Alias_Separator & "mililiter"
+      & Alias_Separator & "mililitry"
+      & Alias_Separator & "mililitre"
+      & Alias_Separator & "mililit"
+      & Alias_Separator & "mililita"
+      & Alias_Separator & "millilitra"
+      & Alias_Separator & "millilitraa"
+      & Alias_Separator & "#6D696C696C697472C3B377"
+      & Alias_Separator & "#6D696C696C697472C5AF"
+      & Alias_Separator & "#D0BCD0B8D0BBD0BBD0B8D0BBD0B8D182D180"
+      & Alias_Separator & "#D0BCD0B8D0BBD0BBD0B8D0BBD0B8D182D180D0B0"
+      & Alias_Separator & "#D0BCD0B8D0BBD0BBD0B8D0BBD0B8D182D180D0BED0B2"
+      & Alias_Separator & "#D0BCD196D0BBD196D0BBD196D182D180"
+      & Alias_Separator & "#D0BCD196D0BBD196D0BBD196D182D180D0B8"
+      & Alias_Separator & "#D0BCD196D0BBD196D0BBD196D182D180D196D0B2"
+      ;
+
+   Unit_Alias_10 : aliased constant String :=
+      "c"
+      & Alias_Separator & "deg c"
+      & Alias_Separator & "degree c"
+      & Alias_Separator & "degrees c"
+      & Alias_Separator & "celsius"
+      & Alias_Separator & "degree celsius"
+      & Alias_Separator & "degrees celsius"
+      & Alias_Separator & "grad celsius"
+      & Alias_Separator & "grader celsius"
+      & Alias_Separator & "#64656772C3A92063656C73697573"
+      & Alias_Separator & "#64656772C3A9732063656C73697573"
+      & Alias_Separator & "grado celsius"
+      & Alias_Separator & "grados celsius"
+      & Alias_Separator & "grado celsius"
+      & Alias_Separator & "gradi celsius"
+      & Alias_Separator & "grau celsius"
+      & Alias_Separator & "graus celsius"
+      & Alias_Separator & "graad celsius"
+      & Alias_Separator & "graden celsius"
+      & Alias_Separator & "grader c"
+      & Alias_Separator & "celsiusastetta"
+      & Alias_Separator & "stopnie celsjusza"
+      & Alias_Separator & "stupne celsia"
+      & Alias_Separator & "#7374757065C5882043656C736961"
+      & Alias_Separator & "#737475706EC49B2043656C736961"
+      & Alias_Separator & "#7374757065C5882063656C736961"
+      & Alias_Separator & "#737475706EC49B2063656C736961"
+      & Alias_Separator & "santigrat derece"
+      ;
+
+   Unit_Alias_11 : aliased constant String :=
+      "f"
+      & Alias_Separator & "deg f"
+      & Alias_Separator & "degree f"
+      & Alias_Separator & "degrees f"
+      & Alias_Separator & "fahrenheit"
+      & Alias_Separator & "degree fahrenheit"
+      & Alias_Separator & "degrees fahrenheit"
+      & Alias_Separator & "#64656772C3A92066616872656E68656974"
+      & Alias_Separator & "#64656772C3A9732066616872656E68656974"
+      & Alias_Separator & "grado fahrenheit"
+      & Alias_Separator & "grados fahrenheit"
+      & Alias_Separator & "gradi fahrenheit"
+      & Alias_Separator & "grau fahrenheit"
+      & Alias_Separator & "graus fahrenheit"
+      & Alias_Separator & "graad fahrenheit"
+      & Alias_Separator & "graden fahrenheit"
+      & Alias_Separator & "grad fahrenheit"
+      & Alias_Separator & "grader fahrenheit"
+      & Alias_Separator & "grader f"
+      & Alias_Separator & "fahrenheitastetta"
+      & Alias_Separator & "stopnie fahrenheita"
+      & Alias_Separator & "stupne fahrenheita"
+      & Alias_Separator & "#7374757065C5882046616872656E6865697461"
+      & Alias_Separator & "#737475706EC49B2046616872656E6865697461"
+      & Alias_Separator & "#7374757065C5882066616872656E6865697461"
+      & Alias_Separator & "#737475706EC49B2066616872656E6865697461"
+      & Alias_Separator & "fahrenhayt derece"
+      ;
+
+   Unit_Alias_12 : aliased constant String :=
+      "m2"
+      & Alias_Separator & "square meter"
+      & Alias_Separator & "square meters"
+      & Alias_Separator & "square metre"
+      & Alias_Separator & "square metres"
+      & Alias_Separator & "#6DC3A87472652063617272C3A9"
+      & Alias_Separator & "#6DC3A8747265732063617272C3A973"
+      & Alias_Separator & "quadratmeter"
+      & Alias_Separator & "metro cuadrado"
+      & Alias_Separator & "metros cuadrados"
+      & Alias_Separator & "metro quadrato"
+      & Alias_Separator & "metri quadrati"
+      & Alias_Separator & "metro quadrado"
+      & Alias_Separator & "metros quadrados"
+      & Alias_Separator & "vierkante meter"
+      & Alias_Separator & "kvadratmeter"
+      & Alias_Separator & "#6E656C69C3B66D65747269"
+      & Alias_Separator & "#6E656C69C3B66D65747269C3A4"
+      & Alias_Separator & "metr kwadratowy"
+      & Alias_Separator & "metry kwadratowe"
+      & Alias_Separator & "#6D65747220C48D7476657265C48D6EC3BD"
+      & Alias_Separator & "#6D6574727920C48D7476657265C48D6EC3A9"
+      & Alias_Separator & "metrekare"
+      ;
+
+   Unit_Alias_13 : aliased constant String :=
+      "km2"
+      & Alias_Separator & "square kilometer"
+      & Alias_Separator & "square kilometers"
+      & Alias_Separator & "square kilometre"
+      & Alias_Separator & "square kilometres"
+      & Alias_Separator & "#6B696C6F6DC3A87472652063617272C3A9"
+      & Alias_Separator & "#6B696C6F6DC3A8747265732063617272C3A973"
+      & Alias_Separator & "quadratkilometer"
+      & Alias_Separator & "kilometro cuadrado"
+      & Alias_Separator & "kilometros cuadrados"
+      & Alias_Separator & "#6B696CC3B36D6574726F20637561647261646F"
+      & Alias_Separator & "#6B696CC3B36D6574726F7320637561647261646F73"
+      & Alias_Separator & "chilometro quadrato"
+      & Alias_Separator & "chilometri quadrati"
+      & Alias_Separator & "quilometro quadrado"
+      & Alias_Separator & "quilometros quadrados"
+      & Alias_Separator & "#7175696CC3B46D6574726F20717561647261646F"
+      & Alias_Separator & "#7175696CC3B46D6574726F7320717561647261646F73"
+      & Alias_Separator & "vierkante kilometer"
+      & Alias_Separator & "kvadratkilometer"
+      & Alias_Separator & "#6E656C69C3B66B696C6F6D65747269"
+      & Alias_Separator & "#6E656C69C3B66B696C6F6D65747269C3A4"
+      & Alias_Separator & "kilometr kwadratowy"
+      & Alias_Separator & "kilometry kwadratowe"
+      & Alias_Separator & "#6B696C6F6D65747220C48D7476657265C48D6EC3BD"
+      & Alias_Separator & "#6B696C6F6D6574727920C48D7476657265C48D6EC3A9"
+      & Alias_Separator & "kilometrekare"
+      ;
+
+   Unit_Alias_14 : aliased constant String :=
+      "ha"
+      & Alias_Separator & "hectare"
+      & Alias_Separator & "hectares"
+      & Alias_Separator & "hectarea"
+      & Alias_Separator & "hectareas"
+      & Alias_Separator & "#68656374C3A1726561"
+      & Alias_Separator & "#68656374C3A172656173"
+      & Alias_Separator & "ettaro"
+      & Alias_Separator & "ettari"
+      & Alias_Separator & "hektar"
+      & Alias_Separator & "hektary"
+      & Alias_Separator & "hehtaari"
+      & Alias_Separator & "hehtaaria"
+      ;
+
+   Unit_Alias_15 : aliased constant String :=
+      "acre"
+      & Alias_Separator & "acres"
+      & Alias_Separator & "ac"
+      & Alias_Separator & "acro"
+      & Alias_Separator & "acri"
+      & Alias_Separator & "akr"
+      & Alias_Separator & "akry"
+      & Alias_Separator & "eekkeri"
+      & Alias_Separator & "#65656B6B657269C3A4"
+      ;
+
+   Unit_Alias_16 : aliased constant String :=
+      "m3"
+      & Alias_Separator & "cubic meter"
+      & Alias_Separator & "cubic meters"
+      & Alias_Separator & "cubic metre"
+      & Alias_Separator & "cubic metres"
+      & Alias_Separator & "#6DC3A87472652063756265"
+      & Alias_Separator & "#6DC3A874726573206375626573"
+      & Alias_Separator & "#6D6574726F2063C3BA6269636F"
+      & Alias_Separator & "#6D6574726F732063C3BA6269636F73"
+      & Alias_Separator & "metro cubo"
+      & Alias_Separator & "metri cubi"
+      & Alias_Separator & "kubieke meter"
+      & Alias_Separator & "kubikmeter"
+      & Alias_Separator & "kubikkmeter"
+      & Alias_Separator & "kuutiometri"
+      & Alias_Separator & "#6B757574696F6D65747269C3A4"
+      & Alias_Separator & "metr szescienny"
+      & Alias_Separator & "metry szescienne"
+      & Alias_Separator & "#6D65747220737A65C59B6369656E6E79"
+      & Alias_Separator & "#6D6574727920737A65C59B6369656E6E65"
+      & Alias_Separator & "#6D657472206B727963686C6F76C3BD"
+      & Alias_Separator & "#6D65747279206B727963686C6F76C3A9"
+      & Alias_Separator & "metrekup"
+      & Alias_Separator & "#6D657472656BC3BC70"
+      ;
+
+   Unit_Alias_17 : aliased constant String :=
+      "km/h"
+      & Alias_Separator & "kilometer per hour"
+      & Alias_Separator & "kilometers per hour"
+      & Alias_Separator & "kilometer pro stunde"
+      & Alias_Separator & "kilometro por hora"
+      & Alias_Separator & "kilometros por hora"
+      & Alias_Separator & "chilometro all'ora"
+      & Alias_Separator & "chilometri all'ora"
+      & Alias_Separator & "quilometro por hora"
+      & Alias_Separator & "quilometros por hora"
+      & Alias_Separator & "#7175696CC3B46D6574726F20706F7220686F7261"
+      & Alias_Separator & "#7175696CC3B46D6574726F7320706F7220686F7261"
+      & Alias_Separator & "#6B696CC3B36D6574726F20706F7220686F7261"
+      & Alias_Separator & "#6B696CC3B36D6574726F7320706F7220686F7261"
+      & Alias_Separator & "kilometer per uur"
+      & Alias_Separator & "kilometer i timmen"
+      & Alias_Separator & "kilometer i timen"
+      & Alias_Separator & "#6B696C6F6DC3A874726520706172206865757265"
+      & Alias_Separator & "#6B696C6F6DC3A87472657320706172206865757265"
+      & Alias_Separator & "kilometri tunnissa"
+      & Alias_Separator & "#6B696C6F6D65747269C3A42074756E6E69737361"
+      & Alias_Separator & "kilometr na godzine"
+      & Alias_Separator & "kilometry na godzine"
+      & Alias_Separator & "#6B696C6F6D657472206E6120676F647A696EC499"
+      & Alias_Separator & "#6B696C6F6D65747279206E6120676F647A696EC499"
+      & Alias_Separator & "kilometr za hodinu"
+      & Alias_Separator & "kilometry za hodinu"
+      & Alias_Separator & "saatte kilometre"
+      ;
+
+   Unit_Alias_18 : aliased constant String :=
+      "m/s"
+      & Alias_Separator & "meter per second"
+      & Alias_Separator & "meters per second"
+      & Alias_Separator & "meter pro sekunde"
+      & Alias_Separator & "metro por segundo"
+      & Alias_Separator & "metros por segundo"
+      & Alias_Separator & "metro al secondo"
+      & Alias_Separator & "metri al secondo"
+      & Alias_Separator & "meter per seconde"
+      & Alias_Separator & "meter i sekundet"
+      & Alias_Separator & "meter per sekund"
+      & Alias_Separator & "#6DC3A874726520706172207365636F6E6465"
+      & Alias_Separator & "#6DC3A87472657320706172207365636F6E6465"
+      & Alias_Separator & "metri sekunnissa"
+      & Alias_Separator & "#6D65747269C3A42073656B756E6E69737361"
+      & Alias_Separator & "metr na sekunde"
+      & Alias_Separator & "metry na sekunde"
+      & Alias_Separator & "#6D657472206E612073656B756E64C499"
+      & Alias_Separator & "#6D65747279206E612073656B756E64C499"
+      & Alias_Separator & "metr za sekundu"
+      & Alias_Separator & "metry za sekundu"
+      & Alias_Separator & "saniyede metre"
+      ;
+
+   Unit_Alias_19 : aliased constant String :=
+      "pa"
+      & Alias_Separator & "pascal"
+      & Alias_Separator & "pascals"
+      & Alias_Separator & "pascales"
+      & Alias_Separator & "pascale"
+      & Alias_Separator & "pascali"
+      & Alias_Separator & "pascais"
+      & Alias_Separator & "pascaly"
+      & Alias_Separator & "paskal"
+      & Alias_Separator & "paskale"
+      & Alias_Separator & "pascalia"
+      ;
+
+   Unit_Alias_20 : aliased constant String :=
+      "kpa"
+      & Alias_Separator & "kilopascal"
+      & Alias_Separator & "kilopascals"
+      & Alias_Separator & "kilopascal"
+      & Alias_Separator & "kilopascales"
+      & Alias_Separator & "kilopascale"
+      & Alias_Separator & "kilopascali"
+      & Alias_Separator & "quilopascal"
+      & Alias_Separator & "quilopascais"
+      & Alias_Separator & "kilopascaly"
+      & Alias_Separator & "kilopaskal"
+      & Alias_Separator & "kilopaskale"
+      & Alias_Separator & "kilopascalia"
+      ;
+
+   Unit_Alias_21 : aliased constant String :=
+      "j"
+      & Alias_Separator & "joule"
+      & Alias_Separator & "joules"
+      & Alias_Separator & "julio"
+      & Alias_Separator & "julios"
+      & Alias_Separator & "joulea"
+      & Alias_Separator & "jouly"
+      & Alias_Separator & "#64C5BC756C"
+      & Alias_Separator & "#64C5BC756C65"
+      & Alias_Separator & "jul"
+      ;
+
+   Unit_Alias_22 : aliased constant String :=
+      "kj"
+      & Alias_Separator & "kilojoule"
+      & Alias_Separator & "kilojoules"
+      & Alias_Separator & "kilojulio"
+      & Alias_Separator & "kilojulios"
+      & Alias_Separator & "quilojoule"
+      & Alias_Separator & "quilojoules"
+      & Alias_Separator & "kilojoulea"
+      & Alias_Separator & "kilojouly"
+      & Alias_Separator & "#6B696C6F64C5BC756C"
+      & Alias_Separator & "#6B696C6F64C5BC756C65"
+      & Alias_Separator & "kilojul"
+      ;
+
+   Unit_Alias_23 : aliased constant String :=
+      "w"
+      & Alias_Separator & "watt"
+      & Alias_Separator & "watts"
+      & Alias_Separator & "vatio"
+      & Alias_Separator & "vatios"
+      & Alias_Separator & "watti"
+      & Alias_Separator & "wattia"
+      & Alias_Separator & "wat"
+      & Alias_Separator & "waty"
+      & Alias_Separator & "watty"
+      & Alias_Separator & "vat"
+      ;
+
+   Unit_Alias_24 : aliased constant String :=
+      "kw"
+      & Alias_Separator & "kilowatt"
+      & Alias_Separator & "kilowatts"
+      & Alias_Separator & "kilovatio"
+      & Alias_Separator & "kilovatios"
+      & Alias_Separator & "quilowatt"
+      & Alias_Separator & "quilowatts"
+      & Alias_Separator & "kilowatti"
+      & Alias_Separator & "kilowattia"
+      & Alias_Separator & "kilowat"
+      & Alias_Separator & "kilowaty"
+      & Alias_Separator & "kilowatty"
+      & Alias_Separator & "kilovat"
+      ;
+
+   Unit_Alias_25 : aliased constant String :=
+      "hz"
+      & Alias_Separator & "hertz"
+      & Alias_Separator & "cycles per second"
+      & Alias_Separator & "hercio"
+      & Alias_Separator & "hercios"
+      & Alias_Separator & "hertsi"
+      & Alias_Separator & "#686572747369C3A4"
+      & Alias_Separator & "herc"
+      & Alias_Separator & "herce"
+      & Alias_Separator & "hertzy"
+      ;
+
+   Unit_Alias_26 : aliased constant String :=
+      "khz"
+      & Alias_Separator & "kilohertz"
+      & Alias_Separator & "kilohercio"
+      & Alias_Separator & "kilohercios"
+      & Alias_Separator & "quilohertz"
+      & Alias_Separator & "kilohertsi"
+      & Alias_Separator & "#6B696C6F686572747369C3A4"
+      & Alias_Separator & "kiloherc"
+      & Alias_Separator & "kiloherce"
+      & Alias_Separator & "kilohertzy"
+      ;
+
+   Unit_Alias_27 : aliased constant String :=
+      "degree"
+      & Alias_Separator & "degrees"
+      & Alias_Separator & "#64656772C3A9"
+      & Alias_Separator & "#64656772C3A973"
+      & Alias_Separator & "grado"
+      & Alias_Separator & "grados"
+      & Alias_Separator & "gradi"
+      & Alias_Separator & "grau"
+      & Alias_Separator & "graus"
+      & Alias_Separator & "graad"
+      & Alias_Separator & "graden"
+      & Alias_Separator & "grad"
+      & Alias_Separator & "grader"
+      & Alias_Separator & "aste"
+      & Alias_Separator & "astetta"
+      & Alias_Separator & "#73746F706965C584"
+      & Alias_Separator & "stopnie"
+      & Alias_Separator & "#7374757065C588"
+      & Alias_Separator & "#737475706EC49B"
+      & Alias_Separator & "derece"
+      ;
+
+   Unit_Alias_28 : aliased constant String :=
+      "mi"
+      & Alias_Separator & "mile"
+      & Alias_Separator & "miles"
+      & Alias_Separator & "meile"
+      & Alias_Separator & "meilen"
+      & Alias_Separator & "mille"
+      & Alias_Separator & "milles"
+      & Alias_Separator & "milla"
+      & Alias_Separator & "millas"
+      & Alias_Separator & "miglio"
+      & Alias_Separator & "miglia"
+      & Alias_Separator & "milha"
+      & Alias_Separator & "milhas"
+      & Alias_Separator & "mijl"
+      & Alias_Separator & "maili"
+      & Alias_Separator & "mailia"
+      & Alias_Separator & "mila"
+      & Alias_Separator & "#6DC3AD6C65"
+      & Alias_Separator & "mil"
+      ;
+
+   Unit_Alias_29 : aliased constant String :=
+      "nmi"
+      & Alias_Separator & "nautical mile"
+      & Alias_Separator & "nautical miles"
+      & Alias_Separator & "seemeile"
+      & Alias_Separator & "seemeilen"
+      & Alias_Separator & "mille marin"
+      & Alias_Separator & "milles marins"
+      & Alias_Separator & "milla nautica"
+      & Alias_Separator & "millas nauticas"
+      & Alias_Separator & "miglio nautico"
+      & Alias_Separator & "miglia nautiche"
+      & Alias_Separator & "milha nautica"
+      & Alias_Separator & "milhas nauticas"
+      & Alias_Separator & "zeemijl"
+      & Alias_Separator & "#6D696C6861206EC3A17574696361"
+      & Alias_Separator & "#6D696C686173206EC3A1757469636173"
+      & Alias_Separator & "#6D696C6C61206EC3A17574696361"
+      & Alias_Separator & "#6D696C6C6173206EC3A1757469636173"
+      & Alias_Separator & "sjomil"
+      & Alias_Separator & "#736AC3B66D696C"
+      & Alias_Separator & "#73C3B86D696C"
+      & Alias_Separator & "nautisk mil"
+      & Alias_Separator & "nautiske mil"
+      & Alias_Separator & "meripeninkulma"
+      & Alias_Separator & "meripeninkulmaa"
+      & Alias_Separator & "mila morska"
+      & Alias_Separator & "mile morskie"
+      & Alias_Separator & "#6EC3A16D6FC5996EC3AD206DC3AD6C65"
+      & Alias_Separator & "deniz mili"
+      ;
+
+   Unit_Alias_30 : aliased constant String :=
+      "yd"
+      & Alias_Separator & "yard"
+      & Alias_Separator & "yards"
+      & Alias_Separator & "yarda"
+      & Alias_Separator & "yardas"
+      & Alias_Separator & "iarda"
+      & Alias_Separator & "iarde"
+      & Alias_Separator & "jarda"
+      & Alias_Separator & "jardas"
+      & Alias_Separator & "jaardi"
+      & Alias_Separator & "jaardia"
+      & Alias_Separator & "jard"
+      & Alias_Separator & "jardy"
+      & Alias_Separator & "yardy"
+      & Alias_Separator & "yarda"
+      ;
+
+   Unit_Alias_31 : aliased constant String :=
+      "ft"
+      & Alias_Separator & "foot"
+      & Alias_Separator & "feet"
+      & Alias_Separator & "fod"
+      & Alias_Separator & "#6675C39F"
+      & Alias_Separator & "#70C3A9"
+      & Alias_Separator & "#70C3A973"
+      & Alias_Separator & "pied"
+      & Alias_Separator & "pieds"
+      & Alias_Separator & "pie"
+      & Alias_Separator & "pies"
+      & Alias_Separator & "piede"
+      & Alias_Separator & "piedi"
+      & Alias_Separator & "voet"
+      & Alias_Separator & "fot"
+      & Alias_Separator & "#66C3B674746572"
+      & Alias_Separator & "#66C3B874746572"
+      & Alias_Separator & "jalka"
+      & Alias_Separator & "jalkaa"
+      & Alias_Separator & "stopa"
+      & Alias_Separator & "stopy"
+      & Alias_Separator & "fit"
+      ;
+
+   Unit_Alias_32 : aliased constant String :=
+      "in"
+      & Alias_Separator & "inch"
+      & Alias_Separator & "inches"
+      & Alias_Separator & "zoll"
+      & Alias_Separator & "pouce"
+      & Alias_Separator & "pouces"
+      & Alias_Separator & "pulgada"
+      & Alias_Separator & "pulgadas"
+      & Alias_Separator & "pollice"
+      & Alias_Separator & "pollici"
+      & Alias_Separator & "polegada"
+      & Alias_Separator & "polegadas"
+      & Alias_Separator & "tum"
+      & Alias_Separator & "tomme"
+      & Alias_Separator & "tommer"
+      & Alias_Separator & "tuuma"
+      & Alias_Separator & "tuumaa"
+      & Alias_Separator & "cal"
+      & Alias_Separator & "cale"
+      & Alias_Separator & "palec"
+      & Alias_Separator & "palce"
+      & Alias_Separator & "inc"
+      ;
+
+   Unit_Alias_33 : aliased constant String :=
+      "tsp"
+      & Alias_Separator & "teaspoon"
+      & Alias_Separator & "teaspoons"
+      & Alias_Separator & "#7465656CC3B66666656C"
+      & Alias_Separator & "#6375696C6CC3A8726520C3A020636166C3A9"
+      & Alias_Separator & "#6375696C6CC3A872657320C3A020636166C3A9"
+      & Alias_Separator & "#636F6C686572206465206368C3A1"
+      & Alias_Separator & "#636F6C6865726573206465206368C3A1"
+      & Alias_Separator & "cucharadita"
+      & Alias_Separator & "cucharaditas"
+      & Alias_Separator & "cucchiaino"
+      & Alias_Separator & "cucchiaini"
+      & Alias_Separator & "theelepel"
+      & Alias_Separator & "theelepels"
+      & Alias_Separator & "tesked"
+      & Alias_Separator & "teskedar"
+      & Alias_Separator & "teske"
+      & Alias_Separator & "teskeer"
+      & Alias_Separator & "teskje"
+      & Alias_Separator & "teskjeer"
+      & Alias_Separator & "teelusikka"
+      & Alias_Separator & "teelusikkaa"
+      & Alias_Separator & "lyzeczka"
+      & Alias_Separator & "lyzeczki"
+      & Alias_Separator & "#C58279C5BC65637A6B61"
+      & Alias_Separator & "#C58279C5BC65637A6B69"
+      & Alias_Separator & "#C48D616A6F76C3A1206CC5BE69C48D6B61"
+      & Alias_Separator & "#C48D616A6F76C3A9206CC5BE69C48D6B79"
+      & Alias_Separator & "#C3A76179206B61C59FC4B1C49FC4B1"
+      ;
+
+   Unit_Alias_34 : aliased constant String :=
+      "tbsp"
+      & Alias_Separator & "tablespoon"
+      & Alias_Separator & "tablespoons"
+      & Alias_Separator & "#6573736CC3B66666656C"
+      & Alias_Separator & "#6375696C6CC3A8726520C3A020736F757065"
+      & Alias_Separator & "#6375696C6CC3A872657320C3A020736F757065"
+      & Alias_Separator & "cucharada"
+      & Alias_Separator & "cucharadas"
+      & Alias_Separator & "cucchiaio"
+      & Alias_Separator & "cucchiai"
+      & Alias_Separator & "colher de sopa"
+      & Alias_Separator & "colheres de sopa"
+      & Alias_Separator & "eetlepel"
+      & Alias_Separator & "eetlepels"
+      & Alias_Separator & "matsked"
+      & Alias_Separator & "matskedar"
+      & Alias_Separator & "spiseske"
+      & Alias_Separator & "spiseskeer"
+      & Alias_Separator & "spiseskje"
+      & Alias_Separator & "spiseskjeer"
+      & Alias_Separator & "ruokalusikka"
+      & Alias_Separator & "ruokalusikkaa"
+      & Alias_Separator & "lyzka stolowa"
+      & Alias_Separator & "lyzki stolowe"
+      & Alias_Separator & "#C58279C5BC6B612073746FC5826F7761"
+      & Alias_Separator & "#C58279C5BC6B692073746FC5826F7765"
+      & Alias_Separator & "#706F6CC3A9766B6F76C3A1206CC5BE696365"
+      & Alias_Separator & "#706F6CC3A9766B6F76C3A9206CC5BE696365"
+      & Alias_Separator & "#79656D656B206B61C59FC4B1C49FC4B1"
+      ;
+
+   Unit_Alias_35 : aliased constant String :=
+      "cup"
+      & Alias_Separator & "cups"
+      & Alias_Separator & "tasse"
+      & Alias_Separator & "tassen"
+      & Alias_Separator & "tasses"
+      & Alias_Separator & "taza"
+      & Alias_Separator & "tazas"
+      & Alias_Separator & "tazza"
+      & Alias_Separator & "tazze"
+      & Alias_Separator & "xicara"
+      & Alias_Separator & "xicaras"
+      & Alias_Separator & "#78C3AD63617261"
+      & Alias_Separator & "#78C3AD6361726173"
+      & Alias_Separator & "kop"
+      & Alias_Separator & "koppen"
+      & Alias_Separator & "kopp"
+      & Alias_Separator & "koppar"
+      & Alias_Separator & "kopper"
+      & Alias_Separator & "kuppi"
+      & Alias_Separator & "kuppia"
+      & Alias_Separator & "filizanka"
+      & Alias_Separator & "filizanki"
+      & Alias_Separator & "#66696C69C5BC616E6B61"
+      & Alias_Separator & "#66696C69C5BC616E6B69"
+      & Alias_Separator & "#C5A1C3A16C656B"
+      & Alias_Separator & "#C5A1C3A16C6B79"
+      & Alias_Separator & "bardak"
+      ;
+
+   Unit_Alias_36 : aliased constant String :=
+      "gal"
+      & Alias_Separator & "gallon"
+      & Alias_Separator & "gallons"
+      & Alias_Separator & "gallone"
+      & Alias_Separator & "gallonen"
+      & Alias_Separator & "galon"
+      & Alias_Separator & "galones"
+      & Alias_Separator & "gallone"
+      & Alias_Separator & "galloni"
+      & Alias_Separator & "#67616CC3A36F"
+      & Alias_Separator & "#67616CC3B56573"
+      & Alias_Separator & "gallona"
+      & Alias_Separator & "gallonaa"
+      & Alias_Separator & "galon"
+      & Alias_Separator & "galony"
+      ;
+
+   Unit_Alias_37 : aliased constant String :=
+      "lb"
+      & Alias_Separator & "lbs"
+      & Alias_Separator & "pound"
+      & Alias_Separator & "pounds"
+      & Alias_Separator & "pfund"
+      & Alias_Separator & "livre"
+      & Alias_Separator & "livres"
+      & Alias_Separator & "libra"
+      & Alias_Separator & "libras"
+      & Alias_Separator & "libbra"
+      & Alias_Separator & "libbre"
+      & Alias_Separator & "pond"
+      & Alias_Separator & "pund"
+      & Alias_Separator & "pauna"
+      & Alias_Separator & "paunaa"
+      & Alias_Separator & "funt"
+      & Alias_Separator & "funty"
+      & Alias_Separator & "libra"
+      & Alias_Separator & "libry"
+      ;
+
+   Unit_Alias_38 : aliased constant String :=
+      "oz"
+      & Alias_Separator & "ounce"
+      & Alias_Separator & "ounces"
+      & Alias_Separator & "unze"
+      & Alias_Separator & "unzen"
+      & Alias_Separator & "once"
+      & Alias_Separator & "onces"
+      & Alias_Separator & "onza"
+      & Alias_Separator & "onzas"
+      & Alias_Separator & "oncia"
+      & Alias_Separator & "once"
+      & Alias_Separator & "#6F6EC3A761"
+      & Alias_Separator & "#6F6EC3A76173"
+      & Alias_Separator & "uns"
+      & Alias_Separator & "unse"
+      & Alias_Separator & "unser"
+      & Alias_Separator & "unssi"
+      & Alias_Separator & "unssia"
+      & Alias_Separator & "uncja"
+      & Alias_Separator & "uncje"
+      & Alias_Separator & "unce"
+      & Alias_Separator & "ons"
+      ;
+
+   Unit_Alias_39 : aliased constant String :=
+      "st"
+      & Alias_Separator & "stone"
+      & Alias_Separator & "stones"
+      & Alias_Separator & "stonea"
+      ;
+
+   Unit_Alias_40 : aliased constant String :=
+      "tonne"
+      & Alias_Separator & "tonnes"
+      & Alias_Separator & "tonnen"
+      & Alias_Separator & "tonelada"
+      & Alias_Separator & "toneladas"
+      & Alias_Separator & "tonnellata"
+      & Alias_Separator & "tonnellate"
+      & Alias_Separator & "tonn"
+      & Alias_Separator & "tonni"
+      & Alias_Separator & "tonnia"
+      & Alias_Separator & "tona"
+      & Alias_Separator & "tony"
+      & Alias_Separator & "tuna"
+      & Alias_Separator & "tuny"
+      ;
+
+   Unit_Alias_41 : aliased constant String :=
+      "ton"
+      & Alias_Separator & "tons"
+      & Alias_Separator & "short ton"
+      & Alias_Separator & "short tons"
+      & Alias_Separator & "tonne courte"
+      & Alias_Separator & "tonnes courtes"
+      & Alias_Separator & "tonelada corta"
+      & Alias_Separator & "toneladas cortas"
+      & Alias_Separator & "tonnellata corta"
+      & Alias_Separator & "tonnellate corte"
+      & Alias_Separator & "tonelada curta"
+      & Alias_Separator & "toneladas curtas"
+      & Alias_Separator & "kort ton"
+      & Alias_Separator & "korta ton"
+      & Alias_Separator & "kort tonn"
+      & Alias_Separator & "korte tonn"
+      & Alias_Separator & "lyhyt tonni"
+      & Alias_Separator & "lyhytta tonnia"
+      & Alias_Separator & "#6C7968797474C3A420746F6E6E6961"
+      & Alias_Separator & "tona krotka"
+      & Alias_Separator & "tony krotkie"
+      & Alias_Separator & "#746F6E61206B72C3B3746B61"
+      & Alias_Separator & "#746F6E79206B72C3B3746B6965"
+      & Alias_Separator & "#6B72C3A1746BC3A12074756E61"
+      & Alias_Separator & "#6B72C3A1746BC3A92074756E79"
+      & Alias_Separator & "kisa ton"
+      & Alias_Separator & "#6BC4B1736120746F6E"
+      ;
+
+   Unit_Aliases : constant Unit_Alias_Group_Array :=
+     [
+      (Unit => Humanize.Units.Meter, Aliases => Unit_Alias_01'Access),
+      (Unit => Humanize.Units.Kilometer, Aliases => Unit_Alias_02'Access),
+      (Unit => Humanize.Units.Centimeter, Aliases => Unit_Alias_03'Access),
+      (Unit => Humanize.Units.Millimeter, Aliases => Unit_Alias_04'Access),
+      (Unit => Humanize.Units.Gram, Aliases => Unit_Alias_05'Access),
+      (Unit => Humanize.Units.Kilogram, Aliases => Unit_Alias_06'Access),
+      (Unit => Humanize.Units.Milligram, Aliases => Unit_Alias_07'Access),
+      (Unit => Humanize.Units.Liter, Aliases => Unit_Alias_08'Access),
+      (Unit => Humanize.Units.Milliliter, Aliases => Unit_Alias_09'Access),
+      (Unit => Humanize.Units.Celsius, Aliases => Unit_Alias_10'Access),
+      (Unit => Humanize.Units.Fahrenheit, Aliases => Unit_Alias_11'Access),
+      (Unit => Humanize.Units.Square_Meter, Aliases => Unit_Alias_12'Access),
+      (Unit => Humanize.Units.Square_Kilometer, Aliases => Unit_Alias_13'Access),
+      (Unit => Humanize.Units.Hectare, Aliases => Unit_Alias_14'Access),
+      (Unit => Humanize.Units.Acre, Aliases => Unit_Alias_15'Access),
+      (Unit => Humanize.Units.Cubic_Meter, Aliases => Unit_Alias_16'Access),
+      (Unit => Humanize.Units.Kilometer_Per_Hour, Aliases => Unit_Alias_17'Access),
+      (Unit => Humanize.Units.Meter_Per_Second, Aliases => Unit_Alias_18'Access),
+      (Unit => Humanize.Units.Pascal, Aliases => Unit_Alias_19'Access),
+      (Unit => Humanize.Units.Kilopascal, Aliases => Unit_Alias_20'Access),
+      (Unit => Humanize.Units.Joule, Aliases => Unit_Alias_21'Access),
+      (Unit => Humanize.Units.Kilojoule, Aliases => Unit_Alias_22'Access),
+      (Unit => Humanize.Units.Watt, Aliases => Unit_Alias_23'Access),
+      (Unit => Humanize.Units.Kilowatt, Aliases => Unit_Alias_24'Access),
+      (Unit => Humanize.Units.Hertz, Aliases => Unit_Alias_25'Access),
+      (Unit => Humanize.Units.Kilohertz, Aliases => Unit_Alias_26'Access),
+      (Unit => Humanize.Units.Degree, Aliases => Unit_Alias_27'Access),
+      (Unit => Humanize.Units.Mile, Aliases => Unit_Alias_28'Access),
+      (Unit => Humanize.Units.Nautical_Mile, Aliases => Unit_Alias_29'Access),
+      (Unit => Humanize.Units.Yard, Aliases => Unit_Alias_30'Access),
+      (Unit => Humanize.Units.Foot, Aliases => Unit_Alias_31'Access),
+      (Unit => Humanize.Units.Inch, Aliases => Unit_Alias_32'Access),
+      (Unit => Humanize.Units.Teaspoon, Aliases => Unit_Alias_33'Access),
+      (Unit => Humanize.Units.Tablespoon, Aliases => Unit_Alias_34'Access),
+      (Unit => Humanize.Units.Cup, Aliases => Unit_Alias_35'Access),
+      (Unit => Humanize.Units.Gallon, Aliases => Unit_Alias_36'Access),
+      (Unit => Humanize.Units.Pound, Aliases => Unit_Alias_37'Access),
+      (Unit => Humanize.Units.Ounce, Aliases => Unit_Alias_38'Access),
+      (Unit => Humanize.Units.Stone, Aliases => Unit_Alias_39'Access),
+      (Unit => Humanize.Units.Tonne, Aliases => Unit_Alias_40'Access),
+      (Unit => Humanize.Units.Ton, Aliases => Unit_Alias_41'Access)
+     ];
+
+   function Generated_Unit_Value
+     (Text : String;
+      Unit : out Humanize.Units.Unit_Kind)
+      return Boolean
+   is
+      Item : constant String := Lower (Trim (Text));
+   begin
+      return Lookup_Unit_Alias (Item, Generated_Unit_Aliases, Unit);
+   end Generated_Unit_Value;
+
+   function Rendered_Unit_Value
+     (Text : String;
+      Unit : out Humanize.Units.Unit_Kind)
+      return Boolean
+   is
+      Locale_Count : constant Positive := 33;
+      type Locale_Array is array (Positive range <>) of access constant String;
+
+      En : aliased constant String := "en";
+      Da : aliased constant String := "da";
+      De : aliased constant String := "de";
+      Fr : aliased constant String := "fr";
+      Es : aliased constant String := "es";
+      It : aliased constant String := "it";
+      Pt : aliased constant String := "pt";
+      Nl : aliased constant String := "nl";
+      Sv : aliased constant String := "sv";
+      No : aliased constant String := "no";
+      Nb : aliased constant String := "nb";
+      Fi : aliased constant String := "fi";
+      Pl : aliased constant String := "pl";
+      Cs : aliased constant String := "cs";
+      Tr : aliased constant String := "tr";
+      Ru : aliased constant String := "ru";
+      Uk : aliased constant String := "uk";
+      Ja : aliased constant String := "ja";
+      Ko : aliased constant String := "ko";
+      Zh : aliased constant String := "zh";
+      Ar : aliased constant String := "ar";
+      Hi : aliased constant String := "hi";
+      Ro : aliased constant String := "ro";
+      Lt : aliased constant String := "lt";
+      Sl : aliased constant String := "sl";
+      Id : aliased constant String := "id";
+      Ms : aliased constant String := "ms";
+      Eo : aliased constant String := "eo";
+      Vi : aliased constant String := "vi";
+      Sw : aliased constant String := "sw";
+      Af : aliased constant String := "af";
+      Hu : aliased constant String := "hu";
+      Sk : aliased constant String := "sk";
+
+      Locales : constant Locale_Array (1 .. Locale_Count) :=
+        [En'Access, Da'Access, De'Access, Fr'Access, Es'Access, It'Access,
+         Pt'Access, Nl'Access, Sv'Access, No'Access, Nb'Access, Fi'Access,
+         Pl'Access, Cs'Access, Tr'Access, Ru'Access, Uk'Access, Ja'Access,
+         Ko'Access, Zh'Access, Ar'Access, Hi'Access, Ro'Access, Lt'Access,
+         Sl'Access, Id'Access, Ms'Access, Eo'Access, Vi'Access, Sw'Access,
+         Af'Access, Hu'Access, Sk'Access];
+
+      Item : constant String := Lower (Trim (Text));
+
+      procedure Add_Alias
+        (Label : String;
+         Kind  : Humanize.Units.Unit_Kind)
+      is
+         Alias : constant String := Lower (Trim (Label));
+      begin
+         if Alias'Length = 0 then
+            return;
+         end if;
+
+         for Index in 1 .. Rendered_Unit_Alias_Count loop
+            if To_String (Rendered_Unit_Alias_Cache (Index).Label) = Alias then
+               return;
+            end if;
+         end loop;
+
+         if Rendered_Unit_Alias_Count < Max_Rendered_Unit_Aliases then
+            Rendered_Unit_Alias_Count := Rendered_Unit_Alias_Count + 1;
+            Rendered_Unit_Alias_Cache (Rendered_Unit_Alias_Count) :=
+              (Label => To_Unbounded_String (Alias),
+               Unit  => Kind);
+         end if;
+      end Add_Alias;
+
+      procedure Add_Rendered
+        (Locale : String;
+         Count  : Long_Float;
+         Kind   : Humanize.Units.Unit_Kind)
+      is
+         Runtime_Loaded : Boolean;
+         Context : constant Humanize.Contexts.Context :=
+           Humanize.I18N_Rendering.Default_Context (Locale, Runtime_Loaded);
+      begin
+         if not Runtime_Loaded then
+            return;
+         end if;
+
+         declare
+            Rendered : constant Humanize.Status.Text_Result :=
+              Humanize.Units.Format (Context, Count, Kind);
+            Full : constant String := To_String (Rendered.Text);
+            Last_Number : Natural;
+            Unit_Start : Natural;
+         begin
+            if Rendered.Status /= Humanize.Status.Ok
+              or else not Split_Number_Unit (Full, Last_Number, Unit_Start)
+            then
+               return;
+            end if;
+
+            Add_Alias (Full (Unit_Start .. Full'Last), Kind);
+         end;
+      end Add_Rendered;
+
+      procedure Add_Rendered
+        (Locale : String;
+         Count  : Natural;
+         Kind   : Humanize.Units.Unit_Kind)
+      is
+         Runtime_Loaded : Boolean;
+         Context : constant Humanize.Contexts.Context :=
+           Humanize.I18N_Rendering.Default_Context (Locale, Runtime_Loaded);
+      begin
+         if not Runtime_Loaded then
+            return;
+         end if;
+
+         declare
+            Rendered : constant Humanize.Status.Text_Result :=
+              Humanize.Units.Format (Context, Count, Kind);
+            Full : constant String := To_String (Rendered.Text);
+            Last_Number : Natural;
+            Unit_Start : Natural;
+         begin
+            if Rendered.Status /= Humanize.Status.Ok
+              or else not Split_Number_Unit (Full, Last_Number, Unit_Start)
+            then
+               return;
+            end if;
+
+            Add_Alias (Full (Unit_Start .. Full'Last), Kind);
+         end;
+      end Add_Rendered;
+   begin
+      Unit := Humanize.Units.Meter;
+      if Item'Length = 0 then
+         return False;
+      end if;
+
+      if not Rendered_Unit_Alias_Cache_Loaded then
+         for Locale of Locales loop
+            for Kind in Humanize.Units.Unit_Kind loop
+               Add_Rendered (Locale.all, 1, Kind);
+               Add_Rendered (Locale.all, 5, Kind);
+               Add_Rendered (Locale.all, 1.0, Kind);
+               Add_Rendered (Locale.all, 5.0, Kind);
+            end loop;
+         end loop;
+
+         Rendered_Unit_Alias_Cache_Loaded := True;
+      end if;
+
+      for Index in 1 .. Rendered_Unit_Alias_Count loop
+         if To_String (Rendered_Unit_Alias_Cache (Index).Label) = Item then
+            Unit := Rendered_Unit_Alias_Cache (Index).Unit;
+            return True;
+         end if;
+      end loop;
+
+      return False;
+   exception
+      when others =>
+         Unit := Humanize.Units.Meter;
+         return False;
+   end Rendered_Unit_Value;
+
    function Unit_Value
      (Text : String;
       Unit : out Humanize.Units.Unit_Kind)
@@ -11197,299 +17122,15 @@ package body Humanize.Parsing is
    is
       Item : constant String := Lower (Trim (Text));
    begin
-      if Item = "m" or else Item = "meter" or else Item = "meters"
-        or else Item = "metre" or else Item = "metres"
-        or else Item = B ("6DC3A8747265")
-        or else Item = B ("6DC3A874726573")
-        or else Item = "meter" or else Item = "metri"
-        or else Item = B ("6D65747269C3A4")
-        or else Item = "metro"
-        or else Item = "metros" or else Item = "metr" or else Item = "metry"
-        or else Item = B ("6D657472C3B377")
-        or else Item = B ("6D657472C5AF")
-        or else Item = "metreler" or else Item = B ("D0BCD0B5D182D180")
-        or else Item = B ("D0BCD0B5D182D180D0B0")
-        or else Item = B ("D0BCD0B5D182D180D0BED0B2")
-        or else Item = B ("D0BCD0B5D182D180D18B")
-        or else Item = B ("D0BCD0B5D182D180D0B8")
-        or else Item = B ("D0BCD0B5D182D180D196D0B2")
-        or else Item = B ("E383A1E383BCE38388E383AB")
-        or else Item = B ("EBAFB8ED84B0")
-        or else Item = B ("E7B1B3")
-        or else Item = B ("D985D8AAD8B1")
-        or else Item = B ("D8A3D985D8AAD8A7D8B1")
-        or else Item = B ("E0A4AEE0A580E0A49FE0A4B0")
-      then
-         Unit := Humanize.Units.Meter;
-      elsif Item = "km" or else Item = "kilometer" or else Item = "kilometers"
-        or else Item = "kilometre" or else Item = "kilometres"
-        or else Item = B ("6B696C6F6DC3A8747265")
-        or else Item = B ("6B696C6F6DC3A874726573")
-        or else Item = "kilometro" or else Item = "kilometros"
-        or else Item = B ("6B696CC3B36D6574726F")
-        or else Item = B ("6B696CC3B36D6574726F73")
-        or else Item = B ("7175696CC3B46D6574726F")
-        or else Item = B ("7175696CC3B46D6574726F73")
-        or else Item = B ("7175696CC3B36D6574726F")
-        or else Item = B ("7175696CC3B36D6574726F73")
-        or else Item = "chilometro" or else Item = "chilometri"
-        or else Item = "kilometr" or else Item = "kilometry"
-        or else Item = B ("6B696C6F6D657472C3B377")
-        or else Item = B ("6B696C6F6D657472C5AF")
-        or else Item = B ("6B696C6F6D65747269C3A4")
-        or else Item = "kilometreler"
-        or else Item = B ("D0BAD0B8D0BBD0BED0BCD0B5D182D180")
-        or else Item = B ("D0BAD0B8D0BBD0BED0BCD0B5D182D180D0B0")
-        or else Item = B ("D0BAD0B8D0BBD0BED0BCD0B5D182D180D0BED0B2")
-        or else Item = B ("D0BAD0B8D0BBD0BED0BCD0B5D182D180D18B")
-        or else Item = B ("D0BAD196D0BBD0BED0BCD0B5D182D180")
-        or else Item = B ("D0BAD196D0BBD0BED0BCD0B5D182D180D0B8")
-        or else Item = B ("D0BAD196D0BBD0BED0BCD0B5D182D180D196D0B2")
-        or else Item = B ("E382ADE383ADE383A1E383BCE38388E383AB")
-        or else Item = B ("ED82ACEBA19CEBAFB8ED84B0")
-        or else Item = B ("E58D83E7B1B3")
-        or else Item = B ("D983D98AD984D988D985D8AAD8B1")
-        or else Item = B ("D983D98AD984D988D985D8AAD8B1D8A7D8AA")
-        or else Item = B ("E0A495E0A4BFE0A4B2E0A58BE0A4AEE0A580E0A49FE0A4B0")
-      then
-         Unit := Humanize.Units.Kilometer;
-      elsif Item = "cm" or else Item = "centimeter"
-        or else Item = "centimeters" or else Item = "centimetre"
-        or else Item = "centimetres"
-        or else Item = B ("63656E74696DC3A8747265")
-        or else Item = B ("63656E74696DC3A874726573")
-        or else Item = "centimetro" or else Item = "centimetros"
-        or else Item = B ("63656E74C3AD6D6574726F")
-        or else Item = B ("63656E74C3AD6D6574726F73")
-        or else Item = "centimetr" or else Item = "centimetry"
-        or else Item = B ("63656E74796D657472C3B377")
-        or else Item = B ("63656E74696D657472C5AF")
-        or else Item = B ("D181D0B0D0BDD182D0B8D0BCD0B5D182D180")
-        or else Item = B ("D181D0B0D0BDD182D0B8D0BCD0B5D182D180D0B0")
-        or else Item = B ("D181D0B0D0BDD182D0B8D0BCD0B5D182D180D0BED0B2")
-        or else Item = B ("D181D0B0D0BDD182D0B8D0BCD0B5D182D180D18B")
-        or else Item = B ("D181D0B0D0BDD182D0B8D0BCD0B5D182D180D0B8")
-        or else Item = B ("D181D0B0D0BDD182D0B8D0BCD0B5D182D180D196D0B2")
-        or else Item = B ("E382BBE383B3E38381E383A1E383BCE38388E383AB")
-        or else Item = B ("E58E98E7B1B3")
-      then
-         Unit := Humanize.Units.Centimeter;
-      elsif Item = "mm" or else Item = "millimeter"
-        or else Item = "millimeters" or else Item = "millimetre"
-        or else Item = "millimetres"
-        or else Item = B ("6D696C6C696DC3A8747265")
-        or else Item = B ("6D696C6C696DC3A874726573")
-        or else Item = "milimetro" or else Item = "milimetros"
-        or else Item = B ("6D696CC3AD6D6574726F")
-        or else Item = B ("6D696CC3AD6D6574726F73")
-        or else Item = "millimetro" or else Item = "millimetri"
-        or else Item = "milimetr" or else Item = "milimetry"
-        or else Item = B ("6D696C696D657472C3B377")
-        or else Item = B ("6D696C696D657472C5AF")
-        or else Item = B ("D0BCD0B8D0BBD0BBD0B8D0BCD0B5D182D180")
-        or else Item = B ("D0BCD0B8D0BBD0BBD0B8D0BCD0B5D182D180D0B0")
-        or else Item = B ("D0BCD0B8D0BBD0BBD0B8D0BCD0B5D182D180D0BED0B2")
-        or else Item = B ("D0BCD0B8D0BBD0BBD0B8D0BCD0B5D182D180D18B")
-        or else Item = B ("D0BCD196D0BBD196D0BCD0B5D182D180")
-        or else Item = B ("D0BCD196D0BBD196D0BCD0B5D182D180D0B8")
-        or else Item = B ("D0BCD196D0BBD196D0BCD0B5D182D180D196D0B2")
-        or else Item = B ("E3839FE383AAE383A1E383BCE38388E383AB")
-        or else Item = B ("E6AFABE7B1B3")
-      then
-         Unit := Humanize.Units.Millimeter;
-      elsif Item = "g" or else Item = "gram" or else Item = "grams"
-        or else Item = "gramy"
-        or else Item = B ("6772616DC3B377")
-        or else Item = B ("6772616DC5AF")
-        or else Item = B ("D0B3D180D0B0D0BC")
-        or else Item = B ("D0B3D180D0B0D0BCD0BC")
-        or else Item = B ("D0B3D180D0B0D0BCD0B8")
-        or else Item = B ("D0B3D180D0B0D0BCD196D0B2")
-        or else Item = B ("D0B3D180D0B0D0BCD0BCD0B0")
-        or else Item = B ("D0B3D180D0B0D0BCD0BCD0BED0B2")
-      then
-         Unit := Humanize.Units.Gram;
-      elsif Item = "kg" or else Item = "kilogram" or else Item = "kilograms"
-        or else Item = "kilogramm" or else Item = "kilogramme"
-        or else Item = "kilogramme" or else Item = "kilogrammes"
-        or else Item = "kilogramo" or else Item = "kilogramos"
-        or else Item = "quilograma" or else Item = "quilogramas"
-        or else Item = "chilogrammo" or else Item = "chilogrammi"
-        or else Item = "kilogrammaa"
-        or else Item = "kilogramy" or else Item = "kilogramlar"
-        or else Item = B ("6B696C6F6772616DC3B377")
-        or else Item = B ("6B696C6F6772616DC5AF")
-        or else Item = B ("D0BAD0B8D0BBD0BED0B3D180D0B0D0BC")
-        or else Item = B ("D0BAD0B8D0BBD0BED0B3D180D0B0D0BCD0BCD0B0")
-        or else Item = B ("D0BAD0B8D0BBD0BED0B3D180D0B0D0BCD0BCD0BED0B2")
-        or else Item = B ("D0BAD0B8D0BBD0BED0B3D180D0B0D0BCD18B")
-        or else Item = B ("D0BAD196D0BBD0BED0B3D180D0B0D0BC")
-        or else Item = B ("D0BAD196D0BBD0BED0B3D180D0B0D0BCD0B8")
-        or else Item = B ("D0BAD196D0BBD0BED0B3D180D0B0D0BCD196D0B2")
-        or else Item = B ("E382ADE383ADE382B0E383A9E383A0")
-        or else Item = B ("ED82ACEBA19CEAB7B8EBA7A8")
-        or else Item = B ("ED82ACEBA19CEAB7B8EB9EA8")
-        or else Item = B ("E58D83E5858B")
-        or else Item = B ("D983D98AD984D988D8ACD8B1D8A7D985")
-        or else Item = B ("D983D98AD984D988D8ACD8B1D8A7D985D8A7D8AA")
-        or else Item = B ("D983D98AD984D988D8BAD8B1D8A7D985")
-        or else Item = B ("D983D98AD984D988D8BAD8B1D8A7D985D8A7D8AA")
-        or else Item = B ("E0A495E0A4BFE0A4B2E0A58BE0A497E0A58DE0A4B0E0A4BEE0A4AE")
-      then
-         Unit := Humanize.Units.Kilogram;
-      elsif Item = "mg" or else Item = "milligram"
-        or else Item = "milligrams"
-        or else Item = "miligram" or else Item = "miligramy"
-        or else Item = B ("6D696C696772616DC3B377")
-        or else Item = B ("6D696C696772616DC5AF")
-        or else Item = B ("D0BCD0B8D0BBD0BBD0B8D0B3D180D0B0D0BCD0BC")
-        or else Item = B ("D0BCD0B8D0BBD0BBD0B8D0B3D180D0B0D0BCD0BCD0B0")
-        or else Item = B ("D0BCD0B8D0BBD0BBD0B8D0B3D180D0B0D0BCD0BCD0BED0B2")
-        or else Item = B ("D0BCD196D0BBD196D0B3D180D0B0D0BC")
-        or else Item = B ("D0BCD196D0BBD196D0B3D180D0B0D0BCD0B8")
-        or else Item = B ("D0BCD196D0BBD196D0B3D180D0B0D0BCD196D0B2")
-      then
-         Unit := Humanize.Units.Milligram;
-      elsif Item = "l" or else Item = "liter" or else Item = "liters"
-        or else Item = "litre" or else Item = "litres"
-        or else Item = "litri"
-        or else Item = "litro" or else Item = "litros"
-        or else Item = "litraa"
-        or else Item = "litr" or else Item = "litry"
-        or else Item = B ("6C697472C3B377")
-        or else Item = B ("6C697472C5AF")
-        or else Item = "litreler"
-        or else Item = B ("D0BBD0B8D182D180")
-        or else Item = B ("D0BBD0B8D182D180D0B0")
-        or else Item = B ("D0BBD0B8D182D180D0BED0B2")
-        or else Item = B ("D0BBD0B8D182D180D18B")
-        or else Item = B ("D0BBD196D182D180")
-        or else Item = B ("D0BBD196D182D180D0B8")
-        or else Item = B ("D0BBD196D182D180D196D0B2")
-        or else Item = B ("E383AAE38383E38388E383AB")
-        or else Item = B ("EBA6ACED84B0")
-        or else Item = B ("E58D87")
-        or else Item = B ("D984D8AAD8B1")
-        or else Item = B ("D984D8AAD8B1D8A7D8AA")
-        or else Item = B ("E0A4B2E0A580E0A49FE0A4B0")
-      then
-         Unit := Humanize.Units.Liter;
-      elsif Item = "ml" or else Item = "milliliter"
-        or else Item = "milliliters" or else Item = "millilitre"
-        or else Item = "millilitres"
-        or else Item = "mililitr" or else Item = "mililitry"
-        or else Item = B ("6D696C696C697472C3B377")
-        or else Item = B ("6D696C696C697472C5AF")
-        or else Item = B ("D0BCD0B8D0BBD0BBD0B8D0BBD0B8D182D180")
-        or else Item = B ("D0BCD0B8D0BBD0BBD0B8D0BBD0B8D182D180D0B0")
-        or else Item = B ("D0BCD0B8D0BBD0BBD0B8D0BBD0B8D182D180D0BED0B2")
-        or else Item = B ("D0BCD196D0BBD196D0BBD196D182D180")
-        or else Item = B ("D0BCD196D0BBD196D0BBD196D182D180D0B8")
-        or else Item = B ("D0BCD196D0BBD196D0BBD196D182D180D196D0B2")
-      then
-         Unit := Humanize.Units.Milliliter;
-      elsif Item = "c" or else Item = "deg c" or else Item = "degree c"
-        or else Item = "degrees c" or else Item = "celsius"
-        or else Item = "degree celsius" or else Item = "degrees celsius"
-      then
-         Unit := Humanize.Units.Celsius;
-      elsif Item = "f" or else Item = "deg f" or else Item = "degree f"
-        or else Item = "degrees f" or else Item = "fahrenheit"
-        or else Item = "degree fahrenheit"
-        or else Item = "degrees fahrenheit"
-      then
-         Unit := Humanize.Units.Fahrenheit;
-      elsif Item = "m2" or else Item = "square meter"
-        or else Item = "square meters" or else Item = "square metre"
-        or else Item = "square metres"
-      then
-         Unit := Humanize.Units.Square_Meter;
-      elsif Item = "km2" or else Item = "square kilometer"
-        or else Item = "square kilometers" or else Item = "square kilometre"
-        or else Item = "square kilometres"
-      then
-         Unit := Humanize.Units.Square_Kilometer;
-      elsif Item = "ha" or else Item = "hectare" or else Item = "hectares" then
-         Unit := Humanize.Units.Hectare;
-      elsif Item = "acre" or else Item = "acres" or else Item = "ac" then
-         Unit := Humanize.Units.Acre;
-      elsif Item = "m3" or else Item = "cubic meter"
-        or else Item = "cubic meters" or else Item = "cubic metre"
-        or else Item = "cubic metres"
-      then
-         Unit := Humanize.Units.Cubic_Meter;
-      elsif Item = "km/h" or else Item = "kilometer per hour"
-        or else Item = "kilometers per hour"
-      then
-         Unit := Humanize.Units.Kilometer_Per_Hour;
-      elsif Item = "m/s" or else Item = "meter per second"
-        or else Item = "meters per second"
-      then
-         Unit := Humanize.Units.Meter_Per_Second;
-      elsif Item = "pa" or else Item = "pascal" or else Item = "pascals" then
-         Unit := Humanize.Units.Pascal;
-      elsif Item = "kpa" or else Item = "kilopascal"
-        or else Item = "kilopascals"
-      then
-         Unit := Humanize.Units.Kilopascal;
-      elsif Item = "j" or else Item = "joule" or else Item = "joules" then
-         Unit := Humanize.Units.Joule;
-      elsif Item = "kj" or else Item = "kilojoule"
-        or else Item = "kilojoules"
-      then
-         Unit := Humanize.Units.Kilojoule;
-      elsif Item = "w" or else Item = "watt" or else Item = "watts" then
-         Unit := Humanize.Units.Watt;
-      elsif Item = "kw" or else Item = "kilowatt"
-        or else Item = "kilowatts"
-      then
-         Unit := Humanize.Units.Kilowatt;
-      elsif Item = "hz" or else Item = "hertz" or else Item = "cycles per second"
-      then
-         Unit := Humanize.Units.Hertz;
-      elsif Item = "khz" or else Item = "kilohertz" then
-         Unit := Humanize.Units.Kilohertz;
-      elsif Item = "mi" or else Item = "mile" or else Item = "miles" then
-         Unit := Humanize.Units.Mile;
-      elsif Item = "nmi" or else Item = "nautical mile"
-        or else Item = "nautical miles"
-      then
-         Unit := Humanize.Units.Nautical_Mile;
-      elsif Item = "yd" or else Item = "yard" or else Item = "yards" then
-         Unit := Humanize.Units.Yard;
-      elsif Item = "ft" or else Item = "foot" or else Item = "feet" then
-         Unit := Humanize.Units.Foot;
-      elsif Item = "in" or else Item = "inch" or else Item = "inches" then
-         Unit := Humanize.Units.Inch;
-      elsif Item = "tsp" or else Item = "teaspoon"
-        or else Item = "teaspoons"
-      then
-         Unit := Humanize.Units.Teaspoon;
-      elsif Item = "tbsp" or else Item = "tablespoon"
-        or else Item = "tablespoons"
-      then
-         Unit := Humanize.Units.Tablespoon;
-      elsif Item = "cup" or else Item = "cups" then
-         Unit := Humanize.Units.Cup;
-      elsif Item = "gal" or else Item = "gallon" or else Item = "gallons" then
-         Unit := Humanize.Units.Gallon;
-      elsif Item = "lb" or else Item = "lbs" or else Item = "pound"
-        or else Item = "pounds"
-      then
-         Unit := Humanize.Units.Pound;
-      elsif Item = "oz" or else Item = "ounce" or else Item = "ounces" then
-         Unit := Humanize.Units.Ounce;
-      elsif Item = "st" or else Item = "stone" then
-         Unit := Humanize.Units.Stone;
-      elsif Item = "tonne" or else Item = "tonnes" then
-         Unit := Humanize.Units.Tonne;
-      elsif Item = "ton" or else Item = "tons" then
-         Unit := Humanize.Units.Ton;
-      else
-         return False;
+      if Lookup_Unit_Alias (Item, Unit_Aliases, Unit) then
+         return True;
       end if;
-      return True;
+
+      return Generated_Unit_Value (Item, Unit)
+        or else Rendered_Unit_Value (Item, Unit);
    end Unit_Value;
+
+   pragma Style_Checks (On);
 
    function Parse_Rate
      (Text : String)
@@ -11498,6 +17139,28 @@ package body Humanize.Parsing is
       Item : constant String := Lower (Trim (Normalize_Native_Digits (Text)));
       Prefix : constant String := "approximately ";
       Less_Prefix : constant String := "less than ";
+      Romanian_Approx : constant String := "aproximativ ";
+      Romanian_Less : constant String := B ("6D6169207075C89B696E20646563C3A27420");
+      Lithuanian_Approx : constant String := "apie ";
+      Lithuanian_Less : constant String := B ("6D61C5BE696175206E656920");
+      Slovenian_Approx : constant String := "priblizno ";
+      Slovenian_Less : constant String := "manj kot ";
+      Indonesian_Approx : constant String := "sekitar ";
+      Indonesian_Less : constant String := "kurang dari ";
+      Malay_Approx : constant String := "kira-kira ";
+      Malay_Less : constant String := "kurang daripada ";
+      Esperanto_Approx : constant String := "proksimume ";
+      Esperanto_Less : constant String := "malpli ol ";
+      Vietnamese_Approx : constant String := "khoang ";
+      Vietnamese_Less : constant String := "it hon ";
+      Swahili_Approx : constant String := "takriban ";
+      Swahili_Less : constant String := "chini ya ";
+      Afrikaans_Approx : constant String := "ongeveer ";
+      Afrikaans_Less : constant String := "minder as ";
+      Hungarian_Approx : constant String := "korulbelul ";
+      Hungarian_Less : constant String := "kevesebb mint ";
+      Slovak_Approx : constant String := "priblizne ";
+      Slovak_Less : constant String := "menej ako ";
       Body_First : Natural := Item'First;
       Per_Pos : Natural := 0;
       Per_Length : Natural := 0;
@@ -11531,16 +17194,77 @@ package body Humanize.Parsing is
          Body_First := Item'First + 8;
       elsif Starts_With (Item, "ungefaehr ") then
          Body_First := Item'First + 10;
+      elsif Starts_With (Item, "weniger als ") then
+         Body_First := Item'First + 12;
+         Less := True;
       elsif Starts_With (Item, "ongeveer ") then
          Body_First := Item'First + 9;
       elsif Starts_With (Item, "noin ") then
          Body_First := Item'First + 5;
+      elsif Starts_With (Item, "alle ") then
+         Body_First := Item'First + 5;
+         Less := True;
       elsif Starts_With (Item, B ("6F6B6FC5826F20")) then
          Body_First := Item'First + 7;
       elsif Starts_With (Item, B ("70C59969626C69C5BE6EC49B20")) then
          Body_First := Item'First + 13;
       elsif Starts_With (Item, "aproximadamente ") then
          Body_First := Item'First + 16;
+      elsif Starts_With (Item, Romanian_Approx) then
+         Body_First := Item'First + Romanian_Approx'Length;
+      elsif Starts_With (Item, Romanian_Less) then
+         Body_First := Item'First + Romanian_Less'Length;
+         Less := True;
+      elsif Starts_With (Item, Lithuanian_Approx) then
+         Body_First := Item'First + Lithuanian_Approx'Length;
+      elsif Starts_With (Item, Lithuanian_Less) then
+         Body_First := Item'First + Lithuanian_Less'Length;
+         Less := True;
+      elsif Starts_With (Item, Slovenian_Approx) then
+         Body_First := Item'First + Slovenian_Approx'Length;
+      elsif Starts_With (Item, Slovenian_Less) then
+         Body_First := Item'First + Slovenian_Less'Length;
+         Less := True;
+      elsif Starts_With (Item, Indonesian_Approx) then
+         Body_First := Item'First + Indonesian_Approx'Length;
+      elsif Starts_With (Item, Indonesian_Less) then
+         Body_First := Item'First + Indonesian_Less'Length;
+         Less := True;
+      elsif Starts_With (Item, Malay_Approx) then
+         Body_First := Item'First + Malay_Approx'Length;
+      elsif Starts_With (Item, Malay_Less) then
+         Body_First := Item'First + Malay_Less'Length;
+         Less := True;
+      elsif Starts_With (Item, Esperanto_Approx) then
+         Body_First := Item'First + Esperanto_Approx'Length;
+      elsif Starts_With (Item, Esperanto_Less) then
+         Body_First := Item'First + Esperanto_Less'Length;
+         Less := True;
+      elsif Starts_With (Item, Vietnamese_Approx) then
+         Body_First := Item'First + Vietnamese_Approx'Length;
+      elsif Starts_With (Item, Vietnamese_Less) then
+         Body_First := Item'First + Vietnamese_Less'Length;
+         Less := True;
+      elsif Starts_With (Item, Swahili_Approx) then
+         Body_First := Item'First + Swahili_Approx'Length;
+      elsif Starts_With (Item, Swahili_Less) then
+         Body_First := Item'First + Swahili_Less'Length;
+         Less := True;
+      elsif Starts_With (Item, Afrikaans_Approx) then
+         Body_First := Item'First + Afrikaans_Approx'Length;
+      elsif Starts_With (Item, Afrikaans_Less) then
+         Body_First := Item'First + Afrikaans_Less'Length;
+         Less := True;
+      elsif Starts_With (Item, Hungarian_Approx) then
+         Body_First := Item'First + Hungarian_Approx'Length;
+      elsif Starts_With (Item, Hungarian_Less) then
+         Body_First := Item'First + Hungarian_Less'Length;
+         Less := True;
+      elsif Starts_With (Item, Slovak_Approx) then
+         Body_First := Item'First + Slovak_Approx'Length;
+      elsif Starts_With (Item, Slovak_Less) then
+         Body_First := Item'First + Slovak_Less'Length;
+         Less := True;
       elsif Starts_With (Item, "circa ") or else Starts_With (Item, "omtrent ")
         or else Starts_With (Item, "yaklasik ")
       then
@@ -11559,9 +17283,14 @@ package body Humanize.Parsing is
          Body_First := Item'First + 3;
       elsif Starts_With (Item, B ("D8AAD982D8B1D98AD8A8D98BD8A720")) then
          Body_First := Item'First + 15;
+      elsif Starts_With (Item, B ("D8A3D982D98420D985D98620")) then
+         Body_First := Item'First + 12;
+         Less := True;
       elsif Starts_With (Item, B ("E0A4B2E0A497E0A4ADE0A49720")) then
          Body_First := Item'First + 13;
-      elsif Starts_With (Item, "mindre end ") then
+      elsif Starts_With (Item, "mindre end ")
+        or else Starts_With (Item, "mindre enn ")
+      then
          Body_First := Item'First + 11;
          Less := True;
       elsif Starts_With (Item, "menos de ") or else Starts_With (Item, "meno di ")
@@ -11580,14 +17309,22 @@ package body Humanize.Parsing is
       then
          Body_First := Item'First + Find_Substring (Item, " ") + 3;
          Less := True;
+      elsif Starts_With (Item, B ("6D6E69656A206E69C5BC20")) then
+         Body_First := Item'First + 11;
+         Less := True;
+      elsif Starts_With (Item, B ("6DC3A96EC49B206E65C5BE20")) then
+         Body_First := Item'First + 12;
+         Less := True;
       elsif Starts_With (Item, B ("6D6E656CC5A1206E65C5BE20")) then
          Body_First := Item'First + 10;
          Less := True;
       elsif Starts_With (Item, B ("D0BCD0B5D0BDD18CD188D0B520D187D0B5D0BC20"))
-        or else Starts_With (Item, B ("D0BCD0B5D0BDD188D0B520D0BDD196D0B620"))
       then
-         Body_First := Item'First + Find_Substring (Item, " ");
-         Body_First := Body_First + Find_Substring (Item (Body_First .. Item'Last), " ");
+         Body_First := Item'First + 20;
+         Less := True;
+      elsif Starts_With (Item, B ("D0BCD0B5D0BDD188D0B520D0BDD196D0B620"))
+      then
+         Body_First := Item'First + 18;
          Less := True;
       elsif Starts_With (Item, B ("E69CACE6BA80")) or else Starts_With (Item, B ("EBAFB8EBA78C"))
         or else Starts_With (Item, B ("E5B091E4BA8E"))
@@ -11601,6 +17338,8 @@ package body Humanize.Parsing is
            Rate_Separator (Item, Body_First, Per_Pos, Per_Length);
          Finnish_Week : constant String := " viikossa";
          Turkish_Week : constant String := " haftada";
+         Malay_Week : constant String := " seminggu";
+         Hungarian_Week : constant String := " hetente";
          Japanese_Week : constant String := B ("20E6AF8EE980B1");
          Chinese_Week : constant String := B ("20E6AF8FE591A8");
          Korean_Week : constant String := B ("20ECA3BCEBA788EB8BA4");
@@ -11611,6 +17350,12 @@ package body Humanize.Parsing is
                Per_Length := 1;
             elsif Ends_With (Item, Turkish_Week) then
                Per_Pos := Item'Last - Turkish_Week'Length + 1;
+               Per_Length := 1;
+            elsif Ends_With (Item, Malay_Week) then
+               Per_Pos := Item'Last - Malay_Week'Length + 1;
+               Per_Length := 1;
+            elsif Ends_With (Item, Hungarian_Week) then
+               Per_Pos := Item'Last - Hungarian_Week'Length + 1;
                Per_Length := 1;
             elsif Ends_With (Item, Japanese_Week) then
                Per_Pos := Item'Last - Japanese_Week'Length + 1;
@@ -11709,6 +17454,8 @@ package body Humanize.Parsing is
                if Low (Index .. Index + 4) = " and "
                  or else Low (Index .. Index + 4) = " und "
                  or else Low (Index .. Index + 4) = " och "
+                 or else Low (Index .. Index + 4) = " dan "
+                 or else Low (Index .. Index + 4) = " kaj "
                then
                   Count := Count + 1;
                   Found := True;
@@ -11723,7 +17470,12 @@ package body Humanize.Parsing is
                  or else Low (Index .. Index + 3) = " en "
                  or else Low (Index .. Index + 3) = " of "
                  or else Low (Index .. Index + 3) = " ja "
+                 or else Low (Index .. Index + 3) = " ir "
+                 or else Low (Index .. Index + 3) = " in "
+                 or else Low (Index .. Index + 3) = " va "
                  or else Low (Index .. Index + 3) = " ve "
+                 or else Low (Index .. Index + 3) = " na "
+                 or else Low (Index .. Index + 3) = " es "
                then
                   Count := Count + 1;
                   Found := True;
@@ -11747,6 +17499,7 @@ package body Humanize.Parsing is
            and then
              (Has_Spaced_Token (Low, B ("D0B8"))
               or else Has_Spaced_Token (Low, B ("D196"))
+              or else Has_Spaced_Token (Low, B ("C89969"))
               or else Has_Spaced_Token (Low, B ("E381A8"))
               or else Has_Spaced_Token (Low, B ("EBA78F"))
               or else Has_Spaced_Token (Low, B ("EBB08F"))
@@ -11861,6 +17614,7 @@ package body Humanize.Parsing is
       Item : constant String := Lower (Trim (Text));
       Last_Number : Natural := Item'First - 1;
       Amount : Long_Float;
+      Locale_Value : Natural := 0;
    begin
       if Item'Length = 0 then
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
@@ -11875,6 +17629,16 @@ package body Humanize.Parsing is
       end loop;
 
       if Last_Number < Item'First then
+         if Humanize.Numbers.Parse_Deterministic_Ordinal (Item, Locale_Value)
+         then
+            return
+              (Status => Humanize.Status.Ok,
+               Value => Long_Long_Integer (Locale_Value),
+               Exact => True,
+               Consumed => Item'Length,
+               Error_Position => 0,
+               Error => No_Parse_Error);
+         end if;
          return Parse_Cardinal (Item);
       elsif not Numeric_Value (Item (Item'First .. Last_Number), Amount) then
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
@@ -12103,7 +17867,7 @@ package body Humanize.Parsing is
          Value    => Amount,
          Unit     => Unit,
          Exact    => True,
-         Consumed => Item'Length,
+         Consumed => Trim (Text)'Length,
          Error_Position => 0,
          Error => No_Parse_Error);
    exception
@@ -12327,14 +18091,18 @@ package body Humanize.Parsing is
         or else U = "gbit"
         or else U = "kg/m3" or else U = "m/s2" or else U = "n m"
         or else U = "l/100 km" or else U = "ml/s"
-        or else U = "ma" or else U = "a" or else U = "kv"
-        or else U = "v" or else U = "ppi" or else U = "kohm"
-        or else U = "ohm" or else U = "uf" or else U = "mh"
+        or else U = "l/s" or else U = "ma" or else U = "a"
+        or else U = "kv" or else U = "v" or else U = "ppi"
+        or else U = "mohm" or else U = "kohm"
+        or else U = "ohm" or else U = "nf" or else U = "uf"
+        or else U = "f" or else U = "mh" or else U = "h"
         or else U = "mol/l" or else U = "mpg"
         or else U = "gb/s" or else U = "mb/s" or else U = "kb/s"
+        or else U = "m ops/s" or else U = "k ops/s"
+        or else U = "ops/s"
         or else U = "gbit/s" or else U = "mbit/s"
         or else U = "kbit/s" or else U = "bit/s"
-        or else U = "mib/s" or else U = "kib/s"
+        or else U = "gib/s" or else U = "mib/s" or else U = "kib/s"
         or else U = "b/s" or else U = "% cpu" or else U = "% battery"
         or else U = "in screen" or else U = "pt";
    end Known_Compound_Unit;
@@ -12412,5 +18180,600 @@ package body Humanize.Parsing is
               Error_Position => Text'First,
               others => <>);
    end Scan_Compound_Unit;
+
+   function Parse_Database_Throughput
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+      Result : constant Compound_Unit_Parse_Result := Parse_Compound_Unit (Text);
+      U : constant String :=
+        (if Result.Unit_Length = 0 then ""
+         else Result.Unit (1 .. Result.Unit_Length));
+   begin
+      if Result.Status /= Humanize.Status.Ok then
+         return Result;
+      elsif U = "ops/s" or else U = "k ops/s" or else U = "m ops/s" then
+         return Result;
+      else
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Unit,
+                 Error_Position => Text'First,
+                 others => <>);
+      end if;
+   end Parse_Database_Throughput;
+
+   function Parse_Filtered_Compound_Unit
+     (Text  : String;
+      Units : String)
+      return Compound_Unit_Parse_Result
+   is
+      Result : constant Compound_Unit_Parse_Result := Parse_Compound_Unit (Text);
+      U : constant String :=
+        (if Result.Unit_Length = 0 then ""
+         else Result.Unit (1 .. Result.Unit_Length));
+   begin
+      if Result.Status /= Humanize.Status.Ok then
+         return Result;
+      elsif Has_Alias (U, Units) then
+         return Result;
+      else
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error => Expected_Unit,
+                 Error_Position => Text'First,
+                 others => <>);
+      end if;
+   end Parse_Filtered_Compound_Unit;
+
+   function Scan_Filtered_Compound_Unit
+     (Text  : String;
+      Units : String)
+      return Compound_Unit_Parse_Result
+   is
+      Last : constant Natural := Scan_End (Text);
+   begin
+      if Text'Length = 0 or else Last < Text'First then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error_Position => Text'First,
+                 others => <>);
+      end if;
+
+      for Stop in reverse Text'First .. Last loop
+         declare
+            Result : constant Compound_Unit_Parse_Result :=
+              Parse_Filtered_Compound_Unit
+                (Text (Text'First .. Stop), Units);
+         begin
+            if Result.Status = Humanize.Status.Ok then
+               return Result;
+            end if;
+         end;
+      end loop;
+
+      return (Status => Humanize.Status.Invalid_Argument,
+              Error_Position => Text'First,
+              others => <>);
+   end Scan_Filtered_Compound_Unit;
+
+   function Scan_Database_Throughput
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+      Last : constant Natural := Scan_End (Text);
+   begin
+      if Text'Length = 0 or else Last < Text'First then
+         return (Status => Humanize.Status.Invalid_Argument,
+                 Error_Position => Text'First,
+                 others => <>);
+      end if;
+
+      for Stop in reverse Text'First .. Last loop
+         declare
+            Result : constant Compound_Unit_Parse_Result :=
+              Parse_Database_Throughput (Text (Text'First .. Stop));
+         begin
+            if Result.Status = Humanize.Status.Ok then
+               return Result;
+            end if;
+         end;
+      end loop;
+
+      return (Status => Humanize.Status.Invalid_Argument,
+              Error_Position => Text'First,
+              others => <>);
+   end Scan_Database_Throughput;
+
+   function Parse_Data_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "mb/s" & ASCII.LF & "kb/s" & ASCII.LF & "b/s");
+   end Parse_Data_Rate;
+
+   function Scan_Data_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "mb/s" & ASCII.LF & "kb/s" & ASCII.LF & "b/s");
+   end Scan_Data_Rate;
+
+   function Parse_Bit_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "gbit/s" & ASCII.LF & "mbit/s" & ASCII.LF
+         & "kbit/s" & ASCII.LF & "bit/s");
+   end Parse_Bit_Rate;
+
+   function Scan_Bit_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "gbit/s" & ASCII.LF & "mbit/s" & ASCII.LF
+         & "kbit/s" & ASCII.LF & "bit/s");
+   end Scan_Bit_Rate;
+
+   function Parse_Binary_Data_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "gib/s" & ASCII.LF & "mib/s" & ASCII.LF
+         & "kib/s" & ASCII.LF & "b/s");
+   end Parse_Binary_Data_Rate;
+
+   function Scan_Binary_Data_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "gib/s" & ASCII.LF & "mib/s" & ASCII.LF
+         & "kib/s" & ASCII.LF & "b/s");
+   end Scan_Binary_Data_Rate;
+
+   function Parse_Memory_Bandwidth
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "gb/s" & ASCII.LF & "mb/s" & ASCII.LF & "kb/s"
+         & ASCII.LF & "b/s" & ASCII.LF & "mib/s" & ASCII.LF & "kib/s");
+   end Parse_Memory_Bandwidth;
+
+   function Scan_Memory_Bandwidth
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "gb/s" & ASCII.LF & "mb/s" & ASCII.LF & "kb/s"
+         & ASCII.LF & "b/s" & ASCII.LF & "mib/s" & ASCII.LF & "kib/s");
+   end Scan_Memory_Bandwidth;
+
+   function Parse_Latency
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "us" & ASCII.LF & "ms" & ASCII.LF & "s");
+   end Parse_Latency;
+
+   function Scan_Latency
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "us" & ASCII.LF & "ms" & ASCII.LF & "s");
+   end Scan_Latency;
+
+   function Parse_IOPS
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "iops" & ASCII.LF & "k iops" & ASCII.LF & "m iops");
+   end Parse_IOPS;
+
+   function Scan_IOPS
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "iops" & ASCII.LF & "k iops" & ASCII.LF & "m iops");
+   end Scan_IOPS;
+
+   function Parse_Density
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "kg/m3");
+   end Parse_Density;
+
+   function Scan_Density
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "kg/m3");
+   end Scan_Density;
+
+   function Parse_Acceleration
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "m/s2");
+   end Parse_Acceleration;
+
+   function Scan_Acceleration
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "m/s2");
+   end Scan_Acceleration;
+
+   function Parse_Torque
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "n m");
+   end Parse_Torque;
+
+   function Scan_Torque
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "n m");
+   end Scan_Torque;
+
+   function Parse_Fuel_Economy
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "l/100 km");
+   end Parse_Fuel_Economy;
+
+   function Scan_Fuel_Economy
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "l/100 km");
+   end Scan_Fuel_Economy;
+
+   function Parse_Flow_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "ml/s" & ASCII.LF & "l/s");
+   end Parse_Flow_Rate;
+
+   function Scan_Flow_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "ml/s" & ASCII.LF & "l/s");
+   end Scan_Flow_Rate;
+
+   function Parse_Electric_Current
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "ma" & ASCII.LF & "a");
+   end Parse_Electric_Current;
+
+   function Scan_Electric_Current
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "ma" & ASCII.LF & "a");
+   end Scan_Electric_Current;
+
+   function Parse_Voltage
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "kv" & ASCII.LF & "v");
+   end Parse_Voltage;
+
+   function Scan_Voltage
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "kv" & ASCII.LF & "v");
+   end Scan_Voltage;
+
+   function Parse_Pixel_Density
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "ppi");
+   end Parse_Pixel_Density;
+
+   function Scan_Pixel_Density
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "ppi");
+   end Scan_Pixel_Density;
+
+   function Parse_Electric_Resistance
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "mohm" & ASCII.LF & "kohm" & ASCII.LF & "ohm");
+   end Parse_Electric_Resistance;
+
+   function Scan_Electric_Resistance
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "mohm" & ASCII.LF & "kohm" & ASCII.LF & "ohm");
+   end Scan_Electric_Resistance;
+
+   function Parse_Electric_Capacitance
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "nf" & ASCII.LF & "uf" & ASCII.LF & "f");
+   end Parse_Electric_Capacitance;
+
+   function Scan_Electric_Capacitance
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "nf" & ASCII.LF & "uf" & ASCII.LF & "f");
+   end Scan_Electric_Capacitance;
+
+   function Parse_Electric_Inductance
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit
+        (Text, "mh" & ASCII.LF & "h");
+   end Parse_Electric_Inductance;
+
+   function Scan_Electric_Inductance
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit
+        (Text, "mh" & ASCII.LF & "h");
+   end Scan_Electric_Inductance;
+
+   function Parse_Concentration
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "mol/l");
+   end Parse_Concentration;
+
+   function Scan_Concentration
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "mol/l");
+   end Scan_Concentration;
+
+   function Parse_Fuel_Efficiency_MPG
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "mpg");
+   end Parse_Fuel_Efficiency_MPG;
+
+   function Scan_Fuel_Efficiency_MPG
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "mpg");
+   end Scan_Fuel_Efficiency_MPG;
+
+   function Parse_CPU_Load
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "% cpu");
+   end Parse_CPU_Load;
+
+   function Scan_CPU_Load
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "% cpu");
+   end Scan_CPU_Load;
+
+   function Parse_Battery
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "% battery");
+   end Parse_Battery;
+
+   function Scan_Battery
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "% battery");
+   end Scan_Battery;
+
+   function Parse_Screen_Size
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "in screen");
+   end Parse_Screen_Size;
+
+   function Scan_Screen_Size
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "in screen");
+   end Scan_Screen_Size;
+
+   function Parse_Typography_Size
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "pt");
+   end Parse_Typography_Size;
+
+   function Scan_Typography_Size
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "pt");
+   end Scan_Typography_Size;
+
+   function Parse_Audio_Level
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "db");
+   end Parse_Audio_Level;
+
+   function Scan_Audio_Level
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "db");
+   end Scan_Audio_Level;
+
+   function Parse_Signal_Strength
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "dbm");
+   end Parse_Signal_Strength;
+
+   function Scan_Signal_Strength
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "dbm");
+   end Scan_Signal_Strength;
+
+   function Parse_Storage_Endurance
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "tbw");
+   end Parse_Storage_Endurance;
+
+   function Scan_Storage_Endurance
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "tbw");
+   end Scan_Storage_Endurance;
+
+   function Parse_Refresh_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "hz refresh");
+   end Parse_Refresh_Rate;
+
+   function Scan_Refresh_Rate
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "hz refresh");
+   end Scan_Refresh_Rate;
+
+   function Parse_Luminance
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "nits");
+   end Parse_Luminance;
+
+   function Scan_Luminance
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "nits");
+   end Scan_Luminance;
+
+   function Parse_Print_Resolution
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Parse_Filtered_Compound_Unit (Text, "dpi");
+   end Parse_Print_Resolution;
+
+   function Scan_Print_Resolution
+     (Text : String)
+      return Compound_Unit_Parse_Result
+   is
+   begin
+      return Scan_Filtered_Compound_Unit (Text, "dpi");
+   end Scan_Print_Resolution;
 
 end Humanize.Parsing;

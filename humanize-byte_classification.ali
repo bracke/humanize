@@ -1,0 +1,148 @@
+V "GNAT Lib v13"
+A -gnatc
+A -gnat2022
+P NO
+
+RN
+RV NO_LONG_LONG_INTEGERS
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_ELABORATION_CODE
+
+U humanize.byte_classification%b  humanize-byte_classification.adb  99a078ff OO PK
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W humanize%s		humanize.ads		humanize.ali
+W humanize.messages%s	humanize-messages.adb	humanize-messages.ali
+
+U humanize.byte_classification%s  humanize-byte_classification.ads  40cc4e2e EE OO PK
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W humanize%s		humanize.ads		humanize.ali
+W humanize.bytes%s	humanize-bytes.adb	humanize-bytes.ali
+W humanize.selections%s	humanize-selections.adb	humanize-selections.ali
+
+D ada.ads		20240521074738 76789da1 ada%s
+D a-charac.ads		20240521074737 2d3ec45b ada.characters%s
+D a-chlat1.ads		20240521074737 e0d72e76 ada.characters.latin_1%s
+D a-contai.ads		20240521074737 61e5e089 ada.containers%s
+D a-cohata.ads		20240521074737 c4f77997 ada.containers.hash_tables%s
+D a-conhel.ads		20240521074737 46fe1ce3 ada.containers.helpers%s
+D a-cihama.ads		20240521074737 42861819 ada.containers.indefinite_hashed_maps%s
+D a-convec.ads		20240521074737 91fb49f3 ada.containers.vectors%s
+D a-finali.ads		20240521074738 bf4f806b ada.finalization%s
+D a-iteint.ads		20240521074738 49a8bee2 ada.iterator_interfaces%s
+D a-stream.ads		20240521074738 119b8fb3 ada.streams%s
+D a-string.ads		20240521074738 90ac6797 ada.strings%s
+D a-strhas.ads		20240521074738 e06866e7 ada.strings.hash%s
+D a-strmap.ads		20240521074738 ed8acfdb ada.strings.maps%s
+D a-sttebu.ads		20240521074738 f1ad67a2 ada.strings.text_buffers%s
+D a-strunb.ads		20240521074738 7bfb7010 ada.strings.unbounded%s
+D a-stuten.ads		20240521074738 c6ced0ae ada.strings.utf_encoding%s
+D a-unccon.ads		20240521074738 0e9b276f ada.unchecked_conversion%s
+D humanize.ads		20260703193357 ae4af322 humanize%s
+D humanize-byte_classification.ads  20260702210132 a0cab8b0 humanize.byte_classification%s
+D humanize-byte_classification.adb  20260704030409 f8b03387 humanize.byte_classification%b
+D humanize-bytes.ads	20260704030201 1dfa8f61 humanize.bytes%s
+D humanize-contexts.ads	20260704135231 90484d74 humanize.contexts%s
+D humanize-messages.ads	20260704135231 c1daf3c8 humanize.messages%s
+D humanize-selections.ads  20260702210132 53b68add humanize.selections%s
+D humanize-status.ads	20260704135231 5d58386c humanize.status%s
+D i18n.ads		20260630205449 fa948552 i18n%s
+D i18n-arguments.ads	20260630205449 e9b3e75b i18n.arguments%s
+D i18n-ast.ads		20260701175824 2f31558b i18n.ast%s
+D i18n-compiled.ads	20260701181345 eb3a3ade i18n.compiled%s
+D i18n-diagnostics.ads	20260629183815 cb556ee3 i18n.diagnostics%s
+D i18n-errors.ads	20260629183815 df9fe2a5 i18n.errors%s
+D i18n-locales.ads	20260706004255 009a6e8f i18n.locales%s
+D i18n-result.ads	20260630205449 6bc1a2e0 i18n.result%s
+D i18n-runtime.ads	20260705233714 0d33f77d i18n.runtime%s
+D interfac.ads		20240521074738 15f799c2 interfaces%s
+D system.ads		20240521074738 426dafb8 system%s
+D s-atocou.ads		20240521074738 dc18efc3 system.atomic_counters%s
+D s-finroo.ads		20240521074738 4ff27390 system.finalization_root%s
+D s-unstyp.ads		20240521074738 fa2a7f59 system.unsigned_types%s
+G a e
+G c Z s b [classify humanize__byte_classification 9 13 none]
+G c Z b b [image_no_space humanize__byte_classification 22 13 none]
+G c Z b b [padded humanize__byte_classification 32 13 none]
+G c Z b b [strip_trailing_zeros humanize__byte_classification 41 13 none]
+G c Z b b [format_value humanize__byte_classification 53 13 none]
+G r c none [classify humanize__byte_classification 9 13 none] [count humanize__selections 34 13 none]
+G r c none [classify humanize__byte_classification 9 13 none] [text_value humanize__selections 40 13 none]
+X 10 a-iteint.ads
+24h9 Forward_Iterator
+32h9 Reversible_Iterator<24R9[8|119]>
+X 19 humanize.ads
+7K9*Humanize 15e13 20|1r6 2r6 7r17 10r17 11r17 12r14 14r5 21|1r6 2r14 4r8
+. 5r8 99r14 118r17 120r20 132r14 137r5
+X 20 humanize-byte_classification.ads
+7K26*Byte_Classification 19|7k9 20|14l14 14e33 21|2b23 137l14 137t33
+9V13*Classify{25|20R9} 10>7 11>7 21|96b13 135l8 135t16
+10m7 Bytes{22|12M9} 21|97b7 103r16 104r21 117r10 121r42 126r35 134r31
+11r7 Options{22|21R9} 21|98b7 102r13 102r46 134r59
+X 21 humanize-byte_classification.adb
+7I9 Unit_Range<short_short_integer> 8r35 9r29 114r20 125r28
+8A9 Threshold_Array(22|12M9)<7I9> 11r32 13r33 107r29
+9A9 Key_Array(24|8E9)<7I9> 16r27 18r28 111r29
+11a4 Binary_Threshold{8A9} 109r15
+13a4 Decimal_Threshold{8A9} 103r25 104r31 110r15
+16a4 Binary_Keys{9A9} 112r44
+18a4 Decimal_Keys{9A9} 112r61
+22V13 Image_No_Space{string} 22b13 22>29 29l8 29t22 33s34 78s20 89s23 91s20
+22m29 Value{22|12M9} 23r52
+23a7 Image{string} 25r10 25r36 25r43 26r17 26r24 26r43 28r14
+32V13 Padded{string} 32b13 32>21 32>41 39l8 39t14 82s46
+32m21 Value{22|12M9} 33r50
+32i41 Width{natural} 35r26 38r20
+33a7 Image{string} 35r10 36r17 38r28 38r51
+41V13 Strip_Trailing_Zeros{string} 41b13 41>35 48l8 48t28 85s21
+41a35 Item{string} 42r25 44r21 44r41 47r14 47r20
+42i7 Last{natural} 44r13 44r47 45m10 45r18 47r34
+53V13 Format_Value{string} 53b13 54>7 55>7 56>7 94l8 94t20 134s17
+54m7 Bytes{22|12M9} 60r36 61r45
+55m7 Threshold{22|12M9} 60r44 61r55 70r33 70r50
+56r7 Options{22|21R9} 59r42 84r19
+59i7 Digits_Count{natural} 64r21 77r13 82r60
+60m7 Int_Part{22|12M9} 73m13 73r25 78r36 89r39 91r36
+61m7 Remainder{22|12M9} 70r13
+62m7 Scale{22|12M9} 65m10 65r19 70r25 72r20
+64i11 I{integer}
+69m10 Frac{22|12M9} 72r13 74m13 82r54
+82a13 Frac_Digits{string} 85r43 86r21
+83a13 Trimmed{string} 88r16 91r54
+101e7 Effective_System{22|14E9} 108r13 112r13
+107a7 Thresholds{8A9} 113r43 126r13 134r38
+111a7 Keys{9A9} 133r17
+113m7 Base{22|12M9} 117r18
+114i7 Chosen{7I9} 127m13 133r23 134r50
+125i11 Index{7I9} 126r25 127r23
+X 22 humanize-bytes.ads
+10K18*Bytes 20|1w15 10r26 11r26 21|4r17 22|181e19
+12M9*Byte_Count 20|10r32 21|8r50 22r37 23r34 32r29 54r19 55r19 60r22 61r31
+. 62r22 69r17 97r17 113r29
+14E9*Byte_Unit_System 21|101r35 22|17e12
+15n7*Binary{14E9} 21|106r15 108r32 112r32
+16n7*Decimal{14E9} 21|105r15
+17n7*Auto{14E9} 21|102r36
+19I12*Fraction_Digit_Count{natural}
+21R9*Byte_Options 20|11r32 21|56r19 98r17 22|25e14
+22e7*Unit_System{14E9} 21|102r21 102r54
+23i7*Maximum_Fraction_Digits{19I12} 21|59r50
+24b7*Suppress_Trailing_Zero{boolean} 21|84r27
+X 24 humanize-messages.ads
+1K18*Messages 21|1w15 5r17 24|139e22
+8E9*Message_Id 21|9r44 24|127e31
+41n7*Bytes_Byte{8E9} 21|119r20
+42n7*Bytes_KB{8E9} 21|19r7
+43n7*Bytes_MB{8E9} 21|19r17
+44n7*Bytes_GB{8E9} 21|19r27
+45n7*Bytes_TB{8E9} 21|19r37
+46n7*Bytes_KiB{8E9} 21|17r7
+47n7*Bytes_MiB{8E9} 21|17r18
+48n7*Bytes_GiB{8E9} 21|17r29
+49n7*Bytes_TiB{8E9} 21|17r40
+X 25 humanize-selections.ads
+9K26*Selections 20|2w15 12r23 21|99r23 118r26 120r29 132r23 25|60e24
+11I12*Count_Value{long_long_integer} 21|120r40
+20R9*Message_Selection 20|12r34 21|99r34 25|26e14
+34V13*Count{20R9} 21|118s37
+40V13*Text_Value{20R9} 21|132s34
+

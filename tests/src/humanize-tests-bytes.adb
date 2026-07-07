@@ -119,6 +119,10 @@ package body Humanize.Tests.Bytes is
         Disk_Usage_Label (Support.En, 1_500, 10_000, Decimal_1);
       Bad_Disk : constant Text_Result :=
         Disk_Usage_Label (Support.En, 1, 0, Decimal_1);
+      Binary_Metadata : constant Byte_Render_Metadata :=
+        Format_Metadata (1_536, Binary_1);
+      Auto_Metadata : constant Byte_Render_Metadata :=
+        Format_Metadata (2_000, Auto_1);
       Buffer : String (1 .. 32);
       Written : Natural;
       Code : Status_Code;
@@ -164,6 +168,17 @@ package body Humanize.Tests.Bytes is
       AUnit.Assertions.Assert
         (Bad_Disk.Status = Invalid_Value,
          "zero total disk usage is invalid");
+      AUnit.Assertions.Assert
+        (Binary_Metadata.Status = Ok
+         and then Binary_Metadata.Unit = Byte_Unit_KiB
+         and then Binary_Metadata.Threshold = 1024
+         and then Binary_Metadata.Effective_Unit_System = Binary,
+         "binary byte render metadata");
+      AUnit.Assertions.Assert
+        (Auto_Metadata.Status = Ok
+         and then Auto_Metadata.Unit = Byte_Unit_KB
+         and then Auto_Metadata.Effective_Unit_System = Decimal,
+         "auto byte render metadata");
 
       File_Size_Summary_Into
         (Support.En, 3, 1_536, Buffer, Written, Code, Binary_1);

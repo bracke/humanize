@@ -1,0 +1,369 @@
+V "GNAT Lib v13"
+A -gnat2022
+P SS ZX
+
+RN
+RV NO_DISPATCHING_CALLS
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTION_PROPAGATION
+RV NO_EXCEPTIONS
+RV NO_IMPLICIT_CONDITIONALS
+RV NO_LONG_LONG_INTEGERS
+RV NO_SECONDARY_STACK
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_ELABORATION_CODE
+
+U i18n.arguments%b	i18n-arguments.adb	c423fd10 OO PK IU
+Z ada.exceptions%s	a-except.adb		a-except.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+W i18n%s		i18n.ads		i18n.ali
+Z system%s		system.ads		system.ali
+Z system.img_lli%s	s-imglli.ads		s-imglli.ali
+Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+
+U i18n.arguments%s	i18n-arguments.ads	b1c91cf7 EE OO PF PK IU
+W ada%s			ada.ads			ada.ali
+W ada.containers%s	a-contai.ads		a-contai.ali
+Z ada.containers.hash_tables%s  a-cohata.ads	a-cohata.ali
+Z ada.containers.hash_tables.generic_keys%s
+Z ada.containers.hash_tables.generic_operations%s
+Z ada.containers.helpers%s  a-conhel.adb	a-conhel.ali
+W ada.containers.indefinite_hashed_maps%s
+Z ada.containers.prime_numbers%s  a-coprnu.adb	a-coprnu.ali
+Z ada.exceptions%s	a-except.adb		a-except.ali
+Z ada.finalization%s	a-finali.ads		a-finali.ali
+Z ada.iterator_interfaces%s
+Z ada.streams%s		a-stream.adb		a-stream.ali
+W ada.strings%s		a-string.ads		a-string.ali
+W ada.strings.hash%s	a-strhas.adb		a-strhas.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+Z ada.unchecked_deallocation%s
+W i18n%s		i18n.ads		i18n.ali
+Z system%s		system.ads		system.ali
+Z system.finalization_masters%s  s-finmas.adb	s-finmas.ali
+Z system.put_images%s	s-putima.adb		s-putima.ali
+Z system.return_stack%s	s-retsta.ads		s-retsta.ali
+Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+Z system.standard_library%s  s-stalib.adb	s-stalib.ali
+Z system.storage_elements%s  s-stoele.adb	s-stoele.ali
+Z system.storage_pools%s  s-stopoo.adb		s-stopoo.ali
+Z system.storage_pools.subpools%s  s-stposu.adb	s-stposu.ali
+Z system.stream_attributes%s  s-stratt.adb	s-stratt.ali
+Z system.strings.stream_ops%s  s-ststop.adb	s-ststop.ali
+
+D ada.ads		20240521074738 76789da1 ada%s
+D a-assert.ads		20240521074737 ba465f5c ada.assertions%s
+D a-contai.ads		20240521074737 61e5e089 ada.containers%s
+D a-cohata.ads		20240521074737 c4f77997 ada.containers.hash_tables%s
+D a-chtgke.ads		20240521074737 20177f7b ada.containers.hash_tables.generic_keys%s
+D a-chtgke.adb		20240521074737 fdf2dddc ada.containers.hash_tables.generic_keys%b
+D a-chtgop.ads		20240521074737 11c5978a ada.containers.hash_tables.generic_operations%s
+D a-chtgop.adb		20240521074737 c3ccdc4f ada.containers.hash_tables.generic_operations%b
+D a-conhel.ads		20240521074737 46fe1ce3 ada.containers.helpers%s
+D a-conhel.adb		20240521074737 854d323e ada.containers.helpers%b
+D a-cihama.ads		20240521074737 42861819 ada.containers.indefinite_hashed_maps%s
+D a-cihama.adb		20240521074737 1212fa7d ada.containers.indefinite_hashed_maps%b
+D a-coprnu.ads		20240521074737 24215258 ada.containers.prime_numbers%s
+D a-except.ads		20240521074738 2a7d8d70 ada.exceptions%s
+D a-finali.ads		20240521074738 bf4f806b ada.finalization%s
+D a-iteint.ads		20240521074738 49a8bee2 ada.iterator_interfaces%s
+D a-numeri.ads		20240521074738 84bea7a3 ada.numerics%s
+D a-nubinu.ads		20240521074738 93f1f3d1 ada.numerics.big_numbers%s
+D a-nbnbig.ads		20240521074738 711e0174 ada.numerics.big_numbers.big_integers_ghost%s
+D a-stream.ads		20240521074738 119b8fb3 ada.streams%s
+D a-string.ads		20240521074738 90ac6797 ada.strings%s
+D a-strhas.ads		20240521074738 e06866e7 ada.strings.hash%s
+D a-sttebu.ads		20240521074738 f1ad67a2 ada.strings.text_buffers%s
+D a-stuten.ads		20240521074738 c6ced0ae ada.strings.utf_encoding%s
+D a-tags.ads		20240521074738 9eaa38c6 ada.tags%s
+D a-unccon.ads		20240521074738 0e9b276f ada.unchecked_conversion%s
+D a-uncdea.ads		20240521074738 c3a8ac65 ada.unchecked_deallocation%s
+D i18n.ads		20260630205449 fa948552 i18n%s
+D i18n-arguments.ads	20260630205449 e9b3e75b i18n.arguments%s
+D i18n-arguments.adb	20260628151426 2d901a4b i18n.arguments%b
+D interfac.ads		20240521074738 15f799c2 interfaces%s
+D i-c.ads		20240521074738 5c5a6c17 interfaces.c%s
+D system.ads		20240521074738 426dafb8 system%s
+D s-assert.ads		20240521074738 9c4520c7 system.assertions%s
+D s-atocou.ads		20240521074738 dc18efc3 system.atomic_counters%s
+D s-atocou.adb		20240521074738 6fe685de system.atomic_counters%b
+D s-atopri.ads		20240521074738 1b132436 system.atomic_primitives%s
+D s-casuti.ads		20240521074738 cf13d755 system.case_util%s
+D s-exctab.ads		20240521074738 91bef6ef system.exception_table%s
+D s-finmas.ads		20240521074738 bd688734 system.finalization_masters%s
+D s-finroo.ads		20240521074738 4ff27390 system.finalization_root%s
+D s-imagei.ads		20240521074738 c707dfd0 system.image_i%s
+D s-imglli.ads		20240521074738 0dc8acc3 system.img_lli%s
+D s-memory.ads		20240521074738 5b8432d0 system.memory%s
+D s-parame.ads		20251218205951 1f39ba92 system.parameters%s
+D s-putima.ads		20240521074738 17291fe4 system.put_images%s
+D s-retsta.ads		20240521074738 0f6b06cb system.return_stack%s
+D s-secsta.ads		20240521074738 578279f5 system.secondary_stack%s
+D s-soflin.ads		20240521074738 df77073e system.soft_links%s
+D s-stache.ads		20240521074738 0b81c1fe system.stack_checking%s
+D s-stalib.ads		20240521074738 1c9580f6 system.standard_library%s
+D s-stalib.adb		20240521074738 eb464a47 system.standard_library%b
+D s-stoele.ads		20240521074738 ab5468e4 system.storage_elements%s
+D s-stoele.adb		20240521074738 8f5a9db6 system.storage_elements%b
+D s-stopoo.ads		20240521074738 e9fa2dd8 system.storage_pools%s
+D s-stposu.ads		20240521074738 e251976f system.storage_pools.subpools%s
+D s-stratt.ads		20240521074738 f7dfd786 system.stream_attributes%s
+D s-string.ads		20240521074738 582aac7d system.strings%s
+D s-ststop.ads		20240521074738 c569db7c system.strings.stream_ops%s
+D s-traent.ads		20240521074738 c81cbf8c system.traceback_entries%s
+D s-unstyp.ads		20240521074738 fa2a7f59 system.unsigned_types%s
+D s-vallli.ads		20240521074738 b4c16804 system.val_lli%s
+D s-valllu.ads		20240521074738 ca6e26ce system.val_llu%s
+D s-valuti.ads		20240521074738 fcd603d8 system.val_util%s
+D s-valuei.ads		20240521074738 11081e09 system.value_i%s
+D s-vaispe.ads		20240521074738 44130d39 system.value_i_spec%s
+D s-valueu.ads		20240521074738 18770347 system.value_u%s
+D s-vauspe.ads		20240521074738 a67b2f28 system.value_u_spec%s
+D s-widllu.ads		20240521074738 a6620b19 system.wid_llu%s
+D s-widthu.ads		20240521074738 b32f15e2 system.width_u%s
+G a e
+G c Z s b [clear i18n__arguments 46 14 none]
+G c Z s b [set i18n__arguments 54 14 none]
+G c Z s b [set_integer i18n__arguments 69 14 none]
+G c Z s b [set_natural i18n__arguments 82 14 none]
+G c Z s b [set_boolean i18n__arguments 96 14 none]
+G c Z s b [copy i18n__arguments 105 14 none]
+G c Z s b [has i18n__arguments 114 13 none]
+G c Z s b [get i18n__arguments 124 13 none]
+G c Z s b [copy_value i18n__arguments 143 14 none]
+G c Z s s [empty i18n__arguments__maps 73 13 153_4]
+G c Z s s [has_element i18n__arguments__maps 79 13 153_4]
+G c Z s s [Oeq i18n__arguments__maps 85 24 153_4]
+G c Z s s [capacity i18n__arguments__maps 96 13 153_4]
+G c Z s s [reserve_capacity i18n__arguments__maps 100 14 153_4]
+G c Z s s [length i18n__arguments__maps 110 13 153_4]
+G c Z s s [is_empty i18n__arguments__maps 113 13 153_4]
+G c Z s s [clear i18n__arguments__maps 116 14 153_4]
+G c Z s s [key i18n__arguments__maps 119 13 153_4]
+G c Z s s [element i18n__arguments__maps 122 13 153_4]
+G c Z s s [replace_element i18n__arguments__maps 125 14 153_4]
+G c Z s s [query_element i18n__arguments__maps 131 14 153_4]
+G c Z s s [update_element i18n__arguments__maps 138 14 153_4]
+G c Z s s [constant_reference i18n__arguments__maps 155 13 153_4]
+G c Z s s [reference i18n__arguments__maps 160 13 153_4]
+G c Z s s [constant_reference i18n__arguments__maps 165 13 153_4]
+G c Z s s [reference i18n__arguments__maps 170 13 153_4]
+G c Z s s [assign i18n__arguments__maps 175 14 153_4]
+G c Z s s [copy i18n__arguments__maps 177 13 153_4]
+G c Z s s [move i18n__arguments__maps 179 14 153_4]
+G c Z s s [insert i18n__arguments__maps 183 14 153_4]
+G c Z s s [insert i18n__arguments__maps 201 14 153_4]
+G c Z s s [include i18n__arguments__maps 212 14 153_4]
+G c Z s s [replace i18n__arguments__maps 223 14 153_4]
+G c Z s s [exclude i18n__arguments__maps 234 14 153_4]
+G c Z s s [delete i18n__arguments__maps 243 14 153_4]
+G c Z s s [delete i18n__arguments__maps 251 14 153_4]
+G c Z s s [first i18n__arguments__maps 257 13 153_4]
+G c Z s s [next i18n__arguments__maps 261 13 153_4]
+G c Z s s [next i18n__arguments__maps 269 14 153_4]
+G c Z s s [find i18n__arguments__maps 272 13 153_4]
+G c Z s s [contains i18n__arguments__maps 278 13 153_4]
+G c Z s s [element i18n__arguments__maps 281 13 153_4]
+G c Z s s [equivalent_keys i18n__arguments__maps 284 13 153_4]
+G c Z s s [equivalent_keys i18n__arguments__maps 288 13 153_4]
+G c Z s s [equivalent_keys i18n__arguments__maps 292 13 153_4]
+G c Z s s [iterate i18n__arguments__maps 296 14 153_4]
+G c Z s s [iterate i18n__arguments__maps 301 13 153_4]
+G c Z s s [node_typeIP i18n__arguments__maps 325 9 153_4]
+G c Z s s [adjust i18n__arguments__maps__ht_types__implementation 90 28 58_7_331_4_153_4]
+G c Z s s [finalize i18n__arguments__maps__ht_types__implementation 93 28 58_7_331_4_153_4]
+G c Z s s [zero_counts i18n__arguments__maps__ht_types__implementation 96 17 58_7_331_4_153_4]
+G c Z s s [busy i18n__arguments__maps__ht_types__implementation 100 17 58_7_331_4_153_4]
+G c Z s s [unbusy i18n__arguments__maps__ht_types__implementation 104 17 58_7_331_4_153_4]
+G c Z s s [lock i18n__arguments__maps__ht_types__implementation 108 17 58_7_331_4_153_4]
+G c Z s s [unlock i18n__arguments__maps__ht_types__implementation 112 17 58_7_331_4_153_4]
+G c Z s s [tc_check i18n__arguments__maps__ht_types__implementation 116 17 58_7_331_4_153_4]
+G c Z s s [te_check i18n__arguments__maps__ht_types__implementation 120 17 58_7_331_4_153_4]
+G c Z s s [is_busy i18n__arguments__maps__ht_types__implementation 136 16 58_7_331_4_153_4]
+G c Z s s [is_locked i18n__arguments__maps__ht_types__implementation 140 16 58_7_331_4_153_4]
+G c Z s s [initialize i18n__arguments__maps__ht_types__implementation 161 28 58_7_331_4_153_4]
+G c Z s s [finalize i18n__arguments__maps__ht_types__implementation 162 28 58_7_331_4_153_4]
+G c Z s s [initialize i18n__arguments__maps__ht_types__implementation 167 28 58_7_331_4_153_4]
+G c Z s s [finalize i18n__arguments__maps__ht_types__implementation 168 28 58_7_331_4_153_4]
+G c Z s s [reference_control_typeDA i18n__arguments__maps__ht_types__implementation 84 12 58_7_331_4_153_4]
+G c Z s s [reference_control_typeDF i18n__arguments__maps__ht_types__implementation 84 12 58_7_331_4_153_4]
+G c Z s s [reference_control_typeIP i18n__arguments__maps__ht_types__implementation 84 12 58_7_331_4_153_4]
+G c Z s s [with_busyDF i18n__arguments__maps__ht_types__implementation 158 12 58_7_331_4_153_4]
+G c Z s s [with_busyIP i18n__arguments__maps__ht_types__implementation 158 12 58_7_331_4_153_4]
+G c Z s s [with_lockDF i18n__arguments__maps__ht_types__implementation 164 12 58_7_331_4_153_4]
+G c Z s s [with_lockIP i18n__arguments__maps__ht_types__implementation 164 12 58_7_331_4_153_4]
+G c Z s s [buckets_typeIP i18n__arguments__maps__ht_types 46 12 331_4_153_4]
+G c Z s s [hash_table_typeDA i18n__arguments__maps__ht_types 52 12 331_4_153_4]
+G c Z s s [hash_table_typeDF i18n__arguments__maps__ht_types 52 12 331_4_153_4]
+G c Z s s [hash_table_typeIP i18n__arguments__maps__ht_types 52 12 331_4_153_4]
+G c Z s s [put_image i18n__arguments__maps 338 14 153_4]
+G c Z s s [adjust i18n__arguments__maps 341 25 153_4]
+G c Z s s [finalize i18n__arguments__maps 343 25 153_4]
+G c Z s s [write i18n__arguments__maps 349 14 153_4]
+G c Z s s [read i18n__arguments__maps 355 14 153_4]
+G c Z s s [write i18n__arguments__maps 384 14 153_4]
+G c Z s s [read i18n__arguments__maps 390 14 153_4]
+G c Z s s [write i18n__arguments__maps 409 14 153_4]
+G c Z s s [read i18n__arguments__maps 415 14 153_4]
+G c Z s s [write i18n__arguments__maps 431 14 153_4]
+G c Z s s [read i18n__arguments__maps 437 14 153_4]
+G c Z s s [pseudo_reference i18n__arguments__maps 447 13 153_4]
+G c Z s s [get_element_access i18n__arguments__maps 454 13 153_4]
+G c Z s s [mapDA i18n__arguments__maps 334 9 153_4]
+G c Z s s [mapDF i18n__arguments__maps 334 9 153_4]
+G c Z s s [mapIP i18n__arguments__maps 334 9 153_4]
+G c Z s s [cursorIP i18n__arguments__maps 364 9 153_4]
+G c Z s s [finalize i18n__arguments__maps 470 25 153_4]
+G c Z s s [first i18n__arguments__maps 472 24 153_4]
+G c Z s s [next i18n__arguments__maps 474 24 153_4]
+G c Z s s [constant_reference_typeDI i18n__arguments__maps 399 9 153_4]
+G c Z s s [constant_reference_typeDA i18n__arguments__maps 399 9 153_4]
+G c Z s s [constant_reference_typeDF i18n__arguments__maps 399 9 153_4]
+G c Z s s [constant_reference_typeIP i18n__arguments__maps 399 9 153_4]
+G c Z s s [reference_typeDI i18n__arguments__maps 421 9 153_4]
+G c Z s s [reference_typeDA i18n__arguments__maps 421 9 153_4]
+G c Z s s [reference_typeDF i18n__arguments__maps 421 9 153_4]
+G c Z s s [reference_typeIP i18n__arguments__maps 421 9 153_4]
+G c Z s s [iteratorDF i18n__arguments__maps 463 9 153_4]
+G c Z s s [iteratorIP i18n__arguments__maps 463 9 153_4]
+G c Z s s [free_key i18n__arguments__maps 51 14 153_4]
+G c Z s s [free_element i18n__arguments__maps 54 14 153_4]
+G c Z s s [copy_node i18n__arguments__maps 61 13 153_4]
+G c Z s s [equivalent_key_node i18n__arguments__maps 64 13 153_4]
+G c Z s s [find_equal_key i18n__arguments__maps 69 13 153_4]
+G c Z s s [free i18n__arguments__maps 73 14 153_4]
+G c Z s s [hash_node i18n__arguments__maps 76 13 153_4]
+G c Z s s [next i18n__arguments__maps 79 13 153_4]
+G c Z s s [read_node i18n__arguments__maps 82 13 153_4]
+G c Z s s [set_next i18n__arguments__maps 85 14 153_4]
+G c Z s s [vet i18n__arguments__maps 88 13 153_4]
+G c Z s s [write_node i18n__arguments__maps 90 14 153_4]
+G c Z s s [free_hash_table i18n__arguments__maps__ht_ops 57 14 98_4_153_4]
+G c Z s s [index i18n__arguments__maps__ht_ops 61 13 98_4_153_4]
+G c Z s s [index i18n__arguments__maps__ht_ops 67 13 98_4_153_4]
+G c Z s s [checked_index i18n__arguments__maps__ht_ops 74 13 98_4_153_4]
+G c Z s s [checked_index i18n__arguments__maps__ht_ops 81 13 98_4_153_4]
+G c Z s s [adjust i18n__arguments__maps__ht_ops 86 14 98_4_153_4]
+G c Z s s [finalize i18n__arguments__maps__ht_ops 92 14 98_4_153_4]
+G c Z s s [clear i18n__arguments__maps__ht_ops 108 14 98_4_153_4]
+G c Z s s [move i18n__arguments__maps__ht_ops 114 14 98_4_153_4]
+G c Z s s [capacity i18n__arguments__maps__ht_ops 120 13 98_4_153_4]
+G c Z s s [reserve_capacity i18n__arguments__maps__ht_ops 123 14 98_4_153_4]
+G c Z s s [delete_node_at_index i18n__arguments__maps__ht_ops 132 14 98_4_153_4]
+G c Z s s [delete_node_sans_free i18n__arguments__maps__ht_ops 141 14 98_4_153_4]
+G c Z s s [first i18n__arguments__maps__ht_ops 146 13 98_4_153_4]
+G c Z s s [first i18n__arguments__maps__ht_ops 148 13 98_4_153_4]
+G c Z s s [next i18n__arguments__maps__ht_ops 155 13 98_4_153_4]
+G c Z s s [next i18n__arguments__maps__ht_ops 158 13 98_4_153_4]
+G c Z s s [new_buckets i18n__arguments__maps__ht_ops 205 13 98_4_153_4]
+G c Z s s [free_buckets i18n__arguments__maps__ht_ops 209 14 98_4_153_4]
+G c Z s s [index i18n__arguments__maps__key_ops 56 13 106_4_153_4]
+G c Z s s [checked_index i18n__arguments__maps__key_ops 62 13 106_4_153_4]
+G c Z s s [checked_equivalent_keys i18n__arguments__maps__key_ops 69 13 106_4_153_4]
+G c Z s s [delete_key_sans_free i18n__arguments__maps__key_ops 76 14 106_4_153_4]
+G c Z s s [find i18n__arguments__maps__key_ops 84 13 106_4_153_4]
+G c Z s s [is_equalR i18n__arguments__maps__is_equalGP4730 118 13 153_4]
+G c Z s s [is_equal i18n__arguments__maps 118 13 153_4]
+G c Z s s [read_nodesR i18n__arguments__maps__read_nodesGP27037 1003 14 153_4]
+G c Z s s [read_nodes i18n__arguments__maps 1003 14 153_4]
+G c Z s s [write_nodesR i18n__arguments__maps__write_nodesGP36160 1367 14 153_4]
+G c Z s s [write_nodes i18n__arguments__maps 1367 14 153_4]
+G c Z s s [argumentsDF i18n__arguments 159 9 none]
+G c Z s s [argumentsDI i18n__arguments 159 9 none]
+G c Z s s [argumentsIP i18n__arguments 159 9 none]
+G c Z b b [decimal_image i18n__arguments 5 13 none]
+X 1 ada.ads
+16K9*Ada 20e8 29|1r6 2r6 153r24 156r26
+X 3 a-contai.ads
+16K13*Containers 28e19 29|1r10 153r28
+19M9*Hash_Type
+X 11 a-cihama.ads
+42+9 Key_Type 29|154r7
+43+9 Element_Type 29|155r7
+45V18 Hash{3|19M9} 29|156r7
+46V18 Equivalent_Keys{boolean} 29|157r7
+49k24*Indefinite_Hashed_Maps 478e42 29|1w21 153r39
+56R9*Map<15|43R9> 29|160r21[153]
+66R9*Cursor
+116U14*Clear 30|19s19[29|153] 71s26[29|153]
+119V13*Key{string} 30|75s30[29|153]
+122V13*Element{string} 30|76s30[29|153]
+201U14*Insert 30|35s22[29|153] 74s29[29|153]
+203a7 Key{string} 30|75r13[29|153]
+204a7 New_Item{string} 30|76r13[29|153]
+223U14*Replace 30|33s22[29|153]
+278V13*Contains{boolean} 30|32s22[29|153] 86s26[29|153] 109s26[29|153]
+281V13*Element{string} 30|95s26[29|153] 117s49[29|153]
+301V13*Iterate{16|24C9[82[29|153]]} 30|73s35[29|153]
+X 16 a-iteint.ads
+24h9 Forward_Iterator
+24C9*Forward_Iterator<24R9[11|82[29|153]]>
+X 21 a-string.ads
+16K13*Strings 35e16 29|2r10 156r30
+X 22 a-strhas.ads
+18V22*Hash{3|19M9} 29|2w18 156r38
+X 28 i18n.ads
+16K9*I18N 19e9 29|39r9 163r5 30|1r14 131r5
+X 29 i18n-arguments.ads
+39K14*Arguments 28|16k9 29|153E12 163l10 163e19 30|1b19 131l10 131t19
+41R9*Arguments 46p14 47r21 54p14 55r22 69p14 70r22 82p14 83r22 96p14 97r22
+. 105p14 106r21 107r28 114p13 115r14 124p13 125r14 143p14 144r18 159c9 161e14
+. 30|16r21 23r22 40r22 49r22 58r22 67r21 68r28 81r14 90r14 99r18
+46U14*Clear 47=7 30|15b14 20l8 20t13
+47r7 Args{41R9} 30|16b7 19m7 19r7
+54U14*Set 55=7 56>7 57>7 30|22b14 37l8 37t11 45s7 54s7 63s7
+55r7 Args{41R9} 30|23b7 32r10 33m10 33r10 35m10 35r10
+56a7 Key{string} 30|24b7 28r10 32r32 33r31 35r30
+57a7 Value{string} 30|25b7 33r36 35r35
+69U14*Set_Integer 70=7 71>7 72>7 30|39b14 46l8 46t19
+70r7 Args{41R9} 30|40b7 45m12
+71a7 Key{string} 30|41b7 45r18
+72i7 Value{long_long_integer} 30|42b7 45r38
+82U14*Set_Natural 83=7 84>7 85>7 30|48b14 55l8 55t19
+83r7 Args{41R9} 30|49b7 54m12
+84a7 Key{string} 30|50b7 54r18
+85i7 Value{natural} 30|51b7 54r57
+96U14*Set_Boolean 97=7 98>7 99>7 30|57b14 64l8 64t19
+97r7 Args{41R9} 30|58b7 63m12
+98a7 Key{string} 30|59b7 63r18
+99b7 Value{boolean} 30|60b7 63r27
+105U14*Copy 106>7 107=7 30|66b14 78l8 78t12
+106r7 Source{41R9} 30|67b7 73r21
+107r7 Destination{41R9} 30|68b7 71m7 71r7 74m10 74r10
+114V13*Has{boolean} 115>7 116>7 129s13 30|80b13 87l8 87t11
+115r7 Args{41R9} 30|81b7 86r14
+116a7 Key{string} 30|82b7 86r36
+124V13*Get{string} 125>7 126>7 30|89b13 96l8 96t11
+125r7 Args{41R9} 129r18 30|90b7 95r14
+126a7 Key{string} 129r24 30|91b7 95r35
+143U14*Copy_Value 144>7 145>7 146<7 147<7 148<7 149<7 30|98b14 129l8 129t18
+144r7 Args{41R9} 30|99b7 109r14 117r37
+145a7 Key{string} 30|100b7 109r36 117r58
+146a7 Target{string} 30|101b7 107m7 118r51 121m13 121r21 121r37 127r37
+147i7 Last{natural} 30|102b7 110m10 125m10
+148b7 Found{boolean} 30|103b7 111m10 126m10
+149b7 Overflow{boolean} 30|104b7 112m10 127m10
+153K12 Maps[11|49] 160r16 30|75r25 76r25
+160r7*Values{11|56R9[153]} 30|19m12 32r15 33m15 35m15 71m19 73r28 74m22 86r19
+. 95r19 109r19 117r42
+X 30 i18n-arguments.adb
+5V13 Decimal_Image{string} 5b13 5>28 13l8 13t21 45s23 54s23
+5i28 Value{long_long_integer} 6r59
+6a7 Image{string} 8r10 8r36 8r43 9r17 9r24 9r43 12r14
+73i11 Cursor{any type} 75r35 76r39
+117a10 Value{string} 118r66 122r15 122r22 122r37 127r22
+118i10 Count{natural} 120r13 121r52 122r51 125r18
+X 33 system.ads
+67M9*Address
+X 44 s-memory.ads
+51V13*Alloc{33|67M9} 101i<c,__gnat_malloc>22
+66U14*Free 102i<c,__gnat_free>22
+74V13*Realloc{33|67M9} 103i<c,__gnat_realloc>22
+X 52 s-stalib.adb
+87U14 Break_Start 88i<c,__gnat_break_start>22
+

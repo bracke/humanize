@@ -5,6 +5,7 @@ with Ada.Strings.Unbounded;
 
 with Humanize.Bytes;
 with Humanize.Capabilities;
+with Humanize.Colors;
 with Humanize.Datetimes;
 with Humanize.Durations;
 with Humanize.Parsing;
@@ -186,6 +187,20 @@ package body Humanize.Tests.Bounded is
         (Humanize.Parsing.Diagnostic_Label (Humanize.Parsing.Expected_Unit),
          Buffer, Written, Code, "diagnostic label bounded");
 
+      Humanize.Colors.Palette_Metadata_Label_Into
+        (Humanize.Colors.Color_List'
+           ([1 => (Red => 0, Green => 0, Blue => 0),
+             2 => (Red => 51, Green => 102, Blue => 153),
+             3 => (Red => 255, Green => 255, Blue => 255)]),
+         Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Colors.Palette_Metadata_Label
+           (Humanize.Colors.Color_List'
+              ([1 => (Red => 0, Green => 0, Blue => 0),
+                2 => (Red => 51, Green => 102, Blue => 153),
+                3 => (Red => 255, Green => 255, Blue => 255)])),
+         Buffer, Written, Code, "palette metadata bounded");
+
       Step_Count_Into (Support.En, 2, 5, Buffer, Written, Code);
       Assert_Into_Matches
         (Step_Count (Support.En, 2, 5),
@@ -211,6 +226,12 @@ package body Humanize.Tests.Bounded is
       Assert_Into_Matches
         (Humanize.Units.Format_Memory_Bandwidth (Support.En, 1_500_000.0),
          Buffer, Written, Code, "memory bandwidth bounded");
+
+      Humanize.Units.Format_Database_Throughput_Into
+        (Support.En, 12_500.0, Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Units.Format_Database_Throughput (Support.En, 12_500.0),
+         Buffer, Written, Code, "database throughput bounded");
 
       Humanize.Units.Format_Geographic_Distance_Into
         (Support.En, 1_500.0, Buffer, Written, Code);
@@ -239,12 +260,49 @@ package body Humanize.Tests.Bounded is
            (Support.En, Humanize.Phrases.Ticket_Open),
          Buffer, Written, Code, "ticket phrase bounded");
 
+      Humanize.Phrases.Field_Added_Summary_Into
+        (Support.En, "title", "final", Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Phrases.Field_Added_Summary
+           (Support.En, "title", "final"),
+         Buffer, Written, Code, "field added bounded");
+
+      Humanize.Phrases.Field_Removed_Summary_Into
+        (Support.En, "title", "draft", Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Phrases.Field_Removed_Summary
+           (Support.En, "title", "draft"),
+         Buffer, Written, Code, "field removed bounded");
+
+      Humanize.Phrases.Field_Unchanged_Summary_Into
+        (Support.En, "status", "open", Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Phrases.Field_Unchanged_Summary
+           (Support.En, "status", "open"),
+         Buffer, Written, Code, "field unchanged bounded");
+
       Humanize.Phrases.Payment_Lifecycle_Phrase_Into
         (Support.En, Humanize.Phrases.Payment_Captured, Buffer, Written, Code);
       Assert_Into_Matches
         (Humanize.Phrases.Payment_Lifecycle_Phrase
            (Support.En, Humanize.Phrases.Payment_Captured),
          Buffer, Written, Code, "payment phrase bounded");
+
+      Humanize.Phrases.Webhook_Phrase_Into
+        (Support.En, Humanize.Phrases.Webhook_Delivered,
+         Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Phrases.Webhook_Phrase
+           (Support.En, Humanize.Phrases.Webhook_Delivered),
+         Buffer, Written, Code, "webhook phrase bounded");
+
+      Humanize.Phrases.Invoice_Phrase_Into
+        (Support.En, Humanize.Phrases.Invoice_Overdue,
+         Buffer, Written, Code);
+      Assert_Into_Matches
+        (Humanize.Phrases.Invoice_Phrase
+           (Support.En, Humanize.Phrases.Invoice_Overdue),
+         Buffer, Written, Code, "invoice phrase bounded");
    end Test_Bounded_Audit_Coverage;
 
    overriding function Name (T : Test_Case) return AUnit.Message_String is

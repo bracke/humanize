@@ -1,5 +1,7 @@
 with Ada.Strings.Unbounded;
 
+with Humanize.Catalogs;
+
 with I18N.Arguments;
 with I18N.Result;
 with I18N.Runtime;
@@ -8,7 +10,12 @@ package body Humanize.I18N_Rendering is
 
    use Ada.Strings.Unbounded;
    use type I18N.Runtime.Resolve_Status;
+   use type I18N.Runtime.Load_Status;
    use type Humanize.Status.Status_Code;
+
+   Default_Runtime : aliased I18N.Runtime.Instance;
+   Default_Runtime_Loaded : Boolean := False;
+   Default_Runtime_Failed : Boolean := False;
 
    --  Map an i18n render status onto the Humanize status set.
    function To_Status
@@ -94,6 +101,26 @@ package body Humanize.I18N_Rendering is
    begin
       return Result.Status = I18N.Runtime.Found;
    end Available;
+
+   function Default_Context
+     (Locale : String;
+      Loaded : out Boolean)
+      return Humanize.Contexts.Context
+   is
+      Load_Result : I18N.Runtime.Load_Result;
+   begin
+      if not Default_Runtime_Loaded and then not Default_Runtime_Failed then
+         Humanize.Catalogs.Load_Defaults (Default_Runtime, Load_Result);
+         if Load_Result.Status = I18N.Runtime.Loaded then
+            Default_Runtime_Loaded := True;
+         else
+            Default_Runtime_Failed := True;
+         end if;
+      end if;
+
+      Loaded := Default_Runtime_Loaded;
+      return Humanize.Contexts.Create (Default_Runtime'Access, Locale);
+   end Default_Context;
 
    function Render
      (Context   : Humanize.Contexts.Context;

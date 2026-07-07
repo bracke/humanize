@@ -44,6 +44,34 @@ package Humanize.Bytes is
       Maximum_Fraction_Digits => 1,
       Suppress_Trailing_Zero  => True);
 
+   type Byte_Render_Unit is
+     (Byte_Unit_Bytes,
+      Byte_Unit_KiB,
+      Byte_Unit_MiB,
+      Byte_Unit_GiB,
+      Byte_Unit_TiB,
+      Byte_Unit_KB,
+      Byte_Unit_MB,
+      Byte_Unit_GB,
+      Byte_Unit_TB);
+
+   type Byte_Render_Metadata is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Bytes  : Byte_Count := 0;
+      Effective_Unit_System : Byte_Unit_System := Binary;
+      Unit   : Byte_Render_Unit := Byte_Unit_Bytes;
+      Threshold : Byte_Count := 1;
+      Fraction_Digits : Fraction_Digit_Count := 1;
+   end record;
+
+   function Format_Metadata
+     (Bytes   : Byte_Count;
+      Options : Byte_Options := Default_Byte_Options)
+      return Byte_Render_Metadata;
+   --  @param Bytes Byte count to format.
+   --  @param Options Byte unit and fraction policy.
+   --  @return Machine-readable metadata for byte-size formatting.
+
    --  Convenience API: humanize Bytes, owned result.
    function Format
      (Context : Humanize.Contexts.Context;

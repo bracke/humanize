@@ -4,12 +4,14 @@ package Humanize.Catalogs is
 
    --  Load the built-in Humanize catalog fragments into Runtime.
    --
-   --  The default catalog set contains complete native fragments for en, da,
-   --  de, fr, es, it, pt, and nl, plus generated-source complete fragments for
-   --  additional high-coverage locale codes. Generated-source fragments use
-   --  native script or native Latin orthography for the core Humanize date,
-   --  duration, byte, compact-number, unit, frequency, rate, and list words,
-   --  and use a shared symbol layer for the broad engineering-unit tail.
+   --  The default catalog set contains complete reviewed native fragments for
+   --  en, da, de, fr, es, it, pt, and nl, plus reviewed native-orthography
+   --  Latin fragments for sv, no, nb, fi, pl, cs, tr, ro, lt, sl, id, ms,
+   --  eo, vi, sw, af, hu, and sk. Complete reviewed native-script fragments
+   --  are also included for ru, uk, ja, ko, zh, ar, and hi. Native-script
+   --  fragments avoid Latin fallback for Humanize-owned
+   --  date, duration, compact-number, unit, frequency, rate, and list words,
+   --  with long-form wording for the broad engineering-unit tail.
    --  Loading is delegated to the public
    --  I18N.Runtime.Load_Text operation; duplicate handling follows Policy.
    --  Humanize never silently overrides application catalog keys (the default

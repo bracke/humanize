@@ -1,0 +1,313 @@
+V "GNAT Lib v13"
+A -gnatc
+A -gnat2022
+P NO
+
+RN
+RV NO_NESTED_FINALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_ELABORATION_CODE
+
+U humanize.rates%b	humanize-rates.adb	499ef078 OO PK
+W ada%s			ada.ads			ada.ali
+W ada.characters%s	a-charac.ads		a-charac.ali
+W ada.characters.handling%s  a-chahan.adb	a-chahan.ali
+W ada.strings%s		a-string.ads		a-string.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W ada.strings.unbounded%s  a-strunb.adb		a-strunb.ali
+W humanize%s		humanize.ads		humanize.ali
+W humanize.i18n_rendering%s  humanize-i18n_rendering.adb  humanize-i18n_rendering.ali
+W humanize.messages%s	humanize-messages.adb	humanize-messages.ali
+W humanize.selections%s	humanize-selections.adb	humanize-selections.ali
+
+U humanize.rates%s	humanize-rates.ads	5f5aab02 EE OO PK
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W humanize%s		humanize.ads		humanize.ali
+W humanize.contexts%s	humanize-contexts.adb	humanize-contexts.ali
+W humanize.frequencies%s  humanize-frequencies.adb  humanize-frequencies.ali
+W humanize.status%s	humanize-status.adb	humanize-status.ali
+
+D ada.ads		20240521074738 76789da1 ada%s
+D a-charac.ads		20240521074737 2d3ec45b ada.characters%s
+D a-chahan.ads		20240521074737 278246c0 ada.characters.handling%s
+D a-chlat1.ads		20240521074737 e0d72e76 ada.characters.latin_1%s
+D a-contai.ads		20240521074737 61e5e089 ada.containers%s
+D a-cohata.ads		20240521074737 c4f77997 ada.containers.hash_tables%s
+D a-conhel.ads		20240521074737 46fe1ce3 ada.containers.helpers%s
+D a-cihama.ads		20240521074737 42861819 ada.containers.indefinite_hashed_maps%s
+D a-convec.ads		20240521074737 91fb49f3 ada.containers.vectors%s
+D a-finali.ads		20240521074738 bf4f806b ada.finalization%s
+D a-iteint.ads		20240521074738 49a8bee2 ada.iterator_interfaces%s
+D a-stream.ads		20240521074738 119b8fb3 ada.streams%s
+D a-string.ads		20240521074738 90ac6797 ada.strings%s
+D a-strhas.ads		20240521074738 e06866e7 ada.strings.hash%s
+D a-strmap.ads		20240521074738 ed8acfdb ada.strings.maps%s
+D a-sttebu.ads		20240521074738 f1ad67a2 ada.strings.text_buffers%s
+D a-strunb.ads		20240521074738 7bfb7010 ada.strings.unbounded%s
+D a-stuten.ads		20240521074738 c6ced0ae ada.strings.utf_encoding%s
+D a-unccon.ads		20240521074738 0e9b276f ada.unchecked_conversion%s
+D humanize.ads		20260703193357 ae4af322 humanize%s
+D humanize-contexts.ads	20260704135231 90484d74 humanize.contexts%s
+D humanize-frequencies.ads  20260702210132 f39a277c humanize.frequencies%s
+D humanize-i18n_rendering.ads  20260702210132 30e6272e humanize.i18n_rendering%s
+D humanize-messages.ads	20260704135231 c1daf3c8 humanize.messages%s
+D humanize-rates.ads	20260702210132 cf9a0a44 humanize.rates%s
+D humanize-rates.adb	20260704153537 78f792d7 humanize.rates%b
+D humanize-selections.ads  20260702210132 53b68add humanize.selections%s
+D humanize-status.ads	20260704135231 5d58386c humanize.status%s
+D i18n.ads		20260630205449 fa948552 i18n%s
+D i18n-arguments.ads	20260630205449 e9b3e75b i18n.arguments%s
+D i18n-ast.ads		20260701175824 2f31558b i18n.ast%s
+D i18n-compiled.ads	20260701181345 eb3a3ade i18n.compiled%s
+D i18n-diagnostics.ads	20260629183815 cb556ee3 i18n.diagnostics%s
+D i18n-errors.ads	20260629183815 df9fe2a5 i18n.errors%s
+D i18n-locales.ads	20260706004255 009a6e8f i18n.locales%s
+D i18n-result.ads	20260630205449 6bc1a2e0 i18n.result%s
+D i18n-runtime.ads	20260705233714 0d33f77d i18n.runtime%s
+D interfac.ads		20240521074738 15f799c2 interfaces%s
+D system.ads		20240521074738 426dafb8 system%s
+D s-atocou.ads		20240521074738 dc18efc3 system.atomic_counters%s
+D s-finroo.ads		20240521074738 4ff27390 system.finalization_root%s
+D s-unstyp.ads		20240521074738 fa2a7f59 system.unsigned_types%s
+G a e
+G c Z s b [pace humanize__rates 21 13 none]
+G c Z s b [pace humanize__rates 31 13 none]
+G c Z s b [pace_approximate humanize__rates 45 13 none]
+G c Z s b [pace_approximate humanize__rates 57 13 none]
+G c Z s b [pace_into humanize__rates 73 14 none]
+G c Z s b [pace_approximate_into humanize__rates 87 14 none]
+G c Z s b [pace_into humanize__rates 103 14 none]
+G c Z b b [no_space humanize__rates 11 13 none]
+G c Z b b [b humanize__rates 16 13 none]
+G c Z b b [language humanize__rates 43 13 none]
+G c Z b b [standard_rate_period humanize__rates 57 13 none]
+G c Z b b [standard_rate_result humanize__rates 113 13 none]
+G c Z b b [key_for humanize__rates 168 13 none]
+G c Z b b [less_key_for humanize__rates 179 13 none]
+G c Z b b [copy_text humanize__rates 193 14 none]
+G r c none [pace humanize__rates 21 13 none] [times humanize__frequencies 8 13 none]
+G r c none [pace humanize__rates 21 13 none] [locale humanize__contexts 26 13 none]
+G r c none [pace humanize__rates 21 13 none] [text_value humanize__selections 40 13 none]
+G r c none [pace humanize__rates 21 13 none] [render humanize__i18n_rendering 21 13 none]
+G r c none [pace humanize__rates 31 13 none] [times humanize__frequencies 16 13 none]
+G r c none [pace humanize__rates 31 13 none] [text_value humanize__selections 40 13 none]
+G r c none [pace humanize__rates 31 13 none] [render humanize__i18n_rendering 21 13 none]
+G r c none [pace_approximate humanize__rates 45 13 none] [times humanize__frequencies 8 13 none]
+G r c none [pace_approximate humanize__rates 45 13 none] [locale humanize__contexts 26 13 none]
+G r c none [pace_approximate humanize__rates 45 13 none] [text_value humanize__selections 40 13 none]
+G r c none [pace_approximate humanize__rates 45 13 none] [render humanize__i18n_rendering 21 13 none]
+G r c none [pace_approximate humanize__rates 57 13 none] [times humanize__frequencies 16 13 none]
+G r c none [pace_approximate humanize__rates 57 13 none] [text_value humanize__selections 40 13 none]
+G r c none [pace_approximate humanize__rates 57 13 none] [render humanize__i18n_rendering 21 13 none]
+G r c none [pace_into humanize__rates 73 14 none] [times humanize__frequencies 8 13 none]
+G r c none [pace_into humanize__rates 73 14 none] [locale humanize__contexts 26 13 none]
+G r c none [pace_into humanize__rates 73 14 none] [text_value humanize__selections 40 13 none]
+G r c none [pace_into humanize__rates 73 14 none] [render humanize__i18n_rendering 21 13 none]
+G r c none [pace_approximate_into humanize__rates 87 14 none] [times humanize__frequencies 8 13 none]
+G r c none [pace_approximate_into humanize__rates 87 14 none] [locale humanize__contexts 26 13 none]
+G r c none [pace_approximate_into humanize__rates 87 14 none] [text_value humanize__selections 40 13 none]
+G r c none [pace_approximate_into humanize__rates 87 14 none] [render humanize__i18n_rendering 21 13 none]
+G r c none [pace_into humanize__rates 103 14 none] [times humanize__frequencies 16 13 none]
+G r c none [pace_into humanize__rates 103 14 none] [text_value humanize__selections 40 13 none]
+G r c none [pace_into humanize__rates 103 14 none] [render humanize__i18n_rendering 21 13 none]
+G r c none [language humanize__rates 43 13 none] [locale humanize__contexts 26 13 none]
+G r c none [standard_rate_result humanize__rates 113 13 none] [locale humanize__contexts 26 13 none]
+X 1 ada.ads
+16K9*Ada 20e8 26|1r6 1r33 2r6 54r14
+X 2 a-charac.ads
+16K13*Characters 18e19 26|2r10 54r18
+X 3 a-chahan.ads
+43K24*Handling 455e28 26|2w21 54r29
+275V13*To_Lower{string} 26|54s38
+X 11 a-iteint.ads
+24h9 Forward_Iterator
+32h9 Reversible_Iterator<24R9[9|119]>
+X 13 a-string.ads
+16K13*Strings 35e16 26|1r10 1r37
+X 17 a-strunb.ads
+85K21*Unbounded 766e26 26|1w18 1r45
+108V13*To_Unbounded_String{91R9} 26|163s23
+121V13*To_String{string} 26|244s31 274s39 298s31 321s39 342s21 362s21 383s21
+X 20 humanize.ads
+7K9*Humanize 15e13 25|1r6 2r6 3r6 6r9 15r29 22r17 23r17 25r14 32r18 33r18
+. 37r14 46r17 47r17 50r14 58r18 59r18 64r14 74r17 75r17 79r21 88r17 89r17
+. 93r21 104r18 105r18 111r22 120r5 26|4r6 5r6 6r6 8r14 9r13 43r33 44r35 114r19
+. 115r19 118r14 125r28 132r15 158r31 162r23 164r23 168r51 171r36 172r36 173r36
+. 174r36 175r36 181r14 185r36 186r36 187r36 188r36 189r36 197r21 202r20 209r20
+. 215r20 220r17 221r17 223r14 225r28 226r9 229r28 232r29 237r30 241r14 243r10
+. 248r17 249r17 252r14 254r28 255r9 259r31 263r32 268r33 271r17 273r13 281r18
+. 282r18 286r14 288r28 289r9 291r30 295r14 297r10 302r18 303r18 308r14 310r28
+. 311r9 315r33 318r17 320r13 328r17 329r17 333r21 335r25 338r27 347r17 348r17
+. 352r21 355r25 358r27 367r18 368r18 374r22 376r25 379r27 386r5
+X 21 humanize-contexts.ads
+5K18*Contexts 46e22 25|1w15 22r26 32r27 46r26 58r27 74r26 88r26 104r27 26|43r42
+. 44r44 114r28 220r26 248r26 281r27 302r27 328r26 347r26 367r27
+14R9*Context 44e14 25|22r35 32r36 46r35 58r36 74r35 88r35 104r36 26|43r51
+. 114r37 220r35 248r35 281r36 302r36 328r35 347r35 367r36
+26V13*Locale{35|32A12} 26|44s53
+X 22 humanize-frequencies.ads
+5K18*Frequencies 55e25 25|2w15 15r38 23r26 33r27 47r26 59r27 75r26 89r26
+. 105r27 26|115r28 132r24 221r26 226r18 249r26 255r18 282r27 289r18 303r27
+. 311r18 329r26 348r26 368r27
+6I12*Occurrence_Count{long_long_integer} 25|15r50 23r38 33r39 47r38 59r39
+. 75r38 89r38 105r39 26|115r40 132r36 221r38 249r38 282r39 303r39 329r38
+. 348r38 368r39
+8V13*Times{28|21R9} 26|226s30 255s30
+16V13*Times{28|21R9} 26|289s30 311s30
+X 23 humanize-i18n_rendering.ads
+11K26*I18N_Rendering 35e28 26|4w15 241r23 271r26 295r23 318r26
+21V13*Render{28|21R9} 26|241s38 271s41 295s38 318s41
+X 24 humanize-messages.ads
+1K18*Messages 139e22 26|5w15 164r32 168r60 171r45 172r45 173r45 174r45 175r45
+. 181r23 185r45 186r45 187r45 188r45 189r45
+8E9*Message_Id 127e31 26|168r69 181r32
+9n7*No_Message{8E9} 26|164r41
+118n7*Rate_Per_Second{8E9} 26|171r54
+119n7*Rate_Per_Minute{8E9} 26|172r54
+120n7*Rate_Per_Hour{8E9} 26|173r54
+121n7*Rate_Per_Day{8E9} 26|174r54
+122n7*Rate_Per_Week{8E9} 26|175r54
+123n7*Rate_Less_Than_Per_Second{8E9} 26|185r54
+124n7*Rate_Less_Than_Per_Minute{8E9} 26|186r54
+125n7*Rate_Less_Than_Per_Hour{8E9} 26|187r54
+126n7*Rate_Less_Than_Per_Day{8E9} 26|188r54
+127n7*Rate_Less_Than_Per_Week{8E9} 26|189r54
+X 25 humanize-rates.ads
+6K18*Rates 20|7k9 25|120l14 120e19 26|8b23 386l14 386t19
+7E9*Rate_Period 12e16 24r17 34r18 48r17 60r18 76r17 90r17 106r18 26|59r16
+. 116r19 168r31 180r16 222r17 250r17 283r18 304r18 330r17 349r17 369r18
+8n7*Per_Second{7E9} 26|65r18 73r18 81r18 89r18 97r18 171r15 185r15
+9n7*Per_Minute{7E9} 26|66r18 74r18 82r18 90r18 99r18 172r15 186r15
+10n7*Per_Hour{7E9} 26|67r18 75r18 83r18 91r18 101r18 173r15 187r15
+11n7*Per_Day{7E9} 26|68r18 76r18 84r18 92r18 103r18 174r15 188r15
+12n7*Per_Week{7E9} 26|69r18 77r18 85r18 93r18 105r18 175r15 189r15
+14R9*Rate_Options 16e14 18r36 49r17 63r18 94r17 26|251r17 307r18 353r17
+15i7*Less_Than_Threshold{22|6I12} 19m7 26|255r54 257r26 261r35 312r29 314r26
+18r4*Default_Rate_Options{14R9} 49r33 63r34 94r33 26|251r33 307r34 353r33
+21V13*Pace{28|21R9} 22>7 23>7 24>7 26|219b13 245l8 245t12 276s17 336s9
+22r7 Context{21|14R9} 26|220b7 226r37 230r34 242r10
+23i7 Count{22|6I12} 26|221b7 226r46 230r43
+24e7 Period{7E9} 26|222b7 230r50 244r22
+31V13*Pace{28|21R9} 32>7 33>7 34>7 35>7 36>7 26|280b13 299l8 299t12 323s17
+. 377s9
+32r7 Context{21|14R9} 26|281b7 289r37 296r10
+33i7 Count{22|6I12} 26|282b7 289r46
+34e7 Period{7E9} 26|283b7 298r22
+35a7 Singular{string} 26|284b7 289r53
+36a7 Plural{string} 26|285b7 289r63
+45V13*Pace_Approximate{28|21R9} 46>7 47>7 48>7 49>7 26|247b13 278l8 278t24
+. 356s9
+46r7 Context{21|14R9} 26|248b7 255r37 261r18 272r13 276r23
+47i7 Count{22|6I12} 26|249b7 257r10 276r32
+48e7 Period{7E9} 26|250b7 261r56 274r30 276r39
+49r7 Options{14R9} 26|251b7 255r46 257r18 261r27
+57V13*Pace_Approximate{28|21R9} 58>7 59>7 60>7 61>7 62>7 63>7 26|301b13 325l8
+. 325t24
+58r7 Context{21|14R9} 26|302b7 312r12 319r13 323r23
+59i7 Count{22|6I12} 26|303b7 314r10 323r32
+60e7 Period{7E9} 26|304b7 321r30 323r39
+61a7 Singular{string} 26|305b7 312r50 323r47
+62a7 Plural{string} 26|306b7 312r60 323r57
+63r7 Options{14R9} 26|307b7 312r21 314r18
+73U14*Pace_Into 74>7 75>7 76>7 77=7 78<7 79<7 26|327b14 344l8 344t17
+74r7 Context{21|14R9} 26|328b7 336r15
+75i7 Count{22|6I12} 26|329b7 336r24
+76e7 Period{7E9} 26|330b7 336r31
+77a7 Target{string} 26|331b7 342m46
+78i7 Written{natural} 26|332b7 339m10 342m54
+79e7 Status{28|8E9} 26|333b7 340m10 342m63
+87U14*Pace_Approximate_Into 88>7 89>7 90>7 91=7 92<7 93<7 94>7 26|346b14
+. 364l8 364t29
+88r7 Context{21|14R9} 26|347b7 356r27
+89i7 Count{22|6I12} 26|348b7 356r36
+90e7 Period{7E9} 26|349b7 356r43
+91a7 Target{string} 26|350b7 362m46
+92i7 Written{natural} 26|351b7 359m10 362m54
+93e7 Status{28|8E9} 26|352b7 360m10 362m63
+94r7 Options{14R9} 26|353b7 356r51
+103U14*Pace_Into 104>7 105>7 106>7 107>7 108>7 109=7 110<7 111<7 26|366b14
+. 385l8 385t17
+104r7 Context{21|14R9} 26|367b7 377r15
+105i7 Count{22|6I12} 26|368b7 377r24
+106e7 Period{7E9} 26|369b7 377r31
+107a7 Singular{string} 26|370b7 377r39
+108a7 Plural{string} 26|371b7 377r49
+109a7 Target{string} 26|372b7 383m46
+110i7 Written{natural} 26|373b7 380m10 383m54
+111e7 Status{28|8E9} 26|374b7 381m10 383m63
+X 26 humanize-rates.adb
+11V13 No_Space{string} 11>23 131s12
+11a23 Image{string} 12r10 12r36 12r43 13r12 13r19 13r38 14r12
+16V13 B{string} 16b13 16>16 41l8 41t9 68s39 73s39 74s39 75s39 76s39 77s39
+. 81s39 82s39 83s39 84s39 85s39 89s39 90s39 91s39 92s39 93s39 98s23 100s23
+. 102s23 104s23 106s23 136s41 139s56 140s35 141s26 143s55 144s26 145s41 146s20
+. 148s48 149s35 150s26 153s20 154s41 155s45
+16a16 Hex{string} 17r29 36r23 36r28 37r25 37r30
+17a7 Result{string} 33r16 34m10 36r49 37r51 40r14
+19V16 Nibble{natural} 19b16 19>24 31l11 31t17 36s15 37s17
+19e24 C{character} 21r15 23r38 25r43 27r43
+33i11 I{integer} 34r18 36r45 37r47
+43V13 Language{string} 43b13 43>23 55l8 55t16 120s33
+43r23 Context{21|14R9} 44r61
+44a7 Locale{string} 45r27 47r20 48r13 48r42 54r48 54r56
+45i7 Last{natural} 49m13 54r72
+47i11 Index{integer} 48r21 48r50 49r21
+57V13 Standard_Rate_Period{string} 57b13 58>7 59>7 111l8 111t28 129s43
+58a7 Lang{string} 63r10 71r13 79r13 87r13 95r13
+59e7 Period{25|7E9} 64r15 72r15 80r15 88r15 96r15
+113V13 Standard_Rate_Result{28|21R9} 113b13 114>7 115>7 116>7 117>7 166l8
+. 166t28 230s12 260s15
+114r7 Context{21|14R9} 120r43
+115i7 Count{22|6I12} 132r60
+116e7 Period{25|7E9} 129r71
+117b7 Less_Than{boolean} 135r19 139r19 143r19 148r19 152r19
+120a7 Lang{string} 122r15 122r35 122r55 123r23 123r43 129r65 134r16 138r19
+. 142r19 147r19
+129a10 Period_Text{string} 135r34 136r21 139r34 140r21 143r34 145r21 148r34
+. 149r21 152r34 154r21 157r13
+130a10 Count_Text{string} 137r26 140r56 145r62 149r56 155r26
+133a10 Text{string} 163r44
+168V13 Key_For{24|8E9} 168b13 168>22 177l8 177t15 244s13 298s13
+168e22 Period{25|7E9} 170r12
+179V13 Less_Key_For{24|8E9} 179b13 180>7 191l8 191t20 274s16 321s16
+180e7 Period{25|7E9} 184r12
+193U14 Copy_Text 193b14 194>7 195=7 196<7 197<7 217l8 217t17 342s10 362s10
+. 383s10
+194a7 Text{string} 203r13 206r15 206r21 206r35 211r13 212r52 212r72 214r21
+195a7 Target{string} 201r10 203r27 204r13 205m13 205r21 205r37 206r48 208r21
+. 212m13 212r21 212r37
+196i7 Written{natural} 200m7 208m10 214m10
+197e7 Status{28|8E9} 202m10 209m10 215m10
+225r7 Frequency{28|21R9} 237r10 238r17 244r42
+229r10 Direct{28|21R9} 232r13 233r20
+254r7 Frequency{28|21R9} 268r13 269r20 274r50
+259r13 Direct{28|21R9} 263r16 264r23
+288r7 Frequency{28|21R9} 291r10 292r17 298r42
+310r7 Frequency{28|21R9} 315r13 316r20 321r50
+335r7 Result{28|21R9} 338r10 340r20 342r32
+355r7 Result{28|21R9} 358r10 360r20 362r32
+376r7 Result{28|21R9} 379r10 381r20 383r32
+X 27 humanize-selections.ads
+9K26*Selections 26|6w15 243r19 273r22 297r19 320r22 27|60e24
+40V13*Text_Value{20R9} 26|243s30 273s33 297s30 320s33
+X 28 humanize-status.ads
+4K18*Status 25|3w15 25r23 37r23 50r23 64r23 79r30 93r30 111r31 26|9r22 118r23
+. 125r37 158r40 162r32 197r30 202r29 209r29 215r29 223r23 225r37 229r37 232r38
+. 237r39 252r23 254r37 259r40 263r41 268r42 286r23 288r37 291r39 308r23 310r37
+. 315r42 333r30 335r34 338r36 352r30 355r34 358r36 374r31 376r34 379r36 28|41e20
+8E9*Status_Code 25|79r37 93r37 111r38 26|9r29 197r37 333r37 352r37 374r38
+. 28|18e22
+9n7*Ok{8E9} 26|162r39 215r36 232r45 237r46 263r48 268r49 291r46 315r49 338r43
+. 358r43 379r43
+11n7*Invalid_Options{8E9} 26|202r36
+16n7*Runtime_Error{8E9} 26|125r44 158r47
+17n7*Buffer_Overflow{8E9} 26|209r36
+21R9*Text_Result 25|25r30 37r30 50r30 64r30 26|118r30 223r30 225r44 229r44
+. 252r30 254r44 259r47 286r30 288r44 308r30 310r44 335r41 355r41 376r41 28|25e14
+22e7*Status{8E9} 26|125m18 158m21 162m13 232r20 237r20 263r23 268r23 291r20
+. 315r23 338r17 340r27 358r17 360r27 379r17 381r27
+23r7*Text{17|91R9} 26|163m13 244r52 274r60 298r52 321r60 342r39 362r39 383r39
+24e7*Key{24|8E9} 26|164m13
+X 35 i18n-locales.ads
+32A12*Locale_Id{string}<integer>
+

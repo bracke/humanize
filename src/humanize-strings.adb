@@ -335,6 +335,40 @@ package body Humanize.Strings is
       return Ok (To_String (Result));
    end Title_Case_With_Word_Lists;
 
+   function Editorial_Title
+     (Text  : String;
+      Style : Editorial_Title_Style := AP_Title)
+      return Humanize.Status.Text_Result
+   is
+      Acronyms : constant String := "api url http https id ui cpu iops utf8";
+   begin
+      case Style is
+         when AP_Title =>
+            return Title_Case_With_Word_Lists
+              (Text,
+               Acronyms,
+               "a an and as at but by for in nor of on or per the to via vs "
+               & "with");
+         when Chicago_Title =>
+            return Title_Case_With_Word_Lists
+              (Text,
+               Acronyms,
+               "a an and as at but by for from in into nor of on or over the "
+               & "to with");
+         when Sentence_Title =>
+            declare
+               Squished : constant Humanize.Status.Text_Result := Squish (Text);
+               Raw      : constant String := To_String (Squished.Text);
+               Lowered  : Unbounded_String;
+            begin
+               for Ch of Raw loop
+                  Append (Lowered, Lower (Ch));
+               end loop;
+               return Capitalize (To_String (Lowered));
+            end;
+      end case;
+   end Editorial_Title;
+
    function NL_To_BR
      (Text : String)
       return Humanize.Status.Text_Result
@@ -2206,6 +2240,362 @@ package body Humanize.Strings is
       end;
    end Shorten_Path;
 
+   function Kind_Char (Kind : File_Mode_Kind) return Character is
+   begin
+      case Kind is
+         when Mode_Only =>
+            return ASCII.NUL;
+         when Regular_File =>
+            return '-';
+         when Directory_File =>
+            return 'd';
+         when Symlink_File =>
+            return 'l';
+         when Character_Device =>
+            return 'c';
+         when Block_Device =>
+            return 'b';
+         when FIFO_File =>
+            return 'p';
+         when Socket_File =>
+            return 's';
+      end case;
+   end Kind_Char;
+
+   function Kind_Label (Kind : File_Mode_Kind) return String is
+   begin
+      case Kind is
+         when Mode_Only =>
+            return "";
+         when Regular_File =>
+            return "file";
+         when Directory_File =>
+            return "directory";
+         when Symlink_File =>
+            return "symlink";
+         when Character_Device =>
+            return "character device";
+         when Block_Device =>
+            return "block device";
+         when FIFO_File =>
+            return "FIFO";
+         when Socket_File =>
+            return "socket";
+      end case;
+   end Kind_Label;
+
+   function Symbolic_File_Mode
+     (Mode : File_Mode_Value;
+      Kind : File_Mode_Kind := Mode_Only)
+      return Humanize.Status.Text_Result
+   is
+      Result : Unbounded_String;
+
+      function Has_Bit (Bit : Natural) return Boolean is
+        ((Natural (Mode) / Bit) mod 2 = 1);
+
+      procedure Append_Triplet
+        (Read_Bit    : Natural;
+         Write_Bit   : Natural;
+         Execute_Bit : Natural;
+         Special_Bit : Natural;
+         Special_Exec : Character;
+         Special_No_Exec : Character)
+      is
+         Has_Execute : constant Boolean := Has_Bit (Execute_Bit);
+      begin
+         Append (Result, (if Has_Bit (Read_Bit) then 'r' else '-'));
+         Append (Result, (if Has_Bit (Write_Bit) then 'w' else '-'));
+         if Has_Bit (Special_Bit) then
+            Append (Result, (if Has_Execute then Special_Exec else Special_No_Exec));
+         else
+            Append (Result, (if Has_Execute then 'x' else '-'));
+         end if;
+      end Append_Triplet;
+   begin
+      if Kind /= Mode_Only then
+         Append (Result, Kind_Char (Kind));
+      end if;
+
+      Append_Triplet (8#0400#, 8#0200#, 8#0100#, 8#4000#, 's', 'S');
+      Append_Triplet (8#0040#, 8#0020#, 8#0010#, 8#2000#, 's', 'S');
+      Append_Triplet (8#0004#, 8#0002#, 8#0001#, 8#1000#, 't', 'T');
+      return Ok (To_String (Result));
+   end Symbolic_File_Mode;
+
+   function Octal_Digit (Value : Natural) return Character is
+     (Character'Val (Character'Pos ('0') + Value));
+
+   function Octal_File_Mode
+     (Mode            : File_Mode_Value;
+      Include_Special : Boolean := False;
+      Prefix          : Boolean := False)
+      return Humanize.Status.Text_Result
+   is
+      Special : constant Natural := Mode / 8#1000#;
+      Owner   : constant Natural := (Mode / 8#0100#) mod 8;
+      Group   : constant Natural := (Mode / 8#0010#) mod 8;
+      Other   : constant Natural := Mode mod 8;
+      Result  : Unbounded_String;
+   begin
+      if Prefix and then (Special /= 0 or else not Include_Special) then
+         Append (Result, "0");
+      end if;
+      if Include_Special or else Special /= 0 then
+         Append (Result, Octal_Digit (Special));
+      end if;
+      Append (Result, Octal_Digit (Owner));
+      Append (Result, Octal_Digit (Group));
+      Append (Result, Octal_Digit (Other));
+      return Ok (To_String (Result));
+   end Octal_File_Mode;
+
+   procedure Append_Permission_List
+     (Result      : in out Unbounded_String;
+      Mode        : File_Mode_Value;
+      Read_Bit    : Natural;
+      Write_Bit   : Natural;
+      Execute_Bit : Natural)
+   is
+      Have : Boolean := False;
+
+      function Has_Bit (Bit : Natural) return Boolean is
+        ((Natural (Mode) / Bit) mod 2 = 1);
+
+      procedure Add (Text : String) is
+      begin
+         if Have then
+            Append (Result, "/");
+         end if;
+         Append (Result, Text);
+         Have := True;
+      end Add;
+   begin
+      if Has_Bit (Read_Bit) then
+         Add ("read");
+      end if;
+      if Has_Bit (Write_Bit) then
+         Add ("write");
+      end if;
+      if Has_Bit (Execute_Bit) then
+         Add ("execute");
+      end if;
+      if not Have then
+         Append (Result, "no access");
+      end if;
+   end Append_Permission_List;
+
+   function File_Mode_Summary
+     (Mode : File_Mode_Value;
+      Kind : File_Mode_Kind := Mode_Only)
+      return Humanize.Status.Text_Result
+   is
+      Result : Unbounded_String;
+
+      function Has_Bit (Bit : Natural) return Boolean is
+        ((Natural (Mode) / Bit) mod 2 = 1);
+   begin
+      if Kind /= Mode_Only then
+         Append (Result, Kind_Label (Kind));
+         Append (Result, ", ");
+      end if;
+
+      Append (Result, "owner ");
+      Append_Permission_List (Result, Mode, 8#0400#, 8#0200#, 8#0100#);
+      Append (Result, "; group ");
+      Append_Permission_List (Result, Mode, 8#0040#, 8#0020#, 8#0010#);
+      Append (Result, "; others ");
+      Append_Permission_List (Result, Mode, 8#0004#, 8#0002#, 8#0001#);
+
+      if Has_Bit (8#4000#) then
+         Append (Result, "; setuid");
+      end if;
+      if Has_Bit (8#2000#) then
+         Append (Result, "; setgid");
+      end if;
+      if Has_Bit (8#1000#) then
+         Append (Result, "; sticky");
+      end if;
+
+      return Ok (To_String (Result));
+   end File_Mode_Summary;
+
+   function Kind_From_Char
+     (Ch   : Character;
+      Kind : out File_Mode_Kind)
+      return Boolean
+   is
+   begin
+      case Ch is
+         when '-' =>
+            Kind := Regular_File;
+         when 'd' =>
+            Kind := Directory_File;
+         when 'l' =>
+            Kind := Symlink_File;
+         when 'c' =>
+            Kind := Character_Device;
+         when 'b' =>
+            Kind := Block_Device;
+         when 'p' =>
+            Kind := FIFO_File;
+         when 's' =>
+            Kind := Socket_File;
+         when others =>
+            return False;
+      end case;
+      return True;
+   end Kind_From_Char;
+
+   function Parse_Octal_File_Mode
+     (Text : String;
+      Mode : out File_Mode_Value)
+      return Boolean
+   is
+      Value : Natural := 0;
+      First : Natural := Text'First;
+   begin
+      if Text'Length = 0 then
+         return False;
+      end if;
+      if (Text'Length in 4 | 5) and then Text (Text'First) = '0' then
+         First := Text'First + 1;
+      end if;
+      if Text'Last - First + 1 not in 3 | 4 then
+         return False;
+      end if;
+      for Index in First .. Text'Last loop
+         if Text (Index) not in '0' .. '7' then
+            return False;
+         end if;
+         Value := Value * 8
+           + Character'Pos (Text (Index)) - Character'Pos ('0');
+      end loop;
+      if Value > File_Mode_Value'Last then
+         return False;
+      end if;
+      Mode := File_Mode_Value (Value);
+      return True;
+   end Parse_Octal_File_Mode;
+
+   function Parse_Symbolic_File_Mode
+     (Text : String;
+      Mode : out File_Mode_Value;
+      Kind : out File_Mode_Kind)
+      return Boolean
+   is
+      Offset : Natural := 0;
+      Value  : Natural := 0;
+
+      function Has (Index : Natural; Ch : Character) return Boolean is
+        (Text (Index) = Ch);
+
+      function Parse_Execute
+        (Index       : Natural;
+         Execute_Bit : Natural;
+         Special_Bit : Natural;
+         Lower       : Character;
+         Upper       : Character)
+         return Boolean
+      is
+      begin
+         case Text (Index) is
+            when 'x' =>
+               Value := Value + Execute_Bit;
+            when '-' =>
+               null;
+            when others =>
+               if Text (Index) = Lower then
+                  Value := Value + Execute_Bit + Special_Bit;
+               elsif Text (Index) = Upper then
+                  Value := Value + Special_Bit;
+               else
+                  return False;
+               end if;
+         end case;
+         return True;
+      end Parse_Execute;
+   begin
+      Kind := Mode_Only;
+      if Text'Length = 10 then
+         if not Kind_From_Char (Text (Text'First), Kind) then
+            return False;
+         end if;
+         Offset := 1;
+      elsif Text'Length /= 9 then
+         return False;
+      end if;
+
+      if Has (Text'First + Offset, 'r') then
+         Value := Value + 8#0400#;
+      elsif not Has (Text'First + Offset, '-') then
+         return False;
+      end if;
+      if Has (Text'First + Offset + 1, 'w') then
+         Value := Value + 8#0200#;
+      elsif not Has (Text'First + Offset + 1, '-') then
+         return False;
+      end if;
+      if not Parse_Execute
+        (Text'First + Offset + 2, 8#0100#, 8#4000#, 's', 'S')
+      then
+         return False;
+      end if;
+
+      if Has (Text'First + Offset + 3, 'r') then
+         Value := Value + 8#0040#;
+      elsif not Has (Text'First + Offset + 3, '-') then
+         return False;
+      end if;
+      if Has (Text'First + Offset + 4, 'w') then
+         Value := Value + 8#0020#;
+      elsif not Has (Text'First + Offset + 4, '-') then
+         return False;
+      end if;
+      if not Parse_Execute
+        (Text'First + Offset + 5, 8#0010#, 8#2000#, 's', 'S')
+      then
+         return False;
+      end if;
+
+      if Has (Text'First + Offset + 6, 'r') then
+         Value := Value + 8#0004#;
+      elsif not Has (Text'First + Offset + 6, '-') then
+         return False;
+      end if;
+      if Has (Text'First + Offset + 7, 'w') then
+         Value := Value + 8#0002#;
+      elsif not Has (Text'First + Offset + 7, '-') then
+         return False;
+      end if;
+      if not Parse_Execute
+        (Text'First + Offset + 8, 8#0001#, 8#1000#, 't', 'T')
+      then
+         return False;
+      end if;
+
+      Mode := File_Mode_Value (Value);
+      return True;
+   end Parse_Symbolic_File_Mode;
+
+   function Parse_File_Mode
+     (Text : String;
+      Mode : out File_Mode_Value;
+      Kind : out File_Mode_Kind)
+      return Humanize.Status.Status_Code
+   is
+   begin
+      Mode := 0;
+      Kind := Mode_Only;
+      if Parse_Octal_File_Mode (Text, Mode) then
+         return Humanize.Status.Ok;
+      elsif Parse_Symbolic_File_Mode (Text, Mode, Kind) then
+         return Humanize.Status.Ok;
+      else
+         return Humanize.Status.Invalid_Value;
+      end if;
+   end Parse_File_Mode;
+
    function Is_Key_Separator (Ch : Character) return Boolean is
      (Ch = ' ' or else Ch = ASCII.HT or else Ch = ASCII.LF
       or else Ch = ASCII.CR or else Ch = '_' or else Ch = '-'
@@ -2687,6 +3077,449 @@ package body Humanize.Strings is
                   null;
             end case;
             Index := Index + 2;
+         elsif Index + 1 <= Text'Last
+           and then Character'Pos (Text (Index)) in 16#C4# .. 16#C5#
+         then
+            declare
+               Lead : constant Natural := Character'Pos (Text (Index));
+               Trail : constant Natural := Character'Pos (Text (Index + 1));
+            begin
+               if Lead = 16#C4# then
+                  case Trail is
+                     when 16#80# | 16#82# | 16#84# =>
+                        Append (Result, "A");
+                     when 16#81# | 16#83# | 16#85# =>
+                        Append (Result, "a");
+                     when 16#86# | 16#88# | 16#8A# | 16#8C# =>
+                        Append (Result, "C");
+                     when 16#87# | 16#89# | 16#8B# | 16#8D# =>
+                        Append (Result, "c");
+                     when 16#8E# | 16#90# =>
+                        Append (Result, "D");
+                     when 16#8F# | 16#91# =>
+                        Append (Result, "d");
+                     when 16#92# | 16#94# | 16#96# | 16#98# | 16#9A# =>
+                        Append (Result, "E");
+                     when 16#93# | 16#95# | 16#97# | 16#99# | 16#9B# =>
+                        Append (Result, "e");
+                     when 16#9C# | 16#9E# =>
+                        Append (Result, "G");
+                     when 16#9D# | 16#9F# =>
+                        Append (Result, "g");
+                     when 16#B0# =>
+                        Append (Result, "I");
+                     when 16#B1# =>
+                        Append (Result, "i");
+                     when 16#B9# =>
+                        Append (Result, "L");
+                     when 16#BA# =>
+                        Append (Result, "l");
+                     when others =>
+                        null;
+                  end case;
+               else
+                  case Trail is
+                     when 16#81# =>
+                        Append (Result, "L");
+                     when 16#82# =>
+                        Append (Result, "l");
+                     when 16#83# | 16#87# =>
+                        Append (Result, "N");
+                     when 16#84# | 16#88# =>
+                        Append (Result, "n");
+                     when 16#90# =>
+                        Append (Result, "O");
+                     when 16#91# =>
+                        Append (Result, "o");
+                     when 16#94# | 16#98# =>
+                        Append (Result, "R");
+                     when 16#95# | 16#99# =>
+                        Append (Result, "r");
+                     when 16#9A# | 16#9C# | 16#9E# | 16#A0# =>
+                        Append (Result, "S");
+                     when 16#9B# | 16#9D# | 16#9F# | 16#A1# =>
+                        Append (Result, "s");
+                     when 16#A2# | 16#A4# =>
+                        Append (Result, "T");
+                     when 16#A3# | 16#A5# =>
+                        Append (Result, "t");
+                     when 16#AA# | 16#AC# | 16#AE# | 16#B0# =>
+                        Append (Result, "U");
+                     when 16#AB# | 16#AD# | 16#AF# | 16#B1# =>
+                        Append (Result, "u");
+                     when 16#B9# | 16#BB# | 16#BD# =>
+                        Append (Result, "Z");
+                     when 16#BA# | 16#BC# | 16#BE# =>
+                        Append (Result, "z");
+                     when others =>
+                        null;
+                  end case;
+               end if;
+            end;
+            Index := Index + 2;
+         elsif Index + 1 <= Text'Last
+           and then Character'Pos (Text (Index)) in 16#CE# .. 16#CF#
+         then
+            declare
+               Lead  : constant Natural := Character'Pos (Text (Index));
+               Trail : constant Natural := Character'Pos (Text (Index + 1));
+            begin
+               if Lead = 16#CE# then
+                  case Trail is
+                     when 16#91# => Append (Result, "A");
+                     when 16#92# => Append (Result, "B");
+                     when 16#93# => Append (Result, "G");
+                     when 16#94# => Append (Result, "D");
+                     when 16#95# | 16#88# => Append (Result, "E");
+                     when 16#96# => Append (Result, "Z");
+                     when 16#97# | 16#89# => Append (Result, "I");
+                     when 16#98# => Append (Result, "Th");
+                     when 16#99# | 16#8A# | 16#AA# => Append (Result, "I");
+                     when 16#9A# => Append (Result, "K");
+                     when 16#9B# => Append (Result, "L");
+                     when 16#9C# => Append (Result, "M");
+                     when 16#9D# => Append (Result, "N");
+                     when 16#9E# => Append (Result, "X");
+                     when 16#9F# | 16#8C# => Append (Result, "O");
+                     when 16#A0# => Append (Result, "P");
+                     when 16#A1# => Append (Result, "R");
+                     when 16#A3# => Append (Result, "S");
+                     when 16#A4# => Append (Result, "T");
+                     when 16#A5# | 16#8E# | 16#AB# => Append (Result, "Y");
+                     when 16#A6# => Append (Result, "F");
+                     when 16#A7# => Append (Result, "Ch");
+                     when 16#A8# => Append (Result, "Ps");
+                     when 16#A9# | 16#8F# => Append (Result, "O");
+                     when 16#B1# | 16#AC# => Append (Result, "a");
+                     when 16#B2# => Append (Result, "b");
+                     when 16#B3# => Append (Result, "g");
+                     when 16#B4# => Append (Result, "d");
+                     when 16#B5# | 16#AD# => Append (Result, "e");
+                     when 16#B6# => Append (Result, "z");
+                     when 16#B7# | 16#AE# => Append (Result, "i");
+                     when 16#B8# => Append (Result, "th");
+                     when 16#B9# | 16#AF# | 16#90# | 16#CA# =>
+                        Append (Result, "i");
+                     when 16#BA# => Append (Result, "k");
+                     when 16#BB# => Append (Result, "l");
+                     when 16#BC# => Append (Result, "m");
+                     when 16#BD# => Append (Result, "n");
+                     when 16#BE# => Append (Result, "x");
+                     when 16#BF# => Append (Result, "o");
+                     when others => null;
+                  end case;
+               else
+                  case Trail is
+                     when 16#80# => Append (Result, "p");
+                     when 16#81# | 16#AC# => Append (Result, "r");
+                     when 16#82# | 16#83# => Append (Result, "s");
+                     when 16#84# => Append (Result, "t");
+                     when 16#85# | 16#8D# | 16#8B# => Append (Result, "y");
+                     when 16#86# => Append (Result, "f");
+                     when 16#87# => Append (Result, "ch");
+                     when 16#88# => Append (Result, "ps");
+                     when 16#89# | 16#8E# => Append (Result, "o");
+                     when others => null;
+                  end case;
+               end if;
+            end;
+            Index := Index + 2;
+         elsif Index + 1 <= Text'Last
+           and then Character'Pos (Text (Index)) in 16#D0# .. 16#D1#
+         then
+            declare
+               Lead  : constant Natural := Character'Pos (Text (Index));
+               Trail : constant Natural := Character'Pos (Text (Index + 1));
+            begin
+               if Lead = 16#D0# then
+                  case Trail is
+                     when 16#90# => Append (Result, "A");
+                     when 16#91# => Append (Result, "B");
+                     when 16#92# => Append (Result, "V");
+                     when 16#93# => Append (Result, "G");
+                     when 16#94# => Append (Result, "D");
+                     when 16#95# => Append (Result, "E");
+                     when 16#96# => Append (Result, "Zh");
+                     when 16#97# => Append (Result, "Z");
+                     when 16#98# => Append (Result, "I");
+                     when 16#99# => Append (Result, "Y");
+                     when 16#9A# => Append (Result, "K");
+                     when 16#9B# => Append (Result, "L");
+                     when 16#9C# => Append (Result, "M");
+                     when 16#9D# => Append (Result, "N");
+                     when 16#9E# => Append (Result, "O");
+                     when 16#9F# => Append (Result, "P");
+                     when 16#A0# => Append (Result, "R");
+                     when 16#A1# => Append (Result, "S");
+                     when 16#A2# => Append (Result, "T");
+                     when 16#A3# => Append (Result, "U");
+                     when 16#A4# => Append (Result, "F");
+                     when 16#A5# => Append (Result, "Kh");
+                     when 16#A6# => Append (Result, "Ts");
+                     when 16#A7# => Append (Result, "Ch");
+                     when 16#A8# => Append (Result, "Sh");
+                     when 16#A9# => Append (Result, "Shch");
+                     when 16#AB# => Append (Result, "Y");
+                     when 16#AD# => Append (Result, "E");
+                     when 16#AE# => Append (Result, "Yu");
+                     when 16#AF# => Append (Result, "Ya");
+                     when 16#B0# => Append (Result, "a");
+                     when 16#B1# => Append (Result, "b");
+                     when 16#B2# => Append (Result, "v");
+                     when 16#B3# => Append (Result, "g");
+                     when 16#B4# => Append (Result, "d");
+                     when 16#B5# => Append (Result, "e");
+                     when 16#B6# => Append (Result, "zh");
+                     when 16#B7# => Append (Result, "z");
+                     when 16#B8# => Append (Result, "i");
+                     when 16#B9# => Append (Result, "y");
+                     when 16#BA# => Append (Result, "k");
+                     when 16#BB# => Append (Result, "l");
+                     when 16#BC# => Append (Result, "m");
+                     when 16#BD# => Append (Result, "n");
+                     when 16#BE# => Append (Result, "o");
+                     when 16#BF# => Append (Result, "p");
+                     when others => null;
+                  end case;
+               else
+                  case Trail is
+                     when 16#80# => Append (Result, "r");
+                     when 16#81# => Append (Result, "s");
+                     when 16#82# => Append (Result, "t");
+                     when 16#83# => Append (Result, "u");
+                     when 16#84# => Append (Result, "f");
+                     when 16#85# => Append (Result, "kh");
+                     when 16#86# => Append (Result, "ts");
+                     when 16#87# => Append (Result, "ch");
+                     when 16#88# => Append (Result, "sh");
+                     when 16#89# => Append (Result, "shch");
+                     when 16#8B# => Append (Result, "y");
+                     when 16#8D# => Append (Result, "e");
+                     when 16#8E# => Append (Result, "yu");
+                     when 16#8F# => Append (Result, "ya");
+                     when others => null;
+                  end case;
+               end if;
+            end;
+            Index := Index + 2;
+         elsif Index + 1 <= Text'Last
+           and then Character'Pos (Text (Index)) = 16#D7#
+         then
+            case Character'Pos (Text (Index + 1)) is
+               when 16#90# => Append (Result, "a");
+               when 16#91# => Append (Result, "b");
+               when 16#92# => Append (Result, "g");
+               when 16#93# => Append (Result, "d");
+               when 16#94# => Append (Result, "h");
+               when 16#95# => Append (Result, "v");
+               when 16#96# => Append (Result, "z");
+               when 16#97# => Append (Result, "ch");
+               when 16#98# => Append (Result, "t");
+               when 16#99# => Append (Result, "y");
+               when 16#9A# | 16#9B# => Append (Result, "k");
+               when 16#9C# => Append (Result, "l");
+               when 16#9D# | 16#9E# => Append (Result, "m");
+               when 16#9F# | 16#A0# => Append (Result, "n");
+               when 16#A1# => Append (Result, "s");
+               when 16#A2# => Append (Result, "a");
+               when 16#A3# | 16#A4# => Append (Result, "p");
+               when 16#A5# | 16#A6# => Append (Result, "ts");
+               when 16#A7# => Append (Result, "q");
+               when 16#A8# => Append (Result, "r");
+               when 16#A9# => Append (Result, "sh");
+               when 16#AA# => Append (Result, "t");
+               when others => null;
+            end case;
+            Index := Index + 2;
+         elsif Index + 1 <= Text'Last
+           and then Character'Pos (Text (Index)) in 16#D4# .. 16#D6#
+         then
+            declare
+               Lead  : constant Natural := Character'Pos (Text (Index));
+               Trail : constant Natural := Character'Pos (Text (Index + 1));
+            begin
+               if Lead = 16#D4# then
+                  case Trail is
+                     when 16#B1# => Append (Result, "A");
+                     when 16#B2# => Append (Result, "B");
+                     when 16#B3# => Append (Result, "G");
+                     when 16#B4# => Append (Result, "D");
+                     when 16#B5# => Append (Result, "E");
+                     when 16#B6# => Append (Result, "Z");
+                     when 16#B7# => Append (Result, "E");
+                     when 16#B8# => Append (Result, "Y");
+                     when 16#B9# => Append (Result, "T");
+                     when 16#BA# => Append (Result, "Zh");
+                     when 16#BB# => Append (Result, "I");
+                     when 16#BC# => Append (Result, "L");
+                     when 16#BD# => Append (Result, "Kh");
+                     when 16#BE# => Append (Result, "Ts");
+                     when 16#BF# => Append (Result, "K");
+                     when others => null;
+                  end case;
+               elsif Lead = 16#D5# then
+                  case Trail is
+                     when 16#80# => Append (Result, "H");
+                     when 16#81# => Append (Result, "Dz");
+                     when 16#82# => Append (Result, "Gh");
+                     when 16#83# => Append (Result, "Ch");
+                     when 16#84# => Append (Result, "M");
+                     when 16#85# => Append (Result, "Y");
+                     when 16#86# => Append (Result, "N");
+                     when 16#87# => Append (Result, "Sh");
+                     when 16#88# => Append (Result, "O");
+                     when 16#89# => Append (Result, "Ch");
+                     when 16#8A# => Append (Result, "P");
+                     when 16#8B# => Append (Result, "J");
+                     when 16#8C# => Append (Result, "R");
+                     when 16#8D# => Append (Result, "S");
+                     when 16#8E# => Append (Result, "V");
+                     when 16#8F# => Append (Result, "T");
+                     when 16#90# => Append (Result, "R");
+                     when 16#91# => Append (Result, "Ts");
+                     when 16#92# => Append (Result, "W");
+                     when 16#93# => Append (Result, "P");
+                     when 16#94# => Append (Result, "K");
+                     when 16#95# => Append (Result, "O");
+                     when 16#96# => Append (Result, "F");
+                     when 16#A1# => Append (Result, "a");
+                     when 16#A2# => Append (Result, "b");
+                     when 16#A3# => Append (Result, "g");
+                     when 16#A4# => Append (Result, "d");
+                     when 16#A5# => Append (Result, "e");
+                     when 16#A6# => Append (Result, "z");
+                     when 16#A7# => Append (Result, "e");
+                     when 16#A8# => Append (Result, "y");
+                     when 16#A9# => Append (Result, "t");
+                     when 16#AA# => Append (Result, "zh");
+                     when 16#AB# => Append (Result, "i");
+                     when 16#AC# => Append (Result, "l");
+                     when 16#AD# => Append (Result, "kh");
+                     when 16#AE# => Append (Result, "ts");
+                     when 16#AF# => Append (Result, "k");
+                     when 16#B0# => Append (Result, "h");
+                     when 16#B1# => Append (Result, "dz");
+                     when 16#B2# => Append (Result, "gh");
+                     when 16#B3# => Append (Result, "ch");
+                     when 16#B4# => Append (Result, "m");
+                     when 16#B5# => Append (Result, "y");
+                     when 16#B6# => Append (Result, "n");
+                     when 16#B7# => Append (Result, "sh");
+                     when 16#B8# => Append (Result, "o");
+                     when 16#B9# => Append (Result, "ch");
+                     when 16#BA# => Append (Result, "p");
+                     when 16#BB# => Append (Result, "j");
+                     when 16#BC# => Append (Result, "r");
+                     when 16#BD# => Append (Result, "s");
+                     when 16#BE# => Append (Result, "v");
+                     when 16#BF# => Append (Result, "t");
+                     when others => null;
+                  end case;
+               else
+                  case Trail is
+                     when 16#80# => Append (Result, "r");
+                     when 16#81# => Append (Result, "ts");
+                     when 16#82# => Append (Result, "w");
+                     when 16#83# => Append (Result, "p");
+                     when 16#84# => Append (Result, "k");
+                     when 16#85# => Append (Result, "o");
+                     when 16#86# => Append (Result, "f");
+                     when others => null;
+                  end case;
+               end if;
+            end;
+            Index := Index + 2;
+         elsif Index + 1 <= Text'Last
+           and then Character'Pos (Text (Index)) in 16#D8# .. 16#D9#
+         then
+            declare
+               Lead  : constant Natural := Character'Pos (Text (Index));
+               Trail : constant Natural := Character'Pos (Text (Index + 1));
+            begin
+               if Lead = 16#D8# then
+                  case Trail is
+                     when 16#A1# | 16#A2# | 16#A3# | 16#A5# =>
+                        Append (Result, "a");
+                     when 16#A7# => Append (Result, "a");
+                     when 16#A8# => Append (Result, "b");
+                     when 16#A9# => Append (Result, "t");
+                     when 16#AA# => Append (Result, "t");
+                     when 16#AB# => Append (Result, "th");
+                     when 16#AC# => Append (Result, "j");
+                     when 16#AD# => Append (Result, "h");
+                     when 16#AE# => Append (Result, "kh");
+                     when 16#AF# => Append (Result, "d");
+                     when 16#B0# => Append (Result, "dh");
+                     when 16#B1# => Append (Result, "r");
+                     when 16#B2# => Append (Result, "z");
+                     when 16#B3# => Append (Result, "s");
+                     when 16#B4# => Append (Result, "sh");
+                     when 16#B5# => Append (Result, "s");
+                     when 16#B6# => Append (Result, "d");
+                     when 16#B7# => Append (Result, "t");
+                     when 16#B8# => Append (Result, "z");
+                     when 16#B9# => Append (Result, "a");
+                     when 16#BA# => Append (Result, "gh");
+                     when others => null;
+                  end case;
+               else
+                  case Trail is
+                     when 16#81# => Append (Result, "f");
+                     when 16#82# => Append (Result, "q");
+                     when 16#83# => Append (Result, "k");
+                     when 16#84# => Append (Result, "l");
+                     when 16#85# => Append (Result, "m");
+                     when 16#86# => Append (Result, "n");
+                     when 16#87# => Append (Result, "h");
+                     when 16#88# => Append (Result, "w");
+                     when 16#89# => Append (Result, "a");
+                     when 16#8A# => Append (Result, "y");
+                     when others => null;
+                  end case;
+               end if;
+            end;
+            Index := Index + 2;
+         elsif Index + 2 <= Text'Last
+           and then Character'Pos (Text (Index)) = 16#E1#
+           and then Character'Pos (Text (Index + 1)) = 16#83#
+         then
+            case Character'Pos (Text (Index + 2)) is
+               when 16#90# => Append (Result, "a");
+               when 16#91# => Append (Result, "b");
+               when 16#92# => Append (Result, "g");
+               when 16#93# => Append (Result, "d");
+               when 16#94# => Append (Result, "e");
+               when 16#95# => Append (Result, "v");
+               when 16#96# => Append (Result, "z");
+               when 16#97# => Append (Result, "t");
+               when 16#98# => Append (Result, "i");
+               when 16#99# => Append (Result, "k");
+               when 16#9A# => Append (Result, "l");
+               when 16#9B# => Append (Result, "m");
+               when 16#9C# => Append (Result, "n");
+               when 16#9D# => Append (Result, "o");
+               when 16#9E# => Append (Result, "p");
+               when 16#9F# => Append (Result, "zh");
+               when 16#A0# => Append (Result, "r");
+               when 16#A1# => Append (Result, "s");
+               when 16#A2# => Append (Result, "t");
+               when 16#A3# => Append (Result, "u");
+               when 16#A4# => Append (Result, "p");
+               when 16#A5# => Append (Result, "k");
+               when 16#A6# => Append (Result, "gh");
+               when 16#A7# => Append (Result, "q");
+               when 16#A8# => Append (Result, "sh");
+               when 16#A9# => Append (Result, "ch");
+               when 16#AA# => Append (Result, "ts");
+               when 16#AB# => Append (Result, "dz");
+               when 16#AC# => Append (Result, "ts");
+               when 16#AD# => Append (Result, "ch");
+               when 16#AE# => Append (Result, "kh");
+               when 16#AF# => Append (Result, "j");
+               when 16#B0# => Append (Result, "h");
+               when others => null;
+            end case;
+            Index := Index + 3;
          else
             Index := Index + UTF8_Byte_Count
               (Text (Index), Text'Last - Index + 1);
@@ -2791,13 +3624,17 @@ package body Humanize.Strings is
       Low : constant String := Inflection_Key (Word);
    begin
       return Low = "advice" or else Low = "aircraft" or else Low = "bison"
-        or else Low = "deer" or else Low = "equipment"
+        or else Low = "bread" or else Low = "deer" or else Low = "equipment"
         or else Low = "fish" or else Low = "furniture"
-        or else Low = "information" or else Low = "money"
+        or else Low = "gold" or else Low = "information"
+        or else Low = "jewelry" or else Low = "knowledge"
+        or else Low = "luggage" or else Low = "metadata"
+        or else Low = "money"
         or else Low = "moose" or else Low = "news"
         or else Low = "rice" or else Low = "series"
         or else Low = "sheep" or else Low = "species"
-        or else Low = "swine" or else Low = "traffic";
+        or else Low = "software" or else Low = "swine"
+        or else Low = "traffic";
    end Is_Uncountable_Noun;
 
    function Irregular_Plural (Word : String) return String is
@@ -2825,6 +3662,38 @@ package body Humanize.Strings is
          return Match_Case (Word, "lice");
       elsif Low = "die" then
          return Match_Case (Word, "dice");
+      elsif Low = "brother" then
+         return Match_Case (Word, "brethren");
+      elsif Low = "cow" then
+         return Match_Case (Word, "kine");
+      elsif Low = "salesman" then
+         return Match_Case (Word, "salesmen");
+      elsif Low = "policeman" then
+         return Match_Case (Word, "policemen");
+      elsif Low = "policewoman" then
+         return Match_Case (Word, "policewomen");
+      elsif Low = "fireman" then
+         return Match_Case (Word, "firemen");
+      elsif Low = "firewoman" then
+         return Match_Case (Word, "firewomen");
+      elsif Low = "corpus" then
+         return Match_Case (Word, "corpora");
+      elsif Low = "genus" then
+         return Match_Case (Word, "genera");
+      elsif Low = "opus" then
+         return Match_Case (Word, "opera");
+      elsif Low = "viscus" then
+         return Match_Case (Word, "viscera");
+      elsif Low = "schema" then
+         return Match_Case (Word, "schemata");
+      elsif Low = "stigma" then
+         return Match_Case (Word, "stigmata");
+      elsif Low = "lemma" then
+         return Match_Case (Word, "lemmata");
+      elsif Low = "nebula" then
+         return Match_Case (Word, "nebulae");
+      elsif Low = "vertebra" then
+         return Match_Case (Word, "vertebrae");
       else
          return "";
       end if;
@@ -2855,6 +3724,38 @@ package body Humanize.Strings is
          return Match_Case (Word, "louse");
       elsif Low = "dice" then
          return Match_Case (Word, "die");
+      elsif Low = "brethren" then
+         return Match_Case (Word, "brother");
+      elsif Low = "kine" then
+         return Match_Case (Word, "cow");
+      elsif Low = "salesmen" then
+         return Match_Case (Word, "salesman");
+      elsif Low = "policemen" then
+         return Match_Case (Word, "policeman");
+      elsif Low = "policewomen" then
+         return Match_Case (Word, "policewoman");
+      elsif Low = "firemen" then
+         return Match_Case (Word, "fireman");
+      elsif Low = "firewomen" then
+         return Match_Case (Word, "firewoman");
+      elsif Low = "corpora" then
+         return Match_Case (Word, "corpus");
+      elsif Low = "genera" then
+         return Match_Case (Word, "genus");
+      elsif Low = "opera" then
+         return Match_Case (Word, "opus");
+      elsif Low = "viscera" then
+         return Match_Case (Word, "viscus");
+      elsif Low = "schemata" then
+         return Match_Case (Word, "schema");
+      elsif Low = "stigmata" then
+         return Match_Case (Word, "stigma");
+      elsif Low = "lemmata" then
+         return Match_Case (Word, "lemma");
+      elsif Low = "nebulae" then
+         return Match_Case (Word, "nebula");
+      elsif Low = "vertebrae" then
+         return Match_Case (Word, "vertebra");
       else
          return "";
       end if;
@@ -2864,6 +3765,189 @@ package body Humanize.Strings is
      (Low = "echo" or else Low = "embargo" or else Low = "hero"
       or else Low = "potato" or else Low = "tomato" or else Low = "torpedo"
       or else Low = "veto");
+
+   function Last_Character (Text : String) return Character is
+   begin
+      if Text'Length = 0 then
+         return ASCII.NUL;
+      else
+         return Text (Text'Last);
+      end if;
+   end Last_Character;
+
+   function Is_ASCII_Vowel (Ch : Character) return Boolean is
+      Low : constant Character := Lower (Ch);
+   begin
+      return Low = 'a' or else Low = 'e' or else Low = 'i'
+        or else Low = 'o' or else Low = 'u';
+   end Is_ASCII_Vowel;
+
+   function Remove_Last
+     (Word  : String;
+      Count : Natural)
+      return String
+   is
+   begin
+      if Count = 0 then
+         return Word;
+      elsif Count >= Word'Length then
+         return "";
+      else
+         return Word (Word'First .. Word'Last - Count);
+      end if;
+   end Remove_Last;
+
+   function Language_Irregular_Plural
+     (Word     : String;
+      Language : Inflection_Language)
+      return String
+   is
+      Low : constant String := Inflection_Key (Word);
+   begin
+      case Language is
+         when English_Inflection =>
+            return Irregular_Plural (Word);
+         when Danish_Inflection =>
+            if Low = "barn" then
+               return Match_Case (Word, "born");
+            elsif Low = "mand" then
+               return Match_Case (Word, "maend");
+            end if;
+         when German_Inflection =>
+            if Low = "kind" then
+               return Match_Case (Word, "kinder");
+            elsif Low = "mann" then
+               return Match_Case (Word, "maenner");
+            elsif Low = "frau" then
+               return Match_Case (Word, "frauen");
+            elsif Low = "datum" then
+               return Match_Case (Word, "daten");
+            end if;
+         when French_Inflection =>
+            if Low = "cheval" then
+               return Match_Case (Word, "chevaux");
+            elsif Low = "travail" then
+               return Match_Case (Word, "travaux");
+            elsif Low = "oeil" then
+               return Match_Case (Word, "yeux");
+            end if;
+         when Spanish_Inflection =>
+            if Low = "luz" then
+               return Match_Case (Word, "luces");
+            elsif Low = "juez" then
+               return Match_Case (Word, "jueces");
+            end if;
+         when Italian_Inflection =>
+            if Low = "uomo" then
+               return Match_Case (Word, "uomini");
+            elsif Low = "uovo" then
+               return Match_Case (Word, "uova");
+            end if;
+         when Portuguese_Inflection =>
+            if Low = "mao" then
+               return Match_Case (Word, "maos");
+            elsif Low = "homem" then
+               return Match_Case (Word, "homens");
+            end if;
+         when Dutch_Inflection =>
+            if Low = "kind" then
+               return Match_Case (Word, "kinderen");
+            elsif Low = "stad" then
+               return Match_Case (Word, "steden");
+            end if;
+         when Swedish_Inflection =>
+            if Low = "barn" then
+               return Match_Case (Word, "barn");
+            elsif Low = "man" then
+               return Match_Case (Word, "maen");
+            end if;
+         when Norwegian_Inflection | Norwegian_Bokmal_Inflection =>
+            if Low = "barn" then
+               return Match_Case (Word, "barn");
+            elsif Low = "mann" then
+               return Match_Case (Word, "menn");
+            end if;
+         when Finnish_Inflection | Turkish_Inflection =>
+            null;
+      end case;
+      return "";
+   end Language_Irregular_Plural;
+
+   function Language_Irregular_Singular
+     (Word     : String;
+      Language : Inflection_Language)
+      return String
+   is
+      Low : constant String := Inflection_Key (Word);
+   begin
+      case Language is
+         when English_Inflection =>
+            return Irregular_Singular (Word);
+         when Danish_Inflection =>
+            if Low = "born" then
+               return Match_Case (Word, "barn");
+            elsif Low = "maend" then
+               return Match_Case (Word, "mand");
+            end if;
+         when German_Inflection =>
+            if Low = "kinder" then
+               return Match_Case (Word, "kind");
+            elsif Low = "maenner" then
+               return Match_Case (Word, "mann");
+            elsif Low = "frauen" then
+               return Match_Case (Word, "frau");
+            elsif Low = "daten" then
+               return Match_Case (Word, "datum");
+            end if;
+         when French_Inflection =>
+            if Low = "chevaux" then
+               return Match_Case (Word, "cheval");
+            elsif Low = "travaux" then
+               return Match_Case (Word, "travail");
+            elsif Low = "yeux" then
+               return Match_Case (Word, "oeil");
+            end if;
+         when Spanish_Inflection =>
+            if Low = "luces" then
+               return Match_Case (Word, "luz");
+            elsif Low = "jueces" then
+               return Match_Case (Word, "juez");
+            end if;
+         when Italian_Inflection =>
+            if Low = "uomini" then
+               return Match_Case (Word, "uomo");
+            elsif Low = "uova" then
+               return Match_Case (Word, "uovo");
+            end if;
+         when Portuguese_Inflection =>
+            if Low = "maos" then
+               return Match_Case (Word, "mao");
+            elsif Low = "homens" then
+               return Match_Case (Word, "homem");
+            end if;
+         when Dutch_Inflection =>
+            if Low = "kinderen" then
+               return Match_Case (Word, "kind");
+            elsif Low = "steden" then
+               return Match_Case (Word, "stad");
+            end if;
+         when Swedish_Inflection =>
+            if Low = "barn" then
+               return Match_Case (Word, "barn");
+            elsif Low = "maen" then
+               return Match_Case (Word, "man");
+            end if;
+         when Norwegian_Inflection | Norwegian_Bokmal_Inflection =>
+            if Low = "barn" then
+               return Match_Case (Word, "barn");
+            elsif Low = "menn" then
+               return Match_Case (Word, "mann");
+            end if;
+         when Finnish_Inflection | Turkish_Inflection =>
+            null;
+      end case;
+      return "";
+   end Language_Irregular_Singular;
 
    function Pluralize
      (Word : String)
@@ -3179,6 +4263,290 @@ package body Humanize.Strings is
          return Ok (Word);
       end if;
    end Singularize;
+
+   function Pluralize_In_Language
+     (Word     : String;
+      Language : Inflection_Language)
+      return Humanize.Status.Text_Result
+   is
+      Low : constant String := Inflection_Key (Word);
+      Hit : constant String := Language_Irregular_Plural (Word, Language);
+   begin
+      if Hit'Length > 0 then
+         return Ok (Hit);
+      end if;
+
+      case Language is
+         when English_Inflection =>
+            return Pluralize (Word);
+         when Danish_Inflection | Norwegian_Inflection
+            | Norwegian_Bokmal_Inflection =>
+            if Ends_With (Low, "e") then
+               return Ok (Word & "r");
+            else
+               return Ok (Word & "er");
+            end if;
+         when German_Inflection =>
+            if Ends_With (Low, "e") then
+               return Ok (Word & "n");
+            elsif Ends_With (Low, "er") or else Ends_With (Low, "el")
+              or else Ends_With (Low, "en") or else Ends_With (Low, "chen")
+              or else Ends_With (Low, "lein")
+            then
+               return Ok (Word);
+            elsif Ends_With (Low, "a") or else Ends_With (Low, "i")
+              or else Ends_With (Low, "o") or else Ends_With (Low, "u")
+              or else Ends_With (Low, "y")
+            then
+               return Ok (Word & "s");
+            else
+               return Ok (Word & "e");
+            end if;
+         when French_Inflection =>
+            if Ends_With (Low, "s") or else Ends_With (Low, "x")
+              or else Ends_With (Low, "z")
+            then
+               return Ok (Word);
+            elsif Ends_With (Low, "al") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2) & "aux");
+            elsif Ends_With (Low, "au") or else Ends_With (Low, "eau")
+              or else Ends_With (Low, "eu")
+            then
+               return Ok (Word & "x");
+            else
+               return Ok (Word & "s");
+            end if;
+         when Spanish_Inflection =>
+            if Ends_With (Low, "z") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1) & "ces");
+            elsif Is_ASCII_Vowel (Last_Character (Low)) then
+               return Ok (Word & "s");
+            else
+               return Ok (Word & "es");
+            end if;
+         when Italian_Inflection =>
+            if Ends_With (Low, "ca") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2) & "che");
+            elsif Ends_With (Low, "ga") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2) & "ghe");
+            elsif Ends_With (Low, "co") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2) & "chi");
+            elsif Ends_With (Low, "go") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2) & "ghi");
+            elsif Ends_With (Low, "o") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1) & "i");
+            elsif Ends_With (Low, "a") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1) & "e");
+            elsif Ends_With (Low, "e") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1) & "i");
+            else
+               return Ok (Word);
+            end if;
+         when Portuguese_Inflection =>
+            if Ends_With (Low, "cao") and then Word'Length > 3 then
+               return Ok (Remove_Last (Word, 3) & "coes");
+            elsif Ends_With (Low, "al") or else Ends_With (Low, "el")
+              or else Ends_With (Low, "ol") or else Ends_With (Low, "ul")
+            then
+               return Ok (Remove_Last (Word, 1) & "is");
+            elsif Ends_With (Low, "m") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1) & "ns");
+            elsif Ends_With (Low, "r") or else Ends_With (Low, "z") then
+               return Ok (Word & "es");
+            elsif Is_ASCII_Vowel (Last_Character (Low)) then
+               return Ok (Word & "s");
+            else
+               return Ok (Word & "es");
+            end if;
+         when Dutch_Inflection =>
+            if Ends_With (Low, "s") or else Ends_With (Low, "x") then
+               return Ok (Word);
+            elsif Ends_With (Low, "e") then
+               return Ok (Word & "n");
+            else
+               return Ok (Word & "en");
+            end if;
+         when Swedish_Inflection =>
+            if Ends_With (Low, "a") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1) & "or");
+            elsif Ends_With (Low, "e") and then Word'Length > 1 then
+               return Ok (Word & "r");
+            else
+               return Ok (Word & "ar");
+            end if;
+         when Finnish_Inflection =>
+            if Ends_With (Low, "t") then
+               return Ok (Word);
+            else
+               return Ok (Word & "t");
+            end if;
+         when Turkish_Inflection =>
+            declare
+               Last_Vowel : Character := ASCII.NUL;
+            begin
+               for Ch of Low loop
+                  if Ch = 'a' or else Ch = 'e' or else Ch = 'i'
+                    or else Ch = 'o' or else Ch = 'u'
+                  then
+                     Last_Vowel := Ch;
+                  end if;
+               end loop;
+
+               if Last_Vowel = 'e' or else Last_Vowel = 'i' then
+                  return Ok (Word & "ler");
+               else
+                  return Ok (Word & "lar");
+               end if;
+            end;
+      end case;
+   end Pluralize_In_Language;
+
+   function Singularize_In_Language
+     (Word     : String;
+      Language : Inflection_Language)
+      return Humanize.Status.Text_Result
+   is
+      Low : constant String := Inflection_Key (Word);
+      Hit : constant String := Language_Irregular_Singular (Word, Language);
+   begin
+      if Hit'Length > 0 then
+         return Ok (Hit);
+      end if;
+
+      case Language is
+         when English_Inflection =>
+            return Singularize (Word);
+         when Danish_Inflection | Norwegian_Inflection
+            | Norwegian_Bokmal_Inflection =>
+            if Ends_With (Low, "er") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2));
+            elsif Ends_With (Low, "r") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1));
+            else
+               return Ok (Word);
+            end if;
+         when German_Inflection =>
+            if Ends_With (Low, "chen") or else Ends_With (Low, "lein") then
+               return Ok (Word);
+            elsif Ends_With (Low, "nen") and then Word'Length > 3 then
+               return Ok (Remove_Last (Word, 1));
+            elsif Ends_With (Low, "en") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2));
+            elsif Ends_With (Low, "e") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1));
+            elsif Ends_With (Low, "s") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1));
+            else
+               return Ok (Word);
+            end if;
+         when French_Inflection =>
+            if Ends_With (Low, "eaux") and then Word'Length > 4 then
+               return Ok (Remove_Last (Word, 1));
+            elsif Ends_With (Low, "aux") and then Word'Length > 3 then
+               return Ok (Remove_Last (Word, 3) & "al");
+            elsif Ends_With (Low, "x") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1));
+            elsif Ends_With (Low, "s") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1));
+            else
+               return Ok (Word);
+            end if;
+         when Spanish_Inflection =>
+            if Ends_With (Low, "ces") and then Word'Length > 3 then
+               return Ok (Remove_Last (Word, 3) & "z");
+            elsif Ends_With (Low, "es") and then Word'Length > 2
+              and then not Is_ASCII_Vowel (Low (Low'Last - 2))
+            then
+               return Ok (Remove_Last (Word, 2));
+            elsif Ends_With (Low, "s") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1));
+            else
+               return Ok (Word);
+            end if;
+         when Italian_Inflection =>
+            if Ends_With (Low, "che") and then Word'Length > 3 then
+               return Ok (Remove_Last (Word, 3) & "ca");
+            elsif Ends_With (Low, "ghe") and then Word'Length > 3 then
+               return Ok (Remove_Last (Word, 3) & "ga");
+            elsif Ends_With (Low, "chi") and then Word'Length > 3 then
+               return Ok (Remove_Last (Word, 3) & "co");
+            elsif Ends_With (Low, "ghi") and then Word'Length > 3 then
+               return Ok (Remove_Last (Word, 3) & "go");
+            elsif Ends_With (Low, "i") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1) & "o");
+            elsif Ends_With (Low, "e") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1) & "a");
+            else
+               return Ok (Word);
+            end if;
+         when Portuguese_Inflection =>
+            if Ends_With (Low, "coes") and then Word'Length > 4 then
+               return Ok (Remove_Last (Word, 4) & "cao");
+            elsif Ends_With (Low, "is") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2) & "l");
+            elsif Ends_With (Low, "ns") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2) & "m");
+            elsif Ends_With (Low, "es") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2));
+            elsif Ends_With (Low, "s") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1));
+            else
+               return Ok (Word);
+            end if;
+         when Dutch_Inflection =>
+            if Ends_With (Low, "en") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2));
+            elsif Ends_With (Low, "n") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1));
+            else
+               return Ok (Word);
+            end if;
+         when Swedish_Inflection =>
+            if Ends_With (Low, "or") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2) & "a");
+            elsif Ends_With (Low, "ar") and then Word'Length > 2 then
+               return Ok (Remove_Last (Word, 2));
+            elsif Ends_With (Low, "r") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1));
+            else
+               return Ok (Word);
+            end if;
+         when Finnish_Inflection =>
+            if Ends_With (Low, "t") and then Word'Length > 1 then
+               return Ok (Remove_Last (Word, 1));
+            else
+               return Ok (Word);
+            end if;
+         when Turkish_Inflection =>
+            if Ends_With (Low, "lar") or else Ends_With (Low, "ler") then
+               return Ok (Remove_Last (Word, 3));
+            else
+               return Ok (Word);
+            end if;
+      end case;
+   end Singularize_In_Language;
+
+   function Inflection_Language_Label
+     (Language : Inflection_Language)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Ok
+        (case Language is
+            when English_Inflection           => "en",
+            when Danish_Inflection            => "da",
+            when German_Inflection            => "de",
+            when French_Inflection            => "fr",
+            when Spanish_Inflection           => "es",
+            when Italian_Inflection           => "it",
+            when Portuguese_Inflection        => "pt",
+            when Dutch_Inflection             => "nl",
+            when Swedish_Inflection           => "sv",
+            when Norwegian_Inflection         => "no",
+            when Norwegian_Bokmal_Inflection  => "nb",
+            when Finnish_Inflection           => "fi",
+            when Turkish_Inflection           => "tr");
+   end Inflection_Language_Label;
 
    function Singularize_With_Dictionary
      (Word      : String;
@@ -4055,6 +5423,69 @@ package body Humanize.Strings is
       return Count;
    end Grapheme_Display_Width;
 
+   function ANSI_Escape_Last
+     (Text  : String;
+      First : Natural)
+      return Natural
+   is
+      Index : Natural;
+   begin
+      if First > Text'Last or else Text (First) /= ASCII.ESC then
+         return 0;
+      elsif First = Text'Last then
+         return First;
+      end if;
+
+      case Text (First + 1) is
+         when '[' =>
+            Index := First + 2;
+            while Index <= Text'Last loop
+               if Character'Pos (Text (Index)) in 16#40# .. 16#7E# then
+                  return Index;
+               end if;
+               Index := Index + 1;
+            end loop;
+            return Text'Last;
+         when ']' | 'P' | '^' | '_' =>
+            Index := First + 2;
+            while Index <= Text'Last loop
+               if Text (Index) = ASCII.BEL then
+                  return Index;
+               elsif Text (Index) = ASCII.ESC
+                 and then Index < Text'Last
+                 and then Text (Index + 1) = '\'
+               then
+                  return Index + 1;
+               end if;
+               Index := Index + 1;
+            end loop;
+            return Text'Last;
+         when others =>
+            return First + 1;
+      end case;
+   end ANSI_Escape_Last;
+
+   function ANSI_Display_Width
+     (Text : String)
+      return Natural
+   is
+      Index : Natural := Text'First;
+      Last  : Natural;
+      Count : Natural := 0;
+   begin
+      while Index <= Text'Last loop
+         Last := ANSI_Escape_Last (Text, Index);
+         if Last /= 0 then
+            Index := Last + 1;
+         else
+            Last := Next_Grapheme_Last (Text, Index);
+            Count := Count + Grapheme_Cluster_Display_Width (Text, Index, Last);
+            Index := Last + 1;
+         end if;
+      end loop;
+      return Count;
+   end ANSI_Display_Width;
+
    function Truncate_UTF8
      (Text      : String;
       Max_Chars : Natural;
@@ -4184,6 +5615,304 @@ package body Humanize.Strings is
       end loop;
       return Ok (Text (Text'First .. Last_Keep) & Ellipsis);
    end Truncate_Graphemes;
+
+   function Truncate_Display_Width
+     (Text      : String;
+      Max_Width : Natural;
+      Ellipsis  : String := "...")
+      return Humanize.Status.Text_Result
+   is
+      Ellipsis_Width : constant Natural := Grapheme_Display_Width (Ellipsis);
+      Limit          : Natural;
+      Index          : Natural := Text'First;
+      Cluster_Last   : Natural;
+      Cluster_Width  : Natural;
+      Used           : Natural := 0;
+      Last_Keep      : Natural := Text'First - 1;
+   begin
+      if Grapheme_Display_Width (Text) <= Max_Width then
+         return Ok (Text);
+      elsif Max_Width = 0 then
+         return Ok ("");
+      elsif Max_Width <= Ellipsis_Width then
+         return Truncate_Display_Width (Ellipsis, Max_Width, "");
+      end if;
+
+      Limit := Max_Width - Ellipsis_Width;
+      while Index <= Text'Last loop
+         Cluster_Last := Next_Grapheme_Last (Text, Index);
+         Cluster_Width :=
+           Grapheme_Cluster_Display_Width (Text, Index, Cluster_Last);
+         exit when Used + Cluster_Width > Limit;
+         Used := Used + Cluster_Width;
+         Last_Keep := Cluster_Last;
+         Index := Cluster_Last + 1;
+      end loop;
+
+      if Last_Keep < Text'First then
+         return Ok (Ellipsis);
+      else
+         return Ok (Text (Text'First .. Last_Keep) & Ellipsis);
+      end if;
+   end Truncate_Display_Width;
+
+   function Truncate_ANSI_Display_Width
+     (Text      : String;
+      Max_Width : Natural;
+      Ellipsis  : String := "...")
+      return Humanize.Status.Text_Result
+   is
+      Ellipsis_Width : constant Natural := ANSI_Display_Width (Ellipsis);
+      Limit          : Natural;
+      Index          : Natural := Text'First;
+      Last           : Natural;
+      Cluster_Width  : Natural;
+      Used           : Natural := 0;
+      Result         : Unbounded_String;
+   begin
+      if ANSI_Display_Width (Text) <= Max_Width then
+         return Ok (Text);
+      elsif Max_Width = 0 then
+         return Ok ("");
+      elsif Max_Width <= Ellipsis_Width then
+         return Truncate_ANSI_Display_Width (Ellipsis, Max_Width, "");
+      end if;
+
+      Limit := Max_Width - Ellipsis_Width;
+      while Index <= Text'Last loop
+         Last := ANSI_Escape_Last (Text, Index);
+         if Last /= 0 then
+            Append (Result, Text (Index .. Last));
+            Index := Last + 1;
+         else
+            Last := Next_Grapheme_Last (Text, Index);
+            Cluster_Width :=
+              Grapheme_Cluster_Display_Width (Text, Index, Last);
+            exit when Used + Cluster_Width > Limit;
+            Used := Used + Cluster_Width;
+            Append (Result, Text (Index .. Last));
+            Index := Last + 1;
+         end if;
+      end loop;
+
+      Append (Result, Ellipsis);
+      return Ok (To_String (Result));
+   end Truncate_ANSI_Display_Width;
+
+   function Spaces (Count : Natural) return String is
+      Result : String (1 .. Count);
+   begin
+      for Index in Result'Range loop
+         Result (Index) := ' ';
+      end loop;
+      return Result;
+   end Spaces;
+
+   function Wrap_Internal
+     (Text      : String;
+      Max_Width : Positive;
+      Indent    : Natural;
+      ANSI      : Boolean)
+      return Humanize.Status.Text_Result
+   is
+      Index         : Natural := Text'First;
+      Last          : Natural;
+      Cluster_Width : Natural;
+      Line_Width    : Natural := 0;
+      Result        : Unbounded_String;
+
+      procedure Break_Line is
+      begin
+         Append (Result, ASCII.LF);
+         if Indent > 0 then
+            Append (Result, Spaces (Indent));
+         end if;
+         Line_Width := Indent;
+      end Break_Line;
+   begin
+      while Index <= Text'Last loop
+         if ANSI then
+            Last := ANSI_Escape_Last (Text, Index);
+            if Last /= 0 then
+               Append (Result, Text (Index .. Last));
+               Index := Last + 1;
+               goto Continue;
+            end if;
+         end if;
+
+         Last := Next_Grapheme_Last (Text, Index);
+         if Text (Index) = ASCII.LF then
+            Break_Line;
+         else
+            Cluster_Width :=
+              Grapheme_Cluster_Display_Width (Text, Index, Last);
+            if Line_Width > 0
+              and then Line_Width + Cluster_Width > Max_Width
+            then
+               Break_Line;
+               if Text (Index) = ' ' or else Text (Index) = ASCII.HT then
+                  Index := Last + 1;
+                  goto Continue;
+               end if;
+            end if;
+            Append (Result, Text (Index .. Last));
+            Line_Width := Line_Width + Cluster_Width;
+         end if;
+         Index := Last + 1;
+         <<Continue>>
+         null;
+      end loop;
+
+      return Ok (To_String (Result));
+   end Wrap_Internal;
+
+   function Wrap_Display_Width
+     (Text      : String;
+      Max_Width : Positive;
+      Indent    : Natural := 0)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Wrap_Internal (Text, Max_Width, Indent, ANSI => False);
+   end Wrap_Display_Width;
+
+   function Wrap_ANSI_Display_Width
+     (Text      : String;
+      Max_Width : Positive;
+      Indent    : Natural := 0)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Wrap_Internal (Text, Max_Width, Indent, ANSI => True);
+   end Wrap_ANSI_Display_Width;
+
+   function Key_Value_Line
+     (Key       : String;
+      Value     : String;
+      Separator : String := ": ")
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Ok (Key & Separator & Value);
+   end Key_Value_Line;
+
+   function Aligned_Key_Value_Line
+     (Key       : String;
+      Value     : String;
+      Key_Width : Natural;
+      Separator : String := " : ")
+      return Humanize.Status.Text_Result
+   is
+      Key_Display_Width : constant Natural := ANSI_Display_Width (Key);
+      Pad : constant Natural :=
+        (if Key_Display_Width >= Key_Width then 0 else Key_Width - Key_Display_Width);
+   begin
+      return Ok (Key & (1 .. Pad => ' ') & Separator & Value);
+   end Aligned_Key_Value_Line;
+
+   function Pad_To_Display_Width
+     (Text  : String;
+      Width : Natural)
+      return String
+   is
+      Text_Width : constant Natural := ANSI_Display_Width (Text);
+      Pad : constant Natural :=
+        (if Text_Width >= Width then 0 else Width - Text_Width);
+   begin
+      return Text & (1 .. Pad => ' ');
+   end Pad_To_Display_Width;
+
+   function Table_Row_2
+     (Left       : String;
+      Right      : String;
+      Left_Width : Natural;
+      Separator  : String := "  ")
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Ok
+        (Pad_To_Display_Width (Left, Left_Width) & Separator & Right);
+   end Table_Row_2;
+
+   function Table_Row_3
+     (Left         : String;
+      Middle       : String;
+      Right        : String;
+      Left_Width   : Natural;
+      Middle_Width : Natural;
+      Separator    : String := "  ")
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Ok
+        (Pad_To_Display_Width (Left, Left_Width) & Separator
+         & Pad_To_Display_Width (Middle, Middle_Width) & Separator
+         & Right);
+   end Table_Row_3;
+
+   function Table_2
+     (Left_Column  : Name_List;
+      Right_Column : Name_List;
+      Left_Width   : Natural;
+      Separator    : String := "  ")
+      return Humanize.Status.Text_Result
+   is
+      Result : Unbounded_String;
+   begin
+      if Left_Column'Length /= Right_Column'Length then
+         return (Status => Humanize.Status.Invalid_Argument, others => <>);
+      end if;
+
+      for Offset in 0 .. Left_Column'Length - 1 loop
+         if Offset > 0 then
+            Append (Result, ASCII.LF);
+         end if;
+         Append
+           (Result,
+            Pad_To_Display_Width
+              (To_String (Left_Column (Left_Column'First + Offset)),
+               Left_Width)
+            & Separator
+            & To_String (Right_Column (Right_Column'First + Offset)));
+      end loop;
+      return Ok (To_String (Result));
+   end Table_2;
+
+   function Table_3
+     (Left_Column   : Name_List;
+      Middle_Column : Name_List;
+      Right_Column  : Name_List;
+      Left_Width    : Natural;
+      Middle_Width  : Natural;
+      Separator     : String := "  ")
+      return Humanize.Status.Text_Result
+   is
+      Result : Unbounded_String;
+   begin
+      if Left_Column'Length /= Middle_Column'Length
+        or else Left_Column'Length /= Right_Column'Length
+      then
+         return (Status => Humanize.Status.Invalid_Argument, others => <>);
+      end if;
+
+      for Offset in 0 .. Left_Column'Length - 1 loop
+         if Offset > 0 then
+            Append (Result, ASCII.LF);
+         end if;
+         Append
+           (Result,
+            Pad_To_Display_Width
+              (To_String (Left_Column (Left_Column'First + Offset)),
+               Left_Width)
+            & Separator
+            & Pad_To_Display_Width
+              (To_String (Middle_Column (Middle_Column'First + Offset)),
+               Middle_Width)
+            & Separator
+            & To_String (Right_Column (Right_Column'First + Offset)));
+      end loop;
+      return Ok (To_String (Result));
+   end Table_3;
 
    function UTF8_Slice
      (Text       : String;
@@ -4371,6 +6100,157 @@ package body Humanize.Strings is
          Target, Written, Status);
    end Truncate_Graphemes_Into;
 
+   procedure Truncate_Display_Width_Into
+     (Text      : String;
+      Max_Width : Natural;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Ellipsis  : String := "...")
+   is
+   begin
+      Copy_Into
+        (Truncate_Display_Width (Text, Max_Width, Ellipsis),
+         Target, Written, Status);
+   end Truncate_Display_Width_Into;
+
+   procedure Truncate_ANSI_Display_Width_Into
+     (Text      : String;
+      Max_Width : Natural;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Ellipsis  : String := "...")
+   is
+   begin
+      Copy_Into
+        (Truncate_ANSI_Display_Width (Text, Max_Width, Ellipsis),
+         Target, Written, Status);
+   end Truncate_ANSI_Display_Width_Into;
+
+   procedure Wrap_Display_Width_Into
+     (Text      : String;
+      Max_Width : Positive;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Indent    : Natural := 0)
+   is
+   begin
+      Copy_Into
+        (Wrap_Display_Width (Text, Max_Width, Indent),
+         Target, Written, Status);
+   end Wrap_Display_Width_Into;
+
+   procedure Wrap_ANSI_Display_Width_Into
+     (Text      : String;
+      Max_Width : Positive;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Indent    : Natural := 0)
+   is
+   begin
+      Copy_Into
+        (Wrap_ANSI_Display_Width (Text, Max_Width, Indent),
+         Target, Written, Status);
+   end Wrap_ANSI_Display_Width_Into;
+
+   procedure Key_Value_Line_Into
+     (Key       : String;
+      Value     : String;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Separator : String := ": ")
+   is
+   begin
+      Copy_Into
+        (Key_Value_Line (Key, Value, Separator), Target, Written, Status);
+   end Key_Value_Line_Into;
+
+   procedure Aligned_Key_Value_Line_Into
+     (Key       : String;
+      Value     : String;
+      Key_Width : Natural;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Separator : String := " : ")
+   is
+   begin
+      Copy_Into
+        (Aligned_Key_Value_Line (Key, Value, Key_Width, Separator),
+         Target, Written, Status);
+   end Aligned_Key_Value_Line_Into;
+
+   procedure Table_Row_2_Into
+     (Left       : String;
+      Right      : String;
+      Left_Width : Natural;
+      Target     : in out String;
+      Written    : out Natural;
+      Status     : out Humanize.Status.Status_Code;
+      Separator  : String := "  ")
+   is
+   begin
+      Copy_Into
+        (Table_Row_2 (Left, Right, Left_Width, Separator),
+         Target, Written, Status);
+   end Table_Row_2_Into;
+
+   procedure Table_Row_3_Into
+     (Left         : String;
+      Middle       : String;
+      Right        : String;
+      Left_Width   : Natural;
+      Middle_Width : Natural;
+      Target       : in out String;
+      Written      : out Natural;
+      Status       : out Humanize.Status.Status_Code;
+      Separator    : String := "  ")
+   is
+   begin
+      Copy_Into
+        (Table_Row_3
+           (Left, Middle, Right, Left_Width, Middle_Width, Separator),
+         Target, Written, Status);
+   end Table_Row_3_Into;
+
+   procedure Table_2_Into
+     (Left_Column  : Name_List;
+      Right_Column : Name_List;
+      Left_Width   : Natural;
+      Target       : in out String;
+      Written      : out Natural;
+      Status       : out Humanize.Status.Status_Code;
+      Separator    : String := "  ")
+   is
+   begin
+      Copy_Into
+        (Table_2 (Left_Column, Right_Column, Left_Width, Separator),
+         Target, Written, Status);
+   end Table_2_Into;
+
+   procedure Table_3_Into
+     (Left_Column   : Name_List;
+      Middle_Column : Name_List;
+      Right_Column  : Name_List;
+      Left_Width    : Natural;
+      Middle_Width  : Natural;
+      Target        : in out String;
+      Written       : out Natural;
+      Status        : out Humanize.Status.Status_Code;
+      Separator     : String := "  ")
+   is
+   begin
+      Copy_Into
+        (Table_3
+           (Left_Column, Middle_Column, Right_Column,
+            Left_Width, Middle_Width, Separator),
+         Target, Written, Status);
+   end Table_3_Into;
+
    procedure Grapheme_Slice_Into
      (Text       : String;
       First_Char : Positive;
@@ -4468,6 +6348,17 @@ package body Humanize.Strings is
         (Title_Case_With_Word_Lists (Text, Acronyms, Small_Words),
          Target, Written, Status);
    end Title_Case_With_Word_Lists_Into;
+
+   procedure Editorial_Title_Into
+     (Text    : String;
+      Style   : Editorial_Title_Style;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Into (Editorial_Title (Text, Style), Target, Written, Status);
+   end Editorial_Title_Into;
 
    procedure NL_To_BR_Into
      (Text    : String;
@@ -4790,6 +6681,42 @@ package body Humanize.Strings is
    begin
       Copy_Into (Shorten_Path (Path, Options), Target, Written, Status);
    end Shorten_Path_Into;
+
+   procedure Symbolic_File_Mode_Into
+     (Mode    : File_Mode_Value;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Kind    : File_Mode_Kind := Mode_Only)
+   is
+   begin
+      Copy_Into (Symbolic_File_Mode (Mode, Kind), Target, Written, Status);
+   end Symbolic_File_Mode_Into;
+
+   procedure Octal_File_Mode_Into
+     (Mode            : File_Mode_Value;
+      Target          : in out String;
+      Written         : out Natural;
+      Status          : out Humanize.Status.Status_Code;
+      Include_Special : Boolean := False;
+      Prefix          : Boolean := False)
+   is
+   begin
+      Copy_Into
+        (Octal_File_Mode (Mode, Include_Special, Prefix),
+         Target, Written, Status);
+   end Octal_File_Mode_Into;
+
+   procedure File_Mode_Summary_Into
+     (Mode    : File_Mode_Value;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Kind    : File_Mode_Kind := Mode_Only)
+   is
+   begin
+      Copy_Into (File_Mode_Summary (Mode, Kind), Target, Written, Status);
+   end File_Mode_Summary_Into;
 
    procedure Search_Key_Into
      (Text    : String;
@@ -5141,6 +7068,30 @@ package body Humanize.Strings is
       Copy_Into (Singularize (Word), Target, Written, Status);
    end Singularize_Into;
 
+   procedure Pluralize_In_Language_Into
+     (Word     : String;
+      Language : Inflection_Language;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Into
+        (Pluralize_In_Language (Word, Language), Target, Written, Status);
+   end Pluralize_In_Language_Into;
+
+   procedure Singularize_In_Language_Into
+     (Word     : String;
+      Language : Inflection_Language;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Into
+        (Singularize_In_Language (Word, Language), Target, Written, Status);
+   end Singularize_In_Language_Into;
+
    procedure Casefold_ASCII_Into
      (Text    : String;
       Target  : in out String;
@@ -5218,6 +7169,17 @@ package body Humanize.Strings is
    begin
       Copy_Into (Inflection_Source_Label (Source), Target, Written, Status);
    end Inflection_Source_Label_Into;
+
+   procedure Inflection_Language_Label_Into
+     (Language : Inflection_Language;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Into
+        (Inflection_Language_Label (Language), Target, Written, Status);
+   end Inflection_Language_Label_Into;
 
    procedure Copy_Into
      (Result  : Humanize.Status.Text_Result;

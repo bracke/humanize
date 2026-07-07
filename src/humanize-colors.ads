@@ -1,3 +1,4 @@
+with Humanize.Contexts;
 with Humanize.Status;
 
 package Humanize.Colors is
@@ -42,17 +43,56 @@ package Humanize.Colors is
 
    type Color_List is array (Positive range <>) of RGB_Color;
 
+   type Contrast_Target is
+     (Target_Large_Text,
+      Target_Normal_Text,
+      Target_Enhanced_Text);
+
+   type Color_Remediation_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Ok;
+      Color  : RGB_Color := (others => 0);
+      Ratio  : Long_Float := 1.0;
+   end record;
+
    type Contrast_Level is
      (Contrast_Fail,
       Contrast_Large_Text,
       Contrast_Normal_Text,
       Contrast_Enhanced_Text);
 
+   type Contrast_Metadata is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Ok;
+      Ratio  : Long_Float := 1.0;
+      Level  : Contrast_Level := Contrast_Fail;
+      Passes_Large_Text : Boolean := False;
+      Passes_Normal_Text : Boolean := False;
+      Passes_Enhanced_Text : Boolean := False;
+   end record;
+
+   type Palette_Metadata is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Ok;
+      Color_Count : Natural := 0;
+      Pair_Count : Natural := 0;
+      Failing_Pairs : Natural := 0;
+      Large_Text_Pairs : Natural := 0;
+      Normal_Text_Pairs : Natural := 0;
+      Enhanced_Text_Pairs : Natural := 0;
+      Best_Contrast_Ratio : Long_Float := 1.0;
+      Worst_Contrast_Ratio : Long_Float := 1.0;
+   end record;
+
    type Color_Vision_Deficiency is
      (Protanopia,
       Deuteranopia,
       Tritanopia,
       Achromatopsia);
+
+   type Perceptual_Difference_Method is
+     (Perceptual_CIE76,
+      Perceptual_CIE94_Graphic_Arts,
+      Perceptual_CIE94_Textiles,
+      Perceptual_CIEDE2000,
+      Perceptual_OKLab);
 
    function Parse_Hex_Color
      (Text  : String;
@@ -165,11 +205,27 @@ package Humanize.Colors is
    --  @param Color RGB color.
    --  @return Hue family label such as "blue" or "neutral".
 
+   function Hue_Family_Label
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Color RGB color.
+   --  @return Localized hue family label such as "blue" or "neutral".
+
    function Saturation_Label
      (Color : RGB_Color)
       return Humanize.Status.Text_Result;
    --  @param Color RGB color.
    --  @return Saturation bucket such as "muted" or "vivid".
+
+   function Saturation_Label
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Color RGB color.
+   --  @return Localized saturation bucket such as "muted" or "vivid".
 
    function Temperature_Label
      (Color : RGB_Color)
@@ -177,17 +233,41 @@ package Humanize.Colors is
    --  @param Color RGB color.
    --  @return Warm/cool/neutral color-temperature label.
 
+   function Temperature_Label
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Color RGB color.
+   --  @return Localized warm/cool/neutral color-temperature label.
+
    function Chroma_Label
      (Color : RGB_Color)
       return Humanize.Status.Text_Result;
    --  @param Color RGB color.
    --  @return Chroma style label such as "pastel" or "vivid".
 
+   function Chroma_Label
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Color RGB color.
+   --  @return Localized chroma style label such as "pastel" or "vivid".
+
    function Color_Description
      (Color : RGB_Color)
       return Humanize.Status.Text_Result;
    --  @param Color RGB color.
    --  @return Combined perceptual color description.
+
+   function Color_Description
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Color RGB color.
+   --  @return Localized combined perceptual color description.
 
    function Nearest_Color_Name
      (Color : RGB_Color)
@@ -231,6 +311,18 @@ package Humanize.Colors is
    --  @param Colors Palette colors.
    --  @return Pair-count summary across fail, large, normal, and enhanced text.
 
+   function Palette_Metadata_For
+     (Colors : Color_List)
+      return Palette_Metadata;
+   --  @param Colors Palette colors.
+   --  @return Structured contrast metadata for all palette pairs.
+
+   function Palette_Metadata_Label
+     (Colors : Color_List)
+      return Humanize.Status.Text_Result;
+   --  @param Colors Palette colors.
+   --  @return Deterministic summary of structured palette contrast metadata.
+
    function Palette_Mood_Label
      (Colors : Color_List)
       return Humanize.Status.Text_Result;
@@ -261,6 +353,14 @@ package Humanize.Colors is
    --  @param Color RGB color.
    --  @return Brightness bucket such as "dark" or "very light".
 
+   function Brightness_Label
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Color RGB color.
+   --  @return Localized brightness bucket such as "dark" or "very light".
+
    function Opacity_Label
      (Opacity : Long_Float)
       return Humanize.Status.Text_Result;
@@ -281,11 +381,49 @@ package Humanize.Colors is
    --  @param Background Background color.
    --  @return WCAG contrast ratio, 1.0 through 21.0.
 
+   function Composite
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Alpha      : Long_Float)
+      return RGB_Color;
+   --  @param Foreground Source foreground color.
+   --  @param Background Destination background color.
+   --  @param Alpha Foreground opacity, clamped to 0.0 through 1.0.
+   --  @return RGB result after alpha compositing over Background.
+
+   function Alpha_Contrast_Ratio
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Alpha      : Long_Float)
+      return Long_Float;
+   --  @param Foreground Source foreground color.
+   --  @param Background Destination background color.
+   --  @param Alpha Foreground opacity, clamped to 0.0 through 1.0.
+   --  @return WCAG contrast ratio after compositing Foreground over Background.
+
+   function Alpha_Contrast_Label
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Alpha      : Long_Float)
+      return Humanize.Status.Text_Result;
+   --  @param Foreground Source foreground color.
+   --  @param Background Destination background color.
+   --  @param Alpha Foreground opacity, clamped to 0.0 through 1.0.
+   --  @return Ratio and contrast level label after alpha compositing.
+
    function Contrast_Level_For
      (Ratio : Long_Float)
       return Contrast_Level;
    --  @param Ratio WCAG contrast ratio.
    --  @return Contrast level bucket.
+
+   function Contrast_Metadata_For
+     (Foreground : RGB_Color;
+      Background : RGB_Color)
+      return Contrast_Metadata;
+   --  @param Foreground Foreground color.
+   --  @param Background Background color.
+   --  @return Machine-readable contrast ratio and pass-level metadata.
 
    function Contrast_Label
      (Foreground : RGB_Color;
@@ -295,6 +433,16 @@ package Humanize.Colors is
    --  @param Background Background color.
    --  @return Ratio and contrast level label.
 
+   function Contrast_Label
+     (Context    : Humanize.Contexts.Context;
+      Foreground : RGB_Color;
+      Background : RGB_Color)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Foreground Foreground color.
+   --  @param Background Background color.
+   --  @return Ratio and localized contrast level label.
+
    function Readability_Label
      (Foreground : RGB_Color;
       Background : RGB_Color)
@@ -302,6 +450,16 @@ package Humanize.Colors is
    --  @param Foreground Foreground color.
    --  @param Background Background color.
    --  @return Text-readability summary for the color pair.
+
+   function Readability_Label
+     (Context    : Humanize.Contexts.Context;
+      Foreground : RGB_Color;
+      Background : RGB_Color)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Foreground Foreground color.
+   --  @param Background Background color.
+   --  @return Localized text-readability summary for the color pair.
 
    function APCA_Contrast
      (Foreground : RGB_Color;
@@ -337,6 +495,26 @@ package Humanize.Colors is
    --  @param Background Background color.
    --  @return Combined WCAG, APCA-style, and CVD risk summary.
 
+   function Accessible_Foreground
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Target     : Contrast_Target := Target_Normal_Text)
+      return Color_Remediation_Result;
+   --  @param Foreground Starting foreground color.
+   --  @param Background Background color.
+   --  @param Target WCAG contrast target.
+   --  @return Adjusted foreground and contrast ratio.
+
+   function Contrast_Remediation_Label
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Target     : Contrast_Target := Target_Normal_Text)
+      return Humanize.Status.Text_Result;
+   --  @param Foreground Starting foreground color.
+   --  @param Background Background color.
+   --  @param Target WCAG contrast target.
+   --  @return Suggestion for meeting the target contrast.
+
    function Color_Difference
      (Left  : RGB_Color;
       Right : RGB_Color)
@@ -361,6 +539,24 @@ package Humanize.Colors is
    --  @param Right Second color.
    --  @return CIE76 Delta-E style difference in Lab space.
 
+   function CIE94_Difference
+     (Left     : RGB_Color;
+      Right    : RGB_Color;
+      Textiles : Boolean := False)
+      return Long_Float;
+   --  @param Left First color.
+   --  @param Right Second color.
+   --  @param Textiles Use the textile weighting variant when true.
+   --  @return CIE94 Delta-E difference.
+
+   function CIEDE2000_Difference
+     (Left  : RGB_Color;
+      Right : RGB_Color)
+      return Long_Float;
+   --  @param Left First color.
+   --  @param Right Second color.
+   --  @return CIEDE2000 Delta-E difference.
+
    function OK_Perceptual_Difference
      (Left  : RGB_Color;
       Right : RGB_Color)
@@ -369,12 +565,32 @@ package Humanize.Colors is
    --  @param Right Second color.
    --  @return OKLab Euclidean difference scaled to Delta-E style units.
 
+   function Perceptual_Difference
+     (Left   : RGB_Color;
+      Right  : RGB_Color;
+      Method : Perceptual_Difference_Method)
+      return Long_Float;
+   --  @param Left First color.
+   --  @param Right Second color.
+   --  @param Method Perceptual difference algorithm.
+   --  @return Difference in the selected perceptual metric.
+
    function Perceptual_Difference_Label
      (Left  : RGB_Color;
       Right : RGB_Color)
       return Humanize.Status.Text_Result;
    --  @param Left First color.
    --  @param Right Second color.
+   --  @return Human label for perceptual color difference.
+
+   function Perceptual_Difference_Label
+     (Left   : RGB_Color;
+      Right  : RGB_Color;
+      Method : Perceptual_Difference_Method)
+      return Humanize.Status.Text_Result;
+   --  @param Left First color.
+   --  @param Right Second color.
+   --  @param Method Perceptual difference algorithm.
    --  @return Human label for perceptual color difference.
 
    procedure Hex_Color_Into
@@ -453,11 +669,35 @@ package Humanize.Colors is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Hue_Family_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Color RGB color.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Saturation_Label_Into
      (Color   : RGB_Color;
       Target  : in out String;
       Written : out Natural;
       Status  : out Humanize.Status.Status_Code);
+   --  @param Color RGB color.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Saturation_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
    --  @param Color RGB color.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
@@ -473,6 +713,18 @@ package Humanize.Colors is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Temperature_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Color RGB color.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Chroma_Label_Into
      (Color   : RGB_Color;
       Target  : in out String;
@@ -483,11 +735,35 @@ package Humanize.Colors is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Chroma_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Color RGB color.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Color_Description_Into
      (Color   : RGB_Color;
       Target  : in out String;
       Written : out Natural;
       Status  : out Humanize.Status.Status_Code);
+   --  @param Color RGB color.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Color_Description_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
    --  @param Color RGB color.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
@@ -563,6 +839,16 @@ package Humanize.Colors is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Palette_Metadata_Label_Into
+     (Colors  : Color_List;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Colors Palette colors.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Palette_Mood_Label_Into
      (Colors  : Color_List;
       Target  : in out String;
@@ -603,6 +889,18 @@ package Humanize.Colors is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Brightness_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Color RGB color.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Opacity_Label_Into
      (Opacity : Long_Float;
       Target  : in out String;
@@ -625,12 +923,54 @@ package Humanize.Colors is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Alpha_Contrast_Label_Into
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Alpha      : Long_Float;
+      Target     : in out String;
+      Written    : out Natural;
+      Status     : out Humanize.Status.Status_Code);
+   --  @param Foreground Source foreground color.
+   --  @param Background Destination background color.
+   --  @param Alpha Foreground opacity, clamped to 0.0 through 1.0.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Contrast_Label_Into
+     (Context    : Humanize.Contexts.Context;
+      Foreground : RGB_Color;
+      Background : RGB_Color;
+      Target     : in out String;
+      Written    : out Natural;
+      Status     : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Foreground Foreground color.
+   --  @param Background Background color.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Readability_Label_Into
      (Foreground : RGB_Color;
       Background : RGB_Color;
       Target     : in out String;
       Written    : out Natural;
       Status     : out Humanize.Status.Status_Code);
+   --  @param Foreground Foreground color.
+   --  @param Background Background color.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Readability_Label_Into
+     (Context    : Humanize.Contexts.Context;
+      Foreground : RGB_Color;
+      Background : RGB_Color;
+      Target     : in out String;
+      Written    : out Natural;
+      Status     : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
    --  @param Foreground Foreground color.
    --  @param Background Background color.
    --  @param Target Caller-owned 1-based output buffer.
@@ -675,6 +1015,20 @@ package Humanize.Colors is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Contrast_Remediation_Label_Into
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Target     : in out String;
+      Written    : out Natural;
+      Status     : out Humanize.Status.Status_Code;
+      Goal       : Contrast_Target := Target_Normal_Text);
+   --  @param Foreground Starting foreground color.
+   --  @param Background Background color.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Goal WCAG contrast target.
+
    procedure Color_Difference_Label_Into
      (Left    : RGB_Color;
       Right   : RGB_Color;
@@ -695,6 +1049,20 @@ package Humanize.Colors is
       Status  : out Humanize.Status.Status_Code);
    --  @param Left First color.
    --  @param Right Second color.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Perceptual_Difference_Label_Into
+     (Left    : RGB_Color;
+      Right   : RGB_Color;
+      Method  : Perceptual_Difference_Method;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Left First color.
+   --  @param Right Second color.
+   --  @param Method Perceptual difference algorithm.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

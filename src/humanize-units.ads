@@ -56,6 +56,23 @@ package Humanize.Units is
 
    type Unit_Style is (Long, Abbreviated);
 
+   type Measurement_System is
+     (Locale_Default,
+      Metric_System,
+      US_Customary_System,
+      UK_Mixed_System,
+      Cooking_US_System);
+
+   type Measurement_Options is record
+      System       : Measurement_System := Locale_Default;
+      Number_Style : Humanize.Numbers.Number_Options :=
+        Humanize.Numbers.Default_Number_Options;
+   end record;
+
+   Default_Measurement_Options : constant Measurement_Options :=
+     (System       => Locale_Default,
+      Number_Style => Humanize.Numbers.Default_Number_Options);
+
    --  Convenience API: humanize Value of Unit, owned result.
    function Format
      (Context : Humanize.Contexts.Context;
@@ -96,6 +113,16 @@ package Humanize.Units is
    --  @param Options Fraction digit policy.
    --  @return Rendered length using millimeter, centimeter, meter, or kilometer.
 
+   function Format_Length
+     (Context : Humanize.Contexts.Context;
+      Meters  : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Meters Length in meters.
+   --  @param Options Measurement-system and fraction digit policy.
+   --  @return Rendered length using locale/profile-appropriate units.
+
    function Format_Mass
      (Context : Humanize.Contexts.Context;
       Grams   : Long_Float;
@@ -106,6 +133,16 @@ package Humanize.Units is
    --  @param Grams Mass in grams.
    --  @param Options Fraction digit policy.
    --  @return Rendered mass using milligram, gram, or kilogram.
+
+   function Format_Mass
+     (Context : Humanize.Contexts.Context;
+      Grams   : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Grams Mass in grams.
+   --  @param Options Measurement-system and fraction digit policy.
+   --  @return Rendered mass using locale/profile-appropriate units.
 
    function Format_Volume
      (Context : Humanize.Contexts.Context;
@@ -118,6 +155,16 @@ package Humanize.Units is
    --  @param Options Fraction digit policy.
    --  @return Rendered volume using milliliter or liter.
 
+   function Format_Volume
+     (Context : Humanize.Contexts.Context;
+      Liters  : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Liters Volume in liters.
+   --  @param Options Measurement-system and fraction digit policy.
+   --  @return Rendered volume using locale/profile-appropriate units.
+
    function Format_Speed
      (Context           : Humanize.Contexts.Context;
       Meters_Per_Second : Long_Float;
@@ -128,6 +175,16 @@ package Humanize.Units is
    --  @param Meters_Per_Second Speed in meters per second.
    --  @param Options Fraction digit policy.
    --  @return Rendered speed using m/s or km/h.
+
+   function Format_Speed
+     (Context           : Humanize.Contexts.Context;
+      Meters_Per_Second : Long_Float;
+      Options           : Measurement_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Meters_Per_Second Speed in meters per second.
+   --  @param Options Measurement-system and fraction digit policy.
+   --  @return Rendered speed using locale/profile-appropriate units.
 
    function Format_Area
      (Context       : Humanize.Contexts.Context;
@@ -183,6 +240,16 @@ package Humanize.Units is
    --  @param Celsius_Value Temperature in degrees Celsius.
    --  @param Options Fraction digit policy.
    --  @return Rendered temperature in Celsius.
+
+   function Format_Temperature
+     (Context : Humanize.Contexts.Context;
+      Celsius_Value : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Celsius_Value Temperature in degrees Celsius.
+   --  @param Options Measurement-system and fraction digit policy.
+   --  @return Rendered temperature using locale/profile-appropriate units.
 
    function Format_Frequency
      (Context : Humanize.Contexts.Context;
@@ -293,6 +360,16 @@ package Humanize.Units is
    --  @param Liters_Per_100_Km Fuel use in liters per 100 kilometers.
    --  @param Options Fraction digit policy.
    --  @return Rendered fuel economy.
+
+   function Format_Fuel_Economy
+     (Context            : Humanize.Contexts.Context;
+      Liters_Per_100_Km  : Long_Float;
+      Options            : Measurement_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Liters_Per_100_Km Fuel use in liters per 100 kilometers.
+   --  @param Options Measurement-system and fraction digit policy.
+   --  @return Rendered fuel economy using locale/profile-appropriate units.
 
    function Format_Flow_Rate
      (Context           : Humanize.Contexts.Context;
@@ -437,6 +514,16 @@ package Humanize.Units is
    --  @param Options Fraction digit policy.
    --  @return Rendered cooking temperature.
 
+   function Format_Cooking_Temperature
+     (Context : Humanize.Contexts.Context;
+      Fahrenheit_Value : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Fahrenheit_Value Cooking temperature in degrees Fahrenheit.
+   --  @param Options Measurement-system and fraction digit policy.
+   --  @return Rendered cooking temperature using locale/profile-appropriate units.
+
    function Format_Memory_Bandwidth
      (Context          : Humanize.Contexts.Context;
       Bytes_Per_Second : Long_Float;
@@ -458,6 +545,17 @@ package Humanize.Units is
    --  @param Microseconds Latency in microseconds.
    --  @param Options Fraction digit policy.
    --  @return Rendered latency using us, ms, or s.
+
+   function Format_Database_Throughput
+     (Context               : Humanize.Contexts.Context;
+      Operations_Per_Second : Long_Float;
+      Options               : Humanize.Numbers.Number_Options :=
+        Humanize.Numbers.Default_Number_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Operations_Per_Second Database operations per second.
+   --  @param Options Fraction digit policy.
+   --  @return Rendered database throughput using ops/s, k ops/s, or M ops/s.
 
    function Format_CPU_Load
      (Context : Humanize.Contexts.Context;
@@ -591,6 +689,16 @@ package Humanize.Units is
    --  @param Options Fraction digit policy.
    --  @return Rendered geographic distance using meters or kilometers.
 
+   function Format_Geographic_Distance
+     (Context : Humanize.Contexts.Context;
+      Meters  : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Meters Geographic distance in meters.
+   --  @param Options Measurement-system and fraction digit policy.
+   --  @return Rendered geographic distance using locale/profile-appropriate units.
+
    --  Bounded API: render into caller-owned Target. Target must be 1-based.
    procedure Format_Into
      (Context : Humanize.Contexts.Context;
@@ -642,6 +750,20 @@ package Humanize.Units is
    --  @param Status Humanize status for the operation.
    --  @param Options Fraction digit policy.
 
+   procedure Format_Length_Into
+     (Context : Humanize.Contexts.Context;
+      Meters  : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options);
+   --  @param Context Formatting context.
+   --  @param Meters Length in meters.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Measurement-system and fraction digit policy.
+
    procedure Format_Mass_Into
      (Context : Humanize.Contexts.Context;
       Grams   : Long_Float;
@@ -656,6 +778,20 @@ package Humanize.Units is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Options Fraction digit policy.
+
+   procedure Format_Mass_Into
+     (Context : Humanize.Contexts.Context;
+      Grams   : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options);
+   --  @param Context Formatting context.
+   --  @param Grams Mass in grams.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Measurement-system and fraction digit policy.
 
    procedure Format_Volume_Into
      (Context : Humanize.Contexts.Context;
@@ -672,6 +808,20 @@ package Humanize.Units is
    --  @param Status Humanize status for the operation.
    --  @param Options Fraction digit policy.
 
+   procedure Format_Volume_Into
+     (Context : Humanize.Contexts.Context;
+      Liters  : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options);
+   --  @param Context Formatting context.
+   --  @param Liters Volume in liters.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Measurement-system and fraction digit policy.
+
    procedure Format_Speed_Into
      (Context           : Humanize.Contexts.Context;
       Meters_Per_Second : Long_Float;
@@ -686,6 +836,20 @@ package Humanize.Units is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Options Fraction digit policy.
+
+   procedure Format_Speed_Into
+     (Context           : Humanize.Contexts.Context;
+      Meters_Per_Second : Long_Float;
+      Target            : in out String;
+      Written           : out Natural;
+      Status            : out Humanize.Status.Status_Code;
+      Options           : Measurement_Options);
+   --  @param Context Formatting context.
+   --  @param Meters_Per_Second Speed in meters per second.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Measurement-system and fraction digit policy.
 
    procedure Format_Area_Into
      (Context       : Humanize.Contexts.Context;
@@ -761,6 +925,20 @@ package Humanize.Units is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Options Fraction digit policy.
+
+   procedure Format_Temperature_Into
+     (Context : Humanize.Contexts.Context;
+      Celsius_Value : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options);
+   --  @param Context Formatting context.
+   --  @param Celsius_Value Temperature in degrees Celsius.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Measurement-system and fraction digit policy.
 
    procedure Format_Frequency_Into
      (Context : Humanize.Contexts.Context;
@@ -911,6 +1089,20 @@ package Humanize.Units is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Options Fraction digit policy.
+
+   procedure Format_Fuel_Economy_Into
+     (Context           : Humanize.Contexts.Context;
+      Liters_Per_100_Km : Long_Float;
+      Target            : in out String;
+      Written           : out Natural;
+      Status            : out Humanize.Status.Status_Code;
+      Options           : Measurement_Options);
+   --  @param Context Formatting context.
+   --  @param Liters_Per_100_Km Fuel use in liters per 100 kilometers.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Measurement-system and fraction digit policy.
 
    procedure Format_Flow_Rate_Into
      (Context           : Humanize.Contexts.Context;
@@ -1107,6 +1299,20 @@ package Humanize.Units is
    --  @param Status Humanize status for the operation.
    --  @param Options Fraction digit policy.
 
+   procedure Format_Cooking_Temperature_Into
+     (Context : Humanize.Contexts.Context;
+      Fahrenheit_Value : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options);
+   --  @param Context Formatting context.
+   --  @param Fahrenheit_Value Cooking temperature in degrees Fahrenheit.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Measurement-system and fraction digit policy.
+
    procedure Format_Memory_Bandwidth_Into
      (Context          : Humanize.Contexts.Context;
       Bytes_Per_Second : Long_Float;
@@ -1132,6 +1338,21 @@ package Humanize.Units is
         Humanize.Numbers.Default_Number_Options);
    --  @param Context Formatting context.
    --  @param Microseconds Latency in microseconds.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Fraction digit policy.
+
+   procedure Format_Database_Throughput_Into
+     (Context               : Humanize.Contexts.Context;
+      Operations_Per_Second : Long_Float;
+      Target                : in out String;
+      Written               : out Natural;
+      Status                : out Humanize.Status.Status_Code;
+      Options               : Humanize.Numbers.Number_Options :=
+        Humanize.Numbers.Default_Number_Options);
+   --  @param Context Formatting context.
+   --  @param Operations_Per_Second Database operations per second.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -1316,5 +1537,19 @@ package Humanize.Units is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Options Fraction digit policy.
+
+   procedure Format_Geographic_Distance_Into
+     (Context : Humanize.Contexts.Context;
+      Meters  : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options);
+   --  @param Context Formatting context.
+   --  @param Meters Geographic distance in meters.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Measurement-system and fraction digit policy.
 
 end Humanize.Units;

@@ -185,6 +185,150 @@ package body Humanize.Phrases is
       end case;
    end Payment_Lifecycle_Severity;
 
+   function Backup_Severity
+     (Status : Backup_Status)
+      return Phrase_Severity
+   is
+   begin
+      case Status is
+         when Backup_Completed =>
+            return Success_Severity;
+         when Backup_Failed =>
+            return Danger_Severity;
+         when Backup_Stale =>
+            return Warning_Severity;
+         when Backup_Running =>
+            return Info_Severity;
+      end case;
+   end Backup_Severity;
+
+   function Incident_Severity
+     (Status : Incident_Status)
+      return Phrase_Severity
+   is
+   begin
+      case Status is
+         when Incident_Resolved =>
+            return Success_Severity;
+         when Incident_Investigating | Incident_Identified =>
+            return Danger_Severity;
+         when Incident_Mitigated =>
+            return Warning_Severity;
+      end case;
+   end Incident_Severity;
+
+   function Release_Severity
+     (Status : Release_Status)
+      return Phrase_Severity
+   is
+   begin
+      case Status is
+         when Release_Published =>
+            return Success_Severity;
+         when Release_Rolled_Back =>
+            return Danger_Severity;
+         when Release_Ready =>
+            return Info_Severity;
+         when Release_Drafting =>
+            return Neutral_Severity;
+      end case;
+   end Release_Severity;
+
+   function Audit_Severity (Status : Audit_Status) return Phrase_Severity is
+   begin
+      case Status is
+         when Audit_Created | Audit_Updated | Audit_Restored =>
+            return Info_Severity;
+         when Audit_Deleted =>
+            return Warning_Severity;
+      end case;
+   end Audit_Severity;
+
+   function Feature_Flag_Severity
+     (Status : Feature_Flag_Status) return Phrase_Severity
+   is
+   begin
+      case Status is
+         when Flag_Enabled =>
+            return Success_Severity;
+         when Flag_Disabled =>
+            return Neutral_Severity;
+         when Flag_Rolling_Out =>
+            return Info_Severity;
+         when Flag_Rolled_Back =>
+            return Warning_Severity;
+      end case;
+   end Feature_Flag_Severity;
+
+   function Webhook_Severity (Status : Webhook_Status) return Phrase_Severity is
+   begin
+      case Status is
+         when Webhook_Delivered =>
+            return Success_Severity;
+         when Webhook_Failed =>
+            return Danger_Severity;
+         when Webhook_Retrying =>
+            return Warning_Severity;
+         when Webhook_Pending =>
+            return Info_Severity;
+      end case;
+   end Webhook_Severity;
+
+   function API_Key_Severity (Status : API_Key_Status) return Phrase_Severity is
+   begin
+      case Status is
+         when API_Key_Active | API_Key_Rotated =>
+            return Success_Severity;
+         when API_Key_Revoked | API_Key_Expired =>
+            return Danger_Severity;
+      end case;
+   end API_Key_Severity;
+
+   function Quota_Severity (Status : Quota_Status) return Phrase_Severity is
+   begin
+      case Status is
+         when Quota_Available | Quota_Reset =>
+            return Success_Severity;
+         when Quota_Near_Limit =>
+            return Warning_Severity;
+         when Quota_Exceeded =>
+            return Danger_Severity;
+      end case;
+   end Quota_Severity;
+
+   function Invoice_Severity (Status : Invoice_Status) return Phrase_Severity is
+   begin
+      case Status is
+         when Invoice_Paid | Invoice_Refunded =>
+            return Success_Severity;
+         when Invoice_Overdue | Refund_Failed =>
+            return Danger_Severity;
+         when Invoice_Sent =>
+            return Info_Severity;
+         when Invoice_Draft =>
+            return Neutral_Severity;
+      end case;
+   end Invoice_Severity;
+
+   function Database_Severity
+     (Status : Database_Status)
+      return Phrase_Severity
+   is
+   begin
+      case Status is
+         when Database_Online =>
+            return Success_Severity;
+         when Database_Offline | Database_Migration_Failed
+            | Database_Backup_Failed =>
+            return Danger_Severity;
+         when Database_Degraded | Database_Replication_Lagging =>
+            return Warning_Severity;
+         when Database_Migrating | Database_Replicating
+            | Database_Backup_Running =>
+            return Info_Severity;
+      end case;
+   end Database_Severity;
+
    function Supported_Phrase_Locales
      return Humanize.Status.Text_Result
    is
@@ -205,7 +349,8 @@ package body Humanize.Phrases is
          Text => To_Unbounded_String
            ("ui file validation empty network auth billing workflow queue security "
             & "deployment health notification form access sync transfer search "
-            & "collaboration issue task ci ticket payment summaries "
+            & "collaboration issue task ci ticket payment backup incident release "
+            & "audit flag webhook api_key quota invoice database summaries "
             & "comparisons"),
          Key => Humanize.Messages.No_Message);
    end Phrase_Pack_Summary;
@@ -716,8 +861,556 @@ package body Humanize.Phrases is
       end if;
    end Phrase_Separator;
 
+   function Database_Token_Text (Locale, Token : String) return String is
+   begin
+      if Locale = "da" then
+         if Token = "DATABASE" then
+            return "database";
+         end if;
+         if Token = "DEGRADED" then
+            return "forringet";
+         end if;
+         if Token = "MIGRATING" then
+            return "migrerer";
+         end if;
+         if Token = "MIGRATION" then
+            return "migrering";
+         end if;
+         if Token = "REPLICATING" then
+            return "replikerer";
+         end if;
+         if Token = "REPLICATION" then
+            return "replikering";
+         end if;
+         if Token = "LAGGING" then
+            return "forsinket";
+         end if;
+         if Token = "BACKUP" then
+            return "backup";
+         end if;
+         if Token = "RUNNING" then
+            return "koerer";
+         end if;
+      elsif Locale = "es" then
+         if Token = "DATABASE" then
+            return "base de datos";
+         end if;
+         if Token = "ONLINE" then
+            return "en linea";
+         end if;
+         if Token = "OFFLINE" then
+            return "sin conexion";
+         end if;
+         if Token = "DEGRADED" then
+            return "degradada";
+         end if;
+         if Token = "MIGRATING" then
+            return "migrando";
+         end if;
+         if Token = "MIGRATION" then
+            return "migracion";
+         end if;
+         if Token = "REPLICATING" then
+            return "replicando";
+         end if;
+         if Token = "REPLICATION" then
+            return "replicacion";
+         end if;
+         if Token = "LAGGING" then
+            return "retrasada";
+         end if;
+         if Token = "BACKUP" then
+            return "copia de seguridad";
+         end if;
+         if Token = "RUNNING" then
+            return "en ejecucion";
+         end if;
+      elsif Locale = "it" then
+         if Token = "DATABASE" then
+            return "database";
+         end if;
+         if Token = "DEGRADED" then
+            return "degradato";
+         end if;
+         if Token = "MIGRATING" then
+            return "migrazione";
+         end if;
+         if Token = "MIGRATION" then
+            return "migrazione";
+         end if;
+         if Token = "REPLICATING" then
+            return "replica";
+         end if;
+         if Token = "REPLICATION" then
+            return "replica";
+         end if;
+         if Token = "LAGGING" then
+            return "in ritardo";
+         end if;
+         if Token = "BACKUP" then
+            return "backup";
+         end if;
+         if Token = "RUNNING" then
+            return "in corso";
+         end if;
+      elsif Locale = "pt" then
+         if Token = "DATABASE" then
+            return "banco de dados";
+         end if;
+         if Token = "DEGRADED" then
+            return "degradado";
+         end if;
+         if Token = "MIGRATING" then
+            return "migrando";
+         end if;
+         if Token = "MIGRATION" then
+            return B ("6D69677261C3A7C3A36F");
+         end if;
+         if Token = "REPLICATING" then
+            return "replicando";
+         end if;
+         if Token = "REPLICATION" then
+            return B ("7265706C696361C3A7C3A36F");
+         end if;
+         if Token = "LAGGING" then
+            return "atrasada";
+         end if;
+         if Token = "BACKUP" then
+            return "backup";
+         end if;
+         if Token = "RUNNING" then
+            return "em execucao";
+         end if;
+      elsif Locale = "nl" then
+         if Token = "DATABASE" then
+            return "database";
+         end if;
+         if Token = "DEGRADED" then
+            return "verminderd";
+         end if;
+         if Token = "MIGRATING" then
+            return "migreert";
+         end if;
+         if Token = "MIGRATION" then
+            return "migratie";
+         end if;
+         if Token = "REPLICATING" then
+            return "repliceert";
+         end if;
+         if Token = "REPLICATION" then
+            return "replicatie";
+         end if;
+         if Token = "LAGGING" then
+            return "vertraagd";
+         end if;
+         if Token = "BACKUP" then
+            return "back-up";
+         end if;
+         if Token = "RUNNING" then
+            return "actief";
+         end if;
+      elsif Locale in "sv" | "no" | "nb" then
+         if Token = "DATABASE" then
+            return "database";
+         end if;
+         if Token = "DEGRADED" then
+            return "nedsatt";
+         end if;
+         if Token = "MIGRATING" then
+            return "migrerer";
+         end if;
+         if Token = "MIGRATION" then
+            return "migrering";
+         end if;
+         if Token = "REPLICATING" then
+            return "replikerer";
+         end if;
+         if Token = "REPLICATION" then
+            return "replikering";
+         end if;
+         if Token = "LAGGING" then
+            return "forsinket";
+         end if;
+         if Token = "BACKUP" then
+            return "backup";
+         end if;
+         if Token = "RUNNING" then
+            return "koerer";
+         end if;
+      elsif Locale = "fi" then
+         if Token = "DATABASE" then
+            return "tietokanta";
+         end if;
+         if Token = "DEGRADED" then
+            return "heikentynyt";
+         end if;
+         if Token = "MIGRATING" then
+            return "siirtyy";
+         end if;
+         if Token = "MIGRATION" then
+            return "siirto";
+         end if;
+         if Token = "REPLICATING" then
+            return "replikoi";
+         end if;
+         if Token = "REPLICATION" then
+            return "replikointi";
+         end if;
+         if Token = "LAGGING" then
+            return "viiveella";
+         end if;
+         if Token = "BACKUP" then
+            return "varmuuskopio";
+         end if;
+         if Token = "RUNNING" then
+            return "kaynnissa";
+         end if;
+      elsif Locale = "pl" then
+         if Token = "DATABASE" then
+            return "baza danych";
+         end if;
+         if Token = "DEGRADED" then
+            return "zdegradowana";
+         end if;
+         if Token = "MIGRATING" then
+            return "migruje";
+         end if;
+         if Token = "MIGRATION" then
+            return "migracja";
+         end if;
+         if Token = "REPLICATING" then
+            return "replikuje";
+         end if;
+         if Token = "REPLICATION" then
+            return "replikacja";
+         end if;
+         if Token = "LAGGING" then
+            return "opozniona";
+         end if;
+         if Token = "BACKUP" then
+            return "kopia zapasowa";
+         end if;
+         if Token = "RUNNING" then
+            return "uruchomiona";
+         end if;
+      elsif Locale = "cs" then
+         if Token = "DATABASE" then
+            return "databaze";
+         end if;
+         if Token = "DEGRADED" then
+            return "degradovana";
+         end if;
+         if Token = "MIGRATING" then
+            return "migruje";
+         end if;
+         if Token = "MIGRATION" then
+            return "migrace";
+         end if;
+         if Token = "REPLICATING" then
+            return "replikuje";
+         end if;
+         if Token = "REPLICATION" then
+            return "replikace";
+         end if;
+         if Token = "LAGGING" then
+            return "zpozdena";
+         end if;
+         if Token = "BACKUP" then
+            return "zaloha";
+         end if;
+         if Token = "RUNNING" then
+            return "bezi";
+         end if;
+      elsif Locale = "tr" then
+         if Token = "DATABASE" then
+            return "veritabani";
+         end if;
+         if Token = "ONLINE" then
+            return "cevrimici";
+         end if;
+         if Token = "OFFLINE" then
+            return "cevrimdisi";
+         end if;
+         if Token = "DEGRADED" then
+            return "bozulmus";
+         end if;
+         if Token = "MIGRATING" then
+            return "tasiniyor";
+         end if;
+         if Token = "MIGRATION" then
+            return "tasima";
+         end if;
+         if Token = "REPLICATING" then
+            return "cogaliyor";
+         end if;
+         if Token = "REPLICATION" then
+            return "cogaltma";
+         end if;
+         if Token = "LAGGING" then
+            return "gecikiyor";
+         end if;
+         if Token = "BACKUP" then
+            return "yedekleme";
+         end if;
+         if Token = "RUNNING" then
+            return "calisiyor";
+         end if;
+      elsif Locale = "ru" then
+         if Token = "DATABASE" then
+            return B ("D0B1D0B0D0B7D0B020D0B4D0B0D0BDD0BDD18BD185");
+         end if;
+         if Token = "ONLINE" then
+            return B ("D0B2D0BAD0BBD18ED187D0B5D0BDD0B0");
+         end if;
+         if Token = "OFFLINE" then
+            return B ("D0BDD0B5D0B4D0BED181D182D183D0BFD0BDD0B0");
+         end if;
+         if Token = "DEGRADED" then
+            return B ("D0B4D0B5D0B3D180D0B0D0B4D0B8D180D0BED0B2D0B0D0BDD0B0");
+         end if;
+         if Token = "MIGRATING" then
+            return B ("D0BCD0B8D0B3D180D0B8D180D183D0B5D182");
+         end if;
+         if Token = "MIGRATION" then
+            return B ("D0BCD0B8D0B3D180D0B0D186D0B8D18F");
+         end if;
+         if Token = "REPLICATING" then
+            return B ("D180D0B5D0BFD0BBD0B8D186D0B8D180D183D0B5D182D181D18F");
+         end if;
+         if Token = "REPLICATION" then
+            return B ("D180D0B5D0BFD0BBD0B8D0BAD0B0D186D0B8D18F");
+         end if;
+         if Token = "LAGGING" then
+            return B ("D0BED182D181D182D0B0D0B5D182");
+         end if;
+         if Token = "BACKUP" then
+            return B
+              ("D180D0B5D0B7D0B5D180D0B2D0BDD0BED0B520D0BA"
+               & "D0BED0BFD0B8D180D0BED0B2D0B0D0BDD0B8D0B5");
+         end if;
+         if Token = "RUNNING" then
+            return B ("D0B2D18BD0BFD0BED0BBD0BDD18FD0B5D182D181D18F");
+         end if;
+      elsif Locale = "uk" then
+         if Token = "DATABASE" then
+            return B ("D0B1D0B0D0B7D0B020D0B4D0B0D0BDD0B8D185");
+         end if;
+         if Token = "ONLINE" then
+            return B ("D0B4D0BED181D182D183D0BFD0BDD0B0");
+         end if;
+         if Token = "OFFLINE" then
+            return B ("D0BDD0B5D0B4D0BED181D182D183D0BFD0BDD0B0");
+         end if;
+         if Token = "DEGRADED" then
+            return B ("D0B4D0B5D0B3D180D0B0D0B4D0BED0B2D0B0D0BDD0B0");
+         end if;
+         if Token = "MIGRATING" then
+            return B ("D0BCD196D0B3D180D183D194");
+         end if;
+         if Token = "MIGRATION" then
+            return B ("D0BCD196D0B3D180D0B0D186D196D18F");
+         end if;
+         if Token = "REPLICATING" then
+            return B ("D180D0B5D0BFD0BBD196D0BAD183D194D182D18CD181D18F");
+         end if;
+         if Token = "REPLICATION" then
+            return B ("D180D0B5D0BFD0BBD196D0BAD0B0D186D196D18F");
+         end if;
+         if Token = "LAGGING" then
+            return B ("D0B2D196D0B4D181D182D0B0D194");
+         end if;
+         if Token = "BACKUP" then
+            return B
+              ("D180D0B5D0B7D0B5D180D0B2D0BDD0B520D0BA"
+               & "D0BED0BFD196D18ED0B2D0B0D0BDD0BDD18F");
+         end if;
+         if Token = "RUNNING" then
+            return B ("D0B2D0B8D0BAD0BED0BDD183D194D182D18CD181D18F");
+         end if;
+      elsif Locale = "ja" then
+         if Token = "DATABASE" then
+            return B ("E38387E383BCE382BFE38399E383BCE382B9");
+         end if;
+         if Token = "ONLINE" then
+            return B ("E382AAE383B3E383A9E382A4E383B3");
+         end if;
+         if Token = "OFFLINE" then
+            return B ("E382AAE38395E383A9E382A4E383B3");
+         end if;
+         if Token = "DEGRADED" then
+            return B ("E58AA3E58C96");
+         end if;
+         if Token = "MIGRATING" then
+            return B ("E7A7BBE8A18CE4B8AD");
+         end if;
+         if Token = "MIGRATION" then
+            return B ("E7A7BBE8A18C");
+         end if;
+         if Token = "REPLICATING" then
+            return B ("E383ACE38397E383AAE382B1E383BCE38388E4B8AD");
+         end if;
+         if Token = "REPLICATION" then
+            return B ("E383ACE38397E383AAE382B1E383BCE382B7E383A7E383B3");
+         end if;
+         if Token = "LAGGING" then
+            return B ("E98185E5BBB6");
+         end if;
+         if Token = "BACKUP" then
+            return B ("E38390E38383E382AFE382A2E38383E38397");
+         end if;
+         if Token = "RUNNING" then
+            return B ("E5AE9FE8A18CE4B8AD");
+         end if;
+      elsif Locale = "ko" then
+         if Token = "DATABASE" then
+            return B ("EB8DB0EC9DB4ED84B0EBB2A0EC9DB4EC8AA4");
+         end if;
+         if Token = "ONLINE" then
+            return B ("EC98A8EB9DBCEC9DB8");
+         end if;
+         if Token = "OFFLINE" then
+            return B ("EC98A4ED9484EB9DBCEC9DB8");
+         end if;
+         if Token = "DEGRADED" then
+            return B ("EC8000ED9598EB90A8");
+         end if;
+         if Token = "MIGRATING" then
+            return B ("ECA09CEC9DB4EAB7B8EBA088EC9DB4EC8598E4B8AD");
+         end if;
+         if Token = "MIGRATION" then
+            return B ("EBA788EC9DB4EAB7B8EBA088EC9DB4EC8598");
+         end if;
+         if Token = "REPLICATING" then
+            return B ("EBA088ED948CEB9FACEBA6ACEC9DB4ECBC80EC9DB4EC8598E4B8AD");
+         end if;
+         if Token = "REPLICATION" then
+            return B ("EBA088ED948CEB9FACEBA6ACEC9DB4ECBC80EC9DB4EC8598");
+         end if;
+         if Token = "LAGGING" then
+            return B ("ECA780EC97B0");
+         end if;
+         if Token = "BACKUP" then
+            return B ("EBB0B1EC9785");
+         end if;
+         if Token = "RUNNING" then
+            return B ("EC8BA4ED9689E4B8AD");
+         end if;
+      elsif Locale = "zh" then
+         if Token = "DATABASE" then
+            return B ("E695B0E68DAEE5BA93");
+         end if;
+         if Token = "ONLINE" then
+            return B ("E59CA8E7BABF");
+         end if;
+         if Token = "OFFLINE" then
+            return B ("E7A6BBE7BABF");
+         end if;
+         if Token = "DEGRADED" then
+            return B ("E9998DE7BAA7");
+         end if;
+         if Token = "MIGRATING" then
+            return B ("E8BF81E7A7BBE4B8AD");
+         end if;
+         if Token = "MIGRATION" then
+            return B ("E8BF81E7A7BB");
+         end if;
+         if Token = "REPLICATING" then
+            return B ("E5A48DE588B6E4B8AD");
+         end if;
+         if Token = "REPLICATION" then
+            return B ("E5A48DE588B6");
+         end if;
+         if Token = "LAGGING" then
+            return B ("E6BB9EE5908E");
+         end if;
+         if Token = "BACKUP" then
+            return B ("E5A487E4BBBD");
+         end if;
+         if Token = "RUNNING" then
+            return B ("E8BF90E8A18CE4B8AD");
+         end if;
+      elsif Locale = "ar" then
+         if Token = "DATABASE" then
+            return B ("D982D8A7D8B9D8AFD8A920D8A8D98AD8A7D986D8A7D8AA");
+         end if;
+         if Token = "ONLINE" then
+            return B ("D985D8AAD8B5D984D8A9");
+         end if;
+         if Token = "OFFLINE" then
+            return B ("D8BAD98AD8B120D985D8AAD8B5D984D8A9");
+         end if;
+         if Token = "DEGRADED" then
+            return B ("D985D8AAD8AFD987D988D8B1D8A9");
+         end if;
+         if Token = "MIGRATING" then
+            return B ("D982D98AD8AF20D8A7D984D8AAD8B1D8ADD98AD984");
+         end if;
+         if Token = "MIGRATION" then
+            return B ("D8AAD8B1D8ADD98AD984");
+         end if;
+         if Token = "REPLICATING" then
+            return B ("D982D98AD8AF20D8A7D984D986D8B3D8AE");
+         end if;
+         if Token = "REPLICATION" then
+            return B ("D986D8B3D8AE");
+         end if;
+         if Token = "LAGGING" then
+            return B ("D985D8AAD8A3D8AED8B1");
+         end if;
+         if Token = "BACKUP" then
+            return B ("D986D8B3D8AE20D8A7D8ADD8AAD98AD8A7D8B7D98A");
+         end if;
+         if Token = "RUNNING" then
+            return B ("D982D98AD8AF20D8A7D984D8AAD986D981D98AD8B0");
+         end if;
+      elsif Locale = "hi" then
+         if Token = "DATABASE" then
+            return B ("E0A4A1E0A587E0A49FE0A4BEE0A4ACE0A587E0A4B8");
+         end if;
+         if Token = "ONLINE" then
+            return B ("E0A491E0A4A8E0A4B2E0A4BEE0A487E0A4A8");
+         end if;
+         if Token = "OFFLINE" then
+            return B ("E0A491E0A4ABE0A4B2E0A4BEE0A487E0A4A8");
+         end if;
+         if Token = "DEGRADED" then
+            return B ("E0A485E0A4B5E0A4A8E0A4A4");
+         end if;
+         if Token = "MIGRATING" then
+            return B ("E0A4AAE0A58DE0A4B0E0A4B5E0A4BEE0A4B8E0A4BFE0A4A4");
+         end if;
+         if Token = "MIGRATION" then
+            return B ("E0A4AAE0A58DE0A4B0E0A4B5E0A4BEE0A4B8");
+         end if;
+         if Token = "REPLICATING" then
+            return B ("E0A4AAE0A58DE0A4B0E0A4A4E0A4BFE0A495E0A583E0A4A4");
+         end if;
+         if Token = "REPLICATION" then
+            return B ("E0A4AAE0A58DE0A4B0E0A4A4E0A4BFE0A495E0A583E0A4A4E0A4BF");
+         end if;
+         if Token = "LAGGING" then
+            return B ("E0A4AAE0A580E0A49BE0A587");
+         end if;
+         if Token = "BACKUP" then
+            return B ("E0A4ACE0A588E0A495E0A485E0A4AA");
+         end if;
+         if Token = "RUNNING" then
+            return B ("E0A49AE0A4B2E0A4B0E0A4B9E0A4BE");
+         end if;
+      end if;
+
+      return Ada.Characters.Handling.To_Lower (Token);
+   end Database_Token_Text;
+
    function Token_Text (Locale, Token : String) return String is
    begin
+      if Token in "DATABASE" | "ONLINE" | "OFFLINE" | "DEGRADED"
+        | "MIGRATING" | "MIGRATION" | "REPLICATING" | "REPLICATION"
+        | "LAGGING" | "BACKUP" | "RUNNING"
+      then
+         return Database_Token_Text (Locale, Token);
+      end if;
+
       if Locale = "da" then
          if Token = "EMPTY" then
             return "tom";
@@ -1410,6 +2103,90 @@ package body Humanize.Phrases is
            (Key_Text ("payment", Payment_Lifecycle_Status'Image (Status))),
          Key => Humanize.Messages.No_Message);
    end Payment_Lifecycle_Key;
+
+   function Backup_Key
+     (Status : Backup_Status)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return
+        (Status => Humanize.Status.Ok,
+         Text => To_Unbounded_String
+           (Key_Text ("backup", Backup_Status'Image (Status))),
+         Key => Humanize.Messages.No_Message);
+   end Backup_Key;
+
+   function Incident_Key
+     (Status : Incident_Status)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return
+        (Status => Humanize.Status.Ok,
+         Text => To_Unbounded_String
+           (Key_Text ("incident", Incident_Status'Image (Status))),
+         Key => Humanize.Messages.No_Message);
+   end Incident_Key;
+
+   function Release_Key
+     (Status : Release_Status)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return
+        (Status => Humanize.Status.Ok,
+         Text => To_Unbounded_String
+           (Key_Text ("release", Release_Status'Image (Status))),
+         Key => Humanize.Messages.No_Message);
+   end Release_Key;
+
+   function Audit_Key
+     (Status : Audit_Status)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Ok_Text (Key_Text ("audit", Audit_Status'Image (Status)));
+   end Audit_Key;
+
+   function Feature_Flag_Key
+     (Status : Feature_Flag_Status)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Ok_Text (Key_Text ("flag", Feature_Flag_Status'Image (Status)));
+   end Feature_Flag_Key;
+
+   function Webhook_Key
+     (Status : Webhook_Status)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Ok_Text (Key_Text ("webhook", Webhook_Status'Image (Status)));
+   end Webhook_Key;
+
+   function API_Key_Key
+     (Status : API_Key_Status)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Ok_Text (Key_Text ("api_key", API_Key_Status'Image (Status)));
+   end API_Key_Key;
+
+   function Quota_Key
+     (Status : Quota_Status)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Ok_Text (Key_Text ("quota", Quota_Status'Image (Status)));
+   end Quota_Key;
+
+   function Invoice_Key
+     (Status : Invoice_Status)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Ok_Text (Key_Text ("invoice", Invoice_Status'Image (Status)));
+   end Invoice_Key;
 
    function Phrase_Text
      (Locale : String;
@@ -2366,6 +3143,260 @@ package body Humanize.Phrases is
       return Ok_Text (Payment_Lifecycle_Text (Locale_Prefix (Context), Status));
    end Payment_Lifecycle_Phrase;
 
+   function Backup_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Backup_Status)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      case Status is
+         when Backup_Running =>
+            return Ok_Text ("backup running");
+         when Backup_Completed =>
+            return Ok_Text ("backup completed");
+         when Backup_Failed =>
+            return Ok_Text ("backup failed");
+         when Backup_Stale =>
+            return Ok_Text ("backup stale");
+      end case;
+   end Backup_Phrase;
+
+   function Incident_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Incident_Status)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      case Status is
+         when Incident_Investigating =>
+            return Ok_Text ("investigating incident");
+         when Incident_Identified =>
+            return Ok_Text ("incident identified");
+         when Incident_Mitigated =>
+            return Ok_Text ("incident mitigated");
+         when Incident_Resolved =>
+            return Ok_Text ("incident resolved");
+      end case;
+   end Incident_Phrase;
+
+   function Release_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Release_Status)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      case Status is
+         when Release_Drafting =>
+            return Ok_Text ("release drafting");
+         when Release_Ready =>
+            return Ok_Text ("release ready");
+         when Release_Published =>
+            return Ok_Text ("release published");
+         when Release_Rolled_Back =>
+            return Ok_Text ("release rolled back");
+      end case;
+   end Release_Phrase;
+
+   function Audit_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Audit_Status)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      case Status is
+         when Audit_Created => return Ok_Text ("audit entry created");
+         when Audit_Updated => return Ok_Text ("audit entry updated");
+         when Audit_Deleted => return Ok_Text ("audit entry deleted");
+         when Audit_Restored => return Ok_Text ("audit entry restored");
+      end case;
+   end Audit_Phrase;
+
+   function Feature_Flag_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Feature_Flag_Status)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      case Status is
+         when Flag_Enabled => return Ok_Text ("feature flag enabled");
+         when Flag_Disabled => return Ok_Text ("feature flag disabled");
+         when Flag_Rolling_Out => return Ok_Text ("feature flag rolling out");
+         when Flag_Rolled_Back => return Ok_Text ("feature flag rolled back");
+      end case;
+   end Feature_Flag_Phrase;
+
+   function Webhook_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Webhook_Status)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      case Status is
+         when Webhook_Pending => return Ok_Text ("webhook pending");
+         when Webhook_Delivered => return Ok_Text ("webhook delivered");
+         when Webhook_Failed => return Ok_Text ("webhook failed");
+         when Webhook_Retrying => return Ok_Text ("webhook retrying");
+      end case;
+   end Webhook_Phrase;
+
+   function API_Key_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : API_Key_Status)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      case Status is
+         when API_Key_Active => return Ok_Text ("API key active");
+         when API_Key_Revoked => return Ok_Text ("API key revoked");
+         when API_Key_Expired => return Ok_Text ("API key expired");
+         when API_Key_Rotated => return Ok_Text ("API key rotated");
+      end case;
+   end API_Key_Phrase;
+
+   function Quota_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Quota_Status)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      case Status is
+         when Quota_Available => return Ok_Text ("quota available");
+         when Quota_Near_Limit => return Ok_Text ("quota near limit");
+         when Quota_Exceeded => return Ok_Text ("quota exceeded");
+         when Quota_Reset => return Ok_Text ("quota reset");
+      end case;
+   end Quota_Phrase;
+
+   function Invoice_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Invoice_Status)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      case Status is
+         when Invoice_Draft => return Ok_Text ("invoice draft");
+         when Invoice_Sent => return Ok_Text ("invoice sent");
+         when Invoice_Paid => return Ok_Text ("invoice paid");
+         when Invoice_Refunded => return Ok_Text ("invoice refunded");
+         when Invoice_Overdue => return Ok_Text ("invoice overdue");
+         when Refund_Failed => return Ok_Text ("refund failed");
+      end case;
+   end Invoice_Phrase;
+
+   function Database_Phrase
+     (Context : Humanize.Contexts.Context;
+      Status  : Database_Status)
+      return Humanize.Status.Text_Result
+   is
+      Locale : constant String := Locale_Prefix (Context);
+   begin
+      if Has_Generated_Phrase_Pack (Locale) then
+         return Ok_Text (Generated_Phrase (Locale, Database_Status'Image (Status)));
+      end if;
+
+      case Status is
+         when Database_Online =>
+            return Ok_Text ("database online");
+         when Database_Offline =>
+            return Ok_Text ("database offline");
+         when Database_Degraded =>
+            return Ok_Text ("database degraded");
+         when Database_Migrating =>
+            return Ok_Text ("database migrating");
+         when Database_Migration_Failed =>
+            return Ok_Text ("database migration failed");
+         when Database_Replicating =>
+            return Ok_Text ("database replicating");
+         when Database_Replication_Lagging =>
+            return Ok_Text ("database replication lagging");
+         when Database_Backup_Running =>
+            return Ok_Text ("database backup running");
+         when Database_Backup_Failed =>
+            return Ok_Text ("database backup failed");
+      end case;
+   end Database_Phrase;
+
+   function Field_Change_Summary
+     (Context  : Humanize.Contexts.Context;
+      Changed  : Natural;
+      Added    : Natural;
+      Removed  : Natural;
+      Singular : String := "field";
+      Plural   : String := "fields")
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+      Total : constant Natural := Changed + Added + Removed;
+
+      function Image (Value : Natural) return String is
+         Raw : constant String := Natural'Image (Value);
+      begin
+         return Raw (Raw'First + 1 .. Raw'Last);
+      end Image;
+   begin
+      return Ok_Text
+        (Image (Total) & " "
+         & (if Total = 1 then Singular else Plural) & ": "
+         & Image (Changed) & " changed, "
+         & Image (Added) & " added, "
+         & Image (Removed) & " removed");
+   end Field_Change_Summary;
+
+   function Field_Diff_Summary
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Before  : String;
+      After   : String)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      return Ok_Text
+        (Field & " changed from " & Before & " to " & After);
+   end Field_Diff_Summary;
+
+   function Field_Added_Summary
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      return Ok_Text (Field & " added as " & Value);
+   end Field_Added_Summary;
+
+   function Field_Removed_Summary
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      return Ok_Text (Field & " removed (was " & Value & ")");
+   end Field_Removed_Summary;
+
+   function Field_Unchanged_Summary
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      return Ok_Text (Field & " unchanged at " & Value);
+   end Field_Unchanged_Summary;
+
    procedure Status_Phrase_Into
      (Context : Humanize.Contexts.Context;
       Status  : UI_Status;
@@ -2412,6 +3443,192 @@ package body Humanize.Phrases is
       Copy_Result
         (Payment_Lifecycle_Phrase (Context, Status), Target, Written, Code);
    end Payment_Lifecycle_Phrase_Into;
+
+   procedure Backup_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Backup_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Backup_Phrase (Context, Status), Target, Written, Code);
+   end Backup_Phrase_Into;
+
+   procedure Incident_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Incident_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Incident_Phrase (Context, Status), Target, Written, Code);
+   end Incident_Phrase_Into;
+
+   procedure Release_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Release_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Release_Phrase (Context, Status), Target, Written, Code);
+   end Release_Phrase_Into;
+
+   procedure Audit_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Audit_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Audit_Phrase (Context, Status), Target, Written, Code);
+   end Audit_Phrase_Into;
+
+   procedure Feature_Flag_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Feature_Flag_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Feature_Flag_Phrase (Context, Status), Target, Written, Code);
+   end Feature_Flag_Phrase_Into;
+
+   procedure Webhook_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Webhook_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Webhook_Phrase (Context, Status), Target, Written, Code);
+   end Webhook_Phrase_Into;
+
+   procedure API_Key_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : API_Key_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (API_Key_Phrase (Context, Status), Target, Written, Code);
+   end API_Key_Phrase_Into;
+
+   procedure Quota_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Quota_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Quota_Phrase (Context, Status), Target, Written, Code);
+   end Quota_Phrase_Into;
+
+   procedure Invoice_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Invoice_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Invoice_Phrase (Context, Status), Target, Written, Code);
+   end Invoice_Phrase_Into;
+
+   procedure Database_Phrase_Into
+     (Context : Humanize.Contexts.Context;
+      Status  : Database_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Database_Phrase (Context, Status), Target, Written, Code);
+   end Database_Phrase_Into;
+
+   procedure Field_Change_Summary_Into
+     (Context  : Humanize.Contexts.Context;
+      Changed  : Natural;
+      Added    : Natural;
+      Removed  : Natural;
+      Singular : String;
+      Plural   : String;
+      Target   : in out String;
+      Written  : out Natural;
+      Code     : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Field_Change_Summary
+           (Context, Changed, Added, Removed, Singular, Plural),
+         Target, Written, Code);
+   end Field_Change_Summary_Into;
+
+   procedure Field_Diff_Summary_Into
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Before  : String;
+      After   : String;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Field_Diff_Summary (Context, Field, Before, After),
+         Target, Written, Code);
+   end Field_Diff_Summary_Into;
+
+   procedure Field_Added_Summary_Into
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Field_Added_Summary (Context, Field, Value),
+         Target, Written, Code);
+   end Field_Added_Summary_Into;
+
+   procedure Field_Removed_Summary_Into
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Field_Removed_Summary (Context, Field, Value),
+         Target, Written, Code);
+   end Field_Removed_Summary_Into;
+
+   procedure Field_Unchanged_Summary_Into
+     (Context : Humanize.Contexts.Context;
+      Field   : String;
+      Value   : String;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Field_Unchanged_Summary (Context, Field, Value),
+         Target, Written, Code);
+   end Field_Unchanged_Summary_Into;
 
    procedure Supported_Phrase_Locales_Into
      (Target  : in out String;
@@ -2675,6 +3892,36 @@ package body Humanize.Phrases is
    begin
       Copy_Result (Payment_Lifecycle_Key (Status), Target, Written, Code);
    end Payment_Lifecycle_Key_Into;
+
+   procedure Backup_Key_Into
+     (Status  : Backup_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Backup_Key (Status), Target, Written, Code);
+   end Backup_Key_Into;
+
+   procedure Incident_Key_Into
+     (Status  : Incident_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Incident_Key (Status), Target, Written, Code);
+   end Incident_Key_Into;
+
+   procedure Release_Key_Into
+     (Status  : Release_Status;
+      Target  : in out String;
+      Written : out Natural;
+      Code    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Release_Key (Status), Target, Written, Code);
+   end Release_Key_Into;
 
    procedure File_Phrase_Into
      (Context : Humanize.Contexts.Context;

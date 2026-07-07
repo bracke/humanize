@@ -9,6 +9,390 @@ with Humanize.Messages;
 package body Humanize.Colors is
    use type Humanize.Status.Status_Code;
 
+   type Color_Phrase_Key is
+     (Phrase_Very_Dark,
+      Phrase_Dark,
+      Phrase_Medium_Brightness,
+      Phrase_Light,
+      Phrase_Very_Light,
+      Phrase_Neutral,
+      Phrase_Red,
+      Phrase_Orange,
+      Phrase_Yellow,
+      Phrase_Green,
+      Phrase_Cyan,
+      Phrase_Blue,
+      Phrase_Purple,
+      Phrase_Magenta,
+      Phrase_Desaturated,
+      Phrase_Muted,
+      Phrase_Saturated,
+      Phrase_Vivid,
+      Phrase_Neutral_Temperature,
+      Phrase_Warm,
+      Phrase_Cool,
+      Phrase_Balanced_Temperature,
+      Phrase_Grayish,
+      Phrase_Pastel,
+      Phrase_Soft,
+      Phrase_Moderate_Chroma,
+      Phrase_High_Chroma,
+      Phrase_Low_Contrast,
+      Phrase_Large_Text_Contrast,
+      Phrase_Normal_Text_Contrast,
+      Phrase_Enhanced_Contrast,
+      Phrase_Readable_Enhanced,
+      Phrase_Readable_Normal,
+      Phrase_Readable_Large_Only,
+      Phrase_Low_Readability);
+
+   function Lower (Text : String) return String;
+   function Starts_With (Text, Prefix : String) return Boolean;
+
+   function Locale_Stem
+     (Context : Humanize.Contexts.Context)
+      return String
+   is
+      Locale : constant String := Lower (Humanize.Contexts.Locale (Context));
+   begin
+      if Starts_With (Locale, "da") then
+         return "da";
+      elsif Starts_With (Locale, "de") then
+         return "de";
+      elsif Starts_With (Locale, "fr") then
+         return "fr";
+      elsif Starts_With (Locale, "es") then
+         return "es";
+      elsif Starts_With (Locale, "it") then
+         return "it";
+      elsif Starts_With (Locale, "pt") then
+         return "pt";
+      elsif Starts_With (Locale, "nl") then
+         return "nl";
+      else
+         return "en";
+      end if;
+   end Locale_Stem;
+
+   function Color_Phrase
+     (Locale : String;
+      Key    : Color_Phrase_Key)
+      return String
+   is
+   begin
+      if Locale = "da" then
+         case Key is
+            when Phrase_Very_Dark => return "meget mork";
+            when Phrase_Dark => return "mork";
+            when Phrase_Medium_Brightness => return "middel lysstyrke";
+            when Phrase_Light => return "lys";
+            when Phrase_Very_Light => return "meget lys";
+            when Phrase_Neutral => return "neutral";
+            when Phrase_Red => return "rod";
+            when Phrase_Orange => return "orange";
+            when Phrase_Yellow => return "gul";
+            when Phrase_Green => return "gron";
+            when Phrase_Cyan => return "cyan";
+            when Phrase_Blue => return "bla";
+            when Phrase_Purple => return "lilla";
+            when Phrase_Magenta => return "magenta";
+            when Phrase_Desaturated => return "desatureret";
+            when Phrase_Muted => return "dampet";
+            when Phrase_Saturated => return "mattet";
+            when Phrase_Vivid => return "kraftig";
+            when Phrase_Neutral_Temperature => return "neutral temperatur";
+            when Phrase_Warm => return "varm";
+            when Phrase_Cool => return "kolig";
+            when Phrase_Balanced_Temperature => return "balanceret temperatur";
+            when Phrase_Grayish => return "gralig";
+            when Phrase_Pastel => return "pastel";
+            when Phrase_Soft => return "blod";
+            when Phrase_Moderate_Chroma => return "moderat chroma";
+            when Phrase_High_Chroma => return "hoj chroma";
+            when Phrase_Low_Contrast => return "lav kontrast";
+            when Phrase_Large_Text_Contrast => return "kontrast for stor tekst";
+            when Phrase_Normal_Text_Contrast => return "kontrast for normal tekst";
+            when Phrase_Enhanced_Contrast => return "forbedret kontrast";
+            when Phrase_Readable_Enhanced => return "laesbar for forbedret tekst";
+            when Phrase_Readable_Normal => return "laesbar for normal tekst";
+            when Phrase_Readable_Large_Only => return "kun laesbar for stor tekst";
+            when Phrase_Low_Readability => return "lav laesbarhed";
+         end case;
+      elsif Locale = "de" then
+         case Key is
+            when Phrase_Very_Dark => return "sehr dunkel";
+            when Phrase_Dark => return "dunkel";
+            when Phrase_Medium_Brightness => return "mittlere Helligkeit";
+            when Phrase_Light => return "hell";
+            when Phrase_Very_Light => return "sehr hell";
+            when Phrase_Neutral => return "neutral";
+            when Phrase_Red => return "rot";
+            when Phrase_Orange => return "orange";
+            when Phrase_Yellow => return "gelb";
+            when Phrase_Green => return "gruen";
+            when Phrase_Cyan => return "cyan";
+            when Phrase_Blue => return "blau";
+            when Phrase_Purple => return "violett";
+            when Phrase_Magenta => return "magenta";
+            when Phrase_Desaturated => return "entsaettigt";
+            when Phrase_Muted => return "gedaempft";
+            when Phrase_Saturated => return "gesaettigt";
+            when Phrase_Vivid => return "kraeftig";
+            when Phrase_Neutral_Temperature => return "neutrale Temperatur";
+            when Phrase_Warm => return "warm";
+            when Phrase_Cool => return "kuehl";
+            when Phrase_Balanced_Temperature => return "ausgeglichene Temperatur";
+            when Phrase_Grayish => return "graeulich";
+            when Phrase_Pastel => return "pastell";
+            when Phrase_Soft => return "weich";
+            when Phrase_Moderate_Chroma => return "mittleres Chroma";
+            when Phrase_High_Chroma => return "hohes Chroma";
+            when Phrase_Low_Contrast => return "niedriger Kontrast";
+            when Phrase_Large_Text_Contrast => return "Kontrast fuer grossen Text";
+            when Phrase_Normal_Text_Contrast => return "Kontrast fuer normalen Text";
+            when Phrase_Enhanced_Contrast => return "erhoehter Kontrast";
+            when Phrase_Readable_Enhanced => return "lesbar fuer erhoehten Text";
+            when Phrase_Readable_Normal => return "lesbar fuer normalen Text";
+            when Phrase_Readable_Large_Only => return "nur fuer grossen Text lesbar";
+            when Phrase_Low_Readability => return "geringe Lesbarkeit";
+         end case;
+      elsif Locale = "fr" then
+         case Key is
+            when Phrase_Very_Dark => return "tres sombre";
+            when Phrase_Dark => return "sombre";
+            when Phrase_Medium_Brightness => return "luminosite moyenne";
+            when Phrase_Light => return "clair";
+            when Phrase_Very_Light => return "tres clair";
+            when Phrase_Neutral => return "neutre";
+            when Phrase_Red => return "rouge";
+            when Phrase_Orange => return "orange";
+            when Phrase_Yellow => return "jaune";
+            when Phrase_Green => return "vert";
+            when Phrase_Cyan => return "cyan";
+            when Phrase_Blue => return "bleu";
+            when Phrase_Purple => return "violet";
+            when Phrase_Magenta => return "magenta";
+            when Phrase_Desaturated => return "desature";
+            when Phrase_Muted => return "attenue";
+            when Phrase_Saturated => return "sature";
+            when Phrase_Vivid => return "vif";
+            when Phrase_Neutral_Temperature => return "temperature neutre";
+            when Phrase_Warm => return "chaud";
+            when Phrase_Cool => return "froid";
+            when Phrase_Balanced_Temperature => return "temperature equilibree";
+            when Phrase_Grayish => return "grisatre";
+            when Phrase_Pastel => return "pastel";
+            when Phrase_Soft => return "doux";
+            when Phrase_Moderate_Chroma => return "chroma modere";
+            when Phrase_High_Chroma => return "chroma eleve";
+            when Phrase_Low_Contrast => return "faible contraste";
+            when Phrase_Large_Text_Contrast => return "contraste grand texte";
+            when Phrase_Normal_Text_Contrast => return "contraste texte normal";
+            when Phrase_Enhanced_Contrast => return "contraste renforce";
+            when Phrase_Readable_Enhanced => return "lisible pour texte renforce";
+            when Phrase_Readable_Normal => return "lisible pour texte normal";
+            when Phrase_Readable_Large_Only => return "lisible seulement en grand texte";
+            when Phrase_Low_Readability => return "faible lisibilite";
+         end case;
+      elsif Locale = "es" then
+         case Key is
+            when Phrase_Very_Dark => return "muy oscuro";
+            when Phrase_Dark => return "oscuro";
+            when Phrase_Medium_Brightness => return "brillo medio";
+            when Phrase_Light => return "claro";
+            when Phrase_Very_Light => return "muy claro";
+            when Phrase_Neutral => return "neutral";
+            when Phrase_Red => return "rojo";
+            when Phrase_Orange => return "naranja";
+            when Phrase_Yellow => return "amarillo";
+            when Phrase_Green => return "verde";
+            when Phrase_Cyan => return "cian";
+            when Phrase_Blue => return "azul";
+            when Phrase_Purple => return "purpura";
+            when Phrase_Magenta => return "magenta";
+            when Phrase_Desaturated => return "desaturado";
+            when Phrase_Muted => return "apagado";
+            when Phrase_Saturated => return "saturado";
+            when Phrase_Vivid => return "vivo";
+            when Phrase_Neutral_Temperature => return "temperatura neutral";
+            when Phrase_Warm => return "calido";
+            when Phrase_Cool => return "frio";
+            when Phrase_Balanced_Temperature => return "temperatura equilibrada";
+            when Phrase_Grayish => return "grisaceo";
+            when Phrase_Pastel => return "pastel";
+            when Phrase_Soft => return "suave";
+            when Phrase_Moderate_Chroma => return "croma moderado";
+            when Phrase_High_Chroma => return "croma alto";
+            when Phrase_Low_Contrast => return "bajo contraste";
+            when Phrase_Large_Text_Contrast => return "contraste para texto grande";
+            when Phrase_Normal_Text_Contrast => return "contraste para texto normal";
+            when Phrase_Enhanced_Contrast => return "contraste mejorado";
+            when Phrase_Readable_Enhanced => return "legible para texto mejorado";
+            when Phrase_Readable_Normal => return "legible para texto normal";
+            when Phrase_Readable_Large_Only => return "legible solo para texto grande";
+            when Phrase_Low_Readability => return "baja legibilidad";
+         end case;
+      elsif Locale = "it" then
+         case Key is
+            when Phrase_Very_Dark => return "molto scuro";
+            when Phrase_Dark => return "scuro";
+            when Phrase_Medium_Brightness => return "luminosita media";
+            when Phrase_Light => return "chiaro";
+            when Phrase_Very_Light => return "molto chiaro";
+            when Phrase_Neutral => return "neutro";
+            when Phrase_Red => return "rosso";
+            when Phrase_Orange => return "arancione";
+            when Phrase_Yellow => return "giallo";
+            when Phrase_Green => return "verde";
+            when Phrase_Cyan => return "ciano";
+            when Phrase_Blue => return "blu";
+            when Phrase_Purple => return "viola";
+            when Phrase_Magenta => return "magenta";
+            when Phrase_Desaturated => return "desaturato";
+            when Phrase_Muted => return "smorzato";
+            when Phrase_Saturated => return "saturo";
+            when Phrase_Vivid => return "vivido";
+            when Phrase_Neutral_Temperature => return "temperatura neutra";
+            when Phrase_Warm => return "caldo";
+            when Phrase_Cool => return "freddo";
+            when Phrase_Balanced_Temperature => return "temperatura bilanciata";
+            when Phrase_Grayish => return "grigiastro";
+            when Phrase_Pastel => return "pastello";
+            when Phrase_Soft => return "morbido";
+            when Phrase_Moderate_Chroma => return "croma moderato";
+            when Phrase_High_Chroma => return "croma alto";
+            when Phrase_Low_Contrast => return "basso contrasto";
+            when Phrase_Large_Text_Contrast => return "contrasto per testo grande";
+            when Phrase_Normal_Text_Contrast => return "contrasto per testo normale";
+            when Phrase_Enhanced_Contrast => return "contrasto avanzato";
+            when Phrase_Readable_Enhanced => return "leggibile per testo avanzato";
+            when Phrase_Readable_Normal => return "leggibile per testo normale";
+            when Phrase_Readable_Large_Only => return "leggibile solo per testo grande";
+            when Phrase_Low_Readability => return "bassa leggibilita";
+         end case;
+      elsif Locale = "pt" then
+         case Key is
+            when Phrase_Very_Dark => return "muito escuro";
+            when Phrase_Dark => return "escuro";
+            when Phrase_Medium_Brightness => return "brilho medio";
+            when Phrase_Light => return "claro";
+            when Phrase_Very_Light => return "muito claro";
+            when Phrase_Neutral => return "neutro";
+            when Phrase_Red => return "vermelho";
+            when Phrase_Orange => return "laranja";
+            when Phrase_Yellow => return "amarelo";
+            when Phrase_Green => return "verde";
+            when Phrase_Cyan => return "ciano";
+            when Phrase_Blue => return "azul";
+            when Phrase_Purple => return "roxo";
+            when Phrase_Magenta => return "magenta";
+            when Phrase_Desaturated => return "dessaturado";
+            when Phrase_Muted => return "suave";
+            when Phrase_Saturated => return "saturado";
+            when Phrase_Vivid => return "vivo";
+            when Phrase_Neutral_Temperature => return "temperatura neutra";
+            when Phrase_Warm => return "quente";
+            when Phrase_Cool => return "frio";
+            when Phrase_Balanced_Temperature => return "temperatura equilibrada";
+            when Phrase_Grayish => return "acinzentado";
+            when Phrase_Pastel => return "pastel";
+            when Phrase_Soft => return "macio";
+            when Phrase_Moderate_Chroma => return "croma moderado";
+            when Phrase_High_Chroma => return "croma alto";
+            when Phrase_Low_Contrast => return "baixo contraste";
+            when Phrase_Large_Text_Contrast => return "contraste para texto grande";
+            when Phrase_Normal_Text_Contrast => return "contraste para texto normal";
+            when Phrase_Enhanced_Contrast => return "contraste aprimorado";
+            when Phrase_Readable_Enhanced => return "legivel para texto aprimorado";
+            when Phrase_Readable_Normal => return "legivel para texto normal";
+            when Phrase_Readable_Large_Only => return "legivel apenas para texto grande";
+            when Phrase_Low_Readability => return "baixa legibilidade";
+         end case;
+      elsif Locale = "nl" then
+         case Key is
+            when Phrase_Very_Dark => return "zeer donker";
+            when Phrase_Dark => return "donker";
+            when Phrase_Medium_Brightness => return "gemiddelde helderheid";
+            when Phrase_Light => return "licht";
+            when Phrase_Very_Light => return "zeer licht";
+            when Phrase_Neutral => return "neutraal";
+            when Phrase_Red => return "rood";
+            when Phrase_Orange => return "oranje";
+            when Phrase_Yellow => return "geel";
+            when Phrase_Green => return "groen";
+            when Phrase_Cyan => return "cyaan";
+            when Phrase_Blue => return "blauw";
+            when Phrase_Purple => return "paars";
+            when Phrase_Magenta => return "magenta";
+            when Phrase_Desaturated => return "onverzadigd";
+            when Phrase_Muted => return "gedempt";
+            when Phrase_Saturated => return "verzadigd";
+            when Phrase_Vivid => return "levendig";
+            when Phrase_Neutral_Temperature => return "neutrale temperatuur";
+            when Phrase_Warm => return "warm";
+            when Phrase_Cool => return "koel";
+            when Phrase_Balanced_Temperature => return "gebalanceerde temperatuur";
+            when Phrase_Grayish => return "grijzig";
+            when Phrase_Pastel => return "pastel";
+            when Phrase_Soft => return "zacht";
+            when Phrase_Moderate_Chroma => return "matige chroma";
+            when Phrase_High_Chroma => return "hoge chroma";
+            when Phrase_Low_Contrast => return "laag contrast";
+            when Phrase_Large_Text_Contrast => return "contrast voor grote tekst";
+            when Phrase_Normal_Text_Contrast => return "contrast voor normale tekst";
+            when Phrase_Enhanced_Contrast => return "verhoogd contrast";
+            when Phrase_Readable_Enhanced => return "leesbaar voor verhoogde tekst";
+            when Phrase_Readable_Normal => return "leesbaar voor normale tekst";
+            when Phrase_Readable_Large_Only => return "alleen leesbaar voor grote tekst";
+            when Phrase_Low_Readability => return "lage leesbaarheid";
+         end case;
+      else
+         case Key is
+            when Phrase_Very_Dark => return "very dark";
+            when Phrase_Dark => return "dark";
+            when Phrase_Medium_Brightness => return "medium brightness";
+            when Phrase_Light => return "light";
+            when Phrase_Very_Light => return "very light";
+            when Phrase_Neutral => return "neutral";
+            when Phrase_Red => return "red";
+            when Phrase_Orange => return "orange";
+            when Phrase_Yellow => return "yellow";
+            when Phrase_Green => return "green";
+            when Phrase_Cyan => return "cyan";
+            when Phrase_Blue => return "blue";
+            when Phrase_Purple => return "purple";
+            when Phrase_Magenta => return "magenta";
+            when Phrase_Desaturated => return "desaturated";
+            when Phrase_Muted => return "muted";
+            when Phrase_Saturated => return "saturated";
+            when Phrase_Vivid => return "vivid";
+            when Phrase_Neutral_Temperature => return "neutral temperature";
+            when Phrase_Warm => return "warm";
+            when Phrase_Cool => return "cool";
+            when Phrase_Balanced_Temperature => return "balanced temperature";
+            when Phrase_Grayish => return "grayish";
+            when Phrase_Pastel => return "pastel";
+            when Phrase_Soft => return "soft";
+            when Phrase_Moderate_Chroma => return "moderate chroma";
+            when Phrase_High_Chroma => return "high chroma";
+            when Phrase_Low_Contrast => return "low contrast";
+            when Phrase_Large_Text_Contrast => return "large-text contrast";
+            when Phrase_Normal_Text_Contrast => return "normal-text contrast";
+            when Phrase_Enhanced_Contrast => return "enhanced contrast";
+            when Phrase_Readable_Enhanced => return "readable for enhanced text";
+            when Phrase_Readable_Normal => return "readable for normal text";
+            when Phrase_Readable_Large_Only => return "readable for large text only";
+            when Phrase_Low_Readability => return "low readability";
+         end case;
+      end if;
+   end Color_Phrase;
+
+   function Color_Phrase
+     (Context : Humanize.Contexts.Context;
+      Key     : Color_Phrase_Key)
+      return String is
+     (Color_Phrase (Locale_Stem (Context), Key));
+
    function Ok_Text (Text : String) return Humanize.Status.Text_Result is
    begin
       return
@@ -2242,6 +2626,26 @@ package body Humanize.Colors is
       end if;
    end Brightness_Label;
 
+   function Brightness_Label
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result
+   is
+      Value : constant Long_Float := Brightness (Color);
+   begin
+      if Value < 0.20 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Very_Dark));
+      elsif Value < 0.40 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Dark));
+      elsif Value < 0.60 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Medium_Brightness));
+      elsif Value < 0.80 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Light));
+      else
+         return Ok_Text (Color_Phrase (Context, Phrase_Very_Light));
+      end if;
+   end Brightness_Label;
+
    function Linear_RGB_To_XYZ_D65 (Color : RGB_Color) return Lab_Color is
       R : constant Long_Float := Linear_From_SRGB_Component
         (Long_Float (Color.Red) / 255.0);
@@ -2356,6 +2760,39 @@ package body Humanize.Colors is
       end if;
    end Hue_Family_Label;
 
+   function Hue_Family_Label
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result
+   is
+      Value : constant HSL_Color := HSL (Color);
+      Hue   : constant Long_Float := Value.Hue;
+      Key   : Color_Phrase_Key;
+   begin
+      if Value.Saturation < 0.08 then
+         Key := Phrase_Neutral;
+      elsif Hue < 15.0 or else Hue >= 345.0 then
+         Key := Phrase_Red;
+      elsif Hue < 45.0 then
+         Key := Phrase_Orange;
+      elsif Hue < 70.0 then
+         Key := Phrase_Yellow;
+      elsif Hue < 165.0 then
+         Key := Phrase_Green;
+      elsif Hue < 195.0 then
+         Key := Phrase_Cyan;
+      elsif Hue < 255.0 then
+         Key := Phrase_Blue;
+      elsif Hue < 285.0 then
+         Key := Phrase_Purple;
+      elsif Hue < 345.0 then
+         Key := Phrase_Magenta;
+      else
+         Key := Phrase_Neutral;
+      end if;
+      return Ok_Text (Color_Phrase (Context, Key));
+   end Hue_Family_Label;
+
    function Saturation_Label
      (Color : RGB_Color)
       return Humanize.Status.Text_Result
@@ -2375,6 +2812,26 @@ package body Humanize.Colors is
       end if;
    end Saturation_Label;
 
+   function Saturation_Label
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result
+   is
+      Value : constant Long_Float := HSL (Color).Saturation;
+   begin
+      if Value < 0.08 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Neutral));
+      elsif Value < 0.25 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Desaturated));
+      elsif Value < 0.50 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Muted));
+      elsif Value < 0.75 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Saturated));
+      else
+         return Ok_Text (Color_Phrase (Context, Phrase_Vivid));
+      end if;
+   end Saturation_Label;
+
    function Temperature_Label
      (Color : RGB_Color)
       return Humanize.Status.Text_Result
@@ -2390,6 +2847,25 @@ package body Humanize.Colors is
          return Ok_Text ("cool");
       else
          return Ok_Text ("balanced temperature");
+      end if;
+   end Temperature_Label;
+
+   function Temperature_Label
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result
+   is
+      Value : constant HSL_Color := HSL (Color);
+      Hue   : constant Long_Float := Value.Hue;
+   begin
+      if Value.Saturation < 0.08 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Neutral_Temperature));
+      elsif Hue < 80.0 or else Hue >= 300.0 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Warm));
+      elsif Hue >= 150.0 and then Hue < 285.0 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Cool));
+      else
+         return Ok_Text (Color_Phrase (Context, Phrase_Balanced_Temperature));
       end if;
    end Temperature_Label;
 
@@ -2416,6 +2892,30 @@ package body Humanize.Colors is
       end if;
    end Chroma_Label;
 
+   function Chroma_Label
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result
+   is
+      Value : constant OKLab_Color := OKLab (Color);
+      Chroma : constant Long_Float :=
+        Ada.Numerics.Long_Elementary_Functions.Sqrt
+          (Value.A * Value.A + Value.B * Value.B);
+      Light : constant Long_Float := HSL (Color).Lightness;
+   begin
+      if Chroma < 0.03 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Grayish));
+      elsif Chroma < 0.14 and then Light > 0.68 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Pastel));
+      elsif Chroma < 0.08 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Soft));
+      elsif Chroma < 0.16 then
+         return Ok_Text (Color_Phrase (Context, Phrase_Moderate_Chroma));
+      else
+         return Ok_Text (Color_Phrase (Context, Phrase_High_Chroma));
+      end if;
+   end Chroma_Label;
+
    function Color_Description
      (Color : RGB_Color)
       return Humanize.Status.Text_Result
@@ -2427,6 +2927,20 @@ package body Humanize.Colors is
          & To_String (Hue_Family_Label (Color).Text) & ", "
          & To_String (Temperature_Label (Color).Text) & ", "
          & To_String (Chroma_Label (Color).Text));
+   end Color_Description;
+
+   function Color_Description
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Ok_Text
+        (To_String (Brightness_Label (Context, Color).Text) & ", "
+         & To_String (Saturation_Label (Context, Color).Text) & " "
+         & To_String (Hue_Family_Label (Context, Color).Text) & ", "
+         & To_String (Temperature_Label (Context, Color).Text) & ", "
+         & To_String (Chroma_Label (Context, Color).Text));
    end Color_Description;
 
    function Clamped_Opacity (Opacity : Long_Float) return Long_Float is
@@ -2491,6 +3005,50 @@ package body Humanize.Colors is
       return (Lighter + 0.05) / (Darker + 0.05);
    end Contrast_Ratio;
 
+   function Clamp_Unit (Value : Long_Float) return Long_Float is
+   begin
+      return Long_Float'Max (0.0, Long_Float'Min (1.0, Value));
+   end Clamp_Unit;
+
+   function Blend_Channel
+     (Foreground : Color_Channel;
+      Background : Color_Channel;
+      Alpha      : Long_Float)
+      return Color_Channel
+   is
+      Value : constant Long_Float :=
+        Long_Float (Foreground) * Alpha
+        + Long_Float (Background) * (1.0 - Alpha);
+   begin
+      return Color_Channel
+        (Natural (Long_Float'Min (255.0, Long_Float'Max (0.0, Value + 0.5))));
+   end Blend_Channel;
+
+   function Composite
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Alpha      : Long_Float)
+      return RGB_Color
+   is
+      A : constant Long_Float := Clamp_Unit (Alpha);
+   begin
+      return
+        (Red   => Blend_Channel (Foreground.Red, Background.Red, A),
+         Green => Blend_Channel (Foreground.Green, Background.Green, A),
+         Blue  => Blend_Channel (Foreground.Blue, Background.Blue, A));
+   end Composite;
+
+   function Alpha_Contrast_Ratio
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Alpha      : Long_Float)
+      return Long_Float
+   is
+   begin
+      return Contrast_Ratio
+        (Composite (Foreground, Background, Alpha), Background);
+   end Alpha_Contrast_Ratio;
+
    function Contrast_Level_For
      (Ratio : Long_Float)
       return Contrast_Level
@@ -2512,6 +3070,30 @@ package body Humanize.Colors is
       return Humanize.Decimal_Images.Decimal_Image (Ratio, 1, True) & ":1";
    end Ratio_Text;
 
+   function Target_Ratio (Target : Contrast_Target) return Long_Float is
+   begin
+      case Target is
+         when Target_Large_Text =>
+            return 3.0;
+         when Target_Normal_Text =>
+            return 4.5;
+         when Target_Enhanced_Text =>
+            return 7.0;
+      end case;
+   end Target_Ratio;
+
+   function Target_Label (Target : Contrast_Target) return String is
+   begin
+      case Target is
+         when Target_Large_Text =>
+            return "large text";
+         when Target_Normal_Text =>
+            return "normal text";
+         when Target_Enhanced_Text =>
+            return "enhanced text";
+      end case;
+   end Target_Label;
+
    function Contrast_Level_Label (Level : Contrast_Level) return String is
    begin
       case Level is
@@ -2526,6 +3108,23 @@ package body Humanize.Colors is
       end case;
    end Contrast_Level_Label;
 
+   function Contrast_Level_Label
+     (Context : Humanize.Contexts.Context;
+      Level   : Contrast_Level)
+      return String is
+   begin
+      case Level is
+         when Contrast_Fail =>
+            return Color_Phrase (Context, Phrase_Low_Contrast);
+         when Contrast_Large_Text =>
+            return Color_Phrase (Context, Phrase_Large_Text_Contrast);
+         when Contrast_Normal_Text =>
+            return Color_Phrase (Context, Phrase_Normal_Text_Contrast);
+         when Contrast_Enhanced_Text =>
+            return Color_Phrase (Context, Phrase_Enhanced_Contrast);
+      end case;
+   end Contrast_Level_Label;
+
    function Contrast_Label
      (Foreground : RGB_Color;
       Background : RGB_Color)
@@ -2537,6 +3136,205 @@ package body Humanize.Colors is
         (Ratio_Text (Ratio) & " "
          & Contrast_Level_Label (Contrast_Level_For (Ratio)));
    end Contrast_Label;
+
+   function Contrast_Metadata_For
+     (Foreground : RGB_Color;
+      Background : RGB_Color)
+      return Contrast_Metadata
+   is
+      Ratio : constant Long_Float := Contrast_Ratio (Foreground, Background);
+      Level : constant Contrast_Level := Contrast_Level_For (Ratio);
+   begin
+      return
+        (Status => Humanize.Status.Ok,
+         Ratio => Ratio,
+         Level => Level,
+         Passes_Large_Text => Ratio >= 3.0,
+         Passes_Normal_Text => Ratio >= 4.5,
+         Passes_Enhanced_Text => Ratio >= 7.0);
+   end Contrast_Metadata_For;
+
+   function Palette_Metadata_For
+     (Colors : Color_List)
+      return Palette_Metadata
+   is
+      Result : Palette_Metadata :=
+        (Status => Humanize.Status.Ok,
+         Color_Count => Colors'Length,
+         Pair_Count => 0,
+         Failing_Pairs => 0,
+         Large_Text_Pairs => 0,
+         Normal_Text_Pairs => 0,
+         Enhanced_Text_Pairs => 0,
+         Best_Contrast_Ratio => 1.0,
+         Worst_Contrast_Ratio => 1.0);
+      Ratio : Long_Float;
+      First_Pair : Boolean := True;
+   begin
+      if Colors'Length < 2 then
+         return Result;
+      end if;
+
+      for I in Colors'First .. Colors'Last - 1 loop
+         for J in I + 1 .. Colors'Last loop
+            Ratio := Contrast_Ratio (Colors (I), Colors (J));
+            Result.Pair_Count := Result.Pair_Count + 1;
+
+            if First_Pair then
+               Result.Best_Contrast_Ratio := Ratio;
+               Result.Worst_Contrast_Ratio := Ratio;
+               First_Pair := False;
+            elsif Ratio > Result.Best_Contrast_Ratio then
+               Result.Best_Contrast_Ratio := Ratio;
+            elsif Ratio < Result.Worst_Contrast_Ratio then
+               Result.Worst_Contrast_Ratio := Ratio;
+            end if;
+
+            case Contrast_Level_For (Ratio) is
+               when Contrast_Enhanced_Text =>
+                  Result.Enhanced_Text_Pairs :=
+                    Result.Enhanced_Text_Pairs + 1;
+               when Contrast_Normal_Text =>
+                  Result.Normal_Text_Pairs := Result.Normal_Text_Pairs + 1;
+               when Contrast_Large_Text =>
+                  Result.Large_Text_Pairs := Result.Large_Text_Pairs + 1;
+               when Contrast_Fail =>
+                  Result.Failing_Pairs := Result.Failing_Pairs + 1;
+            end case;
+         end loop;
+      end loop;
+
+      return Result;
+   end Palette_Metadata_For;
+
+   function Palette_Metadata_Label
+     (Colors : Color_List)
+      return Humanize.Status.Text_Result
+   is
+      Info : constant Palette_Metadata := Palette_Metadata_For (Colors);
+   begin
+      return Ok_Text
+        (Natural_Text (Info.Color_Count) & " colors, "
+         & Natural_Text (Info.Pair_Count) & " pairs: "
+         & Natural_Text (Info.Enhanced_Text_Pairs) & " enhanced, "
+         & Natural_Text (Info.Normal_Text_Pairs) & " normal, "
+         & Natural_Text (Info.Large_Text_Pairs) & " large-only, "
+         & Natural_Text (Info.Failing_Pairs) & " fail");
+   end Palette_Metadata_Label;
+
+   function Alpha_Contrast_Label
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Alpha      : Long_Float)
+      return Humanize.Status.Text_Result
+   is
+      Ratio : constant Long_Float :=
+        Alpha_Contrast_Ratio (Foreground, Background, Alpha);
+   begin
+      return Ok_Text
+        (Ratio_Text (Ratio) & " "
+         & Contrast_Level_Label (Contrast_Level_For (Ratio))
+         & " after alpha compositing");
+   end Alpha_Contrast_Label;
+
+   function Contrast_Label
+     (Context    : Humanize.Contexts.Context;
+      Foreground : RGB_Color;
+      Background : RGB_Color)
+      return Humanize.Status.Text_Result
+   is
+      Ratio : constant Long_Float := Contrast_Ratio (Foreground, Background);
+   begin
+      return Ok_Text
+        (Ratio_Text (Ratio) & " "
+         & Contrast_Level_Label (Context, Contrast_Level_For (Ratio)));
+   end Contrast_Label;
+
+   function Mix_Toward
+     (Color  : RGB_Color;
+      Target : RGB_Color;
+      Amount : Long_Float)
+      return RGB_Color
+   is
+   begin
+      return Composite (Target, Color, Amount);
+   end Mix_Toward;
+
+   function Accessible_Foreground
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Target     : Contrast_Target := Target_Normal_Text)
+      return Color_Remediation_Result
+   is
+      Goal : constant Long_Float := Target_Ratio (Target);
+      Current_Ratio : constant Long_Float :=
+        Contrast_Ratio (Foreground, Background);
+      Black : constant RGB_Color := (Red => 0, Green => 0, Blue => 0);
+      White : constant RGB_Color := (Red => 255, Green => 255, Blue => 255);
+      Toward : RGB_Color;
+      Candidate : RGB_Color := Foreground;
+      Ratio : Long_Float := Current_Ratio;
+   begin
+      if Current_Ratio >= Goal then
+         return
+           (Status => Humanize.Status.Ok,
+            Color  => Foreground,
+            Ratio  => Current_Ratio);
+      end if;
+
+      if Contrast_Ratio (Black, Background)
+        >= Contrast_Ratio (White, Background)
+      then
+         Toward := Black;
+      else
+         Toward := White;
+      end if;
+
+      for Step in 1 .. 100 loop
+         Candidate := Mix_Toward (Foreground, Toward, Long_Float (Step) / 100.0);
+         Ratio := Contrast_Ratio (Candidate, Background);
+         if Ratio >= Goal then
+            return
+              (Status => Humanize.Status.Ok,
+               Color  => Candidate,
+               Ratio  => Ratio);
+         end if;
+      end loop;
+
+      Candidate := Toward;
+      Ratio := Contrast_Ratio (Candidate, Background);
+      return
+        (Status =>
+           (if Ratio >= Goal then Humanize.Status.Ok
+            else Humanize.Status.Invalid_Options),
+         Color  => Candidate,
+         Ratio  => Ratio);
+   end Accessible_Foreground;
+
+   function Contrast_Remediation_Label
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Target     : Contrast_Target := Target_Normal_Text)
+      return Humanize.Status.Text_Result
+   is
+      Current : constant Long_Float := Contrast_Ratio (Foreground, Background);
+      Result  : constant Color_Remediation_Result :=
+        Accessible_Foreground (Foreground, Background, Target);
+      Hex     : constant Humanize.Status.Text_Result := Hex_Color (Result.Color);
+   begin
+      if Result.Status /= Humanize.Status.Ok then
+         return (Status => Result.Status, others => <>);
+      elsif Current >= Target_Ratio (Target) then
+         return Ok_Text
+           ("current foreground meets " & Target_Label (Target)
+            & " contrast at " & Ratio_Text (Current));
+      else
+         return Ok_Text
+           ("use " & To_String (Hex.Text) & " for "
+            & Ratio_Text (Result.Ratio) & " " & Target_Label (Target)
+            & " contrast");
+      end if;
+   end Contrast_Remediation_Label;
 
    function Readability_Label
      (Foreground : RGB_Color;
@@ -2553,6 +3351,25 @@ package body Humanize.Colors is
             return Ok_Text ("readable for large text only");
          when Contrast_Fail =>
             return Ok_Text ("low readability");
+      end case;
+   end Readability_Label;
+
+   function Readability_Label
+     (Context    : Humanize.Contexts.Context;
+      Foreground : RGB_Color;
+      Background : RGB_Color)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      case Contrast_Level_For (Contrast_Ratio (Foreground, Background)) is
+         when Contrast_Enhanced_Text =>
+            return Ok_Text (Color_Phrase (Context, Phrase_Readable_Enhanced));
+         when Contrast_Normal_Text =>
+            return Ok_Text (Color_Phrase (Context, Phrase_Readable_Normal));
+         when Contrast_Large_Text =>
+            return Ok_Text (Color_Phrase (Context, Phrase_Readable_Large_Only));
+         when Contrast_Fail =>
+            return Ok_Text (Color_Phrase (Context, Phrase_Low_Readability));
       end case;
    end Readability_Label;
 
@@ -2771,6 +3588,159 @@ package body Humanize.Colors is
       return Sqrt (DL * DL + DA * DA + DB * DB);
    end Perceptual_Difference;
 
+   function CIE94_Difference
+     (Left     : RGB_Color;
+      Right    : RGB_Color;
+      Textiles : Boolean := False)
+      return Long_Float
+   is
+      use Ada.Numerics.Long_Elementary_Functions;
+      L : constant Lab_Color := Lab (Left);
+      R : constant Lab_Color := Lab (Right);
+      Delta_L : constant Long_Float := L.Lightness - R.Lightness;
+      C1 : constant Long_Float := Sqrt (L.A * L.A + L.B * L.B);
+      C2 : constant Long_Float := Sqrt (R.A * R.A + R.B * R.B);
+      Delta_C : constant Long_Float := C1 - C2;
+      Delta_A : constant Long_Float := L.A - R.A;
+      Delta_B : constant Long_Float := L.B - R.B;
+      Delta_H_Squared : constant Long_Float :=
+        Long_Float'Max
+          (0.0, Delta_A * Delta_A + Delta_B * Delta_B
+           - Delta_C * Delta_C);
+      K_L : constant Long_Float := (if Textiles then 2.0 else 1.0);
+      K_C : constant Long_Float := 1.0;
+      K_H : constant Long_Float := 1.0;
+      K_1 : constant Long_Float := (if Textiles then 0.048 else 0.045);
+      K_2 : constant Long_Float := (if Textiles then 0.014 else 0.015);
+      S_L : constant Long_Float := 1.0;
+      S_C : constant Long_Float := 1.0 + K_1 * C1;
+      S_H : constant Long_Float := 1.0 + K_2 * C1;
+      L_Term : constant Long_Float := Delta_L / (K_L * S_L);
+      C_Term : constant Long_Float := Delta_C / (K_C * S_C);
+      H_Term : constant Long_Float := Sqrt (Delta_H_Squared) / (K_H * S_H);
+   begin
+      return Sqrt
+        (L_Term * L_Term + C_Term * C_Term + H_Term * H_Term);
+   end CIE94_Difference;
+
+   function CIEDE2000_Difference
+     (Left  : RGB_Color;
+      Right : RGB_Color)
+      return Long_Float
+   is
+      use Ada.Numerics.Long_Elementary_Functions;
+
+      function Pow_7 (Value : Long_Float) return Long_Float is
+      begin
+         return Value ** 7;
+      end Pow_7;
+
+      function To_Radians (Degrees : Long_Float) return Long_Float is
+      begin
+         return Degrees * Ada.Numerics.Pi / 180.0;
+      end To_Radians;
+
+      function Hue_Degrees
+        (B : Long_Float;
+         A : Long_Float)
+         return Long_Float
+      is
+         Angle : Long_Float;
+      begin
+         if A = 0.0 and then B = 0.0 then
+            return 0.0;
+         end if;
+
+         Angle := Arctan (B, A) * 180.0 / Ada.Numerics.Pi;
+         if Angle < 0.0 then
+            Angle := Angle + 360.0;
+         end if;
+         return Angle;
+      end Hue_Degrees;
+
+      L1 : constant Lab_Color := Lab (Left);
+      L2 : constant Lab_Color := Lab (Right);
+      C1 : constant Long_Float := Sqrt (L1.A * L1.A + L1.B * L1.B);
+      C2 : constant Long_Float := Sqrt (L2.A * L2.A + L2.B * L2.B);
+      Mean_C : constant Long_Float := (C1 + C2) / 2.0;
+      Mean_C7 : constant Long_Float := Pow_7 (Mean_C);
+      G : constant Long_Float :=
+        0.5 * (1.0 - Sqrt (Mean_C7 / (Mean_C7 + Pow_7 (25.0))));
+      A1_Prime : constant Long_Float := (1.0 + G) * L1.A;
+      A2_Prime : constant Long_Float := (1.0 + G) * L2.A;
+      C1_Prime : constant Long_Float :=
+        Sqrt (A1_Prime * A1_Prime + L1.B * L1.B);
+      C2_Prime : constant Long_Float :=
+        Sqrt (A2_Prime * A2_Prime + L2.B * L2.B);
+      H1_Prime : constant Long_Float := Hue_Degrees (L1.B, A1_Prime);
+      H2_Prime : constant Long_Float := Hue_Degrees (L2.B, A2_Prime);
+      Delta_L_Prime : constant Long_Float := L2.Lightness - L1.Lightness;
+      Delta_C_Prime : constant Long_Float := C2_Prime - C1_Prime;
+      Delta_H_Prime_Degrees : Long_Float;
+      Delta_H_Prime : Long_Float;
+      Mean_L_Prime : constant Long_Float := (L1.Lightness + L2.Lightness) / 2.0;
+      Mean_C_Prime : constant Long_Float := (C1_Prime + C2_Prime) / 2.0;
+      Mean_H_Prime : Long_Float;
+      T : Long_Float;
+      Delta_Theta : Long_Float;
+      Mean_C_Prime7 : Long_Float;
+      R_C : Long_Float;
+      S_L : Long_Float;
+      S_C : Long_Float;
+      S_H : Long_Float;
+      R_T : Long_Float;
+      L_Term : Long_Float;
+      C_Term : Long_Float;
+      H_Term : Long_Float;
+   begin
+      if C1_Prime * C2_Prime = 0.0 then
+         Delta_H_Prime_Degrees := 0.0;
+      elsif abs (H2_Prime - H1_Prime) <= 180.0 then
+         Delta_H_Prime_Degrees := H2_Prime - H1_Prime;
+      elsif H2_Prime <= H1_Prime then
+         Delta_H_Prime_Degrees := H2_Prime - H1_Prime + 360.0;
+      else
+         Delta_H_Prime_Degrees := H2_Prime - H1_Prime - 360.0;
+      end if;
+
+      Delta_H_Prime :=
+        2.0 * Sqrt (C1_Prime * C2_Prime)
+        * Sin (To_Radians (Delta_H_Prime_Degrees / 2.0));
+
+      if C1_Prime * C2_Prime = 0.0 then
+         Mean_H_Prime := H1_Prime + H2_Prime;
+      elsif abs (H1_Prime - H2_Prime) <= 180.0 then
+         Mean_H_Prime := (H1_Prime + H2_Prime) / 2.0;
+      elsif H1_Prime + H2_Prime < 360.0 then
+         Mean_H_Prime := (H1_Prime + H2_Prime + 360.0) / 2.0;
+      else
+         Mean_H_Prime := (H1_Prime + H2_Prime - 360.0) / 2.0;
+      end if;
+
+      T := 1.0
+        - 0.17 * Cos (To_Radians (Mean_H_Prime - 30.0))
+        + 0.24 * Cos (To_Radians (2.0 * Mean_H_Prime))
+        + 0.32 * Cos (To_Radians (3.0 * Mean_H_Prime + 6.0))
+        - 0.20 * Cos (To_Radians (4.0 * Mean_H_Prime - 63.0));
+      Delta_Theta :=
+        30.0 * Exp (-((Mean_H_Prime - 275.0) / 25.0) ** 2);
+      Mean_C_Prime7 := Pow_7 (Mean_C_Prime);
+      R_C := 2.0
+        * Sqrt (Mean_C_Prime7 / (Mean_C_Prime7 + Pow_7 (25.0)));
+      S_L := 1.0 + (0.015 * (Mean_L_Prime - 50.0) ** 2)
+        / Sqrt (20.0 + (Mean_L_Prime - 50.0) ** 2);
+      S_C := 1.0 + 0.045 * Mean_C_Prime;
+      S_H := 1.0 + 0.015 * Mean_C_Prime * T;
+      R_T := -Sin (To_Radians (2.0 * Delta_Theta)) * R_C;
+      L_Term := Delta_L_Prime / S_L;
+      C_Term := Delta_C_Prime / S_C;
+      H_Term := Delta_H_Prime / S_H;
+
+      return Sqrt
+        (L_Term * L_Term + C_Term * C_Term + H_Term * H_Term
+         + R_T * C_Term * H_Term);
+   end CIEDE2000_Difference;
+
    function OK_Perceptual_Difference
      (Left  : RGB_Color;
       Right : RGB_Color)
@@ -2786,21 +3756,84 @@ package body Humanize.Colors is
       return Sqrt (DL * DL + DA * DA + DB * DB) * 100.0;
    end OK_Perceptual_Difference;
 
-   function Perceptual_Difference_Label
-     (Left  : RGB_Color;
-      Right : RGB_Color)
-      return Humanize.Status.Text_Result
+   function Perceptual_Difference
+     (Left   : RGB_Color;
+      Right  : RGB_Color;
+      Method : Perceptual_Difference_Method)
+      return Long_Float
    is
-      Value : constant Long_Float := OK_Perceptual_Difference (Left, Right);
-      Label : constant String :=
+   begin
+      case Method is
+         when Perceptual_CIE76 =>
+            return Perceptual_Difference (Left, Right);
+         when Perceptual_CIE94_Graphic_Arts =>
+            return CIE94_Difference (Left, Right);
+         when Perceptual_CIE94_Textiles =>
+            return CIE94_Difference (Left, Right, Textiles => True);
+         when Perceptual_CIEDE2000 =>
+            return CIEDE2000_Difference (Left, Right);
+         when Perceptual_OKLab =>
+            return OK_Perceptual_Difference (Left, Right);
+      end case;
+   end Perceptual_Difference;
+
+   function Perceptual_Method_Label
+     (Method : Perceptual_Difference_Method)
+      return String
+   is
+   begin
+      case Method is
+         when Perceptual_CIE76 =>
+            return "CIE76 delta ";
+         when Perceptual_CIE94_Graphic_Arts =>
+            return "CIE94 delta ";
+         when Perceptual_CIE94_Textiles =>
+            return "CIE94 textile delta ";
+         when Perceptual_CIEDE2000 =>
+            return "CIEDE2000 delta ";
+         when Perceptual_OKLab =>
+            return "OKLab delta ";
+      end case;
+   end Perceptual_Method_Label;
+
+   function Perceptual_Difference_Descriptor
+     (Value : Long_Float)
+      return String
+   is
+   begin
+      return
         (if Value < 1.0 then "imperceptible"
          elsif Value < 3.0 then "barely perceptible"
          elsif Value < 8.0 then "subtle perceptual difference"
          elsif Value < 18.0 then "noticeable perceptual difference"
          elsif Value < 35.0 then "large perceptual difference"
          else "dramatic perceptual difference");
+   end Perceptual_Difference_Descriptor;
+
+   function Perceptual_Difference_Label
+     (Left  : RGB_Color;
+      Right : RGB_Color)
+      return Humanize.Status.Text_Result
+   is
+      Value : constant Long_Float := OK_Perceptual_Difference (Left, Right);
    begin
-      return Ok_Text ("OKLab delta " & Float_Text (Value, 1) & ", " & Label);
+      return Ok_Text
+        ("OKLab delta " & Float_Text (Value, 1) & ", "
+         & Perceptual_Difference_Descriptor (Value));
+   end Perceptual_Difference_Label;
+
+   function Perceptual_Difference_Label
+     (Left   : RGB_Color;
+      Right  : RGB_Color;
+      Method : Perceptual_Difference_Method)
+      return Humanize.Status.Text_Result
+   is
+      Value : constant Long_Float :=
+        Perceptual_Difference (Left, Right, Method);
+   begin
+      return Ok_Text
+        (Perceptual_Method_Label (Method) & Float_Text (Value, 1) & ", "
+         & Perceptual_Difference_Descriptor (Value));
    end Perceptual_Difference_Label;
 
    procedure Hex_Color_Into
@@ -2877,6 +3910,17 @@ package body Humanize.Colors is
       Copy_Result (Hue_Family_Label (Color), Target, Written, Status);
    end Hue_Family_Label_Into;
 
+   procedure Hue_Family_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Hue_Family_Label (Context, Color), Target, Written, Status);
+   end Hue_Family_Label_Into;
+
    procedure Saturation_Label_Into
      (Color   : RGB_Color;
       Target  : in out String;
@@ -2885,6 +3929,17 @@ package body Humanize.Colors is
    is
    begin
       Copy_Result (Saturation_Label (Color), Target, Written, Status);
+   end Saturation_Label_Into;
+
+   procedure Saturation_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Saturation_Label (Context, Color), Target, Written, Status);
    end Saturation_Label_Into;
 
    procedure Temperature_Label_Into
@@ -2897,6 +3952,17 @@ package body Humanize.Colors is
       Copy_Result (Temperature_Label (Color), Target, Written, Status);
    end Temperature_Label_Into;
 
+   procedure Temperature_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Temperature_Label (Context, Color), Target, Written, Status);
+   end Temperature_Label_Into;
+
    procedure Chroma_Label_Into
      (Color   : RGB_Color;
       Target  : in out String;
@@ -2907,6 +3973,17 @@ package body Humanize.Colors is
       Copy_Result (Chroma_Label (Color), Target, Written, Status);
    end Chroma_Label_Into;
 
+   procedure Chroma_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Chroma_Label (Context, Color), Target, Written, Status);
+   end Chroma_Label_Into;
+
    procedure Color_Description_Into
      (Color   : RGB_Color;
       Target  : in out String;
@@ -2915,6 +3992,17 @@ package body Humanize.Colors is
    is
    begin
       Copy_Result (Color_Description (Color), Target, Written, Status);
+   end Color_Description_Into;
+
+   procedure Color_Description_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Color_Description (Context, Color), Target, Written, Status);
    end Color_Description_Into;
 
    procedure Nearest_Color_Name_Into
@@ -2990,6 +4078,16 @@ package body Humanize.Colors is
         (Palette_Contrast_Matrix_Label (Colors), Target, Written, Status);
    end Palette_Contrast_Matrix_Label_Into;
 
+   procedure Palette_Metadata_Label_Into
+     (Colors  : Color_List;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Palette_Metadata_Label (Colors), Target, Written, Status);
+   end Palette_Metadata_Label_Into;
+
    procedure Palette_Mood_Label_Into
      (Colors  : Color_List;
       Target  : in out String;
@@ -3030,6 +4128,17 @@ package body Humanize.Colors is
       Copy_Result (Brightness_Label (Color), Target, Written, Status);
    end Brightness_Label_Into;
 
+   procedure Brightness_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result (Brightness_Label (Context, Color), Target, Written, Status);
+   end Brightness_Label_Into;
+
    procedure Opacity_Label_Into
      (Opacity : Long_Float;
       Target  : in out String;
@@ -3052,6 +4161,34 @@ package body Humanize.Colors is
         (Contrast_Label (Foreground, Background), Target, Written, Status);
    end Contrast_Label_Into;
 
+   procedure Contrast_Label_Into
+     (Context    : Humanize.Contexts.Context;
+      Foreground : RGB_Color;
+      Background : RGB_Color;
+      Target     : in out String;
+      Written    : out Natural;
+      Status     : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Contrast_Label (Context, Foreground, Background),
+         Target, Written, Status);
+   end Contrast_Label_Into;
+
+   procedure Alpha_Contrast_Label_Into
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Alpha      : Long_Float;
+      Target     : in out String;
+      Written    : out Natural;
+      Status     : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Alpha_Contrast_Label (Foreground, Background, Alpha),
+         Target, Written, Status);
+   end Alpha_Contrast_Label_Into;
+
    procedure Readability_Label_Into
      (Foreground : RGB_Color;
       Background : RGB_Color;
@@ -3062,6 +4199,20 @@ package body Humanize.Colors is
    begin
       Copy_Result
         (Readability_Label (Foreground, Background), Target, Written, Status);
+   end Readability_Label_Into;
+
+   procedure Readability_Label_Into
+     (Context    : Humanize.Contexts.Context;
+      Foreground : RGB_Color;
+      Background : RGB_Color;
+      Target     : in out String;
+      Written    : out Natural;
+      Status     : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Readability_Label (Context, Foreground, Background),
+         Target, Written, Status);
    end Readability_Label_Into;
 
    procedure APCA_Contrast_Label_Into
@@ -3103,6 +4254,20 @@ package body Humanize.Colors is
          Target, Written, Status);
    end Color_Accessibility_Summary_Into;
 
+   procedure Contrast_Remediation_Label_Into
+     (Foreground : RGB_Color;
+      Background : RGB_Color;
+      Target     : in out String;
+      Written    : out Natural;
+      Status     : out Humanize.Status.Status_Code;
+      Goal       : Contrast_Target := Target_Normal_Text)
+   is
+   begin
+      Copy_Result
+        (Contrast_Remediation_Label (Foreground, Background, Goal),
+         Target, Written, Status);
+   end Contrast_Remediation_Label_Into;
+
    procedure Color_Difference_Label_Into
      (Left    : RGB_Color;
       Right   : RGB_Color;
@@ -3125,6 +4290,20 @@ package body Humanize.Colors is
    begin
       Copy_Result
         (Perceptual_Difference_Label (Left, Right), Target, Written, Status);
+   end Perceptual_Difference_Label_Into;
+
+   procedure Perceptual_Difference_Label_Into
+     (Left    : RGB_Color;
+      Right   : RGB_Color;
+      Method  : Perceptual_Difference_Method;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Perceptual_Difference_Label (Left, Right, Method),
+         Target, Written, Status);
    end Perceptual_Difference_Label_Into;
 
 end Humanize.Colors;

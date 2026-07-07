@@ -5,7 +5,19 @@ Documentation and metadata describe the intended public contract; the compiler
 and the test suite remain the authority for Ada visibility, the `Humanize -> I18N`
 boundary, and behavior.
 
-## Verified GNAT/GPRbuild checks
+## Verified GNAT 15/GPRbuild checks
+
+Humanize must be built with Alire GNAT 15 only. The development, release,
+build-overlay, tests, and tooling manifests pin `gnat_native = "=15.2.1"`.
+Confirm the selected compiler with:
+
+```sh
+alr exec -- gnatls --version
+```
+
+Do not run plain system `gnat*`, `gnatmake`, `gnatls`, `gnatprove`, or
+`gprbuild` in this workspace. Use `alr exec -- ...` for compiler and builder
+commands so PATH cannot select a different GNAT installation.
 
 Run these checks for every release candidate:
 
@@ -148,11 +160,13 @@ public or private `I18N` imports and localized text leakage in classifiers.
 Humanize ships built-in English, Danish, German, French, Spanish, Italian,
 Portuguese, and Dutch native catalog fragments as in-source string constants.
 It also ships complete generated-source fragments for Swedish, Norwegian,
-Norwegian Bokmal, Finnish, Polish, Czech, Turkish, Russian, Ukrainian,
-Japanese, Korean, Chinese, Arabic, and Hindi locale codes. Generated-source
+Norwegian Bokmal, Finnish, Polish, Czech, Turkish, Romanian, Lithuanian,
+Slovenian, Indonesian, Malay, Esperanto, Vietnamese, Swahili, Afrikaans,
+Hungarian, Slovak, Russian, Ukrainian, Japanese, Korean, Chinese, Arabic, and
+Hindi locale codes. Generated-source
 fragments use native script or native Latin orthography for the core Humanize
 date, duration, byte, compact-number, unit, frequency, rate, and list words,
-and use a shared symbol layer for the broad engineering-unit tail.
+with long-form wording for the broad engineering-unit tail.
 Region-tagged contexts resolve through `i18n` locale fallback to the shipped
 base fragments. All fragments load through the public `I18N.Runtime.Load_Text`
 API with the caller-selected duplicate policy (default `Reject_Duplicates`).

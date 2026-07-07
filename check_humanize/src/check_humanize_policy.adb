@@ -62,6 +62,21 @@ package body Check_Humanize_Policy is
         [1 => To_Unbounded_String ("i18n = { path = ""../i18n"" }")];
    begin
       Project_Tools.Files.Require_Contains
+        (Root & "/alire.toml", "gnat_native = ""=15.2.1""",
+         "humanize development manifest must pin Alire GNAT 15");
+      Project_Tools.Files.Require_Contains
+        (Root & "/alire.release.toml", "gnat_native = ""=15.2.1""",
+         "humanize release manifest must pin Alire GNAT 15");
+      Project_Tools.Files.Require_Contains
+        (Root & "/alire.build.toml", "gnat_native = ""=15.2.1""",
+         "humanize build overlay must pin Alire GNAT 15");
+      Project_Tools.Files.Require_Contains
+        (Root & "/tests/alire.toml", "gnat_native = ""=15.2.1""",
+         "humanize tests manifest must pin Alire GNAT 15");
+      Project_Tools.Files.Require_Contains
+        (Root & "/check_humanize/alire.toml", "gnat_native = ""=15.2.1""",
+         "humanize tooling manifest must pin Alire GNAT 15");
+      Project_Tools.Files.Require_Contains
         (Root & "/alire.toml", "i18n = "">=1.1.0""",
          "humanize development manifest must require i18n >= 1.1.0");
       Project_Tools.Alire_Manifests.Require_Workspace_Pin
@@ -108,6 +123,12 @@ package body Check_Humanize_Policy is
       Require_Text
         (Root, Errors, "README.md", "check_humanize",
          "README must mention the check_humanize release guard");
+      Require_Text
+        (Root, Errors, "README.md", "gnat_native = ""=15.2.1""",
+         "README must document the pinned Alire GNAT 15 toolchain");
+      Require_Text
+        (Root, Errors, "docs/RELEASE_VERIFICATION.md", "gnat_native = ""=15.2.1""",
+         "release verification must document the pinned Alire GNAT 15 toolchain");
       Require_Text
         (Root, Errors, "docs/RELEASE_VERIFICATION.md", "check_humanize",
          "release verification must include check_humanize");

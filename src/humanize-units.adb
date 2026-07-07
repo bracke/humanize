@@ -102,6 +102,53 @@ package body Humanize.Units is
       return Ada.Characters.Handling.To_Lower (Locale (Locale'First .. Last));
    end Language;
 
+   function Resolved_System
+     (Context : Humanize.Contexts.Context;
+      Options : Measurement_Options)
+      return Measurement_System
+   is
+      Lang   : constant String := Language (Context);
+      Locale : constant String :=
+        Ada.Characters.Handling.To_Lower (Humanize.Contexts.Locale (Context));
+   begin
+      if Options.System /= Locale_Default then
+         return Options.System;
+      elsif Locale'Length >= 5
+        and then (Locale (Locale'First .. Locale'First + 1) = "en")
+        and then (Locale (Locale'First + 2) = '-' or else Locale (Locale'First + 2) = '_')
+        and then Locale (Locale'First + 3 .. Locale'First + 4) = "us"
+      then
+         return US_Customary_System;
+      elsif Locale'Length >= 5
+        and then (Locale (Locale'First .. Locale'First + 1) = "en")
+        and then (Locale (Locale'First + 2) = '-' or else Locale (Locale'First + 2) = '_')
+        and then Locale (Locale'First + 3 .. Locale'First + 4) = "gb"
+      then
+         return UK_Mixed_System;
+      elsif Lang = "en" then
+         return Metric_System;
+      else
+         return Metric_System;
+      end if;
+   end Resolved_System;
+
+   function Fahrenheit_From_Celsius (Value : Long_Float) return Long_Float is
+     (Value * 9.0 / 5.0 + 32.0);
+
+   function Celsius_From_Fahrenheit (Value : Long_Float) return Long_Float is
+     ((Value - 32.0) * 5.0 / 9.0);
+
+   function Miles_Per_Gallon_From_L_100_Km
+     (Liters_Per_100_Km : Long_Float)
+      return Long_Float
+   is
+   begin
+      if Liters_Per_100_Km = 0.0 then
+         return 0.0;
+      end if;
+      return 235.214583 / Liters_Per_100_Km;
+   end Miles_Per_Gallon_From_L_100_Km;
+
    type Slavic_Form is (One_Form, Few_Form, Many_Form);
 
    function Slavic_Form_For
@@ -346,6 +393,211 @@ package body Humanize.Units is
             when others =>
                return "";
          end case;
+      elsif Lang = "sk" then
+         case Unit is
+            when Meter =>
+               return (case Form is
+                         when One_Form => "meter",
+                         when Few_Form => "metre",
+                         when Many_Form => "metrov");
+            when Kilometer =>
+               return (case Form is
+                         when One_Form => "kilometer",
+                         when Few_Form => "kilometre",
+                         when Many_Form => "kilometrov");
+            when Centimeter =>
+               return (case Form is
+                         when One_Form => "centimeter",
+                         when Few_Form => "centimetre",
+                         when Many_Form => "centimetrov");
+            when Millimeter =>
+               return (case Form is
+                         when One_Form => "milimeter",
+                         when Few_Form => "milimetre",
+                         when Many_Form => "milimetrov");
+            when Gram =>
+               return (case Form is
+                         when One_Form => "gram",
+                         when Few_Form => "gramy",
+                         when Many_Form => "gramov");
+            when Kilogram =>
+               return (case Form is
+                         when One_Form => "kilogram",
+                         when Few_Form => "kilogramy",
+                         when Many_Form => "kilogramov");
+            when Milligram =>
+               return (case Form is
+                         when One_Form => "miligram",
+                         when Few_Form => "miligramy",
+                         when Many_Form => "miligramov");
+            when Liter =>
+               return (case Form is
+                         when One_Form => "liter",
+                         when Few_Form => "litre",
+                         when Many_Form => "litrov");
+            when Milliliter =>
+               return (case Form is
+                         when One_Form => "mililiter",
+                         when Few_Form => "mililitre",
+                         when Many_Form => "mililitrov");
+            when Celsius =>
+               return (case Form is
+                         when One_Form => "stupen Celzia",
+                         when Few_Form => "stupne Celzia",
+                         when Many_Form => "stupnov Celzia");
+            when Fahrenheit =>
+               return (case Form is
+                         when One_Form => "stupen Fahrenheita",
+                         when Few_Form => "stupne Fahrenheita",
+                         when Many_Form => "stupnov Fahrenheita");
+            when Square_Meter =>
+               return (case Form is
+                         when One_Form => "stvorcovy meter",
+                         when Few_Form => "stvorcove metre",
+                         when Many_Form => "stvorcovych metrov");
+            when Hectare =>
+               return (case Form is
+                         when One_Form => "hektar",
+                         when Few_Form => "hektare",
+                         when Many_Form => "hektarov");
+            when Kilometer_Per_Hour =>
+               return (case Form is
+                         when One_Form => "kilometer za hodinu",
+                         when Few_Form => "kilometre za hodinu",
+                         when Many_Form => "kilometrov za hodinu");
+            when Meter_Per_Second =>
+               return (case Form is
+                         when One_Form => "meter za sekundu",
+                         when Few_Form => "metre za sekundu",
+                         when Many_Form => "metrov za sekundu");
+            when Pascal =>
+               return (case Form is
+                         when One_Form => "pascal",
+                         when Few_Form => "pascaly",
+                         when Many_Form => "pascalov");
+            when Kilopascal =>
+               return (case Form is
+                         when One_Form => "kilopascal",
+                         when Few_Form => "kilopascaly",
+                         when Many_Form => "kilopascalov");
+            when Joule =>
+               return (case Form is
+                         when One_Form => "joule",
+                         when Few_Form => "jouly",
+                         when Many_Form => "joulov");
+            when Kilojoule =>
+               return (case Form is
+                         when One_Form => "kilojoule",
+                         when Few_Form => "kilojouly",
+                         when Many_Form => "kilojoulov");
+            when Watt =>
+               return (case Form is
+                         when One_Form => "watt",
+                         when Few_Form => "watty",
+                         when Many_Form => "wattov");
+            when Kilowatt =>
+               return (case Form is
+                         when One_Form => "kilowatt",
+                         when Few_Form => "kilowatty",
+                         when Many_Form => "kilowattov");
+            when Hertz =>
+               return (case Form is
+                         when One_Form => "hertz",
+                         when Few_Form => "hertze",
+                         when Many_Form => "hertzov");
+            when Kilohertz =>
+               return (case Form is
+                         when One_Form => "kilohertz",
+                         when Few_Form => "kilohertze",
+                         when Many_Form => "kilohertzov");
+            when Degree =>
+               return (case Form is
+                         when One_Form => "stupen",
+                         when Few_Form => "stupne",
+                         when Many_Form => "stupnov");
+            when Mile =>
+               return (case Form is
+                         when One_Form => "mila",
+                         when Few_Form => "mile",
+                         when Many_Form => "mil");
+            when Yard =>
+               return (case Form is
+                         when One_Form => "yard",
+                         when Few_Form => "yardy",
+                         when Many_Form => "yardov");
+            when Foot =>
+               return (case Form is
+                         when One_Form => "stopa",
+                         when Few_Form => "stopy",
+                         when Many_Form => "stop");
+            when Inch =>
+               return (case Form is
+                         when One_Form => "palec",
+                         when Few_Form => "palce",
+                         when Many_Form => "palcov");
+            when Nautical_Mile =>
+               return (case Form is
+                         when One_Form => "namorna mila",
+                         when Few_Form => "namorne mile",
+                         when Many_Form => "namornych mil");
+            when Acre =>
+               return (case Form is
+                         when One_Form => "aker",
+                         when Few_Form => "akre",
+                         when Many_Form => "akrov");
+            when Square_Kilometer =>
+               return (case Form is
+                         when One_Form => "stvorcovy kilometer",
+                         when Few_Form => "stvorcove kilometre",
+                         when Many_Form => "stvorcovych kilometrov");
+            when Cubic_Meter =>
+               return (case Form is
+                         when One_Form => "kubicky meter",
+                         when Few_Form => "kubicke metre",
+                         when Many_Form => "kubickych metrov");
+            when Teaspoon =>
+               return (case Form is
+                         when One_Form => "cajova lyzicka",
+                         when Few_Form => "cajove lyzicky",
+                         when Many_Form => "cajovych lyziciek");
+            when Tablespoon =>
+               return (case Form is
+                         when One_Form => "polievkova lyzica",
+                         when Few_Form => "polievkove lyzice",
+                         when Many_Form => "polievkovych lyzic");
+            when Cup =>
+               return (case Form is
+                         when One_Form => "salka",
+                         when Few_Form => "salky",
+                         when Many_Form => "salok");
+            when Gallon =>
+               return (case Form is
+                         when One_Form => "galon",
+                         when Few_Form => "galony",
+                         when Many_Form => "galonov");
+            when Pound =>
+               return (case Form is
+                         when One_Form => "libra",
+                         when Few_Form => "libry",
+                         when Many_Form => "libier");
+            when Ounce =>
+               return (case Form is
+                         when One_Form => "unca",
+                         when Few_Form => "unce",
+                         when Many_Form => "unci");
+            when Stone =>
+               return "stone";
+            when Tonne =>
+               return (case Form is
+                         when One_Form => "tona",
+                         when Few_Form => "tony",
+                         when Many_Form => "ton");
+            when Ton =>
+               return (case Form is
+                         when One_Form => "kratka tona",
+                         when Few_Form => "kratke tony",
+                         when Many_Form => "kratkych ton");
+         end case;
       else
          return "";
       end if;
@@ -359,7 +611,12 @@ package body Humanize.Units is
    is
       Lang : constant String := Language (Context);
    begin
-      if Lang = "pl" or else Lang = "cs" or else Lang = "ru" or else Lang = "uk" then
+      if Lang = "pl"
+        or else Lang = "cs"
+        or else Lang = "ru"
+        or else Lang = "uk"
+        or else Lang = "sk"
+      then
          declare
             Name : constant String :=
               Slavic_Unit_Name (Lang, Unit, Slavic_Form_For (Lang, Value));
@@ -440,6 +697,29 @@ package body Humanize.Units is
    function Format_Length
      (Context : Humanize.Contexts.Context;
       Meters  : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result
+   is
+      Abs_Value : constant Long_Float := abs Meters;
+      System    : constant Measurement_System :=
+        Resolved_System (Context, Options);
+   begin
+      if System = Metric_System or else System = Cooking_US_System then
+         return Format_Length (Context, Meters, Options.Number_Style);
+      elsif Abs_Value >= 1609.344 then
+         return Format (Context, Meters / 1609.344, Mile, Options.Number_Style);
+      elsif Abs_Value >= 0.9144 then
+         return Format (Context, Meters / 0.9144, Yard, Options.Number_Style);
+      elsif Abs_Value >= 0.3048 then
+         return Format (Context, Meters / 0.3048, Foot, Options.Number_Style);
+      else
+         return Format (Context, Meters / 0.0254, Inch, Options.Number_Style);
+      end if;
+   end Format_Length;
+
+   function Format_Length
+     (Context : Humanize.Contexts.Context;
+      Meters  : Long_Float;
       Options : Humanize.Numbers.Number_Options :=
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
@@ -475,6 +755,27 @@ package body Humanize.Units is
       end if;
    end Format_Mass;
 
+   function Format_Mass
+     (Context : Humanize.Contexts.Context;
+      Grams   : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result
+   is
+      Abs_Value : constant Long_Float := abs Grams;
+      System    : constant Measurement_System :=
+        Resolved_System (Context, Options);
+   begin
+      if System = Metric_System then
+         return Format_Mass (Context, Grams, Options.Number_Style);
+      elsif Abs_Value >= 907_184.74 then
+         return Format (Context, Grams / 907_184.74, Ton, Options.Number_Style);
+      elsif Abs_Value >= 453.59237 then
+         return Format (Context, Grams / 453.59237, Pound, Options.Number_Style);
+      else
+         return Format (Context, Grams / 28.349523125, Ounce, Options.Number_Style);
+      end if;
+   end Format_Mass;
+
    function Format_Volume
      (Context : Humanize.Contexts.Context;
       Liters  : Long_Float;
@@ -487,6 +788,35 @@ package body Humanize.Units is
          return Format (Context, Liters * 1000.0, Milliliter, Options);
       else
          return Format (Context, Liters, Liter, Options);
+      end if;
+   end Format_Volume;
+
+   function Format_Volume
+     (Context : Humanize.Contexts.Context;
+      Liters  : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result
+   is
+      Abs_Value : constant Long_Float := abs Liters;
+      System    : constant Measurement_System :=
+        Resolved_System (Context, Options);
+   begin
+      if System = Metric_System then
+         return Format_Volume (Context, Liters, Options.Number_Style);
+      elsif System = Cooking_US_System then
+         if Abs_Value >= 3.785411784 then
+            return Format (Context, Liters / 3.785411784, Gallon, Options.Number_Style);
+         elsif Abs_Value >= 0.2365882365 then
+            return Format (Context, Liters / 0.2365882365, Cup, Options.Number_Style);
+         elsif Abs_Value >= 0.01478676478 then
+            return Format (Context, Liters / 0.01478676478, Tablespoon, Options.Number_Style);
+         else
+            return Format (Context, Liters / 0.00492892159, Teaspoon, Options.Number_Style);
+         end if;
+      elsif Abs_Value >= 3.785411784 then
+         return Format (Context, Liters / 3.785411784, Gallon, Options.Number_Style);
+      else
+         return Format (Context, Liters / 0.0338140227, Ounce, Options.Number_Style);
       end if;
    end Format_Volume;
 
@@ -529,6 +859,22 @@ package body Humanize.Units is
          return Format (Context, Km_H, Kilometer_Per_Hour, Options);
       else
          return Format (Context, Meters_Per_Second, Meter_Per_Second, Options);
+      end if;
+   end Format_Speed;
+
+   function Format_Speed
+     (Context           : Humanize.Contexts.Context;
+      Meters_Per_Second : Long_Float;
+      Options           : Measurement_Options)
+      return Humanize.Status.Text_Result
+   is
+      System : constant Measurement_System := Resolved_System (Context, Options);
+   begin
+      if System = Metric_System or else System = Cooking_US_System then
+         return Format_Speed (Context, Meters_Per_Second, Options.Number_Style);
+      else
+         return Compound (Meters_Per_Second * 2.2369362920544, "mph",
+                          Options.Number_Style);
       end if;
    end Format_Speed;
 
@@ -605,6 +951,26 @@ package body Humanize.Units is
    is
    begin
       return Format (Context, Celsius_Value, Celsius, Options);
+   end Format_Temperature;
+
+   function Format_Temperature
+     (Context : Humanize.Contexts.Context;
+      Celsius_Value : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result
+   is
+      System : constant Measurement_System := Resolved_System (Context, Options);
+   begin
+      if System = US_Customary_System
+        or else System = UK_Mixed_System
+        or else System = Cooking_US_System
+      then
+         return Format
+           (Context, Fahrenheit_From_Celsius (Celsius_Value), Fahrenheit,
+            Options.Number_Style);
+      else
+         return Format_Temperature (Context, Celsius_Value, Options.Number_Style);
+      end if;
    end Format_Temperature;
 
    function Format_Frequency
@@ -761,6 +1127,24 @@ package body Humanize.Units is
       pragma Unreferenced (Context);
    begin
       return Compound (Liters_Per_100_Km, "L/100 km", Options);
+   end Format_Fuel_Economy;
+
+   function Format_Fuel_Economy
+     (Context            : Humanize.Contexts.Context;
+      Liters_Per_100_Km  : Long_Float;
+      Options            : Measurement_Options)
+      return Humanize.Status.Text_Result
+   is
+      System : constant Measurement_System := Resolved_System (Context, Options);
+   begin
+      if System = Metric_System or else System = Cooking_US_System then
+         return Format_Fuel_Economy
+           (Context, Liters_Per_100_Km, Options.Number_Style);
+      else
+         return Format_Fuel_Efficiency_MPG
+           (Context, Miles_Per_Gallon_From_L_100_Km (Liters_Per_100_Km),
+            Options.Number_Style);
+      end if;
    end Format_Fuel_Economy;
 
    function Format_Flow_Rate
@@ -972,6 +1356,24 @@ package body Humanize.Units is
       return Format (Context, Fahrenheit_Value, Fahrenheit, Options);
    end Format_Cooking_Temperature;
 
+   function Format_Cooking_Temperature
+     (Context : Humanize.Contexts.Context;
+      Fahrenheit_Value : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result
+   is
+      System : constant Measurement_System := Resolved_System (Context, Options);
+   begin
+      if System = Metric_System then
+         return Format
+           (Context, Celsius_From_Fahrenheit (Fahrenheit_Value), Celsius,
+            Options.Number_Style);
+      else
+         return Format_Cooking_Temperature
+           (Context, Fahrenheit_Value, Options.Number_Style);
+      end if;
+   end Format_Cooking_Temperature;
+
    function Format_Memory_Bandwidth
      (Context          : Humanize.Contexts.Context;
       Bytes_Per_Second : Long_Float;
@@ -1009,6 +1411,26 @@ package body Humanize.Units is
          return Compound (Microseconds, "us", Options);
       end if;
    end Format_Latency;
+
+   function Format_Database_Throughput
+     (Context               : Humanize.Contexts.Context;
+      Operations_Per_Second : Long_Float;
+      Options               : Humanize.Numbers.Number_Options :=
+        Humanize.Numbers.Default_Number_Options)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      if abs Operations_Per_Second >= 1_000_000.0 then
+         return Compound
+           (Operations_Per_Second / 1_000_000.0, "M ops/s", Options);
+      elsif abs Operations_Per_Second >= 1_000.0 then
+         return Compound
+           (Operations_Per_Second / 1_000.0, "k ops/s", Options);
+      else
+         return Compound (Operations_Per_Second, "ops/s", Options);
+      end if;
+   end Format_Database_Throughput;
 
    function Format_CPU_Load
      (Context : Humanize.Contexts.Context;
@@ -1163,6 +1585,21 @@ package body Humanize.Units is
       end if;
    end Format_Geographic_Distance;
 
+   function Format_Geographic_Distance
+     (Context : Humanize.Contexts.Context;
+      Meters  : Long_Float;
+      Options : Measurement_Options)
+      return Humanize.Status.Text_Result
+   is
+      System : constant Measurement_System := Resolved_System (Context, Options);
+   begin
+      if System = Metric_System or else System = Cooking_US_System then
+         return Format_Geographic_Distance (Context, Meters, Options.Number_Style);
+      else
+         return Format_Length (Context, Meters, Options);
+      end if;
+   end Format_Geographic_Distance;
+
    procedure Format_Into
      (Context : Humanize.Contexts.Context;
       Value   : Natural;
@@ -1263,6 +1700,19 @@ package body Humanize.Units is
         (Format_Length (Context, Meters, Options), Target, Written, Status);
    end Format_Length_Into;
 
+   procedure Format_Length_Into
+     (Context : Humanize.Contexts.Context;
+      Meters  : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options)
+   is
+   begin
+      Copy_Result_Into
+        (Format_Length (Context, Meters, Options), Target, Written, Status);
+   end Format_Length_Into;
+
    procedure Format_Mass_Into
      (Context : Humanize.Contexts.Context;
       Grams   : Long_Float;
@@ -1271,6 +1721,19 @@ package body Humanize.Units is
       Status  : out Humanize.Status.Status_Code;
       Options : Humanize.Numbers.Number_Options :=
         Humanize.Numbers.Default_Number_Options)
+   is
+   begin
+      Copy_Result_Into
+        (Format_Mass (Context, Grams, Options), Target, Written, Status);
+   end Format_Mass_Into;
+
+   procedure Format_Mass_Into
+     (Context : Humanize.Contexts.Context;
+      Grams   : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options)
    is
    begin
       Copy_Result_Into
@@ -1291,6 +1754,19 @@ package body Humanize.Units is
         (Format_Volume (Context, Liters, Options), Target, Written, Status);
    end Format_Volume_Into;
 
+   procedure Format_Volume_Into
+     (Context : Humanize.Contexts.Context;
+      Liters  : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options)
+   is
+   begin
+      Copy_Result_Into
+        (Format_Volume (Context, Liters, Options), Target, Written, Status);
+   end Format_Volume_Into;
+
    procedure Format_Speed_Into
      (Context           : Humanize.Contexts.Context;
       Meters_Per_Second : Long_Float;
@@ -1299,6 +1775,20 @@ package body Humanize.Units is
       Status            : out Humanize.Status.Status_Code;
       Options           : Humanize.Numbers.Number_Options :=
         Humanize.Numbers.Default_Number_Options)
+   is
+   begin
+      Copy_Result_Into
+        (Format_Speed (Context, Meters_Per_Second, Options),
+         Target, Written, Status);
+   end Format_Speed_Into;
+
+   procedure Format_Speed_Into
+     (Context           : Humanize.Contexts.Context;
+      Meters_Per_Second : Long_Float;
+      Target            : in out String;
+      Written           : out Natural;
+      Status            : out Humanize.Status.Status_Code;
+      Options           : Measurement_Options)
    is
    begin
       Copy_Result_Into
@@ -1373,6 +1863,20 @@ package body Humanize.Units is
       Status  : out Humanize.Status.Status_Code;
       Options : Humanize.Numbers.Number_Options :=
         Humanize.Numbers.Default_Number_Options)
+   is
+   begin
+      Copy_Result_Into
+        (Format_Temperature (Context, Celsius_Value, Options),
+         Target, Written, Status);
+   end Format_Temperature_Into;
+
+   procedure Format_Temperature_Into
+     (Context : Humanize.Contexts.Context;
+      Celsius_Value : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options)
    is
    begin
       Copy_Result_Into
@@ -1522,6 +2026,20 @@ package body Humanize.Units is
       Status            : out Humanize.Status.Status_Code;
       Options           : Humanize.Numbers.Number_Options :=
         Humanize.Numbers.Default_Number_Options)
+   is
+   begin
+      Copy_Result_Into
+        (Format_Fuel_Economy (Context, Liters_Per_100_Km, Options),
+         Target, Written, Status);
+   end Format_Fuel_Economy_Into;
+
+   procedure Format_Fuel_Economy_Into
+     (Context           : Humanize.Contexts.Context;
+      Liters_Per_100_Km : Long_Float;
+      Target            : in out String;
+      Written           : out Natural;
+      Status            : out Humanize.Status.Status_Code;
+      Options           : Measurement_Options)
    is
    begin
       Copy_Result_Into
@@ -1721,6 +2239,20 @@ package body Humanize.Units is
          Target, Written, Status);
    end Format_Cooking_Temperature_Into;
 
+   procedure Format_Cooking_Temperature_Into
+     (Context : Humanize.Contexts.Context;
+      Fahrenheit_Value : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options)
+   is
+   begin
+      Copy_Result_Into
+        (Format_Cooking_Temperature (Context, Fahrenheit_Value, Options),
+         Target, Written, Status);
+   end Format_Cooking_Temperature_Into;
+
    procedure Format_Memory_Bandwidth_Into
      (Context          : Humanize.Contexts.Context;
       Bytes_Per_Second : Long_Float;
@@ -1750,6 +2282,22 @@ package body Humanize.Units is
         (Format_Latency (Context, Microseconds, Options),
          Target, Written, Status);
    end Format_Latency_Into;
+
+   procedure Format_Database_Throughput_Into
+     (Context               : Humanize.Contexts.Context;
+      Operations_Per_Second : Long_Float;
+      Target                : in out String;
+      Written               : out Natural;
+      Status                : out Humanize.Status.Status_Code;
+      Options               : Humanize.Numbers.Number_Options :=
+        Humanize.Numbers.Default_Number_Options)
+   is
+   begin
+      Copy_Result_Into
+        (Format_Database_Throughput
+           (Context, Operations_Per_Second, Options),
+         Target, Written, Status);
+   end Format_Database_Throughput_Into;
 
    procedure Format_CPU_Load_Into
      (Context : Humanize.Contexts.Context;
@@ -1924,6 +2472,20 @@ package body Humanize.Units is
       Status  : out Humanize.Status.Status_Code;
       Options : Humanize.Numbers.Number_Options :=
         Humanize.Numbers.Default_Number_Options)
+   is
+   begin
+      Copy_Result_Into
+        (Format_Geographic_Distance (Context, Meters, Options),
+         Target, Written, Status);
+   end Format_Geographic_Distance_Into;
+
+   procedure Format_Geographic_Distance_Into
+     (Context : Humanize.Contexts.Context;
+      Meters  : Long_Float;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Measurement_Options)
    is
    begin
       Copy_Result_Into

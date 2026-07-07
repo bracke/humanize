@@ -12,6 +12,9 @@ tags = ["tool", "release", "check"]
 executables = ["check_humanize"]
 
 [[depends-on]]
+gnat_native = "=15.2.1"
+
+[[depends-on]]
 project_tools = "*"
 
 [[pins]]

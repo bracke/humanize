@@ -1,13 +1,16 @@
 name = "humanize"
 description = "Localized humanization of datetimes, durations, bytes, numbers, units"
 version = "0.5.0"
-
+website = "https://github.com/bracke/humanize"
 authors = ["Bent Bracke"]
 maintainers = ["Bent Bracke <bent@bracke.dk>"]
 maintainers-logins = ["bracke"]
 licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
-website = ""
+
 tags = ["i18n", "humanize", "localization"]
+
+[[depends-on]]
+gnat_native = "=15.2.1"
 
 [[depends-on]]
 i18n = ">=1.1.0"

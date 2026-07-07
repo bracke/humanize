@@ -75,6 +75,64 @@ package body Humanize.Bytes is
       return No_Space (Byte_Count'Image (Rounded)) & "%";
    end Percent_Used;
 
+   function Format_Metadata
+     (Bytes   : Byte_Count;
+      Options : Byte_Options := Default_Byte_Options)
+      return Byte_Render_Metadata
+   is
+      type Unit_Range is range 1 .. 4;
+      type Threshold_Array is array (Unit_Range) of Byte_Count;
+      type Unit_Array is array (Unit_Range) of Byte_Render_Unit;
+
+      Binary_Threshold : constant Threshold_Array :=
+        [1024, 1_048_576, 1_073_741_824, 1_099_511_627_776];
+      Decimal_Threshold : constant Threshold_Array :=
+        [1000, 1_000_000, 1_000_000_000, 1_000_000_000_000];
+      Binary_Units : constant Unit_Array :=
+        [Byte_Unit_KiB, Byte_Unit_MiB, Byte_Unit_GiB, Byte_Unit_TiB];
+      Decimal_Units : constant Unit_Array :=
+        [Byte_Unit_KB, Byte_Unit_MB, Byte_Unit_GB, Byte_Unit_TB];
+      Effective_System : constant Byte_Unit_System :=
+        (if Options.Unit_System /= Auto then Options.Unit_System
+         elsif Bytes >= Decimal_Threshold (1)
+           and then Bytes mod Decimal_Threshold (1) = 0
+         then Decimal
+         else Binary);
+      Thresholds : constant Threshold_Array :=
+        (if Effective_System = Binary
+         then Binary_Threshold
+         else Decimal_Threshold);
+      Units : constant Unit_Array :=
+        (if Effective_System = Binary then Binary_Units else Decimal_Units);
+      Base : constant Byte_Count := Thresholds (1);
+      Chosen : Unit_Range := 1;
+   begin
+      if Bytes < Base then
+         return
+           (Status => Humanize.Status.Ok,
+            Bytes => Bytes,
+            Effective_Unit_System => Effective_System,
+            Unit => Byte_Unit_Bytes,
+            Threshold => 1,
+            Fraction_Digits => Options.Maximum_Fraction_Digits);
+      end if;
+
+      for Index in reverse Unit_Range loop
+         if Thresholds (Index) <= Bytes then
+            Chosen := Index;
+            exit;
+         end if;
+      end loop;
+
+      return
+        (Status => Humanize.Status.Ok,
+         Bytes => Bytes,
+         Effective_Unit_System => Effective_System,
+         Unit => Units (Chosen),
+         Threshold => Thresholds (Chosen),
+         Fraction_Digits => Options.Maximum_Fraction_Digits);
+   end Format_Metadata;
+
    function Format
      (Context : Humanize.Contexts.Context;
       Bytes   : Byte_Count;

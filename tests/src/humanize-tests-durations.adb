@@ -12,6 +12,28 @@ package body Humanize.Tests.Durations is
    use Humanize.Durations;
    use Humanize.Status;
 
+   U_A_Grave : constant String :=
+     Character'Val (16#C3#) & Character'Val (16#A0#);
+
+   function U (Code : Natural) return String is
+   begin
+      if Code <= 16#7F# then
+         return String'(1 => Character'Val (Code));
+      elsif Code <= 16#7FF# then
+         return Character'Val (16#C0# + Code / 64)
+           & Character'Val (16#80# + Code mod 64);
+      elsif Code <= 16#FFFF# then
+         return Character'Val (16#E0# + Code / 4_096)
+           & Character'Val (16#80# + (Code / 64) mod 64)
+           & Character'Val (16#80# + Code mod 64);
+      else
+         return Character'Val (16#F0# + Code / 262_144)
+           & Character'Val (16#80# + (Code / 4_096) mod 64)
+           & Character'Val (16#80# + (Code / 64) mod 64)
+           & Character'Val (16#80# + Code mod 64);
+      end if;
+   end U;
+
    procedure Check
      (Seconds  : Duration_Seconds;
       Expected : String;
@@ -48,6 +70,7 @@ package body Humanize.Tests.Durations is
 
    procedure Test_Whole_Units (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
+      Info : constant Duration_Render_Metadata := Format_Metadata (3_661);
    begin
       Check (0, "0 seconds", "zero");
       Check (1, "1 second", "one second");
@@ -61,6 +84,13 @@ package body Humanize.Tests.Durations is
       Check (7 * 86_400, "1 week", "7 days is 1 week");
       Check (30 * 86_400, "1 month", "30 days is 1 month");
       Check (365 * 86_400, "1 year", "365 days is 1 year");
+      AUnit.Assertions.Assert
+        (Info.Status = Ok
+         and then Info.Hours = 1
+         and then Info.Minutes = 1
+         and then Info.Seconds = 1
+         and then Info.Component_Count = 3,
+         "duration render metadata");
    end Test_Whole_Units;
 
    procedure Check_Multi
@@ -204,8 +234,151 @@ package body Humanize.Tests.Durations is
       Working : constant Text_Result := Working_Hours (Support.En, 1);
       EOW : constant Text_Result := End_Of_Week (Support.En);
       Repeat : constant Text_Result := Recurrence (Support.En, 2, Every_Day);
+      Weekday_Schedule : constant Text_Result :=
+        Schedule
+          (Support.En,
+           (Kind        => Schedule_Weekday_Set,
+            Every       => 1,
+            Unit        => Every_Week,
+            Weekday     => 0,
+            Weekdays    => Weekdays,
+            Ordinal     => 0,
+            Has_Time    => True,
+            Hour        => 9,
+            Minute      => 0,
+            Use_12_Hour => False));
+      Danish_Weekday_Schedule : constant Text_Result :=
+        Schedule
+          (Support.Da,
+           (Kind        => Schedule_Weekday_Set,
+            Every       => 1,
+            Unit        => Every_Week,
+            Weekday     => 0,
+            Weekdays    => Weekdays,
+            Ordinal     => 0,
+            Has_Time    => True,
+            Hour        => 9,
+            Minute      => 0,
+            Use_12_Hour => False));
+      German_Ordinal_Schedule : constant Text_Result :=
+        Schedule
+          (Support.De,
+           (Kind        => Schedule_Ordinal_Weekday,
+            Every       => 1,
+            Unit        => Every_Month,
+            Weekday     => 1,
+            Weekdays    => Every_Day_Set,
+            Ordinal     => 1,
+            Has_Time    => True,
+            Hour        => 9,
+            Minute      => 30,
+            Use_12_Hour => False));
+      Italian_Ordinal_Schedule : constant Text_Result :=
+        Schedule
+          (Support.It,
+           (Kind        => Schedule_Ordinal_Weekday,
+            Every       => 1,
+            Unit        => Every_Month,
+            Weekday     => 1,
+            Weekdays    => Every_Day_Set,
+            Ordinal     => 1,
+            Has_Time    => True,
+            Hour        => 9,
+            Minute      => 30,
+            Use_12_Hour => False));
+      Swedish_Custom_Weekdays : constant Text_Result :=
+        Schedule
+          (Support.Locale ("sv"),
+           (Kind        => Schedule_Weekday_Set,
+            Every       => 1,
+            Unit        => Every_Week,
+            Weekday     => 0,
+            Weekdays    =>
+              [1 => True, 2 => False, 3 => True, 4 => False,
+               5 => False, 6 => False, 7 => False],
+            Ordinal     => 0,
+            Has_Time    => False,
+            Hour        => 0,
+            Minute      => 0,
+            Use_12_Hour => False));
+      French_Weekday_Schedule : constant Text_Result :=
+        Cron_Schedule (Support.Fr, "0", "9", "*", "*", "1-5");
+      Spanish_Weekday_Schedule : constant Text_Result :=
+        Cron_Schedule (Support.Es, "0", "9", "*", "*", "1-5");
+      Ordinal_Schedule : constant Text_Result :=
+        Schedule
+          (Support.En,
+           (Kind        => Schedule_Ordinal_Weekday,
+            Every       => 1,
+            Unit        => Every_Month,
+            Weekday     => 1,
+            Weekdays    => Every_Day_Set,
+            Ordinal     => 1,
+            Has_Time    => True,
+            Hour        => 9,
+            Minute      => 30,
+            Use_12_Hour => False));
+      Cron_Minutely : constant Text_Result :=
+        Cron_Schedule (Support.En, "*", "*", "*", "*", "*");
+      Cron_Daily : constant Text_Result :=
+        Cron_Schedule (Support.En, "0", "9", "*", "*", "*");
+      Cron_Hourly : constant Text_Result :=
+        Cron_Schedule (Support.En, "15", "*", "*", "*", "*");
+      Cron_Weekday : constant Text_Result :=
+        Cron_Schedule (Support.En, "0", "9", "*", "*", "1-5");
+      Biweekly_Monday : constant Text_Result :=
+        Schedule
+          (Support.En,
+           (Kind        => Schedule_Weekday,
+            Every       => 2,
+            Unit        => Every_Week,
+            Weekday     => 1,
+            Weekdays    => Every_Day_Set,
+            Ordinal     => 0,
+            Has_Time    => True,
+            Hour        => 9,
+            Minute      => 0,
+            Use_12_Hour => False));
+      Weekly_Helper : constant Text_Result :=
+        Weekly_Schedule
+          (Support.En,
+           [1 => True, 2 => False, 3 => True, 4 => False,
+            5 => False, 6 => False, 7 => False],
+           Every => 2);
+      Every_Other_Helper : constant Text_Result :=
+        Every_Other_Weekday_Schedule
+          (Support.En, 1, Has_Time => True, Hour => 9, Minute => 0);
+      Monthly_Day_Helper : constant Text_Result :=
+        Monthly_Day_Schedule
+          (Support.En, 15, Has_Time => True, Hour => 8, Minute => 30);
+      Last_Business_Helper : constant Text_Result :=
+        Last_Business_Day_Schedule
+          (Support.En, Has_Time => True, Hour => 17, Minute => 0);
+      Second_Business_Helper : constant Text_Result :=
+        Business_Day_Schedule
+          (Support.En, 2, Has_Time => True, Hour => 10, Minute => 15);
+      Invalid_Business_Helper : constant Text_Result :=
+        Business_Day_Schedule (Support.En, 0);
+      Cron_Monthly : constant Text_Result :=
+        Cron_Schedule (Support.En, "30", "8", "15", "*", "*");
+      Finnish_Cron_Monthly : constant Text_Result :=
+        Cron_Schedule (Support.Locale ("fi"), "30", "8", "15", "*", "*");
+      Polish_Cron_Monthly : constant Text_Result :=
+        Cron_Schedule (Support.Locale ("pl"), "30", "8", "15", "*", "*");
       Natural_Text : constant Text_Result :=
         Natural_Duration (Support.En, 30);
+      Rails_Text : constant Text_Result :=
+        Natural_Duration (Support.En, 20, Threshold_Rails);
+      Conversational_Text : constant Text_Result :=
+        Natural_Duration (Support.En, 59 * 60, Threshold_Conversational);
+      Distance_Past : constant Text_Result :=
+        Duration_Distance
+          (Support.En, 3 * 86_400, Duration_Distance_Past,
+           Threshold_Django);
+      Distance_Future : constant Text_Result :=
+        Duration_Distance
+          (Support.En, 400 * 86_400, Duration_Distance_Future,
+           Threshold_Rails);
       Half_Text : constant Text_Result :=
         Natural_Duration (Support.En, 1_800);
       Brief_Text : constant Text_Result :=
@@ -340,10 +513,235 @@ package body Humanize.Tests.Durations is
                Sunday_Start => 0, Sunday_End => 0),
             Break_Start_Hour => 0,
             Break_End_Hour => 0));
+      Extended_Weekday_Hour : constant Text_Result :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 7, 3, 16.0 * 3_600.0),
+           1,
+           Inert_Holidays,
+           Inert_Recurring,
+           Inert_Half_Days,
+           Inert_Shutdowns,
+           Business_Calendar_Options_For (Business_Extended_Weekdays));
+      Weekend_Preset_Hour : constant Text_Result :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 7, 4, 15.0 * 3_600.0),
+           1,
+           Inert_Holidays,
+           Inert_Recurring,
+           Inert_Half_Days,
+           Inert_Shutdowns,
+           Business_Calendar_Options_For (Business_Seven_Days));
+      Closed_Preset_Rules : constant Business_Calendar_Rules :=
+        Business_Calendar_Rules_For (Business_Closed);
+      Closed_Preset_Hour : constant Text_Result :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 7, 3, 16.0 * 3_600.0),
+           1,
+           Closed_Preset_Rules);
+      Observed_Rules : Business_Calendar_Rules;
+      Nth_Weekday_Rules : Business_Calendar_Rules;
+      US_Federal_Rules : constant Business_Calendar_Rules :=
+        US_Federal_Business_Calendar_Rules (2026);
+      TARGET2_Rules : constant Business_Calendar_Rules :=
+        TARGET2_Business_Calendar_Rules (2026);
+      UK_Rules : constant Business_Calendar_Rules :=
+        UK_England_Wales_Business_Calendar_Rules (2026);
+      Canada_Rules : constant Business_Calendar_Rules :=
+        Canada_Federal_Business_Calendar_Rules (2026);
+      Germany_Rules : constant Business_Calendar_Rules :=
+        Germany_Business_Calendar_Rules (2026);
+      France_Rules : constant Business_Calendar_Rules :=
+        France_Business_Calendar_Rules (2026);
+      NYSE_Rules : constant Business_Calendar_Rules :=
+        NYSE_Business_Calendar_Rules (2026);
+      ASX_Rules : constant Business_Calendar_Rules :=
+        ASX_Business_Calendar_Rules (2026);
+      JPX_Rules : constant Business_Calendar_Rules :=
+        JPX_Business_Calendar_Rules (2026);
+      SIX_Rules : constant Business_Calendar_Rules :=
+        SIX_Business_Calendar_Rules (2026);
+      SGX_Rules : constant Business_Calendar_Rules :=
+        SGX_Business_Calendar_Rules (2026);
+      HKEX_Rules : constant Business_Calendar_Rules :=
+        HKEX_Business_Calendar_Rules (2026);
+      NSE_Rules : constant Business_Calendar_Rules :=
+        NSE_Business_Calendar_Rules (2026);
+      B3_Rules : constant Business_Calendar_Rules :=
+        B3_Business_Calendar_Rules (2026);
+      BMV_Rules : constant Business_Calendar_Rules :=
+        BMV_Business_Calendar_Rules (2026);
+      Australia_Rules : constant Business_Calendar_Rules :=
+        Australia_National_Business_Calendar_Rules (2026);
+      Japan_Rules : constant Business_Calendar_Rules :=
+        Japan_Business_Calendar_Rules (2026);
+      Switzerland_Rules : constant Business_Calendar_Rules :=
+        Switzerland_Business_Calendar_Rules (2026);
+      Singapore_Rules : constant Business_Calendar_Rules :=
+        Singapore_Business_Calendar_Rules (2026);
+      Observed_Date : Text_Result;
+      Nth_Weekday_Date : Text_Result;
+      US_Federal_Date : Text_Result;
+      TARGET2_Date : Text_Result;
+      UK_Date : Text_Result;
+      Canada_Date : Text_Result;
+      Germany_Date : Text_Result;
+      France_Date : Text_Result;
+      NYSE_Date : Text_Result;
+      ASX_Date : Text_Result;
+      JPX_Date : Text_Result;
+      SIX_Date : Text_Result;
+      SGX_Date : Text_Result;
+      HKEX_Date : Text_Result;
+      NSE_Date : Text_Result;
+      B3_Date : Text_Result;
+      BMV_Date : Text_Result;
+      Australia_Date : Text_Result;
+      Japan_Date : Text_Result;
+      Switzerland_Date : Text_Result;
+      Singapore_Date : Text_Result;
+      Rule_Status : Status_Code;
       Buffer : String (1 .. 32);
       Written : Natural;
       Code : Status_Code;
    begin
+      Rule_Status := Add_Observed_Holiday (Observed_Rules, 2026, 7, 4);
+      AUnit.Assertions.Assert
+        (Rule_Status = Ok,
+         "add observed fixed-date holiday");
+      Observed_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 7, 2, 16.0 * 3_600.0),
+           2,
+           Observed_Rules);
+      Rule_Status :=
+        Add_Nth_Weekday_Holiday (Nth_Weekday_Rules, 2026, 11, 4, 4);
+      AUnit.Assertions.Assert
+        (Rule_Status = Ok,
+         "add nth weekday holiday");
+      Nth_Weekday_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 11, 25, 16.0 * 3_600.0),
+           2,
+           Nth_Weekday_Rules);
+      US_Federal_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 7, 2, 16.0 * 3_600.0),
+           2,
+           US_Federal_Rules);
+      TARGET2_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 4, 2, 16.0 * 3_600.0),
+           2,
+           TARGET2_Rules);
+      UK_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 12, 24, 16.0 * 3_600.0),
+           2,
+           UK_Rules);
+      Canada_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 6, 30, 16.0 * 3_600.0),
+           2,
+           Canada_Rules);
+      Germany_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 4, 2, 16.0 * 3_600.0),
+           2,
+           Germany_Rules);
+      France_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 5, 7, 16.0 * 3_600.0),
+           2,
+           France_Rules);
+      NYSE_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 11, 25, 16.0 * 3_600.0),
+           2,
+           NYSE_Rules);
+      ASX_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 6, 5, 16.0 * 3_600.0),
+           2,
+           ASX_Rules);
+      JPX_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 1, 1, 16.0 * 3_600.0),
+           2,
+           JPX_Rules);
+      SIX_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 1, 1, 16.0 * 3_600.0),
+           2,
+           SIX_Rules);
+      SGX_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 8, 7, 16.0 * 3_600.0),
+           2,
+           SGX_Rules);
+      HKEX_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 6, 30, 16.0 * 3_600.0),
+           2,
+           HKEX_Rules);
+      NSE_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 1, 23, 16.0 * 3_600.0),
+           2,
+           NSE_Rules);
+      B3_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 9, 4, 16.0 * 3_600.0),
+           2,
+           B3_Rules);
+      BMV_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 9, 15, 16.0 * 3_600.0),
+           2,
+           BMV_Rules);
+      Australia_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 1, 23, 16.0 * 3_600.0),
+           2,
+           Australia_Rules);
+      Japan_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 5, 1, 16.0 * 3_600.0),
+           2,
+           Japan_Rules);
+      Switzerland_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 4, 2, 16.0 * 3_600.0),
+           2,
+           Switzerland_Rules);
+      Singapore_Date :=
+        Business_Calendar_Label
+          (Support.En,
+           Ada.Calendar.Time_Of (2026, 8, 7, 16.0 * 3_600.0),
+           2,
+           Singapore_Rules);
       AUnit.Assertions.Assert
         (Compact.Status = Ok and then Support.Text (Compact) = "1h 30m",
          "compact duration");
@@ -442,9 +840,135 @@ package body Humanize.Tests.Durations is
         (Repeat.Status = Ok and then Support.Text (Repeat) = "every 2 days",
          "recurrence phrase");
       AUnit.Assertions.Assert
+        (Weekday_Schedule.Status = Ok
+         and then Support.Text (Weekday_Schedule) = "every weekday at 09:00",
+         "weekday schedule phrase");
+      AUnit.Assertions.Assert
+        (Danish_Weekday_Schedule.Status = Ok
+         and then Support.Text (Danish_Weekday_Schedule)
+           = "hver hverdag kl. 09:00",
+         "localized Danish weekday schedule phrase");
+      AUnit.Assertions.Assert
+        (German_Ordinal_Schedule.Status = Ok
+         and then Support.Text (German_Ordinal_Schedule)
+           = "erster Montag jedes Monats um 09:30",
+         "localized German ordinal weekday schedule phrase");
+      AUnit.Assertions.Assert
+        (Italian_Ordinal_Schedule.Status = Ok
+         and then Support.Text (Italian_Ordinal_Schedule)
+           = "primo luned" & Character'Val (16#C3#) & Character'Val (16#AC#)
+             & " di ogni mese alle 09:30",
+         "localized Italian ordinal weekday schedule phrase");
+      AUnit.Assertions.Assert
+        (Swedish_Custom_Weekdays.Status = Ok
+         and then Support.Text (Swedish_Custom_Weekdays)
+           = "varje m" & Character'Val (16#C3#) & Character'Val (16#A5#)
+             & "ndag och onsdag",
+         "localized Swedish custom weekday conjunction");
+      AUnit.Assertions.Assert
+        (French_Weekday_Schedule.Status = Ok
+         and then Support.Text (French_Weekday_Schedule)
+           = "chaque jour ouvrable " & U_A_Grave & " 09:00",
+         "localized French cron weekday schedule phrase");
+      AUnit.Assertions.Assert
+        (Spanish_Weekday_Schedule.Status = Ok
+         and then Support.Text (Spanish_Weekday_Schedule)
+           = "cada d" & Character'Val (16#C3#) & Character'Val (16#AD#)
+             & "a laborable a las 09:00",
+         "localized Spanish cron weekday schedule phrase");
+      AUnit.Assertions.Assert
+        (Ordinal_Schedule.Status = Ok
+         and then Support.Text (Ordinal_Schedule)
+           = "first Monday of each month at 09:30",
+         "ordinal weekday schedule phrase");
+      AUnit.Assertions.Assert
+        (Cron_Minutely.Status = Ok
+         and then Support.Text (Cron_Minutely) = "every minute",
+         "cron minutely schedule phrase");
+      AUnit.Assertions.Assert
+        (Cron_Daily.Status = Ok
+         and then Support.Text (Cron_Daily) = "every day at 09:00",
+         "cron daily schedule phrase");
+      AUnit.Assertions.Assert
+        (Cron_Hourly.Status = Ok
+         and then Support.Text (Cron_Hourly) = "every hour at minute 15",
+         "cron hourly schedule phrase");
+      AUnit.Assertions.Assert
+        (Cron_Weekday.Status = Ok
+         and then Support.Text (Cron_Weekday) = "every weekday at 09:00",
+         "cron weekday schedule phrase");
+      AUnit.Assertions.Assert
+        (Biweekly_Monday.Status = Ok
+         and then Support.Text (Biweekly_Monday)
+           = "every 2 weeks on Monday at 09:00",
+         "biweekly weekday schedule phrase");
+      AUnit.Assertions.Assert
+        (Weekly_Helper.Status = Ok
+         and then Support.Text (Weekly_Helper)
+           = "every 2 weeks on Monday and Wednesday",
+         "weekly helper schedule phrase");
+      AUnit.Assertions.Assert
+        (Every_Other_Helper.Status = Ok
+         and then Support.Text (Every_Other_Helper)
+           = "every 2 weeks on Monday at 09:00",
+         "every-other weekday helper schedule phrase");
+      AUnit.Assertions.Assert
+        (Monthly_Day_Helper.Status = Ok
+         and then Support.Text (Monthly_Day_Helper)
+           = "day 15 of each month at 08:30",
+         "monthly day helper schedule phrase");
+      AUnit.Assertions.Assert
+        (Last_Business_Helper.Status = Ok
+         and then Support.Text (Last_Business_Helper)
+           = "last business day of each month at 17:00",
+         "last business day helper schedule phrase");
+      AUnit.Assertions.Assert
+        (Second_Business_Helper.Status = Ok
+         and then Support.Text (Second_Business_Helper)
+           = "second business day of each month at 10:15",
+         "ordinal business day helper schedule phrase");
+      AUnit.Assertions.Assert
+        (Invalid_Business_Helper.Status = Invalid_Argument,
+         "invalid ordinal business day helper");
+      AUnit.Assertions.Assert
+        (Cron_Monthly.Status = Ok
+         and then Support.Text (Cron_Monthly)
+           = "day 15 of each month at 08:30",
+         "cron monthly schedule phrase");
+      AUnit.Assertions.Assert
+        (Finnish_Cron_Monthly.Status = Ok
+         and then Support.Text (Finnish_Cron_Monthly)
+           = "p" & Character'Val (16#C3#) & Character'Val (16#A4#)
+             & "iv" & Character'Val (16#C3#) & Character'Val (16#A4#)
+             & " 15 joka kuukausi klo 08:30",
+         "localized Finnish cron monthly schedule phrase");
+      AUnit.Assertions.Assert
+        (Polish_Cron_Monthly.Status = Ok
+         and then Support.Text (Polish_Cron_Monthly)
+           = "15. dzie" & U (16#144#) & " ka" & U (16#17C#)
+             & "dego miesi" & U (16#105#) & "ca o 08:30",
+         "localized Polish cron monthly schedule phrase");
+      AUnit.Assertions.Assert
         (Natural_Text.Status = Ok
          and then Support.Text (Natural_Text) = "less than a minute",
          "natural less-than duration");
+      AUnit.Assertions.Assert
+        (Rails_Text.Status = Ok
+         and then Support.Text (Rails_Text) = "a few seconds",
+         "Rails-style short natural duration");
+      AUnit.Assertions.Assert
+        (Conversational_Text.Status = Ok
+         and then Support.Text (Conversational_Text)
+           = "a little under 1 hour",
+         "conversational under-threshold duration");
+      AUnit.Assertions.Assert
+        (Distance_Past.Status = Ok
+         and then Support.Text (Distance_Past) = "3 days ago",
+         "past duration distance");
+      AUnit.Assertions.Assert
+        (Distance_Future.Status = Ok
+         and then Support.Text (Distance_Future) = "in over 1 year",
+         "future duration distance");
       AUnit.Assertions.Assert
         (Half_Text.Status = Ok and then Support.Text (Half_Text) = "half an hour",
          "natural half-hour duration");
@@ -511,6 +1035,109 @@ package body Humanize.Tests.Durations is
          and then Support.Text (Holiday_Date) = "2026-07-07",
          "business-day arithmetic skips configured holidays");
       AUnit.Assertions.Assert
+        (Observed_Date.Status = Ok
+         and then Support.Text (Observed_Date) = "2026-07-06",
+         "observed fixed-date holiday skips observed weekday");
+      AUnit.Assertions.Assert
+        (Nth_Weekday_Date.Status = Ok
+         and then Support.Text (Nth_Weekday_Date) = "2026-11-27",
+         "nth weekday holiday skips configured weekday");
+      AUnit.Assertions.Assert
+        (US_Federal_Rules.Holiday_Count = 11
+         and then US_Federal_Date.Status = Ok
+         and then Support.Text (US_Federal_Date) = "2026-07-06",
+         "US federal calendar skips observed holidays");
+      AUnit.Assertions.Assert
+        (TARGET2_Rules.Holiday_Count = 6
+         and then TARGET2_Date.Status = Ok
+         and then Support.Text (TARGET2_Date) = "2026-04-07",
+         "TARGET2 calendar skips Easter closing days");
+      AUnit.Assertions.Assert
+        (UK_Rules.Holiday_Count = 8
+         and then UK_Date.Status = Ok
+         and then Support.Text (UK_Date) = "2026-12-29",
+         "UK England/Wales calendar skips bank holidays");
+      AUnit.Assertions.Assert
+        (Canada_Rules.Holiday_Count = 9
+         and then Canada_Date.Status = Ok
+         and then Support.Text (Canada_Date) = "2026-07-02",
+         "Canada federal calendar skips Canada Day");
+      AUnit.Assertions.Assert
+        (Germany_Rules.Holiday_Count = 9
+         and then Germany_Date.Status = Ok
+         and then Support.Text (Germany_Date) = "2026-04-07",
+         "Germany calendar skips Easter holidays");
+      AUnit.Assertions.Assert
+        (France_Rules.Holiday_Count = 11
+         and then France_Date.Status = Ok
+         and then Support.Text (France_Date) = "2026-05-11",
+         "France calendar skips May holidays");
+      AUnit.Assertions.Assert
+        (NYSE_Rules.Holiday_Count = 10
+         and then NYSE_Date.Status = Ok
+         and then Support.Text (NYSE_Date) = "2026-11-27",
+         "NYSE calendar skips Thanksgiving");
+      AUnit.Assertions.Assert
+        (ASX_Rules.Holiday_Count >= Australia_Rules.Holiday_Count + 1
+         and then ASX_Date.Status = Ok
+         and then Support.Text (ASX_Date) = "2026-06-09",
+         "ASX calendar skips common market holidays");
+      AUnit.Assertions.Assert
+        (JPX_Rules.Holiday_Count >= Japan_Rules.Holiday_Count + 3
+         and then JPX_Date.Status = Ok,
+         "JPX calendar skips common year-end market holidays");
+      AUnit.Assertions.Assert
+        (SIX_Rules.Holiday_Count >= Switzerland_Rules.Holiday_Count + 1
+         and then SIX_Date.Status = Ok
+         and then Support.Text (SIX_Date) = "2026-01-05",
+         "SIX calendar skips common exchange holidays");
+      AUnit.Assertions.Assert
+        (SGX_Rules.Holiday_Count = Singapore_Rules.Holiday_Count
+         and then SGX_Date.Status = Ok
+         and then Support.Text (SGX_Date) = "2026-08-11",
+         "SGX calendar skips common Singapore holidays");
+      AUnit.Assertions.Assert
+        (HKEX_Rules.Holiday_Count >= 8
+         and then HKEX_Rules.Half_Day_Count >= 2
+         and then HKEX_Date.Status = Ok
+         and then Support.Text (HKEX_Date) = "2026-07-02",
+         "HKEX calendar skips common Hong Kong market holidays and tracks half days");
+      AUnit.Assertions.Assert
+        (NSE_Rules.Holiday_Count >= 6
+         and then NSE_Date.Status = Ok
+         and then Support.Text (NSE_Date) = "2026-01-27",
+         "NSE calendar skips common India market holidays");
+      AUnit.Assertions.Assert
+        (B3_Rules.Holiday_Count >= 14
+         and then B3_Date.Status = Ok
+         and then Support.Text (B3_Date) = "2026-09-08",
+         "B3 calendar skips common Brazil market and year-end holidays");
+      AUnit.Assertions.Assert
+        (BMV_Rules.Holiday_Count >= 7
+         and then BMV_Date.Status = Ok
+         and then Support.Text (BMV_Date) = "2026-09-17",
+         "BMV calendar skips common Mexico market holidays");
+      AUnit.Assertions.Assert
+        (Australia_Rules.Holiday_Count >= 7
+         and then Australia_Date.Status = Ok
+         and then Support.Text (Australia_Date) = "2026-01-27",
+         "Australia calendar skips national holidays");
+      AUnit.Assertions.Assert
+        (Japan_Rules.Holiday_Count >= 15
+         and then Japan_Date.Status = Ok
+         and then Support.Text (Japan_Date) = "2026-05-07",
+         "Japan calendar skips Golden Week holidays");
+      AUnit.Assertions.Assert
+        (Switzerland_Rules.Holiday_Count >= 8
+         and then Switzerland_Date.Status = Ok
+         and then Support.Text (Switzerland_Date) = "2026-04-07",
+         "Switzerland calendar skips Easter holidays");
+      AUnit.Assertions.Assert
+        (Singapore_Rules.Holiday_Count >= 5
+         and then Singapore_Date.Status = Ok
+         and then Support.Text (Singapore_Date) = "2026-08-11",
+         "Singapore calendar skips observed National Day");
+      AUnit.Assertions.Assert
         (Business_Hour.Status = Ok
          and then Support.Text (Business_Hour) = "2026-07-06",
          "business-hour arithmetic respects workday window");
@@ -529,6 +1156,17 @@ package body Humanize.Tests.Durations is
       AUnit.Assertions.Assert
         (Closed_Advanced_Hour.Status = Invalid_Options,
          "advanced calendar rejects fully closed schedules");
+      AUnit.Assertions.Assert
+        (Extended_Weekday_Hour.Status = Ok
+         and then Support.Text (Extended_Weekday_Hour) = "2026-07-03",
+         "extended weekday preset keeps late weekday hours open");
+      AUnit.Assertions.Assert
+        (Weekend_Preset_Hour.Status = Ok
+         and then Support.Text (Weekend_Preset_Hour) = "2026-07-04",
+         "seven-day preset keeps weekends open");
+      AUnit.Assertions.Assert
+        (Closed_Preset_Hour.Status = Invalid_Options,
+         "closed business calendar preset has no open hours");
       Business_Calendar_Label_Into
         (Support.En,
          Ada.Calendar.Time_Of (2026, 12, 24, 15.0 * 3_600.0),
@@ -545,6 +1183,17 @@ package body Humanize.Tests.Durations is
       AUnit.Assertions.Assert
         (Code = Ok and then Buffer (1 .. Written) = "2026-12-30",
          "bounded advanced calendar respects exclusions");
+      Business_Calendar_Label_Into
+        (Support.En,
+         Ada.Calendar.Time_Of (2026, 4, 2, 16.0 * 3_600.0),
+         2,
+         TARGET2_Rules,
+         Buffer,
+         Written,
+         Code);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "2026-04-07",
+         "bounded business calendar rules overload");
       Retry_In_Into (Support.En, 10, Buffer, Written, Code);
       AUnit.Assertions.Assert
         (Code = Ok and then Buffer (1 .. Written) = "retrying in 10 seconds",
@@ -561,6 +1210,45 @@ package body Humanize.Tests.Durations is
       AUnit.Assertions.Assert
         (Code = Ok and then Buffer (1 .. Written) = "a little under 1 month",
          "bounded natural duration with custom approximation thresholds");
+      Schedule_Into
+        (Support.En,
+         (Kind        => Schedule_Weekday_Set,
+          Every       => 1,
+          Unit        => Every_Week,
+          Weekday     => 0,
+          Weekdays    => Weekdays,
+          Ordinal     => 0,
+          Has_Time    => True,
+          Hour        => 9,
+          Minute      => 0,
+          Use_12_Hour => False),
+         Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "every weekday at 09:00",
+         "bounded schedule phrase");
+      Last_Business_Day_Schedule_Into
+        (Support.En, Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok
+         and then Buffer (1 .. Written) = "last business day of each month",
+         "bounded last business day schedule phrase");
+      Business_Day_Schedule_Into
+        (Support.En, 2, Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Buffer_Overflow
+         and then Buffer (1 .. Written) = "second business day of each mont",
+         "bounded ordinal business day schedule phrase");
+      Natural_Duration_Into
+        (Support.En, 20, Buffer, Written, Code, Threshold_Rails);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "a few seconds",
+         "bounded threshold preset natural duration");
+      Duration_Distance_Into
+        (Support.En, 3 * 86_400, Buffer, Written, Code,
+         Duration_Distance_Past, Threshold_Django);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "3 days ago",
+         "bounded duration distance");
    end Test_Compact_And_Clock;
 
    overriding function Name (T : Test_Case) return AUnit.Message_String is

@@ -55,7 +55,8 @@ package body Humanize.Capabilities is
             when Rate_Area      => "rates",
             when Unit_Area      => "units",
             when Phrase_Area    => "phrases",
-            when Parsing_Area   => "parsing");
+            when Parsing_Area   => "parsing",
+            when Metadata_Area  => "metadata");
    end Area_Label;
 
    function Area_Rendering_Source
@@ -67,7 +68,8 @@ package body Humanize.Capabilities is
          when Datetime_Area | Duration_Area | Bytes_Area | Number_Area
             | List_Area | Frequency_Area | Rate_Area | Unit_Area =>
             return Humanize.Locale_Rendered;
-         when Color_Area | String_Area | Phrase_Area | Parsing_Area =>
+         when Color_Area | String_Area | Phrase_Area | Parsing_Area
+            | Metadata_Area =>
             return Humanize.Deterministic_Text;
       end case;
    end Area_Rendering_Source;
@@ -82,7 +84,7 @@ package body Humanize.Capabilities is
             return Catalog_Localized;
          when Phrase_Area =>
             return Deterministic_Locale_Aware;
-         when Color_Area | String_Area | Parsing_Area =>
+         when Color_Area | String_Area | Parsing_Area | Metadata_Area =>
             return Deterministic_English;
          when Datetime_Area | Duration_Area | Bytes_Area | Number_Area
             | List_Area =>
@@ -124,7 +126,7 @@ package body Humanize.Capabilities is
    begin
       return Ok_Text
         ("datetimes durations bytes colors numbers strings lists frequencies rates "
-         & "units phrases parsing");
+         & "units phrases parsing metadata");
    end Capability_Summary;
 
    function Locale_Behavior_Summary

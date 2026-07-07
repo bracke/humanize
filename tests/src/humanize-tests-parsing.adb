@@ -1,11 +1,14 @@
 with AUnit.Assertions;
 
 with Ada.Calendar;
+with Ada.Strings.Unbounded;
 
 with Humanize.Bytes;
 with Humanize.Colors;
+with Humanize.Datetimes;
 with Humanize.Durations;
 with Humanize.Frequencies;
+with Humanize.Lists;
 with Humanize.Numbers;
 with Humanize.Parsing;
 with Humanize.Phrases;
@@ -16,26 +19,43 @@ with Humanize.Tests.Support;
 with Humanize.Units;
 
 package body Humanize.Tests.Parsing is
+   use Ada.Strings.Unbounded;
    use type Humanize.Bytes.Byte_Count;
+   use type Humanize.Colors.RGB_Color;
    use type Humanize.Colors.Color_Vision_Deficiency;
    use type Humanize.Durations.Duration_Microseconds;
    use type Humanize.Durations.Duration_Seconds;
    use type Humanize.Durations.Recurrence_Unit;
+   use type Humanize.Durations.Weekday_Set;
    use type Humanize.Frequencies.Occurrence_Count;
    use type Humanize.Numbers.Approximation_Kind;
+   use type Humanize.Numbers.Uncertainty_Style;
    use type Humanize.Parsing.Business_Calendar_Parse_Kind;
    use type Humanize.Parsing.Collection_Display_Kind;
    use type Humanize.Parsing.Comparison_Direction;
+   use type Humanize.Parsing.Field_State_Change_Kind;
+   use type Humanize.Parsing.Operational_Phrase_Domain;
    use type Humanize.Parsing.Parse_Error_Kind;
    use type Humanize.Parsing.Recurrence_Parse_Kind;
    use type Humanize.Parsing.Selection_Summary_Kind;
    use type Humanize.Parsing.Validation_Severity_Label;
    use type Humanize.Phrases.Phrase_Severity;
    use type Humanize.Phrases.Phrase_Tone;
+   use type Humanize.Phrases.Backup_Status;
+   use type Humanize.Phrases.Incident_Status;
+   use type Humanize.Phrases.Payment_Lifecycle_Status;
+   use type Humanize.Phrases.Audit_Status;
+   use type Humanize.Phrases.Feature_Flag_Status;
+   use type Humanize.Phrases.Webhook_Status;
+   use type Humanize.Phrases.API_Key_Status;
+   use type Humanize.Phrases.Quota_Status;
+   use type Humanize.Phrases.Invoice_Status;
+   use type Humanize.Phrases.Database_Status;
    use type Humanize.Phrases.Summary_Domain;
    use type Humanize.Phrases.Summary_State;
    use type Humanize.Rates.Rate_Period;
    use type Humanize.Status.Status_Code;
+   use type Humanize.Strings.File_Mode_Kind;
    use type Humanize.Strings.Inflection_Source;
    use type Humanize.Units.Unit_Kind;
    use type Ada.Calendar.Time;
@@ -67,6 +87,50 @@ package body Humanize.Tests.Parsing is
       return Result;
    end B;
 
+   type Locale_Index is
+     (En, Da, De, Fr, Es, It, Pt, Nl, Sv, No, Nb, Fi, Pl, Cs, Tr,
+      Ro, Lt, Sl, Id, Ms, Eo, Vi, Sw, Af, Hu, Sk,
+      Ru, Uk, Ja, Ko, Zh, Ar, Hi);
+
+   function Locale_Name (Index : Locale_Index) return String is
+   begin
+      case Index is
+         when En => return "en";
+         when Da => return "da";
+         when De => return "de";
+         when Fr => return "fr";
+         when Es => return "es";
+         when It => return "it";
+         when Pt => return "pt";
+         when Nl => return "nl";
+         when Sv => return "sv";
+         when No => return "no";
+         when Nb => return "nb";
+         when Fi => return "fi";
+         when Pl => return "pl";
+         when Cs => return "cs";
+         when Tr => return "tr";
+         when Ro => return "ro";
+         when Lt => return "lt";
+         when Sl => return "sl";
+         when Id => return "id";
+         when Ms => return "ms";
+         when Eo => return "eo";
+         when Vi => return "vi";
+         when Sw => return "sw";
+         when Af => return "af";
+         when Hu => return "hu";
+         when Sk => return "sk";
+         when Ru => return "ru";
+         when Uk => return "uk";
+         when Ja => return "ja";
+         when Ko => return "ko";
+         when Zh => return "zh";
+         when Ar => return "ar";
+         when Hi => return "hi";
+      end case;
+   end Locale_Name;
+
    procedure Test_Bytes (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
       KiB : constant Humanize.Parsing.Byte_Parse_Result :=
@@ -96,6 +160,14 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Parse_Duration ("1.5 hours");
       Long_Units : constant Humanize.Parsing.Duration_Parse_Result :=
         Humanize.Parsing.Parse_Duration ("2 weeks, 1 month and 1 year");
+      ISO_Mixed : constant Humanize.Parsing.Duration_Parse_Result :=
+        Humanize.Parsing.Parse_Duration ("P1Y2M3DT4H5M6S");
+      ISO_Weeks : constant Humanize.Parsing.Duration_Parse_Result :=
+        Humanize.Parsing.Parse_Duration ("P2W");
+      ISO_Fractional : constant Humanize.Parsing.Duration_Parse_Result :=
+        Humanize.Parsing.Parse_Duration ("PT1.5S");
+      Scanned_ISO : constant Humanize.Parsing.Duration_Parse_Result :=
+        Humanize.Parsing.Scan_Duration ("PT1H30M; cached");
       Lenient : constant Humanize.Parsing.Duration_Parse_Result :=
         Humanize.Parsing.Parse_Lenient_Duration ("in about 1.5hrs");
       Lenient_Almost : constant Humanize.Parsing.Duration_Parse_Result :=
@@ -106,11 +178,20 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Parse_Lenient_Duration ("a little under 1 month");
       Lenient_Half : constant Humanize.Parsing.Duration_Parse_Result :=
         Humanize.Parsing.Parse_Lenient_Duration ("about half an hour");
+      Lenient_Couple : constant Humanize.Parsing.Duration_Parse_Result :=
+        Humanize.Parsing.Parse_Lenient_Duration ("a couple of days");
+      Fortnight : constant Humanize.Parsing.Duration_Parse_Result :=
+        Humanize.Parsing.Parse_Lenient_Duration ("a fortnight");
       Scanned_Lenient : constant Humanize.Parsing.Duration_Parse_Result :=
         Humanize.Parsing.Scan_Lenient_Duration ("~2m; cached");
       Precise : constant Humanize.Parsing.Precise_Duration_Parse_Result :=
         Humanize.Parsing.Parse_Precise_Duration
           ("1 second and 500 milliseconds");
+      Precise_ISO : constant Humanize.Parsing.Precise_Duration_Parse_Result :=
+        Humanize.Parsing.Parse_Precise_Duration ("PT1.5S");
+      Scanned_Precise_ISO : constant
+        Humanize.Parsing.Precise_Duration_Parse_Result :=
+          Humanize.Parsing.Scan_Precise_Duration ("PT1.25S; cached");
       Localized : constant Humanize.Parsing.Duration_Parse_Result :=
         Humanize.Parsing.Parse_Duration ("2 Stunden");
       Cyrillic : constant Humanize.Parsing.Duration_Parse_Result :=
@@ -132,6 +213,26 @@ package body Humanize.Tests.Parsing is
              ((14 + 30 + 365) * 86_400),
          "parse week month year durations");
       AUnit.Assertions.Assert
+        (ISO_Mixed.Status = Humanize.Status.Ok
+         and then ISO_Mixed.Value =
+           Humanize.Durations.Duration_Seconds
+             ((365 + 60 + 3) * 86_400 + 4 * 3_600 + 5 * 60 + 6),
+         "parse ISO mixed duration");
+      AUnit.Assertions.Assert
+        (ISO_Weeks.Status = Humanize.Status.Ok
+         and then ISO_Weeks.Value =
+           Humanize.Durations.Duration_Seconds (14 * 86_400),
+         "parse ISO week duration");
+      AUnit.Assertions.Assert
+        (ISO_Fractional.Status = Humanize.Status.Ok
+         and then ISO_Fractional.Value = 2,
+         "parse ISO fractional duration");
+      AUnit.Assertions.Assert
+        (Scanned_ISO.Status = Humanize.Status.Ok
+         and then Scanned_ISO.Value = 5_400
+         and then Scanned_ISO.Consumed = 7,
+         "scan ISO duration");
+      AUnit.Assertions.Assert
         (Lenient.Status = Humanize.Status.Ok and then Lenient.Value = 5_400,
          "parse lenient duration");
       AUnit.Assertions.Assert
@@ -151,6 +252,10 @@ package body Humanize.Tests.Parsing is
          and then Lenient_Half.Value = 1_800,
          "parse approximate half-hour duration");
       AUnit.Assertions.Assert
+        (Fortnight.Status = Humanize.Status.Ok
+         and then Fortnight.Value = 14 * 86_400,
+         "parse fortnight duration");
+      AUnit.Assertions.Assert
         (Scanned_Lenient.Status = Humanize.Status.Ok
          and then Scanned_Lenient.Value = 120
          and then Scanned_Lenient.Consumed = 3,
@@ -159,6 +264,19 @@ package body Humanize.Tests.Parsing is
         (Precise.Status = Humanize.Status.Ok
          and then Precise.Value = 1_500_000,
          "parse precise duration");
+      AUnit.Assertions.Assert
+        (Precise_ISO.Status = Humanize.Status.Ok
+         and then Precise_ISO.Value = 1_500_000,
+         "parse precise ISO duration");
+      AUnit.Assertions.Assert
+        (Scanned_Precise_ISO.Status = Humanize.Status.Ok
+         and then Scanned_Precise_ISO.Value = 1_250_000
+         and then Scanned_Precise_ISO.Consumed = 7,
+         "scan precise ISO duration");
+      AUnit.Assertions.Assert
+        (Lenient_Couple.Status = Humanize.Status.Ok
+         and then Lenient_Couple.Value = 172_800,
+         "parse couple duration idiom");
       AUnit.Assertions.Assert
         (Localized.Status = Humanize.Status.Ok and then Localized.Value = 7_200,
          "parse localized duration unit alias");
@@ -267,6 +385,10 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Palette_Contrast_Matrix_Parse_Result :=
           Humanize.Parsing.Parse_Palette_Contrast_Matrix
             ("1 enhanced, 1 normal, 1 large-only, 0 fail out of 3 pairs");
+      Palette_Metadata : constant
+        Humanize.Parsing.Palette_Metadata_Parse_Result :=
+          Humanize.Parsing.Parse_Palette_Metadata_Label
+            ("3 colors, 3 pairs: 1 enhanced, 1 normal, 1 large-only, 0 fail");
       APCA : constant Humanize.Parsing.APCA_Label_Parse_Result :=
         Humanize.Parsing.Parse_APCA_Contrast_Label
           ("Lc 100, excellent, dark text on light background");
@@ -294,10 +416,34 @@ package body Humanize.Tests.Parsing is
       Color_Bucket : constant
         Humanize.Parsing.Color_Bucket_Label_Parse_Result :=
           Humanize.Parsing.Parse_Color_Bucket_Label ("moderate chroma");
+      Localized_Color_Bucket : constant
+        Humanize.Parsing.Color_Bucket_Label_Parse_Result :=
+          Humanize.Parsing.Parse_Color_Bucket_Label ("mittleres Chroma");
       Color_Description : constant
         Humanize.Parsing.Color_Description_Parse_Result :=
           Humanize.Parsing.Parse_Color_Description
             ("dark, muted blue, cool, moderate chroma");
+      Localized_Color_Description : constant
+        Humanize.Parsing.Color_Description_Parse_Result :=
+          Humanize.Parsing.Parse_Color_Description
+            ("dunkel, gedaempft blau, kuehl, mittleres Chroma");
+      Localized_Accessibility : constant
+        Humanize.Parsing.Color_Accessibility_Parse_Result :=
+          Humanize.Parsing.Parse_Color_Accessibility_Summary
+            ("21:1 erhoehter Kontrast; Lc 100, excellent, "
+             & "dark text on light background; protanopia distinct");
+      Alpha_Contrast : constant
+        Humanize.Parsing.Color_Difference_Label_Parse_Result :=
+          Humanize.Parsing.Parse_Alpha_Contrast_Label
+            ("3.9:1 large-text contrast after alpha compositing");
+      Remediation_Pass : constant
+        Humanize.Parsing.Contrast_Remediation_Parse_Result :=
+          Humanize.Parsing.Parse_Contrast_Remediation_Label
+            ("current foreground meets normal text contrast at 21:1");
+      Remediation_Use : constant
+        Humanize.Parsing.Contrast_Remediation_Parse_Result :=
+          Humanize.Parsing.Parse_Contrast_Remediation_Label
+            ("use #767676 for 4.5:1 normal text contrast");
       Opacity : constant Humanize.Parsing.Color_Difference_Label_Parse_Result :=
         Humanize.Parsing.Parse_Opacity_Label ("50% translucent");
       Palette_Summary : constant
@@ -335,6 +481,10 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Color_Difference_Label_Parse_Result :=
           Humanize.Parsing.Parse_Perceptual_Difference_Label
             ("OKLab delta 12.5, noticeable perceptual difference");
+      CIEDE2000_Difference : constant
+        Humanize.Parsing.Color_Difference_Label_Parse_Result :=
+          Humanize.Parsing.Parse_Perceptual_Difference_Label
+            ("CIEDE2000 delta 12.5, noticeable perceptual difference");
       Word_Summary : constant
         Humanize.Parsing.Text_Count_Summary_Parse_Result :=
           Humanize.Parsing.Parse_Word_Count_Summary ("3 words");
@@ -371,6 +521,12 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Parse_Extension_Label ("PDF");
       Shortened_Path : constant Humanize.Parsing.Excerpt_Parse_Result :=
         Humanize.Parsing.Parse_Shortened_Path ("src~/humanize.ads");
+      Symbolic_Mode : constant Humanize.Parsing.File_Mode_Parse_Result :=
+        Humanize.Parsing.Parse_File_Mode_Label ("-rwsr-xr-x");
+      Octal_Mode : constant Humanize.Parsing.File_Mode_Parse_Result :=
+        Humanize.Parsing.Parse_File_Mode_Label ("0755");
+      Bad_File_Mode : constant Humanize.Parsing.File_Mode_Parse_Result :=
+        Humanize.Parsing.Parse_File_Mode_Label ("rwxr-xr-q");
       Handle : constant Humanize.Parsing.String_Label_Parse_Result :=
         Humanize.Parsing.Parse_Handle_Label ("@ada");
       Name_Label : constant Humanize.Parsing.String_Label_Parse_Result :=
@@ -480,6 +636,8 @@ package body Humanize.Tests.Parsing is
             ("ui file validation empty network auth billing workflow queue "
              & "security deployment health notification form access sync "
              & "transfer search collaboration issue task ci ticket payment "
+             & "backup incident release audit flag webhook api_key quota "
+             & "invoice database "
              & "summaries comparisons");
       Phrase_Locales : constant
         Humanize.Parsing.Phrase_Locales_Parse_Result :=
@@ -660,6 +818,15 @@ package body Humanize.Tests.Parsing is
          and then Matrix.Total = 3,
          "parse palette contrast matrix output");
       AUnit.Assertions.Assert
+        (Palette_Metadata.Status = Humanize.Status.Ok
+         and then Palette_Metadata.Color_Count = 3
+         and then Palette_Metadata.Pair_Count = 3
+         and then Palette_Metadata.Enhanced = 1
+         and then Palette_Metadata.Normal = 1
+         and then Palette_Metadata.Large_Only = 1
+         and then Palette_Metadata.Fail = 0,
+         "parse palette metadata label output");
+      AUnit.Assertions.Assert
         (APCA.Status = Humanize.Status.Ok
          and then APCA.Score = 100.0
          and then APCA.Strength (1 .. APCA.Strength_Length) = "excellent"
@@ -728,6 +895,11 @@ package body Humanize.Tests.Parsing is
            "moderate chroma",
          "parse color bucket label output");
       AUnit.Assertions.Assert
+        (Localized_Color_Bucket.Status = Humanize.Status.Ok
+         and then Localized_Color_Bucket.Label
+           (1 .. Localized_Color_Bucket.Label_Length) = "mittleres chroma",
+         "parse localized color bucket label output");
+      AUnit.Assertions.Assert
         (Color_Description.Status = Humanize.Status.Ok
          and then Color_Description.Brightness
            (1 .. Color_Description.Brightness_Length) = "dark"
@@ -740,6 +912,51 @@ package body Humanize.Tests.Parsing is
          and then Color_Description.Chroma
            (1 .. Color_Description.Chroma_Length) = "moderate chroma",
          "parse color description output");
+      AUnit.Assertions.Assert
+        (Localized_Color_Description.Status = Humanize.Status.Ok
+         and then Localized_Color_Description.Brightness
+           (1 .. Localized_Color_Description.Brightness_Length) = "dunkel"
+         and then Localized_Color_Description.Saturation
+           (1 .. Localized_Color_Description.Saturation_Length) = "gedaempft"
+         and then Localized_Color_Description.Hue
+           (1 .. Localized_Color_Description.Hue_Length) = "blau"
+         and then Localized_Color_Description.Temperature
+           (1 .. Localized_Color_Description.Temperature_Length) = "kuehl"
+         and then Localized_Color_Description.Chroma
+           (1 .. Localized_Color_Description.Chroma_Length) = "mittleres chroma",
+         "parse localized color description output");
+      AUnit.Assertions.Assert
+        (Localized_Accessibility.Status = Humanize.Status.Ok
+         and then Localized_Accessibility.Contrast_Ratio = 21.0
+         and then Localized_Accessibility.Contrast_Level
+           (1 .. Localized_Accessibility.Contrast_Level_Length)
+           = "erhoehter Kontrast",
+         "parse localized color accessibility summary output");
+      AUnit.Assertions.Assert
+        (Alpha_Contrast.Status = Humanize.Status.Ok
+         and then Alpha_Contrast.Value = 3.9
+         and then Alpha_Contrast.Label
+           (1 .. Alpha_Contrast.Label_Length) = "large-text"
+         and then not Alpha_Contrast.Perceptual,
+         "parse alpha contrast label output");
+      AUnit.Assertions.Assert
+        (Remediation_Pass.Status = Humanize.Status.Ok
+         and then Remediation_Pass.Already_Passes
+         and then not Remediation_Pass.Has_Recommended_Color
+         and then Remediation_Pass.Ratio = 21.0
+         and then Remediation_Pass.Target
+           (1 .. Remediation_Pass.Target_Length) = "normal text",
+         "parse contrast remediation pass output");
+      AUnit.Assertions.Assert
+        (Remediation_Use.Status = Humanize.Status.Ok
+         and then not Remediation_Use.Already_Passes
+         and then Remediation_Use.Has_Recommended_Color
+         and then Remediation_Use.Recommended_Color =
+           (Red => 16#76#, Green => 16#76#, Blue => 16#76#)
+         and then Remediation_Use.Ratio = 4.5
+         and then Remediation_Use.Target
+           (1 .. Remediation_Use.Target_Length) = "normal text",
+         "parse contrast remediation suggestion output");
       AUnit.Assertions.Assert
         (Opacity.Status = Humanize.Status.Ok
          and then Opacity.Value = 50.0
@@ -815,6 +1032,14 @@ package body Humanize.Tests.Parsing is
              "noticeable perceptual difference"
          and then Perceptual_Difference.Perceptual,
          "parse perceptual difference label output");
+      AUnit.Assertions.Assert
+        (CIEDE2000_Difference.Status = Humanize.Status.Ok
+         and then CIEDE2000_Difference.Value = 12.5
+         and then CIEDE2000_Difference.Label
+           (1 .. CIEDE2000_Difference.Label_Length) =
+             "noticeable perceptual difference"
+         and then CIEDE2000_Difference.Perceptual,
+         "parse CIEDE2000 perceptual difference label output");
       AUnit.Assertions.Assert
         (Word_Summary.Status = Humanize.Status.Ok
          and then Word_Summary.Count = 3
@@ -917,6 +1142,25 @@ package body Humanize.Tests.Parsing is
          and then Shortened_Path.Content
            (1 .. Shortened_Path.Content_Length) = "src~/humanize.ads",
          "parse shortened path output");
+      AUnit.Assertions.Assert
+        (Symbolic_Mode.Status = Humanize.Status.Ok
+         and then Symbolic_Mode.Mode = 8#4755#
+         and then Symbolic_Mode.Kind = Humanize.Strings.Regular_File
+         and then Symbolic_Mode.Symbolic
+         and then not Symbolic_Mode.Octal,
+         "parse symbolic file mode output");
+      AUnit.Assertions.Assert
+        (Octal_Mode.Status = Humanize.Status.Ok
+         and then Octal_Mode.Mode = 8#0755#
+         and then Octal_Mode.Kind = Humanize.Strings.Mode_Only
+         and then Octal_Mode.Octal
+         and then not Octal_Mode.Symbolic,
+         "parse octal file mode output");
+      AUnit.Assertions.Assert
+        (Bad_File_Mode.Status = Humanize.Status.Invalid_Value
+         and then Bad_File_Mode.Error_Position = 1
+         and then Bad_File_Mode.Error = Humanize.Parsing.Expected_Number,
+         "parse invalid file mode diagnostic");
       AUnit.Assertions.Assert
         (Handle.Status = Humanize.Status.Ok
          and then Handle.Value (1 .. Handle.Value_Length) = "@ada",
@@ -1184,7 +1428,7 @@ package body Humanize.Tests.Parsing is
          "parse phrase key output");
       AUnit.Assertions.Assert
         (Phrase_Packs.Status = Humanize.Status.Ok
-         and then Phrase_Packs.Pack_Count = 26
+         and then Phrase_Packs.Pack_Count = 36
          and then Phrase_Packs.Has_Summaries
          and then Phrase_Packs.Has_Comparisons,
          "parse phrase pack summary output");
@@ -1367,6 +1611,336 @@ package body Humanize.Tests.Parsing is
          "parse screen-reader collection output");
    end Test_Round_Trip_Parsers;
 
+   procedure Test_Localized_Render_Parse_Roundtrips
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+
+      type Integer_Value_List is array (Positive range <>)
+        of Long_Long_Integer;
+      type Natural_Value_List is array (Positive range <>) of Natural;
+
+      Cardinal_Values : constant Integer_Value_List :=
+        [-42, 0, 1, 5, 21, 42, 342, 2_345, 1_200_000];
+      Ordinal_Values : constant Natural_Value_List :=
+        [0, 1, 2, 12, 21, 42, 121, 2_345];
+
+      procedure Check_Cardinal
+        (Locale : String;
+         Value  : Long_Long_Integer)
+      is
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Numbers.Locale_Cardinal
+             (Humanize.Tests.Support.Locale (Locale), Value);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.Number_Parse_Result :=
+           Humanize.Parsing.Parse_Cardinal (Text);
+      begin
+         AUnit.Assertions.Assert
+           (Rendered.Status = Humanize.Status.Ok,
+            Locale & " cardinal render status");
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Parsed.Value = Value
+            and then Parsed.Consumed = Text'Length,
+            Locale & " localized cardinal round trip: " & Text);
+      end Check_Cardinal;
+
+      procedure Check_Ordinal
+        (Locale : String;
+         Value  : Natural)
+      is
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Numbers.Ordinal_Words
+             (Humanize.Tests.Support.Locale (Locale), Value);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.Number_Parse_Result :=
+           Humanize.Parsing.Parse_Ordinal (Text);
+      begin
+         AUnit.Assertions.Assert
+           (Rendered.Status = Humanize.Status.Ok,
+            Locale & " ordinal render status");
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Parsed.Value = Long_Long_Integer (Value)
+            and then Parsed.Consumed = Text'Length,
+            Locale & " localized ordinal round trip: " & Text);
+      end Check_Ordinal;
+
+      procedure Check_Unit
+        (Locale : String;
+         Unit   : Humanize.Units.Unit_Kind)
+      is
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Units.Format
+             (Humanize.Tests.Support.Locale (Locale), 5, Unit);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.Unit_Parse_Result :=
+           Humanize.Parsing.Parse_Unit (Text);
+
+         function Equivalent_Unit return Boolean is
+         begin
+            return Parsed.Unit = Unit
+              or else
+                ((Unit = Humanize.Units.Ton
+                  or else Unit = Humanize.Units.Tonne)
+                 and then
+                   (Parsed.Unit = Humanize.Units.Ton
+                    or else Parsed.Unit = Humanize.Units.Tonne));
+         end Equivalent_Unit;
+      begin
+         AUnit.Assertions.Assert
+           (Rendered.Status = Humanize.Status.Ok,
+            Locale & " unit render status");
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Equivalent_Unit
+            and then Parsed.Consumed = Text'Length,
+            Locale & " localized unit round trip: " & Text);
+      end Check_Unit;
+
+      procedure Check_Duration
+        (Locale  : String;
+         Seconds : Humanize.Durations.Duration_Seconds)
+      is
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Durations.Format
+             (Humanize.Tests.Support.Locale (Locale), Seconds);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.Duration_Parse_Result :=
+           Humanize.Parsing.Parse_Duration (Text);
+      begin
+         AUnit.Assertions.Assert
+           (Rendered.Status = Humanize.Status.Ok,
+            Locale & " duration render status");
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Parsed.Value = Seconds
+            and then Parsed.Consumed = Text'Length,
+            Locale & " localized duration round trip: " & Text);
+      end Check_Duration;
+
+      procedure Check_Bytes
+        (Locale : String;
+         Bytes  : Humanize.Bytes.Byte_Count)
+      is
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Bytes.Format
+             (Humanize.Tests.Support.Locale (Locale), Bytes);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.Byte_Parse_Result :=
+           Humanize.Parsing.Parse_Bytes (Text);
+      begin
+         AUnit.Assertions.Assert
+           (Rendered.Status = Humanize.Status.Ok,
+            Locale & " bytes render status");
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Parsed.Value = Bytes
+            and then Parsed.Consumed = Text'Length,
+            Locale & " localized byte round trip: " & Text);
+      end Check_Bytes;
+   begin
+      for Locale in Locale_Index loop
+         declare
+            Name : constant String := Locale_Name (Locale);
+         begin
+            for Value of Cardinal_Values loop
+               Check_Cardinal (Name, Value);
+            end loop;
+
+            for Value of Ordinal_Values loop
+               Check_Ordinal (Name, Value);
+            end loop;
+
+            Check_Bytes (Name, 1);
+            Check_Bytes (Name, 1_536);
+
+            Check_Duration (Name, 2);
+            Check_Duration (Name, 120);
+            Check_Duration (Name, 7_200);
+            Check_Duration (Name, 172_800);
+            Check_Duration (Name, 1_209_600);
+            Check_Duration (Name, 5_184_000);
+            Check_Duration (Name, 63_072_000);
+
+            for Unit in Humanize.Units.Unit_Kind loop
+               Check_Unit (Name, Unit);
+            end loop;
+         end;
+      end loop;
+   end Test_Localized_Render_Parse_Roundtrips;
+
+   procedure Test_Localized_Semantic_Parse_Roundtrips
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+
+      Reference : constant Ada.Calendar.Time :=
+        Ada.Calendar.Time_Of (2026, 3, 21, 12.0 * 3_600.0);
+      Today : constant Humanize.Datetimes.Civil_Date_Time :=
+        (Year => 2026, Month => 3, Day => 21, others => 0);
+      Tomorrow : constant Humanize.Datetimes.Civil_Date_Time :=
+        (Year => 2026, Month => 3, Day => 22, others => 0);
+
+      procedure Check_Compact
+        (Locale : String;
+         Value  : Long_Long_Integer)
+      is
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Numbers.Compact
+             (Humanize.Tests.Support.Locale (Locale), Value);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.Number_Parse_Result :=
+           Humanize.Parsing.Parse_Compact_Number (Text);
+      begin
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Parsed.Value = Value,
+            Locale & " localized compact round trip: " & Text);
+      end Check_Compact;
+
+      procedure Check_Percent (Locale : String) is
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Numbers.Percent
+             (Humanize.Tests.Support.Locale (Locale), 12.0);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.Number_Parse_Result :=
+           Humanize.Parsing.Parse_Percent (Text);
+      begin
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Parsed.Value = 12,
+            Locale & " localized percent round trip: " & Text);
+      end Check_Percent;
+
+      procedure Check_Frequency
+        (Locale : String;
+         Count  : Humanize.Frequencies.Occurrence_Count)
+      is
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Frequencies.Times
+             (Humanize.Tests.Support.Locale (Locale), Count);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.Frequency_Parse_Result :=
+           Humanize.Parsing.Parse_Frequency (Text);
+      begin
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Parsed.Count = Count,
+            Locale & " localized frequency round trip: " & Text);
+      end Check_Frequency;
+
+      procedure Check_Rate
+        (Locale    : String;
+         Count     : Humanize.Frequencies.Occurrence_Count;
+         Less_Than : Boolean := False)
+      is
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Rates.Pace_Approximate
+             (Humanize.Tests.Support.Locale (Locale), Count,
+              Humanize.Rates.Per_Week);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.Rate_Parse_Result :=
+           Humanize.Parsing.Parse_Rate (Text);
+      begin
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Parsed.Period = Humanize.Rates.Per_Week
+            and then Parsed.Less_Than = Less_Than
+            and then
+              (if Less_Than then Parsed.Count = 1 else Parsed.Count = Count),
+            Locale & " localized rate round trip: " & Text);
+      end Check_Rate;
+
+      procedure Check_List (Locale : String) is
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Lists.Format
+             (Humanize.Tests.Support.Locale (Locale),
+              [1 => To_Unbounded_String ("alpha"),
+               2 => To_Unbounded_String ("beta"),
+               3 => To_Unbounded_String ("gamma")]);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.List_Parse_Result :=
+           Humanize.Parsing.Parse_List (Text);
+      begin
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Parsed.Count = 3,
+            Locale & " localized list round trip: " & Text);
+      end Check_List;
+
+      procedure Check_Natural_Day
+        (Locale : String;
+         Day    : Humanize.Datetimes.Civil_Date_Time;
+         Offset : Integer)
+      is
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Datetimes.Natural_Day
+             (Humanize.Tests.Support.Locale (Locale), Day, Today);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.Date_Parse_Result :=
+           Humanize.Parsing.Parse_Natural_Date (Reference, Text);
+         Expected : constant Ada.Calendar.Time :=
+           Reference + Standard.Duration (Offset * 86_400);
+      begin
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Ada.Calendar.Year (Parsed.Value) =
+              Ada.Calendar.Year (Expected)
+            and then Ada.Calendar.Month (Parsed.Value) =
+              Ada.Calendar.Month (Expected)
+            and then Ada.Calendar.Day (Parsed.Value) =
+              Ada.Calendar.Day (Expected),
+            Locale & " localized natural day round trip: " & Text);
+      end Check_Natural_Day;
+
+      procedure Check_Relative_Day
+        (Locale : String;
+         Offset : Integer)
+      is
+         Target : constant Ada.Calendar.Time :=
+           Reference + Standard.Duration (Offset * 86_400);
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.Datetimes.Relative
+             (Humanize.Tests.Support.Locale (Locale), Target, Reference);
+         Text : constant String := Humanize.Tests.Support.Text (Rendered);
+         Parsed : constant Humanize.Parsing.Date_Parse_Result :=
+           Humanize.Parsing.Parse_Natural_Date (Reference, Text);
+      begin
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Ada.Calendar.Year (Parsed.Value) =
+              Ada.Calendar.Year (Target)
+            and then Ada.Calendar.Month (Parsed.Value) =
+              Ada.Calendar.Month (Target)
+            and then Ada.Calendar.Day (Parsed.Value) =
+              Ada.Calendar.Day (Target),
+            Locale & " localized relative day round trip: " & Text);
+      end Check_Relative_Day;
+   begin
+      for Locale in Locale_Index loop
+         declare
+            Name : constant String := Locale_Name (Locale);
+         begin
+            Check_Compact (Name, 1_200);
+            Check_Compact (Name, 1_200_000);
+            Check_Percent (Name);
+            Check_Frequency (Name, 0);
+            Check_Frequency (Name, 1);
+            Check_Frequency (Name, 2);
+            Check_Frequency (Name, 4);
+            Check_Rate (Name, 0, Less_Than => True);
+            Check_Rate (Name, 4);
+            Check_List (Name);
+            Check_Natural_Day (Name, Today, 0);
+            Check_Natural_Day (Name, Tomorrow, 1);
+            Check_Relative_Day (Name, 3);
+            Check_Relative_Day (Name, -3);
+         end;
+      end loop;
+   end Test_Localized_Semantic_Parse_Roundtrips;
+
    procedure Test_Diagnostics (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
 
@@ -1421,6 +1995,13 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Color_Description_Parse_Result :=
           Humanize.Parsing.Parse_Color_Description
             ("dark muted blue cool moderate chroma");
+      Bad_Worded_Range :
+        constant Humanize.Parsing.Decimal_Range_Parse_Result :=
+          Humanize.Parsing.Parse_Decimal_Range_Words
+            ("one point two three point four");
+      Bad_Remediation :
+        constant Humanize.Parsing.Contrast_Remediation_Parse_Result :=
+          Humanize.Parsing.Parse_Contrast_Remediation_Label ("use nope");
    begin
       AUnit.Assertions.Assert
         (Empty_Bytes.Error = Humanize.Parsing.Empty_Input
@@ -1500,6 +2081,14 @@ package body Humanize.Tests.Parsing is
         (Bad_Color_Description.Error = Humanize.Parsing.Expected_Separator
          and then Bad_Color_Description.Error_Position = 1,
          "color description separator diagnostic position");
+      AUnit.Assertions.Assert
+        (Bad_Worded_Range.Error = Humanize.Parsing.Expected_Separator
+         and then Bad_Worded_Range.Error_Position > 0,
+         "worded range separator diagnostic");
+      AUnit.Assertions.Assert
+        (Bad_Remediation.Error = Humanize.Parsing.Expected_Unit
+         and then Bad_Remediation.Error_Position = 5,
+         "contrast remediation diagnostic");
    end Test_Diagnostics;
 
    procedure Test_Frequency_Rate_List
@@ -1539,6 +2128,49 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Parse_Cardinal ("twenty one");
       Word_Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
         Humanize.Parsing.Parse_Ordinal ("twenty first");
+      German_Word_Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Cardinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Locale_Cardinal
+                (Humanize.Tests.Support.De, 42)));
+      Finnish_Word_Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Cardinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Locale_Cardinal
+                (Humanize.Tests.Support.Locale ("fi"), 2_345)));
+      French_Large_Word_Cardinal :
+        constant Humanize.Parsing.Number_Parse_Result :=
+          Humanize.Parsing.Parse_Cardinal
+            (Humanize.Tests.Support.Text
+               (Humanize.Numbers.Locale_Cardinal
+                  (Humanize.Tests.Support.Fr, 2_000_000_001)));
+      Japanese_Word_Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Cardinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Locale_Cardinal
+                (Humanize.Tests.Support.Locale ("ja"), 2_345)));
+      Polish_Word_Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Ordinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Ordinal_Words
+                (Humanize.Tests.Support.Locale ("pl"), 121)));
+      Polish_Thousands_Word_Ordinal :
+        constant Humanize.Parsing.Number_Parse_Result :=
+          Humanize.Parsing.Parse_Ordinal
+            (Humanize.Tests.Support.Text
+               (Humanize.Numbers.Ordinal_Words
+                  (Humanize.Tests.Support.Locale ("pl"), 2_345)));
+      Japanese_Word_Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Ordinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Ordinal_Words
+                (Humanize.Tests.Support.Locale ("ja"), 12)));
+      Japanese_Thousands_Word_Ordinal :
+        constant Humanize.Parsing.Number_Parse_Result :=
+          Humanize.Parsing.Parse_Ordinal
+            (Humanize.Tests.Support.Text
+               (Humanize.Numbers.Ordinal_Words
+                  (Humanize.Tests.Support.Locale ("ja"), 2_345)));
       Scientific : constant Humanize.Parsing.Float_Parse_Result :=
         Humanize.Parsing.Parse_Scientific_Number ("1.23e6");
       Duration_Range : constant Humanize.Parsing.Duration_Range_Parse_Result :=
@@ -1586,13 +2218,74 @@ package body Humanize.Tests.Parsing is
       Other_Tuesday : constant Humanize.Parsing.Recurrence_Parse_Result :=
         Humanize.Parsing.Parse_Recurrence_Detail
           (Ada.Calendar.Time_Of (2024, 1, 1, 0.0), "every other Tuesday");
+      Weekday_Schedule : constant Humanize.Parsing.Recurrence_Parse_Result :=
+        Humanize.Parsing.Parse_Recurrence_Detail
+          (Ada.Calendar.Time_Of (2024, 1, 1, 0.0),
+           "every weekday at 09:00");
       First_Monday : constant Humanize.Parsing.Recurrence_Parse_Result :=
         Humanize.Parsing.Parse_Recurrence_Detail
           (Ada.Calendar.Time_Of (2024, 1, 1, 0.0),
-           "first Monday of each month");
+           "first Monday of each month at 9:30");
       Last_Business : constant Humanize.Parsing.Recurrence_Parse_Result :=
         Humanize.Parsing.Parse_Recurrence_Detail
           (Ada.Calendar.Time_Of (2024, 1, 1, 0.0), "last business day");
+      Every_Last_Weekday : constant Humanize.Parsing.Recurrence_Parse_Result :=
+        Humanize.Parsing.Parse_Recurrence_Detail
+          (Ada.Calendar.Time_Of (2024, 1, 1, 0.0), "every last weekday");
+      Second_Business : constant Humanize.Parsing.Recurrence_Parse_Result :=
+        Humanize.Parsing.Parse_Recurrence_Detail
+          (Ada.Calendar.Time_Of (2024, 1, 1, 0.0),
+           "second business day of each month at 10:15");
+      Cron_Weekday : constant Humanize.Parsing.Recurrence_Parse_Result :=
+        Humanize.Parsing.Parse_Cron_Schedule ("0 9 * * 1-5");
+      Cron_Monthly : constant Humanize.Parsing.Recurrence_Parse_Result :=
+        Humanize.Parsing.Parse_Cron_Schedule ("30 8 15 * *");
+      Scanned_Cron : constant Humanize.Parsing.Recurrence_Parse_Result :=
+        Humanize.Parsing.Scan_Cron_Schedule ("0 9 * * 1-5; cached");
+      Cron_Step_Minute : constant Humanize.Parsing.Recurrence_Parse_Result :=
+        Humanize.Parsing.Parse_Cron_Schedule ("*/15 * * * *");
+      Cron_Step_Hour : constant Humanize.Parsing.Recurrence_Parse_Result :=
+        Humanize.Parsing.Parse_Cron_Schedule ("0 */2 * * *");
+      Cron_Named_List : constant Humanize.Parsing.Recurrence_Parse_Result :=
+        Humanize.Parsing.Parse_Cron_Schedule ("30 9 ? * mon,wed,fri");
+      Cron_Yearly : constant Humanize.Parsing.Recurrence_Parse_Result :=
+        Humanize.Parsing.Parse_Cron_Schedule ("30 8 15 jan *");
+      Italian_Ordinal_Schedule :
+        constant Humanize.Parsing.Recurrence_Parse_Result :=
+          Humanize.Parsing.Parse_Recurrence_Detail
+            (Ada.Calendar.Time_Of (2024, 1, 1, 0.0),
+             "primo luned" & B ("C3AC") & " di ogni mese alle 09:30");
+      Finnish_Rendered_Cron :
+        constant Humanize.Parsing.Recurrence_Parse_Result :=
+          Humanize.Parsing.Parse_Cron_Schedule
+            ("p" & B ("C3A4") & "iv" & B ("C3A4")
+             & " 15 joka kuukausi klo 08:30");
+      Polish_Rendered_Cron :
+        constant Humanize.Parsing.Recurrence_Parse_Result :=
+          Humanize.Parsing.Parse_Cron_Schedule
+            ("15. dzie" & B ("C584") & " ka" & B ("C5BC")
+             & "dego miesi" & B ("C485") & "ca o 08:30");
+      Cron_Quartz_Weekday :
+        constant Humanize.Parsing.Recurrence_Parse_Result :=
+          Humanize.Parsing.Parse_Cron_Schedule ("0 0 9 ? * MON-FRI");
+      Cron_Quartz_Year :
+        constant Humanize.Parsing.Recurrence_Parse_Result :=
+          Humanize.Parsing.Parse_Cron_Schedule ("30 15 8 15 JAN ? 2027");
+      Cron_Last_Day :
+        constant Humanize.Parsing.Recurrence_Parse_Result :=
+          Humanize.Parsing.Parse_Cron_Schedule ("0 0 9 L * ?");
+      Cron_Nearest_Weekday :
+        constant Humanize.Parsing.Recurrence_Parse_Result :=
+          Humanize.Parsing.Parse_Cron_Schedule ("0 0 9 15W * ?");
+      Cron_Last_Friday :
+        constant Humanize.Parsing.Recurrence_Parse_Result :=
+          Humanize.Parsing.Parse_Cron_Schedule ("0 0 9 ? * 5L");
+      Cron_Second_Monday :
+        constant Humanize.Parsing.Recurrence_Parse_Result :=
+          Humanize.Parsing.Parse_Cron_Schedule ("0 0 9 ? * MON#2");
+      Danish_Rendered_Weekday :
+        constant Humanize.Parsing.Recurrence_Parse_Result :=
+          Humanize.Parsing.Parse_Cron_Schedule ("hver hverdag kl. 09:00");
       Until_Weeks : constant Humanize.Parsing.Recurrence_Parse_Result :=
         Humanize.Parsing.Parse_Recurrence_Detail
           (Ada.Calendar.Time_Of (2024, 1, 1, 0.0),
@@ -1601,6 +2294,15 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Parse_Recurrence_Detail
           (Ada.Calendar.Time_Of (2024, 1, 1, 0.0),
            "every 2 weeks from 2026-01-01 until 2026-12-31 for 5 times");
+      Windowed_Time : constant Humanize.Parsing.Recurrence_Parse_Result :=
+        Humanize.Parsing.Parse_Recurrence_Detail
+          (Ada.Calendar.Time_Of (2024, 1, 1, 0.0),
+           "every 15 minutes between 09:00 and 17:00");
+      Weekday_Except_Friday :
+        constant Humanize.Parsing.Recurrence_Parse_Result :=
+          Humanize.Parsing.Parse_Recurrence_Detail
+            (Ada.Calendar.Time_Of (2024, 1, 1, 0.0),
+             "every weekday except Friday");
       Throughput : constant Humanize.Parsing.Proportion_Parse_Result :=
         Humanize.Parsing.Parse_Throughput_Remaining
           ("120 items remaining at 4 item/s");
@@ -1634,6 +2336,212 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Parse_Number_Range ("between 3 and 7");
       Scanned_Range : constant Humanize.Parsing.Number_Range_Parse_Result :=
         Humanize.Parsing.Scan_Number_Range ("about 10-20 selected");
+      Decimal_Range : constant Humanize.Parsing.Decimal_Range_Parse_Result :=
+        Humanize.Parsing.Parse_Decimal_Range ("1.25 to 3.5");
+      Decimal_Range_Words :
+        constant Humanize.Parsing.Decimal_Range_Parse_Result :=
+          Humanize.Parsing.Parse_Decimal_Range_Words
+            ("one point two five to three point five zero");
+      Editorial_Number : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Editorial_Number ("1,200%");
+      Currency_Words : constant Humanize.Parsing.Currency_Parse_Result :=
+        Humanize.Parsing.Parse_Currency_Words
+          ("twelve dollars and fifty cents");
+      Fraction_Words : constant Humanize.Parsing.Proportion_Parse_Result :=
+        Humanize.Parsing.Parse_Fraction_Words ("three quarters");
+      Percent_Words : constant Humanize.Parsing.Float_Parse_Result :=
+        Humanize.Parsing.Parse_Percent_Words ("twelve point five percent");
+      Scanned_Decimal_Range :
+        constant Humanize.Parsing.Decimal_Range_Parse_Result :=
+          Humanize.Parsing.Scan_Decimal_Range ("1.25 to 3.5 measured");
+      Operational_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("backup stale");
+      Backup_Phrase_Case_Running :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("backup running");
+      Backup_Phrase_Case_Completed :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("backup completed");
+      Backup_Phrase_Case_Failed :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("backup failed");
+      Payment_Authorized_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("payment authorized");
+      Payment_Captured_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("payment captured");
+      Payment_Refunded_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("payment refunded");
+      Payment_Disputed_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("payment disputed");
+      Payment_Requires_Action_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("payment requires action");
+      Payment_Expired_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("payment expired");
+      Incident_Phrase_Created :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("investigating incident");
+      Audit_Created_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("audit entry created");
+      Audit_Updated_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("audit entry updated");
+      Audit_Deleted_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("audit entry deleted");
+      Audit_Restored_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("audit entry restored");
+      Feature_Flag_Enabled_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("feature flag enabled");
+      Feature_Flag_Disabled_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("feature flag disabled");
+      Feature_Flag_Rolling_Out_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("feature flag rolling out");
+      Feature_Flag_Rolled_Back_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("feature flag rolled back");
+      Webhook_Pending_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("webhook pending");
+      Webhook_Delivered_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("webhook delivered");
+      Webhook_Failed_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("webhook failed");
+      Webhook_Retrying_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("webhook retrying");
+      API_Key_Active_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("api key active");
+      API_Key_Revoked_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("api key revoked");
+      API_Key_Expired_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("api key expired");
+      API_Key_Rotated_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("api key rotated");
+      Quota_Available_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("quota available");
+      Quota_Near_Limit_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("quota near limit");
+      Quota_Exceeded_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("quota exceeded");
+      Quota_Reset_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("quota reset");
+      Invoice_Draft_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("invoice draft");
+      Invoice_Sent_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("invoice sent");
+      Invoice_Paid_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("invoice paid");
+      Invoice_Refunded_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("invoice refunded");
+      Invoice_Overdue_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("invoice overdue");
+      Invoice_Refund_Failed_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("refund failed");
+      Database_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("database replication lagging");
+      Database_Backup_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("database backup failed");
+      Database_Online_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("database online");
+      Database_Offline_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("database offline");
+      Database_Degraded_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("database degraded");
+      Database_Migrating_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase ("database migrating");
+      Database_Migration_Failed_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("database migration failed");
+      Database_Replicating_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("database replicating");
+      Database_Backup_Running_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("database backup running");
+      Database_Backup_Failed_Phrase :
+        constant Humanize.Parsing.Operational_Phrase_Parse_Result :=
+          Humanize.Parsing.Parse_Operational_Phrase
+            ("database backup failed");
+      Field_Change :
+        constant Humanize.Parsing.Field_Change_Summary_Parse_Result :=
+          Humanize.Parsing.Parse_Field_Change_Summary
+            ("4 fields: 2 changed, 1 added, 1 removed");
+      Field_Added :
+        constant Humanize.Parsing.Field_State_Summary_Parse_Result :=
+          Humanize.Parsing.Parse_Field_State_Summary
+            ("title added as final");
+      Field_Removed :
+        constant Humanize.Parsing.Field_State_Summary_Parse_Result :=
+          Humanize.Parsing.Parse_Field_State_Summary
+            ("title removed (was draft)");
+      Field_Unchanged :
+        constant Humanize.Parsing.Field_State_Summary_Parse_Result :=
+          Humanize.Parsing.Parse_Field_State_Summary
+            ("status unchanged at open");
+      Uncertainty : constant Humanize.Parsing.Uncertainty_Parse_Result :=
+        Humanize.Parsing.Parse_Uncertainty_Label ("12.3 +/- 0.4");
+      Uncertainty_Words :
+        constant Humanize.Parsing.Uncertainty_Parse_Result :=
+          Humanize.Parsing.Parse_Uncertainty_Words
+            ("twelve point three plus or minus zero point four");
+      Parenthesized_Uncertainty :
+        constant Humanize.Parsing.Uncertainty_Parse_Result :=
+          Humanize.Parsing.Parse_Uncertainty_Label ("12.3 (+/- 0.4)");
+      Interval_Uncertainty :
+        constant Humanize.Parsing.Uncertainty_Parse_Result :=
+          Humanize.Parsing.Parse_Uncertainty_Label ("11.9 to 12.7");
+      Scanned_Uncertainty :
+        constant Humanize.Parsing.Uncertainty_Parse_Result :=
+          Humanize.Parsing.Scan_Uncertainty_Label ("12.3 +/- 0.4 measured");
       Proportion : constant Humanize.Parsing.Proportion_Parse_Result :=
         Humanize.Parsing.Parse_Proportion ("3 out of 10");
       Scanned_Proportion : constant Humanize.Parsing.Proportion_Parse_Result :=
@@ -1649,6 +2557,81 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Parse_CSS_Length ("1.5 rem");
       Compound : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
         Humanize.Parsing.Parse_Compound_Unit ("2.5 ms");
+      Database_Throughput : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Database_Throughput ("12.5 k ops/s");
+      Scanned_Database_Throughput :
+        constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+          Humanize.Parsing.Scan_Database_Throughput
+            ("12.5 k ops/s; cached");
+      Data_Rate : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Data_Rate ("1.5 MB/s");
+      Scanned_Bit_Rate : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Scan_Bit_Rate ("1.5 Mbit/s; cached");
+      Binary_Data_Rate :
+        constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+          Humanize.Parsing.Parse_Binary_Data_Rate ("1.5 GiB/s");
+      Memory_Bandwidth :
+        constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+          Humanize.Parsing.Parse_Memory_Bandwidth ("12.5 GB/s");
+      Scanned_Latency :
+        constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+          Humanize.Parsing.Scan_Latency ("2.5 ms; cached");
+      IOPS : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_IOPS ("42 k IOPS");
+      Scanned_IOPS : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Scan_IOPS ("42 k IOPS; cached");
+      Density : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Density ("12.5 kg/m3");
+      Acceleration : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Acceleration ("9.8 m/s2");
+      Torque : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Torque ("12 N m");
+      Fuel_Economy : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Fuel_Economy ("5.5 L/100 km");
+      Flow_Rate : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Scan_Flow_Rate ("500 mL/s; cached");
+      Electric_Current :
+        constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+          Humanize.Parsing.Parse_Electric_Current ("500 mA");
+      Voltage : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Voltage ("1.2 kV");
+      Pixel_Density : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Pixel_Density ("326 ppi");
+      Electric_Resistance :
+        constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+          Humanize.Parsing.Parse_Electric_Resistance ("4.7 Mohm");
+      Electric_Capacitance :
+        constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+          Humanize.Parsing.Parse_Electric_Capacitance ("4.7 nF");
+      Electric_Inductance :
+        constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+          Humanize.Parsing.Parse_Electric_Inductance ("4.7 H");
+      Concentration : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Concentration ("2.5 mol/L");
+      Fuel_Efficiency_MPG :
+        constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+          Humanize.Parsing.Parse_Fuel_Efficiency_MPG ("30 mpg");
+      CPU_Load : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_CPU_Load ("82.5 % CPU");
+      Battery : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Battery ("37 % battery");
+      Screen_Size : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Screen_Size ("13 in screen");
+      Typography_Size : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Typography_Size ("12 pt");
+      Audio_Level : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Audio_Level ("-6 dB");
+      Signal_Strength : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Signal_Strength ("-67 dBm");
+      Storage_Endurance :
+        constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+          Humanize.Parsing.Parse_Storage_Endurance ("600 TBW");
+      Refresh_Rate : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Refresh_Rate ("144 Hz refresh");
+      Luminance : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Luminance ("1000 nits");
+      Print_Resolution : constant Humanize.Parsing.Compound_Unit_Parse_Result :=
+        Humanize.Parsing.Parse_Print_Resolution ("300 dpi");
       Acre : constant Humanize.Parsing.Unit_Parse_Result :=
         Humanize.Parsing.Parse_Unit ("2 acres");
       Pounds : constant Humanize.Parsing.Unit_Parse_Result :=
@@ -1703,11 +2686,28 @@ package body Humanize.Tests.Parsing is
           (Ref_Date, "2 " & B ("D0B4D0BDD18F20D0BDD0B0D0B7D0B0D0B4"));
       Next_Fri : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date (Ref_Date, "next friday");
+      Friday_After_Next : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date (Ref_Date, "friday after next");
       Next_Fri_Afternoon : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date
           (Ref_Date, "next friday afternoon");
+      Next_Fri_At_1730 : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "next friday at 17:30");
       Tonight : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date (Ref_Date, "tonight");
+      Tomorrow_At_5 : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date (Ref_Date, "tomorrow at 5pm");
+      Tomorrow_Around_Noon : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "tomorrow around noon");
+      End_Next_Business_Month :
+        constant Humanize.Parsing.Date_Parse_Result :=
+          Humanize.Parsing.Parse_Natural_Date
+            (Ref_Date, "end of next business month");
+      Next_Month_Third : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "next month on the 3rd");
       Later_Today : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date
           (Ada.Calendar.Time_Of (2024, 1, 1, 12.0 * 3_600.0),
@@ -1722,6 +2722,14 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Scan_Natural_Date (Ref_Date, "in 3 days; cached");
       ISO_Date : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date (Ref_Date, "2024-02-29");
+      ISO_Ordinal_Date : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date (Ref_Date, "2024-060");
+      ISO_Week_Date : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date (Ref_Date, "2024-W09-4");
+      ISO_Week_Start : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date (Ref_Date, "2024-W01");
+      Scanned_ISO_Week : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Scan_Natural_Date (Ref_Date, "2024-W09-4; cached");
       Month_Name : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date (Ref_Date, "February 2 2024");
       Month_Day_Ordinal : constant Humanize.Parsing.Date_Parse_Result :=
@@ -1732,6 +2740,15 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Scan_Natural_Date (Ref_Date, "Jan 1st; cached");
       In_Weeks : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date (Ref_Date, "in 2 weeks");
+      In_Few_Days : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date (Ref_Date, "in a few days");
+      In_A_Couple_Of_Weeks : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "in a couple of weeks");
+      In_A_Fortnight : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date (Ref_Date, "in a fortnight");
+      Fortnight_Ago : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date (Ref_Date, "a fortnight ago");
       Month_Ago : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date (Ref_Date, "1 month ago");
       This_Fri : constant Humanize.Parsing.Date_Parse_Result :=
@@ -1741,6 +2758,9 @@ package body Humanize.Tests.Parsing is
       Two_Fridays : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date
           (Ref_Date, "two fridays from now");
+      Friday_Before_Next : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "Friday before next");
       End_Next_Month : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date (Ref_Date, "end of next month");
       Start_Q3 : constant Humanize.Parsing.Date_Parse_Result :=
@@ -1756,9 +2776,15 @@ package body Humanize.Tests.Parsing is
           (Ref_Date, "last friday of march 2024");
       Next_Business : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date (Ref_Date, "next business day");
+      Next_Business_Friday : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "next business friday");
       Three_Business : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date
           (Ref_Date, "3 business days from now");
+      Several_Business : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "several business days from now");
       Before_Month_End : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date
           (Ref_Date, "two business days before month end");
@@ -1797,6 +2823,9 @@ package body Humanize.Tests.Parsing is
       Late_Q2 : constant Humanize.Parsing.Date_Range_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date_Range
           (Ref_Date, "late Q2");
+      Mid_Next_Quarter : constant Humanize.Parsing.Date_Range_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date_Range
+          (Ref_Date, "mid next quarter");
       First_Half_2026 : constant Humanize.Parsing.Date_Range_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date_Range
           (Ref_Date, "first half of 2026");
@@ -1804,6 +2833,8 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Parse_Natural_Date (Ref_Date, "end of FY2027");
       Week_32_Range : constant Humanize.Parsing.Date_Range_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date_Range (Ref_Date, "week 32");
+      ISO_Week_Range : constant Humanize.Parsing.Date_Range_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date_Range (Ref_Date, "2024-W09");
       This_Weekend : constant Humanize.Parsing.Date_Range_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date_Range
           (Ref_Date, "this weekend");
@@ -1813,6 +2844,10 @@ package body Humanize.Tests.Parsing is
       Last_Weekend : constant Humanize.Parsing.Date_Range_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date_Range
           (Ref_Date, "last weekend");
+      Next_Business_Week :
+        constant Humanize.Parsing.Date_Range_Parse_Result :=
+          Humanize.Parsing.Parse_Natural_Date_Range
+            (Ref_Date, "next business week");
       Scanned_Weekend : constant Humanize.Parsing.Date_Range_Parse_Result :=
         Humanize.Parsing.Scan_Natural_Date_Range
           (Ref_Date, "this weekend; cached");
@@ -1960,6 +2995,38 @@ package body Humanize.Tests.Parsing is
          and then Word_Ordinal.Value = 21,
          "parse word ordinal");
       AUnit.Assertions.Assert
+        (German_Word_Cardinal.Status = Humanize.Status.Ok
+         and then German_Word_Cardinal.Value = 42,
+         "parse localized German cardinal spellout");
+      AUnit.Assertions.Assert
+        (Finnish_Word_Cardinal.Status = Humanize.Status.Ok
+         and then Finnish_Word_Cardinal.Value = 2_345,
+         "parse localized Finnish cardinal spellout");
+      AUnit.Assertions.Assert
+        (French_Large_Word_Cardinal.Status = Humanize.Status.Ok
+         and then French_Large_Word_Cardinal.Value = 2_000_000_001,
+         "parse localized French large cardinal spellout");
+      AUnit.Assertions.Assert
+        (Japanese_Word_Cardinal.Status = Humanize.Status.Ok
+         and then Japanese_Word_Cardinal.Value = 2_345,
+         "parse localized Japanese cardinal spellout");
+      AUnit.Assertions.Assert
+        (Polish_Word_Ordinal.Status = Humanize.Status.Ok
+         and then Polish_Word_Ordinal.Value = 121,
+         "parse localized Polish ordinal spellout");
+      AUnit.Assertions.Assert
+        (Polish_Thousands_Word_Ordinal.Status = Humanize.Status.Ok
+         and then Polish_Thousands_Word_Ordinal.Value = 2_345,
+         "parse localized Polish thousands ordinal spellout");
+      AUnit.Assertions.Assert
+        (Japanese_Word_Ordinal.Status = Humanize.Status.Ok
+         and then Japanese_Word_Ordinal.Value = 12,
+         "parse localized Japanese ordinal spellout");
+      AUnit.Assertions.Assert
+        (Japanese_Thousands_Word_Ordinal.Status = Humanize.Status.Ok
+         and then Japanese_Thousands_Word_Ordinal.Value = 2_345,
+         "parse localized Japanese thousands ordinal spellout");
+      AUnit.Assertions.Assert
         (Scientific.Status = Humanize.Status.Ok
          and then Scientific.Value = 1_230_000.0,
          "parse scientific number");
@@ -2057,13 +3124,169 @@ package body Humanize.Tests.Parsing is
          and then Other_Tuesday.Weekday = 2,
          "parse every-other weekday recurrence");
       AUnit.Assertions.Assert
+        (Weekday_Schedule.Status = Humanize.Status.Ok
+         and then Weekday_Schedule.Kind =
+           Humanize.Parsing.Recurrence_Weekday_Set
+         and then Weekday_Schedule.Weekdays = Humanize.Durations.Weekdays
+         and then Weekday_Schedule.Has_Time
+         and then Weekday_Schedule.Hour = 9
+         and then Weekday_Schedule.Minute = 0,
+         "parse weekday schedule recurrence");
+      AUnit.Assertions.Assert
         (First_Monday.Status = Humanize.Status.Ok
          and then First_Monday.Kind =
            Humanize.Parsing.Recurrence_Ordinal_Weekday
          and then First_Monday.Unit = Humanize.Durations.Every_Month
          and then First_Monday.Ordinal = 1
-         and then First_Monday.Weekday = 1,
+         and then First_Monday.Weekday = 1
+         and then First_Monday.Has_Time
+         and then First_Monday.Hour = 9
+         and then First_Monday.Minute = 30,
          "parse ordinal weekday recurrence");
+      AUnit.Assertions.Assert
+        (Cron_Weekday.Status = Humanize.Status.Ok
+         and then Cron_Weekday.Kind = Humanize.Parsing.Recurrence_Weekday_Set
+         and then Cron_Weekday.Weekdays = Humanize.Durations.Weekdays
+         and then Cron_Weekday.Has_Time
+         and then Cron_Weekday.Hour = 9
+         and then Cron_Weekday.Minute = 0,
+         "parse cron weekday schedule");
+      AUnit.Assertions.Assert
+        (Cron_Monthly.Status = Humanize.Status.Ok
+         and then Cron_Monthly.Unit = Humanize.Durations.Every_Month
+         and then Cron_Monthly.Day_Of_Month = 15
+         and then Cron_Monthly.Has_Time
+         and then Cron_Monthly.Hour = 8
+         and then Cron_Monthly.Minute = 30,
+         "parse cron monthly schedule");
+      AUnit.Assertions.Assert
+        (Scanned_Cron.Status = Humanize.Status.Ok
+         and then Scanned_Cron.Kind = Humanize.Parsing.Recurrence_Weekday_Set
+         and then Scanned_Cron.Weekdays = Humanize.Durations.Weekdays
+         and then Scanned_Cron.Has_Time
+         and then Scanned_Cron.Hour = 9
+         and then Scanned_Cron.Consumed = 11,
+         "scan cron weekday schedule");
+      AUnit.Assertions.Assert
+        (Cron_Step_Minute.Status = Humanize.Status.Ok
+         and then Cron_Step_Minute.Every = 15
+         and then Cron_Step_Minute.Unit = Humanize.Durations.Every_Minute,
+         "parse cron stepped minute schedule");
+      AUnit.Assertions.Assert
+        (Cron_Step_Hour.Status = Humanize.Status.Ok
+         and then Cron_Step_Hour.Every = 2
+         and then Cron_Step_Hour.Unit = Humanize.Durations.Every_Hour
+         and then Cron_Step_Hour.Has_Time
+         and then Cron_Step_Hour.Minute = 0,
+         "parse cron stepped hour schedule");
+      AUnit.Assertions.Assert
+        (Cron_Named_List.Status = Humanize.Status.Ok
+         and then Cron_Named_List.Kind =
+           Humanize.Parsing.Recurrence_Weekday_Set
+         and then Cron_Named_List.Weekdays (1)
+         and then Cron_Named_List.Weekdays (3)
+         and then Cron_Named_List.Weekdays (5)
+         and then not Cron_Named_List.Weekdays (2)
+         and then Cron_Named_List.Has_Time
+         and then Cron_Named_List.Hour = 9
+         and then Cron_Named_List.Minute = 30,
+         "parse cron named weekday list");
+      AUnit.Assertions.Assert
+        (Cron_Yearly.Status = Humanize.Status.Ok
+         and then Cron_Yearly.Unit = Humanize.Durations.Every_Year
+         and then Cron_Yearly.Month_Of_Year = 1
+         and then Cron_Yearly.Day_Of_Month = 15
+         and then Cron_Yearly.Has_Time
+         and then Cron_Yearly.Hour = 8
+         and then Cron_Yearly.Minute = 30,
+         "parse cron named month yearly schedule");
+      AUnit.Assertions.Assert
+        (Cron_Quartz_Weekday.Status = Humanize.Status.Ok
+         and then Cron_Quartz_Weekday.Kind =
+           Humanize.Parsing.Recurrence_Weekday_Set
+         and then Cron_Quartz_Weekday.Has_Second
+         and then Cron_Quartz_Weekday.Second = 0
+         and then Cron_Quartz_Weekday.Has_Time
+         and then Cron_Quartz_Weekday.Hour = 9
+         and then Cron_Quartz_Weekday.Minute = 0
+         and then Cron_Quartz_Weekday.Weekdays =
+           Humanize.Durations.Weekdays,
+         "parse quartz cron weekday schedule");
+      AUnit.Assertions.Assert
+        (Cron_Quartz_Year.Status = Humanize.Status.Ok
+         and then Cron_Quartz_Year.Unit = Humanize.Durations.Every_Year
+         and then Cron_Quartz_Year.Has_Second
+         and then Cron_Quartz_Year.Second = 30
+         and then Cron_Quartz_Year.Has_Year
+         and then Cron_Quartz_Year.Year = 2027
+         and then Cron_Quartz_Year.Month_Of_Year = 1
+         and then Cron_Quartz_Year.Day_Of_Month = 15
+         and then Cron_Quartz_Year.Hour = 8
+         and then Cron_Quartz_Year.Minute = 15,
+         "parse quartz cron year field");
+      AUnit.Assertions.Assert
+        (Cron_Last_Day.Status = Humanize.Status.Ok
+         and then Cron_Last_Day.Unit = Humanize.Durations.Every_Month
+         and then Cron_Last_Day.Is_Last_Day_Of_Month,
+         "parse quartz cron last day of month");
+      AUnit.Assertions.Assert
+        (Cron_Nearest_Weekday.Status = Humanize.Status.Ok
+         and then Cron_Nearest_Weekday.Unit = Humanize.Durations.Every_Month
+         and then Cron_Nearest_Weekday.Day_Of_Month = 15
+         and then Cron_Nearest_Weekday.Is_Nearest_Weekday,
+         "parse quartz cron nearest weekday");
+      AUnit.Assertions.Assert
+        (Cron_Last_Friday.Status = Humanize.Status.Ok
+         and then Cron_Last_Friday.Kind =
+           Humanize.Parsing.Recurrence_Ordinal_Weekday
+         and then Cron_Last_Friday.Is_Last_Weekday
+         and then Cron_Last_Friday.Ordinal = -1
+         and then Cron_Last_Friday.Weekday = 5,
+         "parse quartz cron last weekday");
+      AUnit.Assertions.Assert
+        (Cron_Second_Monday.Status = Humanize.Status.Ok
+         and then Cron_Second_Monday.Kind =
+           Humanize.Parsing.Recurrence_Ordinal_Weekday
+         and then Cron_Second_Monday.Nth_Weekday = 2
+         and then Cron_Second_Monday.Ordinal = 2
+         and then Cron_Second_Monday.Weekday = 1,
+         "parse quartz cron nth weekday");
+      AUnit.Assertions.Assert
+        (Italian_Ordinal_Schedule.Status = Humanize.Status.Ok
+         and then Italian_Ordinal_Schedule.Kind =
+           Humanize.Parsing.Recurrence_Ordinal_Weekday
+         and then Italian_Ordinal_Schedule.Ordinal = 1
+         and then Italian_Ordinal_Schedule.Weekday = 1
+         and then Italian_Ordinal_Schedule.Has_Time
+         and then Italian_Ordinal_Schedule.Hour = 9
+         and then Italian_Ordinal_Schedule.Minute = 30,
+         "parse localized rendered ordinal schedule");
+      AUnit.Assertions.Assert
+        (Finnish_Rendered_Cron.Status = Humanize.Status.Ok
+         and then Finnish_Rendered_Cron.Unit = Humanize.Durations.Every_Month
+         and then Finnish_Rendered_Cron.Day_Of_Month = 15
+         and then Finnish_Rendered_Cron.Has_Time
+         and then Finnish_Rendered_Cron.Hour = 8
+         and then Finnish_Rendered_Cron.Minute = 30,
+         "parse Finnish rendered cron schedule");
+      AUnit.Assertions.Assert
+        (Polish_Rendered_Cron.Status = Humanize.Status.Ok
+         and then Polish_Rendered_Cron.Unit = Humanize.Durations.Every_Month
+         and then Polish_Rendered_Cron.Day_Of_Month = 15
+         and then Polish_Rendered_Cron.Has_Time
+         and then Polish_Rendered_Cron.Hour = 8
+         and then Polish_Rendered_Cron.Minute = 30,
+         "parse Polish rendered cron schedule");
+      AUnit.Assertions.Assert
+        (Danish_Rendered_Weekday.Status = Humanize.Status.Ok
+         and then Danish_Rendered_Weekday.Kind =
+           Humanize.Parsing.Recurrence_Weekday_Set
+         and then Danish_Rendered_Weekday.Weekdays =
+           Humanize.Durations.Weekdays
+         and then Danish_Rendered_Weekday.Has_Time
+         and then Danish_Rendered_Weekday.Hour = 9
+         and then Danish_Rendered_Weekday.Minute = 0,
+         "parse Danish rendered weekday schedule");
       AUnit.Assertions.Assert
         (Last_Business.Status = Humanize.Status.Ok
          and then Last_Business.Kind =
@@ -2071,6 +3294,23 @@ package body Humanize.Tests.Parsing is
          and then Last_Business.Ordinal = -1
          and then Last_Business.Unit = Humanize.Durations.Every_Month,
          "parse last business day recurrence");
+      AUnit.Assertions.Assert
+        (Every_Last_Weekday.Status = Humanize.Status.Ok
+         and then Every_Last_Weekday.Kind =
+           Humanize.Parsing.Recurrence_Business_Day
+         and then Every_Last_Weekday.Ordinal = -1
+         and then Every_Last_Weekday.Unit = Humanize.Durations.Every_Month,
+         "parse every last weekday recurrence");
+      AUnit.Assertions.Assert
+        (Second_Business.Status = Humanize.Status.Ok
+         and then Second_Business.Kind =
+           Humanize.Parsing.Recurrence_Business_Day
+         and then Second_Business.Ordinal = 2
+         and then Second_Business.Unit = Humanize.Durations.Every_Month
+         and then Second_Business.Has_Time
+         and then Second_Business.Hour = 10
+         and then Second_Business.Minute = 15,
+         "parse ordinal business day recurrence");
       AUnit.Assertions.Assert
         (Until_Weeks.Status = Humanize.Status.Ok
          and then Until_Weeks.Every = 2
@@ -2090,6 +3330,24 @@ package body Humanize.Tests.Parsing is
          and then Windowed.Has_Occurrences
          and then Windowed.Occurrences = 5,
          "parse recurrence start/end/count window");
+      AUnit.Assertions.Assert
+        (Windowed_Time.Status = Humanize.Status.Ok
+         and then Windowed_Time.Every = 15
+         and then Windowed_Time.Unit = Humanize.Durations.Every_Minute
+         and then Windowed_Time.Has_Time_Window
+         and then Windowed_Time.Window_Start_Hour = 9
+         and then Windowed_Time.Window_Start_Minute = 0
+         and then Windowed_Time.Window_End_Hour = 17
+         and then Windowed_Time.Window_End_Minute = 0,
+         "parse recurrence time window metadata");
+      AUnit.Assertions.Assert
+        (Weekday_Except_Friday.Status = Humanize.Status.Ok
+         and then Weekday_Except_Friday.Kind =
+           Humanize.Parsing.Recurrence_Weekday_Set
+         and then Weekday_Except_Friday.Has_Excluded_Weekdays
+         and then Weekday_Except_Friday.Excluded_Weekdays (5)
+         and then not Weekday_Except_Friday.Weekdays (5),
+         "parse recurrence weekday exclusion metadata");
       AUnit.Assertions.Assert
         (Throughput.Status = Humanize.Status.Ok
          and then Throughput.Count = 120
@@ -2173,6 +3431,363 @@ package body Humanize.Tests.Parsing is
          and then Scanned_Range.Consumed = 11,
          "scan number range prefix");
       AUnit.Assertions.Assert
+        (Decimal_Range.Status = Humanize.Status.Ok
+         and then abs (Decimal_Range.Low - 1.25) < 0.0001
+         and then abs (Decimal_Range.High - 3.5) < 0.0001,
+         "parse decimal range");
+      AUnit.Assertions.Assert
+        (Decimal_Range_Words.Status = Humanize.Status.Ok
+         and then abs (Decimal_Range_Words.Low - 1.25) < 0.0001
+         and then abs (Decimal_Range_Words.High - 3.5) < 0.0001,
+         "parse worded decimal range");
+      AUnit.Assertions.Assert
+        (Editorial_Number.Status = Humanize.Status.Ok
+         and then Editorial_Number.Value = 1_200
+         and then Editorial_Number.Consumed = 6,
+         "parse editorial grouped number");
+      AUnit.Assertions.Assert
+        (Currency_Words.Status = Humanize.Status.Ok
+         and then abs (Currency_Words.Amount - 12.5) < 0.0001
+         and then Currency_Words.Code
+           (1 .. Currency_Words.Code_Length) = "dollar",
+         "parse worded currency");
+      AUnit.Assertions.Assert
+        (Fraction_Words.Status = Humanize.Status.Ok
+         and then Fraction_Words.Count = 3
+         and then Fraction_Words.Total = 4,
+         "parse worded fraction");
+      AUnit.Assertions.Assert
+        (Percent_Words.Status = Humanize.Status.Ok
+         and then abs (Percent_Words.Value - 12.5) < 0.0001,
+         "parse worded percent");
+      AUnit.Assertions.Assert
+        (Scanned_Decimal_Range.Status = Humanize.Status.Ok
+         and then abs (Scanned_Decimal_Range.Low - 1.25) < 0.0001
+         and then abs (Scanned_Decimal_Range.High - 3.5) < 0.0001,
+         "scan decimal range prefix");
+      AUnit.Assertions.Assert
+        (Operational_Phrase.Status = Humanize.Status.Ok
+         and then Operational_Phrase.Domain =
+           Humanize.Parsing.Backup_Phrase_Domain
+         and then Operational_Phrase.Backup_Status =
+           Humanize.Phrases.Backup_Stale,
+         "parse operational phrase");
+      AUnit.Assertions.Assert
+        (Backup_Phrase_Case_Running.Status = Humanize.Status.Ok
+         and then Backup_Phrase_Case_Running.Domain =
+           Humanize.Parsing.Backup_Phrase_Domain
+         and then Backup_Phrase_Case_Running.Backup_Status =
+           Humanize.Phrases.Backup_Running
+         and then Backup_Phrase_Case_Completed.Status = Humanize.Status.Ok
+         and then Backup_Phrase_Case_Completed.Domain =
+           Humanize.Parsing.Backup_Phrase_Domain
+         and then Backup_Phrase_Case_Completed.Backup_Status =
+           Humanize.Phrases.Backup_Completed
+         and then Backup_Phrase_Case_Failed.Status = Humanize.Status.Ok
+         and then Backup_Phrase_Case_Failed.Domain =
+           Humanize.Parsing.Backup_Phrase_Domain
+         and then Backup_Phrase_Case_Failed.Backup_Status =
+           Humanize.Phrases.Backup_Failed,
+         "parse all backup operational phrases");
+      AUnit.Assertions.Assert
+        (Incident_Phrase_Created.Status = Humanize.Status.Ok
+         and then Incident_Phrase_Created.Domain =
+           Humanize.Parsing.Incident_Phrase_Domain
+         and then Incident_Phrase_Created.Incident_Status =
+           Humanize.Phrases.Incident_Investigating
+         and then Payment_Authorized_Phrase.Status = Humanize.Status.Ok
+         and then Payment_Authorized_Phrase.Domain =
+           Humanize.Parsing.Payment_Lifecycle_Phrase_Domain
+         and then Payment_Authorized_Phrase.Payment_Lifecycle_Status =
+           Humanize.Phrases.Payment_Authorized
+         and then Payment_Captured_Phrase.Status = Humanize.Status.Ok
+         and then Payment_Captured_Phrase.Domain =
+           Humanize.Parsing.Payment_Lifecycle_Phrase_Domain
+         and then Payment_Captured_Phrase.Payment_Lifecycle_Status =
+           Humanize.Phrases.Payment_Captured
+         and then Payment_Refunded_Phrase.Status = Humanize.Status.Ok
+         and then Payment_Refunded_Phrase.Domain =
+           Humanize.Parsing.Payment_Lifecycle_Phrase_Domain
+         and then Payment_Refunded_Phrase.Payment_Lifecycle_Status =
+           Humanize.Phrases.Payment_Refunded
+         and then Payment_Disputed_Phrase.Status = Humanize.Status.Ok
+         and then Payment_Disputed_Phrase.Domain =
+           Humanize.Parsing.Payment_Lifecycle_Phrase_Domain
+         and then Payment_Disputed_Phrase.Payment_Lifecycle_Status =
+           Humanize.Phrases.Payment_Disputed
+         and then Payment_Requires_Action_Phrase.Status = Humanize.Status.Ok
+         and then Payment_Requires_Action_Phrase.Domain =
+           Humanize.Parsing.Payment_Lifecycle_Phrase_Domain
+         and then Payment_Requires_Action_Phrase.Payment_Lifecycle_Status =
+           Humanize.Phrases.Payment_Requires_Action
+         and then Payment_Expired_Phrase.Status = Humanize.Status.Ok
+         and then Payment_Expired_Phrase.Domain =
+           Humanize.Parsing.Payment_Lifecycle_Phrase_Domain
+         and then Payment_Expired_Phrase.Payment_Lifecycle_Status =
+           Humanize.Phrases.Payment_Expired,
+         "parse payment lifecycle phrases");
+      AUnit.Assertions.Assert
+        (Audit_Created_Phrase.Status = Humanize.Status.Ok
+         and then Audit_Created_Phrase.Domain =
+           Humanize.Parsing.Audit_Phrase_Domain
+         and then Audit_Created_Phrase.Audit_Status =
+           Humanize.Phrases.Audit_Created
+         and then Audit_Updated_Phrase.Status = Humanize.Status.Ok
+         and then Audit_Updated_Phrase.Domain =
+           Humanize.Parsing.Audit_Phrase_Domain
+         and then Audit_Updated_Phrase.Audit_Status =
+           Humanize.Phrases.Audit_Updated
+         and then Audit_Deleted_Phrase.Status = Humanize.Status.Ok
+         and then Audit_Deleted_Phrase.Domain =
+           Humanize.Parsing.Audit_Phrase_Domain
+         and then Audit_Deleted_Phrase.Audit_Status =
+           Humanize.Phrases.Audit_Deleted
+         and then Audit_Restored_Phrase.Status = Humanize.Status.Ok
+         and then Audit_Restored_Phrase.Domain =
+           Humanize.Parsing.Audit_Phrase_Domain
+         and then Audit_Restored_Phrase.Audit_Status =
+           Humanize.Phrases.Audit_Restored,
+         "parse audit phrases");
+      AUnit.Assertions.Assert
+        (Feature_Flag_Enabled_Phrase.Status = Humanize.Status.Ok
+         and then Feature_Flag_Enabled_Phrase.Domain =
+           Humanize.Parsing.Feature_Flag_Phrase_Domain
+         and then Feature_Flag_Enabled_Phrase.Feature_Flag_Status =
+           Humanize.Phrases.Flag_Enabled
+         and then Feature_Flag_Disabled_Phrase.Status = Humanize.Status.Ok
+         and then Feature_Flag_Disabled_Phrase.Domain =
+           Humanize.Parsing.Feature_Flag_Phrase_Domain
+         and then Feature_Flag_Disabled_Phrase.Feature_Flag_Status =
+           Humanize.Phrases.Flag_Disabled
+         and then Feature_Flag_Rolling_Out_Phrase.Status = Humanize.Status.Ok
+         and then Feature_Flag_Rolling_Out_Phrase.Domain =
+           Humanize.Parsing.Feature_Flag_Phrase_Domain
+         and then Feature_Flag_Rolling_Out_Phrase.Feature_Flag_Status =
+           Humanize.Phrases.Flag_Rolling_Out
+         and then Feature_Flag_Rolled_Back_Phrase.Status = Humanize.Status.Ok
+         and then Feature_Flag_Rolled_Back_Phrase.Domain =
+           Humanize.Parsing.Feature_Flag_Phrase_Domain
+         and then Feature_Flag_Rolled_Back_Phrase.Feature_Flag_Status =
+           Humanize.Phrases.Flag_Rolled_Back,
+         "parse feature flag phrases");
+      AUnit.Assertions.Assert
+        (Webhook_Pending_Phrase.Status = Humanize.Status.Ok
+         and then Webhook_Pending_Phrase.Domain =
+           Humanize.Parsing.Webhook_Phrase_Domain
+         and then Webhook_Pending_Phrase.Webhook_Status =
+           Humanize.Phrases.Webhook_Pending
+         and then Webhook_Delivered_Phrase.Status = Humanize.Status.Ok
+         and then Webhook_Delivered_Phrase.Domain =
+           Humanize.Parsing.Webhook_Phrase_Domain
+         and then Webhook_Delivered_Phrase.Webhook_Status =
+           Humanize.Phrases.Webhook_Delivered
+         and then Webhook_Failed_Phrase.Status = Humanize.Status.Ok
+         and then Webhook_Failed_Phrase.Domain =
+           Humanize.Parsing.Webhook_Phrase_Domain
+         and then Webhook_Failed_Phrase.Webhook_Status =
+           Humanize.Phrases.Webhook_Failed
+         and then Webhook_Retrying_Phrase.Status = Humanize.Status.Ok
+         and then Webhook_Retrying_Phrase.Domain =
+           Humanize.Parsing.Webhook_Phrase_Domain
+         and then Webhook_Retrying_Phrase.Webhook_Status =
+           Humanize.Phrases.Webhook_Retrying,
+         "parse webhook phrases");
+      AUnit.Assertions.Assert
+        (API_Key_Active_Phrase.Status = Humanize.Status.Ok
+         and then API_Key_Active_Phrase.Domain =
+           Humanize.Parsing.API_Key_Phrase_Domain
+         and then API_Key_Active_Phrase.API_Key_Status =
+           Humanize.Phrases.API_Key_Active
+         and then API_Key_Revoked_Phrase.Status = Humanize.Status.Ok
+         and then API_Key_Revoked_Phrase.Domain =
+           Humanize.Parsing.API_Key_Phrase_Domain
+         and then API_Key_Revoked_Phrase.API_Key_Status =
+           Humanize.Phrases.API_Key_Revoked
+         and then API_Key_Expired_Phrase.Status = Humanize.Status.Ok
+         and then API_Key_Expired_Phrase.Domain =
+           Humanize.Parsing.API_Key_Phrase_Domain
+         and then API_Key_Expired_Phrase.API_Key_Status =
+           Humanize.Phrases.API_Key_Expired
+         and then API_Key_Rotated_Phrase.Status = Humanize.Status.Ok
+         and then API_Key_Rotated_Phrase.Domain =
+           Humanize.Parsing.API_Key_Phrase_Domain
+         and then API_Key_Rotated_Phrase.API_Key_Status =
+           Humanize.Phrases.API_Key_Rotated,
+         "parse API-key phrases");
+      AUnit.Assertions.Assert
+        (Quota_Available_Phrase.Status = Humanize.Status.Ok
+         and then Quota_Available_Phrase.Domain =
+           Humanize.Parsing.Quota_Phrase_Domain
+         and then Quota_Available_Phrase.Quota_Status =
+           Humanize.Phrases.Quota_Available
+         and then Quota_Near_Limit_Phrase.Status = Humanize.Status.Ok
+         and then Quota_Near_Limit_Phrase.Domain =
+           Humanize.Parsing.Quota_Phrase_Domain
+         and then Quota_Near_Limit_Phrase.Quota_Status =
+           Humanize.Phrases.Quota_Near_Limit
+         and then Quota_Exceeded_Phrase.Status = Humanize.Status.Ok
+         and then Quota_Exceeded_Phrase.Domain =
+           Humanize.Parsing.Quota_Phrase_Domain
+         and then Quota_Exceeded_Phrase.Quota_Status =
+           Humanize.Phrases.Quota_Exceeded
+         and then Quota_Reset_Phrase.Status = Humanize.Status.Ok
+         and then Quota_Reset_Phrase.Domain =
+           Humanize.Parsing.Quota_Phrase_Domain
+         and then Quota_Reset_Phrase.Quota_Status =
+           Humanize.Phrases.Quota_Reset,
+         "parse quota phrases");
+      AUnit.Assertions.Assert
+        (Invoice_Draft_Phrase.Status = Humanize.Status.Ok
+         and then Invoice_Draft_Phrase.Domain =
+           Humanize.Parsing.Invoice_Phrase_Domain
+         and then Invoice_Draft_Phrase.Invoice_Status =
+           Humanize.Phrases.Invoice_Draft
+         and then Invoice_Sent_Phrase.Status = Humanize.Status.Ok
+         and then Invoice_Sent_Phrase.Domain =
+           Humanize.Parsing.Invoice_Phrase_Domain
+         and then Invoice_Sent_Phrase.Invoice_Status =
+           Humanize.Phrases.Invoice_Sent
+         and then Invoice_Paid_Phrase.Status = Humanize.Status.Ok
+         and then Invoice_Paid_Phrase.Domain =
+           Humanize.Parsing.Invoice_Phrase_Domain
+         and then Invoice_Paid_Phrase.Invoice_Status =
+           Humanize.Phrases.Invoice_Paid
+         and then Invoice_Refunded_Phrase.Status = Humanize.Status.Ok
+         and then Invoice_Refunded_Phrase.Domain =
+           Humanize.Parsing.Invoice_Phrase_Domain
+         and then Invoice_Refunded_Phrase.Invoice_Status =
+           Humanize.Phrases.Invoice_Refunded
+         and then Invoice_Overdue_Phrase.Status = Humanize.Status.Ok
+         and then Invoice_Overdue_Phrase.Domain =
+           Humanize.Parsing.Invoice_Phrase_Domain
+         and then Invoice_Overdue_Phrase.Invoice_Status =
+           Humanize.Phrases.Invoice_Overdue
+         and then Invoice_Refund_Failed_Phrase.Status = Humanize.Status.Ok
+         and then Invoice_Refund_Failed_Phrase.Domain =
+           Humanize.Parsing.Invoice_Phrase_Domain
+         and then Invoice_Refund_Failed_Phrase.Invoice_Status =
+           Humanize.Phrases.Refund_Failed,
+         "parse invoice phrases");
+      AUnit.Assertions.Assert
+        (Database_Phrase.Status = Humanize.Status.Ok
+         and then Database_Phrase.Domain =
+           Humanize.Parsing.Database_Phrase_Domain
+         and then Database_Phrase.Database_Status =
+           Humanize.Phrases.Database_Replication_Lagging
+         and then Database_Backup_Phrase.Status = Humanize.Status.Ok
+         and then Database_Backup_Phrase.Domain =
+           Humanize.Parsing.Database_Phrase_Domain
+         and then Database_Backup_Phrase.Database_Status =
+           Humanize.Phrases.Database_Backup_Failed,
+         "parse database phrases");
+      AUnit.Assertions.Assert
+        (Database_Online_Phrase.Status = Humanize.Status.Ok
+         and then Database_Online_Phrase.Domain =
+           Humanize.Parsing.Database_Phrase_Domain
+         and then Database_Online_Phrase.Database_Status =
+           Humanize.Phrases.Database_Online
+         and then Database_Offline_Phrase.Status = Humanize.Status.Ok
+         and then Database_Offline_Phrase.Domain =
+           Humanize.Parsing.Database_Phrase_Domain
+         and then Database_Offline_Phrase.Database_Status =
+           Humanize.Phrases.Database_Offline
+         and then Database_Degraded_Phrase.Status = Humanize.Status.Ok
+         and then Database_Degraded_Phrase.Domain =
+           Humanize.Parsing.Database_Phrase_Domain
+         and then Database_Degraded_Phrase.Database_Status =
+           Humanize.Phrases.Database_Degraded
+         and then Database_Migrating_Phrase.Status = Humanize.Status.Ok
+         and then Database_Migrating_Phrase.Domain =
+           Humanize.Parsing.Database_Phrase_Domain
+         and then Database_Migrating_Phrase.Database_Status =
+           Humanize.Phrases.Database_Migrating
+         and then Database_Migration_Failed_Phrase.Status = Humanize.Status.Ok
+         and then Database_Migration_Failed_Phrase.Domain =
+           Humanize.Parsing.Database_Phrase_Domain
+         and then Database_Migration_Failed_Phrase.Database_Status =
+           Humanize.Phrases.Database_Migration_Failed
+         and then Database_Replicating_Phrase.Status = Humanize.Status.Ok
+         and then Database_Replicating_Phrase.Domain =
+           Humanize.Parsing.Database_Phrase_Domain
+         and then Database_Replicating_Phrase.Database_Status =
+           Humanize.Phrases.Database_Replicating
+         and then Database_Backup_Running_Phrase.Status = Humanize.Status.Ok
+         and then Database_Backup_Running_Phrase.Domain =
+           Humanize.Parsing.Database_Phrase_Domain
+         and then Database_Backup_Running_Phrase.Database_Status =
+           Humanize.Phrases.Database_Backup_Running
+         and then Database_Backup_Failed_Phrase.Status = Humanize.Status.Ok
+         and then Database_Backup_Failed_Phrase.Domain =
+           Humanize.Parsing.Database_Phrase_Domain
+         and then Database_Backup_Failed_Phrase.Database_Status =
+           Humanize.Phrases.Database_Backup_Failed,
+         "parse all database phrases");
+      AUnit.Assertions.Assert
+        (Field_Change.Status = Humanize.Status.Ok
+         and then Field_Change.Total = 4
+         and then Field_Change.Changed = 2
+         and then Field_Change.Added = 1
+         and then Field_Change.Removed = 1
+         and then Field_Change.Unit (1 .. Field_Change.Unit_Length) = "fields",
+         "parse field change summary");
+      AUnit.Assertions.Assert
+        (Field_Added.Status = Humanize.Status.Ok
+         and then Field_Added.Kind = Humanize.Parsing.Field_State_Added
+         and then Field_Added.Field (1 .. Field_Added.Field_Length) = "title"
+         and then Field_Added.Value (1 .. Field_Added.Value_Length) = "final",
+         "parse field added summary");
+      AUnit.Assertions.Assert
+        (Field_Removed.Status = Humanize.Status.Ok
+         and then Field_Removed.Kind = Humanize.Parsing.Field_State_Removed
+         and then Field_Removed.Field (1 .. Field_Removed.Field_Length) =
+           "title"
+         and then Field_Removed.Value (1 .. Field_Removed.Value_Length) =
+           "draft",
+         "parse field removed summary");
+      AUnit.Assertions.Assert
+        (Field_Unchanged.Status = Humanize.Status.Ok
+         and then Field_Unchanged.Kind =
+           Humanize.Parsing.Field_State_Unchanged
+         and then Field_Unchanged.Field
+           (1 .. Field_Unchanged.Field_Length) = "status"
+         and then Field_Unchanged.Value
+           (1 .. Field_Unchanged.Value_Length) = "open",
+         "parse field unchanged summary");
+      AUnit.Assertions.Assert
+        (Uncertainty.Status = Humanize.Status.Ok
+         and then abs (Uncertainty.Value - 12.3) < 0.0001
+         and then abs (Uncertainty.Uncertainty - 0.4) < 0.0001
+         and then Uncertainty.Style =
+           Humanize.Numbers.Plus_Minus_Uncertainty,
+         "parse plus-minus uncertainty");
+      AUnit.Assertions.Assert
+        (Uncertainty_Words.Status = Humanize.Status.Ok
+         and then abs (Uncertainty_Words.Value - 12.3) < 0.0001
+         and then abs (Uncertainty_Words.Uncertainty - 0.4) < 0.0001
+         and then Uncertainty_Words.Style =
+           Humanize.Numbers.Plus_Minus_Uncertainty,
+         "parse worded uncertainty");
+      AUnit.Assertions.Assert
+        (Parenthesized_Uncertainty.Status = Humanize.Status.Ok
+         and then abs (Parenthesized_Uncertainty.Value - 12.3) < 0.0001
+         and then abs (Parenthesized_Uncertainty.Uncertainty - 0.4) < 0.0001
+         and then Parenthesized_Uncertainty.Style =
+           Humanize.Numbers.Parenthesized_Uncertainty,
+         "parse parenthesized uncertainty");
+      AUnit.Assertions.Assert
+        (Interval_Uncertainty.Status = Humanize.Status.Ok
+         and then abs (Interval_Uncertainty.Value - 12.3) < 0.0001
+         and then abs (Interval_Uncertainty.Uncertainty - 0.4) < 0.0001
+         and then abs (Interval_Uncertainty.Low - 11.9) < 0.0001
+         and then abs (Interval_Uncertainty.High - 12.7) < 0.0001
+         and then Interval_Uncertainty.Style =
+           Humanize.Numbers.Interval_Uncertainty,
+         "parse interval uncertainty");
+      AUnit.Assertions.Assert
+        (Scanned_Uncertainty.Status = Humanize.Status.Ok
+         and then Scanned_Uncertainty.Consumed = 12,
+         "scan uncertainty prefix");
+      AUnit.Assertions.Assert
         (Proportion.Status = Humanize.Status.Ok
          and then Proportion.Count = 3
          and then Proportion.Total = 10,
@@ -2197,6 +3812,172 @@ package body Humanize.Tests.Parsing is
          and then Compound.Value = 2.5
          and then Compound.Unit (1 .. Compound.Unit_Length) = "ms",
          "parse compound unit");
+      AUnit.Assertions.Assert
+        (Database_Throughput.Status = Humanize.Status.Ok
+         and then Database_Throughput.Value = 12.5
+         and then Database_Throughput.Unit
+           (1 .. Database_Throughput.Unit_Length) = "k ops/s",
+         "parse database throughput");
+      AUnit.Assertions.Assert
+        (Scanned_Database_Throughput.Status = Humanize.Status.Ok
+         and then Scanned_Database_Throughput.Value = 12.5
+         and then Scanned_Database_Throughput.Unit
+           (1 .. Scanned_Database_Throughput.Unit_Length) = "k ops/s"
+         and then Scanned_Database_Throughput.Consumed = 12,
+         "scan database throughput");
+      AUnit.Assertions.Assert
+        (Data_Rate.Status = Humanize.Status.Ok
+         and then Data_Rate.Value = 1.5
+         and then Data_Rate.Unit (1 .. Data_Rate.Unit_Length) = "mb/s",
+         "parse data rate");
+      AUnit.Assertions.Assert
+        (Scanned_Bit_Rate.Status = Humanize.Status.Ok
+         and then Scanned_Bit_Rate.Value = 1.5
+         and then Scanned_Bit_Rate.Unit
+           (1 .. Scanned_Bit_Rate.Unit_Length) = "mbit/s"
+         and then Scanned_Bit_Rate.Consumed = 10,
+         "scan bit rate");
+      AUnit.Assertions.Assert
+        (Binary_Data_Rate.Status = Humanize.Status.Ok
+         and then Binary_Data_Rate.Value = 1.5
+         and then Binary_Data_Rate.Unit
+           (1 .. Binary_Data_Rate.Unit_Length) = "gib/s",
+         "parse binary data rate");
+      AUnit.Assertions.Assert
+        (Memory_Bandwidth.Status = Humanize.Status.Ok
+         and then Memory_Bandwidth.Value = 12.5
+         and then Memory_Bandwidth.Unit
+           (1 .. Memory_Bandwidth.Unit_Length) = "gb/s",
+         "parse memory bandwidth");
+      AUnit.Assertions.Assert
+        (Scanned_Latency.Status = Humanize.Status.Ok
+         and then Scanned_Latency.Value = 2.5
+         and then Scanned_Latency.Unit
+           (1 .. Scanned_Latency.Unit_Length) = "ms"
+         and then Scanned_Latency.Consumed = 6,
+         "scan latency");
+      AUnit.Assertions.Assert
+        (IOPS.Status = Humanize.Status.Ok
+         and then IOPS.Value = 42.0
+         and then IOPS.Unit (1 .. IOPS.Unit_Length) = "k iops",
+         "parse IOPS");
+      AUnit.Assertions.Assert
+        (Scanned_IOPS.Status = Humanize.Status.Ok
+         and then Scanned_IOPS.Value = 42.0
+         and then Scanned_IOPS.Unit (1 .. Scanned_IOPS.Unit_Length) = "k iops"
+         and then Scanned_IOPS.Consumed = 9,
+         "scan IOPS");
+      AUnit.Assertions.Assert
+        (Density.Status = Humanize.Status.Ok
+         and then Density.Unit (1 .. Density.Unit_Length) = "kg/m3",
+         "parse density");
+      AUnit.Assertions.Assert
+        (Acceleration.Status = Humanize.Status.Ok
+         and then Acceleration.Unit
+           (1 .. Acceleration.Unit_Length) = "m/s2",
+         "parse acceleration");
+      AUnit.Assertions.Assert
+        (Torque.Status = Humanize.Status.Ok
+         and then Torque.Unit (1 .. Torque.Unit_Length) = "n m",
+         "parse torque");
+      AUnit.Assertions.Assert
+        (Fuel_Economy.Status = Humanize.Status.Ok
+         and then Fuel_Economy.Unit
+           (1 .. Fuel_Economy.Unit_Length) = "l/100 km",
+         "parse fuel economy");
+      AUnit.Assertions.Assert
+        (Flow_Rate.Status = Humanize.Status.Ok
+         and then Flow_Rate.Unit (1 .. Flow_Rate.Unit_Length) = "ml/s"
+         and then Flow_Rate.Consumed = 8,
+         "scan flow rate");
+      AUnit.Assertions.Assert
+        (Electric_Current.Status = Humanize.Status.Ok
+         and then Electric_Current.Unit
+           (1 .. Electric_Current.Unit_Length) = "ma",
+         "parse electric current");
+      AUnit.Assertions.Assert
+        (Voltage.Status = Humanize.Status.Ok
+         and then Voltage.Unit (1 .. Voltage.Unit_Length) = "kv",
+         "parse voltage");
+      AUnit.Assertions.Assert
+        (Pixel_Density.Status = Humanize.Status.Ok
+         and then Pixel_Density.Unit
+           (1 .. Pixel_Density.Unit_Length) = "ppi",
+         "parse pixel density");
+      AUnit.Assertions.Assert
+        (Electric_Resistance.Status = Humanize.Status.Ok
+         and then Electric_Resistance.Unit
+           (1 .. Electric_Resistance.Unit_Length) = "mohm",
+         "parse electric resistance");
+      AUnit.Assertions.Assert
+        (Electric_Capacitance.Status = Humanize.Status.Ok
+         and then Electric_Capacitance.Unit
+           (1 .. Electric_Capacitance.Unit_Length) = "nf",
+         "parse electric capacitance");
+      AUnit.Assertions.Assert
+        (Electric_Inductance.Status = Humanize.Status.Ok
+         and then Electric_Inductance.Unit
+           (1 .. Electric_Inductance.Unit_Length) = "h",
+         "parse electric inductance");
+      AUnit.Assertions.Assert
+        (Concentration.Status = Humanize.Status.Ok
+         and then Concentration.Unit
+           (1 .. Concentration.Unit_Length) = "mol/l",
+         "parse concentration");
+      AUnit.Assertions.Assert
+        (Fuel_Efficiency_MPG.Status = Humanize.Status.Ok
+         and then Fuel_Efficiency_MPG.Unit
+           (1 .. Fuel_Efficiency_MPG.Unit_Length) = "mpg",
+         "parse fuel efficiency mpg");
+      AUnit.Assertions.Assert
+        (CPU_Load.Status = Humanize.Status.Ok
+         and then CPU_Load.Unit (1 .. CPU_Load.Unit_Length) = "% cpu",
+         "parse CPU load");
+      AUnit.Assertions.Assert
+        (Battery.Status = Humanize.Status.Ok
+         and then Battery.Unit (1 .. Battery.Unit_Length) = "% battery",
+         "parse battery");
+      AUnit.Assertions.Assert
+        (Screen_Size.Status = Humanize.Status.Ok
+         and then Screen_Size.Unit
+           (1 .. Screen_Size.Unit_Length) = "in screen",
+         "parse screen size");
+      AUnit.Assertions.Assert
+        (Typography_Size.Status = Humanize.Status.Ok
+         and then Typography_Size.Unit
+           (1 .. Typography_Size.Unit_Length) = "pt",
+         "parse typography size");
+      AUnit.Assertions.Assert
+        (Audio_Level.Status = Humanize.Status.Ok
+         and then Audio_Level.Value = -6.0
+         and then Audio_Level.Unit
+           (1 .. Audio_Level.Unit_Length) = "db",
+         "parse audio level");
+      AUnit.Assertions.Assert
+        (Signal_Strength.Status = Humanize.Status.Ok
+         and then Signal_Strength.Value = -67.0
+         and then Signal_Strength.Unit
+           (1 .. Signal_Strength.Unit_Length) = "dbm",
+         "parse signal strength");
+      AUnit.Assertions.Assert
+        (Storage_Endurance.Status = Humanize.Status.Ok
+         and then Storage_Endurance.Unit
+           (1 .. Storage_Endurance.Unit_Length) = "tbw",
+         "parse storage endurance");
+      AUnit.Assertions.Assert
+        (Refresh_Rate.Status = Humanize.Status.Ok
+         and then Refresh_Rate.Unit
+           (1 .. Refresh_Rate.Unit_Length) = "hz refresh",
+         "parse refresh rate");
+      AUnit.Assertions.Assert
+        (Luminance.Status = Humanize.Status.Ok
+         and then Luminance.Unit (1 .. Luminance.Unit_Length) = "nits",
+         "parse luminance");
+      AUnit.Assertions.Assert
+        (Print_Resolution.Status = Humanize.Status.Ok
+         and then Print_Resolution.Unit
+           (1 .. Print_Resolution.Unit_Length) = "dpi",
+         "parse print resolution");
       AUnit.Assertions.Assert
         (Unit.Status = Humanize.Status.Ok
          and then Unit.Unit = Humanize.Units.Kilometer
@@ -2320,10 +4101,19 @@ package body Humanize.Tests.Parsing is
          and then Next_Fri.Value = Ref_Date + 4.0 * 86_400.0,
          "parse natural next weekday");
       AUnit.Assertions.Assert
+        (Friday_After_Next.Status = Humanize.Status.Ok
+         and then Friday_After_Next.Value = Ref_Date + 11.0 * 86_400.0,
+         "parse natural weekday after next");
+      AUnit.Assertions.Assert
         (Next_Fri_Afternoon.Status = Humanize.Status.Ok
          and then Next_Fri_Afternoon.Value =
            Ada.Calendar.Time_Of (2024, 1, 5, 13.0 * 3_600.0),
          "parse natural weekday with time-of-day");
+      AUnit.Assertions.Assert
+        (Next_Fri_At_1730.Status = Humanize.Status.Ok
+         and then Next_Fri_At_1730.Value =
+           Ada.Calendar.Time_Of (2024, 1, 5, 17.0 * 3_600.0 + 30.0 * 60.0),
+         "parse natural weekday with clock time");
       AUnit.Assertions.Assert
         (Tonight.Status = Humanize.Status.Ok
          and then Tonight.Value =
@@ -2352,9 +4142,65 @@ package body Humanize.Tests.Parsing is
          and then Scanned_Date.Consumed = 9,
          "scan natural date");
       AUnit.Assertions.Assert
+        (In_A_Couple_Of_Weeks.Status = Humanize.Status.Ok
+         and then In_A_Couple_Of_Weeks.Value =
+           Ada.Calendar.Time_Of (2024, 1, 15, 0.0),
+         "parse natural date couple of weeks");
+      AUnit.Assertions.Assert
+        (In_A_Fortnight.Status = Humanize.Status.Ok
+         and then In_A_Fortnight.Value =
+           Ada.Calendar.Time_Of (2024, 1, 15, 0.0),
+         "parse natural date fortnight");
+      AUnit.Assertions.Assert
+        (Fortnight_Ago.Status = Humanize.Status.Ok
+         and then Fortnight_Ago.Value =
+           Ada.Calendar.Time_Of (2023, 12, 18, 0.0),
+         "parse natural date fortnight ago");
+      AUnit.Assertions.Assert
+        (Tomorrow_At_5.Status = Humanize.Status.Ok
+         and then Tomorrow_At_5.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 17.0 * 3_600.0),
+         "parse natural date with clock time");
+      AUnit.Assertions.Assert
+        (Tomorrow_Around_Noon.Status = Humanize.Status.Ok
+         and then Tomorrow_Around_Noon.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 12.0 * 3_600.0),
+         "parse natural date around noon");
+      AUnit.Assertions.Assert
+        (End_Next_Business_Month.Status = Humanize.Status.Ok
+         and then End_Next_Business_Month.Value =
+           Ada.Calendar.Time_Of (2024, 2, 29, 0.0),
+         "parse end of next business month");
+      AUnit.Assertions.Assert
+        (Next_Month_Third.Status = Humanize.Status.Ok
+         and then Next_Month_Third.Value =
+           Ada.Calendar.Time_Of (2024, 2, 3, 0.0),
+         "parse next month ordinal date");
+      AUnit.Assertions.Assert
         (ISO_Date.Status = Humanize.Status.Ok
          and then ISO_Date.Value = Ada.Calendar.Time_Of (2024, 2, 29, 0.0),
          "parse ISO natural date");
+      AUnit.Assertions.Assert
+        (ISO_Ordinal_Date.Status = Humanize.Status.Ok
+         and then ISO_Ordinal_Date.Value =
+           Ada.Calendar.Time_Of (2024, 2, 29, 0.0),
+         "parse ISO ordinal date");
+      AUnit.Assertions.Assert
+        (ISO_Week_Date.Status = Humanize.Status.Ok
+         and then ISO_Week_Date.Value =
+           Ada.Calendar.Time_Of (2024, 2, 29, 0.0),
+         "parse ISO week date");
+      AUnit.Assertions.Assert
+        (ISO_Week_Start.Status = Humanize.Status.Ok
+         and then ISO_Week_Start.Value =
+           Ada.Calendar.Time_Of (2024, 1, 1, 0.0),
+         "parse ISO week start date");
+      AUnit.Assertions.Assert
+        (Scanned_ISO_Week.Status = Humanize.Status.Ok
+         and then Scanned_ISO_Week.Value =
+           Ada.Calendar.Time_Of (2024, 2, 29, 0.0)
+         and then Scanned_ISO_Week.Consumed = 10,
+         "scan ISO week date");
       AUnit.Assertions.Assert
         (Month_Name.Status = Humanize.Status.Ok
          and then Month_Name.Value = Ada.Calendar.Time_Of (2024, 2, 2, 0.0),
@@ -2380,6 +4226,10 @@ package body Humanize.Tests.Parsing is
          and then In_Weeks.Value = Ref_Date + 14.0 * 86_400.0,
          "parse relative weeks");
       AUnit.Assertions.Assert
+        (In_Few_Days.Status = Humanize.Status.Ok
+         and then In_Few_Days.Value = Ada.Calendar.Time_Of (2024, 1, 4, 0.0),
+         "parse fuzzy relative days");
+      AUnit.Assertions.Assert
         (Month_Ago.Status = Humanize.Status.Ok
          and then Month_Ago.Value = Ada.Calendar.Time_Of (2023, 12, 1, 0.0),
          "parse relative months ago");
@@ -2395,6 +4245,11 @@ package body Humanize.Tests.Parsing is
         (Two_Fridays.Status = Humanize.Status.Ok
          and then Two_Fridays.Value = Ref_Date + 11.0 * 86_400.0,
          "parse repeated weekday from now");
+      AUnit.Assertions.Assert
+        (Friday_Before_Next.Status = Humanize.Status.Ok
+         and then Friday_Before_Next.Value =
+           Ada.Calendar.Time_Of (2023, 12, 29, 0.0),
+         "parse weekday before next");
       AUnit.Assertions.Assert
         (End_Next_Month.Status = Humanize.Status.Ok
          and then End_Next_Month.Value =
@@ -2424,9 +4279,19 @@ package body Humanize.Tests.Parsing is
          and then Next_Business.Value = Ref_Date + 86_400.0,
          "parse next business day");
       AUnit.Assertions.Assert
+        (Next_Business_Friday.Status = Humanize.Status.Ok
+         and then Next_Business_Friday.Value =
+           Ada.Calendar.Time_Of (2024, 1, 5, 0.0),
+         "parse next business weekday");
+      AUnit.Assertions.Assert
         (Three_Business.Status = Humanize.Status.Ok
          and then Three_Business.Value = Ref_Date + 3.0 * 86_400.0,
          "parse business days from now");
+      AUnit.Assertions.Assert
+        (Several_Business.Status = Humanize.Status.Ok
+         and then Several_Business.Value =
+           Ada.Calendar.Time_Of (2024, 1, 10, 0.0),
+         "parse fuzzy business days from now");
       AUnit.Assertions.Assert
         (Before_Month_End.Status = Humanize.Status.Ok
          and then Before_Month_End.Value =
@@ -2485,6 +4350,13 @@ package body Humanize.Tests.Parsing is
          and then Week_32_Start.Value =
            Ada.Calendar.Time_Of (2024, 8, 5, 0.0),
          "parse week-number start");
+      AUnit.Assertions.Assert
+        (ISO_Week_Range.Status = Humanize.Status.Ok
+         and then ISO_Week_Range.Low =
+           Ada.Calendar.Time_Of (2024, 2, 26, 0.0)
+         and then ISO_Week_Range.High =
+           Ada.Calendar.Time_Of (2024, 3, 4, 0.0),
+         "parse ISO week date range");
       AUnit.Assertions.Assert
         (This_Week.Status = Humanize.Status.Ok
          and then This_Week.Low = Ref_Date
@@ -2561,6 +4433,13 @@ package body Humanize.Tests.Parsing is
            Ada.Calendar.Time_Of (2024, 7, 1, 0.0),
          "parse late quarter range");
       AUnit.Assertions.Assert
+        (Mid_Next_Quarter.Status = Humanize.Status.Ok
+         and then Mid_Next_Quarter.Low =
+           Ada.Calendar.Time_Of (2024, 5, 2, 0.0)
+         and then Mid_Next_Quarter.High =
+           Ada.Calendar.Time_Of (2024, 6, 1, 0.0),
+         "parse mid next quarter range");
+      AUnit.Assertions.Assert
         (First_Half_2026.Status = Humanize.Status.Ok
          and then First_Half_2026.Low =
            Ada.Calendar.Time_Of (2026, 1, 1, 0.0)
@@ -2592,6 +4471,13 @@ package body Humanize.Tests.Parsing is
          and then Last_Weekend.Low = Ada.Calendar.Time_Of (2023, 12, 30, 0.0)
          and then Last_Weekend.High = Ada.Calendar.Time_Of (2024, 1, 1, 0.0),
          "parse last weekend range");
+      AUnit.Assertions.Assert
+        (Next_Business_Week.Status = Humanize.Status.Ok
+         and then Next_Business_Week.Low =
+           Ada.Calendar.Time_Of (2024, 1, 8, 0.0)
+         and then Next_Business_Week.High =
+           Ada.Calendar.Time_Of (2024, 1, 13, 0.0),
+         "parse next business week range");
       AUnit.Assertions.Assert
         (Scanned_Weekend.Status = Humanize.Status.Ok
          and then Scanned_Weekend.Low = Ada.Calendar.Time_Of (2024, 1, 6, 0.0)
@@ -2685,6 +4571,10 @@ package body Humanize.Tests.Parsing is
       Register_Routine (T, Test_Compact'Access, "parse compact numbers");
       Register_Routine (T, Test_Round_Trip_Parsers'Access,
         "parse formatter round trips");
+      Register_Routine (T, Test_Localized_Render_Parse_Roundtrips'Access,
+        "parse localized formatter round trips");
+      Register_Routine (T, Test_Localized_Semantic_Parse_Roundtrips'Access,
+        "parse localized semantic round trips");
       Register_Routine (T, Test_Diagnostics'Access, "parser diagnostics");
       Register_Routine (T, Test_Frequency_Rate_List'Access,
         "parse frequencies rates and lists");

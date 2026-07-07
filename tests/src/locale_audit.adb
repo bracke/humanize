@@ -27,8 +27,9 @@ procedure Locale_Audit is
    Errors  : Natural := 0;
 
    type Locale_Code is
-     (En, Da, De, Fr, Es, It, Pt, Nl, Sv, No, Nb, Fi, Pl, Cs, Tr, Ru, Uk,
-      Ja, Ko, Zh, Ar, Hi);
+     (En, Da, De, Fr, Es, It, Pt, Nl, Sv, No, Nb, Fi, Pl, Cs, Tr,
+      Ro, Lt, Sl, Id, Ms, Eo, Vi, Sw, Af, Hu, Sk,
+      Ru, Uk, Ja, Ko, Zh, Ar, Hi);
 
    type Sample_Label is
      (Duration_Second, Duration_Minute, Duration_Hour, Duration_Day,
@@ -37,8 +38,17 @@ procedure Locale_Audit is
       Rate_Second, Rate_Minute, Rate_Hour, Rate_Day, Rate_Week,
       Rate_Hour_Less, Unit_Meter, Unit_Kilometer, Unit_Centimeter,
       Unit_Millimeter, Unit_Gram, Unit_Kilogram, Unit_Milligram, Unit_Liter,
-      Unit_Milliliter, List, Relative_Past, Relative_Past_Many,
-      Relative_Future_Many, Natural_Today, Natural_Tomorrow);
+      Unit_Milliliter, Unit_Celsius, Unit_Square_Meter,
+      Unit_Kilometer_Per_Hour, Unit_Teaspoon, Unit_Fahrenheit, Unit_Hectare,
+      Unit_Meter_Per_Second, Unit_Pascal, Unit_Kilopascal, Unit_Joule,
+      Unit_Kilojoule, Unit_Watt, Unit_Kilowatt, Unit_Hertz, Unit_Kilohertz,
+      Unit_Degree, Unit_Mile, Unit_Yard, Unit_Foot, Unit_Inch,
+      Unit_Nautical_Mile, Unit_Acre, Unit_Square_Kilometer, Unit_Cubic_Meter,
+      Unit_Tablespoon, Unit_Cup, Unit_Gallon, Unit_Pound, Unit_Ounce,
+      Unit_Stone, Unit_Tonne, Unit_Ton, List, Relative_Past,
+      Relative_Past_Many, Relative_Future_Many, Natural_Today,
+      Natural_Tomorrow, Schedule_Weekday, Schedule_Monthly,
+      Spellout_Ordinal);
 
    type Sample_Texts is array (Sample_Label) of Unbounded_String;
 
@@ -60,6 +70,17 @@ procedure Locale_Audit is
          when Pl => return "pl";
          when Cs => return "cs";
          when Tr => return "tr";
+         when Ro => return "ro";
+         when Lt => return "lt";
+         when Sl => return "sl";
+         when Id => return "id";
+         when Ms => return "ms";
+         when Eo => return "eo";
+         when Vi => return "vi";
+         when Sw => return "sw";
+         when Af => return "af";
+         when Hu => return "hu";
+         when Sk => return "sk";
          when Ru => return "ru";
          when Uk => return "uk";
          when Ja => return "ja";
@@ -100,12 +121,47 @@ procedure Locale_Audit is
          when Unit_Milligram => return "unit-milligram";
          when Unit_Liter => return "unit-liter";
          when Unit_Milliliter => return "unit-milliliter";
+         when Unit_Celsius => return "unit-celsius";
+         when Unit_Square_Meter => return "unit-square-meter";
+         when Unit_Kilometer_Per_Hour => return "unit-kilometer-per-hour";
+         when Unit_Teaspoon => return "unit-teaspoon";
+         when Unit_Fahrenheit => return "unit-fahrenheit";
+         when Unit_Hectare => return "unit-hectare";
+         when Unit_Meter_Per_Second => return "unit-meter-per-second";
+         when Unit_Pascal => return "unit-pascal";
+         when Unit_Kilopascal => return "unit-kilopascal";
+         when Unit_Joule => return "unit-joule";
+         when Unit_Kilojoule => return "unit-kilojoule";
+         when Unit_Watt => return "unit-watt";
+         when Unit_Kilowatt => return "unit-kilowatt";
+         when Unit_Hertz => return "unit-hertz";
+         when Unit_Kilohertz => return "unit-kilohertz";
+         when Unit_Degree => return "unit-degree";
+         when Unit_Mile => return "unit-mile";
+         when Unit_Yard => return "unit-yard";
+         when Unit_Foot => return "unit-foot";
+         when Unit_Inch => return "unit-inch";
+         when Unit_Nautical_Mile => return "unit-nautical-mile";
+         when Unit_Acre => return "unit-acre";
+         when Unit_Square_Kilometer => return "unit-square-kilometer";
+         when Unit_Cubic_Meter => return "unit-cubic-meter";
+         when Unit_Tablespoon => return "unit-tablespoon";
+         when Unit_Cup => return "unit-cup";
+         when Unit_Gallon => return "unit-gallon";
+         when Unit_Pound => return "unit-pound";
+         when Unit_Ounce => return "unit-ounce";
+         when Unit_Stone => return "unit-stone";
+         when Unit_Tonne => return "unit-tonne";
+         when Unit_Ton => return "unit-ton";
          when List => return "list";
          when Relative_Past => return "relative-past";
          when Relative_Past_Many => return "relative-past-many";
          when Relative_Future_Many => return "relative-future-many";
          when Natural_Today => return "natural-today";
          when Natural_Tomorrow => return "natural-tomorrow";
+         when Schedule_Weekday => return "schedule-weekday";
+         when Schedule_Monthly => return "schedule-monthly";
+         when Spellout_Ordinal => return "spellout-ordinal";
       end case;
    end Sample_Name;
 
@@ -160,6 +216,19 @@ procedure Locale_Audit is
 
       return False;
    end Has_Non_ASCII;
+
+   function Has_ASCII_Letter (Text : String) return Boolean is
+   begin
+      for C of Text loop
+         if (C >= 'A' and then C <= 'Z')
+           or else (C >= 'a' and then C <= 'z')
+         then
+            return True;
+         end if;
+      end loop;
+
+      return False;
+   end Has_ASCII_Letter;
 
    procedure Error
      (Locale : String;
@@ -305,6 +374,113 @@ procedure Locale_Audit is
         (Locale, Unit_Milliliter,
          Humanize.Units.Format (Context, 5, Humanize.Units.Milliliter), Texts);
       Audit_Result
+        (Locale, Unit_Celsius,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Celsius), Texts);
+      Audit_Result
+        (Locale, Unit_Square_Meter,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Square_Meter),
+         Texts);
+      Audit_Result
+        (Locale, Unit_Kilometer_Per_Hour,
+         Humanize.Units.Format
+           (Context, 5, Humanize.Units.Kilometer_Per_Hour),
+         Texts);
+      Audit_Result
+        (Locale, Unit_Teaspoon,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Teaspoon), Texts);
+      Audit_Result
+        (Locale, Unit_Fahrenheit,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Fahrenheit),
+         Texts);
+      Audit_Result
+        (Locale, Unit_Hectare,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Hectare), Texts);
+      Audit_Result
+        (Locale, Unit_Meter_Per_Second,
+         Humanize.Units.Format
+           (Context, 5, Humanize.Units.Meter_Per_Second),
+         Texts);
+      Audit_Result
+        (Locale, Unit_Pascal,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Pascal), Texts);
+      Audit_Result
+        (Locale, Unit_Kilopascal,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Kilopascal),
+         Texts);
+      Audit_Result
+        (Locale, Unit_Joule,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Joule), Texts);
+      Audit_Result
+        (Locale, Unit_Kilojoule,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Kilojoule), Texts);
+      Audit_Result
+        (Locale, Unit_Watt,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Watt), Texts);
+      Audit_Result
+        (Locale, Unit_Kilowatt,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Kilowatt), Texts);
+      Audit_Result
+        (Locale, Unit_Hertz,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Hertz), Texts);
+      Audit_Result
+        (Locale, Unit_Kilohertz,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Kilohertz), Texts);
+      Audit_Result
+        (Locale, Unit_Degree,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Degree), Texts);
+      Audit_Result
+        (Locale, Unit_Mile,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Mile), Texts);
+      Audit_Result
+        (Locale, Unit_Yard,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Yard), Texts);
+      Audit_Result
+        (Locale, Unit_Foot,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Foot), Texts);
+      Audit_Result
+        (Locale, Unit_Inch,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Inch), Texts);
+      Audit_Result
+        (Locale, Unit_Nautical_Mile,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Nautical_Mile),
+         Texts);
+      Audit_Result
+        (Locale, Unit_Acre,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Acre), Texts);
+      Audit_Result
+        (Locale, Unit_Square_Kilometer,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Square_Kilometer),
+         Texts);
+      Audit_Result
+        (Locale, Unit_Cubic_Meter,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Cubic_Meter),
+         Texts);
+      Audit_Result
+        (Locale, Unit_Tablespoon,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Tablespoon),
+         Texts);
+      Audit_Result
+        (Locale, Unit_Cup,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Cup), Texts);
+      Audit_Result
+        (Locale, Unit_Gallon,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Gallon), Texts);
+      Audit_Result
+        (Locale, Unit_Pound,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Pound), Texts);
+      Audit_Result
+        (Locale, Unit_Ounce,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Ounce), Texts);
+      Audit_Result
+        (Locale, Unit_Stone,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Stone), Texts);
+      Audit_Result
+        (Locale, Unit_Tonne,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Tonne), Texts);
+      Audit_Result
+        (Locale, Unit_Ton,
+         Humanize.Units.Format (Context, 5, Humanize.Units.Ton), Texts);
+      Audit_Result
         (Locale, List,
          Humanize.Lists.Format
            (Context,
@@ -333,6 +509,29 @@ procedure Locale_Audit is
       Audit_Result
         (Locale, Natural_Tomorrow,
          Humanize.Datetimes.Natural_Day (Context, Tomorrow, Today), Texts);
+      Audit_Result
+        (Locale, Schedule_Weekday,
+         Humanize.Durations.Schedule
+           (Context,
+            (Kind        => Humanize.Durations.Schedule_Weekday_Set,
+             Every       => 1,
+             Unit        => Humanize.Durations.Every_Week,
+             Weekday     => 0,
+             Weekdays    => Humanize.Durations.Weekdays,
+             Ordinal     => 0,
+             Has_Time    => True,
+             Hour        => 9,
+             Minute      => 0,
+             Use_12_Hour => False)),
+         Texts);
+      Audit_Result
+        (Locale, Schedule_Monthly,
+         Humanize.Durations.Cron_Schedule (Context, "30", "8", "15", "*", "*"),
+         Texts);
+      Audit_Result
+        (Locale, Spellout_Ordinal,
+         Humanize.Numbers.Ordinal_Words (Context, 30),
+         Texts);
    end Audit_Locale;
 
    procedure Print_Header is
@@ -562,9 +761,257 @@ procedure Locale_Audit is
       Check (Unit_Centimeter);
       Check (Unit_Millimeter);
       Check (Unit_Gram);
+      Check (Unit_Celsius);
+      Check (Unit_Square_Meter);
+      Check (Unit_Kilometer_Per_Hour);
+      Check (Unit_Teaspoon);
+      Check (Unit_Fahrenheit);
+      Check (Unit_Hectare);
+      Check (Unit_Meter_Per_Second);
+      Check (Unit_Pascal);
+      Check (Unit_Kilopascal);
+      Check (Unit_Joule);
+      Check (Unit_Kilojoule);
+      Check (Unit_Watt);
+      Check (Unit_Kilowatt);
+      Check (Unit_Hertz);
+      Check (Unit_Kilohertz);
+      Check (Unit_Degree);
+      Check (Unit_Mile);
+      Check (Unit_Yard);
+      Check (Unit_Foot);
+      Check (Unit_Inch);
+      Check (Unit_Nautical_Mile);
+      Check (Unit_Acre);
+      Check (Unit_Square_Kilometer);
+      Check (Unit_Cubic_Meter);
+      Check (Unit_Tablespoon);
+      Check (Unit_Cup);
+      Check (Unit_Gallon);
+      Check (Unit_Pound);
+      Check (Unit_Ounce);
+      Check (Unit_Stone);
+      Check (Unit_Tonne);
+      Check (Unit_Ton);
       Check (Relative_Past);
       Check (Natural_Today);
    end Audit_Non_ASCII_Core;
+
+   procedure Audit_Native_Script_No_Latin
+     (Locale : String;
+      Texts  : Sample_Texts)
+   is
+      procedure Check (Label : Sample_Label) is
+         Text : constant String := To_String (Texts (Label));
+      begin
+         if Has_ASCII_Letter (Text) then
+            Error
+              (Locale, Label, Text,
+               "expected reviewed native-script wording without Latin fallback");
+         end if;
+      end Check;
+   begin
+      Check (Duration_Second);
+      Check (Duration_Minute);
+      Check (Duration_Hour);
+      Check (Duration_Day);
+      Check (Duration_Week);
+      Check (Duration_Month);
+      Check (Duration_Year);
+      Check (Compact_Thousand);
+      Check (Compact_Million);
+      Check (Frequency_Count);
+      Check (Rate_Second);
+      Check (Rate_Minute);
+      Check (Rate_Hour);
+      Check (Rate_Day);
+      Check (Rate_Week);
+      Check (Rate_Hour_Less);
+      Check (Unit_Meter);
+      Check (Unit_Kilometer);
+      Check (Unit_Centimeter);
+      Check (Unit_Millimeter);
+      Check (Unit_Gram);
+      Check (Unit_Kilogram);
+      Check (Unit_Milligram);
+      Check (Unit_Liter);
+      Check (Unit_Milliliter);
+      Check (Unit_Celsius);
+      Check (Unit_Square_Meter);
+      Check (Unit_Kilometer_Per_Hour);
+      Check (Unit_Teaspoon);
+      Check (Unit_Fahrenheit);
+      Check (Unit_Hectare);
+      Check (Unit_Meter_Per_Second);
+      Check (Unit_Pascal);
+      Check (Unit_Kilopascal);
+      Check (Unit_Joule);
+      Check (Unit_Kilojoule);
+      Check (Unit_Watt);
+      Check (Unit_Kilowatt);
+      Check (Unit_Hertz);
+      Check (Unit_Kilohertz);
+      Check (Unit_Degree);
+      Check (Unit_Mile);
+      Check (Unit_Yard);
+      Check (Unit_Foot);
+      Check (Unit_Inch);
+      Check (Unit_Nautical_Mile);
+      Check (Unit_Acre);
+      Check (Unit_Square_Kilometer);
+      Check (Unit_Cubic_Meter);
+      Check (Unit_Tablespoon);
+      Check (Unit_Cup);
+      Check (Unit_Gallon);
+      Check (Unit_Pound);
+      Check (Unit_Ounce);
+      Check (Unit_Stone);
+      Check (Unit_Tonne);
+      Check (Unit_Ton);
+      Check (Relative_Past);
+      Check (Relative_Past_Many);
+      Check (Relative_Future_Many);
+      Check (Natural_Today);
+      Check (Natural_Tomorrow);
+   end Audit_Native_Script_No_Latin;
+
+   procedure Audit_Reviewed_Latin_Upgrades
+     (Locale : String;
+      Texts  : Sample_Texts)
+   is
+      procedure Check
+        (Label    : Sample_Label;
+         Expected : String)
+      is
+      begin
+         if To_String (Texts (Label)) /= Expected then
+            Error
+              (Locale, Label, To_String (Texts (Label)),
+               "expected reviewed native locale wording");
+         end if;
+      end Check;
+   begin
+      if Locale = "da" then
+         Check (Unit_Nautical_Mile, B ("352073C3B86D696C"));
+      elsif Locale = "de" then
+         Check (Unit_Foot, B ("35204675C39F"));
+         Check (Unit_Teaspoon, B ("35205465656CC3B66666656C"));
+         Check (Unit_Tablespoon, B ("35204573736CC3B66666656C"));
+      elsif Locale = "fr" then
+         Check
+           (Unit_Celsius,
+            B ("352064656772C3A9732043656C73697573"));
+         Check
+           (Unit_Square_Meter,
+            B ("35206DC3A8747265732063617272C3A973"));
+         Check
+           (Unit_Kilometer_Per_Hour,
+            B ("35206B696C6F6DC3A87472657320706172206865757265"));
+         Check
+           (Unit_Teaspoon,
+            B ("35206375696C6CC3A872657320C3A020636166C3A9"));
+         Check
+           (Unit_Fahrenheit,
+            B ("352064656772C3A9732046616872656E68656974"));
+         Check
+           (Unit_Meter_Per_Second,
+            B ("35206DC3A87472657320706172207365636F6E6465"));
+         Check (Unit_Degree, B ("352064656772C3A973"));
+         Check
+           (Unit_Square_Kilometer,
+            B ("35206B696C6F6DC3A8747265732063617272C3A973"));
+         Check
+           (Unit_Cubic_Meter,
+            B ("35206DC3A874726573206375626573"));
+         Check
+           (Unit_Tablespoon,
+            B ("35206375696C6CC3A872657320C3A020736F757065"));
+      elsif Locale = "es" then
+         Check
+           (Unit_Kilometer_Per_Hour,
+            B ("35206B696CC3B36D6574726F7320706F7220686F7261"));
+         Check (Unit_Hectare, B ("352068656374C3A172656173"));
+         Check
+           (Unit_Nautical_Mile,
+            B ("35206D696C6C6173206EC3A1757469636173"));
+         Check
+           (Unit_Square_Kilometer,
+            B ("35206B696CC3B36D6574726F7320637561647261646F73"));
+         Check
+           (Unit_Cubic_Meter,
+            B ("35206D6574726F732063C3BA6269636F73"));
+      elsif Locale = "pt" then
+         Check
+           (Unit_Kilometer_Per_Hour,
+            B ("35207175696CC3B46D6574726F7320706F7220686F7261"));
+         Check
+           (Unit_Teaspoon,
+            B ("3520636F6C6865726573206465206368C3A1"));
+         Check (Unit_Foot, B ("352070C3A973"));
+         Check
+           (Unit_Nautical_Mile,
+            B ("35206D696C686173206EC3A1757469636173"));
+         Check
+           (Unit_Square_Kilometer,
+            B ("35207175696CC3B46D6574726F7320717561647261646F73"));
+         Check
+           (Unit_Cubic_Meter,
+            B ("35206D6574726F732063C3BA6269636F73"));
+         Check (Unit_Cup, B ("352078C3AD6361726173"));
+         Check (Unit_Gallon, B ("352067616CC3B56573"));
+         Check (Unit_Ounce, B ("35206F6EC3A76173"));
+      elsif Locale = "sv" then
+         Check (Unit_Nautical_Mile, B ("3520736AC3B66D696C"));
+      elsif Locale = "fi" then
+         Check (Unit_Ton, B ("35206C7968797474C3A420746F6E6E6961"));
+      elsif Locale = "pl" then
+         Check
+           (Unit_Kilometer_Per_Hour,
+            B ("35206B696C6F6D65747279206E6120676F647A696EC499"));
+         Check
+           (Unit_Meter_Per_Second,
+            B ("35206D65747279206E612073656B756E64C499"));
+         Check
+           (Unit_Cubic_Meter,
+            B ("35206D6574727920737A65C59B6369656E6E65"));
+         Check (Unit_Teaspoon, B ("3520C58279C5BC65637A6B69"));
+         Check
+           (Unit_Tablespoon,
+            B ("3520C58279C5BC6B692073746FC5826F7765"));
+         Check (Unit_Cup, B ("352066696C69C5BC616E6B69"));
+         Check (Unit_Ton, B ("3520746F6E79206B72C3B3746B6965"));
+      elsif Locale = "tr" then
+         Check (Unit_Cubic_Meter, B ("35206D657472656BC3BC70"));
+         Check (Unit_Ton, B ("35206BC4B1736120746F6E"));
+      end if;
+   end Audit_Reviewed_Latin_Upgrades;
+
+   procedure Audit_Deterministic_Schedule_Spellout
+     (Locale : String;
+      Texts  : Sample_Texts)
+   is
+      Weekday : constant String := To_String (Texts (Schedule_Weekday));
+      Monthly : constant String := To_String (Texts (Schedule_Monthly));
+      Ordinal : constant String := To_String (Texts (Spellout_Ordinal));
+   begin
+      if Locale /= "en" then
+         if Contains (Weekday, "every weekday") then
+            Error
+              (Locale, Schedule_Weekday, Weekday,
+               "expected localized schedule weekday wording");
+         end if;
+         if Contains (Monthly, "day 15 of each month") then
+            Error
+              (Locale, Schedule_Monthly, Monthly,
+               "expected localized cron monthly wording");
+         end if;
+         if Ordinal = "thirtieth" then
+            Error
+              (Locale, Spellout_Ordinal, Ordinal,
+               "expected localized ordinal spellout wording");
+         end if;
+      end if;
+   end Audit_Deterministic_Schedule_Spellout;
 
    Load_Result : I18N.Runtime.Load_Result;
 begin
@@ -577,6 +1024,7 @@ begin
          Texts  : Sample_Texts := [others => Null_Unbounded_String];
       begin
          Audit_Locale (Locale, Texts);
+         Audit_Deterministic_Schedule_Spellout (Locale, Texts);
          case Code is
             when Da =>
                Audit_Generated_Core
@@ -699,6 +1147,7 @@ begin
                   "za 5 hodin");
             when Ru =>
                Audit_Non_ASCII_Core (Locale, Texts);
+               Audit_Native_Script_No_Latin (Locale, Texts);
                Audit_Slavic_Core
                  (Locale, Texts,
                   B ("3220D0BCD0B8D0BDD183D182D18B"),
@@ -719,6 +1168,7 @@ begin
                   B ("D187D0B5D180D0B5D0B7203520D187D0B0D181D0BED0B2"));
             when Uk =>
                Audit_Non_ASCII_Core (Locale, Texts);
+               Audit_Native_Script_No_Latin (Locale, Texts);
                Audit_Slavic_Core
                  (Locale, Texts,
                   B ("3220D185D0B2D0B8D0BBD0B8D0BDD0B8"),
@@ -773,6 +1223,7 @@ begin
                     B ("3520EBB080EBA6ACEBA6ACED84B0");
                begin
                   Audit_Non_ASCII_Core (Locale, Texts);
+                  Audit_Native_Script_No_Latin (Locale, Texts);
                   Audit_Generated_Core
                     (Locale, Texts, B ("3220EBB684"), B ("3220EC9DBC"),
                      B ("3220ECA3BC"), B ("3220EAB09CEC9B94"),
@@ -810,6 +1261,7 @@ begin
                     B ("3520E3839FE383AAE383AAE38383E38388E383AB");
                begin
                   Audit_Non_ASCII_Core (Locale, Texts);
+                  Audit_Native_Script_No_Latin (Locale, Texts);
                   Audit_Generated_Core
                     (Locale, Texts, B ("3220E58886"), B ("3220E697A5"),
                      B ("3220E980B1"), B ("3220E3818BE69C88"),
@@ -827,6 +1279,7 @@ begin
                   B ("E6AF8EE69982203120E59B9EE69CAAE6BA80"));
             when Zh =>
                Audit_Non_ASCII_Core (Locale, Texts);
+               Audit_Native_Script_No_Latin (Locale, Texts);
                Audit_Generated_Core
                  (Locale, Texts, B ("3220E58886E9929F"),
                   B ("3220E5A4A9"), B ("3220E591A8"),
@@ -905,6 +1358,7 @@ begin
                     & B ("E0A4BEE0A4B9");
                begin
                   Audit_Non_ASCII_Core (Locale, Texts);
+                  Audit_Native_Script_No_Latin (Locale, Texts);
                   Audit_Generated_Core
                     (Locale, Texts, Core_Minute, Core_Day, Core_Week,
                      Core_Month, Core_Year, Kilometer, Centimeter,
@@ -958,6 +1412,7 @@ begin
                  B ("D9A520D985D984D98AD984D8AAD8B1D8A7D8AA");
             begin
                Audit_Non_ASCII_Core (Locale, Texts);
+               Audit_Native_Script_No_Latin (Locale, Texts);
                Audit_Generated_Core
                  (Locale, Texts, Core_Minute, Core_Day, Core_Week,
                   Core_Month, Core_Year, Kilometer, Centimeter, Millimeter,
@@ -967,6 +1422,7 @@ begin
          if Code = Nl then
             Audit_Dutch_Core (Texts);
          end if;
+         Audit_Reviewed_Latin_Upgrades (Locale, Texts);
          Print_Row (Locale, Texts);
       end;
    end loop;
