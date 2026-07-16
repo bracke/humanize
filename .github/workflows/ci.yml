@@ -26,14 +26,18 @@ jobs:
           path: project_tools
       - name: Set up Alire
         uses: alire-project/setup-alire@v5
-      - name: Install Ada toolchain
+        with:
+          toolchain: gnat_native=15.2.1 gprbuild
+      - name: Install GNATdoc
+        # The release checker runs "alr exec -- gnatdoc". gnatdoc is a regular Alire
+        # crate, not a toolchain component, and apt has no reliable gnatdoc package --
+        # the previous "apt-get install gnatdoc" is what failed here.
         run: |
-          sudo apt-get update
-          sudo apt-get install -y gnat gprbuild gnatdoc
-          sudo apt-get install -y libaunit-dev || sudo apt-get install -y libaunit22-dev || sudo apt-get install -y libaunit24-dev
+          alr install gnatdoc
+          echo "$HOME/.alire/bin" >> "$GITHUB_PATH"
       - name: Build release checker
         working-directory: humanize/check_humanize
-        run: alr build
+        run: alr --non-interactive build
       - name: Run release checker
         working-directory: humanize/check_humanize
         run: ./bin/check_humanize
@@ -58,14 +62,15 @@ jobs:
           path: project_tools
       - name: Set up Alire
         uses: alire-project/setup-alire@v5
-      - name: Install Ada toolchain
+        with:
+          toolchain: gnat_native=15.2.1 gprbuild
+      - name: Install GNATdoc
         run: |
-          sudo apt-get update
-          sudo apt-get install -y gnat gprbuild
-          sudo apt-get install -y libaunit-dev || sudo apt-get install -y libaunit22-dev || sudo apt-get install -y libaunit24-dev
+          alr install gnatdoc
+          echo "$HOME/.alire/bin" >> "$GITHUB_PATH"
       - name: Build release checker
         working-directory: humanize/check_humanize
-        run: alr build
+        run: alr --non-interactive build
       - name: Verify staged pin-free release tree
         working-directory: humanize/check_humanize
         run: ./bin/check_humanize --staged-release-only
