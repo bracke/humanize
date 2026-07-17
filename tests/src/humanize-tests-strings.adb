@@ -11,6 +11,7 @@ package body Humanize.Tests.Strings is
    use Ada.Strings.Unbounded;
    use type Humanize.Strings.File_Mode_Kind;
    use type Humanize.Strings.Inflection_Source;
+   use type Humanize.Strings.Text_Change_Kind;
 
    procedure Check
      (Result   : Text_Result;
@@ -1330,6 +1331,12 @@ package body Humanize.Tests.Strings is
          Red_Start & "abcd" & Reset & ASCII.LF & "ef",
          "ANSI display-width wrap ignores escape width");
       Check
+        (Humanize.Strings.Wrap_ANSI_Display_Width_Styled
+           (Red_Start & "abcd ef" & Reset, 4),
+         Red_Start & "abcd" & ASCII.ESC & "[0m" & ASCII.LF
+         & Red_Start & "ef" & Reset,
+         "ANSI styled wrap reopens active style");
+      Check
         (Humanize.Strings.Key_Value_Line ("Status", "ok"),
          "Status: ok",
          "key value line");
@@ -1457,6 +1464,219 @@ package body Humanize.Tests.Strings is
       AUnit.Assertions.Assert
         (Code = Ok and then Buffer (1 .. Written) = "alpha...",
          "grapheme word truncate into");
+
+      Check
+        (Humanize.Strings.Slug
+           ("M" & Character'Val (16#C3#) & Character'Val (16#BC#)
+            & "nchen API"),
+         "munchen-api", "slug label");
+      Check
+        (Humanize.Strings.Safe_Email_Label ("ada@example.com"),
+         "email at example.com", "safe email label");
+      Check
+        (Humanize.Strings.Safe_Phone_Label ("+1 (555) 123-9876"),
+         "phone ending in 9876", "safe phone label");
+      Check
+        (Humanize.Strings.Safe_Handle_Label ("@adalovelace"),
+         "handle @a***e", "safe handle label");
+      Check
+        (Humanize.Strings.Code_Symbol_Label ("Humanize.Strings.Slug"),
+         "code symbol humanize strings slug", "code symbol label");
+      Check
+        (Humanize.Strings.Source_Location_Label ("src/humanize.adb", 42, 7),
+         "humanize.adb:42:7", "source location label");
+      Check
+        (Humanize.Strings.Transliteration_Coverage_Label
+           (Character'Val (16#CE#) & Character'Val (16#91#)
+            & Character'Val (16#CE#) & Character'Val (16#B8#)),
+         "3 ASCII characters from 2 input characters",
+         "transliteration coverage label");
+      Check
+        (Humanize.Strings.Text_Boundary_Summary_Label ("One. Two."),
+         "9 graphemes, 2 words, 2 sentences, 1 paragraphs, width 9",
+         "text boundary summary label");
+      Check
+        (Humanize.Strings.Terminal_Paragraph
+           ("alpha beta gamma", 10, "> ", "  "),
+         "> alpha" & ASCII.LF & "  beta" & ASCII.LF & "  gamma",
+         "terminal paragraph label");
+      Check
+        (Humanize.Strings.Terminal_Bullet_List
+           ([To_Unbounded_String ("alpha beta"),
+             To_Unbounded_String ("gamma")],
+            10),
+         "- alpha" & ASCII.LF & "  beta" & ASCII.LF & "- gamma",
+         "terminal bullet list label");
+      Check
+        (Humanize.Strings.Text_Metadata_Label ("alpha"),
+         "text metadata: graphemes=5 words=1 display-width=5 ansi-width=5",
+         "text metadata label");
+      Check
+        (Humanize.Strings.Terminal_Section
+           ("Summary", "alpha beta gamma",
+            (Width => 10, Prefix => ' ', Continuation => ' ',
+             Bullet => '-', Mode => Humanize.Strings.Terminal_Detailed,
+             Use_Color => False)),
+         "Summary" & ASCII.LF & "alpha" & ASCII.LF & "  beta"
+         & ASCII.LF & "  gamma",
+         "terminal section label");
+      Check
+        (Humanize.Strings.Terminal_Key_Value_Block
+           ([To_Unbounded_String ("status")],
+            [To_Unbounded_String ("ready now")],
+            (Width => 12, Prefix => ' ', Continuation => ' ',
+             Bullet => '-', Mode => Humanize.Strings.Terminal_Detailed,
+             Use_Color => False)),
+         "status: ready" & ASCII.LF & "  now",
+         "terminal key value block");
+      Check
+        (Humanize.Strings.Terminal_Status_Block
+           ("ready", "all checks passed",
+            (Width => 12, Prefix => '>', Continuation => ' ',
+             Bullet => '-', Mode => Humanize.Strings.Terminal_Detailed,
+             Use_Color => False)),
+         "> ready" & ASCII.LF & "  all checks" & ASCII.LF & "  passed",
+         "terminal status block");
+      Check
+        (Humanize.Strings.Prose_List
+           ([To_Unbounded_String ("alpha"),
+             To_Unbounded_String ("beta"),
+             To_Unbounded_String ("gamma")]),
+         "alpha, beta, and gamma",
+         "prose list label");
+      Check
+        (Humanize.Strings.Prose_List
+           ([To_Unbounded_String ("alpha"),
+             To_Unbounded_String (""),
+             To_Unbounded_String ("gamma")],
+            (Conjunction => 'o', Oxford_Comma => False, Empty_Text => '-')),
+         "alpha or gamma",
+         "prose list options");
+      Check
+        (Humanize.Strings.Sentence_From_Parts
+           ([To_Unbounded_String ("sync completed"),
+             To_Unbounded_String ("2 warnings"),
+             To_Unbounded_String ("")]),
+         "Sync completed; 2 warnings.",
+         "sentence from parts");
+      Check
+        (Humanize.Strings.Generic_Range_Label
+           ("10", "20",
+            (Low_Boundary => Humanize.Strings.Inclusive_Boundary,
+             High_Boundary => Humanize.Strings.Exclusive_Boundary,
+             Separator => '-', Unit => "ms              ",
+             Unit_Length => 2)),
+         "10 - 20 ms (inclusive low, exclusive high)",
+         "generic range label");
+      Check
+        (Humanize.Strings.Generic_Range_Label
+           ("", "5",
+            (Low_Boundary => Humanize.Strings.Open_Boundary,
+             High_Boundary => Humanize.Strings.Inclusive_Boundary,
+             Separator => '-', Unit => [others => ' '], Unit_Length => 0)),
+         "up to 5",
+         "open generic range label");
+      Check
+        (Humanize.Strings.Uncertainty_Label ("12.5", "0.2", "ms"),
+         "12.5 +/- 0.2 ms",
+         "uncertainty label");
+      Check
+        (Humanize.Strings.Text_Change_Label
+           ("alpha beta gamma", "alpha beta gamma delta"),
+         "text change: minor edit, 3 old words, 4 new words, 1 changed word",
+         "text change label");
+      Check
+        (Humanize.Strings.Text_Change_Label
+           ("Alpha beta.", "alpha beta"),
+         "text change: minor edit, 2 old words, 2 new words, "
+         & "no changed words, punctuation-only",
+         "punctuation-only text change label");
+      declare
+         Meta : constant Humanize.Strings.Text_Change_Metadata :=
+           Humanize.Strings.Text_Change_Metadata_For
+             ("alpha  beta", "alpha beta");
+      begin
+         AUnit.Assertions.Assert
+           (Meta.Kind = Humanize.Strings.Text_Whitespace_Only
+            and then Meta.Changed_Words = 0,
+            "text change metadata whitespace");
+      end;
+      declare
+         Address : Humanize.Strings.Address_Fields;
+      begin
+         Address.Name (1 .. 3) := "Ada";
+         Address.Name_Length := 3;
+         Address.Street (1 .. 11) := "1 Logic Way";
+         Address.Street_Length := 11;
+         Address.City (1 .. 6) := "London";
+         Address.City_Length := 6;
+         Address.Postal_Code (1 .. 6) := "SW1A 1";
+         Address.Postal_Length := 6;
+         Address.Country (1 .. 2) := "UK";
+         Address.Country_Length := 2;
+         Check
+           (Humanize.Strings.Address_Label (Address),
+            "Ada, 1 Logic Way, London SW1A 1, UK",
+            "address label");
+         Check
+           (Humanize.Strings.Address_Metadata_Label (Address),
+            "address metadata: 5 fields present, 1 field missing",
+            "address metadata label");
+         Check
+           (Humanize.Strings.Privacy_Address_Label (Address),
+            "address near London, UK",
+            "privacy address label");
+      end;
+      Check
+        (Humanize.Strings.Data_Shape_Label
+           (Humanize.Strings.Data_Shape_Metadata'
+              (Kind => Humanize.Strings.Object_Shape, Fields => 5, Items => 0,
+               Nulls => 1, Mixed_Types => 0, Max_Depth => 3)),
+         "data shape: object, 5 fields, no items, 1 null, no mixed types, "
+         & "depth 3",
+         "data shape label");
+      Check
+         (Humanize.Strings.Data_Shape_Label
+           ("{""users"": [{""name"": ""Ada""}, null]}"),
+         "data shape: mixed, 2 fields, 1 item, 1 null, 1 mixed type, "
+         & "depth 3",
+         "inferred data shape label");
+      Check
+        (Humanize.Strings.Label_Coverage_Audit_Label
+           ((Families => 12, Bounded => 11, Parseable => 10, Metadata => 9,
+             Stable => 12, Privacy_Safe => 8)),
+         "label coverage: 12 families, 11 bounded, 10 parseable, "
+         & "9 with metadata, 12 stable, 8 privacy-safe",
+         "label coverage audit label");
+      Humanize.Strings.Text_Metadata_Label_Into
+        ("alpha", Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok
+         and then Buffer (1 .. Written) =
+           "text metadata: graphemes=5 words=1 display-width=5 ansi-width=5",
+         "text metadata bounded label");
+      Humanize.Strings.Prose_List_Into
+        ([To_Unbounded_String ("alpha"), To_Unbounded_String ("beta")],
+         Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "alpha and beta",
+         "prose list bounded label");
+      Humanize.Strings.Data_Shape_Label_Into
+        ((Kind => Humanize.Strings.Array_Shape, Fields => 0, Items => 3,
+          Nulls => 1, Mixed_Types => 1, Max_Depth => 2),
+         Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok
+         and then Buffer (1 .. Written) =
+           "data shape: array, no fields, 3 items, 1 null, "
+           & "1 mixed type, depth 2",
+         "data shape bounded label");
+      Humanize.Strings.Slug_Into
+        ("S" & Character'Val (16#C3#) & Character'Val (16#A3#)
+         & "o Paulo", Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Buffer (1 .. Written) = "sao-paulo",
+         "slug bounded label");
    end Test_String_Helpers;
 
    overriding function Name (T : Test_Case) return AUnit.Message_String is

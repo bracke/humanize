@@ -120,6 +120,109 @@ package Humanize.Strings is
       Preserve_Extension : Boolean := False;
    end record;
 
+   type Terminal_Output_Mode is
+     (Terminal_Detailed,
+      Terminal_Compact,
+      Terminal_Log);
+
+   type Terminal_Layout_Options is record
+      Width        : Positive := 80;
+      Prefix       : Character := ' ';
+      Continuation : Character := ' ';
+      Bullet       : Character := '-';
+      Mode         : Terminal_Output_Mode := Terminal_Detailed;
+      Use_Color    : Boolean := False;
+   end record;
+
+   Default_Terminal_Layout_Options : constant Terminal_Layout_Options :=
+     (Width        => 80,
+      Prefix       => ' ',
+      Continuation => ' ',
+      Bullet       => '-',
+      Mode         => Terminal_Detailed,
+      Use_Color    => False);
+
+   type Prose_List_Options is record
+      Conjunction  : Character := 'a';
+      Oxford_Comma : Boolean := True;
+      Empty_Text   : Character := '-';
+   end record;
+
+   Default_Prose_List_Options : constant Prose_List_Options :=
+     (Conjunction  => 'a',
+      Oxford_Comma => True,
+      Empty_Text   => '-');
+
+   type Range_Boundary is
+     (Inclusive_Boundary,
+      Exclusive_Boundary,
+      Open_Boundary);
+
+   type Generic_Range_Options is record
+      Low_Boundary  : Range_Boundary := Inclusive_Boundary;
+      High_Boundary : Range_Boundary := Inclusive_Boundary;
+      Separator     : Character := '-';
+      Unit          : String (1 .. 16) := [others => ' '];
+      Unit_Length   : Natural := 0;
+   end record;
+
+   type Text_Change_Kind is
+     (Text_Unchanged,
+      Text_Whitespace_Only,
+      Text_Minor_Edit,
+      Text_Moderate_Edit,
+      Text_Major_Rewrite);
+
+   type Text_Change_Metadata is record
+      Kind          : Text_Change_Kind := Text_Unchanged;
+      Old_Words     : Natural := 0;
+      New_Words     : Natural := 0;
+      Shared_Words  : Natural := 0;
+      Changed_Words : Natural := 0;
+      Case_Only     : Boolean := False;
+      Punctuation_Only : Boolean := False;
+   end record;
+
+   type Address_Fields is record
+      Name           : String (1 .. 64) := [others => ' '];
+      Name_Length    : Natural := 0;
+      Street         : String (1 .. 96) := [others => ' '];
+      Street_Length  : Natural := 0;
+      City           : String (1 .. 64) := [others => ' '];
+      City_Length    : Natural := 0;
+      Region         : String (1 .. 64) := [others => ' '];
+      Region_Length  : Natural := 0;
+      Postal_Code    : String (1 .. 32) := [others => ' '];
+      Postal_Length  : Natural := 0;
+      Country        : String (1 .. 64) := [others => ' '];
+      Country_Length : Natural := 0;
+   end record;
+
+   type Data_Shape_Kind is
+     (Scalar_Shape,
+      Object_Shape,
+      Array_Shape,
+      Empty_Shape,
+      Mixed_Shape);
+
+   type Data_Shape_Metadata is record
+      Kind        : Data_Shape_Kind := Scalar_Shape;
+      Fields      : Natural := 0;
+      Items       : Natural := 0;
+      Nulls       : Natural := 0;
+      Mixed_Types : Natural := 0;
+      Max_Depth   : Natural := 0;
+   end record;
+
+   type Label_Coverage_Metadata is record
+      Families     : Natural := 0;
+      Bounded      : Natural := 0;
+      Parseable    : Natural := 0;
+      Metadata     : Natural := 0;
+      Stable       : Natural := 0;
+      Privacy_Safe : Natural := 0;
+   end record;
+
    Default_Path_Shorten_Options : constant Path_Shorten_Options :=
      (Max_Chars => 40,
       Ellipsis  => '~',
@@ -1163,6 +1266,16 @@ package Humanize.Strings is
    --  @param Max_Width Maximum monospace display width for each output line.
    --  @param Indent Spaces to prepend after inserted line breaks.
    --  @return ANSI-preserving grapheme-safe text wrapped by display width.
+
+   function Wrap_ANSI_Display_Width_Styled
+     (Text      : String;
+      Max_Width : Positive;
+      Indent    : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Text UTF-8-compatible input text that may contain ANSI SGR escapes.
+   --  @param Max_Width Maximum monospace display width for each output line.
+   --  @param Indent Spaces to prepend after inserted line breaks.
+   --  @return ANSI-aware wrapped text that reopens active SGR styles after breaks.
 
    function Key_Value_Line
      (Key       : String;
@@ -2327,6 +2440,306 @@ package Humanize.Strings is
       Written : out Natural;
       Status  : out Humanize.Status.Status_Code);
    --  @param Text UTF-8-compatible input text.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   function Slug
+     (Text      : String;
+      Separator : Character := '-')
+      return Humanize.Status.Text_Result;
+   --  @param Text UTF-8-compatible input text.
+   --  @param Separator ASCII separator used between slug tokens.
+   --  @return Deterministic lowercase ASCII slug.
+
+   procedure Slug_Into
+     (Text      : String;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Separator : Character := '-');
+   --  @param Text UTF-8-compatible input text.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Separator ASCII separator used between slug tokens.
+
+   function Safe_Email_Label
+     (Email : String)
+      return Humanize.Status.Text_Result;
+   --  @param Email Email-like address.
+   --  @return PII-safe email label, preserving only safe structural details.
+
+   function Safe_Phone_Label
+     (Phone : String;
+      Visible_Digits : Natural := 4)
+      return Humanize.Status.Text_Result;
+   --  @param Phone Phone-like text.
+   --  @param Visible_Digits Number of trailing digits to reveal.
+   --  @return PII-safe phone label.
+
+   function Safe_Handle_Label
+     (Handle : String)
+      return Humanize.Status.Text_Result;
+   --  @param Handle User handle.
+   --  @return PII-safe handle label.
+
+   function Code_Symbol_Label
+     (Symbol : String)
+      return Humanize.Status.Text_Result;
+   --  @param Symbol Code symbol or qualified identifier.
+   --  @return Human-readable code symbol label.
+
+   function Source_Location_Label
+     (Path   : String;
+      Line   : Natural := 0;
+      Column : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Path Source path.
+   --  @param Line Optional 1-based source line.
+   --  @param Column Optional 1-based source column.
+   --  @return Human-readable source location label.
+
+   function Prose_List
+     (Items   : Name_List;
+      Options : Prose_List_Options := Default_Prose_List_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Items Text fragments to join.
+   --  @param Options Conjunction, comma, and empty-output policy.
+   --  @return Human-readable prose list.
+
+   function Sentence_From_Parts
+     (Parts : Name_List)
+      return Humanize.Status.Text_Result;
+   --  @param Parts Optional sentence fragments.
+   --  @return Sentence with empty fragments removed and punctuation normalized.
+
+   function Generic_Range_Label
+     (Low     : String;
+      High    : String;
+      Options : Generic_Range_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Low Lower range bound label, or empty for open low bound.
+   --  @param High Upper range bound label, or empty for open high bound.
+   --  @param Options Boundary, separator, and unit policy.
+   --  @return Human-readable generic range label.
+
+   function Uncertainty_Label
+     (Value       : String;
+      Uncertainty : String;
+      Unit        : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Value Center value label.
+   --  @param Uncertainty Plus/minus uncertainty label.
+   --  @param Unit Optional unit label.
+   --  @return Human-readable value-with-uncertainty label.
+
+   function Text_Change_Metadata_For
+     (Old_Text : String;
+      New_Text : String)
+      return Text_Change_Metadata;
+   --  @param Old_Text Previous text.
+   --  @param New_Text New text.
+   --  @return Deterministic word-level text-change metadata.
+
+   function Text_Change_Label
+     (Old_Text : String;
+      New_Text : String)
+      return Humanize.Status.Text_Result;
+   --  @param Old_Text Previous text.
+   --  @param New_Text New text.
+   --  @return Human-readable text-change summary.
+
+   function Address_Label
+     (Address   : Address_Fields;
+      Multiline : Boolean := False)
+      return Humanize.Status.Text_Result;
+   --  @param Address Structured bounded address fields.
+   --  @param Multiline True to render address components on separate lines.
+   --  @return Human-readable address label with empty fields skipped.
+
+   function Address_Metadata_Label
+     (Address : Address_Fields)
+      return Humanize.Status.Text_Result;
+   --  @param Address Structured bounded address fields.
+   --  @return Address completeness metadata label.
+
+   function Privacy_Address_Label
+     (Address : Address_Fields)
+      return Humanize.Status.Text_Result;
+   --  @param Address Structured bounded address fields.
+   --  @return Privacy-safe partial address label.
+
+   function Data_Shape_Label
+     (Shape : Data_Shape_Metadata)
+      return Humanize.Status.Text_Result;
+   --  @param Shape Structured generic data-shape metadata.
+   --  @return Human-readable data-shape summary.
+
+   function Infer_Data_Shape
+     (Text : String)
+      return Data_Shape_Metadata;
+   --  @param Text JSON/YAML-like sample text.
+   --  @return Best-effort generic data-shape metadata.
+
+   function Data_Shape_Label
+     (Text : String)
+      return Humanize.Status.Text_Result;
+   --  @param Text JSON/YAML-like sample text.
+   --  @return Human-readable inferred data-shape summary.
+
+   function Label_Coverage_Audit_Label
+     (Coverage : Label_Coverage_Metadata)
+      return Humanize.Status.Text_Result;
+   --  @param Coverage Label-family capability counts.
+   --  @return Human-readable label coverage audit summary.
+
+   function Transliteration_Coverage_Label
+     (Text : String)
+      return Humanize.Status.Text_Result;
+   --  @param Text UTF-8-compatible input text.
+   --  @return Summary of ASCII transliteration coverage for Text.
+
+   function Text_Boundary_Summary_Label
+     (Text : String)
+      return Humanize.Status.Text_Result;
+   --  @param Text UTF-8-compatible input text.
+   --  @return Grapheme, word, sentence, paragraph, and display-width summary.
+
+   function Terminal_Paragraph
+     (Text         : String;
+      Width        : Positive;
+      Prefix       : String := "";
+      Continuation : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Text Paragraph text to wrap.
+   --  @param Width Maximum monospace width.
+   --  @param Prefix Prefix for the first line.
+   --  @param Continuation Prefix for continuation lines.
+   --  @return Terminal-safe wrapped paragraph.
+
+   function Terminal_Bullet_List
+     (Items  : Name_List;
+      Width  : Positive;
+      Bullet : String := "- ")
+      return Humanize.Status.Text_Result;
+   --  @param Items Bullet item labels.
+   --  @param Width Maximum monospace width.
+   --  @param Bullet Bullet prefix.
+   --  @return Terminal-safe newline-separated bullet list.
+
+   function Text_Metadata_Label
+     (Text : String)
+      return Humanize.Status.Text_Result;
+   --  @param Text UTF-8-compatible input text.
+   --  @return Machine-stable metadata summary for humanized text output.
+
+   function Terminal_Section
+     (Title   : String;
+      Content : String;
+      Options : Terminal_Layout_Options := Default_Terminal_Layout_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Title Section title.
+   --  @param Content Section body text.
+   --  @param Options Terminal width and style policy.
+   --  @return Width-constrained terminal section label.
+
+   function Terminal_Key_Value_Block
+     (Keys    : Name_List;
+      Values  : Name_List;
+      Options : Terminal_Layout_Options := Default_Terminal_Layout_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Keys Key labels.
+   --  @param Values Value labels.
+   --  @param Options Terminal width and style policy.
+   --  @return Wrapped terminal key/value block.
+
+   function Terminal_Status_Block
+     (Status_Label : String;
+      Detail       : String := "";
+      Options      : Terminal_Layout_Options := Default_Terminal_Layout_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Status_Label Primary status label.
+   --  @param Detail Optional detail text.
+   --  @param Options Terminal width and style policy.
+   --  @return Terminal-safe status block.
+
+   procedure Transliteration_Coverage_Label_Into
+     (Text    : String;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Text UTF-8-compatible input text.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Text_Boundary_Summary_Label_Into
+     (Text    : String;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Text UTF-8-compatible input text.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Terminal_Paragraph_Into
+     (Text         : String;
+      Width        : Positive;
+      Target       : in out String;
+      Written      : out Natural;
+      Status       : out Humanize.Status.Status_Code;
+      Prefix       : String := "";
+      Continuation : String := "");
+   --  @param Text Paragraph text to wrap.
+   --  @param Width Maximum monospace width.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Prefix Prefix for the first line.
+   --  @param Continuation Prefix for continuation lines.
+
+   procedure Text_Metadata_Label_Into
+     (Text    : String;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Text UTF-8-compatible input text.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Prose_List_Into
+     (Items   : Name_List;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code;
+      Options : Prose_List_Options := Default_Prose_List_Options);
+   --  @param Items Text fragments to join.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Options Conjunction, comma, and empty-output policy.
+
+   procedure Text_Change_Label_Into
+     (Old_Text : String;
+      New_Text : String;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code);
+   --  @param Old_Text Previous text.
+   --  @param New_Text New text.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Data_Shape_Label_Into
+     (Shape   : Data_Shape_Metadata;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Shape Structured generic data-shape metadata.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

@@ -175,13 +175,37 @@ begin
       return;
    end if;
 
+   if Project_Tools.Processes.Has_Argument ("--policy-only") then
+      Check_Humanize_Policy.Check_Manifest (Root, Errors);
+      Check_Required_Release_Surface;
+      Check_Humanize_Policy.Check_AUnit_Metrics (Root, Errors);
+      Check_Humanize_Policy.Check_Generated_Artifacts (Root, Errors);
+      Check_Humanize_Policy.Check_Source_Tree_Artifacts (Root, Errors);
+      Check_Humanize_Policy.Check_Tooling_Boundary (Root, Errors);
+      Check_Humanize_Policy.Check_Public_Documentation (Root, Errors);
+      Check_Humanize_Policy.Check_Examples_Inventory (Root, Errors);
+      Check_Humanize_Policy.Check_Quality_Guards (Root, Errors);
+      Print_Result
+        ("humanize policy checks passed",
+         "humanize policy checks failed:");
+      return;
+   end if;
+
+   if Project_Tools.Processes.Has_Argument ("--print-generated-data-manifest") then
+      Check_Humanize_Policy.Print_Generated_Data_Manifest (Root);
+      Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Success);
+      return;
+   end if;
+
    Check_Humanize_Policy.Check_Manifest (Root, Errors);
    Check_Required_Release_Surface;
    Check_Humanize_Policy.Check_AUnit_Metrics (Root, Errors);
    Check_Humanize_Policy.Check_Generated_Artifacts (Root, Errors);
+   Check_Humanize_Policy.Check_Source_Tree_Artifacts (Root, Errors);
    Check_Humanize_Policy.Check_Tooling_Boundary (Root, Errors);
    Check_Humanize_Policy.Check_Public_Documentation (Root, Errors);
    Check_Humanize_Policy.Check_Examples_Inventory (Root, Errors);
+   Check_Humanize_Policy.Check_Quality_Guards (Root, Errors);
    Check_Humanize_Release.Run_Release_Builds (Root, Errors);
    Check_Humanize_Release.Check_Staged_Release_Tree
      (Root, Stage_Root, Errors);

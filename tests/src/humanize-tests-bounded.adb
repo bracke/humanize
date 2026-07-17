@@ -1,8 +1,8 @@
 with AUnit.Assertions;
 
 with Ada.Calendar;
-with Ada.Strings.Unbounded;
 
+with Humanize.Bounded_Text;
 with Humanize.Bytes;
 with Humanize.Capabilities;
 with Humanize.Colors;
@@ -26,7 +26,7 @@ package body Humanize.Tests.Bounded is
       Code     : Status_Code;
       Message  : String)
    is
-      Text : constant String := Ada.Strings.Unbounded.To_String (Expected.Text);
+      Text : constant String := Humanize.Bounded_Text.Result_Text (Expected);
    begin
       AUnit.Assertions.Assert
          (Expected.Status = Ok

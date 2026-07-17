@@ -23,12 +23,28 @@ package Humanize.Lists is
       Summary_Display,
       Screen_Reader_Display);
 
+   type Collection_Summary_Style is
+     (Collection_Compact_Summary,
+      Collection_Detailed_Summary,
+      Collection_Accessible_Summary);
+
    type Collection_Display_Options is record
       Style : Collection_Display_Style := Summary_Display;
    end record;
 
+   type Collection_Summary_Options is record
+      Style          : Collection_Summary_Style := Collection_Detailed_Summary;
+      Include_Total  : Boolean := True;
+      Include_Hidden : Boolean := True;
+   end record;
+
    Default_Collection_Display_Options : constant Collection_Display_Options :=
      (Style => Summary_Display);
+
+   Default_Collection_Summary_Options : constant Collection_Summary_Options :=
+     (Style          => Collection_Detailed_Summary,
+      Include_Total  => True,
+      Include_Hidden => True);
 
    type Count_Number_Style is
      (Numeric_Count,
@@ -360,6 +376,93 @@ package Humanize.Lists is
    --  @param Plural Plural noun.
    --  @param Options Collection display policy.
    --  @return Compact, summary, or screen-reader-oriented collection label.
+
+   function Collection_Count_Label
+     (Context  : Humanize.Contexts.Context;
+      Total    : Natural;
+      Singular : String := "item";
+      Plural   : String := "items")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Total Total collection size.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
+   --  @return Collection count label such as "no items" or "12 items".
+
+   function Collection_Summary
+     (Context   : Humanize.Contexts.Context;
+      Visible   : Natural;
+      Total     : Natural;
+      Singular  : String := "item";
+      Plural    : String := "items";
+      Options   : Collection_Summary_Options :=
+        Default_Collection_Summary_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Visible Number of currently visible items.
+   --  @param Total Total available collection size.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
+   --  @param Options Collection summary policy.
+   --  @return Collection visibility summary such as "showing 3 of 10 items".
+
+   function Empty_Collection_Label
+     (Context  : Humanize.Contexts.Context;
+      Singular : String := "item";
+      Plural   : String := "items")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
+   --  @return Empty collection label such as "no items".
+
+   function Page_Position_Label
+     (Context : Humanize.Contexts.Context;
+      Page    : Positive;
+      Total   : Positive)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Page Current 1-based page.
+   --  @param Total Total page count.
+   --  @return Validated page label such as "page 2 of 8".
+
+   function Page_Range_Label
+     (Context  : Humanize.Contexts.Context;
+      First    : Positive;
+      Last     : Positive;
+      Total    : Natural;
+      Singular : String := "result";
+      Plural   : String := "results")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param First First displayed 1-based item number.
+   --  @param Last Last displayed 1-based item number.
+   --  @param Total Total available count.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
+   --  @return Validated page range such as "21-40 of 153 results".
+
+   function Page_Navigation_Label
+     (Context : Humanize.Contexts.Context;
+      Page    : Positive;
+      Total   : Positive)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Page Current 1-based page.
+   --  @param Total Total page count.
+   --  @return Navigation availability label for page controls.
+
+   function Page_Size_Label
+     (Context  : Humanize.Contexts.Context;
+      Page_Size : Positive;
+      Singular  : String := "result";
+      Plural    : String := "results")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Page_Size Number of items shown per page.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
+   --  @return Page-size label such as "50 results per page".
 
    procedure Format_Into
      (Context : Humanize.Contexts.Context;
@@ -712,4 +815,119 @@ package Humanize.Lists is
    --  @param Singular Singular noun.
    --  @param Plural Plural noun.
    --  @param Options Collection display policy.
+
+   procedure Collection_Count_Label_Into
+     (Context  : Humanize.Contexts.Context;
+      Total    : Natural;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code;
+      Singular : String := "item";
+      Plural   : String := "items");
+   --  @param Context Formatting context.
+   --  @param Total Total collection size.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
+
+   procedure Collection_Summary_Into
+     (Context   : Humanize.Contexts.Context;
+      Visible   : Natural;
+      Total     : Natural;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Singular  : String := "item";
+      Plural    : String := "items";
+      Options   : Collection_Summary_Options :=
+        Default_Collection_Summary_Options);
+   --  @param Context Formatting context.
+   --  @param Visible Number of currently visible items.
+   --  @param Total Total available collection size.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
+   --  @param Options Collection summary policy.
+
+   procedure Empty_Collection_Label_Into
+     (Context  : Humanize.Contexts.Context;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code;
+      Singular : String := "item";
+      Plural   : String := "items");
+   --  @param Context Formatting context.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
+
+   procedure Page_Position_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Page    : Positive;
+      Total   : Positive;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Page Current 1-based page.
+   --  @param Total Total page count.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Page_Range_Label_Into
+     (Context  : Humanize.Contexts.Context;
+      First    : Positive;
+      Last     : Positive;
+      Total    : Natural;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code;
+      Singular : String := "result";
+      Plural   : String := "results");
+   --  @param Context Formatting context.
+   --  @param First First displayed 1-based item number.
+   --  @param Last Last displayed 1-based item number.
+   --  @param Total Total available count.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
+
+   procedure Page_Navigation_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Page    : Positive;
+      Total   : Positive;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Page Current 1-based page.
+   --  @param Total Total page count.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Page_Size_Label_Into
+     (Context   : Humanize.Contexts.Context;
+      Page_Size : Positive;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Singular  : String := "result";
+      Plural    : String := "results");
+   --  @param Context Formatting context.
+   --  @param Page_Size Number of items shown per page.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Singular Singular noun.
+   --  @param Plural Plural noun.
 end Humanize.Lists;

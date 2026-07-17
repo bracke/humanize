@@ -68,6 +68,14 @@ package body Humanize.Tests.Units is
       Check (Support.Fr, 2, Centimeter, "2 centim" & EG & "tres",
              "French centimetres");
       Check (Support.De, 5, Millimeter, "5 Millimeter", "German millimetres");
+      Check
+        (Support.Locale ("NB_no"), 5, Kilometer_Per_Hour,
+         "5 kilometer i timen",
+         "regional Norwegian catalog units use normalized locale predicate");
+      Check
+        (Support.Locale ("NB_no"), 5, Teaspoon,
+         "5 teskjeer",
+         "regional Norwegian extended units use normalized locale predicate");
    end Test_Locales;
 
    procedure Check_F

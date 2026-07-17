@@ -275,6 +275,12 @@ package Humanize.Colors is
    --  @param Color RGB color.
    --  @return Nearest basic CSS color name by RGB distance.
 
+   function Descriptive_Color_Name
+     (Color : RGB_Color)
+      return Humanize.Status.Text_Result;
+   --  @param Color RGB color.
+   --  @return Rich deterministic color name from tone, temperature, and nearest color.
+
    function Palette_Summary
      (Colors : Color_List)
       return Humanize.Status.Text_Result;
@@ -1063,6 +1069,16 @@ package Humanize.Colors is
    --  @param Left First color.
    --  @param Right Second color.
    --  @param Method Perceptual difference algorithm.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Descriptive_Color_Name_Into
+     (Color   : RGB_Color;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Color RGB color.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

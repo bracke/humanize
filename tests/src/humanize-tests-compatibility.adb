@@ -10,6 +10,7 @@ with Humanize.Datetimes;
 with Humanize.Durations;
 with Humanize.Frequencies;
 with Humanize.Lists;
+with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Parsing;
 with Humanize.Phrases;
@@ -39,58 +40,6 @@ package body Humanize.Tests.Compatibility is
    use type Humanize.Units.Unit_Kind;
 
    package Support renames Humanize.Tests.Support;
-
-   type Locale_Code is
-     (L_En, L_Da, L_De, L_Fr, L_Es, L_It, L_Pt, L_Nl, L_Sv, L_No, L_Nb,
-      L_Fi, L_Pl, L_Cs, L_Tr, L_Ro, L_Lt, L_Sl, L_Id, L_Ms, L_Eo, L_Vi,
-      L_Sw, L_Af, L_Hu, L_Sk, L_Ru, L_Uk, L_Ja, L_Ko, L_Zh, L_Ar, L_Hi);
-
-   function Locale_Name (Code : Locale_Code) return String is
-   begin
-      case Code is
-         when L_En => return "en";
-         when L_Da => return "da";
-         when L_De => return "de";
-         when L_Fr => return "fr";
-         when L_Es => return "es";
-         when L_It => return "it";
-         when L_Pt => return "pt";
-         when L_Nl => return "nl";
-         when L_Sv => return "sv";
-         when L_No => return "no";
-         when L_Nb => return "nb";
-         when L_Fi => return "fi";
-         when L_Pl => return "pl";
-         when L_Cs => return "cs";
-         when L_Tr => return "tr";
-         when L_Ro => return "ro";
-         when L_Lt => return "lt";
-         when L_Sl => return "sl";
-         when L_Id => return "id";
-         when L_Ms => return "ms";
-         when L_Eo => return "eo";
-         when L_Vi => return "vi";
-         when L_Sw => return "sw";
-         when L_Af => return "af";
-         when L_Hu => return "hu";
-         when L_Sk => return "sk";
-         when L_Ru => return "ru";
-         when L_Uk => return "uk";
-         when L_Ja => return "ja";
-         when L_Ko => return "ko";
-         when L_Zh => return "zh";
-         when L_Ar => return "ar";
-         when L_Hi => return "hi";
-      end case;
-   end Locale_Name;
-
-   function Locale_Context
-     (Code : Locale_Code)
-      return Humanize.Contexts.Context
-   is
-   begin
-      return Support.Locale (Locale_Name (Code));
-   end Locale_Context;
 
    procedure Check
      (Result   : Text_Result;
@@ -1982,11 +1931,11 @@ package body Humanize.Tests.Compatibility is
       Check_Scanner_Roundtrips;
       Check_Deterministic_Helper_Roundtrips;
 
-      for Code in Locale_Code loop
+      for Locale_Access of Humanize.Locales.Shipped_Locales loop
          declare
-            Locale  : constant String := Locale_Name (Code);
+            Locale  : constant String := Locale_Access.all;
             Context : constant Humanize.Contexts.Context :=
-              Locale_Context (Code);
+              Support.Locale (Locale);
          begin
             Check_Duration_Roundtrip
               (Context, Locale, 2, "duration seconds");

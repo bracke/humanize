@@ -26,6 +26,7 @@ alr build
 cd tests
 alr build
 ./bin/tests
+./bin/perf_smoke
 cd ..
 cd check_humanize
 alr build
@@ -36,13 +37,40 @@ alr test
 
 These checks establish that the library builds against `i18n`, the test project
 builds, the AUnit suite runs successfully, and the `project_tools`-based release
-guard (`check_humanize`) passes.
+guard (`check_humanize`) passes. `perf_smoke` is a loose timing and path
+coverage executable for common Humanize format/parse operations; it is not a
+benchmark suite, but it catches accidental pathological slowdowns before
+staging.
 
 `check_humanize` also builds `examples/examples.gpr`, runs GNATdoc, validates
 the public GNATdoc tags, verifies example inventory documentation, checks that
 compiler `.stderr` logs are empty, and enforces the Humanize/tooling and
 Humanize/i18n import boundaries. It also stages and verifies a pin-free release
 tree at `/tmp/humanize-release-stage`.
+
+For source-policy work that does not need release staging, run the focused
+policy mode:
+
+```sh
+cd check_humanize
+alr build
+./bin/check_humanize --policy-only
+```
+
+This mode validates manifests, required release text, AUnit inventory,
+generated-artifact policy, public GNATdoc tags, example inventory, and the
+Humanize/tooling plus Humanize/i18n boundaries. It intentionally skips release
+builds, staged publication checks, GNATdoc generation, and compiler `.stderr`
+log hygiene; the full release candidate command above remains authoritative
+before tagging.
+
+The source-policy gate also enforces the quality guard map in
+`docs/QUALITY_GUARDS.md`, the public API surface snapshot in
+`docs/API_SURFACE.md`, the machine-readable public API allowlist in
+`docs/PUBLIC_API.toml`, the example coverage map in
+`docs/EXAMPLE_COVERAGE.toml`, the performance smoke baseline in
+`docs/PERFORMANCE_BASELINE.toml`, and the task-oriented usage guide in
+`docs/TASK_GUIDE.md`.
 
 ## Remaining publication checks
 
@@ -103,6 +131,7 @@ alr build
 cd tests
 alr exec -- gprbuild -P tests.gpr
 alr exec -- ./bin/tests
+alr exec -- ./bin/perf_smoke
 cd ..
 alr exec -- gprbuild -P examples/examples.gpr
 ./examples/bin/humanize_demo
@@ -146,12 +175,23 @@ Humanize depends on `i18n` and must keep the dependency one-way:
 * all direct calls into `I18N.Runtime`, `I18N.Arguments`, and
   `I18N.Result.Output_Text` are isolated in the private package
   `Humanize.I18N_Rendering` (HUM-INV-003);
+* locale support-list types and shipped-locale lists live in `Humanize.Locales`,
+  which does not import catalog loading or `i18n` runtime units;
 * the domain packages `Humanize.Datetimes`, `Humanize.Durations`, and
   `Humanize.Bytes` do not import `I18N.Runtime` directly (HUM-INV-002).
 
 The architecture test in `tests/src/humanize-tests-architecture.adb` keeps the
 fast semantic invariants: every `Message_Id` maps to a non-empty unique key and
-every key resolves in every shipped locale after `Humanize.Catalogs.Load_Defaults`.
+every key resolves for every tag returned by
+`Humanize.Locales.All_Shipped_Locales` after `Humanize.Catalogs.Load_Defaults`.
+It also verifies the public base, regional, and all-locale lists have declared
+lengths, stable ordering, no duplicate tags, and regional tags whose base locale
+is shipped. The public shipped-locale predicates are checked against those lists
+and through the `Humanize.Catalogs` compatibility aliases. The canonical
+shipped-locale helper is checked for base tags, regional tags, case-insensitive
+input, `_` separator input, variants, and unknown tags. Phrase locale metadata
+is verified as a unique subset of the base catalog locale list, and generated
+phrase locale metadata is verified as a unique subset of the phrase locale list.
 The release checker owns source/package policy scans, including unexpected
 public or private `I18N` imports and localized text leakage in classifiers.
 
@@ -188,6 +228,7 @@ A release may be tagged only after:
 
 * the verified GNAT/GPRbuild and AUnit checks remain passing;
 * `check_humanize` reports success;
+* `check_humanize --policy-only` reports success for source-policy changes;
 * `check_humanize --staged-release-only` reports success for
   `/tmp/humanize-release-stage`;
 * `check_humanize --release-strict --staged-release-only` reports success after

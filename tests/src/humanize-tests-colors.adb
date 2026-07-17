@@ -289,6 +289,9 @@ package body Humanize.Tests.Colors is
         (Humanize.Colors.Nearest_Color_Name (Purple),
          "rebeccapurple", "nearest named color");
       Check
+        (Humanize.Colors.Descriptive_Color_Name (Pink),
+         "very light pastel warm pink", "descriptive color name");
+      Check
         (Humanize.Colors.Palette_Summary (Palette),
          "3 colors, mostly gray, high contrast spread", "palette summary");
       Check
@@ -498,6 +501,12 @@ package body Humanize.Tests.Colors is
          and then Wide_Buffer (1 .. Written)
            = "dunkel, gedaempft blau, kuehl, mittleres Chroma",
          "bounded localized color description");
+      Humanize.Colors.Descriptive_Color_Name_Into
+        (Pink, Wide_Buffer, Written, Bounded_Status);
+      AUnit.Assertions.Assert
+        (Bounded_Status = Ok
+         and then Wide_Buffer (1 .. Written) = "very light pastel warm pink",
+         "bounded descriptive color name");
       Humanize.Colors.Palette_Roles_Into
         (Palette, Buffer, Written, Bounded_Status);
       AUnit.Assertions.Assert

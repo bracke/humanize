@@ -1,10 +1,9 @@
+with Humanize.Bounded_Text;
+
 package body Humanize.Decimal_Images is
 
-   --  Decimal image without the 'Image leading space.
-   function No_Space (Image : String) return String is
-     (if Image'Length > 0 and then Image (Image'First) = ' '
-      then Image (Image'First + 1 .. Image'Last)
-      else Image);
+   function Integer_Text (Value : Long_Long_Integer) return String
+      renames Humanize.Bounded_Text.Image;
 
    function Decimal_Image
      (Value                  : Long_Float;
@@ -26,7 +25,7 @@ package body Humanize.Decimal_Images is
          Int_Part  : constant Long_Long_Integer := Scaled / Scale;
          Frac_Part : constant Long_Long_Integer := Scaled mod Scale;
          Int_Img   : constant String :=
-           No_Space (Long_Long_Integer'Image (Int_Part));
+           Integer_Text (Int_Part);
       begin
          if Max_Digits = 0 then
             return Sign & Int_Img;
@@ -34,7 +33,7 @@ package body Humanize.Decimal_Images is
 
          declare
             Raw_Frac : constant String :=
-              No_Space (Long_Long_Integer'Image (Frac_Part));
+              Integer_Text (Frac_Part);
             Padded   : String (1 .. Max_Digits) := [others => '0'];
             Last     : Natural := Max_Digits;
          begin

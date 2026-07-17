@@ -434,6 +434,18 @@ package body Humanize.Tests.Datetimes is
            (Year => 2026, Month => 3, Day => 21, others => 0),
            Calendar_Date_Options'
              (Style => Calendar_Date_Medium, Fiscal_Year_Start_Month => 1));
+      Date_German_Regional : constant Text_Result :=
+        Calendar_Date_Label
+          (Support.Locale ("DE_at"),
+           (Year => 2026, Month => 3, Day => 21, others => 0),
+           Calendar_Date_Options'
+             (Style => Calendar_Date_Medium, Fiscal_Year_Start_Month => 1));
+      Date_French_Regional : constant Text_Result :=
+        Calendar_Date_Label
+          (Support.Locale ("FR_ca"),
+           (Year => 2026, Month => 3, Day => 21, others => 0),
+           Calendar_Date_Options'
+             (Style => Calendar_Date_Medium, Fiscal_Year_Start_Month => 1));
       Date_Long : constant Text_Result :=
         Calendar_Date_Label
           (Support.En,
@@ -765,6 +777,12 @@ package body Humanize.Tests.Datetimes is
         (Date_Medium.Status = Ok
          and then Support.Text (Date_Medium) = "Mar 21, 2026",
          "medium calendar date label");
+      AUnit.Assertions.Assert
+        (Date_German_Regional.Status = Ok
+         and then Support.Text (Date_German_Regional) = "Marz 21, 2026"
+         and then Date_French_Regional.Status = Ok
+         and then Support.Text (Date_French_Regional) = "mars 21, 2026",
+         "calendar date labels use language-code regional fallback");
       AUnit.Assertions.Assert
         (Date_Long.Status = Ok
          and then Support.Text (Date_Long) = "Saturday, March 21, 2026",

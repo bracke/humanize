@@ -19,6 +19,10 @@ package Check_Humanize_Policy is
      (Root   : String;
       Errors : in out Natural);
 
+   procedure Check_Source_Tree_Artifacts
+     (Root   : String;
+      Errors : in out Natural);
+
    procedure Check_Tooling_Boundary
      (Root   : String;
       Errors : in out Natural);
@@ -30,6 +34,12 @@ package Check_Humanize_Policy is
    procedure Check_Examples_Inventory
      (Root   : String;
       Errors : in out Natural);
+
+   procedure Check_Quality_Guards
+     (Root   : String;
+      Errors : in out Natural);
+
+   procedure Print_Generated_Data_Manifest (Root : String);
 
    procedure Check_Compiler_Stderr
      (Root   : String;

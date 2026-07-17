@@ -10,6 +10,7 @@ with Humanize.Rates;
 with Humanize.Status;
 with Humanize.Strings;
 with Humanize.Units;
+with Humanize.Values;
 
 package Humanize.Parsing is
 
@@ -22,13 +23,47 @@ package Humanize.Parsing is
       Out_Of_Range,
       Unsupported_Form);
 
+   type Scheduling_Phrase_Kind is
+     (No_Scheduling_Phrase,
+      Relative_Offset_Phrase,
+      Date_Time_Phrase,
+      Business_Day_Phrase,
+      Period_Boundary_Phrase,
+      Recurrence_Phrase,
+      Ambiguous_Scheduling_Phrase);
+   --  Stable categories for natural scheduling phrase coverage.
+
+   type Parse_Value_Family is
+     (Parsed_Bytes,
+      Parsed_Duration,
+      Parsed_Number,
+      Parsed_Date_Time,
+      Parsed_Color,
+      Parsed_URL,
+      Parsed_Unit,
+      Parsed_Recurrence,
+      Parsed_Generic_Value);
+   --  Stable successful-parse explanation families.
+
+   type Parse_Success_Explanation is record
+      Status            : Humanize.Status.Status_Code := Humanize.Status.Ok;
+      Family            : Parse_Value_Family := Parsed_Generic_Value;
+      Consumed          : Natural := 0;
+      Exact             : Boolean := False;
+      Input_First       : Natural := 0;
+      Input_Length      : Natural := 0;
+      Normalized_First  : Natural := 0;
+      Normalized_Length : Natural := 0;
+   end record;
+   --  Parsed spans from a successful parse explanation label.
+
    type Byte_Parse_Result is record
       Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
       Value  : Humanize.Bytes.Byte_Count := 0;
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Duration_Parse_Result is record
@@ -37,8 +72,23 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
+
+   type Scheduling_Phrase_Result is record
+      Status         : Humanize.Status.Status_Code := Humanize.Status.Ok;
+      Kind           : Scheduling_Phrase_Kind := No_Scheduling_Phrase;
+      Consumed       : Natural := 0;
+      Ambiguous      : Boolean := False;
+      Has_Relative_Offset : Boolean := False;
+      Has_Date_Time       : Boolean := False;
+      Has_Business_Day    : Boolean := False;
+      Has_Period_Boundary : Boolean := False;
+      Has_Recurrence      : Boolean := False;
+      Error_Position : Natural := 0;
+      Error          : Parse_Error_Kind := No_Parse_Error;
+   end record;
+   --  Classification result for human scheduling phrases.
 
    type Precise_Duration_Parse_Result is record
       Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
@@ -46,7 +96,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Number_Parse_Result is record
@@ -55,7 +105,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Float_Parse_Result is record
@@ -64,7 +114,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Currency_Parse_Result is record
@@ -77,7 +127,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Change_Parse_Result is record
@@ -92,7 +142,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Comparison_Direction is
@@ -119,7 +169,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Date_Comparison_Parse_Result is record
@@ -135,7 +185,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Palette_Contrast_Matrix_Parse_Result is record
@@ -148,7 +198,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Palette_Metadata_Parse_Result is record
@@ -162,7 +212,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type APCA_Label_Parse_Result is record
@@ -175,7 +225,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Color_Vision_Deficiency_Parse_Result is record
@@ -189,7 +239,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Color_Accessibility_Parse_Result is record
@@ -202,7 +252,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Color_Label_Parse_Result is record
@@ -214,7 +264,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Color_Model_Label_Parse_Result is record
@@ -225,7 +275,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Color_Bucket_Label_Parse_Result is record
@@ -235,7 +285,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Color_Description_Parse_Result is record
@@ -253,7 +303,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Palette_Summary_Parse_Result is record
@@ -266,7 +316,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Palette_Roles_Parse_Result is record
@@ -277,7 +327,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Palette_Mood_Parse_Result is record
@@ -291,7 +341,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Palette_Contrast_Suggestion_Parse_Result is record
@@ -302,7 +352,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Palette_Accessibility_Label_Parse_Result is record
@@ -315,7 +365,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Color_Difference_Label_Parse_Result is record
@@ -327,7 +377,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Contrast_Remediation_Parse_Result is record
@@ -341,7 +391,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Domain_Summary_Parse_Result is record
@@ -358,7 +408,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Phrase_Severity_Parse_Result is record
@@ -368,7 +418,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Phrase_Tone_Parse_Result is record
@@ -377,7 +427,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Phrase_Domain_Parse_Result is record
@@ -387,7 +437,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Phrase_State_Parse_Result is record
@@ -397,7 +447,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Phrase_Key_Parse_Result is record
@@ -409,7 +459,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Phrase_Pack_Summary_Parse_Result is record
@@ -420,7 +470,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Phrase_Locales_Parse_Result is record
@@ -430,7 +480,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Operational_Phrase_Domain is
@@ -474,7 +524,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Field_Change_Summary_Parse_Result is record
@@ -488,7 +538,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Field_State_Change_Kind is
@@ -506,7 +556,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Queue_Summary_Parse_Result is record
@@ -521,7 +571,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Cache_Summary_Parse_Result is record
@@ -533,7 +583,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type File_Size_Summary_Parse_Result is record
@@ -543,7 +593,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Transfer_Remaining_Parse_Result is record
@@ -556,7 +606,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Disk_Usage_Parse_Result is record
@@ -567,7 +617,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Validation_Severity_Label is
@@ -586,7 +636,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Field_Problem_Parse_Result is record
@@ -597,7 +647,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Selection_Summary_Kind is
@@ -615,7 +665,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type More_Count_Parse_Result is record
@@ -625,7 +675,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Pagination_Range_Parse_Result is record
@@ -638,7 +688,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Collection_Display_Kind is
@@ -658,7 +708,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Text_Count_Summary_Parse_Result is record
@@ -669,7 +719,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Text_Time_Parse_Result is record
@@ -681,7 +731,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Text_Summary_Parse_Result is record
@@ -705,7 +755,27 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
+   end record;
+
+   type Boolean_Label_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Value  : Boolean := False;
+      Style  : Humanize.Values.Boolean_Label_Style := Humanize.Values.True_False;
+      Exact  : Boolean := False;
+      Consumed : Natural := 0;
+      Error_Position : Natural := 0;
+      Error : Parse_Error_Kind := Unsupported_Form;
+   end record;
+
+   type Ternary_Label_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Value  : Humanize.Values.Ternary_Value := Humanize.Values.Unknown_Value;
+      Style  : Humanize.Values.Ternary_Label_Style := Humanize.Values.Yes_No_Unknown;
+      Exact  : Boolean := False;
+      Consumed : Natural := 0;
+      Error_Position : Natural := 0;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type String_Label_Parse_Result is record
@@ -728,7 +798,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Initials_Parse_Result is record
@@ -741,7 +811,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Possessive_Parse_Result is record
@@ -754,7 +824,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Identifier_Label_Parse_Result is record
@@ -774,7 +844,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Filename_Label_Parse_Result is record
@@ -796,7 +866,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type File_Mode_Parse_Result is record
@@ -808,7 +878,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Email_Local_Part_Parse_Result is record
@@ -822,7 +892,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Cleanup_Label_Parse_Result is record
@@ -843,7 +913,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Mask_Parse_Result is record
@@ -856,7 +926,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Grouped_Token_Parse_Result is record
@@ -870,7 +940,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Highlight_Parse_Result is record
@@ -884,7 +954,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Excerpt_Parse_Result is record
@@ -899,7 +969,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Person_List_Parse_Result is record
@@ -910,7 +980,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Inflection_Source_Parse_Result is record
@@ -920,7 +990,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Duration_Range_Parse_Result is record
@@ -930,7 +1000,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Number_Range_Parse_Result is record
@@ -940,7 +1010,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Decimal_Range_Parse_Result is record
@@ -950,7 +1020,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Uncertainty_Parse_Result is record
@@ -964,7 +1034,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Proportion_Parse_Result is record
@@ -974,7 +1044,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Frequency_Parse_Result is record
@@ -983,7 +1053,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Rate_Parse_Result is record
@@ -994,7 +1064,7 @@ package Humanize.Parsing is
       Exact     : Boolean := False;
       Consumed  : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type List_Parse_Result is record
@@ -1003,7 +1073,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Counted_Noun_Parse_Result is record
@@ -1014,7 +1084,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Unit_Parse_Result is record
@@ -1024,7 +1094,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Aspect_Ratio_Parse_Result is record
@@ -1034,7 +1104,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Compound_Unit_Parse_Result is record
@@ -1045,7 +1115,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Date_Parse_Result is record
@@ -1054,7 +1124,18 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
+   end record;
+
+   type Natural_Date_Time_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Value  : Ada.Calendar.Time := Ada.Calendar.Clock;
+      Has_Time : Boolean := False;
+      Has_Relative_Offset : Boolean := False;
+      Exact  : Boolean := False;
+      Consumed : Natural := 0;
+      Error_Position : Natural := 0;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Date_Range_Parse_Result is record
@@ -1064,7 +1145,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Business_Calendar_Parse_Kind is
@@ -1088,7 +1169,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Business_Calendar_Rules_Parse_Result is record
@@ -1097,7 +1178,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    type Recurrence_Parse_Kind is
@@ -1147,7 +1228,7 @@ package Humanize.Parsing is
       Exact  : Boolean := False;
       Consumed : Natural := 0;
       Error_Position : Natural := 0;
-      Error : Parse_Error_Kind := No_Parse_Error;
+      Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
    function Parse_Bytes
@@ -1327,6 +1408,62 @@ package Humanize.Parsing is
       Rules     : Humanize.Durations.Business_Calendar_Rules)
       return Date_Parse_Result;
    --  @param Reference Calendar instant used for relative date phrases.
+   --  @param Text Text beginning with a natural date phrase.
+   --  @param Rules Business-calendar rules for business-day phrases.
+   --  @return Parsed date and consumed prefix length.
+
+   function Parse_Natural_Date_Time
+     (Reference : Ada.Calendar.Time;
+      Text      : String)
+      return Natural_Date_Time_Parse_Result;
+   --  @param Reference Calendar instant used for relative date/time phrases.
+   --  @param Text Natural date/time phrase such as "tomorrow at 09:30",
+   --    "today 14:00", "next friday afternoon", or "in 2 hours".
+   --  @return Parsed calendar instant with time/relative-offset metadata.
+
+   function Scan_Natural_Date_Time
+     (Reference : Ada.Calendar.Time;
+      Text      : String)
+      return Natural_Date_Time_Parse_Result;
+   --  @param Reference Calendar instant used for relative date/time phrases.
+   --  @param Text Text beginning with a natural date/time phrase.
+   --  @return Parsed calendar instant and consumed prefix length.
+
+   function Parse_Error_Label
+     (Error : Parse_Error_Kind)
+      return Humanize.Status.Text_Result;
+   --  @param Error Parser error category.
+   --  @return Human-readable parser error label.
+
+   function Parse_Error_Context_Label
+     (Error          : Parse_Error_Kind;
+      Error_Position : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Error Parser error category.
+   --  @param Error_Position 1-based input position, or 0 when unknown.
+   --  @return Human-readable parser error label with optional position.
+
+   procedure Parse_Error_Label_Into
+     (Error   : Parse_Error_Kind;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Error Parser error category.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Parse_Error_Context_Label_Into
+     (Error          : Parse_Error_Kind;
+      Target         : in out String;
+      Written        : out Natural;
+      Status         : out Humanize.Status.Status_Code;
+      Error_Position : Natural := 0);
+   --  @param Error Parser error category.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Error_Position 1-based input position, or 0 when unknown.
    --  @param Text Text beginning with a natural date phrase.
    --  @param Rules Business-calendar rules for business-day phrases.
    --  @return Parsed date and consumed prefix length.
@@ -2497,6 +2634,30 @@ package Humanize.Parsing is
    --  @param Text Text beginning with a frequency expression.
    --  @return Parsed frequency and consumed prefix length.
 
+   function Parse_Boolean_Label
+     (Text : String)
+      return Boolean_Label_Parse_Result;
+   --  @param Text Boolean label emitted by Humanize.Values.
+   --  @return Parsed Boolean value and matching label style.
+
+   function Scan_Boolean_Label
+     (Text : String)
+      return Boolean_Label_Parse_Result;
+   --  @param Text Text beginning with a Boolean label.
+   --  @return Parsed Boolean value, style, and consumed prefix length.
+
+   function Parse_Ternary_Label
+     (Text : String)
+      return Ternary_Label_Parse_Result;
+   --  @param Text Three-state label emitted by Humanize.Values.
+   --  @return Parsed three-state value and matching label style.
+
+   function Scan_Ternary_Label
+     (Text : String)
+      return Ternary_Label_Parse_Result;
+   --  @param Text Text beginning with a three-state label.
+   --  @return Parsed three-state value, style, and consumed prefix length.
+
    function Parse_Rate
      (Text : String)
       return Rate_Parse_Result;
@@ -2688,6 +2849,8 @@ package Humanize.Parsing is
    function Scan_Density
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a density quantity.
+   --  @return Parsed density amount, unit label, and consumed prefix length.
 
    function Parse_Acceleration
      (Text : String)
@@ -2698,6 +2861,8 @@ package Humanize.Parsing is
    function Scan_Acceleration
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with an acceleration quantity.
+   --  @return Parsed acceleration amount, unit label, and consumed prefix length.
 
    function Parse_Torque
      (Text : String)
@@ -2708,6 +2873,8 @@ package Humanize.Parsing is
    function Scan_Torque
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a torque quantity.
+   --  @return Parsed torque amount, unit label, and consumed prefix length.
 
    function Parse_Fuel_Economy
      (Text : String)
@@ -2718,6 +2885,8 @@ package Humanize.Parsing is
    function Scan_Fuel_Economy
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a fuel-economy quantity.
+   --  @return Parsed fuel-economy amount, unit label, and consumed prefix length.
 
    function Parse_Flow_Rate
      (Text : String)
@@ -2728,6 +2897,8 @@ package Humanize.Parsing is
    function Scan_Flow_Rate
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a flow-rate quantity.
+   --  @return Parsed flow-rate amount, unit label, and consumed prefix length.
 
    function Parse_Electric_Current
      (Text : String)
@@ -2738,6 +2909,8 @@ package Humanize.Parsing is
    function Scan_Electric_Current
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with an electric-current quantity.
+   --  @return Parsed current amount, unit label, and consumed prefix length.
 
    function Parse_Voltage
      (Text : String)
@@ -2748,6 +2921,8 @@ package Humanize.Parsing is
    function Scan_Voltage
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a voltage quantity.
+   --  @return Parsed voltage amount, unit label, and consumed prefix length.
 
    function Parse_Pixel_Density
      (Text : String)
@@ -2758,6 +2933,8 @@ package Humanize.Parsing is
    function Scan_Pixel_Density
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a pixel-density quantity.
+   --  @return Parsed pixel-density amount, unit label, and consumed prefix length.
 
    function Parse_Electric_Resistance
      (Text : String)
@@ -2768,6 +2945,8 @@ package Humanize.Parsing is
    function Scan_Electric_Resistance
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with an electric-resistance quantity.
+   --  @return Parsed resistance amount, unit label, and consumed prefix length.
 
    function Parse_Electric_Capacitance
      (Text : String)
@@ -2778,6 +2957,8 @@ package Humanize.Parsing is
    function Scan_Electric_Capacitance
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with an electric-capacitance quantity.
+   --  @return Parsed capacitance amount, unit label, and consumed prefix length.
 
    function Parse_Electric_Inductance
      (Text : String)
@@ -2788,6 +2969,8 @@ package Humanize.Parsing is
    function Scan_Electric_Inductance
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with an electric-inductance quantity.
+   --  @return Parsed inductance amount, unit label, and consumed prefix length.
 
    function Parse_Concentration
      (Text : String)
@@ -2798,6 +2981,8 @@ package Humanize.Parsing is
    function Scan_Concentration
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a concentration quantity.
+   --  @return Parsed concentration amount, unit label, and consumed prefix length.
 
    function Parse_Fuel_Efficiency_MPG
      (Text : String)
@@ -2808,6 +2993,8 @@ package Humanize.Parsing is
    function Scan_Fuel_Efficiency_MPG
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with an MPG fuel-efficiency quantity.
+   --  @return Parsed MPG amount, unit label, and consumed prefix length.
 
    function Parse_CPU_Load
      (Text : String)
@@ -2818,6 +3005,8 @@ package Humanize.Parsing is
    function Scan_CPU_Load
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a CPU-load quantity.
+   --  @return Parsed CPU-load amount, unit label, and consumed prefix length.
 
    function Parse_Battery
      (Text : String)
@@ -2828,6 +3017,8 @@ package Humanize.Parsing is
    function Scan_Battery
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a battery-level quantity.
+   --  @return Parsed battery amount, unit label, and consumed prefix length.
 
    function Parse_Screen_Size
      (Text : String)
@@ -2838,6 +3029,8 @@ package Humanize.Parsing is
    function Scan_Screen_Size
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a screen-size quantity.
+   --  @return Parsed screen-size amount, unit label, and consumed prefix length.
 
    function Parse_Typography_Size
      (Text : String)
@@ -2848,6 +3041,8 @@ package Humanize.Parsing is
    function Scan_Typography_Size
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a typography-size quantity.
+   --  @return Parsed typography-size amount, unit label, and consumed prefix length.
 
    function Parse_Audio_Level
      (Text : String)
@@ -2858,6 +3053,8 @@ package Humanize.Parsing is
    function Scan_Audio_Level
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with an audio-level quantity.
+   --  @return Parsed audio-level amount, unit label, and consumed prefix length.
 
    function Parse_Signal_Strength
      (Text : String)
@@ -2868,6 +3065,8 @@ package Humanize.Parsing is
    function Scan_Signal_Strength
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a signal-strength quantity.
+   --  @return Parsed signal-strength amount, unit label, and consumed prefix length.
 
    function Parse_Storage_Endurance
      (Text : String)
@@ -2878,6 +3077,8 @@ package Humanize.Parsing is
    function Scan_Storage_Endurance
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a storage-endurance quantity.
+   --  @return Parsed storage-endurance amount, unit label, and consumed prefix length.
 
    function Parse_Refresh_Rate
      (Text : String)
@@ -2888,6 +3089,8 @@ package Humanize.Parsing is
    function Scan_Refresh_Rate
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a refresh-rate quantity.
+   --  @return Parsed refresh-rate amount, unit label, and consumed prefix length.
 
    function Parse_Luminance
      (Text : String)
@@ -2898,6 +3101,8 @@ package Humanize.Parsing is
    function Scan_Luminance
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a luminance quantity.
+   --  @return Parsed luminance amount, unit label, and consumed prefix length.
 
    function Parse_Print_Resolution
      (Text : String)
@@ -2908,6 +3113,8 @@ package Humanize.Parsing is
    function Scan_Print_Resolution
      (Text : String)
       return Compound_Unit_Parse_Result;
+   --  @param Text Text beginning with a print-resolution quantity.
+   --  @return Parsed print-resolution amount, unit label, and consumed prefix length.
 
    function Scan_Compound_Unit
      (Text : String)
@@ -2920,5 +3127,129 @@ package Humanize.Parsing is
       return Unit_Parse_Result;
    --  @param Text Text beginning with a unit quantity.
    --  @return Parsed unit quantity and consumed prefix length.
+
+   function Classify_Scheduling_Phrase
+     (Text : String)
+      return Scheduling_Phrase_Result;
+   --  @param Text Natural scheduling phrase to classify.
+   --  @return Phrase family, consumed length, and ambiguity metadata.
+
+   function Scheduling_Phrase_Label
+     (Result : Scheduling_Phrase_Result)
+      return Humanize.Status.Text_Result;
+   --  @param Result Scheduling phrase classification result.
+   --  @return Human-readable scheduling phrase coverage label.
+
+   function Scheduling_Ambiguity_Label
+     (Result : Scheduling_Phrase_Result)
+      return Humanize.Status.Text_Result;
+   --  @param Result Scheduling phrase classification result.
+   --  @return Human-readable ambiguity/candidate summary.
+
+   function Scheduling_Resolution_Label
+     (Kind : Scheduling_Phrase_Kind)
+      return Humanize.Status.Text_Result;
+   --  @param Kind Chosen scheduling phrase kind.
+   --  @return Suggested parser path for the phrase kind.
+
+   function Parse_Value_Family_Label
+     (Family : Parse_Value_Family)
+      return Humanize.Status.Text_Result;
+   --  @param Family Successful parse explanation family.
+   --  @return Stable parse value family label.
+
+   function Parse_Success_Explanation_Label
+     (Family     : Parse_Value_Family;
+      Input      : String;
+      Normalized : String;
+      Consumed   : Natural := 0;
+      Exact      : Boolean := True)
+      return Humanize.Status.Text_Result;
+   --  @param Family Successful parse explanation family.
+   --  @param Input Caller-supplied input text.
+   --  @param Normalized Normalized parsed value label.
+   --  @param Consumed Consumed input length, or zero to use Input length.
+   --  @param Exact Whether the parse was exact.
+   --  @return Human-readable successful parse explanation.
+
+   function Parse_Success_Explanation_Label
+     (Text : String)
+      return Parse_Success_Explanation;
+   --  @param Text Label rendered by Parse_Success_Explanation_Label.
+   --  @return Parsed successful-parse explanation spans.
+
+   function Scan_Success_Explanation_Label
+     (Text : String)
+      return Parse_Success_Explanation;
+   --  @param Text Text beginning with a successful parse explanation.
+   --  @return Parsed successful-parse explanation prefix.
+
+   function Byte_Parse_Success_Label
+     (Input  : String;
+      Result : Byte_Parse_Result)
+      return Humanize.Status.Text_Result;
+   --  @param Input Caller-supplied byte-size input text.
+   --  @param Result Successful byte parse result.
+   --  @return Human-readable byte parse explanation.
+
+   function Duration_Parse_Success_Label
+     (Input  : String;
+      Result : Duration_Parse_Result)
+      return Humanize.Status.Text_Result;
+   --  @param Input Caller-supplied duration input text.
+   --  @param Result Successful duration parse result.
+   --  @return Human-readable duration parse explanation.
+
+   function Number_Parse_Success_Label
+     (Input  : String;
+      Result : Number_Parse_Result)
+      return Humanize.Status.Text_Result;
+   --  @param Input Caller-supplied number input text.
+   --  @param Result Successful number parse result.
+   --  @return Human-readable number parse explanation.
+
+   function Unit_Parse_Success_Label
+     (Input  : String;
+      Result : Unit_Parse_Result)
+      return Humanize.Status.Text_Result;
+   --  @param Input Caller-supplied unit input text.
+   --  @param Result Successful unit parse result.
+   --  @return Human-readable unit parse explanation.
+
+   function Scheduling_Parse_Success_Label
+     (Input  : String;
+      Result : Scheduling_Phrase_Result)
+      return Humanize.Status.Text_Result;
+   --  @param Input Caller-supplied scheduling phrase.
+   --  @param Result Successful scheduling phrase classification.
+   --  @return Human-readable scheduling parse explanation.
+
+   procedure Scheduling_Phrase_Label_Into
+     (Result  : Scheduling_Phrase_Result;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code);
+   --  @param Result Scheduling phrase classification result.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Parse_Success_Explanation_Label_Into
+     (Family     : Parse_Value_Family;
+      Input      : String;
+      Normalized : String;
+      Target     : in out String;
+      Written    : out Natural;
+      Status     : out Humanize.Status.Status_Code;
+      Consumed   : Natural := 0;
+      Exact      : Boolean := True);
+   --  @param Family Successful parse explanation family.
+   --  @param Input Caller-supplied input text.
+   --  @param Normalized Normalized parsed value label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Consumed Consumed input length, or zero to use Input length.
+   --  @param Exact Whether the parse was exact.
 
 end Humanize.Parsing;

@@ -1,0 +1,45 @@
+# Structural baseline for large implementation bodies.
+# The policy checker validates these limits and split inventories so large
+# compatibility backends do not silently grow back into unbounded monoliths.
+
+[[body]]
+path = "src/humanize-colors-support-backend.adb"
+max_bytes = 95000
+split_prefix = "src/humanize-colors-support-backend-"
+min_split_bodies = 18
+usecase = "CSS parsing, palette, accessibility, color-space conversion, and bounded color rendering backend."
+
+[[body]]
+path = "src/humanize-strings-support-backend.adb"
+max_bytes = 93000
+split_prefix = "src/humanize-strings-support-backend-"
+min_split_bodies = 21
+usecase = "Text display, editing, names, paths, prose, metadata, and terminal rendering backend."
+
+[[body]]
+path = "src/humanize-datetimes-support.adb"
+max_bytes = 83000
+split_prefix = "src/humanize-datetimes-support-"
+min_split_bodies = 1
+usecase = "Relative date/time and calendar helper backend."
+
+[[body]]
+path = "src/humanize-cross_domain-support.adb"
+max_bytes = 75000
+split_prefix = "src/humanize-cross_domain-support-"
+min_split_bodies = 2
+usecase = "Cross-domain technical label backend with checksum/product-code subunits."
+
+[[body]]
+path = "src/humanize-domain_details-support.adb"
+max_bytes = 73000
+split_prefix = "src/humanize-domain_details-support-"
+min_split_bodies = 1
+usecase = "Domain-detail metadata and parsing support backend."
+
+[[body]]
+path = "check_humanize/src/check_humanize_policy.adb"
+max_bytes = 90000
+split_prefix = "check_humanize/src/check_humanize_policy-"
+min_split_bodies = 0
+usecase = "Tooling-only policy checks, including API index, coverage scorecard, generated-data, examples, performance, and domain consistency guardrails. Future growth should move to focused helper units before this budget is raised again."

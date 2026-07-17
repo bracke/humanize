@@ -1,0 +1,468 @@
+# Machine-readable public API allowlist for Humanize.
+# `humanize.gpr` Library_Interface and docs/API_SURFACE.md must stay aligned
+# with these units.
+
+[[unit]]
+name = "Humanize"
+spec = "src/humanize.ads"
+area = "root"
+
+[[unit]]
+name = "Humanize.Status"
+spec = "src/humanize-status.ads"
+area = "core"
+
+[[unit]]
+name = "Humanize.Messages"
+spec = "src/humanize-messages.ads"
+area = "core"
+
+[[unit]]
+name = "Humanize.Contexts"
+spec = "src/humanize-contexts.ads"
+area = "core"
+
+[[unit]]
+name = "Humanize.Locales"
+spec = "src/humanize-locales.ads"
+area = "core"
+
+[[unit]]
+name = "Humanize.Catalogs"
+spec = "src/humanize-catalogs.ads"
+area = "core"
+
+[[unit]]
+name = "Humanize.Capabilities"
+spec = "src/humanize-capabilities.ads"
+area = "core"
+
+[[unit]]
+name = "Humanize.Styles"
+spec = "src/humanize-styles.ads"
+area = "core"
+
+[[unit]]
+name = "Humanize.Bounded_Text"
+spec = "src/humanize-bounded_text.ads"
+area = "core"
+
+[[unit]]
+name = "Humanize.Datetimes"
+spec = "src/humanize-datetimes.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Durations"
+spec = "src/humanize-durations.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Durations.Formatting"
+spec = "src/humanize-durations-formatting.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Durations.Natural"
+spec = "src/humanize-durations-natural.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Durations.Schedules"
+spec = "src/humanize-durations-schedules.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Bytes"
+spec = "src/humanize-bytes.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Colors"
+spec = "src/humanize-colors.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Colors.CSS"
+spec = "src/humanize-colors-css.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Colors.Contrast"
+spec = "src/humanize-colors-contrast.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Colors.Models"
+spec = "src/humanize-colors-models.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Colors.Names"
+spec = "src/humanize-colors-names.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Colors.Palettes"
+spec = "src/humanize-colors-palettes.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Numbers"
+spec = "src/humanize-numbers.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Units"
+spec = "src/humanize-units.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Lists"
+spec = "src/humanize-lists.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Frequencies"
+spec = "src/humanize-frequencies.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Rates"
+spec = "src/humanize-rates.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings"
+spec = "src/humanize-strings.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Core"
+spec = "src/humanize-strings-core.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Display"
+spec = "src/humanize-strings-display.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Editing"
+spec = "src/humanize-strings-editing.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Identifiers"
+spec = "src/humanize-strings-identifiers.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Inflections"
+spec = "src/humanize-strings-inflections.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Markup"
+spec = "src/humanize-strings-markup.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Metadata"
+spec = "src/humanize-strings-metadata.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Metrics"
+spec = "src/humanize-strings-metrics.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Names"
+spec = "src/humanize-strings-names.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Paths"
+spec = "src/humanize-strings-paths.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Privacy"
+spec = "src/humanize-strings-privacy.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Prose"
+spec = "src/humanize-strings-prose.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Terminal"
+spec = "src/humanize-strings-terminal.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Types"
+spec = "src/humanize-strings-types.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Values"
+spec = "src/humanize-values.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Parsing"
+spec = "src/humanize-parsing.ads"
+area = "parsing"
+
+[[unit]]
+name = "Humanize.Parsing.Results"
+spec = "src/humanize-parsing-results.ads"
+area = "parsing"
+
+[[unit]]
+name = "Humanize.Parsing.Colors"
+spec = "src/humanize-parsing-colors.ads"
+area = "parsing"
+
+[[unit]]
+name = "Humanize.Parsing.Date_Times"
+spec = "src/humanize-parsing-date_times.ads"
+area = "parsing"
+
+[[unit]]
+name = "Humanize.Parsing.Domain_Labels"
+spec = "src/humanize-parsing-domain_labels.ads"
+area = "parsing"
+
+[[unit]]
+name = "Humanize.Parsing.Durations"
+spec = "src/humanize-parsing-durations.ads"
+area = "parsing"
+
+[[unit]]
+name = "Humanize.Parsing.Numbers"
+spec = "src/humanize-parsing-numbers.ads"
+area = "parsing"
+
+[[unit]]
+name = "Humanize.Parsing.Strings"
+spec = "src/humanize-parsing-strings.ads"
+area = "parsing"
+
+[[unit]]
+name = "Humanize.Parsing.Units"
+spec = "src/humanize-parsing-units.ads"
+area = "parsing"
+
+[[unit]]
+name = "Humanize.Phrases"
+spec = "src/humanize-phrases.ads"
+area = "phrases"
+
+[[unit]]
+name = "Humanize.Phrases.Fields"
+spec = "src/humanize-phrases-fields.ads"
+area = "phrases"
+
+[[unit]]
+name = "Humanize.Phrases.Keys"
+spec = "src/humanize-phrases-keys.ads"
+area = "phrases"
+
+[[unit]]
+name = "Humanize.Phrases.Locales"
+spec = "src/humanize-phrases-locales.ads"
+area = "phrases"
+
+[[unit]]
+name = "Humanize.Phrases.Severity"
+spec = "src/humanize-phrases-severity.ads"
+area = "phrases"
+
+[[unit]]
+name = "Humanize.Phrases.Statuses"
+spec = "src/humanize-phrases-statuses.ads"
+area = "phrases"
+
+[[unit]]
+name = "Humanize.Phrases.Summaries"
+spec = "src/humanize-phrases-summaries.ads"
+area = "phrases"
+
+[[unit]]
+name = "Humanize.Endpoints"
+spec = "src/humanize-endpoints.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Resources"
+spec = "src/humanize-resources.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Versions"
+spec = "src/humanize-versions.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Geo"
+spec = "src/humanize-geo.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Markup"
+spec = "src/humanize-markup.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Secrets"
+spec = "src/humanize-secrets.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Schema"
+spec = "src/humanize-schema.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Diagnostics"
+spec = "src/humanize-diagnostics.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Thresholds"
+spec = "src/humanize-thresholds.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Workflows"
+spec = "src/humanize-workflows.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Changes"
+spec = "src/humanize-changes.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Tables"
+spec = "src/humanize-tables.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Forms"
+spec = "src/humanize-forms.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Navigation"
+spec = "src/humanize-navigation.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Badges"
+spec = "src/humanize-badges.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Notifications"
+spec = "src/humanize-notifications.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Search"
+spec = "src/humanize-search.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Comments"
+spec = "src/humanize-comments.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Tasks"
+spec = "src/humanize-tasks.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Attachments"
+spec = "src/humanize-attachments.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Events"
+spec = "src/humanize-events.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Payments"
+spec = "src/humanize-payments.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.System_Status"
+spec = "src/humanize-system_status.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Operations"
+spec = "src/humanize-operations.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Comparisons"
+spec = "src/humanize-comparisons.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Cross_Domain"
+spec = "src/humanize-cross_domain.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Moderation"
+spec = "src/humanize-moderation.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Accounts"
+spec = "src/humanize-accounts.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Deployments"
+spec = "src/humanize-deployments.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Data_Quality"
+spec = "src/humanize-data_quality.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Media"
+spec = "src/humanize-media.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Notification_Preferences"
+spec = "src/humanize-notification_preferences.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Permissions"
+spec = "src/humanize-permissions.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Builds"
+spec = "src/humanize-builds.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Domain_Details"
+spec = "src/humanize-domain_details.ads"
+area = "domain"

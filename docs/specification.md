@@ -46,6 +46,93 @@ Humanize 0.5.0 supports:
   operational counts, states, and failure totals;
 * deterministic file-size, civil-date, absolute-number, and relative-percent
   comparison summaries;
+* deterministic typed operations, tolerance/baseline comparisons, moderation,
+  account/session, deployment, data-quality, media/document,
+  notification-preference, permission, and build/test labels;
+* deterministic coordinate, bearing, compass direction, distance-with-bearing,
+  bounding-box, and inside/outside labels for maps, logistics, weather,
+  asset-tracking, and location-aware dashboards;
+* deterministic markup tag, attribute, MIME/content-type, heading, landmark,
+  tag-count, attribute-count, and document-outline labels for documentation
+  tools, crawlers, accessibility reports, CMS previews, and diagnostics;
+* deterministic secret, token, credential, environment-secret,
+  header-credential, fingerprint, inventory-count, exposure-policy,
+  credential-source, rotation-status, and safe masking labels for CLIs,
+  dashboards, audit logs, and admin screens;
+* deterministic schema field, type, required/optional, nullable,
+  deprecated/unknown, array/object/data-shape, constraint, enum-option,
+  default/example-value, source/version, missing-required, type-mismatch, and
+  schema-summary labels for API docs, config UIs, inspectors, and data tooling;
+* deterministic severity, check-status, diagnostic-source, issue-count,
+  issue-summary, check-run, location, failed-at, first-failure, check-result,
+  duration, retry, suggested-action, affected-item, field-problem,
+  result-with-notices, diagnostic-message, and source-summary labels for build
+  tools, linters, test runners, import jobs, and form processors;
+* deterministic metric value, range/window, in-range/out-of-range,
+  warning/critical threshold, breach, target-delta, near-limit, and
+  target-window, tolerance, percent-of-limit, remaining-to-limit, budget-used,
+  and threshold-summary labels for observability, budgets, quotas, sensors, and
+  dashboards;
+* deterministic workflow state, step, step-state, milestone, milestone-state,
+  progress, summary, approval, blocker, next-action, queue-position, waiting,
+  owner, handoff, dependency, attempt, result, and resume labels for
+  installers, onboarding flows, CI pipelines, imports, and task trackers;
+* deterministic change-kind, change-severity, change-set, change-summary,
+  item-change, rename, move, field-change, metadata-only, conflict,
+  sync-change, net-change, patch-size, and review-progress labels for diff
+  viewers, release notes, audit logs, review UIs, sync tools, and
+  config-change summaries;
+* deterministic row-count, column-count, table-size, selection, sort,
+  column-role, cell-position, cell-state, page, filter, row-range, group, and
+  subtotal labels for reports, data grids, admin tables, exports, and review
+  screens;
+* deterministic form-state, input-state, field, field-state, character-count,
+  character-limit, required-field, form-progress, unsaved-change, submission,
+  section-progress, form-step, and form-issue labels for forms, settings
+  screens, wizards, and data-entry flows;
+* deterministic navigation-state, navigation-kind, item, current-page,
+  breadcrumb, tab, menu, submenu, external-link, skip-link, back, next, first,
+  last, and section-state labels for menus, settings pages, documentation,
+  dashboards, and accessibility surfaces;
+* deterministic badge-tone, badge-state, badge-priority, badge, count-badge,
+  status-badge, tag, tag-count, chip, dismiss, new, updated, deprecated,
+  overflow, and priority-badge labels for compact UI indicators, filters,
+  labels, chips, and status badges;
+* deterministic notification-channel, notification-state, delivery-state,
+  event, new-event, event-count, count, unread, inbox, notification, delivery,
+  delivery-time, actor-event, muted, snoozed, digest, suppressed,
+  delivery-attempt, group, and mark-read/unread labels for notification
+  centers, inboxes, activity feeds, alerting UIs, and messaging dashboards;
+* deterministic search-state, filter-state, sort-mode, query, result-count,
+  result-summary, no-results, active-filter-count, filter, facet, facet-value,
+  sort, clear-filter, scope, suggestion, recent-search, saved-search, and
+  search-history labels for search pages, filtered lists, faceted browsers,
+  command palettes, documentation search, and admin dashboards;
+* deterministic comment-state, thread-state, reaction-kind, comment-count,
+  reply-count, thread-count, comment, thread, author-action, edited, deleted,
+  resolved, reaction, participant-count, mention, subscribe, unsubscribe, pin,
+  unpin, lock-thread, and hide-comment labels for comments, review
+  threads, discussion panels, collaboration feeds, and moderation UIs;
+* deterministic task-state, priority, assignment-state, task-count,
+  open/completed counts, task, assignment, due, overdue, checklist, blocker,
+  subtask, complete, reopen, estimate, recurring-task, backlog, and sprint
+  labels for todo lists, issue trackers, project boards, checklists, and
+  personal task managers;
+* deterministic attachment-state, attachment-kind, scan-state, count,
+  attachment, upload-progress, size, preview, download, remove, scan-result,
+  upload-error, group, image-dimensions, and expiring-link labels for upload
+  forms, message attachments, content libraries, review tools, and moderation
+  screens;
+* deterministic event-state, attendance-state, visibility, event-count, event,
+  event-time, event-location, attendee-count, capacity, RSVP, reminder,
+  canceled, rescheduled, waitlist, organizer, conference-link, check-in, and
+  all-day labels for calendars, invitations, booking forms, schedules, and
+  meeting dashboards;
+* deterministic payment-state, invoice-state, payment-method, payment-count,
+  invoice-count, amount, payment, invoice, due, paid, refund, method, receipt,
+  balance, tax, subtotal, total, discount, chargeback, and payment-link labels
+  for billing screens, checkout flows, invoices, receipts, and finance
+  dashboards;
 * deterministic string helpers for truncation, UTF-8 boundary-safe truncation
   and counting, grapheme-cluster-safe counting, width estimation, truncation,
   and slicing, Unicode-aware text metrics, capitalization, configurable title
@@ -131,6 +218,30 @@ Humanize.Lists
 Humanize.Frequencies
 Humanize.Rates
 Humanize.Strings
+Humanize.Values
+Humanize.Endpoints
+Humanize.Resources
+Humanize.Versions
+Humanize.Geo
+Humanize.Markup
+Humanize.Secrets
+Humanize.Schema
+Humanize.Diagnostics
+Humanize.Thresholds
+Humanize.Workflows
+Humanize.Changes
+Humanize.Tables
+Humanize.Forms
+Humanize.Navigation
+Humanize.Badges
+Humanize.Notifications
+Humanize.Search
+Humanize.Comments
+Humanize.Tasks
+Humanize.Attachments
+Humanize.Events
+Humanize.Payments
+Humanize.System_Status
 Humanize.Parsing
 Humanize.Styles
 Humanize.Phrases
@@ -244,12 +355,23 @@ catalog key.
 caller-owned `I18N.Runtime.Instance` and a locale identifier. The runtime must
 outlive every context that references it.
 
+`Humanize.Locales` defines neutral locale-code access and array metadata types,
+plus shipped base, regional, and all-locale support-list APIs. It also exposes
+case-normalizing predicates for base shipped locales, regional fallback aliases,
+and any shipped locale tag so callers can gate Humanize coverage without
+duplicating the support-list walk. `Canonical_Shipped_Locale` returns the exact
+canonical shipped tag for accepted base and regional inputs, or `""` for
+unshipped tags. It has no dependency on catalog loading or `i18n` runtime units.
+
 `Humanize.Capabilities` defines stable area labels, rendering-source metadata,
 and locale-behavior metadata. Rendering-source metadata distinguishes
 catalog-rendered output from Humanize-owned deterministic text. Locale behavior
 metadata further distinguishes catalog-localized areas, deterministic
 locale-aware areas, deterministic English/structural areas, and mixed areas
 that combine catalog output with deterministic labels or fallbacks.
+Feature-support metadata reports whether each public area exposes bounded APIs,
+option records, parse helpers, scan helpers, stable metadata, accessible output
+mode, and cross-domain composition helpers.
 
 `Humanize.Catalogs.Load_Defaults` loads the built-in catalog fragments into a
 caller-owned `i18n` runtime using `I18N.Runtime.Load_Text` and the caller's
@@ -435,6 +557,8 @@ forms for callers that need no allocation.
 `Spellout_Coverage` reports the deterministic Humanize-owned spellout scope;
 `Spellout_Locale_Tier_For` reports whether a context uses English, hand-written
 native-locale, generated-locale, or English-fallback deterministic spellout.
+The tier decision uses the normalized language subtag, so generated spellout
+locales keep their tier for case-varied and region-tagged contexts.
 Open-ended CLDR-grade spellout remains i18n territory.
 
 `Humanize.Units` provides `Format` and `Format_Into` for meter, kilometer,
@@ -468,12 +592,16 @@ native or domain-appropriate built-in labels across all shipped locales.
 `Validation_Summary`, `Field_Problem_Summary`, `Selection_Count`,
 `Remaining_Count`, `Position_Count`, `All_Count`, `None_Count`, `Result_Count`,
 `Showing_Count`, `Page_Count`, `More_Count`, `Others_Count`,
-`Selection_Summary`, `Filtered_Count`, `Pagination_Range`, and
-`Collection_Display` for
+`Selection_Summary`, `Filtered_Count`, `Pagination_Range`,
+`Collection_Display`, `Collection_Count_Label`, `Collection_Summary`,
+`Empty_Collection_Label`, `Page_Position_Label`, `Page_Range_Label`,
+`Page_Navigation_Label`, and `Page_Size_Label` for
 human-readable conjunction/disjunction lists, optional Oxford-comma punctuation,
 counted noun phrases, validation/error summaries, "N others" tails, and
 deterministic filtered-count, compact, summary, or screen-reader
-collection/page summaries.
+collection/page summaries. The validated page helpers report impossible page
+positions or item ranges as invalid arguments while preserving the historical
+unvalidated count helpers for compatibility.
 Counted noun options cover numeric, small-word, compact, and article counts,
 zero wording, noun omission, compact thresholds, and deterministic noun-source
 metadata. Validation summary options cover error/warning/notice severity,
@@ -535,13 +663,169 @@ Terminal layout helpers include fixed display-width key/value rows and two- or
 three-column rows that honor ANSI-aware display width before bounded copying.
 Each helper has a direct bounded `*_Into` wrapper where output is produced.
 
+`Humanize.Values` provides deterministic semantic labels for Boolean and
+three-state values. Boolean label styles cover true/false, yes/no, on/off,
+enabled/disabled, active/inactive, availability, visibility, permission,
+pass/fail, health, validity, completion, open/closed, and locked/unlocked
+surfaces. Ternary label styles cover unknown, auto, unset, absent, skipped,
+pending, and mixed states for caller-owned optional, inherited, aggregate, or
+not-yet-evaluated values. `Boolean_Label_Style_Label` and
+`Ternary_Label_Style_Label` expose stable style labels for UIs and diagnostics.
+The package is deterministic English/structural text and does not import
+catalog loading or `i18n` runtime units. Each formatter has a bounded
+`*_Into` wrapper.
+
+`Humanize.Endpoints` provides deterministic display helpers for URL-like text,
+hosts, endpoints, IP addresses, and CIDR-like network prefixes. It classifies
+hosts as domain, IPv4, IPv6, localhost, private-network, or unknown values.
+`URL_Label` performs conservative URL-like parsing for scheme, userinfo, host,
+port, path, query, and fragment display, redacts userinfo by default, summarizes
+query strings by parameter count, and can omit common default ports. Endpoint
+labels combine host, optional port, optional scheme, and host category for
+diagnostic surfaces. IP and CIDR labels provide public/private/local category
+text for common IPv4, IPv6, and private-network forms. The package is
+deterministic English/structural text; it does not resolve DNS, open sockets,
+validate certificates, apply public-suffix rules, or implement full RFC URL/IP
+validation. Public helpers return `Text_Result`, and display helpers have
+bounded `*_Into` wrappers.
+
+`Humanize.Resources` provides deterministic labels for caller-supplied resource
+counts and utilization percentages. It classifies utilization into empty, low,
+normal, high, critical, full, and over-limit bands using caller-configurable
+thresholds. `Utilization_Label` renders `used of total` summaries with
+percentage and band text. `Remaining_Label` renders remaining capacity or
+over-capacity text. `Quota_Label` renders available, near-limit, and exceeded
+quota states with remaining or overage counts. `Availability_Label` renders
+replica/node/service availability counts, including fully available, partially
+available, and none-available cases. `Cache_Hit_Rate_Label` renders hit/miss
+counts and percentage, and `Saturation_Label` turns an already computed
+percentage into a named resource saturation label. The package does not collect
+metrics, format byte units, or decide monitoring policy beyond caller-supplied
+thresholds. Public helpers return `Text_Result`, and the core display helpers
+have bounded `*_Into` wrappers.
+
+`Humanize.Versions` provides deterministic labels for SemVer-like version text,
+release type, version deltas, simple compatibility ranges, and repository
+commit distance. `Parse_Semver` extracts major, minor, patch, prerelease, and
+build metadata from common `v1.2.3-alpha+build` style input. `Version_Label`
+renders normalized version text with prerelease/build annotations.
+`Version_Delta` and `Version_Delta_Label` classify same-version, major, minor,
+patch, prerelease, build-metadata, and downgrade changes. Compatibility range
+helpers render common display forms such as exact versions, `>=` minimums, `<=`
+maximums, caret-style major compatibility, `~>` minor compatibility, and simple
+between-range text. `Release_Label` classifies major, minor, patch,
+prerelease, and initial-development releases, and `Commit_Distance_Label`
+renders ahead/behind/diverged repository distance. The package does not resolve
+dependencies, evaluate solver constraints, compare prerelease ordering beyond
+label changes, or implement package-manager-specific range semantics. Core
+formatters have bounded `*_Into` wrappers.
+
+`Humanize.System_Status` provides deterministic labels for machine status values
+that commonly appear in logs, CLIs, dashboards, and diagnostic messages. HTTP
+helpers classify status codes into informational, successful, redirection,
+client-error, and server-error families and label the standard status reason
+phrases, with an `unknown status` fallback for valid unassigned codes. Errno
+helpers label common POSIX-style error values, including permission, missing
+file, invalid argument, space exhaustion, broken pipe, address-in-use, timeout,
+and connection-refused cases, with generic `errno N unknown error` fallback
+text. Process-exit helpers label portable shell exit statuses and interpret
+128-plus-signal exits through the signal label table. Signal helpers label
+common POSIX signal numbers, and SQLSTATE helpers label common two-character
+SQLSTATE classes. Operational helpers label service availability, aggregate
+health, readiness/lifecycle state, component runtime state, status-check state,
+and incident lifecycle state for status pages and observability dashboards.
+Composed labels cover service status, health, readiness, component status,
+check status, incidents, component/check/incident counts, uptime, latency,
+maintenance windows, and last-checked text. The package is deterministic
+English/structural text and does not implement networking, monitoring,
+database, shell, or OS APIs. Each formatter has a bounded `*_Into` wrapper.
+
+`Humanize.Operations` provides deterministic labels for operational lifecycle
+states, known-total and unknown-total progress, failed/skipped/retried/canceled
+tails, last-success timestamps, next-retry timestamps, and stale-run labels.
+Known-total progress summaries have detailed, compact, accessibility, and log
+output options, plus parse and scan helpers for the deterministic forms emitted
+by the package. It is intended for queue monitors, background jobs,
+sync/import/export dashboards, operational CLIs, and status panels.
+
+`Humanize.Comparisons` provides deterministic labels for improvement,
+regression, unchanged, tolerance, missing-baseline, new, removed, and
+multi-value comparison states. Multi-value summaries have detailed, compact,
+and log output options, plus parse and scan helpers for deterministic count
+summaries. It is intended for dashboards, benchmark reports, release notes,
+audits, storage reports, and change summaries where the caller already owns the
+measured values and Humanize owns the display wording.
+
+`Humanize.Moderation` provides deterministic labels for review states,
+moderation actions, report lifecycle, moderation queues, and appeals. It is
+intended for CMS review queues, marketplace moderation, comment moderation,
+issue triage, and admin tools.
+
+`Humanize.Accounts` provides deterministic labels for account states, sessions,
+MFA state, device trust, last-active text, and login attempts. Account and
+session labels provide detailed, compact, accessible, and log-style output
+options, stable state metadata, option-aware bounded wrappers, and parse/scan
+helpers for labels emitted by the package. It is intended for identity
+settings, admin consoles, audit logs, and access dashboards.
+
+`Humanize.Deployments` provides deterministic labels for deployment lifecycle,
+environment state, migration state, artifact state, rollouts, promotions, and
+rollbacks. Deployment labels provide detailed, compact, accessible, and
+log-style output options, stable deployment-state metadata, option-aware
+bounded wrappers, and parse/scan helpers for labels emitted by the package. It
+is intended for CI/CD dashboards, release tools, and deployment history screens.
+
+`Humanize.Data_Quality` provides deterministic labels for row and record
+issues, duplicate records, missing columns, unknown fields, schema mismatches,
+skipped records, dry-run checks, source-file issues, and import results. It is
+intended for CSV importers, ETL tools, bulk editors, and API ingestion UIs.
+
+`Humanize.Media` provides deterministic labels for media/document kinds,
+processing states, thumbnail and metadata problems, resolution, duration,
+document page counts, and combined media summaries. Media summaries provide
+detailed, compact, accessible, and log-style output options, stable media-state
+metadata, option-aware bounded wrappers, and parse/scan helpers for labels
+emitted by the package. It is intended for upload previews, asset libraries,
+CMS tools, and document workflows.
+
+`Humanize.Notification_Preferences` provides deterministic labels for
+notification preference states, digest schedules, alert levels, subscription
+scopes, channel preferences, quiet hours, and subscriptions. It is intended for
+notification settings, digest controls, team subscriptions, and alerting UIs.
+
+`Humanize.Permissions` provides deterministic labels for roles, permission
+states, policy results, grants, revokes, inherited or temporary access, access
+expiry, and approval-required states. It is intended for admin screens, access
+reviews, policy explanations, and audit logs.
+Permission labels provide detailed, compact, accessible, and log-style output
+options, stable permission-state metadata, option-aware bounded wrappers, and
+parse/scan helpers for labels emitted by the package.
+
+`Humanize.Builds` provides deterministic labels for test states, build states,
+artifact states, release gate states, test counts, coverage, benchmarks, and
+build summaries. Build labels provide detailed, compact, accessible, and
+log-style output options, stable test/build/gate metadata, option-aware bounded
+wrappers, and parse/scan helpers for labels emitted by the package. It is
+intended for CI output, test dashboards, package pipelines, benchmark reports,
+and release gates.
+
+`Humanize.Domain_Details` provides shared output modes, severity and tone
+metadata, state metadata inference, structured render results, accessible text
+normalization, named cross-domain summary composition, full typed domain-surface
+labels, metadata/body parsing, and common named-label parse/scan helpers for
+the typed deterministic domain packages. It is intended for callers that need
+the same domain label to render differently in compact tables, detailed panels,
+logs, and assistive-technology output while preserving stable machine metadata.
+
 `Humanize.Parsing` provides `Parse_Bytes`, `Scan_Bytes`, `Parse_Duration`,
 `Scan_Duration`, `Parse_Lenient_Duration`, `Scan_Lenient_Duration`,
 `Parse_Precise_Duration`, `Scan_Precise_Duration`,
 `Parse_Compact_Number`, `Scan_Compact_Number`, `Parse_Bounded_Number`,
 `Scan_Bounded_Number`, `Parse_Frequency`, `Scan_Frequency`, `Parse_Rate`,
-`Scan_Rate`, `Parse_List`, `Scan_List`, `Parse_Percent`, `Scan_Percent`,
-`Parse_Ordinal`, `Scan_Ordinal`, `Parse_Cardinal`, `Scan_Cardinal`,
+`Scan_Rate`, `Parse_Boolean_Label`, `Scan_Boolean_Label`,
+`Parse_Ternary_Label`, `Scan_Ternary_Label`, `Parse_List`, `Scan_List`,
+`Parse_Percent`, `Scan_Percent`, `Parse_Ordinal`, `Scan_Ordinal`,
+`Parse_Cardinal`, `Scan_Cardinal`,
 `Parse_Unit`, `Scan_Unit`, `Parse_Aspect_Ratio`, `Scan_Aspect_Ratio`,
 `Parse_CSS_Length`, `Scan_CSS_Length`, `Parse_Duration_Range`,
 `Scan_Duration_Range`, `Parse_Countdown`, `Parse_SLA_Window`, `Parse_Age`,
@@ -685,10 +969,22 @@ an error position for parser failures where available, and a stable
 `Parse_Error_Kind` diagnostic category when the parser can identify the
 failure. `Diagnostic` maps status/error-position pairs into fallback
 categories, and its three-argument overload preserves parser-supplied
-diagnostics;
+diagnostics. Strict `Parse_*` entry points are whole-input contracts: successful
+results consume the full accepted form or return a non-OK status. `Scan_*`
+entry points are prefix contracts: they may return success after consuming a
+valid leading form and leave the caller to process the remaining text.
+Malformed representative input should not report `No_Parse_Error` when a
+specific category applies; empty input reports `Empty_Input`, missing numeric
+heads report `Expected_Number`, missing separators report `Expected_Separator`,
+unknown or missing units report `Expected_Unit`, unsupported but recognizable
+phrases report `Unsupported_Form`, and numeric conversion failures report
+`Out_Of_Range` through an `Invalid_Value` status where applicable.
 `Diagnostic_Label` and `Diagnostic_Message` expose deterministic user-facing
 diagnostic text. These APIs parse deterministic unit suffixes, aliases, and
 separators; they do not inspect private `i18n` locale data.
+Boolean and ternary label parsers return both the parsed value and the
+matching semantic label style, so callers can round-trip UI/config/status
+surfaces emitted by `Humanize.Values`.
 Operational parser symmetry covers payment lifecycle, incident, release,
 feature-flag, backup, quota, API key, webhook, audit, invoice, and
 database phrase output with domain/state metadata. Field-change summary parsing
@@ -712,10 +1008,17 @@ collaboration, issue, task, CI/CD, support-ticket, payment lifecycle, backup,
 incident, release, audit, feature-flag, webhook, API-key, quota, invoice,
 database/storage, and
 permission phrases. Phrase enum packs have Humanize-owned text for the shipped
-locale prefixes reported by `Supported_Phrase_Locales`, with hand-written
-English/German/French text, reviewed native-orthography Latin text for the
-reviewed Latin catalog prefixes, and reviewed native-script text for the
-remaining shipped native-script prefixes. It also provides generic operational
+locale prefixes reported by `Phrase_Locales` and `Supported_Phrase_Locales`.
+This phrase-locale list is intentionally narrower than
+`Humanize.Locales.Shipped_Locales`: it contains the base locale prefixes whose
+phrase packs have Humanize-owned text, while the catalog list covers all shipped
+runtime messages. English, German, and French use hand-written phrase text;
+the remaining phrase locales use generated-source native-orthography or
+native-script phrase text. `Generated_Phrase_Locales` reports that generated
+subset directly. `Is_Supported_Phrase_Locale` and
+`Is_Generated_Phrase_Locale` expose the same phrase-pack boundaries for tooling,
+tests, and callers that need to gate phrase rendering by locale. It also
+provides generic operational
 summaries for
 queue/job/run/cache/sync/import/export counts, states, and failure totals.
 Backup, incident, release, audit, feature-flag, webhook, API-key, quota,
@@ -741,13 +1044,33 @@ en da de fr es it pt nl sv no nb fi pl cs tr ro lt sl id ms eo vi sw af hu sk ru
 
 Region-tagged contexts such as `sv-SE`, `nb-NO`, `ja-JP`, and `ar-EG` resolve
 through `i18n` locale fallback to those base fragments.
+`Humanize.Locales` supplies the neutral locale-code array types and shipped
+locale lists used by catalog, parsing, number, and phrase metadata without
+making deterministic metadata depend on catalog loading. `Shipped_Locales` is
+the base-locale list,
+`Regional_Shipped_Locales` is the regional fallback-alias list, and
+`All_Shipped_Locales` is the complete shipped-tag list for coverage checks and
+callers that need to audit every accepted shipped locale tag. `Humanize.Catalogs`
+re-exports those lists and the shipped-locale predicates for compatibility with
+catalog callers. `Is_Base_Shipped_Locale` accepts only base tags such as `en`;
+`Is_Regional_Shipped_Locale` accepts declared regional aliases such as `sv-SE`
+with case and `_` separator normalization; `Is_Shipped_Locale` accepts either
+category. `Canonical_Shipped_Locale` applies the same recognition rules and
+returns the exact shipped spelling, so `SV_se` canonicalizes to `sv-SE` while
+`sv-FI` returns `""`. `Base_Locale` returns the normalized lowercase base
+language subtag before either `-` or `_`, matching `Language_Code` for locale
+tags used by Humanize. `Region_Code` returns the normalized regional subtag
+when one is present. `Locale_Prefix` is retained for compatibility with older
+two-character-prefix callers and lowercases the returned prefix. Language-family
+predicates such as `Is_Norwegian` and `Is_CJK` classify by normalized language
+subtag, so `NB_no`, `ja-JP`, and `zh_CN` are treated like their base tags.
 
 Native-script fragments avoid Latin fallback for the core Humanize date,
 duration, compact-number, unit, frequency, rate, and list words, with long-form
 wording for the broad engineering-unit tail.
 
-Every non-`No_Message` `Message_Id` must resolve in every shipped locale after
-`Humanize.Catalogs.Load_Defaults`.
+Every non-`No_Message` `Message_Id` must resolve for every tag returned by
+`Humanize.Locales.All_Shipped_Locales` after `Humanize.Catalogs.Load_Defaults`.
 
 Catalog strings are in source constants and are loaded through the public
 `I18N.Runtime.Load_Text` API. Humanize does not parse catalog messages itself and

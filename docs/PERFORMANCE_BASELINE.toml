@@ -1,0 +1,60 @@
+# Loose performance smoke baseline for common Humanize paths.
+# This is intentionally not a benchmark suite; it catches pathological
+# slowdowns while remaining stable across normal developer machines.
+
+[perf_smoke]
+executable = "tests/src/perf_smoke.adb"
+iterations = 2000
+max_seconds = 30.0
+paths = [
+  "Humanize.Bytes.Format",
+  "Humanize.Durations.Format",
+  "Humanize.Numbers.Compact",
+  "Humanize.Parsing.Parse_Bytes",
+  "Humanize.Parsing.Parse_Duration",
+  "Humanize.Parsing.Parse_Cardinal",
+  "Humanize.Strings.Title_Case_Smart",
+  "Humanize.Strings.Truncate_Words",
+  "Humanize.Colors.CSS.CSS_Color_Label",
+  "Humanize.System_Status.HTTP_Status_Label",
+  "Humanize.Operations.Progress_Summary",
+  "Humanize.Diagnostics.Issue_Summary_Label",
+  "Humanize.Search.Search_Result_Summary_Label"
+]
+
+[perf_smoke.formatting]
+iterations = 2000
+max_seconds = 12.0
+paths = [
+  "Humanize.Bytes.Format",
+  "Humanize.Durations.Format",
+  "Humanize.Numbers.Compact"
+]
+
+[perf_smoke.parsing]
+iterations = 2000
+max_seconds = 18.0
+paths = [
+  "Humanize.Parsing.Parse_Bytes",
+  "Humanize.Parsing.Parse_Duration",
+  "Humanize.Parsing.Parse_Cardinal"
+]
+
+[perf_smoke.text]
+iterations = 2000
+max_seconds = 10.0
+paths = [
+  "Humanize.Strings.Title_Case_Smart",
+  "Humanize.Strings.Truncate_Words",
+  "Humanize.Colors.CSS.CSS_Color_Label"
+]
+
+[perf_smoke.domain]
+iterations = 2000
+max_seconds = 10.0
+paths = [
+  "Humanize.System_Status.HTTP_Status_Label",
+  "Humanize.Operations.Progress_Summary",
+  "Humanize.Diagnostics.Issue_Summary_Label",
+  "Humanize.Search.Search_Result_Summary_Label"
+]

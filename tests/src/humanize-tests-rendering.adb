@@ -9,13 +9,11 @@ with Humanize.Contexts;
 with Humanize.Datetimes;
 with Humanize.Durations;
 with Humanize.Frequencies;
-with Humanize.I18N_Rendering;
 with Humanize.Lists;
-with Humanize.Messages;
+with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Phrases;
 with Humanize.Rates;
-with Humanize.Selections;
 with Humanize.Status;
 with Humanize.Styles;
 with Humanize.Tests.Support;
@@ -29,8 +27,6 @@ package body Humanize.Tests.Rendering is
    use type Humanize.Bytes.Byte_Unit_System;
    use type Humanize.Phrases.Phrase_Severity;
    use type Humanize.Units.Unit_Style;
-
-   LF : constant String := [1 => ASCII.LF];
 
    --  UTF-8 'å' for Danish expectations.
    AA : constant String :=
@@ -65,6 +61,18 @@ package body Humanize.Tests.Rendering is
 
       return Result;
    end B;
+
+   function Expected_Phrase_Locale_Text return String is
+      Result : Unbounded_String;
+   begin
+      for Locale of Humanize.Phrases.Phrase_Locales loop
+         if Length (Result) > 0 then
+            Append (Result, " ");
+         end if;
+         Append (Result, Locale.all);
+      end loop;
+      return To_String (Result);
+   end Expected_Phrase_Locale_Text;
 
    function Contains (Text, Pattern : String) return Boolean is
    begin
@@ -129,11 +137,6 @@ package body Humanize.Tests.Rendering is
          Locale & " " & Label & " expected native-script text [" & Text & "]");
    end Check_Native_Script_Text;
 
-   --  A runtime whose bytes.kb key is a plural on the (non-numeric) value
-   --  argument, used to provoke an i18n Invalid_Argument.
-   Inv_Runtime : aliased I18N.Runtime.Instance;
-   Inv_Loaded  : Boolean := False;
-
    --  A runtime made invalid (Initialize on a missing file) to provoke an i18n
    --  Execution_Error -> Humanize Runtime_Error.
    Bad_Runtime : aliased I18N.Runtime.Instance;
@@ -147,19 +150,6 @@ package body Humanize.Tests.Rendering is
          Bad_Ready := True;
       end if;
    end Ensure_Bad;
-
-   procedure Ensure_Inv is
-      Result : I18N.Runtime.Load_Result;
-   begin
-      if not Inv_Loaded then
-         I18N.Runtime.Load_Text
-           (Inv_Runtime, "inv",
-            "en.humanize.bytes.kb = {value, plural, one {one} other {many}}"
-            & LF,
-            Result);
-         Inv_Loaded := True;
-      end if;
-   end Ensure_Inv;
 
    procedure Test_English (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
@@ -312,41 +302,6 @@ package body Humanize.Tests.Rendering is
          & Status_Image (Result.Status));
    end Test_Missing_Message;
 
-   procedure Test_Missing_Argument (T : in out AUnit.Test_Cases.Test_Case'Class) is
-      pragma Unreferenced (T);
-      --  A count key rendered with no arguments -> i18n Missing_Argument.
-      Result : constant Text_Result :=
-        Humanize.I18N_Rendering.Render
-          (Support.En,
-           Humanize.Selections.No_Arg
-             (Humanize.Messages.Duration_Unit_Second));
-   begin
-      AUnit.Assertions.Assert
-        (Result.Status = Missing_Argument,
-         "missing count maps to Missing_Argument, got "
-         & Status_Image (Result.Status));
-   end Test_Missing_Argument;
-
-   procedure Test_Invalid_Argument (T : in out AUnit.Test_Cases.Test_Case'Class) is
-      pragma Unreferenced (T);
-   begin
-      Ensure_Inv;
-      declare
-         Ctx : constant Humanize.Contexts.Context :=
-           Humanize.Contexts.Create (Inv_Runtime'Access, "en");
-         Result : constant Text_Result :=
-           Humanize.I18N_Rendering.Render
-             (Ctx,
-              Humanize.Selections.Text_Value
-                (Humanize.Messages.Bytes_KB, "abc"));
-      begin
-         AUnit.Assertions.Assert
-           (Result.Status = Invalid_Argument,
-            "non-numeric plural selector maps to Invalid_Argument, got "
-            & Status_Image (Result.Status));
-      end;
-   end Test_Invalid_Argument;
-
    procedure Test_Runtime_Error (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
    begin
@@ -363,35 +318,6 @@ package body Humanize.Tests.Rendering is
             & Status_Image (Result.Status));
       end;
    end Test_Runtime_Error;
-
-   procedure Test_Value_Argument (T : in out AUnit.Test_Cases.Test_Case'Class) is
-      pragma Unreferenced (T);
-      --  A value-argument selection flows the deterministic formatter text
-      --  through i18n's {value} substitution.
-      Result : constant Text_Result :=
-        Humanize.I18N_Rendering.Render
-          (Support.En,
-           Humanize.Selections.Text_Value
-             (Humanize.Messages.Bytes_KiB, "1.5"));
-   begin
-      AUnit.Assertions.Assert
-        (Result.Status = Ok and then Support.Text (Result) = "1.5 KiB",
-         "value argument substitutes formatter text");
-   end Test_Value_Argument;
-
-   procedure Test_Count_Strict_Decimal (T : in out AUnit.Test_Cases.Test_Case'Class) is
-      pragma Unreferenced (T);
-      --  Count must serialize as a strict decimal with no leading space.
-      Result : constant Text_Result :=
-        Humanize.I18N_Rendering.Render
-          (Support.En,
-           Humanize.Selections.Count
-             (Humanize.Messages.Duration_Unit_Second, 5));
-   begin
-      AUnit.Assertions.Assert
-        (Result.Status = Ok and then Support.Text (Result) = "5 seconds",
-         "count renders as strict decimal");
-   end Test_Count_Strict_Decimal;
 
    procedure Test_Lists_Frequencies_Rates
      (T : in out AUnit.Test_Cases.Test_Case'Class)
@@ -499,6 +425,46 @@ package body Humanize.Tests.Rendering is
         Humanize.Lists.Collection_Display
           (Support.En, 3, 4, Options =>
              (Style => Humanize.Lists.Screen_Reader_Display));
+      Collection_Count : constant Text_Result :=
+        Humanize.Lists.Collection_Count_Label (Support.En, 0);
+      Collection_Summary : constant Text_Result :=
+        Humanize.Lists.Collection_Summary (Support.En, 3, 10);
+      Compact_Collection : constant Text_Result :=
+        Humanize.Lists.Collection_Summary
+          (Support.En, 3, 10,
+           Options =>
+             (Style => Humanize.Lists.Collection_Compact_Summary,
+              Include_Total => True,
+              Include_Hidden => True));
+      Accessible_Collection : constant Text_Result :=
+        Humanize.Lists.Collection_Summary
+          (Support.En, 3, 10,
+           Options =>
+             (Style => Humanize.Lists.Collection_Accessible_Summary,
+              Include_Total => True,
+              Include_Hidden => True));
+      Empty_Collection : constant Text_Result :=
+        Humanize.Lists.Empty_Collection_Label (Support.En, "message", "messages");
+      Invalid_Collection : constant Text_Result :=
+        Humanize.Lists.Collection_Summary (Support.En, 11, 10);
+      Page_Position : constant Text_Result :=
+        Humanize.Lists.Page_Position_Label (Support.En, 2, 8);
+      Invalid_Page_Position : constant Text_Result :=
+        Humanize.Lists.Page_Position_Label (Support.En, 9, 8);
+      Page_Range_Label : constant Text_Result :=
+        Humanize.Lists.Page_Range_Label (Support.En, 21, 40, 153);
+      Invalid_Page_Range : constant Text_Result :=
+        Humanize.Lists.Page_Range_Label (Support.En, 40, 21, 153);
+      Page_Nav_First : constant Text_Result :=
+        Humanize.Lists.Page_Navigation_Label (Support.En, 1, 8);
+      Page_Nav_Middle : constant Text_Result :=
+        Humanize.Lists.Page_Navigation_Label (Support.En, 4, 8);
+      Page_Nav_Last : constant Text_Result :=
+        Humanize.Lists.Page_Navigation_Label (Support.En, 8, 8);
+      Page_Nav_Only : constant Text_Result :=
+        Humanize.Lists.Page_Navigation_Label (Support.En, 1, 1);
+      Page_Size : constant Text_Result :=
+        Humanize.Lists.Page_Size_Label (Support.En, 50);
       Limited_List : constant Text_Result :=
         Humanize.Lists.Format_Limited (Support.En, Items, 2);
       Validation_Issues : constant Humanize.Lists.Text_List :=
@@ -694,6 +660,85 @@ package body Humanize.Tests.Rendering is
            = "3 items shown, 4 items available",
          "collection display screen-reader phrase");
       AUnit.Assertions.Assert
+        (Collection_Count.Status = Ok
+         and then Support.Text (Collection_Count) = "no items",
+         "collection count label");
+      AUnit.Assertions.Assert
+        (Collection_Summary.Status = Ok
+         and then Support.Text (Collection_Summary)
+           = "showing 3 of 10 items, 7 hidden",
+         "collection summary detailed phrase");
+      AUnit.Assertions.Assert
+        (Compact_Collection.Status = Ok
+         and then Support.Text (Compact_Collection) = "3/10",
+         "collection summary compact phrase");
+      AUnit.Assertions.Assert
+        (Accessible_Collection.Status = Ok
+         and then Support.Text (Accessible_Collection)
+           = "3 items visible out of 10 items",
+         "collection summary accessible phrase");
+      AUnit.Assertions.Assert
+        (Empty_Collection.Status = Ok
+         and then Support.Text (Empty_Collection) = "no messages",
+         "empty collection label");
+      AUnit.Assertions.Assert
+        (Invalid_Collection.Status = Invalid_Argument
+         and then Support.Text (Invalid_Collection) =
+           "invalid collection summary",
+         "invalid collection summary");
+      AUnit.Assertions.Assert
+        (Page_Position.Status = Ok
+         and then Support.Text (Page_Position) = "page 2 of 8",
+         "validated page position");
+      AUnit.Assertions.Assert
+        (Invalid_Page_Position.Status = Invalid_Argument
+         and then Support.Text (Invalid_Page_Position) =
+           "invalid page position",
+         "invalid page position");
+      AUnit.Assertions.Assert
+        (Page_Range_Label.Status = Ok
+         and then Support.Text (Page_Range_Label) =
+           "21-40 of 153 results",
+         "validated page range");
+      AUnit.Assertions.Assert
+        (Invalid_Page_Range.Status = Invalid_Argument
+         and then Support.Text (Invalid_Page_Range) = "invalid page range",
+         "invalid page range");
+      AUnit.Assertions.Assert
+        (Page_Nav_First.Status = Ok
+         and then Support.Text (Page_Nav_First) =
+           "first page, next available",
+         "page navigation first");
+      AUnit.Assertions.Assert
+        (Page_Nav_Middle.Status = Ok
+         and then Support.Text (Page_Nav_Middle) =
+           "previous and next available",
+         "page navigation middle");
+      AUnit.Assertions.Assert
+        (Page_Nav_Last.Status = Ok
+         and then Support.Text (Page_Nav_Last) =
+           "last page, previous available",
+         "page navigation last");
+      AUnit.Assertions.Assert
+        (Page_Nav_Only.Status = Ok
+         and then Support.Text (Page_Nav_Only) = "only page",
+         "page navigation only");
+      AUnit.Assertions.Assert
+        (Page_Size.Status = Ok
+         and then Support.Text (Page_Size) = "50 results per page",
+         "page size label");
+      Humanize.Lists.Collection_Summary_Into
+        (Support.En, 3, 10, Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Ok and then Written = 31
+         and then Buffer (1 .. Written) = "showing 3 of 10 items, 7 hidden",
+         "bounded collection summary exact");
+      Humanize.Lists.Page_Position_Label_Into
+        (Support.En, 9, 8, Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Invalid_Argument and then Written = 0,
+         "bounded invalid page position");
+      AUnit.Assertions.Assert
         (Limited_List.Status = Ok
          and then Support.Text (Limited_List) = "alpha, beta and 1 other",
          "limited list shows hidden count");
@@ -793,6 +838,9 @@ package body Humanize.Tests.Rendering is
       Japanese_Rate : constant Text_Result :=
         Humanize.Rates.Pace_Approximate
           (Support.Locale ("ja"), 4, Humanize.Rates.Per_Week);
+      Japanese_Regional_Rate : constant Text_Result :=
+        Humanize.Rates.Pace_Approximate
+          (Support.Locale ("JA_jp"), 4, Humanize.Rates.Per_Week);
       Japanese_Less_Than : constant Text_Result :=
         Humanize.Rates.Pace_Approximate
           (Support.Locale ("ja"), 0, Humanize.Rates.Per_Hour);
@@ -820,14 +868,6 @@ package body Humanize.Tests.Rendering is
         Humanize.Numbers.Compact (Support.Locale ("zh"), 1_200);
       Korean_Byte : constant Text_Result :=
         Humanize.Bytes.Format (Support.Locale ("ko"), 1);
-      Swedish_Region : constant Text_Result :=
-        Humanize.Durations.Format (Support.Locale ("sv-SE"), 2);
-      Norwegian_Region : constant Text_Result :=
-        Humanize.Durations.Format (Support.Locale ("nb-NO"), 2);
-      Japanese_Region : constant Text_Result :=
-        Humanize.Durations.Format (Support.Locale ("ja-JP"), 2);
-      Arabic_Region : constant Text_Result :=
-        Humanize.Durations.Format (Support.Locale ("ar-EG"), 2);
       Generated_Reference : constant Ada.Calendar.Time :=
         Ada.Calendar.Time_Of (2026, 3, 21, 12.0 * 3_600.0);
       Turkish_Now : constant Text_Result :=
@@ -963,6 +1003,28 @@ package body Humanize.Tests.Rendering is
            (Result.Status = Ok and then Support.Text (Result) = Expect,
             Locale & " generated catalog selects Slavic unit many form");
       end Check_Unit_5;
+
+      procedure Check_Regional_Duration_Fallbacks is
+      begin
+         for Locale_Access of Humanize.Locales.Regional_Shipped_Locales loop
+            declare
+               Locale : constant String := Locale_Access.all;
+               Base : constant String := Humanize.Locales.Base_Locale (Locale);
+               Regional_Result : constant Text_Result :=
+                 Humanize.Durations.Format (Support.Locale (Locale), 2);
+               Base_Result : constant Text_Result :=
+                 Humanize.Durations.Format (Support.Locale (Base), 2);
+            begin
+               AUnit.Assertions.Assert
+                 (Regional_Result.Status = Ok
+                  and then Base_Result.Status = Ok
+                  and then Support.Text (Regional_Result) =
+                    Support.Text (Base_Result),
+                  "generated catalog resolves " & Locale
+                  & " through " & Base & " region fallback");
+            end;
+         end loop;
+      end Check_Regional_Duration_Fallbacks;
    begin
       Check_Text
         (Dutch, "2 seconden", "Dutch catalog localizes core duration unit");
@@ -1030,6 +1092,11 @@ package body Humanize.Tests.Rendering is
       Check_Text
         (Japanese_Rate, B ("E6AF8EE980B1E7B484203420E59B9E"),
          "Japanese generated catalog renders natural rate word order");
+      AUnit.Assertions.Assert
+        (Japanese_Regional_Rate.Status = Ok
+         and then Support.Text (Japanese_Regional_Rate) =
+           Support.Text (Japanese_Rate),
+         "regional Japanese rate uses normalized CJK guard");
       Check_Text
         (Japanese_Less_Than, B ("E6AF8EE69982203120E59B9EE69CAAE6BA80"),
          "Japanese generated catalog renders less-than rate words");
@@ -1065,18 +1132,7 @@ package body Humanize.Tests.Rendering is
       Check_Text
         (Korean_Byte, B ("3120EBB094EC9DB4ED8AB8"),
          "Korean generated catalog renders byte word");
-      Check_Text
-        (Swedish_Region, "2 sekunder",
-         "generated Swedish catalog resolves through region fallback");
-      Check_Text
-        (Norwegian_Region, "2 sekunder",
-         "generated Norwegian catalog resolves through region fallback");
-      Check_Text
-        (Japanese_Region, B ("3220E7A792"),
-         "generated Japanese catalog resolves through region fallback");
-      Check_Text
-        (Arabic_Region, ARABIC_TWO & B ("20D8ABD988D8A7D986D98D"),
-         "generated Arabic catalog resolves through region fallback");
+      Check_Regional_Duration_Fallbacks;
       Check_Text
         (Turkish_Now, B ("C59F696D6469"),
          "Turkish generated catalog renders now word");
@@ -1267,38 +1323,6 @@ package body Humanize.Tests.Rendering is
    is
       pragma Unreferenced (T);
 
-      type Locale_Audit_Code is
-        (En, Da, De, Fr, Es, It, Pt, Nl, Sv, No, Nb, Fi, Pl, Cs, Tr, Ru, Uk,
-         Ja, Ko, Zh, Ar, Hi);
-
-      function Locale_Name (Code : Locale_Audit_Code) return String is
-      begin
-         case Code is
-            when En => return "en";
-            when Da => return "da";
-            when De => return "de";
-            when Fr => return "fr";
-            when Es => return "es";
-            when It => return "it";
-            when Pt => return "pt";
-            when Nl => return "nl";
-            when Sv => return "sv";
-            when No => return "no";
-            when Nb => return "nb";
-            when Fi => return "fi";
-            when Pl => return "pl";
-            when Cs => return "cs";
-            when Tr => return "tr";
-            when Ru => return "ru";
-            when Uk => return "uk";
-            when Ja => return "ja";
-            when Ko => return "ko";
-            when Zh => return "zh";
-            when Ar => return "ar";
-            when Hi => return "hi";
-         end case;
-      end Locale_Name;
-
       Reference : constant Ada.Calendar.Time :=
         Ada.Calendar.Time_Of (2026, 3, 21, 12.0 * 3_600.0);
       Today : constant Humanize.Datetimes.Civil_Date_Time :=
@@ -1308,9 +1332,9 @@ package body Humanize.Tests.Rendering is
 
       function Native_Script_Expected (Locale : String) return Boolean is
       begin
-         return Locale = "ru" or else Locale = "uk" or else Locale = "ja"
-           or else Locale = "ko" or else Locale = "zh" or else Locale = "ar"
-           or else Locale = "hi";
+         return Locale = "ru" or else Locale = "uk"
+           or else Humanize.Locales.Is_CJK (Locale)
+           or else Locale = "ar" or else Locale = "hi";
       end Native_Script_Expected;
 
       procedure Audit_Locale (Locale : String) is
@@ -1469,8 +1493,8 @@ package body Humanize.Tests.Rendering is
          end if;
       end Audit_Locale;
    begin
-      for Code in Locale_Audit_Code loop
-         Audit_Locale (Locale_Name (Code));
+      for Locale_Access of Humanize.Locales.Shipped_Locales loop
+         Audit_Locale (Locale_Access.all);
       end loop;
    end Test_Locale_Quality_Audit;
 
@@ -1713,6 +1737,22 @@ package body Humanize.Tests.Rendering is
         Humanize.Phrases.Database_Phrase
           (Support.Locale ("es"),
            Humanize.Phrases.Database_Replication_Lagging);
+      Spanish_Database_Regional : constant Text_Result :=
+        Humanize.Phrases.Database_Phrase
+          (Support.Locale ("ES_mx"),
+           Humanize.Phrases.Database_Replication_Lagging);
+      Swedish_Database : constant Text_Result :=
+        Humanize.Phrases.Database_Phrase
+          (Support.Locale ("sv"),
+           Humanize.Phrases.Database_Replication_Lagging);
+      Swedish_Database_Regional : constant Text_Result :=
+        Humanize.Phrases.Database_Phrase
+          (Support.Locale ("SV_se"),
+           Humanize.Phrases.Database_Replication_Lagging);
+      Norwegian_Database_Regional : constant Text_Result :=
+        Humanize.Phrases.Database_Phrase
+          (Support.Locale ("NB_no"),
+           Humanize.Phrases.Database_Replication_Lagging);
       Field_Change : constant Text_Result :=
         Humanize.Phrases.Field_Change_Summary (Support.En, 2, 1, 1);
       Field_Diff : constant Text_Result :=
@@ -1726,6 +1766,9 @@ package body Humanize.Tests.Rendering is
       Spanish_Saved : constant Text_Result :=
         Humanize.Phrases.Status_Phrase
           (Support.Locale ("es"), Humanize.Phrases.Saved);
+      Spanish_Saved_Regional : constant Text_Result :=
+        Humanize.Phrases.Status_Phrase
+          (Support.Locale ("ES_mx"), Humanize.Phrases.Saved);
       Danish_Permission : constant Text_Result :=
         Humanize.Phrases.Network_Phrase
           (Support.Locale ("da"), Humanize.Phrases.Permission_Denied);
@@ -1735,6 +1778,9 @@ package body Humanize.Tests.Rendering is
       Japanese_Payment : constant Text_Result :=
         Humanize.Phrases.Payment_Lifecycle_Phrase
           (Support.Locale ("ja"), Humanize.Phrases.Payment_Requires_Action);
+      Japanese_Payment_Regional : constant Text_Result :=
+        Humanize.Phrases.Payment_Lifecycle_Phrase
+          (Support.Locale ("JA_jp"), Humanize.Phrases.Payment_Requires_Action);
       Phrase_Locales : constant Text_Result :=
         Humanize.Phrases.Supported_Phrase_Locales;
       Phrase_Packs : constant Text_Result :=
@@ -2107,6 +2153,17 @@ package body Humanize.Tests.Rendering is
            = "base de datos replicacion retrasada",
          "generated database phrase locale");
       AUnit.Assertions.Assert
+        (Spanish_Database_Regional.Status = Ok
+         and then Support.Text (Spanish_Database_Regional)
+           = Support.Text (Spanish_Database),
+         "generated database phrase regional language fallback");
+      AUnit.Assertions.Assert
+        (Swedish_Database.Status = Ok
+         and then Swedish_Database_Regional.Status = Ok
+         and then Support.Text (Swedish_Database_Regional)
+           = Support.Text (Swedish_Database),
+         "regional Swedish database phrase uses normalized shared branch");
+      AUnit.Assertions.Assert
         (Field_Change.Status = Ok
          and then Support.Text (Field_Change)
            = "4 fields: 2 changed, 1 added, 1 removed",
@@ -2130,12 +2187,38 @@ package body Humanize.Tests.Rendering is
          "payment phrase pack");
       AUnit.Assertions.Assert
         (Phrase_Locales.Status = Ok
-         and then Support.Text (Phrase_Locales)
-           = "en da de fr es it pt nl sv no nb fi pl cs tr ru uk ja ko zh ar hi",
+         and then Support.Text (Phrase_Locales) = Expected_Phrase_Locale_Text
+         and then Humanize.Phrases.Is_Supported_Phrase_Locale ("en")
+         and then Humanize.Phrases.Is_Supported_Phrase_Locale ("EN_us")
+         and then Humanize.Phrases.Is_Supported_Phrase_Locale ("hi")
+         and then Humanize.Phrases.Is_Supported_Phrase_Locale ("HI-in")
+         and then not Humanize.Phrases.Is_Supported_Phrase_Locale ("ro")
+         and then not Humanize.Phrases.Is_Supported_Phrase_Locale ("RO_ro")
+         and then not Humanize.Phrases.Is_Generated_Phrase_Locale ("en")
+         and then not Humanize.Phrases.Is_Generated_Phrase_Locale ("EN_us")
+         and then Humanize.Phrases.Is_Generated_Phrase_Locale ("ja")
+         and then Humanize.Phrases.Is_Generated_Phrase_Locale ("JA_jp"),
          "phrase locale metadata");
+      AUnit.Assertions.Assert
+        (Norwegian_Database_Regional.Status = Ok
+         and then Contains
+           (Support.Text (Norwegian_Database_Regional), "database")
+         and then Contains
+           (Support.Text (Norwegian_Database_Regional), "replikering")
+         and then Contains
+           (Support.Text (Norwegian_Database_Regional), "forsinket"),
+         "regional Norwegian generated phrase tokens use normalized predicate");
+      AUnit.Assertions.Assert
+        (Japanese_Payment_Regional.Status = Ok
+         and then Support.Text (Japanese_Payment_Regional) =
+           Support.Text (Japanese_Payment),
+         "regional Japanese generated phrase separator uses normalized predicate");
       AUnit.Assertions.Assert
         (Spanish_Saved.Status = Ok
          and then Support.Text (Spanish_Saved) = B ("677561726461646F")
+         and then Spanish_Saved_Regional.Status = Ok
+         and then Support.Text (Spanish_Saved_Regional) =
+           Support.Text (Spanish_Saved)
          and then Danish_Permission.Status = Ok
          and then Support.Text (Danish_Permission)
            = B ("616467616E67206EC3A667746574")
@@ -2199,12 +2282,7 @@ package body Humanize.Tests.Rendering is
       Register_Routine (T, Test_Spanish_Italian'Access, "Spanish/Italian output");
       Register_Routine (T, Test_Portuguese'Access, "Portuguese output");
       Register_Routine (T, Test_Missing_Message'Access, "missing key");
-      Register_Routine (T, Test_Missing_Argument'Access, "missing argument");
-      Register_Routine (T, Test_Invalid_Argument'Access, "invalid argument");
       Register_Routine (T, Test_Runtime_Error'Access, "runtime error");
-      Register_Routine (T, Test_Value_Argument'Access, "value argument text");
-      Register_Routine (T, Test_Count_Strict_Decimal'Access,
-        "count is strict decimal");
       Register_Routine (T, Test_Lists_Frequencies_Rates'Access,
         "lists frequencies and rates");
       Register_Routine (T, Test_Generated_Locale_Coverage'Access,

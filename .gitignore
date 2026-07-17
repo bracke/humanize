@@ -2,6 +2,14 @@
 obj/
 lib/
 bin/
+*.ali
+*.o
+
+# Ad hoc local debug/check executables
+/check_colors
+/color_accessibility_check
+/debug_color
+/debug_humanize_parse
 
 # Alire-generated config and local workspace state
 config/

@@ -1,0 +1,271 @@
+# Public task coverage for runnable examples.
+
+[[coverage]]
+area = "runtime-catalog-context"
+unit = "Humanize.Catalogs"
+example = "examples/humanize_demo.adb"
+usecase = "load built-in catalogs and create contexts"
+
+[[coverage]]
+area = "localized-formatting"
+unit = "Humanize.Durations"
+example = "examples/humanize_demo.adb"
+usecase = "render durations in several locales"
+
+[[coverage]]
+area = "numbers-and-bytes"
+unit = "Humanize.Bytes"
+example = "examples/humanize_demo.adb"
+usecase = "render byte sizes and compact numbers"
+
+[[coverage]]
+area = "lists-and-units"
+unit = "Humanize.Lists"
+example = "examples/humanize_demo.adb"
+usecase = "render list and unit text through a context"
+
+[[coverage]]
+area = "bounded-output"
+unit = "Humanize.Bounded_Text"
+example = "examples/humanize_demo.adb"
+usecase = "read Text_Result text and demonstrate caller-owned buffers"
+
+[[coverage]]
+area = "parsing"
+unit = "Humanize.Parsing"
+example = "examples/parse_demo.adb"
+usecase = "parse common human-readable byte and duration text in a minimal parser-only executable"
+
+[[coverage]]
+area = "strings"
+unit = "Humanize.Strings"
+example = "examples/humanize_demo.adb"
+usecase = "format common text helpers"
+
+[[coverage]]
+area = "colors"
+unit = "Humanize.Colors.CSS"
+example = "examples/color_demo.adb"
+usecase = "parse CSS color text and render normalized CSS labels through the public color child facade"
+
+[[coverage]]
+area = "domain-labels"
+unit = "Humanize.Capabilities"
+example = "examples/humanize_demo.adb"
+usecase = "show representative deterministic domain labels and capability metadata"
+
+[[coverage]]
+area = "bounded-output"
+unit = "Humanize.Bytes"
+example = "examples/bounded_demo.adb"
+usecase = "render caller-owned bounded byte text without allocating a returned string"
+
+[[coverage]]
+area = "cross-domain-labels"
+unit = "Humanize.Cross_Domain"
+example = "examples/domain_demo.adb"
+usecase = "render deterministic technical progress and product-code labels"
+
+[[coverage]]
+area = "operational-status"
+unit = "Humanize.System_Status"
+example = "examples/system_status_demo.adb"
+usecase = "render service health, HTTP status, diagnostics, and threshold labels for dashboards and logs"
+
+[[coverage]]
+area = "diagnostics"
+unit = "Humanize.Diagnostics"
+example = "examples/system_status_demo.adb"
+usecase = "summarize validation and check results in operator-facing output"
+
+[[coverage]]
+area = "thresholds"
+unit = "Humanize.Thresholds"
+example = "examples/system_status_demo.adb"
+usecase = "render metric threshold state, breach, and budget labels"
+
+[[coverage]]
+area = "ui-forms"
+unit = "Humanize.Forms"
+example = "examples/ui_labels_demo.adb"
+usecase = "render form state, required field, character usage, and submission labels"
+
+[[coverage]]
+area = "ui-navigation"
+unit = "Humanize.Navigation"
+example = "examples/ui_labels_demo.adb"
+usecase = "render breadcrumb, menu, tab, skip-link, and page navigation labels"
+
+[[coverage]]
+area = "ui-badges"
+unit = "Humanize.Badges"
+example = "examples/ui_labels_demo.adb"
+usecase = "render badge, chip, tag, priority, and overflow labels"
+
+[[coverage]]
+area = "ui-notifications"
+unit = "Humanize.Notifications"
+example = "examples/ui_labels_demo.adb"
+usecase = "render inbox, delivery, actor event, digest, and notification-group labels"
+
+[[coverage]]
+area = "ui-search"
+unit = "Humanize.Search"
+example = "examples/ui_labels_demo.adb"
+usecase = "render query, filter, facet, sort, saved-search, and suggestion labels"
+
+[[coverage]]
+area = "collaboration-comments"
+unit = "Humanize.Comments"
+example = "examples/ui_labels_demo.adb"
+usecase = "render comment, thread, mention, reaction, and subscription labels"
+
+[[coverage]]
+area = "tasks"
+unit = "Humanize.Tasks"
+example = "examples/ui_labels_demo.adb"
+usecase = "render task state, assignment, due-date, checklist, blocker, and sprint labels"
+
+[[coverage]]
+area = "tables"
+unit = "Humanize.Tables"
+example = "examples/ui_labels_demo.adb"
+usecase = "render table size, selection, sort, cell, page, filter, and subtotal labels"
+
+[[coverage]]
+area = "secrets"
+unit = "Humanize.Secrets"
+example = "examples/security_data_demo.adb"
+usecase = "render safe secret, credential, fingerprint, rotation, and privacy labels"
+
+[[coverage]]
+area = "permissions"
+unit = "Humanize.Permissions"
+example = "examples/security_data_demo.adb"
+usecase = "render roles, grants, revocations, policy results, and expiring access labels"
+
+[[coverage]]
+area = "attachments"
+unit = "Humanize.Attachments"
+example = "examples/security_data_demo.adb"
+usecase = "render attachment state, upload progress, scan result, preview, and expiring-link labels"
+
+[[coverage]]
+area = "media"
+unit = "Humanize.Media"
+example = "examples/security_data_demo.adb"
+usecase = "render media kind, state, dimensions, duration, page count, and summary labels"
+
+[[coverage]]
+area = "data-quality"
+unit = "Humanize.Data_Quality"
+example = "examples/security_data_demo.adb"
+usecase = "render import checks, issue counts, row issues, and source-file labels"
+
+[[coverage]]
+area = "schema"
+unit = "Humanize.Schema"
+example = "examples/security_data_demo.adb"
+usecase = "render schema field, shape, constraint, default, enum, and mismatch labels"
+
+[[coverage]]
+area = "markup"
+unit = "Humanize.Markup"
+example = "examples/security_data_demo.adb"
+usecase = "render tag, attribute, content-type, landmark, outline, and accessibility labels"
+
+[[coverage]]
+area = "operations"
+unit = "Humanize.Operations"
+example = "examples/workflow_ops_demo.adb"
+usecase = "render progress, retry, stale-run, and unknown-total operation labels"
+
+[[coverage]]
+area = "comparisons"
+unit = "Humanize.Comparisons"
+example = "examples/workflow_ops_demo.adb"
+usecase = "render differences, tolerance, baselines, and multi-value comparison summaries"
+
+[[coverage]]
+area = "workflows"
+unit = "Humanize.Workflows"
+example = "examples/workflow_ops_demo.adb"
+usecase = "render workflow, step, milestone, approval, blocker, queue, and result labels"
+
+[[coverage]]
+area = "changes"
+unit = "Humanize.Changes"
+example = "examples/workflow_ops_demo.adb"
+usecase = "render change sets, item changes, conflicts, sync state, patch size, and review progress"
+
+[[coverage]]
+area = "builds"
+unit = "Humanize.Builds"
+example = "examples/workflow_ops_demo.adb"
+usecase = "render test, build, artifact, gate, coverage, benchmark, and build labels"
+
+[[coverage]]
+area = "deployments"
+unit = "Humanize.Deployments"
+example = "examples/workflow_ops_demo.adb"
+usecase = "render deployment, environment, migration, artifact, rollout, promotion, and rollback labels"
+
+[[coverage]]
+area = "accounts"
+unit = "Humanize.Accounts"
+example = "examples/product_details_demo.adb"
+usecase = "render account, session, MFA, device trust, activity, and login-attempt labels"
+
+[[coverage]]
+area = "payments"
+unit = "Humanize.Payments"
+example = "examples/product_details_demo.adb"
+usecase = "render payment, invoice, amount, due, refund, receipt, balance, tax, total, and chargeback labels"
+
+[[coverage]]
+area = "events"
+unit = "Humanize.Events"
+example = "examples/product_details_demo.adb"
+usecase = "render event state, attendance, visibility, time, location, RSVP, reminders, and capacity labels"
+
+[[coverage]]
+area = "endpoints"
+unit = "Humanize.Endpoints"
+example = "examples/product_details_demo.adb"
+usecase = "render hosts, endpoints, URLs, safe URLs, query summaries, IP addresses, and CIDR labels"
+
+[[coverage]]
+area = "geo"
+unit = "Humanize.Geo"
+example = "examples/product_details_demo.adb"
+usecase = "render latitude, longitude, bearings, distance-bearing, and bounding-box labels"
+
+[[coverage]]
+area = "versions"
+unit = "Humanize.Versions"
+example = "examples/product_details_demo.adb"
+usecase = "render semantic versions, version deltas, compatibility ranges, releases, and commit distances"
+
+[[coverage]]
+area = "resources"
+unit = "Humanize.Resources"
+example = "examples/product_details_demo.adb"
+usecase = "render utilization, remaining quota, availability, cache hit rate, and saturation labels"
+
+[[coverage]]
+area = "moderation"
+unit = "Humanize.Moderation"
+example = "examples/product_details_demo.adb"
+usecase = "render review, moderation, report, queue, and appeal labels"
+
+[[coverage]]
+area = "notification-preferences"
+unit = "Humanize.Notification_Preferences"
+example = "examples/product_details_demo.adb"
+usecase = "render channel preferences, digest schedules, alert levels, quiet hours, and subscriptions"
+
+[[coverage]]
+area = "domain-details"
+unit = "Humanize.Domain_Details"
+example = "examples/product_details_demo.adb"
+usecase = "render detailed domain labels, metadata summaries, accessible labels, narratives, diffs, and validation reports"

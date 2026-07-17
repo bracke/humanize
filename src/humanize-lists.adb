@@ -3,46 +3,37 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Humanize.I18N_Rendering;
 with Humanize.Messages;
 with Humanize.Selections;
+with Humanize.Bounded_Text;
 
 package body Humanize.Lists is
    use type Humanize.Status.Status_Code;
 
-   procedure Copy_Text
-     (Text    : String;
+   function Natural_Text (Value : Natural) return String
+      renames Humanize.Bounded_Text.Image;
+
+   function Ok_Text (Text : String) return Humanize.Status.Text_Result
+      renames Humanize.Bounded_Text.Ok_Text;
+
+   function Result_Text
+     (Result : Humanize.Status.Text_Result)
+      return String
+      renames Humanize.Bounded_Text.Result_Text;
+
+   procedure Copy_Result
+     (Result  : Humanize.Status.Text_Result;
       Target  : in out String;
       Written : out Natural;
       Status  : out Humanize.Status.Status_Code)
-   is
-   begin
-      Written := 0;
-      if Target'First /= 1 then
-         Status := Humanize.Status.Invalid_Options;
-      elsif Text'Length > Target'Length then
-         if Target'Length > 0 then
-            Target (Target'First .. Target'Last) :=
-              Text (Text'First .. Text'First + Target'Length - 1);
-         end if;
-         Written := Target'Length;
-         Status := Humanize.Status.Buffer_Overflow;
-      else
-         if Text'Length > 0 then
-            Target (Target'First .. Target'First + Text'Length - 1) := Text;
-         end if;
-         Written := Text'Length;
-         Status := Humanize.Status.Ok;
-      end if;
-   end Copy_Text;
+      renames Humanize.Bounded_Text.Copy_Text;
 
-   function No_Space (Image : String) return String is
-     (if Image'Length > 0 and then Image (Image'First) = ' '
-      then Image (Image'First + 1 .. Image'Last)
-      else Image);
+   function Ends_With (Text, Suffix : String) return Boolean
+      renames Humanize.Bounded_Text.Ends_With;
 
-   function Ok (Text : String) return Humanize.Status.Text_Result;
+   function Is_Upper (Item : Character) return Boolean
+      renames Humanize.Bounded_Text.Is_ASCII_Uppercase;
 
-   function Ends_With (Text, Suffix : String) return Boolean is
-     (Text'Length >= Suffix'Length
-      and then Text (Text'Last - Suffix'Length + 1 .. Text'Last) = Suffix);
+   function Invalid_Text (Text : String) return Humanize.Status.Text_Result
+      renames Humanize.Bounded_Text.Invalid_Text;
 
    function Starts_With_Vowel_Sound (Text : String) return Boolean is
       First : Character;
@@ -52,7 +43,7 @@ package body Humanize.Lists is
       end if;
 
       First := Text (Text'First);
-      if First in 'A' .. 'Z' then
+      if Is_Upper (First) then
          First := Character'Val
            (Character'Pos (First) - Character'Pos ('A') + Character'Pos ('a'));
       end if;
@@ -136,8 +127,7 @@ package body Humanize.Lists is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok
-        (case Source is
+      return Ok_Text (case Source is
             when Explicit_Plural  => "explicit-plural",
             when Default_S_Suffix => "default-s-suffix",
             when Irregular_Noun   => "irregular-noun");
@@ -199,12 +189,12 @@ package body Humanize.Lists is
    end Small_Word;
 
    function Decimal_Tenths (Whole, Tenths : Natural) return String is
-      Whole_Text : constant String := No_Space (Natural'Image (Whole));
+      Whole_Text : constant String := Natural_Text (Whole);
    begin
       if Tenths = 0 then
          return Whole_Text;
       else
-         return Whole_Text & "." & No_Space (Natural'Image (Tenths));
+         return Whole_Text & "." & Natural_Text (Tenths);
       end if;
    end Decimal_Tenths;
 
@@ -229,7 +219,7 @@ package body Humanize.Lists is
             end;
          end if;
       end loop;
-      return No_Space (Natural'Image (Quantity));
+      return Natural_Text (Quantity);
    end Compact_Number;
 
    function Count_Text
@@ -258,29 +248,21 @@ package body Humanize.Lists is
 
       case Options.Number_Style is
          when Numeric_Count | Article_Count =>
-            return No_Space (Natural'Image (Quantity));
+            return Natural_Text (Quantity);
          when Word_Count =>
             if Small_Word (Quantity, Word) then
                return To_String (Word);
             else
-               return No_Space (Natural'Image (Quantity));
+               return Natural_Text (Quantity);
             end if;
          when Compact_Count =>
             if Quantity >= Options.Compact_At then
                return Compact_Number (Quantity);
             else
-               return No_Space (Natural'Image (Quantity));
+               return Natural_Text (Quantity);
             end if;
       end case;
    end Count_Text;
-
-   function Ok (Text : String) return Humanize.Status.Text_Result is
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text   => To_Unbounded_String (Text),
-         Key    => Humanize.Messages.No_Message);
-   end Ok;
 
    function Conjunction (Context : Humanize.Contexts.Context) return String is
       Result : constant Humanize.Status.Text_Result :=
@@ -288,7 +270,7 @@ package body Humanize.Lists is
           (Context, Humanize.Selections.No_Arg (Humanize.Messages.List_And));
    begin
       if Result.Status = Humanize.Status.Ok then
-         return To_String (Result.Text);
+         return Result_Text (Result);
       else
          return "and";
       end if;
@@ -318,10 +300,7 @@ package body Humanize.Lists is
       And_Text : constant String := Connector (Context, Options.Style);
    begin
       if Items'Length = 0 then
-         return
-           (Status => Humanize.Status.Ok,
-            Text   => Null_Unbounded_String,
-            Key    => Humanize.Messages.No_Message);
+         return Ok_Text ("");
       end if;
 
       if Items'Length = 1 then
@@ -340,10 +319,7 @@ package body Humanize.Lists is
          Append (Joined, Items (Items'Last));
       end if;
 
-      return
-        (Status => Humanize.Status.Ok,
-         Text   => Joined,
-         Key    => Humanize.Messages.No_Message);
+      return Ok_Text (To_String (Joined));
    end Format;
 
    function Others_Text
@@ -406,9 +382,9 @@ package body Humanize.Lists is
       Noun : constant String := Noun_For (Quantity, Singular, Plural);
    begin
       if Quantity = 0 then
-         return Ok ("no " & Noun);
+         return Ok_Text ("no " & Noun);
       else
-         return Ok (No_Space (Natural'Image (Quantity)) & " " & Noun);
+         return Ok_Text (Natural_Text (Quantity) & " " & Noun);
       end if;
    end Count;
 
@@ -429,9 +405,9 @@ package body Humanize.Lists is
       elsif Options.Compact_At = 0 then
          return (Status => Humanize.Status.Invalid_Options, others => <>);
       elsif Options.Include_Noun then
-         return Ok (Prefix & " " & Noun);
+         return Ok_Text (Prefix & " " & Noun);
       else
-         return Ok (Prefix);
+         return Ok_Text (Prefix);
       end if;
    end Counted_Noun;
 
@@ -446,11 +422,11 @@ package body Humanize.Lists is
       Noun : constant String := Severity_Noun (Options.Severity, Count);
    begin
       if Count = 0 and then not Options.Include_Ok then
-         return Ok ("");
+         return Ok_Text ("");
       elsif Count = 0 then
-         return Ok ("no " & Noun);
+         return Ok_Text ("no " & Noun);
       else
-         return Ok (No_Space (Natural'Image (Count)) & " " & Noun);
+         return Ok_Text (Natural_Text (Count) & " " & Noun);
       end if;
    end Validation_Count;
 
@@ -482,9 +458,8 @@ package body Humanize.Lists is
             if Details.Status /= Humanize.Status.Ok then
                return Details;
             else
-               return Ok
-                 (To_String (Count_Label.Text) & ": "
-                  & To_String (Details.Text));
+               return Ok_Text (Result_Text (Count_Label) & ": "
+                  & Result_Text (Details));
             end if;
          end;
       end if;
@@ -506,7 +481,7 @@ package body Humanize.Lists is
       elsif Field'Length = 0 then
          return Summary;
       else
-         return Ok (Field & ": " & To_String (Summary.Text));
+         return Ok_Text (Field & ": " & Result_Text (Summary));
       end if;
    end Field_Problem_Summary;
 
@@ -521,9 +496,8 @@ package body Humanize.Lists is
       pragma Unreferenced (Context);
       Noun : constant String := Noun_For (Total, Singular, Plural);
    begin
-      return Ok
-        (No_Space (Natural'Image (Selected)) & " of "
-         & No_Space (Natural'Image (Total)) & " " & Noun & " selected");
+      return Ok_Text (Natural_Text (Selected) & " of "
+         & Natural_Text (Total) & " " & Noun & " selected");
    end Selection_Count;
 
    function Remaining_Count
@@ -539,7 +513,7 @@ package body Humanize.Lists is
       if Base.Status /= Humanize.Status.Ok then
          return Base;
       end if;
-      return Ok (To_String (Base.Text) & " remaining");
+      return Ok_Text (Result_Text (Base) & " remaining");
    end Remaining_Count;
 
    function Position_Count
@@ -550,9 +524,7 @@ package body Humanize.Lists is
    is
       pragma Unreferenced (Context);
    begin
-      return Ok
-        (No_Space (Natural'Image (Position)) & " of "
-         & No_Space (Natural'Image (Total)));
+      return Ok_Text (Natural_Text (Position) & " of " & Natural_Text (Total));
    end Position_Count;
 
    function All_Count
@@ -564,8 +536,7 @@ package body Humanize.Lists is
    is
       pragma Unreferenced (Context);
    begin
-      return Ok
-        ("all " & No_Space (Natural'Image (Total)) & " "
+      return Ok_Text ("all " & Natural_Text (Total) & " "
          & Noun_For (Total, Singular, Plural));
    end All_Count;
 
@@ -599,9 +570,8 @@ package body Humanize.Lists is
    is
       pragma Unreferenced (Context);
    begin
-      return Ok
-        ("showing " & No_Space (Natural'Image (Showing)) & " of "
-         & No_Space (Natural'Image (Total)) & " "
+      return Ok_Text ("showing " & Natural_Text (Showing) & " of "
+         & Natural_Text (Total) & " "
          & Noun_For (Total, Singular, Plural));
    end Showing_Count;
 
@@ -613,9 +583,8 @@ package body Humanize.Lists is
    is
       pragma Unreferenced (Context);
    begin
-      return Ok
-        ("page " & No_Space (Natural'Image (Page)) & " of "
-         & No_Space (Natural'Image (Total)));
+      return Ok_Text ("page " & Natural_Text (Page) & " of "
+         & Natural_Text (Total));
    end Page_Count;
 
    function More_Count
@@ -626,9 +595,8 @@ package body Humanize.Lists is
    is
       pragma Unreferenced (Context);
    begin
-      return Ok
-        (No_Space (Natural'Image (Visible)) & " shown, +"
-         & No_Space (Natural'Image (Remaining)) & " more");
+      return Ok_Text (Natural_Text (Visible) & " shown, +"
+         & Natural_Text (Remaining) & " more");
    end More_Count;
 
    function Others_Count
@@ -640,12 +608,11 @@ package body Humanize.Lists is
       pragma Unreferenced (Context);
    begin
       if Remaining = 0 then
-         return Ok (First);
+         return Ok_Text (First);
       elsif Remaining = 1 then
-         return Ok (First & " and 1 other");
+         return Ok_Text (First & " and 1 other");
       else
-         return Ok
-           (First & " and " & No_Space (Natural'Image (Remaining))
+         return Ok_Text (First & " and " & Natural_Text (Remaining)
             & " others");
       end if;
    end Others_Count;
@@ -660,10 +627,9 @@ package body Humanize.Lists is
    is
    begin
       if Selected = 0 then
-         return Ok ("no " & Noun_For (Total, Singular, Plural) & " selected");
+         return Ok_Text ("no " & Noun_For (Total, Singular, Plural) & " selected");
       elsif Selected = Total then
-         return Ok
-           ("all " & No_Space (Natural'Image (Total)) & " "
+         return Ok_Text ("all " & Natural_Text (Total) & " "
             & Noun_For (Total, Singular, Plural) & " selected");
       else
          return Selection_Count (Context, Selected, Total, Singular, Plural);
@@ -682,15 +648,13 @@ package body Humanize.Lists is
       Noun : constant String := Noun_For (Total, Singular, Plural);
    begin
       if Matching = 0 then
-         return Ok ("no " & Noun & " match");
+         return Ok_Text ("no " & Noun & " match");
       elsif Matching = Total then
-         return Ok
-           ("all " & No_Space (Natural'Image (Total)) & " "
+         return Ok_Text ("all " & Natural_Text (Total) & " "
             & Noun & " match");
       else
-         return Ok
-           (No_Space (Natural'Image (Matching)) & " of "
-            & No_Space (Natural'Image (Total)) & " "
+         return Ok_Text (Natural_Text (Matching) & " of "
+            & Natural_Text (Total) & " "
             & Noun & " match");
       end if;
    end Filtered_Count;
@@ -706,10 +670,9 @@ package body Humanize.Lists is
    is
       pragma Unreferenced (Context);
    begin
-      return Ok
-        (No_Space (Natural'Image (First)) & "-"
-         & No_Space (Natural'Image (Last)) & " of "
-         & No_Space (Natural'Image (Total)) & " "
+      return Ok_Text (Natural_Text (First) & "-"
+         & Natural_Text (Last) & " of "
+         & Natural_Text (Total) & " "
          & Noun_For (Total, Singular, Plural));
    end Pagination_Range;
 
@@ -723,23 +686,172 @@ package body Humanize.Lists is
         Default_Collection_Display_Options)
       return Humanize.Status.Text_Result
    is
-      Visible_Text : constant String := No_Space (Natural'Image (Visible));
-      Rem_Text     : constant String := No_Space (Natural'Image (Remaining));
+      Visible_Text : constant String := Natural_Text (Visible);
+      Rem_Text     : constant String := Natural_Text (Remaining);
    begin
       case Options.Style is
          when Compact_Display =>
-            return Ok
-              ((if Remaining = 0 then Visible_Text else "+" & Rem_Text));
+            return Ok_Text ((if Remaining = 0 then Visible_Text else "+" & Rem_Text));
          when Summary_Display =>
             return More_Count (Context, Visible, Remaining);
          when Screen_Reader_Display =>
-            return Ok
-              (Visible_Text & " " & Noun_For (Visible, Singular, Plural)
+            return Ok_Text (Visible_Text & " " & Noun_For (Visible, Singular, Plural)
                & " shown, " & Rem_Text & " "
                & Noun_For (Remaining, Singular, Plural)
                & " available");
       end case;
    end Collection_Display;
+
+   function Collection_Count_Label
+     (Context  : Humanize.Contexts.Context;
+      Total    : Natural;
+      Singular : String := "item";
+      Plural   : String := "items")
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Count (Context, Total, Singular, Plural);
+   end Collection_Count_Label;
+
+   function Collection_Summary
+     (Context   : Humanize.Contexts.Context;
+      Visible   : Natural;
+      Total     : Natural;
+      Singular  : String := "item";
+      Plural    : String := "items";
+      Options   : Collection_Summary_Options :=
+        Default_Collection_Summary_Options)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+      Hidden : Natural := 0;
+      Visible_Text : constant String := Natural_Text (Visible);
+      Total_Text : constant String := Natural_Text (Total);
+   begin
+      if Visible > Total then
+         return Invalid_Text ("invalid collection summary");
+      elsif Total = 0 then
+         return Ok_Text ("no " & Noun_For (0, Singular, Plural));
+      elsif Visible = 0 then
+         return Ok_Text ("no " & Noun_For (Total, Singular, Plural) & " shown");
+      end if;
+
+      Hidden := Total - Visible;
+      declare
+         Hidden_Text : constant String := Natural_Text (Hidden);
+      begin
+         case Options.Style is
+            when Collection_Compact_Summary =>
+               if Options.Include_Total then
+                  return Ok_Text (Visible_Text & "/" & Total_Text);
+               elsif Options.Include_Hidden and then Hidden > 0 then
+                  return Ok_Text (Visible_Text & " +" & Hidden_Text);
+               else
+                  return Ok_Text (Visible_Text);
+               end if;
+
+            when Collection_Detailed_Summary =>
+               if Options.Include_Total and then Options.Include_Hidden
+                 and then Hidden > 0
+               then
+                  return Ok_Text ("showing " & Visible_Text & " of " & Total_Text & " "
+                     & Noun_For (Total, Singular, Plural) & ", "
+                     & Hidden_Text & " hidden");
+               elsif Options.Include_Total then
+                  return Ok_Text ("showing " & Visible_Text & " of " & Total_Text & " "
+                     & Noun_For (Total, Singular, Plural));
+               elsif Options.Include_Hidden and then Hidden > 0 then
+                  return Ok_Text (Visible_Text & " " & Noun_For (Visible, Singular, Plural)
+                     & " shown, " & Hidden_Text & " hidden");
+               else
+                  return Ok_Text (Visible_Text & " " & Noun_For (Visible, Singular, Plural)
+                     & " shown");
+               end if;
+
+            when Collection_Accessible_Summary =>
+               return Ok_Text (Visible_Text & " " & Noun_For (Visible, Singular, Plural)
+                  & " visible out of " & Total_Text & " "
+                  & Noun_For (Total, Singular, Plural));
+         end case;
+      end;
+   end Collection_Summary;
+
+   function Empty_Collection_Label
+     (Context  : Humanize.Contexts.Context;
+      Singular : String := "item";
+      Plural   : String := "items")
+      return Humanize.Status.Text_Result
+   is
+   begin
+      return Count (Context, 0, Singular, Plural);
+   end Empty_Collection_Label;
+
+   function Page_Position_Label
+     (Context : Humanize.Contexts.Context;
+      Page    : Positive;
+      Total   : Positive)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      if Page > Total then
+         return Invalid_Text ("invalid page position");
+      else
+         return Ok_Text ("page " & Natural_Text (Page) & " of "
+            & Natural_Text (Total));
+      end if;
+   end Page_Position_Label;
+
+   function Page_Range_Label
+     (Context  : Humanize.Contexts.Context;
+      First    : Positive;
+      Last     : Positive;
+      Total    : Natural;
+      Singular : String := "result";
+      Plural   : String := "results")
+      return Humanize.Status.Text_Result
+   is
+   begin
+      if Last < First or else Last > Total then
+         return Invalid_Text ("invalid page range");
+      else
+         return Pagination_Range (Context, First, Last, Total, Singular, Plural);
+      end if;
+   end Page_Range_Label;
+
+   function Page_Navigation_Label
+     (Context : Humanize.Contexts.Context;
+      Page    : Positive;
+      Total   : Positive)
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      if Page > Total then
+         return Invalid_Text ("invalid page position");
+      elsif Total = 1 then
+         return Ok_Text ("only page");
+      elsif Page = 1 then
+         return Ok_Text ("first page, next available");
+      elsif Page = Total then
+         return Ok_Text ("last page, previous available");
+      else
+         return Ok_Text ("previous and next available");
+      end if;
+   end Page_Navigation_Label;
+
+   function Page_Size_Label
+     (Context   : Humanize.Contexts.Context;
+      Page_Size : Positive;
+      Singular  : String := "result";
+      Plural    : String := "results")
+      return Humanize.Status.Text_Result
+   is
+      pragma Unreferenced (Context);
+   begin
+      return Ok_Text (Natural_Text (Page_Size) & " "
+         & Noun_For (Page_Size, Singular, Plural) & " per page");
+   end Page_Size_Label;
 
    procedure Format_Into
      (Context : Humanize.Contexts.Context;
@@ -752,12 +864,7 @@ package body Humanize.Lists is
       Result : constant Humanize.Status.Text_Result :=
         Format (Context, Items, Options);
    begin
-      if Result.Status /= Humanize.Status.Ok then
-         Written := 0;
-         Status := Result.Status;
-      else
-         Copy_Text (To_String (Result.Text), Target, Written, Status);
-      end if;
+      Copy_Result (Result, Target, Written, Status);
    end Format_Into;
 
    procedure Format_Limited_Into
@@ -772,28 +879,8 @@ package body Humanize.Lists is
       Result : constant Humanize.Status.Text_Result :=
         Format_Limited (Context, Items, Limit, Options);
    begin
-      if Result.Status /= Humanize.Status.Ok then
-         Written := 0;
-         Status := Result.Status;
-      else
-         Copy_Text (To_String (Result.Text), Target, Written, Status);
-      end if;
+      Copy_Result (Result, Target, Written, Status);
    end Format_Limited_Into;
-
-   procedure Copy_Result
-     (Result  : Humanize.Status.Text_Result;
-      Target  : in out String;
-      Written : out Natural;
-      Status  : out Humanize.Status.Status_Code)
-   is
-   begin
-      if Result.Status /= Humanize.Status.Ok then
-         Written := 0;
-         Status := Result.Status;
-      else
-         Copy_Text (To_String (Result.Text), Target, Written, Status);
-      end if;
-   end Copy_Result;
 
    procedure Count_Into
      (Context  : Humanize.Contexts.Context;
@@ -1088,4 +1175,110 @@ package body Humanize.Lists is
            (Context, Visible, Remaining, Singular, Plural, Options),
          Target, Written, Status);
    end Collection_Display_Into;
+
+   procedure Collection_Count_Label_Into
+     (Context  : Humanize.Contexts.Context;
+      Total    : Natural;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code;
+      Singular : String := "item";
+      Plural   : String := "items")
+   is
+   begin
+      Copy_Result
+        (Collection_Count_Label (Context, Total, Singular, Plural),
+         Target, Written, Status);
+   end Collection_Count_Label_Into;
+
+   procedure Collection_Summary_Into
+     (Context   : Humanize.Contexts.Context;
+      Visible   : Natural;
+      Total     : Natural;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Singular  : String := "item";
+      Plural    : String := "items";
+      Options   : Collection_Summary_Options :=
+        Default_Collection_Summary_Options)
+   is
+   begin
+      Copy_Result
+        (Collection_Summary
+           (Context, Visible, Total, Singular, Plural, Options),
+         Target, Written, Status);
+   end Collection_Summary_Into;
+
+   procedure Empty_Collection_Label_Into
+     (Context  : Humanize.Contexts.Context;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code;
+      Singular : String := "item";
+      Plural   : String := "items")
+   is
+   begin
+      Copy_Result
+        (Empty_Collection_Label (Context, Singular, Plural),
+         Target, Written, Status);
+   end Empty_Collection_Label_Into;
+
+   procedure Page_Position_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Page    : Positive;
+      Total   : Positive;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Page_Position_Label (Context, Page, Total), Target, Written, Status);
+   end Page_Position_Label_Into;
+
+   procedure Page_Range_Label_Into
+     (Context  : Humanize.Contexts.Context;
+      First    : Positive;
+      Last     : Positive;
+      Total    : Natural;
+      Target   : in out String;
+      Written  : out Natural;
+      Status   : out Humanize.Status.Status_Code;
+      Singular : String := "result";
+      Plural   : String := "results")
+   is
+   begin
+      Copy_Result
+        (Page_Range_Label (Context, First, Last, Total, Singular, Plural),
+         Target, Written, Status);
+   end Page_Range_Label_Into;
+
+   procedure Page_Navigation_Label_Into
+     (Context : Humanize.Contexts.Context;
+      Page    : Positive;
+      Total   : Positive;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Copy_Result
+        (Page_Navigation_Label (Context, Page, Total), Target, Written, Status);
+   end Page_Navigation_Label_Into;
+
+   procedure Page_Size_Label_Into
+     (Context   : Humanize.Contexts.Context;
+      Page_Size : Positive;
+      Target    : in out String;
+      Written   : out Natural;
+      Status    : out Humanize.Status.Status_Code;
+      Singular  : String := "result";
+      Plural    : String := "results")
+   is
+   begin
+      Copy_Result
+        (Page_Size_Label (Context, Page_Size, Singular, Plural),
+         Target, Written, Status);
+   end Page_Size_Label_Into;
 end Humanize.Lists;

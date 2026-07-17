@@ -1,0 +1,80 @@
+# Machine-readable generated/native data provenance for Humanize.
+# `check_humanize --policy-only` validates these entries by text marker and
+# matching source-file provenance comments.
+
+[[artifact]]
+path = "src/humanize-catalogs-core_data.adb"
+kind = "humanize-owned-catalog"
+owner = "humanize"
+source = "checked-in catalog fragments"
+coverage = "core native catalog keys"
+currentness = "reviewed with release verification"
+marker = "Provenance: Humanize-owned catalog data"
+line_count = 738
+sha256 = "108ff269464c6657108c0febe39d52d327a0858eb636b4d032f927a0eee2e58e"
+
+[[artifact]]
+path = "src/humanize-catalogs-unit_data.adb"
+kind = "generated-catalog"
+owner = "humanize"
+source = "Humanize unit catalog templates"
+coverage = "generated unit catalog keys"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from Humanize unit catalog templates"
+line_count = 1586
+sha256 = "f7feca78bcf8d7851f2bbcdbfa7fa003a4e1b0cb1c5ec5adde02c9eab9115721"
+
+[[artifact]]
+path = "src/humanize-catalogs-native_data.adb"
+kind = "reviewed-native-catalog"
+owner = "humanize"
+source = "reviewed native catalog fragments"
+coverage = "native catalog additions"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from reviewed native catalog fragments"
+line_count = 2751
+sha256 = "a7e7ae38bd6db84c8db0516cda627dff4f2c5e0a3db56003e30bbbae4526088a"
+
+[[artifact]]
+path = "src/humanize-numbers-spellout_data.adb"
+kind = "generated-spellout"
+owner = "humanize"
+source = "Humanize spellout tables"
+coverage = "locale spellout words"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from Humanize spellout tables"
+line_count = 2969
+sha256 = "d0ef6ee4139e878d67d6eaf7e2f9dcc4ae8c830125fffb4adffaea7a4e44f260"
+
+[[artifact]]
+path = "src/humanize-durations-schedule_data.adb"
+kind = "humanize-owned-metadata"
+owner = "humanize"
+source = "deterministic schedule metadata"
+coverage = "schedule and cron wording"
+currentness = "reviewed with release verification"
+marker = "Provenance: Humanize-owned deterministic schedule metadata"
+line_count = 898
+sha256 = "af67fd0f1b72784a75e5044dfbb88cbd7427f16f1edb7861b272969fe5310904"
+
+[[artifact]]
+path = "src/humanize-locales.adb"
+kind = "humanize-owned-inventory"
+owner = "humanize"
+source = "shipped locale inventory"
+coverage = "base and regional shipped locales"
+currentness = "reviewed with release verification"
+marker = "Provenance: Humanize-owned shipped locale inventory"
+line_count = 227
+sha256 = "045718b1b11cce146778426f26c8c6d4bdcd17b9c7d001297ef312d8f1d5fd76"
+
+[[artifact]]
+path = "src/humanize-phrases-locales.adb"
+kind = "delegated-inventory"
+owner = "humanize"
+source = "Humanize.Phrases.Support locale metadata"
+coverage = "phrase locale support"
+currentness = "reviewed with release verification"
+marker = "Provenance: delegates to Humanize.Phrases.Support locale metadata"
+line_count = 32
+sha256 = "7c4caaeb8948ffe8a5046566cd7b54ae70efafd8c1f7c3be1847568db8033c77"

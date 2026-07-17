@@ -273,6 +273,19 @@ package body Humanize.Tests.Durations is
             Hour        => 9,
             Minute      => 30,
             Use_12_Hour => False));
+      German_Regional_Ordinal_Schedule : constant Text_Result :=
+        Schedule
+          (Support.Locale ("DE_at"),
+           (Kind        => Schedule_Ordinal_Weekday,
+            Every       => 1,
+            Unit        => Every_Month,
+            Weekday     => 1,
+            Weekdays    => Every_Day_Set,
+            Ordinal     => 1,
+            Has_Time    => True,
+            Hour        => 9,
+            Minute      => 30,
+            Use_12_Hour => False));
       Italian_Ordinal_Schedule : constant Text_Result :=
         Schedule
           (Support.It,
@@ -303,6 +316,8 @@ package body Humanize.Tests.Durations is
             Use_12_Hour => False));
       French_Weekday_Schedule : constant Text_Result :=
         Cron_Schedule (Support.Fr, "0", "9", "*", "*", "1-5");
+      French_Regional_Weekday_Schedule : constant Text_Result :=
+        Cron_Schedule (Support.Locale ("FR_ca"), "0", "9", "*", "*", "1-5");
       Spanish_Weekday_Schedule : constant Text_Result :=
         Cron_Schedule (Support.Es, "0", "9", "*", "*", "1-5");
       Ordinal_Schedule : constant Text_Result :=
@@ -351,6 +366,9 @@ package body Humanize.Tests.Durations is
       Monthly_Day_Helper : constant Text_Result :=
         Monthly_Day_Schedule
           (Support.En, 15, Has_Time => True, Hour => 8, Minute => 30);
+      Finnish_Regional_Monthly_Day : constant Text_Result :=
+        Monthly_Day_Schedule
+          (Support.Locale ("FI_fi"), 15, Has_Time => True, Hour => 8, Minute => 30);
       Last_Business_Helper : constant Text_Result :=
         Last_Business_Day_Schedule
           (Support.En, Has_Time => True, Hour => 17, Minute => 0);
@@ -365,6 +383,18 @@ package body Humanize.Tests.Durations is
         Cron_Schedule (Support.Locale ("fi"), "30", "8", "15", "*", "*");
       Polish_Cron_Monthly : constant Text_Result :=
         Cron_Schedule (Support.Locale ("pl"), "30", "8", "15", "*", "*");
+      Japanese_Cron_Monthly : constant Text_Result :=
+        Cron_Schedule (Support.Locale ("ja"), "30", "8", "15", "*", "*");
+      Japanese_Regional_Cron_Monthly : constant Text_Result :=
+        Cron_Schedule (Support.Locale ("JA_jp"), "30", "8", "15", "*", "*");
+      Korean_Cron_Monthly : constant Text_Result :=
+        Cron_Schedule (Support.Locale ("ko"), "30", "8", "15", "*", "*");
+      Korean_Regional_Cron_Monthly : constant Text_Result :=
+        Cron_Schedule (Support.Locale ("KO_kr"), "30", "8", "15", "*", "*");
+      Chinese_Cron_Monthly : constant Text_Result :=
+        Cron_Schedule (Support.Locale ("zh"), "30", "8", "15", "*", "*");
+      Chinese_Regional_Cron_Monthly : constant Text_Result :=
+        Cron_Schedule (Support.Locale ("ZH_cn"), "30", "8", "15", "*", "*");
       Natural_Text : constant Text_Result :=
         Natural_Duration (Support.En, 30);
       Rails_Text : constant Text_Result :=
@@ -854,6 +884,11 @@ package body Humanize.Tests.Durations is
            = "erster Montag jedes Monats um 09:30",
          "localized German ordinal weekday schedule phrase");
       AUnit.Assertions.Assert
+        (German_Regional_Ordinal_Schedule.Status = Ok
+         and then Support.Text (German_Regional_Ordinal_Schedule)
+           = "erster Montag jedes Monats um 09:30",
+         "regional German schedule uses language-code fallback");
+      AUnit.Assertions.Assert
         (Italian_Ordinal_Schedule.Status = Ok
          and then Support.Text (Italian_Ordinal_Schedule)
            = "primo luned" & Character'Val (16#C3#) & Character'Val (16#AC#)
@@ -870,6 +905,11 @@ package body Humanize.Tests.Durations is
          and then Support.Text (French_Weekday_Schedule)
            = "chaque jour ouvrable " & U_A_Grave & " 09:00",
          "localized French cron weekday schedule phrase");
+      AUnit.Assertions.Assert
+        (French_Regional_Weekday_Schedule.Status = Ok
+         and then Support.Text (French_Regional_Weekday_Schedule)
+           = "chaque jour ouvrable " & U_A_Grave & " 09:00",
+         "regional French cron schedule uses language-code fallback");
       AUnit.Assertions.Assert
         (Spanish_Weekday_Schedule.Status = Ok
          and then Support.Text (Spanish_Weekday_Schedule)
@@ -918,6 +958,13 @@ package body Humanize.Tests.Durations is
            = "day 15 of each month at 08:30",
          "monthly day helper schedule phrase");
       AUnit.Assertions.Assert
+        (Finnish_Regional_Monthly_Day.Status = Ok
+         and then Support.Text (Finnish_Regional_Monthly_Day)
+           = "p" & Character'Val (16#C3#) & Character'Val (16#A4#)
+             & "iv" & Character'Val (16#C3#) & Character'Val (16#A4#)
+             & " 15 joka kuukausi klo 08:30",
+         "regional Finnish monthly schedule uses language-code fallback");
+      AUnit.Assertions.Assert
         (Last_Business_Helper.Status = Ok
          and then Support.Text (Last_Business_Helper)
            = "last business day of each month at 17:00",
@@ -948,6 +995,24 @@ package body Humanize.Tests.Durations is
            = "15. dzie" & U (16#144#) & " ka" & U (16#17C#)
              & "dego miesi" & U (16#105#) & "ca o 08:30",
          "localized Polish cron monthly schedule phrase");
+      AUnit.Assertions.Assert
+        (Japanese_Cron_Monthly.Status = Ok
+         and then Japanese_Regional_Cron_Monthly.Status = Ok
+         and then Support.Text (Japanese_Regional_Cron_Monthly) =
+           Support.Text (Japanese_Cron_Monthly),
+         "regional Japanese cron schedule uses normalized CJK time branch");
+      AUnit.Assertions.Assert
+        (Korean_Cron_Monthly.Status = Ok
+         and then Korean_Regional_Cron_Monthly.Status = Ok
+         and then Support.Text (Korean_Regional_Cron_Monthly) =
+           Support.Text (Korean_Cron_Monthly),
+         "regional Korean cron schedule uses normalized CJK time branch");
+      AUnit.Assertions.Assert
+        (Chinese_Cron_Monthly.Status = Ok
+         and then Chinese_Regional_Cron_Monthly.Status = Ok
+         and then Support.Text (Chinese_Regional_Cron_Monthly) =
+           Support.Text (Chinese_Cron_Monthly),
+         "regional Chinese cron schedule uses normalized CJK time branch");
       AUnit.Assertions.Assert
         (Natural_Text.Status = Ok
          and then Support.Text (Natural_Text) = "less than a minute",

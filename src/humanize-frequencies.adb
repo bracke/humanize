@@ -1,37 +1,21 @@
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
 with Humanize.I18N_Rendering;
 with Humanize.Messages;
 with Humanize.Selections;
+with Humanize.Bounded_Text;
 
 package body Humanize.Frequencies is
-   use type Humanize.Status.Status_Code;
+   function Ok_Text (Text : String) return Humanize.Status.Text_Result
+      renames Humanize.Bounded_Text.Ok_Text;
 
-   procedure Copy_Text
-     (Text    : String;
+   procedure Copy_Result
+     (Result  : Humanize.Status.Text_Result;
       Target  : in out String;
       Written : out Natural;
       Status  : out Humanize.Status.Status_Code)
-   is
-   begin
-      Written := 0;
-      if Target'First /= 1 then
-         Status := Humanize.Status.Invalid_Options;
-      elsif Text'Length > Target'Length then
-         if Target'Length > 0 then
-            Target (Target'First .. Target'Last) :=
-              Text (Text'First .. Text'First + Target'Length - 1);
-         end if;
-         Written := Target'Length;
-         Status := Humanize.Status.Buffer_Overflow;
-      else
-         if Text'Length > 0 then
-            Target (Target'First .. Target'First + Text'Length - 1) := Text;
-         end if;
-         Written := Text'Length;
-         Status := Humanize.Status.Ok;
-      end if;
-   end Copy_Text;
+      renames Humanize.Bounded_Text.Copy_Text;
+
+   function Integer_Text (Value : Long_Long_Integer) return String
+      renames Humanize.Bounded_Text.Image;
 
    function Times
      (Context : Humanize.Contexts.Context;
@@ -65,19 +49,14 @@ package body Humanize.Frequencies is
       return Humanize.Status.Text_Result
    is
       pragma Unreferenced (Context);
-      Count_Text : constant String := Occurrence_Count'Image (Count);
-      Clean      : constant String := Count_Text (Count_Text'First + 1 .. Count_Text'Last);
       Text       : constant String :=
         (case Count is
            when 0 => "never " & Plural,
            when 1 => "once " & Singular,
            when 2 => "twice " & Plural,
-           when others => Clean & " " & Plural);
+           when others => Integer_Text (Count) & " " & Plural);
    begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text   => To_Unbounded_String (Text),
-         Key    => Humanize.Messages.No_Message);
+      return Ok_Text (Text);
    end Times;
 
    procedure Times_Into
@@ -89,12 +68,7 @@ package body Humanize.Frequencies is
    is
       Result : constant Humanize.Status.Text_Result := Times (Context, Count);
    begin
-      if Result.Status /= Humanize.Status.Ok then
-         Written := 0;
-         Status := Result.Status;
-      else
-         Copy_Text (To_String (Result.Text), Target, Written, Status);
-      end if;
+      Copy_Result (Result, Target, Written, Status);
    end Times_Into;
 
    procedure Times_Into
@@ -109,6 +83,6 @@ package body Humanize.Frequencies is
       Result : constant Humanize.Status.Text_Result :=
         Times (Context, Count, Singular, Plural);
    begin
-      Copy_Text (To_String (Result.Text), Target, Written, Status);
+      Copy_Result (Result, Target, Written, Status);
    end Times_Into;
 end Humanize.Frequencies;

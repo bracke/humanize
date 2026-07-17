@@ -1,5 +1,6 @@
 with Ada.Command_Line;
 with Ada.Directories;
+with Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
@@ -15,6 +16,8 @@ package body Check_Humanize_Release is
 
    Alr_Build_Args : constant Argument_List :=
      (1 => new String'("build"));
+   Alr_Update_Args : constant Argument_List :=
+     (1 => new String'("update"));
    Alr_Test_Args : constant Argument_List :=
      (1 => new String'("test"));
    Build_Tests_Args : constant Argument_List :=
@@ -27,12 +30,46 @@ package body Check_Humanize_Release is
      (1 => new String'("exec"),
       2 => new String'("--"),
       3 => new String'("./bin/tests"));
+   Exec_Perf_Smoke_Args : constant Argument_List :=
+     (1 => new String'("exec"),
+      2 => new String'("--"),
+      3 => new String'("./bin/perf_smoke"));
    Build_Examples_Args : constant Argument_List :=
      (1 => new String'("exec"),
       2 => new String'("--"),
       3 => new String'("gprbuild"),
       4 => new String'("-P"),
       5 => new String'("examples/examples.gpr"));
+   Build_Public_API_Consumer_Args : constant Argument_List :=
+     (1 => new String'("exec"),
+      2 => new String'("--"),
+      3 => new String'("gprbuild"),
+      4 => new String'("-P"),
+      5 => new String'("tests/public_api_consumer/public_api_consumer.gpr"));
+   Exec_Public_API_Consumer_Args : constant Argument_List :=
+     (1 => new String'("exec"),
+      2 => new String'("--"),
+      3 => new String'("./tests/public_api_consumer/bin/public_api_consumer"));
+   Exec_Public_API_Formatting_Consumer_Args : constant Argument_List :=
+     (1 => new String'("exec"),
+      2 => new String'("--"),
+      3 => new String'("./tests/public_api_consumer/bin/public_api_formatting_consumer"));
+   Exec_Public_API_Parsing_Consumer_Args : constant Argument_List :=
+     (1 => new String'("exec"),
+      2 => new String'("--"),
+      3 => new String'("./tests/public_api_consumer/bin/public_api_parsing_consumer"));
+   Exec_Public_API_Color_Consumer_Args : constant Argument_List :=
+     (1 => new String'("exec"),
+      2 => new String'("--"),
+      3 => new String'("./tests/public_api_consumer/bin/public_api_color_consumer"));
+   Exec_Public_API_Domain_Consumer_Args : constant Argument_List :=
+     (1 => new String'("exec"),
+      2 => new String'("--"),
+      3 => new String'("./tests/public_api_consumer/bin/public_api_domain_consumer"));
+   Exec_Public_API_Bounded_Consumer_Args : constant Argument_List :=
+     (1 => new String'("exec"),
+      2 => new String'("--"),
+      3 => new String'("./tests/public_api_consumer/bin/public_api_bounded_consumer"));
    Gnatdoc_Args : constant Argument_List :=
      (1 => new String'("exec"),
       2 => new String'("--"),
@@ -115,13 +152,56 @@ package body Check_Humanize_Release is
         (1 => new String'("exec"),
          2 => new String'("--"),
          3 => new String'("./bin/tests"));
+      Exec_Perf_Smoke_Stage_Args : constant Argument_List :=
+        (1 => new String'("exec"),
+         2 => new String'("--"),
+         3 => new String'("./bin/perf_smoke"));
       Build_Examples_Stage_Args : constant Argument_List :=
         (1 => new String'("exec"),
          2 => new String'("--"),
          3 => new String'("gprbuild"),
          4 => new String'("-P"),
          5 => new String'("examples/examples.gpr"));
+      Build_Public_API_Consumer_Stage_Args : constant Argument_List :=
+        (1 => new String'("exec"),
+         2 => new String'("--"),
+         3 => new String'("gprbuild"),
+         4 => new String'("-P"),
+         5 => new String'("tests/public_api_consumer/public_api_consumer.gpr"));
+      Exec_Public_API_Consumer_Stage_Args : constant Argument_List :=
+        (1 => new String'("exec"),
+         2 => new String'("--"),
+         3 => new String'("./tests/public_api_consumer/bin/public_api_consumer"));
       Empty_Args : Argument_List (1 .. 0);
+
+      procedure Run_Staged_Check
+        (Label   : String;
+         Dir     : String;
+         Program : String;
+         Args    : Argument_List)
+      is
+         Env_Name : constant String := "HUMANIZE_ALIRE_PREFIX";
+         Had_Env  : constant Boolean :=
+           Ada.Environment_Variables.Exists (Env_Name);
+         Old_Env  : constant String :=
+           (if Had_Env then Ada.Environment_Variables.Value (Env_Name) else "");
+      begin
+         if Had_Env then
+            Ada.Environment_Variables.Clear (Env_Name);
+         end if;
+
+         Run_Check (Root, Errors, Label, Dir, Program, Args);
+
+         if Had_Env then
+            Ada.Environment_Variables.Set (Env_Name, Old_Env);
+         end if;
+      exception
+         when others =>
+            if Had_Env then
+               Ada.Environment_Variables.Set (Env_Name, Old_Env);
+            end if;
+            raise;
+      end Run_Staged_Check;
    begin
       Project_Tools.Files.Delete_Tree (Stage_Root);
       Project_Tools.Files.Copy_Release_Source_Tree
@@ -160,18 +240,55 @@ package body Check_Humanize_Release is
       Project_Tools.Alire_Manifests.Activate_Build_Manifest
         (Stage_Root, Quiet => True);
 
-      Run_Check
-        (Root, Errors, "build staged release library",
+      Run_Staged_Check
+        ("update staged release dependencies",
+         Stage_Root, Alr_Path, Alr_Update_Args);
+      Run_Staged_Check
+        ("build staged release library",
          Stage_Root, Alr_Path, Alr_Build_Args);
-      Run_Check
-        (Root, Errors, "build staged release tests",
+      Run_Staged_Check
+        ("update staged release test dependencies",
+         Stage_Root & "/tests", Alr_Path, Alr_Update_Args);
+      Run_Staged_Check
+        ("build staged release tests",
          Stage_Root & "/tests", Alr_Path, Build_Tests_Stage_Args);
-      Run_Check
-        (Root, Errors, "run staged release tests",
+      Run_Staged_Check
+        ("run staged release tests",
          Stage_Root & "/tests", Alr_Path, Exec_Tests_Stage_Args);
-      Run_Check
-        (Root, Errors, "build staged release examples",
+      Run_Staged_Check
+        ("run staged release performance smoke",
+         Stage_Root & "/tests", Alr_Path, Exec_Perf_Smoke_Stage_Args);
+      Run_Staged_Check
+        ("build staged release examples",
          Stage_Root, Alr_Path, Build_Examples_Stage_Args);
+      Run_Staged_Check
+        ("build staged public API consumer",
+         Stage_Root, Alr_Path,
+         Build_Public_API_Consumer_Stage_Args);
+      Run_Staged_Check
+        ("run staged public API consumer",
+         Stage_Root, Alr_Path,
+         Exec_Public_API_Consumer_Stage_Args);
+      Run_Staged_Check
+        ("run staged public API formatting consumer",
+         Stage_Root, Alr_Path,
+         Exec_Public_API_Formatting_Consumer_Args);
+      Run_Staged_Check
+        ("run staged public API parsing consumer",
+         Stage_Root, Alr_Path,
+         Exec_Public_API_Parsing_Consumer_Args);
+      Run_Staged_Check
+        ("run staged public API color consumer",
+         Stage_Root, Alr_Path,
+         Exec_Public_API_Color_Consumer_Args);
+      Run_Staged_Check
+        ("run staged public API domain consumer",
+         Stage_Root, Alr_Path,
+         Exec_Public_API_Domain_Consumer_Args);
+      Run_Staged_Check
+        ("run staged public API bounded consumer",
+         Stage_Root, Alr_Path,
+         Exec_Public_API_Bounded_Consumer_Args);
       Project_Tools.Release_Checks.Require_Program_Output_Matches_Fenced_Text
         (Expected_File => Stage_Root & "/examples/EXPECTED_OUTPUT.md",
          Fence_Label   => "text",
@@ -198,8 +315,38 @@ package body Check_Humanize_Release is
         (Root, Errors, "run humanize tests",
          Root & "/tests", Alr_Path, Exec_Tests_Args);
       Run_Check
+        (Root, Errors, "run humanize performance smoke",
+         Root & "/tests", Alr_Path, Exec_Perf_Smoke_Args);
+      Run_Check
         (Root, Errors, "build humanize examples",
          Root, Alr_Path, Build_Examples_Args);
+      Run_Check
+        (Root, Errors, "build public API consumer",
+         Root, Alr_Path, Build_Public_API_Consumer_Args);
+      Run_Check
+        (Root, Errors, "run public API consumer",
+         Root, Alr_Path,
+         Exec_Public_API_Consumer_Args);
+      Run_Check
+        (Root, Errors, "run public API formatting consumer",
+         Root, Alr_Path,
+         Exec_Public_API_Formatting_Consumer_Args);
+      Run_Check
+        (Root, Errors, "run public API parsing consumer",
+         Root, Alr_Path,
+         Exec_Public_API_Parsing_Consumer_Args);
+      Run_Check
+        (Root, Errors, "run public API color consumer",
+         Root, Alr_Path,
+         Exec_Public_API_Color_Consumer_Args);
+      Run_Check
+        (Root, Errors, "run public API domain consumer",
+         Root, Alr_Path,
+         Exec_Public_API_Domain_Consumer_Args);
+      Run_Check
+        (Root, Errors, "run public API bounded consumer",
+         Root, Alr_Path,
+         Exec_Public_API_Bounded_Consumer_Args);
       Check_Example_Output (Root, Errors);
       Run_Check
         (Root, Errors, "build humanize through alr test action",

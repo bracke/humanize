@@ -1,6 +1,7 @@
 with AUnit.Assertions;
 
 with Humanize.Contexts;
+with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Status;
 with Humanize.Tests.Support;
@@ -122,6 +123,41 @@ package body Humanize.Tests.Numbers is
          & Support.Text (Result) & "] status " & Status_Image (Result.Status));
    end Check_Compact;
 
+   procedure Check_Regional_Cardinal_Fallbacks is
+   begin
+      for Locale_Access of Humanize.Locales.Regional_Shipped_Locales loop
+         declare
+            Locale : constant String := Locale_Access.all;
+            Base : constant String := Humanize.Locales.Base_Locale (Locale);
+            Regional_Result : constant Text_Result :=
+              Locale_Cardinal (Support.Locale (Locale), 2_345);
+            Base_Result : constant Text_Result :=
+              Locale_Cardinal (Support.Locale (Base), 2_345);
+         begin
+            AUnit.Assertions.Assert
+              (Regional_Result.Status = Ok
+               and then Base_Result.Status = Ok
+               and then Support.Text (Regional_Result) = Support.Text (Base_Result),
+               "regional locale cardinal fallback " & Locale & " -> " & Base);
+         end;
+      end loop;
+   end Check_Regional_Cardinal_Fallbacks;
+
+   procedure Check_Regional_Spellout_Tier_Fallbacks is
+   begin
+      for Locale_Access of Humanize.Locales.Regional_Shipped_Locales loop
+         declare
+            Locale : constant String := Locale_Access.all;
+            Base : constant String := Humanize.Locales.Base_Locale (Locale);
+         begin
+            AUnit.Assertions.Assert
+              (Spellout_Locale_Tier_For (Support.Locale (Locale)) =
+               Spellout_Locale_Tier_For (Support.Locale (Base)),
+               "regional spellout tier fallback " & Locale & " -> " & Base);
+         end;
+      end loop;
+   end Check_Regional_Spellout_Tier_Fallbacks;
+
    procedure Test_Ordinal_English (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
    begin
@@ -190,9 +226,9 @@ package body Humanize.Tests.Numbers is
       Dutch_Two_Thousand : constant Text_Result :=
         Locale_Cardinal (Support.Nl, 2_000);
       Swedish_Cardinal : constant Text_Result :=
-        Locale_Cardinal (Support.Locale ("sv-SE"), 2_345);
+        Locale_Cardinal (Support.Locale ("sv"), 2_345);
       Norwegian_Cardinal : constant Text_Result :=
-        Locale_Cardinal (Support.Locale ("nb-NO"), 2_345);
+        Locale_Cardinal (Support.Locale ("nb"), 2_345);
       Finnish_Cardinal : constant Text_Result :=
         Locale_Cardinal (Support.Locale ("fi-FI"), 2_345);
       Turkish_Cardinal : constant Text_Result :=
@@ -236,6 +272,8 @@ package body Humanize.Tests.Numbers is
         Decimal_Words (Support.En, 12.5, 2);
       German_Decimal_Text : constant Text_Result :=
         Decimal_Words (Support.De, 12.5, 2);
+      German_Regional_Decimal_Text : constant Text_Result :=
+        Decimal_Words (Support.Locale ("DE_at"), 12.5, 2);
       Swedish_Decimal_Text : constant Text_Result :=
         Decimal_Words (Support.Locale ("sv"), 12.5, 2);
       Finnish_Decimal_Text : constant Text_Result :=
@@ -254,6 +292,8 @@ package body Humanize.Tests.Numbers is
         Fraction_Words (Support.En, 3, 4);
       French_Fraction_Text : constant Text_Result :=
         Fraction_Words (Support.Fr, 3, 4);
+      French_Regional_Fraction_Text : constant Text_Result :=
+        Fraction_Words (Support.Locale ("FR_ca"), 3, 4);
       Swedish_Fraction_Text : constant Text_Result :=
         Fraction_Words (Support.Locale ("sv"), 3, 4);
       Norwegian_Fraction_Text : constant Text_Result :=
@@ -274,6 +314,8 @@ package body Humanize.Tests.Numbers is
         Ordinal_Words (Support.En, 21);
       German_Ordinal_Text : constant Text_Result :=
         Ordinal_Words (Support.De, 21);
+      German_Regional_Ordinal_Text : constant Text_Result :=
+        Ordinal_Words (Support.Locale ("DE_at"), 21);
       Dutch_Ordinal_Text : constant Text_Result :=
         Ordinal_Words (Support.Nl, 21);
       French_Ordinal_Seventeen : constant Text_Result :=
@@ -330,8 +372,12 @@ package body Humanize.Tests.Numbers is
         Currency_Words (Support.En, 12.50, "dollar", "cent", 2);
       German_Currency_Text : constant Text_Result :=
         Currency_Words (Support.De, 12.50, "Euro", "Cent", 2);
+      German_Regional_Currency_Text : constant Text_Result :=
+        Currency_Words (Support.Locale ("DE_at"), 12.50, "Euro", "Cent", 2);
       Danish_Currency_Text : constant Text_Result :=
         Currency_Words (Support.Da, 12.50, "krone", U_O_Acute & "re", 2);
+      Norwegian_Regional_Currency_Text : constant Text_Result :=
+        Currency_Words (Support.Locale ("NB_no"), 12.50, "krone", U_O_Acute & "re", 2);
       Percent_Text : constant Text_Result :=
         Percent_Words (Support.En, 12.5, 1);
       Accessible_Text : constant Text_Result :=
@@ -341,9 +387,12 @@ package body Humanize.Tests.Numbers is
         Spellout_Locale_Tier_Label (Spellout_Locale_Tier_For (Support.En));
       Native_Tier : constant Text_Result :=
         Spellout_Locale_Tier_Label (Spellout_Locale_Tier_For (Support.De));
+      Regional_Native_Tier : constant Text_Result :=
+        Spellout_Locale_Tier_Label
+          (Spellout_Locale_Tier_For (Support.Locale ("DE_at")));
       Generated_Tier : constant Text_Result :=
         Spellout_Locale_Tier_Label
-          (Spellout_Locale_Tier_For (Support.Locale ("sv-SE")));
+          (Spellout_Locale_Tier_For (Support.Locale ("sv")));
       Fallback_Tier : constant Text_Result :=
         Spellout_Locale_Tier_Label
           (Spellout_Locale_Tier_For (Support.Locale ("zz")));
@@ -474,6 +523,7 @@ package body Humanize.Tests.Numbers is
          and then Support.Text (Norwegian_Cardinal)
            = "to tusen tre hundre f" & U_O_Slash & "rtifem",
          "generated Norwegian locale cardinal");
+      Check_Regional_Cardinal_Fallbacks;
       AUnit.Assertions.Assert
         (Finnish_Cardinal.Status = Ok
          and then Support.Text (Finnish_Cardinal)
@@ -571,6 +621,11 @@ package body Humanize.Tests.Numbers is
            = "zw" & U_O_Umlaut & "lf komma f" & U_U_Umlaut & "nf null",
          "locale decimal words");
       AUnit.Assertions.Assert
+        (German_Regional_Decimal_Text.Status = Ok
+         and then Support.Text (German_Regional_Decimal_Text)
+           = "zw" & U_O_Umlaut & "lf komma f" & U_U_Umlaut & "nf null",
+         "regional German decimal words use language-code fallback");
+      AUnit.Assertions.Assert
         (Swedish_Decimal_Text.Status = Ok
          and then Support.Text (Swedish_Decimal_Text)
            = "tolv komma fem noll",
@@ -614,6 +669,10 @@ package body Humanize.Tests.Numbers is
         (French_Fraction_Text.Status = Ok
          and then Support.Text (French_Fraction_Text) = "trois quarts",
          "locale fraction words");
+      AUnit.Assertions.Assert
+        (French_Regional_Fraction_Text.Status = Ok
+         and then Support.Text (French_Regional_Fraction_Text) = "trois quarts",
+         "regional French fraction words use language-code fallback");
       AUnit.Assertions.Assert
         (Swedish_Fraction_Text.Status = Ok
          and then Support.Text (Swedish_Fraction_Text)
@@ -660,6 +719,10 @@ package body Humanize.Tests.Numbers is
         (German_Ordinal_Text.Status = Ok
          and then Support.Text (German_Ordinal_Text) = "einundzwanzigste",
          "locale ordinal words");
+      AUnit.Assertions.Assert
+        (German_Regional_Ordinal_Text.Status = Ok
+         and then Support.Text (German_Regional_Ordinal_Text) = "einundzwanzigste",
+         "regional German ordinal words use language-code fallback");
       AUnit.Assertions.Assert
         (Dutch_Ordinal_Text.Status = Ok
          and then Support.Text (Dutch_Ordinal_Text) = "eenentwintigste",
@@ -787,10 +850,20 @@ package body Humanize.Tests.Numbers is
            = "zw" & U_O_Umlaut & "lf Euro und f" & U_U_Umlaut & "nfzig Cent",
          "localized German currency words");
       AUnit.Assertions.Assert
+        (German_Regional_Currency_Text.Status = Ok
+         and then Support.Text (German_Regional_Currency_Text)
+           = "zw" & U_O_Umlaut & "lf Euro und f" & U_U_Umlaut & "nfzig Cent",
+         "regional German currency words use language-code fallback");
+      AUnit.Assertions.Assert
         (Danish_Currency_Text.Status = Ok
          and then Support.Text (Danish_Currency_Text)
            = "tolv krone og halvtreds " & U_O_Acute & "re",
          "localized Danish currency words");
+      AUnit.Assertions.Assert
+        (Norwegian_Regional_Currency_Text.Status = Ok
+         and then Support.Text (Norwegian_Regional_Currency_Text)
+           = "tolv krone og femti " & U_O_Acute & "re",
+         "regional Norwegian currency words use normalized conjunction");
       AUnit.Assertions.Assert
         (Percent_Text.Status = Ok
          and then Support.Text (Percent_Text) = "twelve point five percent",
@@ -815,9 +888,20 @@ package body Humanize.Tests.Numbers is
         (Spellout_Locale_Tier_For (Support.De) = Native_Locale_Spellout,
          "native spellout tier metadata");
       AUnit.Assertions.Assert
-        (Spellout_Locale_Tier_For (Support.Locale ("nb-NO"))
+        (Spellout_Locale_Tier_For (Support.Locale ("nb"))
            = Generated_Locale_Spellout,
          "generated spellout tier metadata");
+      AUnit.Assertions.Assert
+        (Spellout_Locale_Tier_For (Support.Locale ("PL_pl"))
+           = Generated_Locale_Spellout
+         and then Spellout_Locale_Tier_For (Support.Locale ("JA_jp"))
+           = Generated_Locale_Spellout
+         and then Spellout_Locale_Tier_For (Support.Locale ("AR_eg"))
+           = Generated_Locale_Spellout
+         and then Spellout_Locale_Tier_For (Support.Locale ("SK_sk"))
+           = Generated_Locale_Spellout,
+         "generated spellout tier normalizes case and regional tags");
+      Check_Regional_Spellout_Tier_Fallbacks;
       AUnit.Assertions.Assert
         (Spellout_Locale_Tier_For (Support.Locale ("pl"))
            = Generated_Locale_Spellout,
@@ -879,6 +963,10 @@ package body Humanize.Tests.Numbers is
          and then Support.Text (Native_Tier) = "native-locale-spellout",
          "native spellout tier label");
       AUnit.Assertions.Assert
+        (Regional_Native_Tier.Status = Ok
+         and then Support.Text (Regional_Native_Tier) = "native-locale-spellout",
+         "regional German spellout tier label uses language-code fallback");
+      AUnit.Assertions.Assert
         (Generated_Tier.Status = Ok
          and then Support.Text (Generated_Tier) = "generated-locale-spellout",
          "generated spellout tier label");
@@ -923,6 +1011,23 @@ package body Humanize.Tests.Numbers is
       Check_Compact (Support.Da, 1_000_000, "1 mio.", "Danish million suffix");
       Check_Compact (Support.Fr, 1_200, "1,2 k", "French thousand suffix");
       Check_Compact (Support.Fr, 1_000_000, "1 M", "French million suffix");
+
+      declare
+         Base       : constant Text_Result :=
+           Compact (Support.Locale ("hi"), 1_200_000);
+         Hyphenated : constant Text_Result :=
+           Compact (Support.Locale ("hi-IN"), 1_200_000);
+         Underscore : constant Text_Result :=
+           Compact (Support.Locale ("hi_IN"), 1_200_000);
+      begin
+         AUnit.Assertions.Assert
+           (Base.Status = Ok
+            and then Hyphenated.Status = Ok
+            and then Underscore.Status = Ok
+            and then Support.Text (Hyphenated) = Support.Text (Base)
+            and then Support.Text (Underscore) = Support.Text (Base),
+            "Hindi regional compact tags use language-code fallback");
+      end;
    end Test_Compact_Other_Locales;
 
    procedure Check_Long
@@ -1141,8 +1246,12 @@ package body Humanize.Tests.Numbers is
       Approx_Range : constant Text_Result :=
         Approximate_Range (Support.En, 10, 20);
       Under_Text : constant Text_Result := Under_Number (Support.En, 5);
+      German_Regional_Under : constant Text_Result :=
+        Under_Number (Support.Locale ("DE_at"), 5);
       Up_To_Text : constant Text_Result := Up_To (Support.En, 100);
       Between_Text : constant Text_Result := Between (Support.En, 3, 7);
+      German_Regional_Between : constant Text_Result :=
+        Between (Support.Locale ("DE_at"), 3, 7);
       Qualified_Inclusive : constant Text_Result :=
         Qualified_Range (Support.En, 3, 7);
       Qualified_Exclusive : constant Text_Result :=
@@ -1273,12 +1382,20 @@ package body Humanize.Tests.Numbers is
         (Under_Text.Status = Ok and then Support.Text (Under_Text) = "under 5",
          "under number");
       AUnit.Assertions.Assert
+        (German_Regional_Under.Status = Ok
+         and then Support.Text (German_Regional_Under) = "unter 5",
+         "regional German number phrase uses language-code fallback");
+      AUnit.Assertions.Assert
         (Up_To_Text.Status = Ok and then Support.Text (Up_To_Text) = "up to 100",
          "up-to number");
       AUnit.Assertions.Assert
         (Between_Text.Status = Ok
          and then Support.Text (Between_Text) = "between 3 and 7",
          "between numbers");
+      AUnit.Assertions.Assert
+        (German_Regional_Between.Status = Ok
+         and then Support.Text (German_Regional_Between) = "zwischen 3 und 7",
+         "regional German between phrase uses language-code fallback");
       AUnit.Assertions.Assert
         (Qualified_Inclusive.Status = Ok
          and then Support.Text (Qualified_Inclusive) = "3 to 7 inclusive",
@@ -1611,6 +1728,73 @@ package body Humanize.Tests.Numbers is
          "automatic under approximation");
    end Test_Approximate;
 
+   procedure Test_Dataset_Summaries (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+      Distribution : constant Text_Result :=
+        Distribution_Summary_Label (3, 10.0, 20.0, 30.0, "ms");
+      Percentiles : constant Text_Result :=
+        Percentile_Summary_Label (42.0, 120.0, 300.0, "ms");
+      Outliers : constant Text_Result := Outlier_Summary_Label (2, 100);
+      Shape : constant Text_Result :=
+        Distribution_Shape_Label
+          (100, 10.0, 18.0, 20.0, 22.0, 40.0, Unit => "ms");
+      Shape_Metadata : constant Distribution_Shape_Metadata :=
+        Distribution_Shape_Metadata_For
+          (100, 10.0, 18.0, 20.0, 22.0, 40.0);
+      Shape_Metadata_Label_Result : constant Text_Result :=
+        Distribution_Shape_Metadata_Label (Shape_Metadata);
+      Buffer : String (1 .. 20);
+      Written : Natural;
+      Code : Status_Code;
+   begin
+      AUnit.Assertions.Assert
+        (Distribution.Status = Ok
+         and then Support.Text (Distribution) =
+           "3 observations, min 1.00000000000000E+01 ms, median "
+           & "2.00000000000000E+01 ms, max 3.00000000000000E+01 ms",
+         "distribution summary");
+      AUnit.Assertions.Assert
+        (Percentiles.Status = Ok
+         and then Support.Text (Percentiles) =
+           "p50 4.20000000000000E+01 ms, p95 "
+           & "1.20000000000000E+02 ms, p99 3.00000000000000E+02 ms",
+         "percentile summary");
+      AUnit.Assertions.Assert
+        (Outliers.Status = Ok
+         and then Support.Text (Outliers) =
+           "2 outliers out of 100 observations",
+         "outlier summary");
+      AUnit.Assertions.Assert
+        (Shape.Status = Ok
+         and then Support.Text (Shape) =
+           "right-skewed distribution, median 2.00000000000000E+01 ms",
+         "distribution shape summary");
+      AUnit.Assertions.Assert
+        (Shape_Metadata.Kind = Right_Skewed_Shape
+         and then Shape_Metadata.Strong_Conclusion,
+         "distribution shape metadata");
+      AUnit.Assertions.Assert
+        (Shape_Metadata_Label_Result.Status = Ok
+         and then Support.Text (Shape_Metadata_Label_Result) =
+           "shape=right-skewed count=100 spread=3.00000000000000E+01 "
+           & "iqr=4.00000000000000E+00 outliers=0 confidence=strong",
+         "distribution shape metadata label");
+      Distribution_Summary_Label_Into
+        (3, 10.0, 20.0, 30.0, Buffer, Written, Code, "ms");
+      AUnit.Assertions.Assert
+        (Code = Buffer_Overflow
+         and then Written = 20
+         and then Buffer = "3 observations, min ",
+         "bounded distribution summary");
+      Distribution_Shape_Label_Into
+        (100, 10.0, 18.0, 20.0, 22.0, 40.0, Buffer, Written, Code,
+         Unit => "ms");
+      AUnit.Assertions.Assert
+        (Code = Buffer_Overflow and then Written = 20
+         and then Buffer = "right-skewed distrib",
+         "bounded distribution shape");
+   end Test_Dataset_Summaries;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -1639,6 +1823,7 @@ package body Humanize.Tests.Numbers is
       Register_Routine (T, Test_Roman'Access, "Roman numerals");
       Register_Routine (T, Test_SI_Prefix'Access, "SI prefix formatting");
       Register_Routine (T, Test_Approximate'Access, "approximate numbers");
+      Register_Routine (T, Test_Dataset_Summaries'Access, "dataset summaries");
    end Register_Tests;
 
 end Humanize.Tests.Numbers;

@@ -5,16 +5,24 @@ with Ada.Text_IO;
 with I18N.Runtime;
 
 with Humanize.Bytes;
+with Humanize.Bounded_Text;
 with Humanize.Capabilities;
 with Humanize.Catalogs;
 with Humanize.Colors;
+with Humanize.Comparisons;
 with Humanize.Contexts;
+with Humanize.Cross_Domain;
 with Humanize.Datetimes;
+with Humanize.Domain_Details;
 with Humanize.Durations;
+with Humanize.Accounts;
+with Humanize.Builds;
+with Humanize.Deployments;
 with Humanize.Lists;
 with Humanize.Numbers;
 with Humanize.Parsing;
 with Humanize.Phrases;
+with Humanize.Operations;
 with Humanize.Status;
 with Humanize.Strings;
 with Humanize.Styles;
@@ -30,7 +38,7 @@ procedure Humanize_Demo is
    use Ada.Text_IO;
 
    function Text (Result : Humanize.Status.Text_Result) return String is
-     (Ada.Strings.Unbounded.To_String (Result.Text));
+     (Humanize.Bounded_Text.Result_Text (Result));
 
    Loaded    : I18N.Runtime.Load_Result;
    Reference : constant Time := Time_Of (2026, 3, 21, Day_Duration (43_200));
@@ -298,6 +306,63 @@ begin
          & Text
              (Humanize.Phrases.Percent_Comparison
                 (English, 88.0, 100.0, "score", "baseline")));
+      Put_Line
+        ("  operation     : "
+         & Text
+             (Humanize.Operations.Progress_Summary
+                ("sync", Humanize.Operations.Running, 8, 10,
+                 Failed => 1)));
+      Put_Line
+        ("  operation log : "
+         & Text
+             (Humanize.Operations.Progress_Summary
+                ("sync", Humanize.Operations.Running, 8, 10,
+                 Failed => 1, Skipped => 0, Retried => 0, Canceled => 0,
+                 Singular => "item", Plural => "items",
+                 Options =>
+                   (Mode => Humanize.Operations.Operation_Log,
+                    Include_Extras => True))));
+      Put_Line
+        ("  comparison log: "
+         & Text
+             (Humanize.Comparisons.Multi_Value_Summary
+                ("settings", 3, 7, 10,
+                 (Mode => Humanize.Comparisons.Comparison_Log))));
+      Put_Line
+        ("  account       : "
+         & Text
+             (Humanize.Accounts.Last_Active_Label
+                ("Ada", "2 hours ago")));
+      Put_Line
+        ("  account meta  : "
+         & Text
+             (Humanize.Accounts.Account_Label
+                ("Ada", Humanize.Accounts.Locked_Account,
+                 (Mode             => Humanize.Accounts.Account_Detailed,
+                  Include_Surface  => True,
+                  Include_Severity => True,
+                  Include_Tone     => False))));
+      Put_Line
+        ("  deploy        : "
+         & Text
+             (Humanize.Deployments.Deployment_Label
+                ("release 1.2", "production",
+                 Humanize.Deployments.Deployed)));
+      Put_Line
+        ("  build         : "
+         & Text
+             (Humanize.Builds.Test_Count_Label
+                (2, Humanize.Builds.Flaky_Test)));
+      Put_Line
+        ("  accessible    : "
+         & Text
+             (Humanize.Domain_Details.Accessible_Label
+                ("MFA enabled, image 1920x1080, 3/10 complete",
+                 (Surface    => Humanize.Domain_Details.Accounts_Surface,
+                  Severity   => Humanize.Domain_Details.Success_Severity,
+                  Tone       => Humanize.Domain_Details.Positive_Tone,
+                  Final      => True,
+                  Actionable => False))));
       Put_Line
         ("  compact time  : "
          & Text (Humanize.Durations.Format_Compact (English, 5_405, 2)));
@@ -759,6 +824,47 @@ begin
                 (Humanize.Capabilities.Rendering_Source_Label
                    (Humanize.Capabilities.Area_Rendering_Source
                       (Humanize.Capabilities.Parsing_Area))));
+         Put_Line
+           ("  cap features  : "
+            & Text
+                (Humanize.Capabilities.Feature_Support_Label
+                   (Humanize.Capabilities.Area_Features
+                      (Humanize.Capabilities.Domain_Detail_Area))));
+         Put_Line
+           ("  cap matrix    : "
+            & Text (Humanize.Capabilities.Capability_Matrix_Summary));
+         Put_Line
+           ("  color name    : "
+            & Text
+                (Humanize.Colors.Descriptive_Color_Name
+                   ((Red => 30, Green => 90, Blue => 180))));
+         Put_Line
+           ("  VIN checksum  : "
+            & Text
+                (Humanize.Cross_Domain.Machine_Checksum_Label
+                   ("1M8GDM9AXKP042788",
+                    Humanize.Cross_Domain.VIN_Checksum)));
+         Put_Line
+           ("  text change   : "
+            & Text
+                (Humanize.Strings.Text_Change_Label
+                   ("Alpha beta.", "alpha beta")));
+         Put_Line
+           ("  data shape    : "
+            & Text
+                (Humanize.Strings.Data_Shape_Label
+                   ("{""users"": [{""name"": ""Ada""}, null]}")));
+         declare
+            Address : Humanize.Strings.Address_Fields;
+         begin
+            Address.City (1 .. 6) := "London";
+            Address.City_Length := 6;
+            Address.Country (1 .. 2) := "UK";
+            Address.Country_Length := 2;
+            Put_Line
+              ("  safe address  : "
+               & Text (Humanize.Strings.Privacy_Address_Label (Address)));
+         end;
          Put_Line
            ("  smart title   : "
             & Text

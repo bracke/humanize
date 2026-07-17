@@ -1,3 +1,4 @@
+with Humanize.Bounded_Text;
 with Humanize.Messages;
 package body Humanize.Byte_Classification is
 
@@ -18,25 +19,15 @@ package body Humanize.Byte_Classification is
    Decimal_Keys : constant Key_Array :=
      [Bytes_KB, Bytes_MB, Bytes_GB, Bytes_TB];
 
-   --  Byte_Count image without the leading space that 'Image produces.
+   function No_Space (Image : String) return String
+      renames Humanize.Bounded_Text.No_Space;
+
    function Image_No_Space (Value : Byte_Count) return String is
-      Image : constant String := Byte_Count'Image (Value);
-   begin
-      if Image'Length > 0 and then Image (Image'First) = ' ' then
-         return Image (Image'First + 1 .. Image'Last);
-      end if;
-      return Image;
-   end Image_No_Space;
+     (No_Space (Byte_Count'Image (Value)));
 
    --  Zero-padded decimal of Value to at least Width characters.
    function Padded (Value : Byte_Count; Width : Natural) return String is
-      Image : constant String := Image_No_Space (Value);
-   begin
-      if Image'Length >= Width then
-         return Image;
-      end if;
-      return [1 .. Width - Image'Length => '0'] & Image;
-   end Padded;
+     (Humanize.Bounded_Text.Zero_Padded (Image_No_Space (Value), Width));
 
    function Strip_Trailing_Zeros (Item : String) return String is
       Last : Natural := Item'Last;

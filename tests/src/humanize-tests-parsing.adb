@@ -9,6 +9,7 @@ with Humanize.Datetimes;
 with Humanize.Durations;
 with Humanize.Frequencies;
 with Humanize.Lists;
+with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Parsing;
 with Humanize.Phrases;
@@ -17,6 +18,7 @@ with Humanize.Status;
 with Humanize.Strings;
 with Humanize.Tests.Support;
 with Humanize.Units;
+with Ada.Calendar.Formatting;
 
 package body Humanize.Tests.Parsing is
    use Ada.Strings.Unbounded;
@@ -86,50 +88,6 @@ package body Humanize.Tests.Parsing is
 
       return Result;
    end B;
-
-   type Locale_Index is
-     (En, Da, De, Fr, Es, It, Pt, Nl, Sv, No, Nb, Fi, Pl, Cs, Tr,
-      Ro, Lt, Sl, Id, Ms, Eo, Vi, Sw, Af, Hu, Sk,
-      Ru, Uk, Ja, Ko, Zh, Ar, Hi);
-
-   function Locale_Name (Index : Locale_Index) return String is
-   begin
-      case Index is
-         when En => return "en";
-         when Da => return "da";
-         when De => return "de";
-         when Fr => return "fr";
-         when Es => return "es";
-         when It => return "it";
-         when Pt => return "pt";
-         when Nl => return "nl";
-         when Sv => return "sv";
-         when No => return "no";
-         when Nb => return "nb";
-         when Fi => return "fi";
-         when Pl => return "pl";
-         when Cs => return "cs";
-         when Tr => return "tr";
-         when Ro => return "ro";
-         when Lt => return "lt";
-         when Sl => return "sl";
-         when Id => return "id";
-         when Ms => return "ms";
-         when Eo => return "eo";
-         when Vi => return "vi";
-         when Sw => return "sw";
-         when Af => return "af";
-         when Hu => return "hu";
-         when Sk => return "sk";
-         when Ru => return "ru";
-         when Uk => return "uk";
-         when Ja => return "ja";
-         when Ko => return "ko";
-         when Zh => return "zh";
-         when Ar => return "ar";
-         when Hi => return "hi";
-      end case;
-   end Locale_Name;
 
    procedure Test_Bytes (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
@@ -347,6 +305,24 @@ package body Humanize.Tests.Parsing is
         Humanize.Parsing.Parse_Currency ("12.5 USD");
       Approx_Currency : constant Humanize.Parsing.Currency_Parse_Result :=
         Humanize.Parsing.Parse_Approximate_Currency ("under 12.5 USD");
+      Prefix_Currency : constant Humanize.Parsing.Currency_Parse_Result :=
+        Humanize.Parsing.Parse_Currency ("USD 12.5");
+      Attached_Prefix_Currency : constant Humanize.Parsing.Currency_Parse_Result :=
+        Humanize.Parsing.Parse_Currency ("USD12.5");
+      Symbol_Currency : constant Humanize.Parsing.Currency_Parse_Result :=
+        Humanize.Parsing.Parse_Currency ("$ 12.5");
+      Attached_Symbol_Currency : constant Humanize.Parsing.Currency_Parse_Result :=
+        Humanize.Parsing.Parse_Currency ("$12.5");
+      Scan_Currency : constant Humanize.Parsing.Currency_Parse_Result :=
+        Humanize.Parsing.Scan_Currency ("$20");
+      Currency_Missing_Code : constant Humanize.Parsing.Currency_Parse_Result :=
+        Humanize.Parsing.Parse_Currency ("12.5");
+      Currency_With_Trailing_Text : constant Humanize.Parsing.Currency_Parse_Result :=
+        Humanize.Parsing.Parse_Currency ("12.5 USD now");
+      Prefix_With_Trailing_Text : constant Humanize.Parsing.Currency_Parse_Result :=
+        Humanize.Parsing.Parse_Currency ("USD 12.5 now");
+      Symbol_With_Trailing_Text : constant Humanize.Parsing.Currency_Parse_Result :=
+        Humanize.Parsing.Parse_Currency ("$ 12.5 now");
       Approx_Number : constant Humanize.Parsing.Number_Parse_Result :=
         Humanize.Parsing.Parse_Approximate_Number ("about 42");
       Change : constant Humanize.Parsing.Change_Parse_Result :=
@@ -639,10 +615,15 @@ package body Humanize.Tests.Parsing is
              & "backup incident release audit flag webhook api_key quota "
              & "invoice database "
              & "summaries comparisons");
+      Phrase_Locales_Text : constant Humanize.Status.Text_Result :=
+        Humanize.Phrases.Supported_Phrase_Locales;
       Phrase_Locales : constant
         Humanize.Parsing.Phrase_Locales_Parse_Result :=
           Humanize.Parsing.Parse_Supported_Phrase_Locales
-            ("en da de fr es it pt nl sv no nb fi pl cs tr ru uk ja ko zh ar hi");
+            (Support.Text (Phrase_Locales_Text));
+      Invalid_Phrase_Locales : constant
+        Humanize.Parsing.Phrase_Locales_Parse_Result :=
+          Humanize.Parsing.Parse_Supported_Phrase_Locales ("en ro");
       Sync_Summary : constant Humanize.Parsing.Domain_Summary_Parse_Result :=
         Humanize.Parsing.Parse_Sync_Summary
           ("sync running: 8 of 10 items complete, 1 failed");
@@ -721,13 +702,57 @@ package body Humanize.Tests.Parsing is
          and then not Currency.Approximate,
          "parse deterministic currency output");
       AUnit.Assertions.Assert
-        (Approx_Currency.Status = Humanize.Status.Ok
-         and then Approx_Currency.Amount = 12.5
-         and then Approx_Currency.Code (1 .. Approx_Currency.Code_Length) =
-           "usd"
+         (Approx_Currency.Status = Humanize.Status.Ok
+          and then Approx_Currency.Amount = 12.5
+          and then Approx_Currency.Code (1 .. Approx_Currency.Code_Length) =
+           "USD"
          and then Approx_Currency.Approximate
          and then Approx_Currency.Kind = Humanize.Numbers.Under,
          "parse approximate currency output");
+      AUnit.Assertions.Assert
+        (Prefix_Currency.Status = Humanize.Status.Ok
+         and then Prefix_Currency.Amount = 12.5
+         and then Prefix_Currency.Code (1 .. Prefix_Currency.Code_Length) = "USD",
+         "parse currency prefix format");
+      AUnit.Assertions.Assert
+        (Prefix_Currency.Consumed = 8,
+         "parse currency prefix consumed length");
+      AUnit.Assertions.Assert
+        (Attached_Prefix_Currency.Status = Humanize.Status.Ok
+         and then Attached_Prefix_Currency.Amount = 12.5
+         and then Attached_Prefix_Currency.Code
+           (1 .. Attached_Prefix_Currency.Code_Length) = "USD",
+         "parse currency prefix-attached format");
+      AUnit.Assertions.Assert
+        (Symbol_Currency.Status = Humanize.Status.Ok
+         and then Symbol_Currency.Amount = 12.5
+         and then Symbol_Currency.Code (1 .. Symbol_Currency.Code_Length) = "USD"
+         and then Symbol_Currency.Consumed = 6,
+         "parse currency symbol format");
+      AUnit.Assertions.Assert
+        (Attached_Symbol_Currency.Status = Humanize.Status.Ok
+         and then Attached_Symbol_Currency.Amount = 12.5
+         and then Attached_Symbol_Currency.Code
+           (1 .. Attached_Symbol_Currency.Code_Length) = "USD",
+         "parse currency symbol-attached format");
+      AUnit.Assertions.Assert
+        (Scan_Currency.Status = Humanize.Status.Ok
+         and then Scan_Currency.Amount = 20.0
+         and then Scan_Currency.Code (1 .. Scan_Currency.Code_Length) = "USD"
+         and then Scan_Currency.Consumed = 3,
+         "scan currency output");
+      AUnit.Assertions.Assert
+        (Currency_Missing_Code.Status = Humanize.Status.Invalid_Argument,
+         "reject currency without code");
+      AUnit.Assertions.Assert
+        (Currency_With_Trailing_Text.Status = Humanize.Status.Invalid_Argument,
+         "reject currency with trailing text (number-first)");
+      AUnit.Assertions.Assert
+        (Prefix_With_Trailing_Text.Status = Humanize.Status.Invalid_Argument,
+         "reject currency with trailing text (prefix-first)");
+      AUnit.Assertions.Assert
+        (Symbol_With_Trailing_Text.Status = Humanize.Status.Invalid_Argument,
+         "reject currency with trailing text (symbol)");
       AUnit.Assertions.Assert
         (Approx_Number.Status = Humanize.Status.Ok
          and then Approx_Number.Value = 42,
@@ -1434,9 +1459,16 @@ package body Humanize.Tests.Parsing is
          "parse phrase pack summary output");
       AUnit.Assertions.Assert
         (Phrase_Locales.Status = Humanize.Status.Ok
-         and then Phrase_Locales.Locale_Count = 22
+         and then Phrase_Locales.Locale_Count =
+           Humanize.Phrases.Phrase_Locale_Count
          and then Phrase_Locales.Has_Generated_Locales,
          "parse supported phrase locales output");
+      AUnit.Assertions.Assert
+        (Invalid_Phrase_Locales.Status = Humanize.Status.Invalid_Argument
+         and then Invalid_Phrase_Locales.Error =
+           Humanize.Parsing.Unsupported_Form
+         and then Invalid_Phrase_Locales.Error_Position = 4,
+         "parse unsupported phrase locale output");
       AUnit.Assertions.Assert
         (Sync_Summary.Status = Humanize.Status.Ok
          and then Sync_Summary.Domain (1 .. Sync_Summary.Domain_Length) =
@@ -1741,9 +1773,9 @@ package body Humanize.Tests.Parsing is
             Locale & " localized byte round trip: " & Text);
       end Check_Bytes;
    begin
-      for Locale in Locale_Index loop
+      for Locale_Access of Humanize.Locales.Shipped_Locales loop
          declare
-            Name : constant String := Locale_Name (Locale);
+            Name : constant String := Locale_Access.all;
          begin
             for Value of Cardinal_Values loop
                Check_Cardinal (Name, Value);
@@ -1919,9 +1951,9 @@ package body Humanize.Tests.Parsing is
             Locale & " localized relative day round trip: " & Text);
       end Check_Relative_Day;
    begin
-      for Locale in Locale_Index loop
+      for Locale_Access of Humanize.Locales.Shipped_Locales loop
          declare
-            Name : constant String := Locale_Name (Locale);
+            Name : constant String := Locale_Access.all;
          begin
             Check_Compact (Name, 1_200);
             Check_Compact (Name, 1_200_000);
@@ -2002,6 +2034,9 @@ package body Humanize.Tests.Parsing is
       Bad_Remediation :
         constant Humanize.Parsing.Contrast_Remediation_Parse_Result :=
           Humanize.Parsing.Parse_Contrast_Remediation_Label ("use nope");
+      Bad_Timezone_Name : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ada.Calendar.Time_Of (2024, 1, 1, 0.0), "tomorrow at 5pm XYZ");
    begin
       AUnit.Assertions.Assert
         (Empty_Bytes.Error = Humanize.Parsing.Empty_Input
@@ -2089,6 +2124,9 @@ package body Humanize.Tests.Parsing is
         (Bad_Remediation.Error = Humanize.Parsing.Expected_Unit
          and then Bad_Remediation.Error_Position = 5,
          "contrast remediation diagnostic");
+      AUnit.Assertions.Assert
+        (Bad_Timezone_Name.Status = Humanize.Status.Invalid_Argument,
+         "invalid timezone name diagnostic");
    end Test_Diagnostics;
 
    procedure Test_Frequency_Rate_List
@@ -2149,6 +2187,16 @@ package body Humanize.Tests.Parsing is
           (Humanize.Tests.Support.Text
              (Humanize.Numbers.Locale_Cardinal
                 (Humanize.Tests.Support.Locale ("ja"), 2_345)));
+      Korean_Word_Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Cardinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Locale_Cardinal
+                (Humanize.Tests.Support.Locale ("ko"), 2_345)));
+      Chinese_Word_Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Cardinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Locale_Cardinal
+                (Humanize.Tests.Support.Locale ("zh"), 2_345)));
       Polish_Word_Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
         Humanize.Parsing.Parse_Ordinal
           (Humanize.Tests.Support.Text
@@ -2165,6 +2213,16 @@ package body Humanize.Tests.Parsing is
           (Humanize.Tests.Support.Text
              (Humanize.Numbers.Ordinal_Words
                 (Humanize.Tests.Support.Locale ("ja"), 12)));
+      Korean_Word_Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Ordinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Ordinal_Words
+                (Humanize.Tests.Support.Locale ("ko"), 12)));
+      Chinese_Word_Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Ordinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Ordinal_Words
+                (Humanize.Tests.Support.Locale ("zh"), 12)));
       Japanese_Thousands_Word_Ordinal :
         constant Humanize.Parsing.Number_Parse_Result :=
           Humanize.Parsing.Parse_Ordinal
@@ -2694,6 +2752,37 @@ package body Humanize.Tests.Parsing is
       Next_Fri_At_1730 : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date
           (Ref_Date, "next friday at 17:30");
+      Next_Fri_At_1730_TZ : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "next friday at 17:30+02:00");
+      Next_Fri_At_1730_CEST : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "next friday at 17:30 CEST");
+      Tomorrow_At_5pm_TZ_Name : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "tomorrow at 5pm CET");
+      Tomorrow_At_5_PM_TZ_Name : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "tomorrow at 5 pm CET");
+      Tomorrow_At_5pm_UTC_Plus2 : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "tomorrow at 5pm UTC+2");
+      Tomorrow_At_5pm_UTC_Plus2_NoSpace :
+        constant Humanize.Parsing.Date_Parse_Result :=
+          Humanize.Parsing.Parse_Natural_Date
+            (Ref_Date, "tomorrow at 5pmUTC+2");
+      Tomorrow_At_5pm_GMT_Minus2 : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "tomorrow at 5pm GMT-2:00");
+      Tonight_At_5pm_TZ : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "tonight at 5pm-0700");
+      Tomorrow_At_5pm_TZ : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "tomorrow at 5 pm+00");
+      Tomorrow_At_5pm_TZ_NoSpace : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date
+          (Ref_Date, "tomorrow at 5pm+00");
       Tonight : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Parse_Natural_Date (Ref_Date, "tonight");
       Tomorrow_At_5 : constant Humanize.Parsing.Date_Parse_Result :=
@@ -2718,6 +2807,21 @@ package body Humanize.Tests.Parsing is
       Scanned_Fri_Afternoon : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Scan_Natural_Date
           (Ref_Date, "next friday afternoon; cached");
+      Scanned_Tonight_TZ : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Scan_Natural_Date
+          (Ref_Date, "tonight at 5pm+0200; cached");
+      Scanned_Tonight_TZ_Name : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Scan_Natural_Date
+          (Ref_Date, "tomorrow at 5pm CET; cached");
+      Scanned_Tonight_TZ_Name_With_Space : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Scan_Natural_Date
+          (Ref_Date, "tomorrow at 5 pm CET; cached");
+      Scanned_Tomorrow_At_5pm_UTC_Plus2 : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Scan_Natural_Date
+          (Ref_Date, "tomorrow at 5pm UTC+2; cached");
+      Scanned_Tomorrow_At_5pm_GMT_Minus2 : constant Humanize.Parsing.Date_Parse_Result :=
+        Humanize.Parsing.Scan_Natural_Date
+          (Ref_Date, "tomorrow at 5pmGMT-2:00; cached");
       Scanned_Date : constant Humanize.Parsing.Date_Parse_Result :=
         Humanize.Parsing.Scan_Natural_Date (Ref_Date, "in 3 days; cached");
       ISO_Date : constant Humanize.Parsing.Date_Parse_Result :=
@@ -3011,6 +3115,14 @@ package body Humanize.Tests.Parsing is
          and then Japanese_Word_Cardinal.Value = 2_345,
          "parse localized Japanese cardinal spellout");
       AUnit.Assertions.Assert
+        (Korean_Word_Cardinal.Status = Humanize.Status.Ok
+         and then Korean_Word_Cardinal.Value = 2_345,
+         "parse localized Korean cardinal spellout");
+      AUnit.Assertions.Assert
+        (Chinese_Word_Cardinal.Status = Humanize.Status.Ok
+         and then Chinese_Word_Cardinal.Value = 2_345,
+         "parse localized Chinese cardinal spellout");
+      AUnit.Assertions.Assert
         (Polish_Word_Ordinal.Status = Humanize.Status.Ok
          and then Polish_Word_Ordinal.Value = 121,
          "parse localized Polish ordinal spellout");
@@ -3022,6 +3134,14 @@ package body Humanize.Tests.Parsing is
         (Japanese_Word_Ordinal.Status = Humanize.Status.Ok
          and then Japanese_Word_Ordinal.Value = 12,
          "parse localized Japanese ordinal spellout");
+      AUnit.Assertions.Assert
+        (Korean_Word_Ordinal.Status = Humanize.Status.Ok
+         and then Korean_Word_Ordinal.Value = 12,
+         "parse localized Korean ordinal spellout");
+      AUnit.Assertions.Assert
+        (Chinese_Word_Ordinal.Status = Humanize.Status.Ok
+         and then Chinese_Word_Ordinal.Value = 12,
+         "parse localized Chinese ordinal spellout");
       AUnit.Assertions.Assert
         (Japanese_Thousands_Word_Ordinal.Status = Humanize.Status.Ok
          and then Japanese_Thousands_Word_Ordinal.Value = 2_345,
@@ -4115,6 +4235,64 @@ package body Humanize.Tests.Parsing is
            Ada.Calendar.Time_Of (2024, 1, 5, 17.0 * 3_600.0 + 30.0 * 60.0),
          "parse natural weekday with clock time");
       AUnit.Assertions.Assert
+        (Next_Fri_At_1730_TZ.Status = Humanize.Status.Ok
+         and then Next_Fri_At_1730_TZ.Value =
+           Ada.Calendar.Time_Of (2024, 1, 5, 15.0 * 3_600.0 + 30.0 * 60.0),
+         "parse natural weekday with clock time and timezone");
+      AUnit.Assertions.Assert
+        (Next_Fri_At_1730_CEST.Status = Humanize.Status.Ok
+         and then Next_Fri_At_1730_CEST.Value =
+           Ada.Calendar.Time_Of (2024, 1, 5, 15.0 * 3_600.0 + 30.0 * 60.0),
+         "parse natural weekday with clock time and timezone name");
+      AUnit.Assertions.Assert
+        (Tomorrow_At_5pm_TZ_Name.Status = Humanize.Status.Ok
+         and then Tomorrow_At_5pm_TZ_Name.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 16.0 * 3_600.0),
+         "parse natural date with timezone name");
+      AUnit.Assertions.Assert
+        (Tomorrow_At_5_PM_TZ_Name.Status = Humanize.Status.Ok
+         and then Tomorrow_At_5_PM_TZ_Name.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 16.0 * 3_600.0),
+         "parse natural date with timezone name and split am/pm");
+      AUnit.Assertions.Assert
+        (Tomorrow_At_5pm_UTC_Plus2.Status = Humanize.Status.Ok
+         and then Tomorrow_At_5pm_UTC_Plus2.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 15.0 * 3_600.0),
+         "parse natural date with UTC timezone offset -- status="
+         & Humanize.Status.Status_Code'Image (Tomorrow_At_5pm_UTC_Plus2.Status)
+         & ", value="
+         & Ada.Calendar.Formatting.Image (Tomorrow_At_5pm_UTC_Plus2.Value));
+      AUnit.Assertions.Assert
+        (Tomorrow_At_5pm_UTC_Plus2_NoSpace.Status = Humanize.Status.Ok
+         and then Tomorrow_At_5pm_UTC_Plus2_NoSpace.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 15.0 * 3_600.0),
+         "parse natural date with UTC timezone offset without space");
+      AUnit.Assertions.Assert
+        (Tomorrow_At_5pm_GMT_Minus2.Status = Humanize.Status.Ok
+         and then Tomorrow_At_5pm_GMT_Minus2.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 19.0 * 3_600.0),
+         "parse natural date with GMT timezone offset");
+      AUnit.Assertions.Assert
+        (Tomorrow_At_5pm_TZ_NoSpace.Status = Humanize.Status.Ok
+         and then Tomorrow_At_5pm_TZ_NoSpace.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 17.0 * 3_600.0),
+         "parse natural date with no-space time and timezone suffix");
+      AUnit.Assertions.Assert
+        (Tonight_At_5pm_TZ.Status = Humanize.Status.Ok
+         and then Tonight_At_5pm_TZ.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 0.0),
+         "parse natural date with pm timezone suffix");
+      AUnit.Assertions.Assert
+        (Tomorrow_At_5pm_TZ.Status = Humanize.Status.Ok
+         and then Tomorrow_At_5pm_TZ.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 17.0 * 3_600.0),
+         "parse natural date with timezone suffix and space: status="
+         & Humanize.Status.Status_Code'Image (Tomorrow_At_5pm_TZ.Status)
+         & " value="
+         & Ada.Calendar.Formatting.Image (Tomorrow_At_5pm_TZ.Value)
+         & " error-pos="
+         & Integer'Image (Tomorrow_At_5pm_TZ.Error_Position));
+      AUnit.Assertions.Assert
         (Tonight.Status = Humanize.Status.Ok
          and then Tonight.Value =
            Ada.Calendar.Time_Of (2024, 1, 1, 21.0 * 3_600.0),
@@ -4136,6 +4314,35 @@ package body Humanize.Tests.Parsing is
            Ada.Calendar.Time_Of (2024, 1, 5, 13.0 * 3_600.0)
          and then Scanned_Fri_Afternoon.Consumed = 21,
          "scan natural weekday with time-of-day");
+      AUnit.Assertions.Assert
+        (Scanned_Tonight_TZ.Status = Humanize.Status.Ok
+         and then Scanned_Tonight_TZ.Value =
+           Ada.Calendar.Time_Of (2024, 1, 1, 15.0 * 3_600.0)
+         and then Scanned_Tonight_TZ.Consumed = 19,
+         "scan natural weekday with clock time and timezone");
+      AUnit.Assertions.Assert
+        (Scanned_Tonight_TZ_Name.Status = Humanize.Status.Ok
+         and then Scanned_Tonight_TZ_Name.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 16.0 * 3_600.0)
+         and then Scanned_Tonight_TZ_Name.Consumed = 19,
+         "scan natural date with timezone name");
+      AUnit.Assertions.Assert
+        (Scanned_Tonight_TZ_Name_With_Space.Status = Humanize.Status.Ok
+         and then Scanned_Tonight_TZ_Name_With_Space.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 16.0 * 3_600.0),
+         "scan natural date with timezone name and split am/pm");
+      AUnit.Assertions.Assert
+        (Scanned_Tomorrow_At_5pm_UTC_Plus2.Status = Humanize.Status.Ok
+         and then Scanned_Tomorrow_At_5pm_UTC_Plus2.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 15.0 * 3_600.0)
+         and then Scanned_Tomorrow_At_5pm_UTC_Plus2.Consumed = 21,
+         "scan natural date with UTC timezone offset");
+      AUnit.Assertions.Assert
+        (Scanned_Tomorrow_At_5pm_GMT_Minus2.Status = Humanize.Status.Ok
+         and then Scanned_Tomorrow_At_5pm_GMT_Minus2.Value =
+           Ada.Calendar.Time_Of (2024, 1, 2, 19.0 * 3_600.0)
+         and then Scanned_Tomorrow_At_5pm_GMT_Minus2.Consumed = 23,
+         "scan natural date with GMT timezone offset");
       AUnit.Assertions.Assert
         (Scanned_Date.Status = Humanize.Status.Ok
          and then Scanned_Date.Value = Ref_Date + 3.0 * 86_400.0
@@ -4557,6 +4764,302 @@ package body Humanize.Tests.Parsing is
          "apply parsed business calendar rules to business-hour arithmetic");
    end Test_Frequency_Rate_List;
 
+   procedure Test_Natural_Date_Time_And_Diagnostics
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      use type Humanize.Parsing.Scheduling_Phrase_Kind;
+      use type Humanize.Parsing.Parse_Value_Family;
+      Reference : constant Ada.Calendar.Time :=
+        Ada.Calendar.Time_Of (2026, 7, 13, 8.0 * 3_600.0);
+      Tomorrow : constant Humanize.Parsing.Natural_Date_Time_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date_Time
+          (Reference, "tomorrow at 09:30");
+      Relative : constant Humanize.Parsing.Natural_Date_Time_Parse_Result :=
+        Humanize.Parsing.Parse_Natural_Date_Time (Reference, "in 2 hours");
+      Scanned : constant Humanize.Parsing.Natural_Date_Time_Parse_Result :=
+        Humanize.Parsing.Scan_Natural_Date_Time
+          (Reference, "today 14:00; cached");
+      Label : constant Humanize.Status.Text_Result :=
+        Humanize.Parsing.Parse_Error_Label
+          (Humanize.Parsing.Expected_Unit);
+      Context : constant Humanize.Status.Text_Result :=
+        Humanize.Parsing.Parse_Error_Context_Label
+          (Humanize.Parsing.Expected_Number, 5);
+      Schedule : constant Humanize.Parsing.Scheduling_Phrase_Result :=
+        Humanize.Parsing.Classify_Scheduling_Phrase
+          ("every business Friday at noon");
+      Schedule_Label : constant Humanize.Status.Text_Result :=
+        Humanize.Parsing.Scheduling_Phrase_Label (Schedule);
+      Ambiguity_Label : constant Humanize.Status.Text_Result :=
+        Humanize.Parsing.Scheduling_Ambiguity_Label (Schedule);
+      Resolution_Label : constant Humanize.Status.Text_Result :=
+        Humanize.Parsing.Scheduling_Resolution_Label
+          (Humanize.Parsing.Ambiguous_Scheduling_Phrase);
+      Success_Label : constant Humanize.Status.Text_Result :=
+        Humanize.Parsing.Parse_Success_Explanation_Label
+          (Humanize.Parsing.Parsed_Duration, "1.5h", "90 minutes",
+           Consumed => 4, Exact => True);
+      Byte_Success : constant Humanize.Status.Text_Result :=
+        Humanize.Parsing.Byte_Parse_Success_Label
+          ("1 KiB", Humanize.Parsing.Parse_Bytes ("1 KiB"));
+      Duration_Success : constant Humanize.Status.Text_Result :=
+        Humanize.Parsing.Duration_Parse_Success_Label
+          ("2 h", Humanize.Parsing.Parse_Duration ("2 h"));
+      Number_Success : constant Humanize.Status.Text_Result :=
+        Humanize.Parsing.Number_Parse_Success_Label
+          ("forty two", Humanize.Parsing.Parse_Cardinal ("forty two"));
+      Unit_Success : constant Humanize.Status.Text_Result :=
+        Humanize.Parsing.Unit_Parse_Success_Label
+          ("3 m", Humanize.Parsing.Parse_Unit ("3 m"));
+      Schedule_Success : constant Humanize.Status.Text_Result :=
+        Humanize.Parsing.Scheduling_Parse_Success_Label
+          ("every Friday", Schedule);
+      Parsed_Success : constant Humanize.Parsing.Parse_Success_Explanation :=
+        Humanize.Parsing.Parse_Success_Explanation_Label
+          ("parse success duration: input=""1.5h"" normalized=""90 minutes"" consumed=4 exact=yes");
+      Scanned_Success : constant Humanize.Parsing.Parse_Success_Explanation :=
+        Humanize.Parsing.Scan_Success_Explanation_Label
+          ("parse success duration: input=""1.5h"" normalized=""90 minutes"" consumed=4 exact=yes"
+           & ASCII.LF & "next");
+      Buffer : String (1 .. 12);
+      Written : Natural;
+      Code : Humanize.Status.Status_Code;
+   begin
+      AUnit.Assertions.Assert
+        (Tomorrow.Status = Humanize.Status.Ok
+         and then Tomorrow.Has_Time
+         and then Tomorrow.Value =
+           Ada.Calendar.Time_Of (2026, 7, 14, 9.5 * 3_600.0),
+         "parse natural date-time with clock time");
+      AUnit.Assertions.Assert
+        (Relative.Status = Humanize.Status.Ok
+         and then Relative.Has_Relative_Offset
+         and then Relative.Value = Reference + 2.0 * 3_600.0,
+         "parse natural date-time relative offset");
+      AUnit.Assertions.Assert
+        (Scanned.Status = Humanize.Status.Ok
+         and then Scanned.Has_Time
+         and then Scanned.Consumed = 11,
+         "scan natural date-time prefix");
+      AUnit.Assertions.Assert
+        (Label.Status = Humanize.Status.Ok
+         and then Support.Text (Label) = "expected-unit",
+         "parse error stable label");
+      AUnit.Assertions.Assert
+        (Context.Status = Humanize.Status.Ok
+         and then Support.Text (Context) = "expected a number at position 5",
+         "parse error context label");
+      AUnit.Assertions.Assert
+        (Schedule.Status = Humanize.Status.Ok
+         and then Schedule.Ambiguous
+         and then Schedule.Kind = Humanize.Parsing.Ambiguous_Scheduling_Phrase,
+         "classify ambiguous scheduling phrase");
+      AUnit.Assertions.Assert
+        (Schedule.Has_Date_Time
+         and then Schedule.Has_Business_Day
+         and then Schedule.Has_Recurrence,
+         "scheduling phrase candidate flags");
+      AUnit.Assertions.Assert
+        (Schedule_Label.Status = Humanize.Status.Ok
+         and then Support.Text (Schedule_Label) =
+           "ambiguous scheduling phrase, needs caller disambiguation",
+         "scheduling phrase label");
+      AUnit.Assertions.Assert
+        (Ambiguity_Label.Status = Humanize.Status.Ok
+         and then Support.Text (Ambiguity_Label) =
+           "ambiguous scheduling phrase: choose date-time, business day, recurrence",
+         "scheduling ambiguity label");
+      AUnit.Assertions.Assert
+        (Resolution_Label.Status = Humanize.Status.Ok
+         and then Support.Text (Resolution_Label) =
+           "ask caller to choose a scheduling interpretation",
+         "scheduling resolution label");
+      AUnit.Assertions.Assert
+        (Success_Label.Status = Humanize.Status.Ok
+         and then Support.Text (Success_Label) =
+           "parse success duration: input=""1.5h"" normalized=""90 minutes"" consumed=4 exact=yes",
+         "parse success explanation label");
+      AUnit.Assertions.Assert
+        (Byte_Success.Status = Humanize.Status.Ok
+         and then Support.Text (Byte_Success) =
+           "parse success bytes: input=""1 KiB"" normalized=""1024 bytes"" consumed=5 exact=yes",
+         "byte parse success explanation label");
+      AUnit.Assertions.Assert
+        (Duration_Success.Status = Humanize.Status.Ok
+         and then Support.Text (Duration_Success) =
+           "parse success duration: input=""2 h"" normalized=""7200 seconds"" consumed=3 exact=yes",
+         "duration parse success explanation label");
+      AUnit.Assertions.Assert
+        (Number_Success.Status = Humanize.Status.Ok
+         and then Support.Text (Number_Success) =
+           "parse success number: input=""forty two"" normalized=""42"" consumed=9 exact=yes",
+         "number parse success explanation label");
+      AUnit.Assertions.Assert
+        (Unit_Success.Status = Humanize.Status.Ok
+         and then Support.Text (Unit_Success) =
+           "parse success unit: input=""3 m"" normalized=""3.00000000000000E+00 METER"" consumed=3 exact=yes",
+         "unit parse success explanation label");
+      AUnit.Assertions.Assert
+        (Schedule_Success.Status = Humanize.Status.Ok
+         and then Support.Text (Schedule_Success) =
+           "parse success recurrence: input=""every Friday"" normalized=""ambiguous scheduling"" consumed=29 exact=no",
+         "scheduling parse success explanation label");
+      AUnit.Assertions.Assert
+        (Parsed_Success.Status = Humanize.Status.Ok
+         and then Parsed_Success.Family = Humanize.Parsing.Parsed_Duration
+         and then Parsed_Success.Consumed = 4
+         and then Parsed_Success.Exact
+         and then Parsed_Success.Input_Length = 4
+         and then Parsed_Success.Normalized_Length = 10,
+         "parse success explanation parse");
+      AUnit.Assertions.Assert
+        (Scanned_Success.Status = Humanize.Status.Ok
+         and then Scanned_Success.Consumed = 4
+         and then Scanned_Success.Normalized_Length = 10,
+         "parse success explanation scan");
+      Humanize.Parsing.Scheduling_Phrase_Label_Into
+        (Schedule, Buffer, Written, Code);
+      AUnit.Assertions.Assert
+        (Code = Humanize.Status.Buffer_Overflow
+         and then Written = 12
+         and then Buffer = "ambiguous sc",
+         "scheduling phrase bounded label");
+      Humanize.Parsing.Parse_Error_Context_Label_Into
+        (Humanize.Parsing.Unsupported_Form, Buffer, Written, Code, 3);
+      AUnit.Assertions.Assert
+        (Code = Humanize.Status.Buffer_Overflow
+         and then Written = 12
+         and then Buffer = "unsupported ",
+         "parse error bounded label");
+      Humanize.Parsing.Parse_Success_Explanation_Label_Into
+        (Humanize.Parsing.Parsed_Duration, "1.5h", "90 minutes",
+         Buffer, Written, Code, Consumed => 4);
+      AUnit.Assertions.Assert
+        (Code = Humanize.Status.Buffer_Overflow
+         and then Written = 12
+         and then Buffer = "parse succes",
+         "parse success bounded label");
+   end Test_Natural_Date_Time_And_Diagnostics;
+
+   procedure Test_Parser_Malformed_Input_Matrix
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      Reference : constant Ada.Calendar.Time :=
+        Ada.Calendar.Time_Of (2026, 7, 16, 12.0 * 3_600.0);
+   begin
+      declare
+         Bytes : constant Humanize.Parsing.Byte_Parse_Result :=
+           Humanize.Parsing.Parse_Bytes ("not-a-number KiB");
+         Duration : constant Humanize.Parsing.Duration_Parse_Result :=
+           Humanize.Parsing.Parse_Duration ("PT");
+         Compact : constant Humanize.Parsing.Number_Parse_Result :=
+           Humanize.Parsing.Parse_Compact_Number ("glorb");
+         Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+           Humanize.Parsing.Parse_Cardinal ("one two nope");
+         Unit : constant Humanize.Parsing.Unit_Parse_Result :=
+           Humanize.Parsing.Parse_Unit ("5 not-a-unit");
+         Rate : constant Humanize.Parsing.Rate_Parse_Result :=
+           Humanize.Parsing.Parse_Rate ("times per maybe");
+         List : constant Humanize.Parsing.List_Parse_Result :=
+           Humanize.Parsing.Parse_List ("");
+         CSS : constant Humanize.Parsing.Color_Label_Parse_Result :=
+           Humanize.Parsing.Parse_CSS_Color_Label ("rgb(1,,2)");
+         Date : constant Humanize.Parsing.Date_Parse_Result :=
+           Humanize.Parsing.Parse_Natural_Date (Reference, "next someday");
+         Date_Time : constant Humanize.Parsing.Natural_Date_Time_Parse_Result :=
+           Humanize.Parsing.Parse_Natural_Date_Time
+             (Reference, "tomorrow at 99:99");
+      begin
+         AUnit.Assertions.Assert
+           (Bytes.Status /= Humanize.Status.Ok
+            and then Bytes.Error = Humanize.Parsing.Expected_Number,
+            "malformed byte parser returns expected-number diagnostic");
+         AUnit.Assertions.Assert
+           (Duration.Status /= Humanize.Status.Ok
+            and then Duration.Error = Humanize.Parsing.Unsupported_Form,
+            "malformed duration parser returns unsupported-form diagnostic");
+         AUnit.Assertions.Assert
+           (Compact.Status /= Humanize.Status.Ok
+            and then Compact.Error = Humanize.Parsing.Expected_Number,
+            "malformed compact-number parser returns expected-number diagnostic");
+         AUnit.Assertions.Assert
+           (Cardinal.Status /= Humanize.Status.Ok
+            and then Cardinal.Error /= Humanize.Parsing.No_Parse_Error,
+            "malformed cardinal parser returns diagnostic");
+         AUnit.Assertions.Assert
+           (Unit.Status /= Humanize.Status.Ok
+            and then Unit.Error = Humanize.Parsing.Expected_Unit,
+            "malformed unit parser returns expected-unit diagnostic");
+         AUnit.Assertions.Assert
+           (Rate.Status /= Humanize.Status.Ok
+            and then Rate.Error /= Humanize.Parsing.No_Parse_Error,
+            "malformed rate parser returns diagnostic");
+         AUnit.Assertions.Assert
+           (List.Status /= Humanize.Status.Ok
+            and then List.Error /= Humanize.Parsing.No_Parse_Error,
+            "malformed list parser returns diagnostic");
+         AUnit.Assertions.Assert
+           (CSS.Status /= Humanize.Status.Ok
+            and then CSS.Error = Humanize.Parsing.Expected_Separator,
+            "malformed CSS color parser returns expected-separator diagnostic");
+         AUnit.Assertions.Assert
+           (Date.Status /= Humanize.Status.Ok
+            and then Date.Error /= Humanize.Parsing.No_Parse_Error,
+            "malformed natural date parser returns diagnostic");
+         AUnit.Assertions.Assert
+           (Date_Time.Status /= Humanize.Status.Ok
+            and then Date_Time.Error /= Humanize.Parsing.No_Parse_Error,
+            "malformed natural date-time parser returns diagnostic");
+      end;
+   end Test_Parser_Malformed_Input_Matrix;
+
+   procedure Test_Parser_Smoke_Baseline
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      Total : Natural := 0;
+   begin
+      for I in 1 .. 250 loop
+         declare
+            Bytes : constant Humanize.Parsing.Byte_Parse_Result :=
+              Humanize.Parsing.Parse_Bytes ("1.5 KiB");
+            Duration : constant Humanize.Parsing.Duration_Parse_Result :=
+              Humanize.Parsing.Parse_Duration ("2 hours, 30 minutes");
+            Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+              Humanize.Parsing.Parse_Cardinal ("forty two");
+            Unit : constant Humanize.Parsing.Unit_Parse_Result :=
+              Humanize.Parsing.Parse_Unit ("3 meters");
+            Rate : constant Humanize.Parsing.Rate_Parse_Result :=
+              Humanize.Parsing.Parse_Rate ("4 times per week");
+            List : constant Humanize.Parsing.List_Parse_Result :=
+              Humanize.Parsing.Parse_List ("Ada, SPARK and Alire");
+         begin
+            AUnit.Assertions.Assert
+              (Bytes.Status = Humanize.Status.Ok
+               and then Duration.Status = Humanize.Status.Ok
+               and then Cardinal.Status = Humanize.Status.Ok
+               and then Unit.Status = Humanize.Status.Ok
+               and then Rate.Status = Humanize.Status.Ok
+               and then List.Status = Humanize.Status.Ok,
+               "parser smoke baseline iteration" & Integer'Image (I));
+            Total :=
+              Total
+              + Bytes.Consumed
+              + Duration.Consumed
+              + Cardinal.Consumed
+              + Unit.Consumed
+              + Rate.Consumed
+              + List.Consumed;
+         end;
+      end loop;
+
+      AUnit.Assertions.Assert
+        (Total = 250 * (7 + 19 + 9 + 8 + 16 + 20),
+         "parser smoke baseline consumed stable representative inputs");
+   end Test_Parser_Smoke_Baseline;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -4578,6 +5081,15 @@ package body Humanize.Tests.Parsing is
       Register_Routine (T, Test_Diagnostics'Access, "parser diagnostics");
       Register_Routine (T, Test_Frequency_Rate_List'Access,
         "parse frequencies rates and lists");
+      Register_Routine
+        (T, Test_Natural_Date_Time_And_Diagnostics'Access,
+         "parse natural date-time and diagnostics");
+      Register_Routine
+        (T, Test_Parser_Malformed_Input_Matrix'Access,
+         "parser malformed input matrix");
+      Register_Routine
+        (T, Test_Parser_Smoke_Baseline'Access,
+         "parser smoke baseline");
    end Register_Tests;
 
 end Humanize.Tests.Parsing;

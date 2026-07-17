@@ -1,6 +1,7 @@
 with Ada.Strings.Unbounded;
 
 with Humanize.Catalogs;
+with Humanize.Bounded_Text;
 
 with I18N.Arguments;
 with I18N.Result;
@@ -43,15 +44,8 @@ package body Humanize.I18N_Rendering is
       end case;
    end To_Status;
 
-   --  Decimal image of a non-negative value without 'Image leading space.
-   function Image (Value : Long_Long_Integer) return String is
-      Text : constant String := Long_Long_Integer'Image (Value);
-   begin
-      if Text (Text'First) = ' ' then
-         return Text (Text'First + 1 .. Text'Last);
-      end if;
-      return Text;
-   end Image;
+   function Image (Value : Long_Long_Integer) return String
+      renames Humanize.Bounded_Text.Image;
 
    --  Populate the i18n argument map from a selection. Numeric values are kept
    --  as strict locale-neutral decimals; catalog messages choose any display

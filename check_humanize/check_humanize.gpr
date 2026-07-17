@@ -1,4 +1,5 @@
 with "../../project_tools/project_tools.gpr";
+with "../../cryptolib/cryptolib.gpr";
 
 project Check_Humanize is
 

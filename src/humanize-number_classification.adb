@@ -1,5 +1,7 @@
 with Humanize.Messages;
 with Humanize.Decimal_Images;
+with Humanize.Bounded_Text;
+with Humanize.Locales;
 
 package body Humanize.Number_Classification is
 
@@ -15,24 +17,11 @@ package body Humanize.Number_Classification is
    Crore    : constant Long_Long_Integer := 10_000_000;
    Kharab   : constant Long_Long_Integer := 100_000_000_000;
 
-   --  Decimal image of a signed value with no 'Image leading space.
-   function Image (Value : Long_Long_Integer) return String is
-      Text : constant String := Long_Long_Integer'Image (Value);
-   begin
-      if Text (Text'First) = ' ' then
-         return Text (Text'First + 1 .. Text'Last);
-      end if;
-      return Text;  --  negative values keep the leading '-'
-   end Image;
+   function Image (Value : Long_Long_Integer) return String
+      renames Humanize.Bounded_Text.Image;
 
    function Padded (Value : Long_Long_Integer; Width : Natural) return String is
-      Text : constant String := Image (Value);
-   begin
-      if Text'Length >= Width then
-         return Text;
-      end if;
-      return [1 .. Width - Text'Length => '0'] & Text;
-   end Padded;
+     (Humanize.Bounded_Text.Padded_Image (Value, Width));
 
    function Strip_Trailing_Zeros (Item : String) return String is
       Last : Natural := Item'Last;
@@ -115,11 +104,10 @@ package body Humanize.Number_Classification is
    end Magnitude;
 
    function Is_Hindi (Context : Humanize.Contexts.Context) return Boolean is
-      Locale : constant String := Humanize.Contexts.Locale (Context);
+      Locale : constant String :=
+        Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context));
    begin
-      return Locale = "hi"
-        or else (Locale'Length > 3
-                 and then Locale (Locale'First .. Locale'First + 2) = "hi-");
+      return Locale = "hi";
    end Is_Hindi;
 
    --  True when rounding Magnitude / Divisor to Digit_Count digits reaches the

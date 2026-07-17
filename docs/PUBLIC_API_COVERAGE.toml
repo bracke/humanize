@@ -1,0 +1,73 @@
+# Public API coverage scorecard.
+# Scores are additive and intentionally coarse:
+# docs = package appears in docs/PUBLIC_API_INDEX.md and package guide/surface docs;
+# tests = AUnit coverage or locale/rendering architecture coverage;
+# examples = runnable examples exercise the package family;
+# consumers = downstream public API consumer builds against the package family;
+# perf = performance smoke covers at least one representative path.
+
+[[area]]
+name = "root"
+units = 1
+docs = 1
+tests = 1
+examples = 1
+consumers = 1
+perf = 0
+score = 4
+usecase = "root import and crate-level discovery"
+
+[[area]]
+name = "core"
+units = 8
+docs = 1
+tests = 1
+examples = 1
+consumers = 1
+perf = 0
+score = 4
+usecase = "shared context, status, catalog, locale, style, capability, and bounded-output types"
+
+[[area]]
+name = "formatting"
+units = 34
+docs = 1
+tests = 1
+examples = 1
+consumers = 1
+perf = 1
+score = 5
+usecase = "duration, datetime, byte, number, unit, color, string, list, frequency, rate, and value labels"
+
+[[area]]
+name = "parsing"
+units = 9
+docs = 1
+tests = 1
+examples = 1
+consumers = 1
+perf = 1
+score = 5
+usecase = "untrusted human-readable byte, duration, number, color, date/time, unit, string, and domain-label input"
+
+[[area]]
+name = "phrases"
+units = 7
+docs = 1
+tests = 1
+examples = 1
+consumers = 1
+perf = 0
+score = 4
+usecase = "deterministic reusable phrase keys, severities, statuses, summaries, fields, and locale metadata"
+
+[[area]]
+name = "domain"
+units = 35
+docs = 1
+tests = 1
+examples = 1
+consumers = 1
+perf = 1
+score = 5
+usecase = "technical, product, UI, workflow, security, data, system, and operational labels"

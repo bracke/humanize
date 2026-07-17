@@ -1,0 +1,25 @@
+with "../../humanize.gpr";
+
+project Public_API_Consumer is
+
+   for Source_Dirs use (".");
+   for Object_Dir use "obj";
+   for Create_Missing_Dirs use "True";
+   for Exec_Dir use "bin";
+   for Main use
+     ("public_api_consumer.adb",
+      "public_api_formatting_consumer.adb",
+      "public_api_parsing_consumer.adb",
+      "public_api_color_consumer.adb",
+      "public_api_domain_consumer.adb",
+      "public_api_bounded_consumer.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat2022", "-gnatyM120", "-gnatX");
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es");
+   end Binder;
+
+end Public_API_Consumer;

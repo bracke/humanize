@@ -1,6 +1,68 @@
 with I18N.Runtime;
 
+with Humanize.Contexts;
+with Humanize.Locales;
+with Humanize.Messages;
+
 package Humanize.Catalogs is
+
+   subtype Locale_Code_Access is Humanize.Locales.Locale_Code_Access;
+
+   subtype Locale_Code_Array is Humanize.Locales.Locale_Code_Array;
+
+   Shipped_Locale_Count : constant Positive :=
+     Humanize.Locales.Shipped_Locale_Count;
+
+   Regional_Shipped_Locale_Count : constant Positive :=
+     Humanize.Locales.Regional_Shipped_Locale_Count;
+
+   All_Shipped_Locale_Count : constant Positive :=
+     Humanize.Locales.All_Shipped_Locale_Count;
+
+   subtype Shipped_Locale_List is Locale_Code_Array (1 .. Shipped_Locale_Count);
+
+   subtype Regional_Locale_List is
+     Locale_Code_Array (1 .. Regional_Shipped_Locale_Count);
+
+   subtype All_Shipped_Locale_List is
+     Locale_Code_Array (1 .. All_Shipped_Locale_Count);
+
+   function Shipped_Locales return Shipped_Locale_List;
+   --  @return Array of access values for shipped base locale tags.
+
+   function Regional_Shipped_Locales return Regional_Locale_List;
+   --  @return Array of access values for shipped regional locale tags.
+
+   function All_Shipped_Locales return All_Shipped_Locale_List;
+   --  @return Array of access values for every shipped locale tag.
+
+   function Is_Base_Shipped_Locale (Locale : String) return Boolean
+     renames Humanize.Locales.Is_Base_Shipped_Locale;
+   --  @param Locale Locale tag or locale-like string.
+   --  @return True when Locale names a shipped base locale.
+
+   function Is_Regional_Shipped_Locale (Locale : String) return Boolean
+     renames Humanize.Locales.Is_Regional_Shipped_Locale;
+   --  @param Locale Locale tag or locale-like string.
+   --  @return True when Locale names a shipped regional fallback alias.
+
+   function Is_Shipped_Locale (Locale : String) return Boolean
+     renames Humanize.Locales.Is_Shipped_Locale;
+   --  @param Locale Locale tag or locale-like string.
+   --  @return True when Locale names any shipped base or regional locale tag.
+
+   function Canonical_Shipped_Locale (Locale : String) return String
+     renames Humanize.Locales.Canonical_Shipped_Locale;
+   --  @param Locale Locale tag or locale-like string.
+   --  @return Canonical shipped tag, or "" when Locale is not shipped.
+
+   function Available
+     (Context : Humanize.Contexts.Context;
+      Id      : Humanize.Messages.Message_Id)
+      return Boolean;
+   --  @param Context Humanize context backed by a loaded runtime.
+   --  @param Id Humanize message id to resolve through locale fallback.
+   --  @return True when Id resolves for Context's locale.
 
    --  Load the built-in Humanize catalog fragments into Runtime.
    --

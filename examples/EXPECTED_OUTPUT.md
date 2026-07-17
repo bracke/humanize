@@ -65,6 +65,14 @@ Numbers / multi-unit (English):
   file compare  : file A is 2.3 MB larger than file B
   date compare  : updated is 3 days before release
   pct compare   : score is 12% lower than baseline
+  operation     : sync running: 8 of 10 items complete, 1 item failed
+  operation log : sync state=running completed=8 total=10 failed=1 skipped=0 retried=0 canceled=0
+  comparison log: settings changed=3 unchanged=7 total=10
+  account       : Ada last active 2 hours ago
+  account meta  : [accounts danger] Ada locked account
+  deploy        : release 1.2 to production deployed
+  build         : 2 tests flaky
+  accessible    : multi-factor authentication enabled, image 1920 by 1080, 3 of 10 complete
   compact time  : 1h 30m
   clock time    : 01:30:05
   interval      : between 1 hour and 2 hours
@@ -148,6 +156,13 @@ Numbers / multi-unit (English):
   bounded       : 1.2M
   byte metadata : BYTE_UNIT_KIB
   capability    : parsing / deterministic-text
+  cap features  : bounded options parse scan metadata accessible cross-domain privacy narrative label-parts diff validation stability
+  cap matrix    : capability coverage: 48 areas, 47 bounded, 38 parseable, 35 scannable, 46 with metadata, 6 privacy-aware, 2 terminal-aware, 3 diff-aware, 5 validation-aware, 3 stability-aware
+  color name    : dark moderate chroma cool blue
+  VIN checksum  : machine checksum VIN: 1M8GDM...2788, checksum valid
+  text change   : text change: minor edit, 2 old words, 2 new words, no changed words, punctuation-only
+  data shape    : data shape: mixed, 2 fields, 1 item, 1 null, 1 mixed type, depth 3
+  safe address  : address near London, UK
   smart title   : API Status and URL Rules
   table row     : Name      Ada
   title options : Api Status And Url Rules

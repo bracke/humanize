@@ -1,58 +1,33 @@
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Characters.Handling;
 
 with Humanize.I18N_Rendering;
+with Humanize.Locales;
 with Humanize.Messages;
 with Humanize.Selections;
+with Humanize.Bounded_Text;
 
 package body Humanize.Rates is
    use type Humanize.Status.Status_Code;
 
-   function No_Space (Image : String) return String is
-     (if Image'Length > 0 and then Image (Image'First) = ' '
-      then Image (Image'First + 1 .. Image'Last)
-      else Image);
+   function Ok_Text (Text : String) return Humanize.Status.Text_Result
+      renames Humanize.Bounded_Text.Ok_Text;
 
-   function B (Hex : String) return String is
-      Result : String (1 .. Hex'Length / 2);
+   function Result_Text
+     (Result : Humanize.Status.Text_Result)
+      return String
+      renames Humanize.Bounded_Text.Result_Text;
 
-      function Nibble (C : Character) return Natural is
-      begin
-         case C is
-            when '0' .. '9' =>
-               return Character'Pos (C) - Character'Pos ('0');
-            when 'A' .. 'F' =>
-               return 10 + Character'Pos (C) - Character'Pos ('A');
-            when 'a' .. 'f' =>
-               return 10 + Character'Pos (C) - Character'Pos ('a');
-            when others =>
-               return 0;
-         end case;
-      end Nibble;
-   begin
-      for I in Result'Range loop
-         Result (I) :=
-           Character'Val
-             (Nibble (Hex (Hex'First + 2 * (I - Result'First))) * 16
-              + Nibble (Hex (Hex'First + 2 * (I - Result'First) + 1)));
-      end loop;
+   function No_Space (Image : String) return String
+      renames Humanize.Bounded_Text.No_Space;
 
-      return Result;
-   end B;
+   function B (Hex : String) return String
+      renames Humanize.Bounded_Text.Hex_Bytes;
 
-   function Language (Context : Humanize.Contexts.Context) return String is
-      Locale : constant String := Humanize.Contexts.Locale (Context);
-      Last   : Natural := Locale'Last;
-   begin
-      for Index in Locale'Range loop
-         if Locale (Index) = '-' or else Locale (Index) = '_' then
-            Last := Index - 1;
-            exit;
-         end if;
-      end loop;
-
-      return Ada.Characters.Handling.To_Lower (Locale (Locale'First .. Last));
-   end Language;
+   procedure Copy_Result
+     (Result  : Humanize.Status.Text_Result;
+      Target  : in out String;
+      Written : out Natural;
+      Status  : out Humanize.Status.Status_Code)
+      renames Humanize.Bounded_Text.Copy_Text;
 
    function Standard_Rate_Period
      (Lang   : String;
@@ -117,10 +92,11 @@ package body Humanize.Rates is
       Less_Than : Boolean := False)
       return Humanize.Status.Text_Result
    is
-      Lang : constant String := Language (Context);
+      Lang : constant String :=
+        Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context));
    begin
-      if not (Lang = "tr" or else Lang = "ja" or else Lang = "ko"
-              or else Lang = "zh" or else Lang = "hi")
+      if not (Lang = "tr" or else Humanize.Locales.Is_CJK (Lang)
+              or else Lang = "hi")
       then
          return (Status => Humanize.Status.Runtime_Error, others => <>);
       end if;
@@ -158,10 +134,7 @@ package body Humanize.Rates is
             return (Status => Humanize.Status.Runtime_Error, others => <>);
          end if;
 
-         return
-           (Status => Humanize.Status.Ok,
-            Text   => To_Unbounded_String (Text),
-            Key    => Humanize.Messages.No_Message);
+         return Ok_Text (Text);
       end;
    end Standard_Rate_Result;
 
@@ -190,32 +163,6 @@ package body Humanize.Rates is
       end case;
    end Less_Key_For;
 
-   procedure Copy_Text
-     (Text    : String;
-      Target  : in out String;
-      Written : out Natural;
-      Status  : out Humanize.Status.Status_Code)
-   is
-   begin
-      Written := 0;
-      if Target'First /= 1 then
-         Status := Humanize.Status.Invalid_Options;
-      elsif Text'Length > Target'Length then
-         if Target'Length > 0 then
-            Target (Target'First .. Target'Last) :=
-              Text (Text'First .. Text'First + Target'Length - 1);
-         end if;
-         Written := Target'Length;
-         Status := Humanize.Status.Buffer_Overflow;
-      else
-         if Text'Length > 0 then
-            Target (Target'First .. Target'First + Text'Length - 1) := Text;
-         end if;
-         Written := Text'Length;
-         Status := Humanize.Status.Ok;
-      end if;
-   end Copy_Text;
-
    function Pace
      (Context : Humanize.Contexts.Context;
       Count   : Humanize.Frequencies.Occurrence_Count;
@@ -241,7 +188,7 @@ package body Humanize.Rates is
       return Humanize.I18N_Rendering.Render
         (Context,
          Humanize.Selections.Text_Value
-           (Key_For (Period), To_String (Frequency.Text)));
+           (Key_For (Period), Result_Text (Frequency)));
    end Pace;
 
    function Pace_Approximate
@@ -271,7 +218,7 @@ package body Humanize.Rates is
          return Humanize.I18N_Rendering.Render
            (Context,
             Humanize.Selections.Text_Value
-              (Less_Key_For (Period), To_String (Frequency.Text)));
+              (Less_Key_For (Period), Result_Text (Frequency)));
       else
          return Pace (Context, Count, Period);
       end if;
@@ -295,7 +242,7 @@ package body Humanize.Rates is
       return Humanize.I18N_Rendering.Render
         (Context,
          Humanize.Selections.Text_Value
-           (Key_For (Period), To_String (Frequency.Text)));
+           (Key_For (Period), Result_Text (Frequency)));
    end Pace;
 
    function Pace_Approximate
@@ -318,7 +265,7 @@ package body Humanize.Rates is
          return Humanize.I18N_Rendering.Render
            (Context,
             Humanize.Selections.Text_Value
-              (Less_Key_For (Period), To_String (Frequency.Text)));
+              (Less_Key_For (Period), Result_Text (Frequency)));
       else
          return Pace (Context, Count, Period, Singular, Plural);
       end if;
@@ -335,12 +282,7 @@ package body Humanize.Rates is
       Result : constant Humanize.Status.Text_Result :=
         Pace (Context, Count, Period);
    begin
-      if Result.Status /= Humanize.Status.Ok then
-         Written := 0;
-         Status := Result.Status;
-      else
-         Copy_Text (To_String (Result.Text), Target, Written, Status);
-      end if;
+      Copy_Result (Result, Target, Written, Status);
    end Pace_Into;
 
    procedure Pace_Approximate_Into
@@ -355,12 +297,7 @@ package body Humanize.Rates is
       Result : constant Humanize.Status.Text_Result :=
         Pace_Approximate (Context, Count, Period, Options);
    begin
-      if Result.Status /= Humanize.Status.Ok then
-         Written := 0;
-         Status := Result.Status;
-      else
-         Copy_Text (To_String (Result.Text), Target, Written, Status);
-      end if;
+      Copy_Result (Result, Target, Written, Status);
    end Pace_Approximate_Into;
 
    procedure Pace_Into
@@ -376,11 +313,6 @@ package body Humanize.Rates is
       Result : constant Humanize.Status.Text_Result :=
         Pace (Context, Count, Period, Singular, Plural);
    begin
-      if Result.Status /= Humanize.Status.Ok then
-         Written := 0;
-         Status := Result.Status;
-      else
-         Copy_Text (To_String (Result.Text), Target, Written, Status);
-      end if;
+      Copy_Result (Result, Target, Written, Status);
    end Pace_Into;
 end Humanize.Rates;

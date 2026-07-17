@@ -12,8 +12,10 @@ with Humanize.Datetimes;
 with Humanize.Durations;
 with Humanize.Frequencies;
 with Humanize.Lists;
+with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Rates;
+with Humanize.Bounded_Text;
 with Humanize.Status;
 with Humanize.Units;
 
@@ -25,11 +27,7 @@ procedure Locale_Audit is
 
    Runtime : aliased I18N.Runtime.Instance;
    Errors  : Natural := 0;
-
-   type Locale_Code is
-     (En, Da, De, Fr, Es, It, Pt, Nl, Sv, No, Nb, Fi, Pl, Cs, Tr,
-      Ro, Lt, Sl, Id, Ms, Eo, Vi, Sw, Af, Hu, Sk,
-      Ru, Uk, Ja, Ko, Zh, Ar, Hi);
+   Audited_Locales : Natural := 0;
 
    type Sample_Label is
      (Duration_Second, Duration_Minute, Duration_Hour, Duration_Day,
@@ -51,45 +49,6 @@ procedure Locale_Audit is
       Spellout_Ordinal);
 
    type Sample_Texts is array (Sample_Label) of Unbounded_String;
-
-   function Locale_Name (Code : Locale_Code) return String is
-   begin
-      case Code is
-         when En => return "en";
-         when Da => return "da";
-         when De => return "de";
-         when Fr => return "fr";
-         when Es => return "es";
-         when It => return "it";
-         when Pt => return "pt";
-         when Nl => return "nl";
-         when Sv => return "sv";
-         when No => return "no";
-         when Nb => return "nb";
-         when Fi => return "fi";
-         when Pl => return "pl";
-         when Cs => return "cs";
-         when Tr => return "tr";
-         when Ro => return "ro";
-         when Lt => return "lt";
-         when Sl => return "sl";
-         when Id => return "id";
-         when Ms => return "ms";
-         when Eo => return "eo";
-         when Vi => return "vi";
-         when Sw => return "sw";
-         when Af => return "af";
-         when Hu => return "hu";
-         when Sk => return "sk";
-         when Ru => return "ru";
-         when Uk => return "uk";
-         when Ja => return "ja";
-         when Ko => return "ko";
-         when Zh => return "zh";
-         when Ar => return "ar";
-         when Hi => return "hi";
-      end case;
-   end Locale_Name;
 
    function Sample_Name (Label : Sample_Label) return String is
    begin
@@ -250,7 +209,7 @@ procedure Locale_Audit is
       Result : Humanize.Status.Text_Result;
       Texts  : in out Sample_Texts)
    is
-      Text : constant String := To_String (Result.Text);
+      Text : constant String := Humanize.Bounded_Text.Result_Text (Result);
    begin
       Texts (Label) := To_Unbounded_String (Text);
 
@@ -555,6 +514,34 @@ procedure Locale_Audit is
       Ada.Text_IO.New_Line;
    end Print_Row;
 
+   function Has_Argument (Name : String) return Boolean is
+   begin
+      for I in 1 .. Ada.Command_Line.Argument_Count loop
+         if Ada.Command_Line.Argument (I) = Name then
+            return True;
+         end if;
+      end loop;
+      return False;
+   end Has_Argument;
+
+   function Option_Value (Name : String) return String is
+   begin
+      if Ada.Command_Line.Argument_Count < 2 then
+         return "";
+      end if;
+
+      for I in 1 .. Ada.Command_Line.Argument_Count - 1 loop
+         if Ada.Command_Line.Argument (I) = Name then
+            return Ada.Command_Line.Argument (I + 1);
+         end if;
+      end loop;
+      return "";
+   end Option_Value;
+
+   Summary_Only  : constant Boolean := Has_Argument ("--summary");
+   Failures_Only : constant Boolean := Has_Argument ("--failures-only");
+   Locale_Filter : constant String := Option_Value ("--locale");
+
    procedure Audit_Dutch_Core (Texts : Sample_Texts) is
    begin
       if To_String (Texts (Duration_Second)) /= "2 seconden" then
@@ -734,6 +721,109 @@ procedure Locale_Audit is
       Check (Unit_Liter, Liter);
       Check (Unit_Milliliter, Milliliter);
    end Audit_Generated_Core;
+
+   type Generated_Core_Expectation is record
+      Locale      : Unbounded_String;
+      Minute      : Unbounded_String;
+      Day         : Unbounded_String;
+      Week        : Unbounded_String;
+      Month       : Unbounded_String;
+      Year        : Unbounded_String;
+      Kilometer   : Unbounded_String;
+      Centimeter  : Unbounded_String;
+      Millimeter  : Unbounded_String;
+      Gram        : Unbounded_String;
+      Milligram   : Unbounded_String;
+      Liter       : Unbounded_String;
+      Milliliter  : Unbounded_String;
+   end record;
+
+   function U (Text : String) return Unbounded_String is
+     (To_Unbounded_String (Text));
+
+   Generated_Core_Expectations : constant array (Positive range <>) of
+     Generated_Core_Expectation :=
+       [(U ("da"), U ("2 minutter"), U ("2 dage"), U ("2 uger"),
+         U (B ("32206DC3A56E65646572")), U (B ("3220C3A572")),
+         U ("5 kilometer"), U ("5 centimeter"), U ("5 millimeter"),
+         U ("5 gram"), U ("5 milligram"), U ("5 liter"),
+         U ("5 milliliter")),
+        (U ("de"), U ("2 Minuten"), U ("2 Tage"), U ("2 Wochen"),
+         U ("2 Monate"), U ("2 Jahre"), U ("5 Kilometer"),
+         U ("5 Zentimeter"), U ("5 Millimeter"), U ("5 Gramm"),
+         U ("5 Milligramm"), U ("5 Liter"), U ("5 Milliliter")),
+        (U ("fr"), U ("2 minutes"), U ("2 jours"), U ("2 semaines"),
+         U ("2 mois"), U ("2 ans"), U (B ("35206B696C6F6DC3A874726573")),
+         U ("5 centim" & B ("C3A874726573")), U ("5 millim" & B ("C3A874726573")),
+         U ("5 grammes"), U ("5 milligrammes"), U ("5 litres"),
+         U ("5 millilitres")),
+        (U ("es"), U ("2 minutos"), U (B ("322064C3AD6173")),
+         U ("2 semanas"), U ("2 meses"), U (B ("322061C3B16F73")),
+         U (B ("35206B696CC3B36D6574726F73")),
+         U (B ("352063656E74C3AD6D6574726F73")),
+         U (B ("35206D696CC3AD6D6574726F73")),
+         U ("5 gramos"), U ("5 miligramos"), U ("5 litros"),
+         U ("5 mililitros")),
+        (U ("it"), U ("2 minuti"), U ("2 giorni"), U ("2 settimane"),
+         U ("2 mesi"), U ("2 anni"), U ("5 chilometri"),
+         U ("5 centimetri"), U ("5 millimetri"), U ("5 grammi"),
+         U ("5 milligrammi"), U ("5 litri"), U ("5 millilitri")),
+        (U ("pt"), U ("2 minutos"), U ("2 dias"), U ("2 semanas"),
+         U ("2 meses"), U ("2 anos"), U (B ("35207175696CC3B36D6574726F73")),
+         U ("5 cent" & B ("C3AD6D6574726F73")),
+         U ("5 mil" & B ("C3AD6D6574726F73")),
+         U ("5 gramas"), U ("5 miligramas"), U ("5 litros"),
+         U ("5 mililitros")),
+        (U ("nl"), U ("2 minuten"), U ("2 dagen"), U ("2 weken"),
+         U ("2 maanden"), U ("2 jaar"), U ("5 kilometer"),
+         U ("5 centimeter"), U ("5 millimeter"), U ("5 gram"),
+         U ("5 milligram"), U ("5 liter"), U ("5 milliliter")),
+        (U ("sv"), U ("2 minuter"), U ("2 dagar"), U ("2 veckor"),
+         U (B ("32206DC3A56E61646572")), U (B ("3220C3A572")),
+         U ("5 kilometer"), U ("5 centimeter"), U ("5 millimeter"),
+         U ("5 gram"), U ("5 milligram"), U ("5 liter"),
+         U ("5 milliliter")),
+        (U ("no"), U ("2 minutter"), U ("2 dager"), U ("2 uker"),
+         U (B ("32206DC3A56E65646572")), U (B ("3220C3A572")),
+         U ("5 kilometer"), U ("5 centimeter"), U ("5 millimeter"),
+         U ("5 gram"), U ("5 milligram"), U ("5 liter"),
+         U ("5 milliliter")),
+        (U ("nb"), U ("2 minutter"), U ("2 dager"), U ("2 uker"),
+         U (B ("32206DC3A56E65646572")), U (B ("3220C3A572")),
+         U ("5 kilometer"), U ("5 centimeter"), U ("5 millimeter"),
+         U ("5 gram"), U ("5 milligram"), U ("5 liter"),
+         U ("5 milliliter")),
+        (U ("fi"), U ("2 minuuttia"), U (B ("322070C3A46976C3A4C3A4")),
+         U ("2 viikkoa"), U ("2 kuukautta"), U ("2 vuotta"),
+         U (B ("35206B696C6F6D65747269C3A4")),
+         U (B ("352073656E7474696D65747269C3A4")),
+         U (B ("35206D696C6C696D65747269C3A4")),
+         U ("5 grammaa"), U ("5 milligrammaa"), U ("5 litraa"),
+         U ("5 millilitraa")),
+        (U ("tr"), U ("2 dakika"), U (B ("322067C3BC6E")),
+         U ("2 hafta"), U ("2 ay"), U (B ("322079C4B16C")),
+         U ("5 kilometre"), U ("5 santimetre"), U ("5 milimetre"),
+         U ("5 gram"), U ("5 miligram"), U ("5 litre"),
+         U ("5 mililitre"))];
+
+   procedure Audit_Configured_Generated_Core
+     (Locale : String;
+      Texts  : Sample_Texts)
+   is
+   begin
+      for Item of Generated_Core_Expectations loop
+         if To_String (Item.Locale) = Locale then
+            Audit_Generated_Core
+              (Locale, Texts, To_String (Item.Minute), To_String (Item.Day),
+               To_String (Item.Week), To_String (Item.Month),
+               To_String (Item.Year), To_String (Item.Kilometer),
+               To_String (Item.Centimeter), To_String (Item.Millimeter),
+               To_String (Item.Gram), To_String (Item.Milligram),
+               To_String (Item.Liter), To_String (Item.Milliliter));
+            return;
+         end if;
+      end loop;
+   end Audit_Configured_Generated_Core;
 
    procedure Audit_Non_ASCII_Core
      (Locale : String;
@@ -1016,17 +1106,24 @@ procedure Locale_Audit is
    Load_Result : I18N.Runtime.Load_Result;
 begin
    Humanize.Catalogs.Load_Defaults (Runtime, Load_Result);
-   Print_Header;
+   if not Summary_Only and then not Failures_Only then
+      Print_Header;
+   end if;
 
-   for Code in Locale_Code loop
+   for Locale_Access of Humanize.Locales.Shipped_Locales loop
       declare
-         Locale : constant String := Locale_Name (Code);
+         Locale : constant String := Locale_Access.all;
          Texts  : Sample_Texts := [others => Null_Unbounded_String];
       begin
+         if Locale_Filter'Length > 0 and then Locale /= Locale_Filter then
+            goto Continue;
+         end if;
+
+         Audited_Locales := Audited_Locales + 1;
          Audit_Locale (Locale, Texts);
          Audit_Deterministic_Schedule_Spellout (Locale, Texts);
-         case Code is
-            when Da =>
+         Audit_Configured_Generated_Core (Locale, Texts);
+         if Locale = "da" then
                Audit_Generated_Core
                  (Locale, Texts, "2 minutter", "2 dage", "2 uger",
                   B ("32206DC3A56E65646572"), B ("3220C3A572"),
@@ -1034,7 +1131,7 @@ begin
                   "5 gram", "5 milligram", "5 liter", "5 milliliter");
                Audit_Native_Added
                  (Locale, Texts, "4 gange", "cirka 4 gange per uge");
-            when De =>
+         elsif Locale = "de" then
                Audit_Generated_Core
                  (Locale, Texts, "2 Minuten", "2 Tage", "2 Wochen",
                   "2 Monate", "2 Jahre", "5 Kilometer", "5 Zentimeter",
@@ -1042,7 +1139,7 @@ begin
                   "5 Milliliter");
                Audit_Native_Added
                  (Locale, Texts, "4 Mal", "ungefaehr 4 Mal pro Woche");
-            when Fr =>
+         elsif Locale = "fr" then
                Audit_Generated_Core
                  (Locale, Texts, "2 minutes", "2 jours", "2 semaines",
                   "2 mois", "2 ans", B ("35206B696C6F6DC3A874726573"),
@@ -1051,7 +1148,7 @@ begin
                   "5 milligrammes", "5 litres", "5 millilitres");
                Audit_Native_Added
                  (Locale, Texts, "4 fois", "environ 4 fois par semaine");
-            when Es =>
+         elsif Locale = "es" then
                Audit_Generated_Core
                  (Locale, Texts, "2 minutos", B ("322064C3AD6173"),
                   "2 semanas", "2 meses", B ("322061C3B16F73"),
@@ -1062,7 +1159,7 @@ begin
                Audit_Native_Added
                  (Locale, Texts, "4 veces",
                   "aproximadamente 4 veces por semana");
-            when It =>
+         elsif Locale = "it" then
                Audit_Generated_Core
                  (Locale, Texts, "2 minuti", "2 giorni", "2 settimane",
                   "2 mesi", "2 anni", "5 chilometri", "5 centimetri",
@@ -1070,7 +1167,7 @@ begin
                   "5 millilitri");
                Audit_Native_Added
                  (Locale, Texts, "4 volte", "circa 4 volte alla settimana");
-            when Pt =>
+         elsif Locale = "pt" then
                Audit_Generated_Core
                  (Locale, Texts, "2 minutos", "2 dias", "2 semanas",
                   "2 meses", "2 anos",
@@ -1081,25 +1178,25 @@ begin
                Audit_Native_Added
                  (Locale, Texts, "4 vezes",
                   "aproximadamente 4 vezes por semana");
-            when Nl =>
+         elsif Locale = "nl" then
                Audit_Generated_Core
                  (Locale, Texts, "2 minuten", "2 dagen", "2 weken",
                   "2 maanden", "2 jaar", "5 kilometer", "5 centimeter",
                   "5 millimeter", "5 gram", "5 milligram", "5 liter",
                   "5 milliliter");
-            when Sv =>
+         elsif Locale = "sv" then
                Audit_Generated_Core
                  (Locale, Texts, "2 minuter", "2 dagar", "2 veckor",
                   B ("32206DC3A56E61646572"), B ("3220C3A572"),
                   "5 kilometer", "5 centimeter", "5 millimeter",
                   "5 gram", "5 milligram", "5 liter", "5 milliliter");
-            when No | Nb =>
+         elsif Humanize.Locales.Is_Norwegian (Locale) then
                Audit_Generated_Core
                  (Locale, Texts, "2 minutter", "2 dager", "2 uker",
                   B ("32206DC3A56E65646572"), B ("3220C3A572"),
                   "5 kilometer", "5 centimeter", "5 millimeter",
                   "5 gram", "5 milligram", "5 liter", "5 milliliter");
-            when Fi =>
+         elsif Locale = "fi" then
                Audit_Generated_Core
                  (Locale, Texts, "2 minuuttia",
                   B ("322070C3A46976C3A4C3A4"), "2 viikkoa",
@@ -1117,7 +1214,7 @@ begin
                      To_String (Texts (Relative_Future_Many)),
                      "expected explicit Finnish future relative wording");
                end if;
-            when Pl =>
+         elsif Locale = "pl" then
                Audit_Slavic_Core
                  (Locale, Texts, "2 minuty", "2 dni", "2 tygodnie",
                   B ("32206D69657369C4856365"), "2 lata",
@@ -1130,7 +1227,7 @@ begin
                   B ("35206D696C696C697472C3B377"));
                Audit_Slavic_Relative_Many
                  (Locale, Texts, "5 godzin temu", "za 5 godzin");
-            when Cs =>
+         elsif Locale = "cs" then
                Audit_Slavic_Core
                  (Locale, Texts, "2 minuty", "2 dny",
                   B ("322074C3BD646E79"),
@@ -1145,7 +1242,7 @@ begin
                Audit_Slavic_Relative_Many
                  (Locale, Texts, B ("3520686F64696E207A70C49B74"),
                   "za 5 hodin");
-            when Ru =>
+         elsif Locale = "ru" then
                Audit_Non_ASCII_Core (Locale, Texts);
                Audit_Native_Script_No_Latin (Locale, Texts);
                Audit_Slavic_Core
@@ -1166,7 +1263,7 @@ begin
                  (Locale, Texts,
                   B ("3520D187D0B0D181D0BED0B220D0BDD0B0D0B7D0B0D0B4"),
                   B ("D187D0B5D180D0B5D0B7203520D187D0B0D181D0BED0B2"));
-            when Uk =>
+         elsif Locale = "uk" then
                Audit_Non_ASCII_Core (Locale, Texts);
                Audit_Native_Script_No_Latin (Locale, Texts);
                Audit_Slavic_Core
@@ -1187,7 +1284,7 @@ begin
                  (Locale, Texts,
                   B ("3520D0B3D0BED0B4D0B8D0BD20D182D0BED0BCD183"),
                   B ("D187D0B5D180D0B5D0B7203520D0B3D0BED0B4D0B8D0BD"));
-            when Tr =>
+         elsif Locale = "tr" then
                Audit_Generated_Core
                  (Locale, Texts, "2 dakika", B ("322067C3BC6E"),
                   "2 hafta", "2 ay", B ("322079C4B16C"),
@@ -1209,7 +1306,7 @@ begin
                      To_String (Texts (Relative_Future_Many)),
                      "expected explicit Turkish future relative wording");
                end if;
-            when Ko =>
+         elsif Locale = "ko" then
                declare
                   Kilometer  : constant String :=
                     B ("3520ED82ACEBA19CEBAFB8ED84B0");
@@ -1247,7 +1344,7 @@ begin
                      To_String (Texts (Relative_Future_Many)),
                      "expected Korean future relative suffix wording");
                end if;
-            when Ja =>
+         elsif Locale = "ja" then
                declare
                   Kilometer  : constant String :=
                     B ("3520E382ADE383ADE383A1E383BCE38388E383AB");
@@ -1277,7 +1374,7 @@ begin
                   B ("E6AF8EE697A5E7B484203420E59B9E"),
                   B ("E6AF8EE980B1E7B484203420E59B9E"),
                   B ("E6AF8EE69982203120E59B9EE69CAAE6BA80"));
-            when Zh =>
+         elsif Locale = "zh" then
                Audit_Non_ASCII_Core (Locale, Texts);
                Audit_Native_Script_No_Latin (Locale, Texts);
                Audit_Generated_Core
@@ -1303,7 +1400,7 @@ begin
                     (Locale, Duration_Month, To_String (Texts (Duration_Month)),
                      "expected Chinese duration month classifier");
                end if;
-            when Hi =>
+         elsif Locale = "hi" then
                declare
                   Core_Minute : constant String :=
                     B ("3220E0A4AEE0A4BFE0A4A8E0A49F");
@@ -1381,10 +1478,8 @@ begin
                      To_String (Texts (Relative_Future_Many)),
                      "expected explicit Hindi future relative wording");
                end if;
-            when others =>
-               null;
-         end case;
-         if Code = Ar then
+         end if;
+         if Locale = "ar" then
             declare
                Core_Minute : constant String :=
                  B ("D9A220D8AFD982D8A7D8A6D982");
@@ -1419,13 +1514,31 @@ begin
                   Core_Gram, Milligram, Core_Liter, Milliliter);
             end;
          end if;
-         if Code = Nl then
+         if Locale = "nl" then
             Audit_Dutch_Core (Texts);
          end if;
          Audit_Reviewed_Latin_Upgrades (Locale, Texts);
-         Print_Row (Locale, Texts);
+         if not Summary_Only and then not Failures_Only then
+            Print_Row (Locale, Texts);
+         end if;
       end;
+      <<Continue>>
+      null;
    end loop;
+
+   if Locale_Filter'Length > 0 and then Audited_Locales = 0 then
+      Ada.Text_IO.Put_Line
+        (Ada.Text_IO.Standard_Error,
+         "error: locale audit unknown shipped locale: " & Locale_Filter);
+      Errors := Errors + 1;
+   end if;
+
+   if Summary_Only or else Failures_Only then
+      Ada.Text_IO.Put_Line
+        ("locale audit summary: "
+         & Natural'Image (Audited_Locales) & " locale(s), "
+         & Natural'Image (Errors) & " error(s)");
+   end if;
 
    if Errors = 0 then
       Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Success);

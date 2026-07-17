@@ -1,55 +1,33 @@
 with Humanize.Byte_Classification;
 with Humanize.I18N_Rendering;
-with Humanize.Messages;
 with Humanize.Selections;
 
-with Ada.Strings.Unbounded;
+with Humanize.Bounded_Text;
 
 package body Humanize.Bytes is
 
    use type Humanize.Status.Status_Code;
 
-   function Text_Result (Text : String) return Humanize.Status.Text_Result is
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text   => Ada.Strings.Unbounded.To_Unbounded_String (Text),
-         Key    => Humanize.Messages.No_Message);
-   end Text_Result;
+   function Text_Result (Text : String) return Humanize.Status.Text_Result
+      renames Humanize.Bounded_Text.Ok_Text;
 
-   function To_String (Result : Humanize.Status.Text_Result) return String is
-     (Ada.Strings.Unbounded.To_String (Result.Text));
+   function Result_Text
+     (Result : Humanize.Status.Text_Result)
+      return String
+      renames Humanize.Bounded_Text.Result_Text;
 
-   procedure Copy_Text
-     (Text    : String;
+   procedure Copy_Result
+     (Result  : Humanize.Status.Text_Result;
       Target  : in out String;
       Written : out Natural;
       Status  : out Humanize.Status.Status_Code)
-   is
-   begin
-      Written := 0;
-      if Target'First /= 1 then
-         Status := Humanize.Status.Invalid_Options;
-      elsif Text'Length > Target'Length then
-         if Target'Length > 0 then
-            Target (Target'First .. Target'Last) :=
-              Text (Text'First .. Text'First + Target'Length - 1);
-         end if;
-         Written := Target'Length;
-         Status := Humanize.Status.Buffer_Overflow;
-      else
-         if Text'Length > 0 then
-            Target (Target'First .. Target'First + Text'Length - 1) := Text;
-         end if;
-         Written := Text'Length;
-         Status := Humanize.Status.Ok;
-      end if;
-   end Copy_Text;
+      renames Humanize.Bounded_Text.Copy_Text;
 
-   function No_Space (Image : String) return String is
-     (if Image'Length > 0 and then Image (Image'First) = ' '
-      then Image (Image'First + 1 .. Image'Last)
-      else Image);
+   function No_Space (Image : String) return String
+      renames Humanize.Bounded_Text.No_Space;
+
+   function Natural_Text (Value : Natural) return String
+      renames Humanize.Bounded_Text.Image;
 
    function File_Count_Label (Count : Natural) return String is
    begin
@@ -58,7 +36,7 @@ package body Humanize.Bytes is
       elsif Count = 1 then
          return "1 file";
       else
-         return No_Space (Natural'Image (Count)) & " files";
+         return Natural_Text (Count) & " files";
       end if;
    end File_Count_Label;
 
@@ -156,13 +134,6 @@ package body Humanize.Bytes is
       Selection : constant Humanize.Selections.Message_Selection :=
         Humanize.Byte_Classification.Classify (Bytes, Options);
    begin
-      Written := 0;
-
-      if Target'First /= 1 then
-         Status := Humanize.Status.Invalid_Options;
-         return;
-      end if;
-
       Humanize.I18N_Rendering.Render_Into
         (Context, Selection, Target, Written, Status);
    end Format_Into;
@@ -180,7 +151,9 @@ package body Humanize.Bytes is
       if Size.Status /= Humanize.Status.Ok then
          return Size;
       end if;
-      return Text_Result (File_Count_Label (File_Count) & ", " & To_String (Size));
+      return Text_Result
+        (File_Count_Label (File_Count) & ", "
+         & Result_Text (Size));
    end File_Size_Summary;
 
    function Transfer_Remaining_Label
@@ -197,7 +170,8 @@ package body Humanize.Bytes is
       elsif Remaining = 0 then
          return Text_Result ("transfer complete");
       else
-         return Text_Result (To_String (Size) & " remaining");
+         return Text_Result
+           (Result_Text (Size) & " remaining");
       end if;
    end Transfer_Remaining_Label;
 
@@ -220,10 +194,12 @@ package body Humanize.Bytes is
       elsif Remaining = 0 then
          return Remaining_Label;
       elsif Bytes_Per_Second = 0 then
-         return Text_Result (To_String (Remaining_Label) & ", stalled");
+         return Text_Result
+           (Result_Text (Remaining_Label) & ", stalled");
       else
          return Text_Result
-           (To_String (Remaining_Label) & " at " & To_String (Rate) & "/s");
+           (Result_Text (Remaining_Label) & " at "
+            & Result_Text (Rate) & "/s");
       end if;
    end Transfer_Remaining_Label;
 
@@ -247,7 +223,8 @@ package body Humanize.Bytes is
          return Total_Label;
       else
          return Text_Result
-           (To_String (Used_Label) & " of " & To_String (Total_Label)
+           (Result_Text (Used_Label) & " of "
+            & Result_Text (Total_Label)
             & " used (" & Percent_Used (Used, Total) & ")");
       end if;
    end Disk_Usage_Label;
@@ -264,12 +241,7 @@ package body Humanize.Bytes is
       Result : constant Humanize.Status.Text_Result :=
         File_Size_Summary (Context, File_Count, Total, Options);
    begin
-      if Result.Status /= Humanize.Status.Ok then
-         Written := 0;
-         Status := Result.Status;
-      else
-         Copy_Text (To_String (Result), Target, Written, Status);
-      end if;
+      Copy_Result (Result, Target, Written, Status);
    end File_Size_Summary_Into;
 
    procedure Transfer_Remaining_Label_Into
@@ -283,12 +255,7 @@ package body Humanize.Bytes is
       Result : constant Humanize.Status.Text_Result :=
         Transfer_Remaining_Label (Context, Remaining, Options);
    begin
-      if Result.Status /= Humanize.Status.Ok then
-         Written := 0;
-         Status := Result.Status;
-      else
-         Copy_Text (To_String (Result), Target, Written, Status);
-      end if;
+      Copy_Result (Result, Target, Written, Status);
    end Transfer_Remaining_Label_Into;
 
    procedure Transfer_Remaining_Label_Into
@@ -304,12 +271,7 @@ package body Humanize.Bytes is
         Transfer_Remaining_Label
           (Context, Remaining, Bytes_Per_Second, Options);
    begin
-      if Result.Status /= Humanize.Status.Ok then
-         Written := 0;
-         Status := Result.Status;
-      else
-         Copy_Text (To_String (Result), Target, Written, Status);
-      end if;
+      Copy_Result (Result, Target, Written, Status);
    end Transfer_Remaining_Label_Into;
 
    procedure Disk_Usage_Label_Into
@@ -324,12 +286,7 @@ package body Humanize.Bytes is
       Result : constant Humanize.Status.Text_Result :=
         Disk_Usage_Label (Context, Used, Total, Options);
    begin
-      if Result.Status /= Humanize.Status.Ok then
-         Written := 0;
-         Status := Result.Status;
-      else
-         Copy_Text (To_String (Result), Target, Written, Status);
-      end if;
+      Copy_Result (Result, Target, Written, Status);
    end Disk_Usage_Label_Into;
 
 end Humanize.Bytes;

@@ -1,0 +1,59 @@
+# Public API classification policy.
+# This file explains why each public package family is callable and which
+# classes are allowed to grow. `check_humanize --policy-only` validates this
+# file alongside docs/PUBLIC_API.toml and humanize.gpr.
+
+[[class]]
+name = "primary-facade"
+usecase = "Stable entry points callers are expected to import directly for normal formatting, parsing, context, and deterministic label work."
+areas = ["root", "core", "formatting", "parsing", "phrases", "domain"]
+examples = [
+  "Humanize",
+  "Humanize.Contexts",
+  "Humanize.Durations",
+  "Humanize.Parsing",
+  "Humanize.Cross_Domain"
+]
+
+[[class]]
+name = "specialized-child-facade"
+usecase = "Public child packages that keep large feature families navigable without exposing implementation packages."
+prefixes = [
+  "Humanize.Colors.",
+  "Humanize.Durations.",
+  "Humanize.Parsing.",
+  "Humanize.Phrases.",
+  "Humanize.Strings."
+]
+examples = [
+  "Humanize.Colors.CSS",
+  "Humanize.Colors.Contrast",
+  "Humanize.Parsing.Numbers",
+  "Humanize.Strings.Core"
+]
+
+[[class]]
+name = "support-type-facade"
+usecase = "Small public packages whose main purpose is shared result, style, metadata, bounded-output, or option types used by primary facades."
+units = [
+  "Humanize.Bounded_Text",
+  "Humanize.Capabilities",
+  "Humanize.Messages",
+  "Humanize.Parsing.Results",
+  "Humanize.Status",
+  "Humanize.Styles"
+]
+
+[[class]]
+name = "internal"
+usecase = "Implementation, support, generated-data, and tooling packages. These must remain absent from Library_Interface even when source specs exist."
+forbidden_prefixes = [
+  "Humanize.Catalogs.Core_Data",
+  "Humanize.Catalogs.Native_Data",
+  "Humanize.Catalogs.Unit_Data",
+  "Humanize.Durations.Schedule_Data",
+  "Humanize.I18N_Rendering",
+  "Humanize.Parsing.Implementation",
+  "Humanize.Phrases.Support",
+  "Project_Tools"
+]

@@ -6,7 +6,17 @@ project Examples is
    for Object_Dir use "../obj/examples";
    for Create_Missing_Dirs use "True";
    for Exec_Dir use "bin";
-   for Main use ("humanize_demo.adb");
+   for Main use
+     ("humanize_demo.adb",
+      "parse_demo.adb",
+      "bounded_demo.adb",
+      "color_demo.adb",
+      "domain_demo.adb",
+      "system_status_demo.adb",
+      "ui_labels_demo.adb",
+      "security_data_demo.adb",
+      "workflow_ops_demo.adb",
+      "product_details_demo.adb");
 
    package Compiler is
       for Default_Switches ("Ada") use ("-gnat2022", "-gnatyM120", "-gnatX");

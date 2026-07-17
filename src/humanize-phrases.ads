@@ -1,6 +1,7 @@
 with Humanize.Bytes;
 with Humanize.Contexts;
 with Humanize.Datetimes;
+with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Status;
 
@@ -620,6 +621,30 @@ package Humanize.Phrases is
       return Phrase_Severity;
    --  @param Status Database/storage phrase.
    --  @return Stable severity category for the phrase.
+
+   Phrase_Locale_Count : constant Positive := 22;
+
+   Generated_Phrase_Locale_Count : constant Positive := 19;
+
+   subtype Phrase_Locale_List is
+     Humanize.Locales.Locale_Code_Array (1 .. Phrase_Locale_Count);
+
+   subtype Generated_Phrase_Locale_List is
+     Humanize.Locales.Locale_Code_Array (1 .. Generated_Phrase_Locale_Count);
+
+   function Phrase_Locales return Phrase_Locale_List;
+   --  @return Locale prefixes with Humanize-owned phrase-pack text.
+
+   function Generated_Phrase_Locales return Generated_Phrase_Locale_List;
+   --  @return Locale prefixes whose phrase-pack text is generated.
+
+   function Is_Supported_Phrase_Locale (Locale : String) return Boolean;
+   --  @param Locale Locale prefix or tag, such as "en" or "ja-JP".
+   --  @return True when Humanize.Phrases has phrase-pack text for Locale.
+
+   function Is_Generated_Phrase_Locale (Locale : String) return Boolean;
+   --  @param Locale Locale prefix or tag, such as "sv" or "ar-EG".
+   --  @return True when Locale uses generated-source phrase-pack text.
 
    function Supported_Phrase_Locales
      return Humanize.Status.Text_Result;

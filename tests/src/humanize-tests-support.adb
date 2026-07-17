@@ -1,5 +1,5 @@
-with Ada.Strings.Unbounded;
 with I18N.Runtime;
+with Humanize.Bounded_Text;
 with Humanize.Catalogs;
 
 package body Humanize.Tests.Support is
@@ -79,7 +79,7 @@ package body Humanize.Tests.Support is
 
    function Text (Item : Humanize.Status.Text_Result) return String is
    begin
-      return Ada.Strings.Unbounded.To_String (Item.Text);
+      return Humanize.Bounded_Text.Result_Text (Item);
    end Text;
 
 end Humanize.Tests.Support;
