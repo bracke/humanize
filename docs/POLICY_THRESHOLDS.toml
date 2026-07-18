@@ -32,5 +32,4 @@ exception_marker_max_intentional_silent_recovery = 12
 tooling_exception_marker_max_parse_failure_normalization = 2
 tooling_exception_marker_max_defensive_recovery = 6
 tooling_exception_marker_max_intentional_silent_recovery = 0
-test_source_parent_max_lines = 2200
-test_source_subunit_max_lines = 2700
+test_source_budget_min_entries = 7

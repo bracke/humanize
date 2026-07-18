@@ -74,6 +74,9 @@ path = "docs/PUBLIC_FACADE_BUDGETS.toml"
 path = "docs/STRUCTURAL_BASELINE.toml"
 
 [[required_file]]
+path = "docs/TEST_SOURCE_BUDGETS.toml"
+
+[[required_file]]
 path = "docs/PACKAGE_GUIDE.md"
 
 [[required_file]]
@@ -407,6 +410,11 @@ message = "quality guards must document the generated-data manifest"
 path = "docs/QUALITY_GUARDS.md"
 pattern = "docs/PUBLIC_API.toml"
 message = "quality guards must document the public API manifest"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/TEST_SOURCE_BUDGETS.toml"
+message = "quality guards must document per-suite test source budgets"
 
 [[required_text]]
 path = ".github/workflows/ci.yml"

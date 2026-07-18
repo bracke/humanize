@@ -13,7 +13,7 @@ usecase = "CSS parsing, palette, accessibility, color-space conversion, and boun
 path = "src/humanize-strings-support-backend.adb"
 max_bytes = 93000
 split_prefix = "src/humanize-strings-support-backend-"
-min_split_bodies = 21
+min_split_bodies = 22
 usecase = "Text display, editing, names, paths, prose, metadata, and terminal rendering backend."
 
 [[body]]

@@ -189,6 +189,10 @@ that large support bodies stay within their reviewed budgets and keep their
 subunit split counts. The same policy pass validates public/private API
 consistency, focused downstream public API consumers, and the short
 `docs/PACKAGE_GUIDE.md` import map.
+`docs/TEST_SOURCE_BUDGETS.toml` records per-suite parent and subunit line
+budgets for `tests/src/humanize-tests-*.adb`. The checker applies the longest
+matching prefix, so large parser and generated-locale corpus files need
+explicit suite budgets while ordinary test bodies inherit tighter defaults.
 
 ## Non-goal boundary
 

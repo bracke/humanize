@@ -361,8 +361,7 @@ package body Check_Humanize_Policy_Support is
       Require_Key ("tooling_exception_marker_max_parse_failure_normalization");
       Require_Key ("tooling_exception_marker_max_defensive_recovery");
       Require_Key ("tooling_exception_marker_max_intentional_silent_recovery");
-      Require_Key ("test_source_parent_max_lines");
-      Require_Key ("test_source_subunit_max_lines");
+      Require_Key ("test_source_budget_min_entries");
    end Check_Policy_Threshold_Keys;
 
    procedure Iterate_Manifest_Section
