@@ -9,6 +9,7 @@ with Check_Humanize_Policy_Public_Surface;
 with Check_Humanize_Policy_Public_Facades;
 with Check_Humanize_Policy_Performance;
 with Check_Humanize_Policy_Requirements;
+with Check_Humanize_Policy_Config;
 with Check_Humanize_Policy_Generated;
 with Check_Humanize_Policy_Examples;
 with Check_Humanize_Policy_Boundaries;
@@ -23,45 +24,55 @@ with Project_Tools.Tree_Checks;
 package body Check_Humanize_Policy is
    use type Ada.Directories.File_Size;
 
+   package Config renames Check_Humanize_Policy_Config;
+
    procedure Check_Manifest
      (Root   : String;
       Errors : in out Natural)
    is
       Release_Dependencies : constant Project_Tools.Alire_Manifests.String_List :=
-        [1 => To_Unbounded_String ("i18n = { path = ""../i18n"" }")];
+        [1 => To_Unbounded_String (Config.Development_I18N_Pin)];
    begin
       Project_Tools.Files.Require_Contains
-        (Root & "/alire.toml", "gnat_native = ""=15.2.1""",
+        (Root & Config.Humanize_Development_Manifest,
+         Config.Required_GNAT_Native_Pin,
          "humanize development manifest must pin Alire GNAT 15");
       Project_Tools.Files.Require_Contains
-        (Root & "/alire.release.toml", "gnat_native = ""=15.2.1""",
+        (Root & Config.Humanize_Release_Manifest,
+         Config.Required_GNAT_Native_Pin,
          "humanize release manifest must pin Alire GNAT 15");
       Project_Tools.Files.Require_Contains
-        (Root & "/alire.build.toml", "gnat_native = ""=15.2.1""",
+        (Root & Config.Humanize_Build_Overlay,
+         Config.Required_GNAT_Native_Pin,
          "humanize build overlay must pin Alire GNAT 15");
       Project_Tools.Files.Require_Contains
-        (Root & "/tests/alire.toml", "gnat_native = ""=15.2.1""",
+        (Root & Config.Humanize_Tests_Manifest,
+         Config.Required_GNAT_Native_Pin,
          "humanize tests manifest must pin Alire GNAT 15");
       Project_Tools.Files.Require_Contains
-        (Root & "/check_humanize/alire.toml", "gnat_native = ""=15.2.1""",
+        (Root & Config.Humanize_Tooling_Manifest,
+         Config.Required_GNAT_Native_Pin,
          "humanize tooling manifest must pin Alire GNAT 15");
       Project_Tools.Files.Require_Contains
-        (Root & "/check_humanize/alire.toml", "cryptolib = ""*""",
+        (Root & Config.Humanize_Tooling_Manifest, "cryptolib = ""*""",
          "humanize tooling manifest must depend on cryptolib for hash checks");
       Project_Tools.Alire_Manifests.Require_Workspace_Pin
-        (Root & "/check_humanize/alire.toml", "cryptolib", "../../cryptolib");
+        (Root & Config.Humanize_Tooling_Manifest, "cryptolib", "../../cryptolib");
       Project_Tools.Files.Require_Contains
-        (Root & "/alire.toml", "i18n = "">=1.1.0""",
+        (Root & Config.Humanize_Development_Manifest,
+         Config.Required_I18N_Constraint,
          "humanize development manifest must require i18n >= 1.1.0");
       Project_Tools.Alire_Manifests.Require_Workspace_Pin
-        (Root & "/alire.toml", "i18n", "../i18n");
+        (Root & Config.Humanize_Development_Manifest, "i18n", "../i18n");
       Project_Tools.Alire_Manifests.Require_No_Local_Pins
-        (Root & "/alire.release.toml");
+        (Root & Config.Humanize_Release_Manifest);
       Project_Tools.Files.Require_Contains
-        (Root & "/alire.release.toml", "i18n = "">=1.1.0""",
+        (Root & Config.Humanize_Release_Manifest,
+         Config.Required_I18N_Constraint,
          "humanize release manifest must require i18n >= 1.1.0");
       Project_Tools.Alire_Manifests.Require_Build_Overlay
-        (Root & "/alire.build.toml", Root & "/alire.release.toml",
+        (Root & Config.Humanize_Build_Overlay,
+         Root & Config.Humanize_Release_Manifest,
          Release_Dependencies);
    exception
       when Program_Error =>

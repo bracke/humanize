@@ -5,6 +5,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with Check_Humanize_Policy;
+with Check_Humanize_Policy_Config;
 with Check_Humanize_Release;
 with GNAT.OS_Lib;
 with Project_Tools.Files;
@@ -17,8 +18,6 @@ procedure Check_Humanize is
    use Ada.Text_IO;
 
    Stage_Root : constant String := "/tmp/humanize-release-stage";
-   Required_GNAT_Native_Pin : constant String := "gnat_native = ""=15.2.1""";
-   Expected_GNATLS_Prefix   : constant String := "GNATLS 15.2.";
 
    function Root_Directory return String is
       Current : constant String := Ada.Directories.Current_Directory;
@@ -92,11 +91,12 @@ procedure Check_Humanize is
          Error ("could not run `alr exec -- gnatls --version`");
          raise Program_Error;
       elsif Ada.Strings.Fixed.Index
-        (To_String (Output), Expected_GNATLS_Prefix) = 0
+        (To_String (Output), Check_Humanize_Policy_Config.Expected_GNATLS_Prefix)
+        = 0
       then
          Error
            ("wrong Ada compiler: manifests must pin "
-            & Required_GNAT_Native_Pin
+            & Check_Humanize_Policy_Config.Required_GNAT_Native_Pin
             & " and validation must run the matching GNATLS 15.2 compiler; got: "
             & To_String (Output));
          raise Program_Error;

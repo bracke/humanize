@@ -7,6 +7,7 @@ with Ada.Text_IO;
 
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 
+with Check_Humanize_Policy_Config;
 with Project_Tools.Alire_Manifests;
 with Project_Tools.Files;
 with Project_Tools.Processes;
@@ -14,6 +15,8 @@ with Project_Tools.Release_Checks;
 
 package body Check_Humanize_Release is
    use Ada.Text_IO;
+
+   package Config renames Check_Humanize_Policy_Config;
 
    Alr_Build_Args : constant Argument_List :=
      (1 => new String'("build"));
@@ -313,26 +316,26 @@ package body Check_Humanize_Release is
             To_Unbounded_String ("obj")],
          Skip_Files   =>
            [To_Unbounded_String ("alire.lock"),
-            To_Unbounded_String ("alire.build.toml")],
+            To_Unbounded_String (Config.Build_Overlay_File)],
          Quiet        => True);
       Project_Tools.Alire_Manifests.Copy_Release_Manifest
-        (Template => Root & "/alire.release.toml",
-         Target   => Stage_Root & "/alire.toml",
+        (Template => Root & Config.Humanize_Release_Manifest,
+         Target   => Stage_Root & Config.Humanize_Development_Manifest,
          Quiet    => True);
       Project_Tools.Alire_Manifests.Require_Staged_Crate_Source
         (Stage_Root, "humanize", "humanize.gpr", Quiet => True);
       Project_Tools.Alire_Manifests.Require_No_Local_Pins
-        (Stage_Root & "/alire.toml", Quiet => True);
+        (Stage_Root & Config.Humanize_Development_Manifest, Quiet => True);
       Project_Tools.Release_Checks.Require_Absolute_Directory
         (I18N_Root, Quiet => True);
       Project_Tools.Alire_Manifests.Write_Build_Manifest_Overlay
-        (Template => Stage_Root & "/alire.toml",
-         Target   => Stage_Root & "/alire.build.toml",
+        (Template => Stage_Root & Config.Humanize_Development_Manifest,
+         Target   => Stage_Root & Config.Humanize_Build_Overlay,
          Pins     => Stage_Pins,
          Quiet    => True);
       Project_Tools.Alire_Manifests.Require_Build_Overlay
-        (Stage_Root & "/alire.build.toml",
-         Stage_Root & "/alire.toml",
+        (Stage_Root & Config.Humanize_Build_Overlay,
+         Stage_Root & Config.Humanize_Development_Manifest,
          [1 => To_Unbounded_String ("i18n = { path = """ & I18N_Root & """ }")],
          Quiet => True);
       Project_Tools.Alire_Manifests.Activate_Build_Manifest
