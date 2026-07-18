@@ -282,7 +282,7 @@ package body Humanize.Datetimes.Support is
    begin
       return True;
    exception
-      when others => --  defensive recovery
+      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
          return False;
    end Is_Valid_Civil;
 
@@ -671,7 +671,7 @@ package body Humanize.Datetimes.Support is
    begin
       return Relative (Context, To_Time (Value), To_Time (Reference), Options);
    exception
-      when others => --  defensive recovery
+      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Relative_Civil;
 
@@ -715,7 +715,7 @@ package body Humanize.Datetimes.Support is
             return Ok_Text (ISO_Date (Value));
       end case;
    exception
-      when others => --  defensive recovery
+      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Natural_Day;
 
@@ -774,7 +774,7 @@ package body Humanize.Datetimes.Support is
          return Ok_Text (ISO_Date (Value));
       end if;
    exception
-      when others => --  defensive recovery
+      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Calendar_Relation;
 
@@ -1145,7 +1145,7 @@ package body Humanize.Datetimes.Support is
          return Ok_Text (ISO_Date (Value));
       end;
    exception
-      when others => --  defensive recovery
+      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Calendar_Relative_Label;
 
@@ -1388,7 +1388,7 @@ package body Humanize.Datetimes.Support is
          end;
       end;
    exception
-      when others => --  defensive recovery
+      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Calendar_Difference_Label;
 
@@ -1660,7 +1660,7 @@ package body Humanize.Datetimes.Support is
         (Context, To_Time (Value), To_Time (Reference),
          Target, Written, Status, Options);
    exception
-      when others => --  defensive recovery
+      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
          Written := 0;
          Status := Humanize.Status.Invalid_Value;
    end Relative_Civil_Into;
@@ -1696,7 +1696,7 @@ package body Humanize.Datetimes.Support is
 
       return Ok_Text (Date_Label (Context, Value, Options, True));
    exception
-      when others => --  defensive recovery
+      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Calendar_Date_Label;
 
@@ -1713,7 +1713,7 @@ package body Humanize.Datetimes.Support is
 
       return Ok_Text (Calendar_Date_Preset_Label (Context, Value, Options));
    exception
-      when others => --  defensive recovery
+      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Calendar_Date_Label;
 
@@ -1889,7 +1889,7 @@ package body Humanize.Datetimes.Support is
            ("due in " & Signed_Text (Days) & " days");
       end if;
    exception
-      when others => --  defensive recovery
+      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Due_Status;
 

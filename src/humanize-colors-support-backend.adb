@@ -485,7 +485,7 @@ package body Humanize.Colors.Support.Backend is
       Value := Long_Float'Value (Trim (Text));
       return True;
    exception
-      when others => --  defensive recovery
+      when Constraint_Error => --  defensive recovery
          Value := 0.0;
          return False;
    end Parse_Float;

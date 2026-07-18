@@ -125,6 +125,6 @@ begin
            (Date_Range (Context, First_Date, Last_Date, Range_Opts)));
    end if;
 exception
-   when others => --  defensive recovery
+   when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
       return (Status => Humanize.Status.Invalid_Value, others => <>);
 end Calendar_Range_Label;

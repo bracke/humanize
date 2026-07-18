@@ -53,6 +53,6 @@ begin
             & " before " & Reference_Label);
       end if;
 exception
-      when others => --  defensive recovery
+      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
          return Invalid_Text;
 end Date_Comparison;

@@ -537,7 +537,7 @@ package body Humanize.Durations.Formatting is
       Take (Second, Result.Seconds);
       return Result;
    exception
-      when others => --  defensive recovery
+      when Constraint_Error => --  defensive recovery
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Format_Metadata;
 

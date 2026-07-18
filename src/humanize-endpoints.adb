@@ -175,7 +175,7 @@ package body Humanize.Endpoints is
         or else (First = 192 and then Second = 168)
         or else (First = 169 and then Second = 254);
    exception
-      when others => --  defensive recovery
+      when Constraint_Error => --  defensive recovery
          return False;
    end Is_Private_IPv4;
 
