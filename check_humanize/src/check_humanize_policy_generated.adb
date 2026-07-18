@@ -91,7 +91,17 @@ package body Check_Humanize_Policy_Generated is
          Manifest_Path  => "docs/GENERATED_DATA.toml",
          Expected_Count =>
            Policy_Threshold (Root, "generated_data_exact_artifacts"),
-         Hash           => SHA256_Hex'Access);
+         Hash           => SHA256_Hex'Access,
+         Allowed_Kinds  =>
+           [new String'("humanize-owned-catalog"),
+            new String'("generated-catalog"),
+            new String'("reviewed-native-catalog"),
+            new String'("reviewed-native-catalog-shard"),
+            new String'("generated-spellout"),
+            new String'("generated-spellout-shard"),
+            new String'("humanize-owned-metadata"),
+            new String'("humanize-owned-inventory"),
+            new String'("delegated-inventory")]);
    end Check_Generated_Data_Manifest;
 
    procedure Check_Generated_Docs_Manifest

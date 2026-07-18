@@ -187,11 +187,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Durations.Formatting.Format_Compact"
+score = 5
 
 [[unit]]
 name = "Humanize.Durations.Natural"
@@ -433,11 +432,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Units.Format_Length"
+score = 5
 
 [[unit]]
 name = "Humanize.Lists"
@@ -968,11 +966,10 @@ examples = 1
 example_file = "examples/public_surface_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "phrase-wrapper"
-perf_exempt_reason = "phrase child facade covered by representative phrase smoke paths"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Phrases.Statuses.Status_Phrase"
+score = 5
 
 [[unit]]
 name = "Humanize.Phrases.Summaries"

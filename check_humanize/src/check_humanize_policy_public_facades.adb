@@ -226,8 +226,7 @@ package body Check_Humanize_Policy_Public_Facades is
            or else Max_Lines = 0
            or else Min_Headroom_Lines = 0
            or else Max_Bytes = 0
-           or else Map_Marker = "" or else Child_Units = ""
-           or else Child_Unit_Count = 0
+           or else Map_Marker = ""
            or else Section_Markers = ""
            or else Section_Marker_Count = 0
            or else Usecase = ""
@@ -251,11 +250,18 @@ package body Check_Humanize_Policy_Public_Facades is
                      "public facade child package inventory too small for "
                      & Unit);
                end if;
-               if Child_Unit_Count /= Delimited_Item_Count (Child_Units) then
+               if Child_Unit_Count > 0
+                 and then Child_Unit_Count /= Delimited_Item_Count (Child_Units)
+               then
                   Error
                     (Errors,
                      "public facade child_unit_count does not match "
                      & "child_units for " & Unit);
+               elsif Child_Unit_Count = 0 and then Child_Units /= "" then
+                  Error
+                    (Errors,
+                     "public facade child_units must be empty when "
+                     & "child_unit_count is zero for " & Unit);
                end if;
                if Section_Marker_Count
                  /= Delimited_Item_Count (Section_Markers)
@@ -265,8 +271,9 @@ package body Check_Humanize_Policy_Public_Facades is
                      "public facade section_marker_count does not match "
                      & "section_markers for " & Unit);
                end if;
-               if Public_Child_Count (Public_API, Child_Prefix)
-                 /= Delimited_Item_Count (Child_Units)
+               if Child_Unit_Count > 0
+                 and then Public_Child_Count (Public_API, Child_Prefix)
+                   /= Delimited_Item_Count (Child_Units)
                then
                   Error
                     (Errors,
@@ -281,8 +288,11 @@ package body Check_Humanize_Policy_Public_Facades is
                      "public facade section inventory does not match "
                      & "section_markers for " & Unit);
                end if;
-               Check_Delimited_Public_Facade_Items
-                 (Spec, Public_API, Child_Units, Unit, "child_units", Errors);
+               if Child_Unit_Count > 0 then
+                  Check_Delimited_Public_Facade_Items
+                    (Spec, Public_API, Child_Units, Unit, "child_units",
+                     Errors);
+               end if;
                Check_Delimited_Public_Facade_Items
                  (Spec, Public_API, Section_Markers, Unit, "section_markers",
                   Errors);

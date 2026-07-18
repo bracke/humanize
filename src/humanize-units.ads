@@ -10,6 +10,11 @@ with Humanize.Status;
 --  operands). This package selects keys only and must not call I18N.Runtime
 --  directly (HUM-INV-002).
 package Humanize.Units is
+   --  Facade map:
+   --  No public child packages; private unit support remains behind
+   --  Humanize.Units.Support.
+
+   --  Facade section: shared unit and measurement option types.
 
    type Unit_Kind is
      (Meter,
@@ -72,6 +77,8 @@ package Humanize.Units is
    Default_Measurement_Options : constant Measurement_Options :=
      (System       => Locale_Default,
       Number_Style => Humanize.Numbers.Default_Number_Options);
+
+   --  Facade section: formatting and automatic unit selection helpers.
 
    --  Convenience API: humanize Value of Unit, owned result.
    function Format
@@ -698,6 +705,8 @@ package Humanize.Units is
    --  @param Meters Geographic distance in meters.
    --  @param Options Measurement-system and fraction digit policy.
    --  @return Rendered geographic distance using locale/profile-appropriate units.
+
+   --  Facade section: bounded output adapters.
 
    --  Bounded API: render into caller-owned Target. Target must be 1-based.
    procedure Format_Into

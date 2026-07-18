@@ -84,3 +84,35 @@ child_units = "Humanize.Numbers.Editorial|Humanize.Numbers.Ranges|Humanize.Numbe
 section_marker_count = 6
 section_markers = "Facade section: shared number option and metadata types.|Facade section: spellout and editorial wording helpers.|Facade section: scale and currency helpers.|Facade section: range, ratio, and change helpers.|Facade section: ordinal, compact, and approximate helpers.|Facade section: statistics and distribution helpers."
 usecase = "Root number compatibility facade; new scale/spellout/range families should move behind child facades before becoming broad root APIs."
+
+[[facade]]
+unit = "Humanize.Units"
+path = "src/humanize-units.ads"
+target_lines = 1564
+max_lines = 1700
+min_headroom_lines = 100
+max_bytes = 70000
+child_prefix = "Humanize.Units."
+min_child_units = 0
+map_marker = "Facade map:"
+child_unit_count = 0
+child_units = ""
+section_marker_count = 3
+section_markers = "Facade section: shared unit and measurement option types.|Facade section: formatting and automatic unit selection helpers.|Facade section: bounded output adapters."
+usecase = "Root unit compatibility facade; new unit families should move behind child packages or private support before becoming broad root APIs."
+
+[[facade]]
+unit = "Humanize.Domain_Details"
+path = "src/humanize-domain_details.ads"
+target_lines = 1148
+max_lines = 1280
+min_headroom_lines = 100
+max_bytes = 50000
+child_prefix = "Humanize.Domain_Details."
+min_child_units = 0
+map_marker = "Facade map:"
+child_unit_count = 0
+child_units = ""
+section_marker_count = 5
+section_markers = "Facade section: shared domain metadata and option types.|Facade section: surface metadata and base label renderers.|Facade section: composition, aggregate, and example summary helpers.|Facade section: parse and scan helpers.|Facade section: bounded output adapters."
+usecase = "Root domain-detail compatibility facade; new domain composition families should move behind child packages or private support before this surface grows."

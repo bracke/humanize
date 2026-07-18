@@ -2,6 +2,12 @@ with Humanize.Status;
 
 --  Shared metadata, display policy, and cross-domain summaries for typed domains.
 package Humanize.Domain_Details is
+   --  Facade map:
+   --  No public child packages; private support remains behind
+   --  Humanize.Domain_Details.Support.
+
+   --  Facade section: shared domain metadata and option types.
+
    type Domain_Surface is
      (Operations_Surface,
       Comparisons_Surface,
@@ -324,6 +330,8 @@ package Humanize.Domain_Details is
    type Metadata_List is array (Positive range <>) of Domain_Label_Metadata;
    --  Caller-owned list of domain metadata for severity/tone rollups.
 
+   --  Facade section: surface metadata and base label renderers.
+
    function Surface_Label
      (Surface : Domain_Surface)
       return Humanize.Status.Text_Result;
@@ -423,6 +431,8 @@ package Humanize.Domain_Details is
    --  @param Text Caller-supplied base label.
    --  @param Metadata Machine-readable label metadata.
    --  @return Screen-reader-oriented label.
+
+   --  Facade section: composition, aggregate, and example summary helpers.
 
    function Cross_Domain_Summary
      (Primary_Label   : String;
@@ -686,6 +696,8 @@ package Humanize.Domain_Details is
    --  @param Area Public domain surface.
    --  @return Curated example/corpus descriptor for Area.
 
+   --  Facade section: parse and scan helpers.
+
    function Parse_Narrative_Summary
      (Text : String)
       return Composition_Label_Parse_Result;
@@ -917,6 +929,8 @@ package Humanize.Domain_Details is
       return Log_Field_Parse_Result;
    --  @param Text Text beginning with a "key=value" log field.
    --  @return Parsed key/value prefix spans and consumed length.
+
+   --  Facade section: bounded output adapters.
 
    procedure Domain_Label_Into
      (Text     : String;

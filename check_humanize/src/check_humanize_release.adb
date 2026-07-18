@@ -178,6 +178,11 @@ package body Check_Humanize_Release is
                Error
                  (Errors,
                   "local release builds require an idle sibling i18n workspace");
+               Put_Line
+                 (Standard_Error,
+                  "hint: rerun staged release validation with "
+                  & "HUMANIZE_WAIT_FOR_I18N_BUILD_SECONDS=<seconds> "
+                  & "./bin/check_humanize --staged-release-only");
                return False;
             end if;
          end;

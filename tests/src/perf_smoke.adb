@@ -13,6 +13,7 @@ with Humanize.Datetimes;
 with Humanize.Diagnostics;
 with Humanize.Domain_Details;
 with Humanize.Durations;
+with Humanize.Durations.Formatting;
 with Humanize.Numbers;
 with Humanize.Numbers.Editorial;
 with Humanize.Numbers.Ranges;
@@ -25,6 +26,7 @@ with Humanize.Phrases;
 with Humanize.Phrases.Fields;
 with Humanize.Phrases.Keys;
 with Humanize.Phrases.Severity;
+with Humanize.Phrases.Statuses;
 with Humanize.Phrases.Summaries;
 with Humanize.Permissions;
 with Humanize.Search;
@@ -34,6 +36,7 @@ with Humanize.Strings.Core;
 with Humanize.Strings.Display;
 with Humanize.System_Status;
 with Humanize.Tests.Support;
+with Humanize.Units;
 
 procedure Perf_Smoke is
    use type Ada.Calendar.Time;
@@ -78,6 +81,11 @@ procedure Perf_Smoke is
               Humanize.Bytes.Format (Context, 1_536);
             Duration_Text : constant Humanize.Status.Text_Result :=
               Humanize.Durations.Format (Context, 90);
+            Duration_Compact : constant Humanize.Status.Text_Result :=
+              Humanize.Durations.Formatting.Format_Compact
+                (Context, 5_430, Max_Components => 3);
+            Duration_Clock : constant Humanize.Status.Text_Result :=
+              Humanize.Durations.Formatting.Format_Clock (Context, 5_430);
             Number_Text : constant Humanize.Status.Text_Result :=
               Humanize.Numbers.Compact (Context, 1_200_000);
             Editorial_Text : constant Humanize.Status.Text_Result :=
@@ -102,9 +110,15 @@ procedure Perf_Smoke is
             Contrast_Text : constant Humanize.Status.Text_Result :=
               Humanize.Colors.Contrast.Contrast_Label
                 (Context, Black, White);
+            Unit_Length : constant Humanize.Status.Text_Result :=
+              Humanize.Units.Format_Length (Context, 1_500.0);
+            Unit_CSS : constant Humanize.Status.Text_Result :=
+              Humanize.Units.Format_CSS_Length (Context, 1.5, "rem");
          begin
             Check_Status (Bytes.Status, "bytes format");
             Check_Status (Duration_Text.Status, "duration format");
+            Check_Status (Duration_Compact.Status, "duration compact format");
+            Check_Status (Duration_Clock.Status, "duration clock format");
             Check_Status (Number_Text.Status, "compact format");
             Check_Status (Editorial_Text.Status, "editorial number format");
             Check_Status (Range_Text.Status, "number range format");
@@ -113,6 +127,8 @@ procedure Perf_Smoke is
             Check_Status (Stats_Text.Status, "number statistics format");
             Check_Status (Relative_Text.Status, "relative datetime format");
             Check_Status (Contrast_Text.Status, "contrast label format");
+            Check_Status (Unit_Length.Status, "unit length format");
+            Check_Status (Unit_CSS.Status, "unit css length format");
             Total := Total + I mod 3;
          end;
       end loop;
@@ -212,6 +228,9 @@ procedure Perf_Smoke is
               Humanize.Capabilities.Capability_Matrix_Summary;
             Phrase : constant Humanize.Status.Text_Result :=
               Humanize.Phrases.Status_Phrase (Context, Humanize.Phrases.Saved);
+            Status_Phrase : constant Humanize.Status.Text_Result :=
+              Humanize.Phrases.Statuses.Status_Phrase
+                (Context, Humanize.Phrases.Saved);
             Field : constant Humanize.Status.Text_Result :=
               Humanize.Phrases.Fields.Field_Change_Summary
                 (Context, Changed => 3, Added => 1, Removed => 1);
@@ -241,6 +260,7 @@ procedure Perf_Smoke is
             Check_Status (Search.Status, "search result summary label");
             Check_Status (Capability.Status, "capability matrix summary");
             Check_Status (Phrase.Status, "status phrase label");
+            Check_Status (Status_Phrase.Status, "child status phrase label");
             Check_Status (Field.Status, "field phrase label");
             Check_Status (Key.Status, "phrase key label");
             Check_Status (Severity.Status, "phrase severity label");

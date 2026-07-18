@@ -9,6 +9,8 @@ max_seconds = 30.0
 paths = [
   "Humanize.Bytes.Format",
   "Humanize.Durations.Format",
+  "Humanize.Durations.Formatting.Format_Compact",
+  "Humanize.Durations.Formatting.Format_Clock",
   "Humanize.Numbers.Compact",
   "Humanize.Numbers.Editorial.Editorial_Number",
   "Humanize.Numbers.Ranges.Between",
@@ -17,6 +19,8 @@ paths = [
   "Humanize.Numbers.Statistics.Outlier_Summary_Label",
   "Humanize.Datetimes.Relative",
   "Humanize.Colors.Contrast.Contrast_Label",
+  "Humanize.Units.Format_Length",
+  "Humanize.Units.Format_CSS_Length",
   "Humanize.Parsing.Parse_Bytes",
   "Humanize.Parsing.Parse_Duration",
   "Humanize.Parsing.Parse_Cardinal",
@@ -32,6 +36,7 @@ paths = [
   "Humanize.Search.Search_Result_Summary_Label",
   "Humanize.Capabilities.Capability_Matrix_Summary",
   "Humanize.Phrases.Status_Phrase",
+  "Humanize.Phrases.Statuses.Status_Phrase",
   "Humanize.Phrases.Fields.Field_Change_Summary",
   "Humanize.Phrases.Keys.Status_Key",
   "Humanize.Phrases.Severity.Severity_Label",
@@ -47,6 +52,8 @@ max_seconds = 12.0
 paths = [
   "Humanize.Bytes.Format",
   "Humanize.Durations.Format",
+  "Humanize.Durations.Formatting.Format_Compact",
+  "Humanize.Durations.Formatting.Format_Clock",
   "Humanize.Numbers.Compact",
   "Humanize.Numbers.Editorial.Editorial_Number",
   "Humanize.Numbers.Ranges.Between",
@@ -54,7 +61,9 @@ paths = [
   "Humanize.Numbers.Spellout.Ordinal_Words",
   "Humanize.Numbers.Statistics.Outlier_Summary_Label",
   "Humanize.Datetimes.Relative",
-  "Humanize.Colors.Contrast.Contrast_Label"
+  "Humanize.Colors.Contrast.Contrast_Label",
+  "Humanize.Units.Format_Length",
+  "Humanize.Units.Format_CSS_Length"
 ]
 
 [perf_smoke.parsing]
@@ -88,6 +97,7 @@ paths = [
   "Humanize.Search.Search_Result_Summary_Label",
   "Humanize.Capabilities.Capability_Matrix_Summary",
   "Humanize.Phrases.Status_Phrase",
+  "Humanize.Phrases.Statuses.Status_Phrase",
   "Humanize.Phrases.Fields.Field_Change_Summary",
   "Humanize.Phrases.Keys.Status_Key",
   "Humanize.Phrases.Severity.Severity_Label",
@@ -108,6 +118,7 @@ Humanize_Datetimes = "Humanize.Datetimes.Relative"
 Humanize_Diagnostics = "Humanize.Diagnostics.Issue_Summary_Label"
 Humanize_Domain_Details = "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
 Humanize_Durations = "Humanize.Durations.Format"
+Humanize_Durations_Formatting = "Humanize.Durations.Formatting.Format_Compact"
 Humanize_Numbers = "Humanize.Numbers.Compact"
 Humanize_Numbers_Editorial = "Humanize.Numbers.Editorial.Editorial_Number"
 Humanize_Numbers_Ranges = "Humanize.Numbers.Ranges.Between"
@@ -121,6 +132,7 @@ Humanize_Phrases = "Humanize.Phrases.Status_Phrase"
 Humanize_Phrases_Fields = "Humanize.Phrases.Fields.Field_Change_Summary"
 Humanize_Phrases_Keys = "Humanize.Phrases.Keys.Status_Key"
 Humanize_Phrases_Severity = "Humanize.Phrases.Severity.Severity_Label"
+Humanize_Phrases_Statuses = "Humanize.Phrases.Statuses.Status_Phrase"
 Humanize_Phrases_Summaries = "Humanize.Phrases.Summaries.Queue_Summary"
 Humanize_Permissions = "Humanize.Permissions.Permission_Label"
 Humanize_Search = "Humanize.Search.Search_Result_Summary_Label"
@@ -128,6 +140,7 @@ Humanize_Strings = "Humanize.Strings.Title_Case_Smart"
 Humanize_Strings_Core = "Humanize.Strings.Core.Title_Case_Smart"
 Humanize_Strings_Display = "Humanize.Strings.Display.Truncate_Display_Width"
 Humanize_System_Status = "Humanize.System_Status.HTTP_Status_Label"
+Humanize_Units = "Humanize.Units.Format_Length"
 
 [perf_smoke.area_coverage]
 root = "exempt: root facade has no standalone runtime path"

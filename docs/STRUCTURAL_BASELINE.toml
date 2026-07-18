@@ -137,11 +137,61 @@ min_split_bodies = 0
 usecase = "Private phrase-support backend contract; new phrase-family declarations should prefer focused backend children."
 
 [[body]]
+path = "src/humanize-durations-business_calendars.adb"
+target_lines = 1851
+max_lines = 2000
+min_headroom_lines = 120
+max_bytes = 72000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Business-calendar rule rendering and schedule semantics; new calendar families should prefer focused helpers before this body grows."
+
+[[body]]
+path = "src/humanize-durations-formatting.adb"
+target_lines = 1753
+max_lines = 1900
+min_headroom_lines = 120
+max_bytes = 67000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Duration formatting and progress label helpers; new duration presentation families should move to child support units."
+
+[[body]]
+path = "src/humanize-parsing-unit_aliases.adb"
+target_lines = 1572
+max_lines = 1720
+min_headroom_lines = 120
+max_bytes = 72000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Unit alias tables and normalization helpers; new alias families should be sharded or generated before this body grows."
+
+[[body]]
+path = "src/humanize-catalogs-unit_data.adb"
+target_lines = 1586
+max_lines = 1750
+min_headroom_lines = 120
+max_bytes = 110000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Generated unit catalog data; tracked both as generated provenance and structural size to limit review churn."
+
+[[body]]
+path = "src/humanize-parsing-implementation.adb"
+target_lines = 1628
+max_lines = 1780
+min_headroom_lines = 120
+max_bytes = 62000
+split_prefix = "src/humanize-parsing-implementation-"
+min_split_bodies = 100
+usecase = "Parser implementation dispatcher and shared plumbing; parser-family logic should remain in focused implementation shards."
+
+[[body]]
 path = "check_humanize/src/check_humanize_policy.adb"
-target_lines = 677
-max_lines = 800
+target_lines = 605
+max_lines = 720
 min_headroom_lines = 80
-max_bytes = 95000
+max_bytes = 80000
 split_prefix = "check_humanize/src/check_humanize_policy-"
 min_split_bodies = 0
 usecase = "Tooling-only policy checks, including generated-doc refresh commands, API index, class map, coverage scorecards, generated-data, examples, performance, non-goals, and domain consistency guardrails. Future growth should move to focused helper units before this budget is raised again."
