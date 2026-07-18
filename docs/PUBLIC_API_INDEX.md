@@ -2,7 +2,7 @@
 
 Generated-maintained from `docs/PUBLIC_API.toml`. Each public unit listed here
 must also be present in `humanize.gpr` `Library_Interface` and in the public API
-coverage scorecard.
+class map and coverage scorecards.
 
 ## root
 
@@ -34,6 +34,11 @@ coverage scorecard.
 - `Humanize.Colors.Names` - `src/humanize-colors-names.ads`
 - `Humanize.Colors.Palettes` - `src/humanize-colors-palettes.ads`
 - `Humanize.Numbers` - `src/humanize-numbers.ads`
+- `Humanize.Numbers.Editorial` - `src/humanize-numbers-editorial.ads`
+- `Humanize.Numbers.Ranges` - `src/humanize-numbers-ranges.ads`
+- `Humanize.Numbers.Scales` - `src/humanize-numbers-scales.ads`
+- `Humanize.Numbers.Spellout` - `src/humanize-numbers-spellout.ads`
+- `Humanize.Numbers.Statistics` - `src/humanize-numbers-statistics.ads`
 - `Humanize.Units` - `src/humanize-units.ads`
 - `Humanize.Lists` - `src/humanize-lists.ads`
 - `Humanize.Frequencies` - `src/humanize-frequencies.ads`

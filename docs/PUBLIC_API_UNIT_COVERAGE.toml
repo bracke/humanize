@@ -1,0 +1,1480 @@
+# Per-unit public API coverage scorecard.
+# Generated-maintained from `docs/PUBLIC_API.toml`.
+# docs/tests/consumers are required public-surface guard signals;
+# examples/perf are per-unit executable-example and performance-smoke signals.
+# *_file fields identify the concrete source file proving each signal.
+
+[[unit]]
+name = "Humanize"
+area = "root"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-architecture.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Status"
+area = "core"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Messages"
+area = "core"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Contexts"
+area = "core"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Locales"
+area = "core"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Catalogs"
+area = "core"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Capabilities"
+area = "core"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-architecture.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Styles"
+area = "core"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-architecture.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Bounded_Text"
+area = "core"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-bounded.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_bounded_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Datetimes"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-datetimes.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Datetimes.Relative"
+score = 5
+
+[[unit]]
+name = "Humanize.Durations"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-durations.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Durations.Format"
+score = 5
+
+[[unit]]
+name = "Humanize.Durations.Formatting"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-durations.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Durations.Natural"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-durations.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Durations.Schedules"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-durations.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Bytes"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-bytes.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Bytes.Format"
+score = 5
+
+[[unit]]
+name = "Humanize.Colors"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-colors.adb"
+examples = 1
+example_file = "examples/color_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Colors.CSS.CSS_Color_Label"
+score = 5
+
+[[unit]]
+name = "Humanize.Colors.CSS"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-colors.adb"
+examples = 1
+example_file = "examples/color_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Colors.CSS.CSS_Color_Label"
+score = 5
+
+[[unit]]
+name = "Humanize.Colors.Contrast"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-colors.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Colors.Contrast.Contrast_Label"
+score = 5
+
+[[unit]]
+name = "Humanize.Colors.Models"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-colors.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Colors.Names"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-colors.adb"
+examples = 1
+example_file = "examples/color_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Colors.Palettes"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-colors.adb"
+examples = 1
+example_file = "examples/color_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Numbers"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-numbers.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Numbers.Compact"
+score = 5
+
+[[unit]]
+name = "Humanize.Numbers.Editorial"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-numbers.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Numbers.Editorial.Editorial_Number"
+score = 5
+
+[[unit]]
+name = "Humanize.Numbers.Ranges"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-numbers.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Numbers.Ranges.Between"
+score = 5
+
+[[unit]]
+name = "Humanize.Numbers.Scales"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-numbers.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Numbers.Scales.SI_Prefix"
+score = 5
+
+[[unit]]
+name = "Humanize.Numbers.Spellout"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-numbers.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Numbers.Spellout.Ordinal_Words"
+score = 5
+
+[[unit]]
+name = "Humanize.Numbers.Statistics"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-numbers.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Numbers.Statistics.Outlier_Summary_Label"
+score = 5
+
+[[unit]]
+name = "Humanize.Units"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-units.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Lists"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Frequencies"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Rates"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Title_Case_Smart"
+score = 5
+
+[[unit]]
+name = "Humanize.Strings.Core"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Core.Title_Case_Smart"
+score = 5
+
+[[unit]]
+name = "Humanize.Strings.Display"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Display.Truncate_Display_Width"
+score = 5
+
+[[unit]]
+name = "Humanize.Strings.Editing"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings.Identifiers"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings.Inflections"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings.Markup"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/security_data_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings.Metadata"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings.Metrics"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings.Names"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings.Paths"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings.Privacy"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/security_data_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings.Prose"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings.Terminal"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Strings.Types"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Values"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/humanize_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Parsing"
+area = "parsing"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-parsing.adb"
+examples = 1
+example_file = "examples/parse_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Parsing.Parse_Bytes"
+score = 5
+
+[[unit]]
+name = "Humanize.Parsing.Results"
+area = "parsing"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-parsing.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Parsing.Colors"
+area = "parsing"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-parsing.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Parsing.Parse_RGB_Label"
+score = 5
+
+[[unit]]
+name = "Humanize.Parsing.Date_Times"
+area = "parsing"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-parsing.adb"
+examples = 1
+example_file = "examples/parse_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Parsing.Domain_Labels"
+area = "parsing"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-parsing.adb"
+examples = 1
+example_file = "examples/parse_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Parsing.Durations"
+area = "parsing"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-parsing.adb"
+examples = 1
+example_file = "examples/parse_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Parsing.Numbers"
+area = "parsing"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-parsing.adb"
+examples = 1
+example_file = "examples/parse_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Parsing.Strings"
+area = "parsing"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-parsing.adb"
+examples = 1
+example_file = "examples/parse_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Parsing.Units"
+area = "parsing"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-parsing.adb"
+examples = 1
+example_file = "examples/parse_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Phrases"
+area = "phrases"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Phrases.Status_Phrase"
+score = 5
+
+[[unit]]
+name = "Humanize.Phrases.Fields"
+area = "phrases"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Phrases.Keys"
+area = "phrases"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Phrases.Locales"
+area = "phrases"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Phrases.Severity"
+area = "phrases"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Phrases.Statuses"
+area = "phrases"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Phrases.Summaries"
+area = "phrases"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-rendering.adb"
+examples = 1
+example_file = "examples/public_surface_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Endpoints"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/product_details_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Resources"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/product_details_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Versions"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/product_details_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Geo"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/product_details_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Markup"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/security_data_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Secrets"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/security_data_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Schema"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/security_data_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Diagnostics"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/system_status_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Diagnostics.Issue_Summary_Label"
+score = 5
+
+[[unit]]
+name = "Humanize.Thresholds"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/system_status_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Workflows"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/workflow_ops_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Changes"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/workflow_ops_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Tables"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/ui_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Forms"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/ui_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Navigation"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/ui_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Badges"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/ui_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Notifications"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/ui_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Search"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/ui_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Search.Search_Result_Summary_Label"
+score = 5
+
+[[unit]]
+name = "Humanize.Comments"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/ui_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Tasks"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/ui_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Attachments"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/security_data_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Events"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/product_details_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Payments"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/product_details_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.System_Status"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/system_status_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.System_Status.HTTP_Status_Label"
+score = 5
+
+[[unit]]
+name = "Humanize.Operations"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/workflow_ops_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Operations.Progress_Summary"
+score = 5
+
+[[unit]]
+name = "Humanize.Comparisons"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/workflow_ops_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Cross_Domain"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/domain_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Moderation"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/product_details_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Accounts"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/product_details_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Deployments"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/workflow_ops_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Data_Quality"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/security_data_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Media"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/security_data_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Notification_Preferences"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/product_details_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Permissions"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/security_data_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Builds"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/workflow_ops_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
+name = "Humanize.Domain_Details"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/product_details_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
+score = 5
+
+[coverage_gaps]
+low_score_units = ""
+missing_example_units = ""
+missing_perf_units = ""

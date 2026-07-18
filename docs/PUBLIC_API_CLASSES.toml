@@ -1,59 +1,618 @@
 # Public API classification policy.
-# This file explains why each public package family is callable and which
-# classes are allowed to grow. `check_humanize --policy-only` validates this
-# file alongside docs/PUBLIC_API.toml and humanize.gpr.
+# Generated-maintained from `docs/PUBLIC_API.toml`.
+# Class rows define the allowed public/internal categories;
+# unit_class rows classify every public package in the allowlist.
+
+[summary]
+total_units = 98
+primary_facades = 52
+specialized_child_facades = 40
+support_type_facades = 6
 
 [[class]]
 name = "primary-facade"
 usecase = "Stable entry points callers are expected to import directly for normal formatting, parsing, context, and deterministic label work."
 areas = ["root", "core", "formatting", "parsing", "phrases", "domain"]
-examples = [
-  "Humanize",
-  "Humanize.Contexts",
-  "Humanize.Durations",
-  "Humanize.Parsing",
-  "Humanize.Cross_Domain"
-]
 
 [[class]]
 name = "specialized-child-facade"
 usecase = "Public child packages that keep large feature families navigable without exposing implementation packages."
-prefixes = [
-  "Humanize.Colors.",
-  "Humanize.Durations.",
-  "Humanize.Parsing.",
-  "Humanize.Phrases.",
-  "Humanize.Strings."
-]
-examples = [
-  "Humanize.Colors.CSS",
-  "Humanize.Colors.Contrast",
-  "Humanize.Parsing.Numbers",
-  "Humanize.Strings.Core"
-]
+prefixes = ["Humanize.Colors.", "Humanize.Durations.", "Humanize.Numbers.", "Humanize.Parsing.", "Humanize.Phrases.", "Humanize.Strings."]
 
 [[class]]
 name = "support-type-facade"
 usecase = "Small public packages whose main purpose is shared result, style, metadata, bounded-output, or option types used by primary facades."
-units = [
-  "Humanize.Bounded_Text",
-  "Humanize.Capabilities",
-  "Humanize.Messages",
-  "Humanize.Parsing.Results",
-  "Humanize.Status",
-  "Humanize.Styles"
-]
+units = ["Humanize.Bounded_Text", "Humanize.Capabilities", "Humanize.Messages", "Humanize.Parsing.Results", "Humanize.Status", "Humanize.Styles"]
 
 [[class]]
 name = "internal"
 usecase = "Implementation, support, generated-data, and tooling packages. These must remain absent from Library_Interface even when source specs exist."
-forbidden_prefixes = [
-  "Humanize.Catalogs.Core_Data",
-  "Humanize.Catalogs.Native_Data",
-  "Humanize.Catalogs.Unit_Data",
-  "Humanize.Durations.Schedule_Data",
-  "Humanize.I18N_Rendering",
-  "Humanize.Parsing.Implementation",
-  "Humanize.Phrases.Support",
-  "Project_Tools"
-]
+forbidden_prefixes = ["Humanize.Catalogs.Core_Data", "Humanize.Catalogs.Native_Data", "Humanize.Catalogs.Unit_Data", "Humanize.Durations.Schedule_Data", "Humanize.I18N_Rendering", "Humanize.Parsing.Implementation", "Humanize.Phrases.Support", "Project_Tools"]
+
+[[unit_class]]
+name = "Humanize"
+area = "root"
+class = "primary-facade"
+reason = "crate root and public package discovery anchor"
+
+[[unit_class]]
+name = "Humanize.Status"
+area = "core"
+class = "support-type-facade"
+reason = "shared public support types used by callable facade packages"
+
+[[unit_class]]
+name = "Humanize.Messages"
+area = "core"
+class = "support-type-facade"
+reason = "shared public support types used by callable facade packages"
+
+[[unit_class]]
+name = "Humanize.Contexts"
+area = "core"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Locales"
+area = "core"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Catalogs"
+area = "core"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Capabilities"
+area = "core"
+class = "support-type-facade"
+reason = "shared public support types used by callable facade packages"
+
+[[unit_class]]
+name = "Humanize.Styles"
+area = "core"
+class = "support-type-facade"
+reason = "shared public support types used by callable facade packages"
+
+[[unit_class]]
+name = "Humanize.Bounded_Text"
+area = "core"
+class = "support-type-facade"
+reason = "shared public support types used by callable facade packages"
+
+[[unit_class]]
+name = "Humanize.Datetimes"
+area = "formatting"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Durations"
+area = "formatting"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Durations.Formatting"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Durations.Natural"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Durations.Schedules"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Bytes"
+area = "formatting"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Colors"
+area = "formatting"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Colors.CSS"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Colors.Contrast"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Colors.Models"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Colors.Names"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Colors.Palettes"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Numbers"
+area = "formatting"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Numbers.Editorial"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Numbers.Ranges"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Numbers.Scales"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Numbers.Spellout"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Numbers.Statistics"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Units"
+area = "formatting"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Lists"
+area = "formatting"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Frequencies"
+area = "formatting"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Rates"
+area = "formatting"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Strings"
+area = "formatting"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Strings.Core"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Display"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Editing"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Identifiers"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Inflections"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Markup"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Metadata"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Metrics"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Names"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Paths"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Privacy"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Prose"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Terminal"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Types"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Values"
+area = "formatting"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Parsing"
+area = "parsing"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Parsing.Results"
+area = "parsing"
+class = "support-type-facade"
+reason = "shared public support types used by callable facade packages"
+
+[[unit_class]]
+name = "Humanize.Parsing.Colors"
+area = "parsing"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Parsing.Date_Times"
+area = "parsing"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Parsing.Domain_Labels"
+area = "parsing"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Parsing.Durations"
+area = "parsing"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Parsing.Numbers"
+area = "parsing"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Parsing.Strings"
+area = "parsing"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Parsing.Units"
+area = "parsing"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Phrases"
+area = "phrases"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Phrases.Fields"
+area = "phrases"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Phrases.Keys"
+area = "phrases"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Phrases.Locales"
+area = "phrases"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Phrases.Severity"
+area = "phrases"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Phrases.Statuses"
+area = "phrases"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Phrases.Summaries"
+area = "phrases"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Endpoints"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Resources"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Versions"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Geo"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Markup"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Secrets"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Schema"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Diagnostics"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Thresholds"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Workflows"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Changes"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Tables"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Forms"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Navigation"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Badges"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Notifications"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Search"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Comments"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Tasks"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Attachments"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Events"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Payments"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.System_Status"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Operations"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Comparisons"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Cross_Domain"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Moderation"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Accounts"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Deployments"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Data_Quality"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Media"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Notification_Preferences"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Permissions"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Builds"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Domain_Details"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"

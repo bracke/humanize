@@ -1,0 +1,32 @@
+# Generated documentation refresh command manifest.
+# This is maintainer metadata for reviewed generated docs.
+
+[[doc]]
+path = "docs/GENERATED_DATA.toml"
+command = "./check_humanize/bin/check_humanize --print-generated-data-manifest"
+owner = "check_humanize"
+source = "docs/GENERATED_DATA.toml plus generated source snapshots"
+
+[[doc]]
+path = "docs/PUBLIC_API_INDEX.md"
+command = "./check_humanize/bin/check_humanize --print-public-api-index"
+owner = "check_humanize"
+source = "docs/PUBLIC_API.toml"
+
+[[doc]]
+path = "docs/PUBLIC_API_CLASSES.toml"
+command = "./check_humanize/bin/check_humanize --print-public-api-classes"
+owner = "check_humanize"
+source = "docs/PUBLIC_API.toml"
+
+[[doc]]
+path = "docs/PUBLIC_API_COVERAGE.toml"
+command = "./check_humanize/bin/check_humanize --print-public-api-coverage"
+owner = "check_humanize"
+source = "docs/PUBLIC_API.toml"
+
+[[doc]]
+path = "docs/PUBLIC_API_UNIT_COVERAGE.toml"
+command = "./check_humanize/bin/check_humanize --print-public-api-unit-coverage"
+owner = "check_humanize"
+source = "docs/PUBLIC_API.toml, docs/PUBLIC_API_INDEX.md, docs/EXAMPLE_COVERAGE.toml, and docs/PERFORMANCE_BASELINE.toml"
