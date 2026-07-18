@@ -116,3 +116,51 @@ child_units = ""
 section_marker_count = 5
 section_markers = "Facade section: shared domain metadata and option types.|Facade section: surface metadata and base label renderers.|Facade section: composition, aggregate, and example summary helpers.|Facade section: parse and scan helpers.|Facade section: bounded output adapters."
 usecase = "Root domain-detail compatibility facade; new domain composition families should move behind child packages or private support before this surface grows."
+
+[[facade]]
+unit = "Humanize.Colors"
+path = "src/humanize-colors.ads"
+target_lines = 1095
+max_lines = 1230
+min_headroom_lines = 100
+max_bytes = 48000
+child_prefix = "Humanize.Colors."
+min_child_units = 5
+map_marker = "Facade map:"
+child_unit_count = 5
+child_units = "Humanize.Colors.Contrast|Humanize.Colors.CSS|Humanize.Colors.Models|Humanize.Colors.Names|Humanize.Colors.Palettes"
+section_marker_count = 1
+section_markers = "Facade section: shared color types, metadata, labels, and bounded output adapters."
+usecase = "Root color compatibility facade; new color model, CSS, contrast, name, and palette APIs should prefer child packages."
+
+[[facade]]
+unit = "Humanize.Cross_Domain"
+path = "src/humanize-cross_domain.ads"
+target_lines = 962
+max_lines = 1090
+min_headroom_lines = 100
+max_bytes = 43000
+child_prefix = "Humanize.Cross_Domain."
+min_child_units = 0
+map_marker = "Facade map:"
+child_unit_count = 0
+child_units = ""
+section_marker_count = 1
+section_markers = "Facade section: shared cross-domain categories, metadata, labels, and bounded output adapters."
+usecase = "Root cross-domain compatibility facade; new cross-domain API families should move behind child packages or support units before this surface grows."
+
+[[facade]]
+unit = "Humanize.Lists"
+path = "src/humanize-lists.ads"
+target_lines = 936
+max_lines = 1060
+min_headroom_lines = 100
+max_bytes = 43000
+child_prefix = "Humanize.Lists."
+min_child_units = 0
+map_marker = "Facade map:"
+child_unit_count = 0
+child_units = ""
+section_marker_count = 1
+section_markers = "Facade section: shared list and collection types, labels, and bounded output adapters."
+usecase = "Root list compatibility facade; new collection-display families should move behind child packages or private support before this surface grows."

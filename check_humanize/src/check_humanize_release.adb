@@ -131,6 +131,43 @@ package body Check_Humanize_Release is
          return 0;
    end Sibling_I18N_Build_Wait_Seconds;
 
+   function Workspace_Build_Lock_Path (Root : String) return String is
+      pragma Unreferenced (Root);
+   begin
+      return "/tmp/humanize-i18n-build.lock";
+   end Workspace_Build_Lock_Path;
+
+   function Acquire_Workspace_Build_Lock
+     (Root   : String;
+      Errors : in out Natural)
+      return Boolean
+   is
+      Lock_Path : constant String := Workspace_Build_Lock_Path (Root);
+   begin
+      Project_Tools.Release_Checks.Wait_For_Workspace_Build_Lock
+        (Lock_Path, Sibling_I18N_Build_Wait_Seconds, Quiet => True);
+      Project_Tools.Release_Checks.Create_Workspace_Build_Lock
+        (Lock_Path, "humanize release validation", Quiet => True);
+      return True;
+   exception
+      when Program_Error =>
+         Error
+           (Errors,
+            "workspace build lock is active; release builds require exclusive "
+            & "linking access");
+         Put_Line
+           (Standard_Error,
+            "hint: wait for the lock to clear or rerun with "
+            & "HUMANIZE_WAIT_FOR_I18N_BUILD_SECONDS=<seconds>");
+         return False;
+   end Acquire_Workspace_Build_Lock;
+
+   procedure Release_Workspace_Build_Lock (Root : String) is
+   begin
+      Project_Tools.Release_Checks.Remove_Workspace_Build_Lock
+        (Workspace_Build_Lock_Path (Root), Quiet => True);
+   end Release_Workspace_Build_Lock;
+
    function Local_Release_Builds_Are_Isolated
      (Root   : String;
       Errors : in out Natural)
@@ -407,6 +444,9 @@ package body Check_Humanize_Release is
       if not Local_Release_Builds_Are_Isolated (Root, Errors) then
          return;
       end if;
+      if not Acquire_Workspace_Build_Lock (Root, Errors) then
+         return;
+      end if;
 
       Project_Tools.Files.Delete_Tree (Stage_Root);
       Project_Tools.Files.Copy_Release_Source_Tree
@@ -495,8 +535,10 @@ package body Check_Humanize_Release is
          Stage_Root, Alr_Path,
          Exec_Public_API_Bounded_Consumer_Stage_Args);
       Check_Example_Output (Stage_Root, Errors);
+      Release_Workspace_Build_Lock (Root);
    exception
       when Program_Error =>
+         Release_Workspace_Build_Lock (Root);
          Error (Errors, "staged pin-free release tree verification failed");
    end Check_Staged_Release_Tree;
 
@@ -506,6 +548,9 @@ package body Check_Humanize_Release is
    is
    begin
       if not Local_Release_Builds_Are_Isolated (Root, Errors) then
+         return;
+      end if;
+      if not Acquire_Workspace_Build_Lock (Root, Errors) then
          return;
       end if;
 
@@ -556,5 +601,10 @@ package body Check_Humanize_Release is
       Run_Check
         (Root, Errors, "generate humanize GNATdoc",
          Root, Alr_Path, Gnatdoc_Args);
+      Release_Workspace_Build_Lock (Root);
+   exception
+      when Program_Error =>
+         Release_Workspace_Build_Lock (Root);
+         raise;
    end Run_Release_Builds;
 end Check_Humanize_Release;

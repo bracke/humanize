@@ -300,6 +300,10 @@ package body Humanize.Tests.Parsing is
      (T : in out AUnit.Test_Cases.Test_Case'Class)
    is separate;
 
+   procedure Test_Text_Domain_Round_Trips
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is separate;
+
    procedure Test_Localized_Render_Parse_Roundtrips
      (T : in out AUnit.Test_Cases.Test_Case'Class)
    is separate;
@@ -341,6 +345,8 @@ package body Humanize.Tests.Parsing is
       Register_Routine (T, Test_Compact'Access, "parse compact numbers");
       Register_Routine (T, Test_Round_Trip_Parsers'Access,
         "parse formatter round trips");
+      Register_Routine (T, Test_Text_Domain_Round_Trips'Access,
+        "parse text and domain round trips");
       Register_Routine (T, Test_Localized_Render_Parse_Roundtrips'Access,
         "parse localized formatter round trips");
       Register_Routine (T, Test_Localized_Semantic_Parse_Roundtrips'Access,

@@ -460,6 +460,18 @@ package body Check_Humanize_Policy is
          Minimum_Entries =>
            Policy_Threshold (Root, "structural_baseline_min_bodies"),
          Purpose         => "structural baseline");
+      Project_Tools.Source_Budgets.Check_Large_Source_Budget_Coverage
+        (Errors        => Errors,
+         Root          => Root,
+         Manifest_Path => "docs/STRUCTURAL_BASELINE.toml",
+         Source_Dir    => "src",
+         Minimum_Lines =>
+           Policy_Threshold (Root, "structural_baseline_min_lines"),
+         Secondary_Manifest_Path => "docs/PUBLIC_FACADE_BUDGETS.toml",
+         Secondary_Section       => "facade",
+         Tertiary_Manifest_Path  => "docs/GENERATED_DATA.toml",
+         Tertiary_Section        => "artifact",
+         Purpose       => "structural baseline coverage");
    end Check_Structural_Baseline;
 
    procedure Check_Performance_Baseline

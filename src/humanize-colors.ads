@@ -4,6 +4,14 @@ with Humanize.Status;
 --  Color value types and facade helpers for labels, contrast, CSS, and
 --  palette-oriented formatting.
 package Humanize.Colors is
+   --  Facade map:
+   --  * Humanize.Colors.Contrast: contrast ratios, APCA, accessibility, and remediation helpers.
+   --  * Humanize.Colors.CSS: CSS color parsing and rendering helpers.
+   --  * Humanize.Colors.Models: color-model conversion helpers.
+   --  * Humanize.Colors.Names: color name and description helpers.
+   --  * Humanize.Colors.Palettes: palette analysis, role, and mood helpers.
+
+   --  Facade section: shared color types, metadata, labels, and bounded output adapters.
    subtype Color_Channel is Natural range 0 .. 255;
 
    type RGB_Color is record

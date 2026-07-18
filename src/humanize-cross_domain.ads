@@ -3,6 +3,9 @@ with Humanize.Status;
 
 --  Cross-domain deterministic labels for common humanized technical facts.
 package Humanize.Cross_Domain is
+   --  Facade map:
+
+   --  Facade section: shared cross-domain categories, metadata, labels, and bounded output adapters.
    type Time_Zone_Kind is
      (UTC_Zone,
       Offset_Zone,

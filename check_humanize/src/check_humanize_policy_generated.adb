@@ -101,7 +101,8 @@ package body Check_Humanize_Policy_Generated is
             new String'("generated-spellout-shard"),
             new String'("humanize-owned-metadata"),
             new String'("humanize-owned-inventory"),
-            new String'("delegated-inventory")]);
+            new String'("delegated-inventory")],
+         Max_Shard_Lines => 1000);
    end Check_Generated_Data_Manifest;
 
    procedure Check_Generated_Docs_Manifest

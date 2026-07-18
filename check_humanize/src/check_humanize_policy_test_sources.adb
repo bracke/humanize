@@ -12,7 +12,7 @@ package body Check_Humanize_Policy_Test_Sources is
          Root            => Root,
          Manifest_Path   => "docs/TEST_SOURCE_BUDGETS.toml",
          Test_Source_Dir => "tests/src",
-         File_Pattern    => "humanize-tests-*.adb",
+         File_Pattern    => "*.adb",
          Minimum_Entries =>
            Policy_Threshold (Root, "test_source_budget_min_entries"),
          Purpose         => "test source budget");

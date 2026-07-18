@@ -224,6 +224,12 @@ that workspace can rewrite `../i18n/lib` while Humanize public API consumers are
 linking, so the checker reports the active process list and exits early instead
 of racing a changing archive.
 
+Release builds also use a workspace-level lock file,
+`/tmp/humanize-i18n-build.lock`, while Humanize is linking against the sibling
+`i18n` checkout. Other local release/build tooling can use the same lock
+protocol through `Project_Tools.Release_Checks` to wait before touching shared
+`lib` outputs.
+
 For local validation during a long sibling `i18n` build, set
 `HUMANIZE_WAIT_FOR_I18N_BUILD_SECONDS` to a positive timeout before starting the
 release checker:
@@ -233,9 +239,9 @@ HUMANIZE_WAIT_FOR_I18N_BUILD_SECONDS=600 ./bin/check_humanize --release-fast
 ```
 
 The checker still requires an idle sibling workspace before any Humanize release
-build or staged release build begins. The timeout only waits for active sibling
-Alire/GPR/GNAT processes to finish; if they are still running when the timeout
-expires, the checker reports the process list and fails.
+build or staged release build begins. The timeout waits for active sibling
+Alire/GPR/GNAT processes and the workspace lock to clear; if either remains
+active when the timeout expires, the checker reports the contention and fails.
 
 ## Dependency and boundary checks
 

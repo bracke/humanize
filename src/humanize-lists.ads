@@ -4,6 +4,9 @@ with Humanize.Status;
 
 --  Human-readable list joining ("a, b and c").
 package Humanize.Lists is
+   --  Facade map:
+
+   --  Facade section: shared list and collection types, labels, and bounded output adapters.
    subtype Text_Item is Ada.Strings.Unbounded.Unbounded_String;
    type Text_List is array (Natural range <>) of Text_Item;
 

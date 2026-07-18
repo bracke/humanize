@@ -3,6 +3,53 @@ with Ada.Strings.Fixed;
 with Check_Humanize_Policy_Support; use Check_Humanize_Policy_Support;
 
 package body Check_Humanize_Policy_Public_Surface is
+   function Occurrence_Count
+     (Text    : String;
+      Pattern : String)
+      return Natural
+   is
+      Position : Positive := Text'First;
+      Count    : Natural := 0;
+   begin
+      if Pattern = "" then
+         return 0;
+      end if;
+
+      loop
+         declare
+            Found : constant Natural :=
+              Ada.Strings.Fixed.Index (Text, Pattern, From => Position);
+         begin
+            exit when Found = 0;
+            Count := Count + 1;
+            exit when Found + Pattern'Length > Text'Last;
+            Position := Found + Pattern'Length;
+         end;
+      end loop;
+
+      return Count;
+   end Occurrence_Count;
+
+   procedure Check_Perf_Exemption_Category
+     (Root     : String;
+      Coverage : String;
+      Category : String;
+      Key      : String;
+      Errors   : in out Natural)
+   is
+      Count : constant Natural :=
+        Occurrence_Count
+          (Coverage, "perf_exempt_category = """ & Category & """");
+      Max_Count : constant Natural := Policy_Threshold (Root, Key);
+   begin
+      if Count > Max_Count then
+         Error
+           (Errors,
+            "public API perf exemption category exceeds ratchet: "
+            & Category);
+      end if;
+   end Check_Perf_Exemption_Category;
+
    function Has_Package_Purpose_Comment
      (Spec        : String;
       Name        : String;
@@ -112,5 +159,27 @@ package body Check_Humanize_Policy_Public_Surface is
            (Errors,
             "public API unit coverage must include concrete trace files");
       end if;
+
+      Check_Perf_Exemption_Category
+        (Root, Coverage, "family-child-facade",
+         "performance_exempt_max_family_child_facade", Errors);
+      Check_Perf_Exemption_Category
+        (Root, Coverage, "parser-wrapper",
+         "performance_exempt_max_parser_wrapper", Errors);
+      Check_Perf_Exemption_Category
+        (Root, Coverage, "phrase-wrapper",
+         "performance_exempt_max_phrase_wrapper", Errors);
+      Check_Perf_Exemption_Category
+        (Root, Coverage, "pure-type-package",
+         "performance_exempt_max_pure_type_package", Errors);
+      Check_Perf_Exemption_Category
+        (Root, Coverage, "root-facade",
+         "performance_exempt_max_root_facade", Errors);
+      Check_Perf_Exemption_Category
+        (Root, Coverage, "support-facade",
+         "performance_exempt_max_support_facade", Errors);
+      Check_Perf_Exemption_Category
+        (Root, Coverage, "trivial-label-facade",
+         "performance_exempt_max_trivial_label_facade", Errors);
    end Check_Public_API_Unit_Coverage_Gaps;
 end Check_Humanize_Policy_Public_Surface;

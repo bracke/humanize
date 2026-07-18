@@ -188,10 +188,110 @@ usecase = "Parser implementation dispatcher and shared plumbing; parser-family l
 
 [[body]]
 path = "check_humanize/src/check_humanize_policy.adb"
-target_lines = 605
+target_lines = 617
 max_lines = 720
 min_headroom_lines = 80
 max_bytes = 80000
 split_prefix = "check_humanize/src/check_humanize_policy-"
 min_split_bodies = 0
 usecase = "Tooling-only policy checks, including generated-doc refresh commands, API index, class map, coverage scorecards, generated-data, examples, performance, non-goals, and domain consistency guardrails. Future growth should move to focused helper units before this budget is raised again."
+
+[[body]]
+path = "src/humanize-strings-display.adb"
+target_lines = 1748
+max_lines = 1900
+min_headroom_lines = 120
+max_bytes = 65000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Display-width, wrapping, truncation, table, column, and progress-rendering helpers; new display families should move behind focused support units."
+
+[[body]]
+path = "src/humanize-strings-support.adb"
+target_lines = 1715
+max_lines = 1870
+min_headroom_lines = 120
+max_bytes = 65000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Shared string support implementation used by child packages and backends; new helper families should prefer backend subunits."
+
+[[body]]
+path = "src/humanize-strings.adb"
+target_lines = 1497
+max_lines = 1650
+min_headroom_lines = 120
+max_bytes = 60000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Root string facade implementation; new behavior should prefer child package bodies before expanding the root compatibility body."
+
+[[body]]
+path = "src/humanize-strings-inflections.adb"
+target_lines = 1380
+max_lines = 1530
+min_headroom_lines = 120
+max_bytes = 58000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Inflection, pluralization, singularization, and source-label helpers; new language families should prefer focused inflection support."
+
+[[body]]
+path = "src/humanize-parsing.adb"
+target_lines = 1332
+max_lines = 1480
+min_headroom_lines = 120
+max_bytes = 56000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Root parsing facade implementation; new parser bodies should remain in child or implementation shards."
+
+[[body]]
+path = "src/humanize-numbers-ranges.adb"
+target_lines = 1331
+max_lines = 1480
+min_headroom_lines = 120
+max_bytes = 56000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Range, ratio, change, and comparison number helpers; new number families should prefer focused child packages."
+
+[[body]]
+path = "src/humanize-parsing-implementation-scalar_text_helpers.adb"
+target_lines = 1289
+max_lines = 1440
+min_headroom_lines = 120
+max_bytes = 56000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Scalar parser text helpers shared by parser families; new parse domains should prefer focused implementation shards."
+
+[[body]]
+path = "src/humanize-lists.adb"
+target_lines = 1284
+max_lines = 1430
+min_headroom_lines = 120
+max_bytes = 50000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "List joining, collection display, selection, pagination, and counted-noun helpers; new collection families should move to child packages."
+
+[[body]]
+path = "src/humanize-durations.adb"
+target_lines = 1244
+max_lines = 1390
+min_headroom_lines = 120
+max_bytes = 56000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Root duration facade implementation; new duration behavior should prefer formatting, natural, schedule, or business-calendar children."
+
+[[body]]
+path = "src/humanize-strings-support-backend.ads"
+target_lines = 1230
+max_lines = 1380
+min_headroom_lines = 120
+max_bytes = 50000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "String support backend contract shared across text, path, display, and terminal helpers; new declarations should stay focused."

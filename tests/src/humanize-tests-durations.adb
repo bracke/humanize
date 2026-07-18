@@ -187,6 +187,14 @@ package body Humanize.Tests.Durations is
      (T : in out AUnit.Test_Cases.Test_Case'Class)
    is separate;
 
+   procedure Test_Schedule_Phrases
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is separate;
+
+   procedure Test_Natural_Distance
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is separate;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -208,6 +216,10 @@ package body Humanize.Tests.Durations is
         "precise subsecond durations");
       Register_Routine (T, Test_Compact_And_Clock'Access,
         "compact and clock durations");
+      Register_Routine (T, Test_Schedule_Phrases'Access,
+        "schedule duration phrases");
+      Register_Routine (T, Test_Natural_Distance'Access,
+        "natural duration distance phrases");
    end Register_Tests;
 
 end Humanize.Tests.Durations;
