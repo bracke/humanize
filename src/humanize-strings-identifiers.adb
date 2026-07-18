@@ -601,7 +601,7 @@ package body Humanize.Strings.Identifiers is
                      when 16#BD# => Append (Result, "n");
                      when 16#BE# => Append (Result, "x");
                      when 16#BF# => Append (Result, "o");
-                     when others => null; --  intentional silent recovery
+                     when others => null;
                   end case;
                else
                   case Trail is
@@ -614,7 +614,7 @@ package body Humanize.Strings.Identifiers is
                      when 16#87# => Append (Result, "ch");
                      when 16#88# => Append (Result, "ps");
                      when 16#89# | 16#8E# => Append (Result, "o");
-                     when others => null; --  intentional silent recovery
+                     when others => null;
                   end case;
                end if;
             end;
@@ -674,7 +674,7 @@ package body Humanize.Strings.Identifiers is
                      when 16#BD# => Append (Result, "n");
                      when 16#BE# => Append (Result, "o");
                      when 16#BF# => Append (Result, "p");
-                     when others => null; --  intentional silent recovery
+                     when others => null;
                   end case;
                else
                   case Trail is
@@ -692,7 +692,7 @@ package body Humanize.Strings.Identifiers is
                      when 16#8D# => Append (Result, "e");
                      when 16#8E# => Append (Result, "yu");
                      when 16#8F# => Append (Result, "ya");
-                     when others => null; --  intentional silent recovery
+                     when others => null;
                   end case;
                end if;
             end;
@@ -723,7 +723,7 @@ package body Humanize.Strings.Identifiers is
                when 16#A8# => Append (Result, "r");
                when 16#A9# => Append (Result, "sh");
                when 16#AA# => Append (Result, "t");
-               when others => null; --  intentional silent recovery
+               when others => null;
             end case;
             Index := Index + 2;
          elsif Index + 1 <= Text'Last
@@ -750,7 +750,7 @@ package body Humanize.Strings.Identifiers is
                      when 16#BD# => Append (Result, "Kh");
                      when 16#BE# => Append (Result, "Ts");
                      when 16#BF# => Append (Result, "K");
-                     when others => null; --  intentional silent recovery
+                     when others => null;
                   end case;
                elsif Lead = 16#D5# then
                   case Trail is
@@ -808,7 +808,7 @@ package body Humanize.Strings.Identifiers is
                      when 16#BD# => Append (Result, "s");
                      when 16#BE# => Append (Result, "v");
                      when 16#BF# => Append (Result, "t");
-                     when others => null; --  intentional silent recovery
+                     when others => null;
                   end case;
                else
                   case Trail is
@@ -819,7 +819,7 @@ package body Humanize.Strings.Identifiers is
                      when 16#84# => Append (Result, "k");
                      when 16#85# => Append (Result, "o");
                      when 16#86# => Append (Result, "f");
-                     when others => null; --  intentional silent recovery
+                     when others => null;
                   end case;
                end if;
             end;
@@ -855,7 +855,7 @@ package body Humanize.Strings.Identifiers is
                      when 16#B8# => Append (Result, "z");
                      when 16#B9# => Append (Result, "a");
                      when 16#BA# => Append (Result, "gh");
-                     when others => null; --  intentional silent recovery
+                     when others => null;
                   end case;
                else
                   case Trail is
@@ -869,7 +869,7 @@ package body Humanize.Strings.Identifiers is
                      when 16#88# => Append (Result, "w");
                      when 16#89# => Append (Result, "a");
                      when 16#8A# => Append (Result, "y");
-                     when others => null; --  intentional silent recovery
+                     when others => null;
                   end case;
                end if;
             end;
@@ -912,7 +912,7 @@ package body Humanize.Strings.Identifiers is
                when 16#AE# => Append (Result, "kh");
                when 16#AF# => Append (Result, "j");
                when 16#B0# => Append (Result, "h");
-               when others => null; --  intentional silent recovery
+               when others => null;
             end case;
             Index := Index + 3;
          else

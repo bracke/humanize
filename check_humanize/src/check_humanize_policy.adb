@@ -102,15 +102,17 @@ package body Check_Humanize_Policy is
      (Root   : String;
       Errors : in out Natural)
    is
-      Search  : Ada.Directories.Search_Type;
-      Item    : Ada.Directories.Directory_Entry_Type;
-      Metrics : Project_Tools.AUnit_Checks.Suite_Metrics;
+      Search      : Ada.Directories.Search_Type;
+      Search_Open : Boolean := False;
+      Item        : Ada.Directories.Directory_Entry_Type;
+      Metrics     : Project_Tools.AUnit_Checks.Suite_Metrics;
    begin
       Ada.Directories.Start_Search
         (Search    => Search,
          Directory => Root & "/tests/src",
          Pattern   => "humanize-tests-*.adb",
          Filter    => [Ada.Directories.Ordinary_File => True, others => False]);
+      Search_Open := True;
 
       while Ada.Directories.More_Entries (Search) loop
          Ada.Directories.Get_Next_Entry (Search, Item);
@@ -133,6 +135,7 @@ package body Check_Humanize_Policy is
          end;
       end loop;
       Ada.Directories.End_Search (Search);
+      Search_Open := False;
 
       Require_Minimum
         (Root, Errors, "aunit_min_sections", Metrics.Section_Count,
@@ -147,8 +150,10 @@ package body Check_Humanize_Policy is
         (Root, Errors, "aunit_min_test_bodies", Metrics.Test_Body_Count,
          "Humanize AUnit test body inventory is too small");
    exception
-      when others => --  defensive recovery
-         if Ada.Directories.More_Entries (Search) then
+      when Constraint_Error
+         | Ada.Directories.Name_Error
+         | Ada.Directories.Use_Error =>
+         if Search_Open then
             Ada.Directories.End_Search (Search);
          end if;
          raise;
@@ -692,7 +697,9 @@ package body Check_Humanize_Policy is
          Ada.Directories.End_Search (Search);
          Search_Open := False;
       exception
-         when others => --  defensive recovery
+         when Constraint_Error
+            | Ada.Directories.Name_Error
+            | Ada.Directories.Use_Error =>
             if Search_Open then
                Ada.Directories.End_Search (Search);
             end if;
@@ -879,7 +886,9 @@ package body Check_Humanize_Policy is
       Ada.Directories.End_Search (Search);
       Search_Open := False;
    exception
-      when others => --  defensive recovery
+      when Constraint_Error
+         | Ada.Directories.Name_Error
+         | Ada.Directories.Use_Error =>
          if Search_Open then
             Ada.Directories.End_Search (Search);
          end if;

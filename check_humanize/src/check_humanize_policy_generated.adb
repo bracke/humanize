@@ -73,7 +73,9 @@ package body Check_Humanize_Policy_Generated is
       Ada.Directories.End_Search (Search);
       Open := False;
    exception
-      when others => --  defensive recovery
+      when Constraint_Error
+         | Ada.Directories.Name_Error
+         | Ada.Directories.Use_Error =>
          if Open then
             Ada.Directories.End_Search (Search);
          end if;

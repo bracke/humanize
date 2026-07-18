@@ -1,6 +1,7 @@
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Environment_Variables;
+with Ada.Finalization;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
@@ -326,22 +327,31 @@ package body Check_Humanize_Release is
            Ada.Environment_Variables.Exists (Env_Name);
          Old_Env  : constant String :=
            (if Had_Env then Ada.Environment_Variables.Value (Env_Name) else "");
+
+         type Env_Restore_Guard is
+           new Ada.Finalization.Limited_Controlled with null record;
+
+         overriding procedure Finalize (Guard : in out Env_Restore_Guard);
+
+         overriding procedure Finalize (Guard : in out Env_Restore_Guard) is
+            pragma Unreferenced (Guard);
+         begin
+            if Had_Env then
+               Ada.Environment_Variables.Set (Env_Name, Old_Env);
+            end if;
+         exception
+            when Constraint_Error | Program_Error =>
+               null;
+         end Finalize;
+
+         Guard : Env_Restore_Guard;
+         pragma Unreferenced (Guard);
       begin
          if Had_Env then
             Ada.Environment_Variables.Clear (Env_Name);
          end if;
 
          Run_Check (Root, Errors, Label, Dir, Program, Args);
-
-         if Had_Env then
-            Ada.Environment_Variables.Set (Env_Name, Old_Env);
-         end if;
-      exception
-         when others => --  defensive recovery
-            if Had_Env then
-               Ada.Environment_Variables.Set (Env_Name, Old_Env);
-            end if;
-            raise;
       end Run_Staged_Check;
    begin
       if not Local_Release_Builds_Are_Isolated (Root, Errors) then
