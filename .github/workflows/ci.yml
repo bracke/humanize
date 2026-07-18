@@ -51,9 +51,9 @@ jobs:
       - name: Build release checker
         working-directory: humanize/check_humanize
         run: alr --non-interactive build
-      - name: Run release checker
+      - name: Run fast release checker
         working-directory: humanize/check_humanize
-        run: ./bin/check_humanize
+        run: ./bin/check_humanize --release-fast
 
   linux-staged-release:
     name: Linux staged release package

@@ -182,6 +182,49 @@ procedure Check_Humanize is
          & "; i18n=../i18n; project_tools=../project_tools; generated_docs="
          & "docs/GENERATED_DOCS.toml");
    end Print_Check_Context;
+
+   procedure Run_Source_Policy_Guards
+     (Check_AUnit       : Boolean;
+      Check_Deep_Static : Boolean;
+      Check_Builds      : Boolean;
+      Check_Staged      : Boolean)
+   is
+   begin
+      Check_Humanize_Policy.Check_Manifest (Root, Errors);
+      Print_Check_Context;
+      Check_Required_Release_Surface;
+
+      if Check_AUnit then
+         Check_Humanize_Policy.Check_AUnit_Metrics (Root, Errors);
+         Check_Humanize_Policy.Check_Generated_Artifacts (Root, Errors);
+      end if;
+
+      Check_Humanize_Policy.Check_Source_Tree_Artifacts (Root, Errors);
+      Check_Humanize_Policy.Check_Tooling_Boundary (Root, Errors);
+      Check_Humanize_Policy.Check_Public_Documentation (Root, Errors);
+      Check_Humanize_Policy.Check_Examples_Inventory (Root, Errors);
+
+      if Check_AUnit then
+         Check_Humanize_Policy.Check_Quality_Guards (Root, Errors);
+      end if;
+
+      if Check_Deep_Static then
+         Check_Humanize_Policy.Check_Deep_Static (Root, Errors);
+      end if;
+
+      if Check_Builds then
+         Check_Humanize_Release.Run_Release_Builds (Root, Errors);
+      end if;
+
+      if Check_Staged then
+         Check_Humanize_Release.Check_Staged_Release_Tree
+           (Root, Stage_Root, Errors);
+      end if;
+
+      if Check_Builds then
+         Check_Humanize_Policy.Check_Compiler_Stderr (Root, Errors);
+      end if;
+   end Run_Source_Policy_Guards;
 begin
    Project_Tools.Processes.Require_Command
      ("alr", "alr executable not found on PATH");
@@ -208,18 +251,11 @@ begin
    end if;
 
    if Project_Tools.Processes.Has_Argument ("--release-fast") then
-      Check_Humanize_Policy.Check_Manifest (Root, Errors);
-      Print_Check_Context;
-      Check_Required_Release_Surface;
-      Check_Humanize_Policy.Check_AUnit_Metrics (Root, Errors);
-      Check_Humanize_Policy.Check_Generated_Artifacts (Root, Errors);
-      Check_Humanize_Policy.Check_Source_Tree_Artifacts (Root, Errors);
-      Check_Humanize_Policy.Check_Tooling_Boundary (Root, Errors);
-      Check_Humanize_Policy.Check_Public_Documentation (Root, Errors);
-      Check_Humanize_Policy.Check_Examples_Inventory (Root, Errors);
-      Check_Humanize_Policy.Check_Quality_Guards (Root, Errors);
-      Check_Humanize_Release.Run_Release_Builds (Root, Errors);
-      Check_Humanize_Policy.Check_Compiler_Stderr (Root, Errors);
+      Run_Source_Policy_Guards
+        (Check_AUnit       => True,
+         Check_Deep_Static => False,
+         Check_Builds      => True,
+         Check_Staged      => False);
       Print_Result
         ("humanize fast release checks passed",
          "humanize fast release checks failed:");
@@ -235,16 +271,11 @@ begin
    end if;
 
    if Project_Tools.Processes.Has_Argument ("--policy-only") then
-      Print_Check_Context;
-      Check_Humanize_Policy.Check_Manifest (Root, Errors);
-      Check_Required_Release_Surface;
-      Check_Humanize_Policy.Check_AUnit_Metrics (Root, Errors);
-      Check_Humanize_Policy.Check_Generated_Artifacts (Root, Errors);
-      Check_Humanize_Policy.Check_Source_Tree_Artifacts (Root, Errors);
-      Check_Humanize_Policy.Check_Tooling_Boundary (Root, Errors);
-      Check_Humanize_Policy.Check_Public_Documentation (Root, Errors);
-      Check_Humanize_Policy.Check_Examples_Inventory (Root, Errors);
-      Check_Humanize_Policy.Check_Quality_Guards (Root, Errors);
+      Run_Source_Policy_Guards
+        (Check_AUnit       => True,
+         Check_Deep_Static => False,
+         Check_Builds      => False,
+         Check_Staged      => False);
       Print_Result
         ("humanize policy checks passed",
          "humanize policy checks failed:");
@@ -252,14 +283,11 @@ begin
    end if;
 
    if Project_Tools.Processes.Has_Argument ("--deep-static") then
-      Print_Check_Context;
-      Check_Humanize_Policy.Check_Manifest (Root, Errors);
-      Check_Required_Release_Surface;
-      Check_Humanize_Policy.Check_Source_Tree_Artifacts (Root, Errors);
-      Check_Humanize_Policy.Check_Tooling_Boundary (Root, Errors);
-      Check_Humanize_Policy.Check_Public_Documentation (Root, Errors);
-      Check_Humanize_Policy.Check_Examples_Inventory (Root, Errors);
-      Check_Humanize_Policy.Check_Deep_Static (Root, Errors);
+      Run_Source_Policy_Guards
+        (Check_AUnit       => False,
+         Check_Deep_Static => True,
+         Check_Builds      => False,
+         Check_Staged      => False);
       Print_Result
         ("humanize deep static checks passed",
          "humanize deep static checks failed:");
@@ -296,20 +324,11 @@ begin
       return;
    end if;
 
-   Check_Humanize_Policy.Check_Manifest (Root, Errors);
-   Print_Check_Context;
-   Check_Required_Release_Surface;
-   Check_Humanize_Policy.Check_AUnit_Metrics (Root, Errors);
-   Check_Humanize_Policy.Check_Generated_Artifacts (Root, Errors);
-   Check_Humanize_Policy.Check_Source_Tree_Artifacts (Root, Errors);
-   Check_Humanize_Policy.Check_Tooling_Boundary (Root, Errors);
-   Check_Humanize_Policy.Check_Public_Documentation (Root, Errors);
-   Check_Humanize_Policy.Check_Examples_Inventory (Root, Errors);
-   Check_Humanize_Policy.Check_Quality_Guards (Root, Errors);
-   Check_Humanize_Release.Run_Release_Builds (Root, Errors);
-   Check_Humanize_Release.Check_Staged_Release_Tree
-     (Root, Stage_Root, Errors);
-   Check_Humanize_Policy.Check_Compiler_Stderr (Root, Errors);
+   Run_Source_Policy_Guards
+     (Check_AUnit       => True,
+      Check_Deep_Static => False,
+      Check_Builds      => True,
+      Check_Staged      => True);
 
    Print_Result ("humanize checks passed", "humanize checks failed:");
 exception
