@@ -257,7 +257,7 @@ package body Check_Humanize_Policy_Support is
       begin
          Minimum := Policy_Threshold (Root, Key);
       exception
-         when others => --  defensive recovery
+         when Program_Error =>
             Error (Errors, "missing policy threshold: " & Key);
             return;
       end;
@@ -279,7 +279,7 @@ package body Check_Humanize_Policy_Support is
       begin
          Expected := Policy_Threshold (Root, Key);
       exception
-         when others => --  defensive recovery
+         when Program_Error =>
             Error (Errors, "missing policy threshold: " & Key);
             return;
       end;
@@ -301,7 +301,7 @@ package body Check_Humanize_Policy_Support is
       begin
          Maximum := Policy_Threshold (Root, Key);
       exception
-         when others => --  defensive recovery
+         when Program_Error =>
             Error (Errors, "missing policy threshold: " & Key);
             return;
       end;
@@ -435,7 +435,7 @@ package body Check_Humanize_Policy_Support is
          Ada.Directories.End_Search (Search);
          return Count;
       exception
-         when others => --  defensive recovery
+         when Ada.Directories.Name_Error | Ada.Directories.Use_Error =>
             if Ada.Directories.More_Entries (Search) then
                Ada.Directories.End_Search (Search);
             end if;

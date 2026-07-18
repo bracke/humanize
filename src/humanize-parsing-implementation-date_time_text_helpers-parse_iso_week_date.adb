@@ -45,6 +45,6 @@ begin
       Value := Add_Calendar_Days (Start, (Week - 1) * 7 + Day - 1);
       return Value < Next_Start;
 exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return False;
 end Parse_ISO_Week_Date;

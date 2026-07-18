@@ -27,6 +27,9 @@ runs:
       uses: alire-project/setup-alire@v5
       with:
         toolchain: gnat_native=15.2.1 gprbuild
+    - name: Report selected GNAT
+      shell: bash
+      run: alr exec -- gnatls --version
     - name: Install GNATdoc
       if: ${{ inputs.install-gnatdoc == 'true' }}
       shell: bash

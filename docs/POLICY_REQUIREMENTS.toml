@@ -419,6 +419,11 @@ pattern = "toolchain: gnat_native=15.2.1 gprbuild"
 message = "shared Ada workspace action must pin the CI GNAT toolchain"
 
 [[required_text]]
+path = ".github/actions/setup-ada-workspace/action.yml"
+pattern = "alr exec -- gnatls --version"
+message = "shared Ada workspace action must report the selected GNAT version"
+
+[[required_text]]
 path = "docs/QUALITY_GUARDS.md"
 pattern = "docs/PUBLIC_API_INDEX.md"
 message = "quality guards must document the generated public API index"

@@ -66,6 +66,6 @@ begin
          0.0);
       return True;
 exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return False;
 end Parse_Month_Day_Ordinal_Date;
