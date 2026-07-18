@@ -722,6 +722,12 @@ package body Check_Humanize_Release is
          Run_Check
            (Root, Errors, "build humanize library",
             Root, Alr_Path, Alr_Build_Args);
+         --  tests is its own Alire root, and on a fresh checkout its
+         --  config/tests_config.gpr does not exist yet -- the raw gprbuild below
+         --  cannot import it. Let Alire generate it first.
+         Run_Check
+           (Root, Errors, "configure humanize tests",
+            Root & "/tests", Alr_Path, Alr_Build_Args);
          Run_Check
            (Root, Errors, "build humanize tests",
             Root & "/tests", Alr_Path, Build_Tests_Args);
