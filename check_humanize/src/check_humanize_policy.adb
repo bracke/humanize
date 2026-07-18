@@ -563,6 +563,31 @@ package body Check_Humanize_Policy is
          or else Contains (Line, "invalid input normalization")
          or else Contains (Line, "defensive recovery"));
 
+      function Is_Broad_Exception_Choice
+        (Trimmed    : String;
+         Case_Depth : Natural)
+         return Boolean
+      is
+        (Case_Depth = 0
+         and then
+           (Trimmed = "when others"
+            or else Starts_With (Trimmed, "when others --")
+            or else Starts_With (Trimmed, "when others =>")
+            or else Starts_With (Trimmed, "when others  =>")));
+
+      function Starts_Case_Statement (Trimmed : String) return Boolean is
+        (Starts_With (Trimmed, "case ") and then Contains (Trimmed, " is"));
+
+      function Ends_Case_Statement (Trimmed : String) return Boolean is
+        (Starts_With (Trimmed, "end case"));
+
+      function Ends_Exception_Section (Trimmed : String) return Boolean is
+        (Starts_With (Trimmed, "end ")
+         and then not Starts_With (Trimmed, "end if")
+         and then not Starts_With (Trimmed, "end loop")
+         and then not Starts_With (Trimmed, "end case")
+         and then not Starts_With (Trimmed, "end record"));
+
       function Line_Number
         (Text : String;
          Pos  : Positive)
@@ -607,6 +632,7 @@ package body Check_Humanize_Policy is
          Text     : constant String := Read_File (Root, Relative_Path);
          Position : Natural := Text'First;
          In_Exception_Handler : Boolean := False;
+         Exception_Case_Depth : Natural := 0;
       begin
          if Text = "" then
             return;
@@ -622,13 +648,26 @@ package body Check_Humanize_Policy is
             begin
                if Trimmed = "exception" then
                   In_Exception_Handler := True;
-               elsif In_Exception_Handler
-                 and then Starts_With (Trimmed, "end ")
+                  Exception_Case_Depth := 0;
+               elsif In_Exception_Handler and then Ends_Case_Statement (Trimmed)
+               then
+                  if Exception_Case_Depth > 0 then
+                     Exception_Case_Depth := Exception_Case_Depth - 1;
+                  end if;
+               elsif In_Exception_Handler and then Starts_Case_Statement (Trimmed)
+               then
+                  Exception_Case_Depth := Exception_Case_Depth + 1;
+               elsif In_Exception_Handler and then Ends_Exception_Section (Trimmed)
                then
                   In_Exception_Handler := False;
+                  Exception_Case_Depth := 0;
                end if;
 
-               if Match /= 0 and then In_Exception_Handler then
+               if Match /= 0
+                 and then In_Exception_Handler
+                 and then Is_Broad_Exception_Choice
+                   (Trimmed, Exception_Case_Depth)
+               then
                   if Contains (Line, Silent_Pattern)
                     and then not Contains (Line, Silent_Marker)
                   then
@@ -753,21 +792,62 @@ package body Check_Humanize_Policy is
          Path : constant String :=
            Manifest_String_Value_After
              (Manifest, ASCII.LF & "path = ", Entry_Pos);
+         Target_Lines : constant Natural :=
+           Natural_Value_After
+             (Manifest, ASCII.LF & "target_lines = ", Entry_Pos);
+         Max_Lines : constant Natural :=
+           Natural_Value_After
+             (Manifest, ASCII.LF & "max_lines = ", Entry_Pos);
+         Min_Headroom_Lines : constant Natural :=
+           Natural_Value_After
+             (Manifest, ASCII.LF & "min_headroom_lines = ", Entry_Pos);
          Max_Bytes : constant Natural :=
            Natural_Value_After
              (Manifest, ASCII.LF & "max_bytes = ", Entry_Pos);
       begin
-         if Path = "" or else Max_Bytes = 0 then
-            Error (Errors, "public facade byte budget entry is incomplete");
+         if Path = "" or else Target_Lines = 0 or else Max_Lines = 0
+           or else Min_Headroom_Lines = 0 or else Max_Bytes = 0
+         then
+            Error (Errors, "public facade budget entry is incomplete");
          else
             Require_File (Root, Errors, Path);
-            if Ada.Directories.Size (Root & "/" & Path)
-              > Ada.Directories.File_Size (Max_Bytes)
-            then
-               Error
-                 (Errors,
-                  "public facade size guard exceeded for " & Path);
-            end if;
+            declare
+               Lines : constant Natural :=
+                 Line_Count (Read_File (Root, Path));
+            begin
+               if Target_Lines > Max_Lines then
+                  Error
+                    (Errors,
+                     "public facade target exceeds hard line cap for "
+                     & Path);
+               elsif Max_Lines - Target_Lines < Min_Headroom_Lines then
+                  Error
+                    (Errors,
+                     "public facade target is too close to hard line cap for "
+                     & Path);
+               end if;
+
+               if Lines > Max_Lines then
+                  Error
+                    (Errors,
+                     "public facade hard line cap exceeded for " & Path);
+               elsif Lines > Target_Lines then
+                  Error
+                    (Errors,
+                     "public facade ratchet exceeded for " & Path
+                     & ": add new API families to child packages or migrate "
+                     & "root-only APIs behind child facade wrappers before "
+                     & "raising target_lines");
+               end if;
+
+               if Ada.Directories.Size (Root & "/" & Path)
+                 > Ada.Directories.File_Size (Max_Bytes)
+               then
+                  Error
+                    (Errors,
+                     "public facade byte budget exceeded for " & Path);
+               end if;
+            end;
             Count := Count + 1;
          end if;
       end Check_Entry;

@@ -1,15 +1,16 @@
 # Public facade navigation and growth budgets.
-# target_lines records the reviewed ratchet baseline. max_lines is the hard
-# release gate and gives small compatibility additions room before maintainers
-# must either split into child facades or deliberately raise the hard cap.
-# These guards keep large compatibility facades navigable and make new API
-# families prefer child packages instead of silently growing root specs.
+# target_lines records the reviewed ratchet baseline and is enforced so root
+# compatibility facades cannot grow accidentally. max_lines is the hard release
+# gate for deliberate compatibility expansion. min_headroom_lines keeps reviewed
+# targets away from the hard cap, so future API families move to child packages
+# or root-only APIs migrate behind child facades before these specs fill up.
 
 [[facade]]
 unit = "Humanize.Parsing"
 path = "src/humanize-parsing.ads"
 target_lines = 3282
 max_lines = 3450
+min_headroom_lines = 120
 max_bytes = 130000
 child_prefix = "Humanize.Parsing."
 min_child_units = 8
@@ -25,6 +26,7 @@ unit = "Humanize.Strings"
 path = "src/humanize-strings.ads"
 target_lines = 2908
 max_lines = 3050
+min_headroom_lines = 100
 max_bytes = 120000
 child_prefix = "Humanize.Strings."
 min_child_units = 12
@@ -40,6 +42,7 @@ unit = "Humanize.Durations"
 path = "src/humanize-durations.ads"
 target_lines = 2163
 max_lines = 2280
+min_headroom_lines = 80
 max_bytes = 95000
 child_prefix = "Humanize.Durations."
 min_child_units = 3
@@ -55,6 +58,7 @@ unit = "Humanize.Phrases"
 path = "src/humanize-phrases.ads"
 target_lines = 1884
 max_lines = 1980
+min_headroom_lines = 70
 max_bytes = 75000
 child_prefix = "Humanize.Phrases."
 min_child_units = 6
@@ -70,6 +74,7 @@ unit = "Humanize.Numbers"
 path = "src/humanize-numbers.ads"
 target_lines = 1721
 max_lines = 1810
+min_headroom_lines = 60
 max_bytes = 80000
 child_prefix = "Humanize.Numbers."
 min_child_units = 5
