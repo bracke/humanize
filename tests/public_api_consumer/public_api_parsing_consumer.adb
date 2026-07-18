@@ -1,6 +1,8 @@
 with Ada.Command_Line;
 
 with Humanize.Parsing;
+with Humanize.Parsing.Durations;
+with Humanize.Parsing.Numbers;
 with Humanize.Status;
 
 procedure Public_API_Parsing_Consumer is
@@ -9,9 +11,9 @@ procedure Public_API_Parsing_Consumer is
    Bytes : constant Humanize.Parsing.Byte_Parse_Result :=
      Humanize.Parsing.Parse_Bytes ("1.5 KiB");
    Duration : constant Humanize.Parsing.Duration_Parse_Result :=
-     Humanize.Parsing.Parse_Duration ("2 hours, 30 minutes");
+     Humanize.Parsing.Durations.Parse_Duration ("2 hours, 30 minutes");
    Number : constant Humanize.Parsing.Number_Parse_Result :=
-     Humanize.Parsing.Parse_Cardinal ("forty two");
+     Humanize.Parsing.Numbers.Parse_Cardinal ("forty two");
 begin
    Ada.Command_Line.Set_Exit_Status
      (if Bytes.Status = Humanize.Status.Ok

@@ -10,16 +10,28 @@ paths = [
   "Humanize.Bytes.Format",
   "Humanize.Durations.Format",
   "Humanize.Numbers.Compact",
+  "Humanize.Numbers.Editorial.Editorial_Number",
+  "Humanize.Numbers.Ranges.Between",
+  "Humanize.Numbers.Scales.SI_Prefix",
+  "Humanize.Numbers.Spellout.Ordinal_Words",
+  "Humanize.Numbers.Statistics.Outlier_Summary_Label",
+  "Humanize.Datetimes.Relative",
+  "Humanize.Colors.Contrast.Contrast_Label",
   "Humanize.Parsing.Parse_Bytes",
   "Humanize.Parsing.Parse_Duration",
   "Humanize.Parsing.Parse_Cardinal",
+  "Humanize.Parsing.Parse_RGB_Label",
   "Humanize.Strings.Title_Case_Smart",
+  "Humanize.Strings.Core.Title_Case_Smart",
   "Humanize.Strings.Truncate_Words",
+  "Humanize.Strings.Display.Truncate_Display_Width",
   "Humanize.Colors.CSS.CSS_Color_Label",
   "Humanize.System_Status.HTTP_Status_Label",
   "Humanize.Operations.Progress_Summary",
   "Humanize.Diagnostics.Issue_Summary_Label",
-  "Humanize.Search.Search_Result_Summary_Label"
+  "Humanize.Search.Search_Result_Summary_Label",
+  "Humanize.Phrases.Status_Phrase",
+  "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
 ]
 
 [perf_smoke.formatting]
@@ -28,7 +40,14 @@ max_seconds = 12.0
 paths = [
   "Humanize.Bytes.Format",
   "Humanize.Durations.Format",
-  "Humanize.Numbers.Compact"
+  "Humanize.Numbers.Compact",
+  "Humanize.Numbers.Editorial.Editorial_Number",
+  "Humanize.Numbers.Ranges.Between",
+  "Humanize.Numbers.Scales.SI_Prefix",
+  "Humanize.Numbers.Spellout.Ordinal_Words",
+  "Humanize.Numbers.Statistics.Outlier_Summary_Label",
+  "Humanize.Datetimes.Relative",
+  "Humanize.Colors.Contrast.Contrast_Label"
 ]
 
 [perf_smoke.parsing]
@@ -37,7 +56,8 @@ max_seconds = 18.0
 paths = [
   "Humanize.Parsing.Parse_Bytes",
   "Humanize.Parsing.Parse_Duration",
-  "Humanize.Parsing.Parse_Cardinal"
+  "Humanize.Parsing.Parse_Cardinal",
+  "Humanize.Parsing.Parse_RGB_Label"
 ]
 
 [perf_smoke.text]
@@ -45,7 +65,9 @@ iterations = 2000
 max_seconds = 10.0
 paths = [
   "Humanize.Strings.Title_Case_Smart",
+  "Humanize.Strings.Core.Title_Case_Smart",
   "Humanize.Strings.Truncate_Words",
+  "Humanize.Strings.Display.Truncate_Display_Width",
   "Humanize.Colors.CSS.CSS_Color_Label"
 ]
 
@@ -56,5 +78,40 @@ paths = [
   "Humanize.System_Status.HTTP_Status_Label",
   "Humanize.Operations.Progress_Summary",
   "Humanize.Diagnostics.Issue_Summary_Label",
-  "Humanize.Search.Search_Result_Summary_Label"
+  "Humanize.Search.Search_Result_Summary_Label",
+  "Humanize.Phrases.Status_Phrase",
+  "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
 ]
+
+[perf_smoke.public_api_units]
+Humanize_Bytes = "Humanize.Bytes.Format"
+Humanize_Colors = "Humanize.Colors.CSS.CSS_Color_Label"
+Humanize_Colors_Contrast = "Humanize.Colors.Contrast.Contrast_Label"
+Humanize_Colors_CSS = "Humanize.Colors.CSS.CSS_Color_Label"
+Humanize_Datetimes = "Humanize.Datetimes.Relative"
+Humanize_Diagnostics = "Humanize.Diagnostics.Issue_Summary_Label"
+Humanize_Domain_Details = "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
+Humanize_Durations = "Humanize.Durations.Format"
+Humanize_Numbers = "Humanize.Numbers.Compact"
+Humanize_Numbers_Editorial = "Humanize.Numbers.Editorial.Editorial_Number"
+Humanize_Numbers_Ranges = "Humanize.Numbers.Ranges.Between"
+Humanize_Numbers_Scales = "Humanize.Numbers.Scales.SI_Prefix"
+Humanize_Numbers_Spellout = "Humanize.Numbers.Spellout.Ordinal_Words"
+Humanize_Numbers_Statistics = "Humanize.Numbers.Statistics.Outlier_Summary_Label"
+Humanize_Operations = "Humanize.Operations.Progress_Summary"
+Humanize_Parsing = "Humanize.Parsing.Parse_Bytes"
+Humanize_Parsing_Colors = "Humanize.Parsing.Parse_RGB_Label"
+Humanize_Phrases = "Humanize.Phrases.Status_Phrase"
+Humanize_Search = "Humanize.Search.Search_Result_Summary_Label"
+Humanize_Strings = "Humanize.Strings.Title_Case_Smart"
+Humanize_Strings_Core = "Humanize.Strings.Core.Title_Case_Smart"
+Humanize_Strings_Display = "Humanize.Strings.Display.Truncate_Display_Width"
+Humanize_System_Status = "Humanize.System_Status.HTTP_Status_Label"
+
+[perf_smoke.area_coverage]
+root = "exempt: root facade has no standalone runtime path"
+core = "exempt: type/result helper APIs are covered by public consumers"
+formatting = "Humanize.Bytes.Format"
+parsing = "Humanize.Parsing.Parse_Bytes"
+phrases = "Humanize.Phrases.Status_Phrase"
+domain = "Humanize.System_Status.HTTP_Status_Label"

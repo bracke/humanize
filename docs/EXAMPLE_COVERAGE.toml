@@ -1,6 +1,12 @@
 # Public task coverage for runnable examples.
 
 [[coverage]]
+area = "root"
+unit = "Humanize"
+example = "examples/humanize_demo.adb"
+usecase = "import the crate root as the public discovery anchor for Humanize packages"
+
+[[coverage]]
 area = "runtime-catalog-context"
 unit = "Humanize.Catalogs"
 example = "examples/humanize_demo.adb"
@@ -269,3 +275,321 @@ area = "domain-details"
 unit = "Humanize.Domain_Details"
 example = "examples/product_details_demo.adb"
 usecase = "render detailed domain labels, metadata summaries, accessible labels, narratives, diffs, and validation reports"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Status"
+example = "examples/public_surface_demo.adb"
+usecase = "inspect status codes from parser results and bounded rendering workflows"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Messages"
+example = "examples/public_surface_demo.adb"
+usecase = "exercise message-key-backed public functions through higher-level humanize calls"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Contexts"
+example = "examples/public_surface_demo.adb"
+usecase = "create a caller-owned context for focused public child package calls"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Locales"
+example = "examples/public_surface_demo.adb"
+usecase = "demonstrate locale-aware behavior through a concrete context"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Styles"
+example = "examples/public_surface_demo.adb"
+usecase = "exercise style-sensitive public calls through default style policy"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Datetimes"
+example = "examples/humanize_demo.adb"
+usecase = "render relative date/time labels from caller-supplied reference times"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Durations.Formatting"
+example = "examples/humanize_demo.adb"
+usecase = "render exact and multi-component duration formatting through the duration facade"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Durations.Natural"
+example = "examples/humanize_demo.adb"
+usecase = "render natural duration wording through the duration facade"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Durations.Schedules"
+example = "examples/humanize_demo.adb"
+usecase = "render recurring and schedule-oriented duration labels through the duration facade"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Colors"
+example = "examples/color_demo.adb"
+usecase = "parse and render color labels with caller-owned color values"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Colors.Contrast"
+example = "examples/public_surface_demo.adb"
+usecase = "render contrast and readability labels for foreground/background pairs"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Colors.Models"
+example = "examples/public_surface_demo.adb"
+usecase = "render derived color-model and brightness labels from RGB values"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Colors.Names"
+example = "examples/color_demo.adb"
+usecase = "resolve and render common named color values"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Colors.Palettes"
+example = "examples/color_demo.adb"
+usecase = "render palette summaries and accessibility-oriented palette labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Numbers"
+example = "examples/humanize_demo.adb"
+usecase = "render compact, ordinal, percentage, currency, range, and spellout number labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Numbers.Editorial"
+example = "examples/public_surface_demo.adb"
+usecase = "render editorial numbers, measurements, percentages, ordinals, and age labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Numbers.Ranges"
+example = "examples/public_surface_demo.adb"
+usecase = "render range, threshold, uncertainty, ratio, and change labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Numbers.Scales"
+example = "examples/public_surface_demo.adb"
+usecase = "render compact, SI-prefix, scientific, currency, fraction, roman, and ordinal labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Numbers.Spellout"
+example = "examples/public_surface_demo.adb"
+usecase = "render cardinal, ordinal, fraction, decimal, currency, percent, and locale spellout labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Numbers.Statistics"
+example = "examples/public_surface_demo.adb"
+usecase = "render distribution, percentile, outlier, and distribution-shape labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Units"
+example = "examples/humanize_demo.adb"
+usecase = "render singular, plural, integer, and decimal unit labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Frequencies"
+example = "examples/humanize_demo.adb"
+usecase = "render frequency labels alongside duration and unit workflows"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Rates"
+example = "examples/humanize_demo.adb"
+usecase = "render rate and throughput labels alongside duration and byte workflows"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Core"
+example = "examples/public_surface_demo.adb"
+usecase = "render truncation, capitalization, and title-case helpers"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Display"
+example = "examples/public_surface_demo.adb"
+usecase = "render UTF-8, grapheme, display-width, wrapping, and ANSI-aware text helpers"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Editing"
+example = "examples/humanize_demo.adb"
+usecase = "render edit-distance, cleanup, and text-change labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Identifiers"
+example = "examples/humanize_demo.adb"
+usecase = "render identifier, slug, and normalized-name labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Inflections"
+example = "examples/humanize_demo.adb"
+usecase = "render singular/plural and inflected text helpers"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Markup"
+example = "examples/security_data_demo.adb"
+usecase = "render markup-safe text and accessible-label workflows"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Metadata"
+example = "examples/humanize_demo.adb"
+usecase = "render text metadata, data-shape, address, and field-count labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Metrics"
+example = "examples/humanize_demo.adb"
+usecase = "render text metric and readability labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Names"
+example = "examples/humanize_demo.adb"
+usecase = "render initials, person-list, and name-display labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Paths"
+example = "examples/humanize_demo.adb"
+usecase = "render basename, extension, safe filename, and path-summary labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Privacy"
+example = "examples/security_data_demo.adb"
+usecase = "render masked, privacy-preserving, address, and sensitive-text labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Prose"
+example = "examples/humanize_demo.adb"
+usecase = "render prose lists, excerpts, summaries, and sentence helpers"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Terminal"
+example = "examples/humanize_demo.adb"
+usecase = "render terminal key/value blocks and terminal-safe paragraphs"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Strings.Types"
+example = "examples/humanize_demo.adb"
+usecase = "render common type and data-kind labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Values"
+example = "examples/humanize_demo.adb"
+usecase = "render boolean, nullable, default, and validation value labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Parsing.Results"
+example = "examples/public_surface_demo.adb"
+usecase = "inspect parser result status and parsed-value metadata"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Parsing.Colors"
+example = "examples/public_surface_demo.adb"
+usecase = "parse color labels produced by color formatting helpers"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Parsing.Date_Times"
+example = "examples/parse_demo.adb"
+usecase = "parse relative, natural, ISO, and calendar date/time labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Parsing.Domain_Labels"
+example = "examples/parse_demo.adb"
+usecase = "parse deterministic operational and domain-label text"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Parsing.Durations"
+example = "examples/parse_demo.adb"
+usecase = "parse plain, ISO, range, and precise duration labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Parsing.Numbers"
+example = "examples/parse_demo.adb"
+usecase = "parse cardinal, compact, decimal, range, currency, and change labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Parsing.Strings"
+example = "examples/parse_demo.adb"
+usecase = "parse text summaries, identifiers, highlights, filenames, and person lists"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Parsing.Units"
+example = "examples/parse_demo.adb"
+usecase = "parse unit aliases, compound units, and unit labels"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Phrases"
+example = "examples/public_surface_demo.adb"
+usecase = "render reusable status, progress, security, file, and operational phrases"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Phrases.Fields"
+example = "examples/public_surface_demo.adb"
+usecase = "render field diff, added, removed, unchanged, and change-summary phrases"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Phrases.Keys"
+example = "examples/public_surface_demo.adb"
+usecase = "exercise public phrase-key families through stable phrase calls"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Phrases.Locales"
+example = "examples/public_surface_demo.adb"
+usecase = "exercise phrase locale metadata through locale-aware phrase rendering"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Phrases.Severity"
+example = "examples/public_surface_demo.adb"
+usecase = "render severity and tone labels for reusable phrase status families"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Phrases.Statuses"
+example = "examples/public_surface_demo.adb"
+usecase = "render status-family phrases through the public phrase facade"
+
+[[coverage]]
+area = "public-surface"
+unit = "Humanize.Phrases.Summaries"
+example = "examples/public_surface_demo.adb"
+usecase = "render summary phrase helpers through reusable public phrase calls"
