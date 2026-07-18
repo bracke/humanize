@@ -191,6 +191,12 @@ worktrees to be clean before running the requested release checks. This is
 opt-in so day-to-day local verification can still run while those sibling
 tooling/dependency repos are under active development.
 
+The release checker also requires the sibling `../i18n` workspace to be idle
+before local or staged release builds start. Concurrent Alire/GPR/GNAT builds in
+that workspace can rewrite `../i18n/lib` while Humanize public API consumers are
+linking, so the checker reports the active process list and exits early instead
+of racing a changing archive.
+
 ## Dependency and boundary checks
 
 Humanize depends on `i18n` and must keep the dependency one-way:

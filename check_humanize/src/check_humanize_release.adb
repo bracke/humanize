@@ -18,6 +18,8 @@ package body Check_Humanize_Release is
 
    package Config renames Check_Humanize_Policy_Config;
 
+   Sibling_Build_Preflight_Failed : Boolean := False;
+
    Alr_Build_Args : constant Argument_List :=
      (1 => new String'("build"));
    Alr_Update_Args : constant Argument_List :=
@@ -115,6 +117,44 @@ package body Check_Humanize_Release is
    begin
       return Project_Tools.Processes.Shell_Output (Command);
    end Concurrent_Build_Processes;
+
+   function Sibling_I18N_Build_Processes (Root : String) return String is
+      I18N_Root : constant String :=
+        Ada.Directories.Full_Name (Root & "/../i18n");
+      Command : constant String :=
+        "ps -eo pid,ppid,stat,etime,comm,args"
+        & " | grep "
+        & Project_Tools.Processes.Shell_Quote (I18N_Root)
+        & " | grep -E '(^|/| )(alr|gprbuild|gcc|gnat1|gnatbind|gnatlink)( |$)'"
+        & " | grep -v grep";
+   begin
+      return Project_Tools.Processes.Shell_Output (Command);
+   end Sibling_I18N_Build_Processes;
+
+   function Local_Release_Builds_Are_Isolated
+     (Root   : String;
+      Errors : in out Natural)
+      return Boolean
+   is
+      Processes : constant String := Sibling_I18N_Build_Processes (Root);
+   begin
+      if Processes = "" then
+         return True;
+      elsif Sibling_Build_Preflight_Failed then
+         return False;
+      end if;
+
+      Sibling_Build_Preflight_Failed := True;
+      Put_Line
+        (Standard_Error,
+         "active sibling i18n build processes can rewrite ../i18n/lib while "
+         & "local public API consumers are linking:");
+      Put_Line (Standard_Error, Ada.Strings.Fixed.Trim (Processes, Ada.Strings.Both));
+      Error
+        (Errors,
+         "local release builds require an idle sibling i18n workspace");
+      return False;
+   end Local_Release_Builds_Are_Isolated;
 
    procedure Report_Failed_Command
      (Root   : String;
@@ -304,6 +344,10 @@ package body Check_Humanize_Release is
             raise;
       end Run_Staged_Check;
    begin
+      if not Local_Release_Builds_Are_Isolated (Root, Errors) then
+         return;
+      end if;
+
       Project_Tools.Files.Delete_Tree (Stage_Root);
       Project_Tools.Files.Copy_Release_Source_Tree
         (Source_Dir   => Root,
@@ -401,6 +445,10 @@ package body Check_Humanize_Release is
       Errors : in out Natural)
    is
    begin
+      if not Local_Release_Builds_Are_Isolated (Root, Errors) then
+         return;
+      end if;
+
       Run_Check (Root, Errors, "build humanize library", Root, Alr_Path, Alr_Build_Args);
       Run_Check
         (Root, Errors, "build humanize tests",
