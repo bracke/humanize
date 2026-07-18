@@ -96,6 +96,7 @@ package body Check_Humanize_Policy_Public_Surface is
             "public API unit coverage must not report non-actionable perf gaps");
       end if;
       if not Contains (Coverage, "perf_applicable = ")
+        or else not Contains (Coverage, "perf_exempt_category = ")
         or else not Contains (Coverage, "perf_exempt_reason = ")
         or else not Contains (Coverage, "perf_covered_by = ")
       then

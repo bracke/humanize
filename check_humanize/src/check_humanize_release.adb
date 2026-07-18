@@ -9,6 +9,7 @@ with Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 
 with Check_Humanize_Policy_Config;
+with Project_Tools.Alire;
 with Project_Tools.Alire_Manifests;
 with Project_Tools.Files;
 with Project_Tools.Processes;
@@ -23,8 +24,6 @@ package body Check_Humanize_Release is
 
    Alr_Build_Args : constant Argument_List :=
      (1 => new String'("build"));
-   Alr_Update_Args : constant Argument_List :=
-     (1 => new String'("update"));
    Alr_Test_Args : constant Argument_List :=
      (1 => new String'("test"));
    Build_Tests_Args : constant Argument_List :=
@@ -100,36 +99,23 @@ package body Check_Humanize_Release is
    end Alr_Path;
 
    function Compiler_Stderr_Diagnostics (Root : String) return String is
-      Command : constant String :=
-        "find "
-        & Project_Tools.Processes.Shell_Quote (Root & "/obj") & " "
-        & Project_Tools.Processes.Shell_Quote (Root & "/tests/obj") & " "
-        & Project_Tools.Processes.Shell_Quote (Root & "/check_humanize/obj")
-        & " -type f -name '*.stderr' -size +0c -print";
    begin
-      return Project_Tools.Processes.Shell_Output (Command);
+      return Project_Tools.Release_Checks.Nonempty_Stderr_Files
+        ([To_Unbounded_String (Root & "/obj"),
+          To_Unbounded_String (Root & "/tests/obj"),
+          To_Unbounded_String (Root & "/check_humanize/obj")]);
    end Compiler_Stderr_Diagnostics;
 
    function Concurrent_Build_Processes return String is
-      Command : constant String :=
-        "ps -eo pid,ppid,stat,etime,comm,args"
-        & " | grep -E '(^|/| )(alr|gprbuild|gcc|gnat1|gnatbind|gnatlink)( |$)'"
-        & " | grep -v grep";
    begin
-      return Project_Tools.Processes.Shell_Output (Command);
+      return Project_Tools.Release_Checks.Ada_Build_Processes;
    end Concurrent_Build_Processes;
 
    function Sibling_I18N_Build_Processes (Root : String) return String is
       I18N_Root : constant String :=
         Ada.Directories.Full_Name (Root & "/../i18n");
-      Command : constant String :=
-        "ps -eo pid,ppid,stat,etime,comm,args"
-        & " | grep "
-        & Project_Tools.Processes.Shell_Quote (I18N_Root)
-        & " | grep -E '(^|/| )(alr|gprbuild|gcc|gnat1|gnatbind|gnatlink)( |$)'"
-        & " | grep -v grep";
    begin
-      return Project_Tools.Processes.Shell_Output (Command);
+      return Project_Tools.Release_Checks.Ada_Build_Processes (I18N_Root);
    end Sibling_I18N_Build_Processes;
 
    function Sibling_I18N_Build_Wait_Seconds return Natural is
@@ -335,35 +321,45 @@ package body Check_Humanize_Release is
         "[[pins]]" & ASCII.LF
         & "i18n = { path = """ & I18N_Root & """ }" & ASCII.LF;
       Build_Tests_Stage_Args : constant Argument_List :=
-        (1 => new String'("exec"),
-         2 => new String'("--"),
-         3 => new String'("gprbuild"),
-         4 => new String'("-P"),
-         5 => new String'("tests.gpr"));
+        Project_Tools.Alire.Noninteractive_Exec_Args
+          ([new String'("gprbuild"), new String'("-P"),
+            new String'("tests.gpr")]);
       Exec_Tests_Stage_Args : constant Argument_List :=
-        (1 => new String'("exec"),
-         2 => new String'("--"),
-         3 => new String'("./bin/tests"));
+        Project_Tools.Alire.Noninteractive_Exec_Args
+          ([1 => new String'("./bin/tests")]);
       Exec_Perf_Smoke_Stage_Args : constant Argument_List :=
-        (1 => new String'("exec"),
-         2 => new String'("--"),
-         3 => new String'("./bin/perf_smoke"));
+        Project_Tools.Alire.Noninteractive_Exec_Args
+          ([1 => new String'("./bin/perf_smoke")]);
       Build_Examples_Stage_Args : constant Argument_List :=
-        (1 => new String'("exec"),
-         2 => new String'("--"),
-         3 => new String'("gprbuild"),
-         4 => new String'("-P"),
-         5 => new String'("examples/examples.gpr"));
+        Project_Tools.Alire.Noninteractive_Exec_Args
+          ([new String'("gprbuild"), new String'("-P"),
+            new String'("examples/examples.gpr")]);
       Build_Public_API_Consumer_Stage_Args : constant Argument_List :=
-        (1 => new String'("exec"),
-         2 => new String'("--"),
-         3 => new String'("gprbuild"),
-         4 => new String'("-P"),
-         5 => new String'("tests/public_api_consumer/public_api_consumer.gpr"));
+        Project_Tools.Alire.Noninteractive_Exec_Args
+          ([new String'("gprbuild"), new String'("-P"),
+            new String'("tests/public_api_consumer/public_api_consumer.gpr")]);
       Exec_Public_API_Consumer_Stage_Args : constant Argument_List :=
-        (1 => new String'("exec"),
-         2 => new String'("--"),
-         3 => new String'("./tests/public_api_consumer/bin/public_api_consumer"));
+        Project_Tools.Alire.Noninteractive_Exec_Args
+          ([1 => new String'("./tests/public_api_consumer/bin/public_api_consumer")]);
+      Exec_Public_API_Formatting_Consumer_Stage_Args : constant Argument_List :=
+        Project_Tools.Alire.Noninteractive_Exec_Args
+          ([1 => new String'("./tests/public_api_consumer/bin/public_api_formatting_consumer")]);
+      Exec_Public_API_Parsing_Consumer_Stage_Args : constant Argument_List :=
+        Project_Tools.Alire.Noninteractive_Exec_Args
+          ([1 => new String'("./tests/public_api_consumer/bin/public_api_parsing_consumer")]);
+      Exec_Public_API_Color_Consumer_Stage_Args : constant Argument_List :=
+        Project_Tools.Alire.Noninteractive_Exec_Args
+          ([1 => new String'("./tests/public_api_consumer/bin/public_api_color_consumer")]);
+      Exec_Public_API_Domain_Consumer_Stage_Args : constant Argument_List :=
+        Project_Tools.Alire.Noninteractive_Exec_Args
+          ([1 => new String'("./tests/public_api_consumer/bin/public_api_domain_consumer")]);
+      Exec_Public_API_Bounded_Consumer_Stage_Args : constant Argument_List :=
+        Project_Tools.Alire.Noninteractive_Exec_Args
+          ([1 => new String'("./tests/public_api_consumer/bin/public_api_bounded_consumer")]);
+      Alr_Staged_Build_Args : constant Argument_List :=
+        Project_Tools.Alire.Noninteractive_Build_Args;
+      Alr_Staged_Update_Args : constant Argument_List :=
+        Project_Tools.Alire.Noninteractive_Update_Args;
 
       procedure Run_Staged_Check
         (Label   : String;
@@ -446,13 +442,13 @@ package body Check_Humanize_Release is
 
       Run_Staged_Check
         ("update staged release dependencies",
-         Stage_Root, Alr_Path, Alr_Update_Args);
+         Stage_Root, Alr_Path, Alr_Staged_Update_Args);
       Run_Staged_Check
         ("build staged release library",
-         Stage_Root, Alr_Path, Alr_Build_Args);
+         Stage_Root, Alr_Path, Alr_Staged_Build_Args);
       Run_Staged_Check
         ("update staged release test dependencies",
-         Stage_Root & "/tests", Alr_Path, Alr_Update_Args);
+         Stage_Root & "/tests", Alr_Path, Alr_Staged_Update_Args);
       Run_Staged_Check
         ("build staged release tests",
          Stage_Root & "/tests", Alr_Path, Build_Tests_Stage_Args);
@@ -476,23 +472,23 @@ package body Check_Humanize_Release is
       Run_Staged_Check
         ("run staged public API formatting consumer",
          Stage_Root, Alr_Path,
-         Exec_Public_API_Formatting_Consumer_Args);
+         Exec_Public_API_Formatting_Consumer_Stage_Args);
       Run_Staged_Check
         ("run staged public API parsing consumer",
          Stage_Root, Alr_Path,
-         Exec_Public_API_Parsing_Consumer_Args);
+         Exec_Public_API_Parsing_Consumer_Stage_Args);
       Run_Staged_Check
         ("run staged public API color consumer",
          Stage_Root, Alr_Path,
-         Exec_Public_API_Color_Consumer_Args);
+         Exec_Public_API_Color_Consumer_Stage_Args);
       Run_Staged_Check
         ("run staged public API domain consumer",
          Stage_Root, Alr_Path,
-         Exec_Public_API_Domain_Consumer_Args);
+         Exec_Public_API_Domain_Consumer_Stage_Args);
       Run_Staged_Check
         ("run staged public API bounded consumer",
          Stage_Root, Alr_Path,
-         Exec_Public_API_Bounded_Consumer_Args);
+         Exec_Public_API_Bounded_Consumer_Stage_Args);
       Check_Example_Output (Stage_Root, Errors);
    exception
       when Program_Error =>

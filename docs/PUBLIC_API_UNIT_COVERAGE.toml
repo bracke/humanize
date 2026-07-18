@@ -16,7 +16,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "root-facade"
+perf_exempt_reason = "crate root facade; exercised by consumers, not a distinct performance path"
 score = 4
 
 [[unit]]
@@ -31,7 +32,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "pure-type-package"
+perf_exempt_reason = "pure type/support package; no standalone performance-smoke loop"
 score = 4
 
 [[unit]]
@@ -46,7 +48,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "pure-type-package"
+perf_exempt_reason = "pure type/support package; no standalone performance-smoke loop"
 score = 4
 
 [[unit]]
@@ -61,7 +64,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "pure-type-package"
+perf_exempt_reason = "pure type/support package; no standalone performance-smoke loop"
 score = 4
 
 [[unit]]
@@ -76,7 +80,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "pure-type-package"
+perf_exempt_reason = "pure type/support package; no standalone performance-smoke loop"
 score = 4
 
 [[unit]]
@@ -91,7 +96,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "support-facade"
+perf_exempt_reason = "catalog selection facade; locale data costs are covered by rendering and parser smoke paths"
 score = 4
 
 [[unit]]
@@ -104,10 +110,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Capabilities.Capability_Matrix_Summary"
+score = 5
 
 [[unit]]
 name = "Humanize.Styles"
@@ -121,7 +127,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "pure-type-package"
+perf_exempt_reason = "pure type/support package; no standalone performance-smoke loop"
 score = 4
 
 [[unit]]
@@ -136,7 +143,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_bounded_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "support-facade"
+perf_exempt_reason = "bounded-output helper facade; covered by bounded tests and consumer build"
 score = 4
 
 [[unit]]
@@ -181,7 +189,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -196,7 +205,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -211,7 +221,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -286,7 +297,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -301,7 +313,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -316,7 +329,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -421,7 +435,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -436,7 +451,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -451,7 +467,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -466,7 +483,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -526,7 +544,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -541,7 +560,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -556,7 +576,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -571,7 +592,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -586,7 +608,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -601,7 +624,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -616,7 +640,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -631,7 +656,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -646,7 +672,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -661,7 +688,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -676,7 +704,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "family-child-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
 score = 4
 
 [[unit]]
@@ -691,7 +720,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "pure-type-package"
+perf_exempt_reason = "pure type/support package; no standalone performance-smoke loop"
 score = 4
 
 [[unit]]
@@ -706,7 +736,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -736,7 +767,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "pure-type-package"
+perf_exempt_reason = "pure type/support package; no standalone performance-smoke loop"
 score = 4
 
 [[unit]]
@@ -766,7 +798,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "parser-wrapper"
+perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
 score = 4
 
 [[unit]]
@@ -781,7 +814,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "parser-wrapper"
+perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
 score = 4
 
 [[unit]]
@@ -796,7 +830,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "parser-wrapper"
+perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
 score = 4
 
 [[unit]]
@@ -811,7 +846,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "parser-wrapper"
+perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
 score = 4
 
 [[unit]]
@@ -826,7 +862,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "parser-wrapper"
+perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
 score = 4
 
 [[unit]]
@@ -841,7 +878,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "parser-wrapper"
+perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
 score = 4
 
 [[unit]]
@@ -869,10 +907,10 @@ examples = 1
 example_file = "examples/public_surface_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Phrases.Fields.Field_Change_Summary"
+score = 5
 
 [[unit]]
 name = "Humanize.Phrases.Keys"
@@ -884,10 +922,10 @@ examples = 1
 example_file = "examples/public_surface_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Phrases.Keys.Status_Key"
+score = 5
 
 [[unit]]
 name = "Humanize.Phrases.Locales"
@@ -901,7 +939,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "phrase-wrapper"
+perf_exempt_reason = "phrase child facade covered by representative phrase smoke paths"
 score = 4
 
 [[unit]]
@@ -914,10 +953,10 @@ examples = 1
 example_file = "examples/public_surface_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Phrases.Severity.Severity_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Phrases.Statuses"
@@ -931,7 +970,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "phrase-wrapper"
+perf_exempt_reason = "phrase child facade covered by representative phrase smoke paths"
 score = 4
 
 [[unit]]
@@ -944,10 +984,10 @@ examples = 1
 example_file = "examples/public_surface_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Phrases.Summaries.Queue_Summary"
+score = 5
 
 [[unit]]
 name = "Humanize.Endpoints"
@@ -961,7 +1001,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -976,7 +1017,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -991,7 +1033,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1006,7 +1049,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1021,7 +1065,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1036,7 +1081,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1051,7 +1097,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1081,7 +1128,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1096,7 +1144,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1111,7 +1160,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1126,7 +1176,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1141,7 +1192,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1156,7 +1208,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1171,7 +1224,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1186,7 +1240,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1216,7 +1271,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1231,7 +1287,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1246,7 +1303,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1261,7 +1319,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1276,7 +1335,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1321,7 +1381,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1336,7 +1397,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1351,7 +1413,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1366,7 +1429,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1381,7 +1445,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1396,7 +1461,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1411,7 +1477,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1426,7 +1493,8 @@ consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
 perf = 0
 perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
 score = 4
 
 [[unit]]
@@ -1439,10 +1507,10 @@ examples = 1
 example_file = "examples/security_data_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Permissions.Permission_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Builds"
@@ -1454,10 +1522,10 @@ examples = 1
 example_file = "examples/workflow_ops_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_reason = "not a representative performance-smoke path; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Builds.Build_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Domain_Details"

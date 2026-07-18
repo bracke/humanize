@@ -15,6 +15,12 @@ Confirm the selected compiler with:
 alr exec -- gnatls --version
 ```
 
+The manifest pin and the compiler banner are related but not identical:
+`gnat_native = "=15.2.1"` selects the Alire toolchain crate, while
+`gnatls --version` may report the upstream GNAT patch string such as
+`GNATLS 15.2.0`. `check_humanize` therefore requires the exact manifest pin and
+accepts an Alire-selected `GNATLS 15.2.x` executable.
+
 Do not run plain system `gnat*`, `gnatmake`, `gnatls`, `gnatprove`, or
 `gprbuild` in this workspace. Use `alr exec -- ...` for compiler and builder
 commands so PATH cannot select a different GNAT installation.
@@ -169,15 +175,21 @@ After activating that temporary build overlay, the checker runs:
 
 ```sh
 cd /tmp/humanize-release-stage
-alr build
+alr --non-interactive update
+alr --non-interactive build
 cd tests
-alr exec -- gprbuild -P tests.gpr
-alr exec -- ./bin/tests
-alr exec -- ./bin/perf_smoke
+alr --non-interactive update
+alr --non-interactive exec -- gprbuild -P tests.gpr
+alr --non-interactive exec -- ./bin/tests
+alr --non-interactive exec -- ./bin/perf_smoke
 cd ..
-alr exec -- gprbuild -P examples/examples.gpr
+alr --non-interactive exec -- gprbuild -P examples/examples.gpr
 ./examples/bin/humanize_demo
 ```
+
+The staged Alire calls are noninteractive on purpose: dependency-resolution
+prompts must use Alire's default answers explicitly so CI and unattended
+release validation never depend on terminal input.
 
 The staged `./bin/tests` run includes
 `Humanize.Tests.Compatibility`, a golden-output corpus for common Humanize

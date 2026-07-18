@@ -1,10 +1,9 @@
 with Ada.Command_Line;
 with Ada.Directories;
-with Ada.Strings;
-with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Check_Humanize_Policy_Support; use Check_Humanize_Policy_Support;
+with Check_Humanize_Policy_Exception_Handlers;
 with Check_Humanize_Policy_Public_Surface;
 with Check_Humanize_Policy_Public_Facades;
 with Check_Humanize_Policy_Performance;
@@ -13,11 +12,14 @@ with Check_Humanize_Policy_Config;
 with Check_Humanize_Policy_Generated;
 with Check_Humanize_Policy_Examples;
 with Check_Humanize_Policy_Boundaries;
+with Check_Humanize_Policy_Non_Goals;
+with Check_Humanize_Policy_Test_Sources;
 with Check_Humanize_Public_API;
 with Project_Tools.Ada_Source;
 with Project_Tools.Alire_Manifests;
 with Project_Tools.AUnit_Checks;
 with Project_Tools.Files;
+with Project_Tools.Source_Budgets;
 with Project_Tools.Text;
 with Project_Tools.Tree_Checks;
 
@@ -450,68 +452,15 @@ package body Check_Humanize_Policy is
      (Root   : String;
       Errors : in out Natural)
    is
-      Manifest : constant String :=
-        Read_File (Root, "docs/STRUCTURAL_BASELINE.toml");
-      Count    : Natural := 0;
-
-      procedure Check_Entry (Entry_Pos : Positive) is
-         Path : constant String :=
-           Manifest_String_Value_After (Manifest, "path = ", Entry_Pos);
-         Prefix : constant String :=
-           Manifest_String_Value_After
-             (Manifest, "split_prefix = ", Entry_Pos);
-         Max_Bytes : constant Natural :=
-           Natural_Value_After (Manifest, "max_bytes = ", Entry_Pos);
-         Min_Splits : constant Natural :=
-           Natural_Value_After (Manifest, "min_split_bodies = ", Entry_Pos);
-         Usecase : constant String :=
-           Manifest_String_Value_After (Manifest, "usecase = ", Entry_Pos);
-      begin
-         if Path = "" or else Prefix = "" or else Max_Bytes = 0
-           or else Usecase = ""
-         then
-            Error (Errors, "structural baseline entry is incomplete");
-         else
-            Require_File (Root, Errors, Path);
-            if Ada.Directories.Size (Root & "/" & Path)
-              > Ada.Directories.File_Size (Max_Bytes)
-            then
-               Error (Errors, "structural baseline exceeded for " & Path);
-            end if;
-            if Count_Files_With_Prefix (Root, Prefix) < Min_Splits then
-               Error
-                 (Errors,
-                  "structural split inventory too small for " & Path);
-            end if;
-            Count := Count + 1;
-         end if;
-      end Check_Entry;
-
-      procedure Check_Entries is new Iterate_Manifest_Section (Check_Entry);
    begin
-      Check_Entries (Manifest, "body");
-
-      Require_Minimum
-        (Root, Errors, "structural_baseline_min_bodies", Count,
-         "structural baseline must cover major large bodies");
+      Project_Tools.Source_Budgets.Check_Structural_Baseline
+        (Errors          => Errors,
+         Root            => Root,
+         Manifest_Path   => "docs/STRUCTURAL_BASELINE.toml",
+         Minimum_Entries =>
+           Policy_Threshold (Root, "structural_baseline_min_bodies"),
+         Purpose         => "structural baseline");
    end Check_Structural_Baseline;
-
-   procedure Check_Non_Goals
-     (Root   : String;
-      Errors : in out Natural)
-   is
-      Spec : constant String := Read_File (Root, "docs/specification.md");
-   begin
-      if not Contains (Spec, "## Non-Goals")
-        or else not Contains (Spec, "time zone database")
-        or else not Contains (Spec, "arbitrary CLDR import")
-        or else not Contains (Spec, "full CLDR currency-formatting engines")
-        or else not Contains
-          (Spec, "application-defined runtime classifier plugins")
-      then
-         Error (Errors, "specification must keep Humanize non-goals explicit");
-      end if;
-   end Check_Non_Goals;
 
    procedure Check_Performance_Baseline
      (Root   : String;
@@ -539,441 +488,6 @@ package body Check_Humanize_Policy is
             "scheduling phrase classifier must retain a no-error default");
       end if;
    end Check_Parser_Diagnostic_Defaults;
-
-   procedure Check_Intentional_Silent_Recovery
-     (Root   : String;
-      Errors : in out Natural)
-   is
-      Pattern : constant String := "when others";
-      Silent_Pattern : constant String := "when others => null";
-      Silent_Marker  : constant String := "intentional silent recovery";
-      Parse_Failure_Marker : constant String := "parse failure normalization";
-      Defensive_Marker     : constant String := "defensive recovery";
-      Runtime_Parse_Failure_Count : Natural := 0;
-      Runtime_Defensive_Count     : Natural := 0;
-      Runtime_Silent_Count        : Natural := 0;
-      Tooling_Parse_Failure_Count : Natural := 0;
-      Tooling_Defensive_Count     : Natural := 0;
-      Tooling_Silent_Count        : Natural := 0;
-
-      function Has_Recovery_Marker (Line : String) return Boolean is
-        (Contains (Line, Silent_Marker)
-         or else Contains (Line, "intentional fallback")
-         or else Contains (Line, "parse failure normalization")
-         or else Contains (Line, "invalid input normalization")
-         or else Contains (Line, "defensive recovery"));
-
-      function Is_Broad_Exception_Choice
-        (Trimmed    : String;
-         Case_Depth : Natural)
-         return Boolean
-      is
-        (Case_Depth = 0
-         and then
-           (Trimmed = "when others"
-            or else Starts_With (Trimmed, "when others --")
-            or else Starts_With (Trimmed, "when others =>")
-            or else Starts_With (Trimmed, "when others  =>")));
-
-      function Starts_Case_Statement (Trimmed : String) return Boolean is
-        (Starts_With (Trimmed, "case ") and then Contains (Trimmed, " is"));
-
-      function Ends_Case_Statement (Trimmed : String) return Boolean is
-        (Starts_With (Trimmed, "end case"));
-
-      function Ends_Exception_Section (Trimmed : String) return Boolean is
-        (Starts_With (Trimmed, "end ")
-         and then not Starts_With (Trimmed, "end if")
-         and then not Starts_With (Trimmed, "end loop")
-         and then not Starts_With (Trimmed, "end case")
-         and then not Starts_With (Trimmed, "end record"));
-
-      function Line_Number
-        (Text : String;
-         Pos  : Positive)
-         return Natural
-      is
-         Count : Natural := 1;
-      begin
-         for Index in Text'First .. Pos - 1 loop
-            if Text (Index) = ASCII.LF then
-               Count := Count + 1;
-            end if;
-         end loop;
-
-         return Count;
-      end Line_Number;
-
-      function Line_Text
-        (Text : String;
-         Pos  : Positive)
-         return String
-      is
-         First : Natural := Pos;
-         Last  : Natural := Pos;
-      begin
-         while First > Text'First and then Text (First - 1) /= ASCII.LF loop
-            First := First - 1;
-         end loop;
-
-         while Last < Text'Last and then Text (Last + 1) /= ASCII.LF loop
-            Last := Last + 1;
-         end loop;
-
-         return Text (First .. Last);
-      end Line_Text;
-
-      procedure Check_File
-        (Relative_Path        : String;
-         Parse_Failure_Count  : in out Natural;
-         Defensive_Count      : in out Natural;
-         Silent_Count         : in out Natural)
-      is
-         Text     : constant String := Read_File (Root, Relative_Path);
-         Position : Natural := Text'First;
-         In_Exception_Handler : Boolean := False;
-         Exception_Case_Depth : Natural := 0;
-      begin
-         if Text = "" then
-            return;
-         end if;
-
-         loop
-            declare
-               Line : constant String := Line_Text (Text, Position);
-               Trimmed : constant String :=
-                 Ada.Strings.Fixed.Trim (Line, Ada.Strings.Both);
-               Match : constant Natural :=
-                 Ada.Strings.Fixed.Index (Line, Pattern);
-            begin
-               if Trimmed = "exception" then
-                  In_Exception_Handler := True;
-                  Exception_Case_Depth := 0;
-               elsif In_Exception_Handler and then Ends_Case_Statement (Trimmed)
-               then
-                  if Exception_Case_Depth > 0 then
-                     Exception_Case_Depth := Exception_Case_Depth - 1;
-                  end if;
-               elsif In_Exception_Handler and then Starts_Case_Statement (Trimmed)
-               then
-                  Exception_Case_Depth := Exception_Case_Depth + 1;
-               elsif In_Exception_Handler and then Ends_Exception_Section (Trimmed)
-               then
-                  In_Exception_Handler := False;
-                  Exception_Case_Depth := 0;
-               end if;
-
-               if Match /= 0
-                 and then In_Exception_Handler
-                 and then Is_Broad_Exception_Choice
-                   (Trimmed, Exception_Case_Depth)
-               then
-                  if Contains (Line, Silent_Pattern)
-                    and then not Contains (Line, Silent_Marker)
-                  then
-                     Error
-                       (Errors,
-                        Relative_Path & ":"
-                        & Natural'Image (Line_Number (Text, Position))
-                        & " must mark intentional silent recovery");
-                  elsif not Has_Recovery_Marker (Line) then
-                     Error
-                       (Errors,
-                        Relative_Path & ":"
-                        & Natural'Image (Line_Number (Text, Position))
-                        & " must classify broad exception recovery");
-                  else
-                     if Contains (Line, Parse_Failure_Marker) then
-                        Parse_Failure_Count := Parse_Failure_Count + 1;
-                     elsif Contains (Line, Defensive_Marker) then
-                        Defensive_Count := Defensive_Count + 1;
-                     elsif Contains (Line, Silent_Marker) then
-                        Silent_Count := Silent_Count + 1;
-                     end if;
-                  end if;
-               end if;
-
-               exit when Position = Text'Last;
-
-               declare
-                  Next_Line : constant Natural :=
-                    Ada.Strings.Fixed.Index
-                      (Text, String'(1 => ASCII.LF), From => Position);
-               begin
-                  exit when Next_Line = 0;
-                  exit when Next_Line = Text'Last;
-                  Position := Next_Line + 1;
-               end;
-            end;
-         end loop;
-      end Check_File;
-
-      procedure Check_Directory
-        (Relative_Dir         : String;
-         Parse_Failure_Count  : in out Natural;
-         Defensive_Count      : in out Natural;
-         Silent_Count         : in out Natural)
-      is
-         Search      : Ada.Directories.Search_Type;
-         Search_Open : Boolean := False;
-         Item        : Ada.Directories.Directory_Entry_Type;
-      begin
-         Ada.Directories.Start_Search
-           (Search    => Search,
-            Directory => Root & "/" & Relative_Dir,
-            Pattern   => "*.ad?",
-            Filter    => [Ada.Directories.Ordinary_File => True,
-                          others => False]);
-         Search_Open := True;
-
-         while Ada.Directories.More_Entries (Search) loop
-            Ada.Directories.Get_Next_Entry (Search, Item);
-            Check_File
-              (Relative_Dir & "/" & Ada.Directories.Simple_Name (Item),
-               Parse_Failure_Count, Defensive_Count, Silent_Count);
-         end loop;
-
-         Ada.Directories.End_Search (Search);
-         Search_Open := False;
-      exception
-         when Constraint_Error
-            | Ada.Directories.Name_Error
-            | Ada.Directories.Use_Error =>
-            if Search_Open then
-               Ada.Directories.End_Search (Search);
-            end if;
-            raise;
-      end Check_Directory;
-   begin
-      Check_Directory
-        ("src", Runtime_Parse_Failure_Count, Runtime_Defensive_Count,
-         Runtime_Silent_Count);
-      Check_Directory
-        ("check_humanize/src", Tooling_Parse_Failure_Count,
-         Tooling_Defensive_Count, Tooling_Silent_Count);
-
-      Require_Maximum
-        (Root, Errors, "exception_marker_max_parse_failure_normalization",
-         Runtime_Parse_Failure_Count,
-         "parse failure normalization handler count grew");
-      Require_Maximum
-        (Root, Errors, "exception_marker_max_defensive_recovery",
-         Runtime_Defensive_Count,
-         "defensive recovery handler count grew");
-      Require_Maximum
-        (Root, Errors, "exception_marker_max_intentional_silent_recovery",
-         Runtime_Silent_Count,
-         "intentional silent recovery handler count grew");
-      Require_Maximum
-        (Root, Errors,
-         "tooling_exception_marker_max_parse_failure_normalization",
-         Tooling_Parse_Failure_Count,
-         "tooling parse failure normalization handler count grew");
-      Require_Maximum
-        (Root, Errors, "tooling_exception_marker_max_defensive_recovery",
-         Tooling_Defensive_Count,
-         "tooling defensive recovery handler count grew");
-      Require_Maximum
-        (Root, Errors,
-         "tooling_exception_marker_max_intentional_silent_recovery",
-         Tooling_Silent_Count,
-         "tooling intentional silent recovery handler count grew");
-   end Check_Intentional_Silent_Recovery;
-
-   procedure Check_Public_Spec_Size_Guards
-     (Root   : String;
-      Errors : in out Natural)
-   is
-      Manifest : constant String :=
-        Read_File (Root, "docs/PUBLIC_FACADE_BUDGETS.toml");
-      Count    : Natural := 0;
-
-      procedure Check_Entry (Entry_Pos : Positive) is
-         Path : constant String :=
-           Manifest_String_Value_After
-             (Manifest, ASCII.LF & "path = ", Entry_Pos);
-         Target_Lines : constant Natural :=
-           Natural_Value_After
-             (Manifest, ASCII.LF & "target_lines = ", Entry_Pos);
-         Max_Lines : constant Natural :=
-           Natural_Value_After
-             (Manifest, ASCII.LF & "max_lines = ", Entry_Pos);
-         Min_Headroom_Lines : constant Natural :=
-           Natural_Value_After
-             (Manifest, ASCII.LF & "min_headroom_lines = ", Entry_Pos);
-         Max_Bytes : constant Natural :=
-           Natural_Value_After
-             (Manifest, ASCII.LF & "max_bytes = ", Entry_Pos);
-      begin
-         if Path = "" or else Target_Lines = 0 or else Max_Lines = 0
-           or else Min_Headroom_Lines = 0 or else Max_Bytes = 0
-         then
-            Error (Errors, "public facade budget entry is incomplete");
-         else
-            Require_File (Root, Errors, Path);
-            declare
-               Lines : constant Natural :=
-                 Line_Count (Read_File (Root, Path));
-            begin
-               if Target_Lines > Max_Lines then
-                  Error
-                    (Errors,
-                     "public facade target exceeds hard line cap for "
-                     & Path);
-               elsif Max_Lines - Target_Lines < Min_Headroom_Lines then
-                  Error
-                    (Errors,
-                     "public facade target is too close to hard line cap for "
-                     & Path);
-               end if;
-
-               if Lines > Max_Lines then
-                  Error
-                    (Errors,
-                     "public facade hard line cap exceeded for " & Path);
-               elsif Lines > Target_Lines then
-                  Error
-                    (Errors,
-                     "public facade ratchet exceeded for " & Path
-                     & ": add new API families to child packages or migrate "
-                     & "root-only APIs behind child facade wrappers before "
-                     & "raising target_lines");
-               end if;
-
-               if Ada.Directories.Size (Root & "/" & Path)
-                 > Ada.Directories.File_Size (Max_Bytes)
-               then
-                  Error
-                    (Errors,
-                     "public facade byte budget exceeded for " & Path);
-               end if;
-            end;
-            Count := Count + 1;
-         end if;
-      end Check_Entry;
-
-      procedure Check_Entries is new Iterate_Manifest_Section (Check_Entry);
-   begin
-      Check_Entries (Manifest, "facade");
-
-      Require_Minimum
-        (Root, Errors, "public_facade_size_min_budgets", Count,
-         "public facade byte budgets must cover the large root facades");
-   end Check_Public_Spec_Size_Guards;
-
-   procedure Check_Test_Source_Size_Guards
-     (Root   : String;
-      Errors : in out Natural)
-   is
-      Manifest : constant String :=
-        Read_File (Root, "docs/TEST_SOURCE_BUDGETS.toml");
-      Search      : Ada.Directories.Search_Type;
-      Search_Open : Boolean := False;
-      Item        : Ada.Directories.Directory_Entry_Type;
-      Budget_Count : Natural := 0;
-
-      function Is_Subunit_Test (Name : String) return Boolean is
-        (Contains (Name, "-test_") or else Contains (Name, "-check_"));
-
-      procedure Count_Budget (Entry_Pos : Positive) is
-         Prefix : constant String :=
-           Manifest_String_Value_After (Manifest, "prefix = ", Entry_Pos);
-         Parent_Max : constant Natural :=
-           Natural_Value_After (Manifest, "parent_max_lines = ", Entry_Pos);
-         Subunit_Max : constant Natural :=
-           Natural_Value_After (Manifest, "subunit_max_lines = ", Entry_Pos);
-         Usecase : constant String :=
-           Manifest_String_Value_After (Manifest, "usecase = ", Entry_Pos);
-      begin
-         if Prefix = "" or else Parent_Max = 0 or else Subunit_Max = 0
-           or else Usecase = ""
-         then
-            Error (Errors, "test source budget entry is incomplete");
-         else
-            Budget_Count := Budget_Count + 1;
-         end if;
-      end Count_Budget;
-
-      procedure Count_Budgets is new Iterate_Manifest_Section (Count_Budget);
-
-      function Budget_For
-        (Relative_Path : String;
-         Is_Subunit    : Boolean)
-         return Natural
-      is
-         Best_Length : Natural := 0;
-         Best_Max    : Natural := 0;
-
-         procedure Consider_Budget (Entry_Pos : Positive) is
-            Prefix : constant String :=
-              Manifest_String_Value_After (Manifest, "prefix = ", Entry_Pos);
-            Parent_Max : constant Natural :=
-              Natural_Value_After
-                (Manifest, "parent_max_lines = ", Entry_Pos);
-            Subunit_Max : constant Natural :=
-              Natural_Value_After
-                (Manifest, "subunit_max_lines = ", Entry_Pos);
-         begin
-            if Prefix /= "" and then Starts_With (Relative_Path, Prefix)
-              and then Prefix'Length > Best_Length
-            then
-               Best_Length := Prefix'Length;
-               Best_Max := (if Is_Subunit then Subunit_Max else Parent_Max);
-            end if;
-         end Consider_Budget;
-
-         procedure Consider_Budgets is
-           new Iterate_Manifest_Section (Consider_Budget);
-      begin
-         Consider_Budgets (Manifest, "suite");
-         return Best_Max;
-      end Budget_For;
-   begin
-      Count_Budgets (Manifest, "suite");
-      Require_Minimum
-        (Root, Errors, "test_source_budget_min_entries", Budget_Count,
-         "test source budget manifest covers too few suites");
-
-      Ada.Directories.Start_Search
-        (Search    => Search,
-         Directory => Root & "/tests/src",
-         Pattern   => "humanize-tests-*.adb",
-         Filter    => [Ada.Directories.Ordinary_File => True, others => False]);
-      Search_Open := True;
-
-      while Ada.Directories.More_Entries (Search) loop
-         Ada.Directories.Get_Next_Entry (Search, Item);
-         declare
-            Name : constant String := Ada.Directories.Simple_Name (Item);
-            Relative_Path : constant String := "tests/src/" & Name;
-            Lines : constant Natural :=
-              Line_Count (Read_File (Root, Relative_Path));
-            Max_Lines : constant Natural :=
-              Budget_For (Relative_Path, Is_Subunit_Test (Name));
-         begin
-            if Max_Lines = 0 then
-               Error
-                 (Errors,
-                  "test source budget missing for " & Relative_Path);
-            elsif Lines > Max_Lines then
-               Error
-                 (Errors,
-                  "test source size guard exceeded for " & Relative_Path);
-            end if;
-         end;
-      end loop;
-
-      Ada.Directories.End_Search (Search);
-      Search_Open := False;
-   exception
-      when Constraint_Error
-         | Ada.Directories.Name_Error
-         | Ada.Directories.Use_Error =>
-         if Search_Open then
-            Ada.Directories.End_Search (Search);
-         end if;
-         raise;
-   end Check_Test_Source_Size_Guards;
 
    procedure Check_Domain_Package_Consistency
      (Root   : String;
@@ -1056,13 +570,14 @@ package body Check_Humanize_Policy is
         (Root, Errors);
       Check_Performance_Baseline (Root, Errors);
       Check_Parser_Diagnostic_Defaults (Root, Errors);
-      Check_Intentional_Silent_Recovery (Root, Errors);
-      Check_Public_Spec_Size_Guards (Root, Errors);
-      Check_Test_Source_Size_Guards (Root, Errors);
+      Check_Humanize_Policy_Exception_Handlers
+        .Check_Intentional_Silent_Recovery (Root, Errors);
+      Check_Humanize_Policy_Test_Sources.Check_Test_Source_Size_Guards
+        (Root, Errors);
       Check_Humanize_Policy_Public_Facades.Check_Public_Facade_Budgets
         (Root, Errors);
       Check_Domain_Package_Consistency (Root, Errors);
-      Check_Non_Goals (Root, Errors);
+      Check_Humanize_Policy_Non_Goals.Check_Non_Goals (Root, Errors);
    end Check_Quality_Guards;
 
    procedure Check_Deep_Static

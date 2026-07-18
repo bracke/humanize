@@ -256,6 +256,11 @@ tooling manifests pin `gnat_native = "=15.2.1"`. Confirm with:
 alr exec -- gnatls --version
 ```
 
+`gnat_native = "=15.2.1"` is the Alire toolchain crate pin. The selected GNAT
+executable may report its upstream compiler patch string, such as
+`GNATLS 15.2.0`, so release checks accept an Alire-selected `GNATLS 15.2.x`
+banner while still requiring the exact manifest pin.
+
 Do not run plain system `gnat*`, `gnatmake`, `gnatls`, `gnatprove`, or
 `gprbuild` in this workspace. Use `alr exec -- ...` for compiler and builder
 commands so PATH cannot select a different GNAT installation.

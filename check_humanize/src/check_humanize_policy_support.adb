@@ -9,8 +9,11 @@ with CryptoLib.Hashes;
 
 with Project_Tools.Release_Checks;
 with Project_Tools.Text;
+with Project_Tools.TOML;
 
 package body Check_Humanize_Policy_Support is
+   use type Project_Tools.TOML.Natural_Parse_Status;
+
    Policy_Thresholds_Path : constant String := "docs/POLICY_THRESHOLDS.toml";
 
    procedure Error
@@ -119,36 +122,7 @@ package body Check_Humanize_Policy_Support is
       From : Positive)
       return Natural_Parse_Result
    is
-      Key_Pos : constant Natural :=
-        Ada.Strings.Fixed.Index (Text, Key, From => From);
-   begin
-      if Key_Pos = 0 then
-         return (Status => Missing_Natural, Value => 0);
-      end if;
-
-      declare
-         First : Natural := Key_Pos + Key'Length;
-         Last  : Natural := First;
-      begin
-         while First <= Text'Last and then Text (First) = ' ' loop
-            First := First + 1;
-         end loop;
-         Last := First;
-         while Last <= Text'Last and then Text (Last) in '0' .. '9' loop
-            Last := Last + 1;
-         end loop;
-         if Last = First then
-            return (Status => Malformed_Natural, Value => 0);
-         else
-            return
-              (Status => Parsed_Natural,
-               Value  => Natural'Value (Text (First .. Last - 1)));
-         end if;
-      end;
-   exception
-      when Constraint_Error =>
-         return (Status => Malformed_Natural, Value => 0);
-   end Parse_Natural_After;
+     (Project_Tools.TOML.Parse_Natural_After (Text, Key, From));
 
    function Natural_Value_After
      (Text : String;
@@ -156,15 +130,7 @@ package body Check_Humanize_Policy_Support is
       From : Positive)
       return Natural
    is
-      Parsed : constant Natural_Parse_Result :=
-        Parse_Natural_After (Text, Key, From);
-   begin
-      if Parsed.Status = Parsed_Natural then
-         return Parsed.Value;
-      else
-         return 0;
-      end if;
-   end Natural_Value_After;
+     (Project_Tools.TOML.Natural_Value_After (Text, Key, From));
 
    function Manifest_String_Value_After
      (Text : String;
@@ -172,15 +138,7 @@ package body Check_Humanize_Policy_Support is
       From : Positive)
       return String
    is
-      Parsed : constant String_Parse_Result :=
-        Parse_String_After (Text, Key, From);
-   begin
-      if Parsed.Status = Parsed_String then
-         return To_String (Parsed.Value);
-      else
-         return "";
-      end if;
-   end Manifest_String_Value_After;
+     (Project_Tools.TOML.String_Value_After (Text, Key, From));
 
    function Parse_String_After
      (Text : String;
@@ -188,46 +146,7 @@ package body Check_Humanize_Policy_Support is
       From : Positive)
       return String_Parse_Result
    is
-      Key_Pos : constant Natural :=
-        Ada.Strings.Fixed.Index (Text, Key, From => From);
-   begin
-      if Key_Pos = 0 then
-         return (Status => Missing_String, Value => Null_Unbounded_String);
-      end if;
-
-      declare
-         First : Natural := Key_Pos + Key'Length;
-      begin
-         while First <= Text'Last and then Text (First) = ' ' loop
-            First := First + 1;
-         end loop;
-
-         if First > Text'Last
-           or else (Text (First) /= '"' and then Text (First) /= ''')
-         then
-            return (Status => Malformed_String, Value => Null_Unbounded_String);
-         end if;
-
-         declare
-            Quote : constant Character := Text (First);
-            Last  : constant Natural :=
-              Ada.Strings.Fixed.Index
-                (Text, String'(1 => Quote), From => First + 1);
-         begin
-            if Last = 0 or else Last = First + 1 then
-               return
-                 (Status => Malformed_String, Value => Null_Unbounded_String);
-            end if;
-
-            return
-              (Status => Parsed_String,
-               Value  => To_Unbounded_String (Text (First + 1 .. Last - 1)));
-         end;
-      end;
-   exception
-      when Constraint_Error =>
-         return (Status => Malformed_String, Value => Null_Unbounded_String);
-   end Parse_String_After;
+     (Project_Tools.TOML.Parse_String_After (Text, Key, From));
 
    function Policy_Threshold
      (Root : String;
@@ -344,7 +263,6 @@ package body Check_Humanize_Policy_Support is
       Require_Key ("example_coverage_min_major_tasks");
       Require_Key ("example_coverage_min_public_api_families");
       Require_Key ("generated_docs_min_docs");
-      Require_Key ("public_facade_size_min_budgets");
       Require_Key ("public_facade_budget_min_entries");
       Require_Key ("domain_min_public_packages");
       Require_Key ("domain_min_example_covered_units");
@@ -448,32 +366,5 @@ package body Check_Humanize_Policy_Support is
       From : Positive)
       return String
    is
-      Key_Pos : constant Natural :=
-        Ada.Strings.Fixed.Index (Text, Key, From => From);
-   begin
-      if Key_Pos = 0 then
-         return "";
-      end if;
-
-      declare
-         First_Quote : constant Natural :=
-           Ada.Strings.Fixed.Index
-             (Text, """", From => Key_Pos + Key'Length);
-      begin
-         if First_Quote = 0 then
-            return "";
-         end if;
-
-         declare
-            Last_Quote : constant Natural :=
-              Ada.Strings.Fixed.Index (Text, """", From => First_Quote + 1);
-         begin
-            if Last_Quote = 0 or else Last_Quote = First_Quote + 1 then
-               return "";
-            end if;
-
-            return Text (First_Quote + 1 .. Last_Quote - 1);
-         end;
-      end;
-   end Quoted_Value_After;
+     (Project_Tools.TOML.Quoted_Value_After (Text, Key, From));
 end Check_Humanize_Policy_Support;

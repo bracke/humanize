@@ -1,0 +1,741 @@
+--  Provenance: generated from Humanize spellout tables; split shard: small locale spellout words.
+
+separate (Humanize.Numbers.Spellout_Data)
+function Small_Locale_Word
+     (Locale : String;
+      Value  : Natural)
+      return String
+   is
+      function English return String is
+      begin
+         if Value <= 20 then
+            return Under_Thousand (Value);
+         else
+            return "";
+         end if;
+      end English;
+   begin
+      if Locale = "de" then
+         case Value is
+            when 0 => return "null";
+            when 1 => return "eins";
+            when 2 => return "zwei";
+            when 3 => return "drei";
+            when 4 => return "vier";
+            when 5 => return "f" & U_U_Umlaut & "nf";
+            when 6 => return "sechs";
+            when 7 => return "sieben";
+            when 8 => return "acht";
+            when 9 => return "neun";
+            when 10 => return "zehn";
+            when 11 => return "elf";
+            when 12 => return "zw" & U_O_Umlaut & "lf";
+            when 13 => return "dreizehn";
+            when 14 => return "vierzehn";
+            when 15 => return "f" & U_U_Umlaut & "nfzehn";
+            when 16 => return "sechzehn";
+            when 17 => return "siebzehn";
+            when 18 => return "achtzehn";
+            when 19 => return "neunzehn";
+            when 20 => return "zwanzig";
+            when others => return "";
+         end case;
+      elsif Locale = "fr" then
+         case Value is
+            when 0 => return "z" & U_E_Acute & "ro";
+            when 1 => return "un";
+            when 2 => return "deux";
+            when 3 => return "trois";
+            when 4 => return "quatre";
+            when 5 => return "cinq";
+            when 6 => return "six";
+            when 7 => return "sept";
+            when 8 => return "huit";
+            when 9 => return "neuf";
+            when 10 => return "dix";
+            when 11 => return "onze";
+            when 12 => return "douze";
+            when 13 => return "treize";
+            when 14 => return "quatorze";
+            when 15 => return "quinze";
+            when 16 => return "seize";
+            when 17 => return "dix-sept";
+            when 18 => return "dix-huit";
+            when 19 => return "dix-neuf";
+            when 20 => return "vingt";
+            when others => return "";
+         end case;
+      elsif Locale = "da" then
+         case Value is
+            when 0 => return "nul";
+            when 1 => return "en";
+            when 2 => return "to";
+            when 3 => return "tre";
+            when 4 => return "fire";
+            when 5 => return "fem";
+            when 6 => return "seks";
+            when 7 => return "syv";
+            when 8 => return "otte";
+            when 9 => return "ni";
+            when 10 => return "ti";
+            when 11 => return "elleve";
+            when 12 => return "tolv";
+            when 13 => return "tretten";
+            when 14 => return "fjorten";
+            when 15 => return "femten";
+            when 16 => return "seksten";
+            when 17 => return "sytten";
+            when 18 => return "atten";
+            when 19 => return "nitten";
+            when 20 => return "tyve";
+            when others => return "";
+         end case;
+      elsif Locale = "es" then
+         case Value is
+            when 0 => return "cero";
+            when 1 => return "uno";
+            when 2 => return "dos";
+            when 3 => return "tres";
+            when 4 => return "cuatro";
+            when 5 => return "cinco";
+            when 6 => return "seis";
+            when 7 => return "siete";
+            when 8 => return "ocho";
+            when 9 => return "nueve";
+            when 10 => return "diez";
+            when 11 => return "once";
+            when 12 => return "doce";
+            when 13 => return "trece";
+            when 14 => return "catorce";
+            when 15 => return "quince";
+            when 16 => return "diecis" & U_E_Acute & "is";
+            when 17 => return "diecisiete";
+            when 18 => return "dieciocho";
+            when 19 => return "diecinueve";
+            when 20 => return "veinte";
+            when others => return "";
+         end case;
+      elsif Locale = "it" then
+         case Value is
+            when 0 => return "zero";
+            when 1 => return "uno";
+            when 2 => return "due";
+            when 3 => return "tre";
+            when 4 => return "quattro";
+            when 5 => return "cinque";
+            when 6 => return "sei";
+            when 7 => return "sette";
+            when 8 => return "otto";
+            when 9 => return "nove";
+            when 10 => return "dieci";
+            when 11 => return "undici";
+            when 12 => return "dodici";
+            when 13 => return "tredici";
+            when 14 => return "quattordici";
+            when 15 => return "quindici";
+            when 16 => return "sedici";
+            when 17 => return "diciassette";
+            when 18 => return "diciotto";
+            when 19 => return "diciannove";
+            when 20 => return "venti";
+            when others => return "";
+         end case;
+      elsif Locale = "pt" then
+         case Value is
+            when 0 => return "zero";
+            when 1 => return "um";
+            when 2 => return "dois";
+            when 3 => return "tr" & U_E_Circumflex & "s";
+            when 4 => return "quatro";
+            when 5 => return "cinco";
+            when 6 => return "seis";
+            when 7 => return "sete";
+            when 8 => return "oito";
+            when 9 => return "nove";
+            when 10 => return "dez";
+            when 11 => return "onze";
+            when 12 => return "doze";
+            when 13 => return "treze";
+            when 14 => return "catorze";
+            when 15 => return "quinze";
+            when 16 => return "dezesseis";
+            when 17 => return "dezessete";
+            when 18 => return "dezoito";
+            when 19 => return "dezenove";
+            when 20 => return "vinte";
+            when others => return "";
+         end case;
+      elsif Locale = "nl" then
+         case Value is
+            when 0 => return "nul";
+            when 1 => return "een";
+            when 2 => return "twee";
+            when 3 => return "drie";
+            when 4 => return "vier";
+            when 5 => return "vijf";
+            when 6 => return "zes";
+            when 7 => return "zeven";
+            when 8 => return "acht";
+            when 9 => return "negen";
+            when 10 => return "tien";
+            when 11 => return "elf";
+            when 12 => return "twaalf";
+            when 13 => return "dertien";
+            when 14 => return "veertien";
+            when 15 => return "vijftien";
+            when 16 => return "zestien";
+            when 17 => return "zeventien";
+            when 18 => return "achttien";
+            when 19 => return "negentien";
+            when 20 => return "twintig";
+            when others => return "";
+         end case;
+      elsif Locale = "sv" then
+         case Value is
+            when 0 => return "noll";
+            when 1 => return "ett";
+            when 2 => return "tv" & U_A_Ring;
+            when 3 => return "tre";
+            when 4 => return "fyra";
+            when 5 => return "fem";
+            when 6 => return "sex";
+            when 7 => return "sju";
+            when 8 => return U_A_Ring & "tta";
+            when 9 => return "nio";
+            when 10 => return "tio";
+            when 11 => return "elva";
+            when 12 => return "tolv";
+            when 13 => return "tretton";
+            when 14 => return "fjorton";
+            when 15 => return "femton";
+            when 16 => return "sexton";
+            when 17 => return "sjutton";
+            when 18 => return "arton";
+            when 19 => return "nitton";
+            when 20 => return "tjugo";
+            when others => return "";
+         end case;
+      elsif Humanize.Locales.Is_Norwegian (Locale) then
+         case Value is
+            when 0 => return "null";
+            when 1 => return "en";
+            when 2 => return "to";
+            when 3 => return "tre";
+            when 4 => return "fire";
+            when 5 => return "fem";
+            when 6 => return "seks";
+            when 7 => return "sju";
+            when 8 => return U_A_Ring & "tte";
+            when 9 => return "ni";
+            when 10 => return "ti";
+            when 11 => return "elleve";
+            when 12 => return "tolv";
+            when 13 => return "tretten";
+            when 14 => return "fjorten";
+            when 15 => return "femten";
+            when 16 => return "seksten";
+            when 17 => return "sytten";
+            when 18 => return "atten";
+            when 19 => return "nitten";
+            when 20 => return "tjue";
+            when others => return "";
+         end case;
+      elsif Locale = "fi" then
+         case Value is
+            when 0 => return "nolla";
+            when 1 => return "yksi";
+            when 2 => return "kaksi";
+            when 3 => return "kolme";
+            when 4 => return "nelj" & U_A_Umlaut;
+            when 5 => return "viisi";
+            when 6 => return "kuusi";
+            when 7 => return "seitsem" & U_A_Umlaut & "n";
+            when 8 => return "kahdeksan";
+            when 9 => return "yhdeks" & U_A_Umlaut & "n";
+            when 10 => return "kymmenen";
+            when 11 => return "yksitoista";
+            when 12 => return "kaksitoista";
+            when 13 => return "kolmetoista";
+            when 14 => return "nelj" & U_A_Umlaut & "toista";
+            when 15 => return "viisitoista";
+            when 16 => return "kuusitoista";
+            when 17 => return "seitsem" & U_A_Umlaut & "ntoista";
+            when 18 => return "kahdeksantoista";
+            when 19 => return "yhdeks" & U_A_Umlaut & "ntoista";
+            when 20 => return "kaksikymment" & U_A_Umlaut;
+            when others => return "";
+         end case;
+      elsif Locale = "tr" then
+         case Value is
+            when 0 => return "s" & U_I_Dotless & "f" & U_I_Dotless & "r";
+            when 1 => return "bir";
+            when 2 => return "iki";
+            when 3 => return U_U_Umlaut & U_C_Cedilla;
+            when 4 => return "d" & U_O_Umlaut & "rt";
+            when 5 => return "be" & U_S_Cedilla;
+            when 6 => return "alt" & U_I_Dotless;
+            when 7 => return "yedi";
+            when 8 => return "sekiz";
+            when 9 => return "dokuz";
+            when 10 => return "on";
+            when 11 => return "on bir";
+            when 12 => return "on iki";
+            when 13 => return "on " & U_U_Umlaut & U_C_Cedilla;
+            when 14 => return "on d" & U_O_Umlaut & "rt";
+            when 15 => return "on be" & U_S_Cedilla;
+            when 16 => return "on alt" & U_I_Dotless;
+            when 17 => return "on yedi";
+            when 18 => return "on sekiz";
+            when 19 => return "on dokuz";
+            when 20 => return "yirmi";
+            when others => return "";
+         end case;
+      elsif Locale = "pl" then
+         case Value is
+            when 0 => return "zero";
+            when 1 => return "jeden";
+            when 2 => return "dwa";
+            when 3 => return "trzy";
+            when 4 => return "cztery";
+            when 5 => return "pi" & U (16#119#) & U (16#107#);
+            when 6 => return "sze" & U (16#15B#) & U (16#107#);
+            when 7 => return "siedem";
+            when 8 => return "osiem";
+            when 9 => return "dziewi" & U (16#119#) & U (16#107#);
+            when 10 => return "dziesi" & U (16#119#) & U (16#107#);
+            when 11 => return "jedena" & U (16#15B#) & "cie";
+            when 12 => return "dwana" & U (16#15B#) & "cie";
+            when 13 => return "trzyna" & U (16#15B#) & "cie";
+            when 14 => return "czterna" & U (16#15B#) & "cie";
+            when 15 => return "pi" & U (16#119#) & "tna" & U (16#15B#) & "cie";
+            when 16 => return "szesna" & U (16#15B#) & "cie";
+            when 17 => return "siedemna" & U (16#15B#) & "cie";
+            when 18 => return "osiemna" & U (16#15B#) & "cie";
+            when 19 => return "dziewi" & U (16#119#) & "tna" & U (16#15B#) & "cie";
+            when 20 => return "dwadzie" & U (16#15B#) & "cia";
+            when others => return "";
+         end case;
+      elsif Locale = "cs" then
+         case Value is
+            when 0 => return "nula";
+            when 1 => return "jedna";
+            when 2 => return "dva";
+            when 3 => return "t" & U (16#159#) & "i";
+            when 4 => return U (16#10D#) & "ty" & U (16#159#) & "i";
+            when 5 => return "p" & U (16#11B#) & "t";
+            when 6 => return U (16#161#) & "est";
+            when 7 => return "sedm";
+            when 8 => return "osm";
+            when 9 => return "dev" & U (16#11B#) & "t";
+            when 10 => return "deset";
+            when 11 => return "jeden" & U (16#E1#) & "ct";
+            when 12 => return "dvan" & U (16#E1#) & "ct";
+            when 13 => return "t" & U (16#159#) & "in" & U (16#E1#) & "ct";
+            when 14 => return U (16#10D#) & "trn" & U (16#E1#) & "ct";
+            when 15 => return "patn" & U (16#E1#) & "ct";
+            when 16 => return U (16#161#) & "estn" & U (16#E1#) & "ct";
+            when 17 => return "sedmn" & U (16#E1#) & "ct";
+            when 18 => return "osmn" & U (16#E1#) & "ct";
+            when 19 => return "devaten" & U (16#E1#) & "ct";
+            when 20 => return "dvacet";
+            when others => return "";
+         end case;
+      elsif Locale = "ru" then
+         case Value is
+            when 0 => return U (16#43D#) & U (16#43E#) & U (16#43B#) & U (16#44C#);
+            when 1 => return U (16#43E#) & U (16#434#) & U (16#438#) & U (16#43D#);
+            when 2 => return U (16#434#) & U (16#432#) & U (16#430#);
+            when 3 => return U (16#442#) & U (16#440#) & U (16#438#);
+            when 4 => return U (16#447#) & U (16#435#) & U (16#442#) & U (16#44B#) & U (16#440#) & U (16#435#);
+            when 5 => return U (16#43F#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 6 => return U (16#448#) & U (16#435#) & U (16#441#) & U (16#442#) & U (16#44C#);
+            when 7 => return U (16#441#) & U (16#435#) & U (16#43C#) & U (16#44C#);
+            when 8 => return U (16#432#) & U (16#43E#) & U (16#441#) & U (16#435#) & U (16#43C#) & U (16#44C#);
+            when 9 => return U (16#434#) & U (16#435#) & U (16#432#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 10 => return U (16#434#) & U (16#435#) & U (16#441#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 11 => return U (16#43E#) & U (16#434#) & U (16#438#) & U (16#43D#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#430#) & U (16#442#) & U (16#44C#);
+            when 12 => return U (16#434#) & U (16#432#) & U (16#435#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#430#) & U (16#442#) & U (16#44C#);
+            when 13 => return U (16#442#) & U (16#440#) & U (16#438#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#430#) & U (16#442#) & U (16#44C#);
+            when 14 => return U (16#447#) & U (16#435#) & U (16#442#) & U (16#44B#) & U (16#440#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#430#) & U (16#442#) & U (16#44C#);
+            when 15 => return U (16#43F#) & U (16#44F#) & U (16#442#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#430#) & U (16#442#) & U (16#44C#);
+            when 16 => return U (16#448#) & U (16#435#) & U (16#441#) & U (16#442#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#430#) & U (16#442#) & U (16#44C#);
+            when 17 => return U (16#441#) & U (16#435#) & U (16#43C#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#430#) & U (16#442#) & U (16#44C#);
+            when 18 => return U (16#432#) & U (16#43E#) & U (16#441#) & U (16#435#) & U (16#43C#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#430#) & U (16#442#) & U (16#44C#);
+            when 19 => return U (16#434#) & U (16#435#) & U (16#432#) & U (16#44F#) & U (16#442#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#430#) & U (16#442#) & U (16#44C#);
+            when 20 => return U (16#434#) & U (16#432#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#430#) & U (16#442#) & U (16#44C#);
+            when others => return "";
+         end case;
+      elsif Locale = "uk" then
+         case Value is
+            when 0 => return U (16#43D#) & U (16#443#) & U (16#43B#) & U (16#44C#);
+            when 1 => return U (16#43E#) & U (16#434#) & U (16#438#) & U (16#43D#);
+            when 2 => return U (16#434#) & U (16#432#) & U (16#430#);
+            when 3 => return U (16#442#) & U (16#440#) & U (16#438#);
+            when 4 => return U (16#447#) & U (16#43E#) & U (16#442#) & U (16#438#) & U (16#440#) & U (16#438#);
+            when 5 => return U (16#43F#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 6 => return U (16#448#) & U (16#456#) & U (16#441#) & U (16#442#) & U (16#44C#);
+            when 7 => return U (16#441#) & U (16#456#) & U (16#43C#);
+            when 8 => return U (16#432#) & U (16#456#) & U (16#441#) & U (16#456#) & U (16#43C#);
+            when 9 => return U (16#434#) & U (16#435#) & U (16#432#) & U (16#2019#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 10 => return U (16#434#) & U (16#435#) & U (16#441#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 11 => return U (16#43E#) & U (16#434#) & U (16#438#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 12 => return U (16#434#) & U (16#432#) & U (16#430#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 13 => return U (16#442#) & U (16#440#) & U (16#438#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 14 => return U (16#447#) & U (16#43E#) & U (16#442#) & U (16#438#) & U (16#440#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 15 => return U (16#43F#) & U (16#2019#) & U (16#44F#) & U (16#442#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 16 => return U (16#448#) & U (16#456#) & U (16#441#) & U (16#442#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 17 => return U (16#441#) & U (16#456#) & U (16#43C#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 18 => return U (16#432#) & U (16#456#) & U (16#441#) & U (16#456#) & U (16#43C#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 19 => return U (16#434#) & U (16#435#) & U (16#432#) & U (16#2019#) & U (16#44F#) & U (16#442#) & U (16#43D#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when 20 => return U (16#434#) & U (16#432#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#44C#);
+            when others => return "";
+         end case;
+      elsif Locale = "ja" then
+         case Value is
+            when 0 => return U (16#96F6#);
+            when 1 => return U (16#4E00#);
+            when 2 => return U (16#4E8C#);
+            when 3 => return U (16#4E09#);
+            when 4 => return U (16#56DB#);
+            when 5 => return U (16#4E94#);
+            when 6 => return U (16#516D#);
+            when 7 => return U (16#4E03#);
+            when 8 => return U (16#516B#);
+            when 9 => return U (16#4E5D#);
+            when 10 => return U (16#5341#);
+            when others => return "";
+         end case;
+      elsif Locale = "ko" then
+         case Value is
+            when 0 => return U (16#C601#);
+            when 1 => return U (16#C77C#);
+            when 2 => return U (16#C774#);
+            when 3 => return U (16#C0BC#);
+            when 4 => return U (16#C0AC#);
+            when 5 => return U (16#C624#);
+            when 6 => return U (16#C721#);
+            when 7 => return U (16#CE60#);
+            when 8 => return U (16#D314#);
+            when 9 => return U (16#AD6C#);
+            when 10 => return U (16#C2ED#);
+            when others => return "";
+         end case;
+      elsif Locale = "zh" then
+         case Value is
+            when 0 => return U (16#96F6#);
+            when 1 => return U (16#4E00#);
+            when 2 => return U (16#4E8C#);
+            when 3 => return U (16#4E09#);
+            when 4 => return U (16#56DB#);
+            when 5 => return U (16#4E94#);
+            when 6 => return U (16#516D#);
+            when 7 => return U (16#4E03#);
+            when 8 => return U (16#516B#);
+            when 9 => return U (16#4E5D#);
+            when 10 => return U (16#5341#);
+            when others => return "";
+         end case;
+      elsif Locale = "ar" then
+         case Value is
+            when 0 => return U (16#635#) & U (16#641#) & U (16#631#);
+            when 1 => return U (16#648#) & U (16#627#) & U (16#62D#) & U (16#62F#);
+            when 2 => return U (16#627#) & U (16#62B#) & U (16#646#) & U (16#627#) & U (16#646#);
+            when 3 => return U (16#62B#) & U (16#644#) & U (16#627#) & U (16#62B#) & U (16#629#);
+            when 4 => return U (16#623#) & U (16#631#) & U (16#628#) & U (16#639#) & U (16#629#);
+            when 5 => return U (16#62E#) & U (16#645#) & U (16#633#) & U (16#629#);
+            when 6 => return U (16#633#) & U (16#62A#) & U (16#629#);
+            when 7 => return U (16#633#) & U (16#628#) & U (16#639#) & U (16#629#);
+            when 8 => return U (16#62B#) & U (16#645#) & U (16#627#) & U (16#646#) & U (16#64A#) & U (16#629#);
+            when 9 => return U (16#62A#) & U (16#633#) & U (16#639#) & U (16#629#);
+            when 10 => return U (16#639#) & U (16#634#) & U (16#631#) & U (16#629#);
+            when 11 => return U (16#623#) & U (16#62D#) & U (16#62F#) & U (16#20#) & U (16#639#) & U (16#634#) & U (16#631#);
+            when 12 => return U (16#627#) & U (16#62B#) & U (16#646#) & U (16#627#) & U (16#20#) & U (16#639#) & U (16#634#) & U (16#631#);
+            when 13 => return U (16#62B#) & U (16#644#) & U (16#627#) & U (16#62B#) & U (16#629#) & U (16#20#) & U (16#639#) & U (16#634#) & U (16#631#);
+            when 14 => return U (16#623#) & U (16#631#) & U (16#628#) & U (16#639#) & U (16#629#) & U (16#20#) & U (16#639#) & U (16#634#) & U (16#631#);
+            when 15 => return U (16#62E#) & U (16#645#) & U (16#633#) & U (16#629#) & U (16#20#) & U (16#639#) & U (16#634#) & U (16#631#);
+            when 16 => return U (16#633#) & U (16#62A#) & U (16#629#) & U (16#20#) & U (16#639#) & U (16#634#) & U (16#631#);
+            when 17 => return U (16#633#) & U (16#628#) & U (16#639#) & U (16#629#) & U (16#20#) & U (16#639#) & U (16#634#) & U (16#631#);
+            when 18 => return U (16#62B#) & U (16#645#) & U (16#627#) & U (16#646#) & U (16#64A#) & U (16#629#) & U (16#20#) & U (16#639#) & U (16#634#) & U (16#631#);
+            when 19 => return U (16#62A#) & U (16#633#) & U (16#639#) & U (16#629#) & U (16#20#) & U (16#639#) & U (16#634#) & U (16#631#);
+            when 20 => return U (16#639#) & U (16#634#) & U (16#631#) & U (16#648#) & U (16#646#);
+            when others => return "";
+         end case;
+      elsif Locale = "hi" then
+         case Value is
+            when 0 => return U (16#936#) & U (16#942#) & U (16#928#) & U (16#94D#) & U (16#92F#);
+            when 1 => return U (16#90F#) & U (16#915#);
+            when 2 => return U (16#926#) & U (16#94B#);
+            when 3 => return U (16#924#) & U (16#940#) & U (16#928#);
+            when 4 => return U (16#91A#) & U (16#93E#) & U (16#930#);
+            when 5 => return U (16#92A#) & U (16#93E#) & U (16#901#) & U (16#91A#);
+            when 6 => return U (16#91B#) & U (16#939#);
+            when 7 => return U (16#938#) & U (16#93E#) & U (16#924#);
+            when 8 => return U (16#906#) & U (16#920#);
+            when 9 => return U (16#928#) & U (16#94C#);
+            when 10 => return U (16#926#) & U (16#938#);
+            when 11 => return U (16#917#) & U (16#94D#) & U (16#92F#) & U (16#93E#) & U (16#930#) & U (16#939#);
+            when 12 => return U (16#92C#) & U (16#93E#) & U (16#930#) & U (16#939#);
+            when 13 => return U (16#924#) & U (16#947#) & U (16#930#) & U (16#939#);
+            when 14 => return U (16#91A#) & U (16#94C#) & U (16#926#) & U (16#939#);
+            when 15 => return U (16#92A#) & U (16#902#) & U (16#926#) & U (16#94D#) & U (16#930#) & U (16#939#);
+            when 16 => return U (16#938#) & U (16#94B#) & U (16#932#) & U (16#939#);
+            when 17 => return U (16#938#) & U (16#924#) & U (16#94D#) & U (16#930#) & U (16#939#);
+            when 18 => return U (16#905#) & U (16#920#) & U (16#93E#) & U (16#930#) & U (16#939#);
+            when 19 => return U (16#909#) & U (16#928#) & U (16#94D#) & U (16#928#) & U (16#940#) & U (16#938#);
+            when 20 => return U (16#92C#) & U (16#940#) & U (16#938#);
+            when others => return "";
+         end case;
+      elsif Locale = "ro" then
+         case Value is
+            when 0 => return "zero";
+            when 1 => return "unu";
+            when 2 => return "doi";
+            when 3 => return "trei";
+            when 4 => return "patru";
+            when 5 => return "cinci";
+            when 6 => return "sase";
+            when 7 => return "sapte";
+            when 8 => return "opt";
+            when 9 => return "noua";
+            when 10 => return "zece";
+            when 11 => return "unsprezece";
+            when 12 => return "doisprezece";
+            when 13 => return "treisprezece";
+            when 14 => return "paisprezece";
+            when 15 => return "cincisprezece";
+            when 16 => return "saisprezece";
+            when 17 => return "saptesprezece";
+            when 18 => return "optsprezece";
+            when 19 => return "nouasprezece";
+            when 20 => return "douazeci";
+            when others => return "";
+         end case;
+      elsif Locale = "lt" then
+         case Value is
+            when 0 => return "nulis";
+            when 1 => return "vienas";
+            when 2 => return "du";
+            when 3 => return "trys";
+            when 4 => return "keturi";
+            when 5 => return "penki";
+            when 6 => return "sesi";
+            when 7 => return "septyni";
+            when 8 => return "astuoni";
+            when 9 => return "devyni";
+            when 10 => return "desimt";
+            when 11 => return "vienuolika";
+            when 12 => return "dvylika";
+            when 13 => return "trylika";
+            when 14 => return "keturiolika";
+            when 15 => return "penkiolika";
+            when 16 => return "sesiolika";
+            when 17 => return "septyniolika";
+            when 18 => return "astuoniolika";
+            when 19 => return "devyniolika";
+            when 20 => return "dvidesimt";
+            when others => return "";
+         end case;
+      elsif Locale = "sl" then
+         case Value is
+            when 0 => return "nic";
+            when 1 => return "ena";
+            when 2 => return "dve";
+            when 3 => return "tri";
+            when 4 => return "stiri";
+            when 5 => return "pet";
+            when 6 => return "sest";
+            when 7 => return "sedem";
+            when 8 => return "osem";
+            when 9 => return "devet";
+            when 10 => return "deset";
+            when 11 => return "enajst";
+            when 12 => return "dvanajst";
+            when 13 => return "trinajst";
+            when 14 => return "stirinajst";
+            when 15 => return "petnajst";
+            when 16 => return "sestnajst";
+            when 17 => return "sedemnajst";
+            when 18 => return "osemnajst";
+            when 19 => return "devetnajst";
+            when 20 => return "dvajset";
+            when others => return "";
+         end case;
+      elsif Locale = "id" or else Locale = "ms" then
+         case Value is
+            when 0 => return (if Locale = "ms" then "sifar" else "nol");
+            when 1 => return "satu";
+            when 2 => return "dua";
+            when 3 => return "tiga";
+            when 4 => return "empat";
+            when 5 => return "lima";
+            when 6 => return "enam";
+            when 7 => return "tujuh";
+            when 8 => return (if Locale = "ms" then "lapan" else "delapan");
+            when 9 => return "sembilan";
+            when 10 => return "sepuluh";
+            when 11 => return "sebelas";
+            when 12 => return "dua belas";
+            when 13 => return "tiga belas";
+            when 14 => return "empat belas";
+            when 15 => return "lima belas";
+            when 16 => return "enam belas";
+            when 17 => return "tujuh belas";
+            when 18 => return (if Locale = "ms" then "lapan belas" else "delapan belas");
+            when 19 => return "sembilan belas";
+            when 20 => return "dua puluh";
+            when others => return "";
+         end case;
+      elsif Locale = "eo" then
+         case Value is
+            when 0 => return "nulo";
+            when 1 => return "unu";
+            when 2 => return "du";
+            when 3 => return "tri";
+            when 4 => return "kvar";
+            when 5 => return "kvin";
+            when 6 => return "ses";
+            when 7 => return "sep";
+            when 8 => return "ok";
+            when 9 => return "nau";
+            when 10 => return "dek";
+            when 11 => return "dek unu";
+            when 12 => return "dek du";
+            when 13 => return "dek tri";
+            when 14 => return "dek kvar";
+            when 15 => return "dek kvin";
+            when 16 => return "dek ses";
+            when 17 => return "dek sep";
+            when 18 => return "dek ok";
+            when 19 => return "dek nau";
+            when 20 => return "dudek";
+            when others => return "";
+         end case;
+      elsif Locale = "vi" then
+         case Value is
+            when 0 => return "khong";
+            when 1 => return "mot";
+            when 2 => return "hai";
+            when 3 => return "ba";
+            when 4 => return "bon";
+            when 5 => return "nam";
+            when 6 => return "sau";
+            when 7 => return "bay";
+            when 8 => return "tam";
+            when 9 => return "chin";
+            when 10 => return "muoi";
+            when 11 => return "muoi mot";
+            when 12 => return "muoi hai";
+            when 13 => return "muoi ba";
+            when 14 => return "muoi bon";
+            when 15 => return "muoi lam";
+            when 16 => return "muoi sau";
+            when 17 => return "muoi bay";
+            when 18 => return "muoi tam";
+            when 19 => return "muoi chin";
+            when 20 => return "hai muoi";
+            when others => return "";
+         end case;
+      elsif Locale = "sw" then
+         case Value is
+            when 0 => return "sifuri";
+            when 1 => return "moja";
+            when 2 => return "mbili";
+            when 3 => return "tatu";
+            when 4 => return "nne";
+            when 5 => return "tano";
+            when 6 => return "sita";
+            when 7 => return "saba";
+            when 8 => return "nane";
+            when 9 => return "tisa";
+            when 10 => return "kumi";
+            when 11 => return "kumi na moja";
+            when 12 => return "kumi na mbili";
+            when 13 => return "kumi na tatu";
+            when 14 => return "kumi na nne";
+            when 15 => return "kumi na tano";
+            when 16 => return "kumi na sita";
+            when 17 => return "kumi na saba";
+            when 18 => return "kumi na nane";
+            when 19 => return "kumi na tisa";
+            when 20 => return "ishirini";
+            when others => return "";
+         end case;
+      elsif Locale = "af" then
+         case Value is
+            when 0 => return "nul";
+            when 1 => return "een";
+            when 2 => return "twee";
+            when 3 => return "drie";
+            when 4 => return "vier";
+            when 5 => return "vyf";
+            when 6 => return "ses";
+            when 7 => return "sewe";
+            when 8 => return "agt";
+            when 9 => return "nege";
+            when 10 => return "tien";
+            when 11 => return "elf";
+            when 12 => return "twaalf";
+            when 13 => return "dertien";
+            when 14 => return "veertien";
+            when 15 => return "vyftien";
+            when 16 => return "sestien";
+            when 17 => return "sewentien";
+            when 18 => return "agtien";
+            when 19 => return "negentien";
+            when 20 => return "twintig";
+            when others => return "";
+         end case;
+      elsif Locale = "hu" then
+         case Value is
+            when 0 => return "nulla";
+            when 1 => return "egy";
+            when 2 => return "ketto";
+            when 3 => return "harom";
+            when 4 => return "negy";
+            when 5 => return "ot";
+            when 6 => return "hat";
+            when 7 => return "het";
+            when 8 => return "nyolc";
+            when 9 => return "kilenc";
+            when 10 => return "tiz";
+            when 11 => return "tizenegy";
+            when 12 => return "tizenketto";
+            when 13 => return "tizenharom";
+            when 14 => return "tizennegy";
+            when 15 => return "tizenot";
+            when 16 => return "tizenhat";
+            when 17 => return "tizenhet";
+            when 18 => return "tizennyolc";
+            when 19 => return "tizenkilenc";
+            when 20 => return "husz";
+            when others => return "";
+         end case;
+      elsif Locale = "sk" then
+         case Value is
+            when 0 => return "nula";
+            when 1 => return "jeden";
+            when 2 => return "dva";
+            when 3 => return "tri";
+            when 4 => return "styri";
+            when 5 => return "pat";
+            when 6 => return "sest";
+            when 7 => return "sedem";
+            when 8 => return "osem";
+            when 9 => return "devat";
+            when 10 => return "desat";
+            when 11 => return "jedenast";
+            when 12 => return "dvanast";
+            when 13 => return "trinast";
+            when 14 => return "strnast";
+            when 15 => return "patnast";
+            when 16 => return "sestnast";
+            when 17 => return "sedemnast";
+            when 18 => return "osemnast";
+            when 19 => return "devatnast";
+            when 20 => return "dvadsat";
+            when others => return "";
+         end case;
+      else
+         return English;
+      end if;
+   end Small_Locale_Word;

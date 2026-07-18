@@ -768,8 +768,38 @@ message = "generated-data manifest must include native catalog data"
 
 [[required_text]]
 path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-catalogs-native_data-nordic_slavic_locale_catalogs.adb"'
+message = "generated-data manifest must include Nordic/Slavic native catalog shard"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-catalogs-native_data-additional_latin_locale_catalogs.adb"'
+message = "generated-data manifest must include additional Latin native catalog shard"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-catalogs-native_data-native_script_locale_catalogs.adb"'
+message = "generated-data manifest must include native-script catalog shard"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
 pattern = 'path = "src/humanize-numbers-spellout_data.adb"'
 message = "generated-data manifest must include spellout data"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-numbers-spellout_data-small_locale_word.adb"'
+message = "generated-data manifest must include small-word spellout shard"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-numbers-spellout_data-locale_tens_word.adb"'
+message = "generated-data manifest must include tens-word spellout shard"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-numbers-spellout_data-locale_ordinal_words_text.adb"'
+message = "generated-data manifest must include ordinal-word spellout shard"
 
 [[required_text]]
 path = "docs/GENERATED_DATA.toml"

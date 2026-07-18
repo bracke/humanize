@@ -1,9 +1,16 @@
-# Structural baseline for large implementation bodies.
-# The policy checker validates these limits and split inventories so large
-# compatibility backends do not silently grow back into unbounded monoliths.
+# Structural baseline for large implementation and support units.
+# The policy checker validates line ratchets, hard line/byte limits, and split
+# inventories so large compatibility backends, generated/native data, and
+# support specs do not silently grow back into unbounded monoliths. target_lines
+# records the reviewed baseline; max_lines is the hard growth gate;
+# min_headroom_lines keeps targets away from hard caps. Use min_split_bodies = 0
+# for large units without subunits.
 
 [[body]]
 path = "src/humanize-colors-support-backend.adb"
+target_lines = 2701
+max_lines = 2900
+min_headroom_lines = 150
 max_bytes = 95000
 split_prefix = "src/humanize-colors-support-backend-"
 min_split_bodies = 18
@@ -11,6 +18,9 @@ usecase = "CSS parsing, palette, accessibility, color-space conversion, and boun
 
 [[body]]
 path = "src/humanize-strings-support-backend.adb"
+target_lines = 2764
+max_lines = 2950
+min_headroom_lines = 150
 max_bytes = 93000
 split_prefix = "src/humanize-strings-support-backend-"
 min_split_bodies = 22
@@ -18,6 +28,9 @@ usecase = "Text display, editing, names, paths, prose, metadata, and terminal re
 
 [[body]]
 path = "src/humanize-datetimes-support.adb"
+target_lines = 2146
+max_lines = 2300
+min_headroom_lines = 120
 max_bytes = 83000
 split_prefix = "src/humanize-datetimes-support-"
 min_split_bodies = 2
@@ -25,6 +38,9 @@ usecase = "Relative date/time and calendar helper backend."
 
 [[body]]
 path = "src/humanize-cross_domain-support.adb"
+target_lines = 2020
+max_lines = 2150
+min_headroom_lines = 100
 max_bytes = 75000
 split_prefix = "src/humanize-cross_domain-support-"
 min_split_bodies = 2
@@ -32,13 +48,99 @@ usecase = "Cross-domain technical label backend with checksum/product-code subun
 
 [[body]]
 path = "src/humanize-domain_details-support.adb"
+target_lines = 2041
+max_lines = 2180
+min_headroom_lines = 100
 max_bytes = 73000
 split_prefix = "src/humanize-domain_details-support-"
 min_split_bodies = 1
 usecase = "Domain-detail metadata and parsing support backend."
 
 [[body]]
+path = "src/humanize-catalogs-native_data.adb"
+target_lines = 833
+max_lines = 1000
+min_headroom_lines = 120
+max_bytes = 40000
+split_prefix = "src/humanize-catalogs-native_data-"
+min_split_bodies = 3
+usecase = "Reviewed native catalog data; broad locale-family fragments live in split shards."
+
+[[body]]
+path = "src/humanize-phrases-support-backend.adb"
+target_lines = 2451
+max_lines = 2650
+min_headroom_lines = 150
+max_bytes = 85000
+split_prefix = "src/humanize-phrases-support-backend-"
+min_split_bodies = 24
+usecase = "Phrase support backend dispatcher and shared helpers; new phrase families should prefer focused subunits."
+
+[[body]]
+path = "src/humanize-units-support.adb"
+target_lines = 1996
+max_lines = 2150
+min_headroom_lines = 120
+max_bytes = 75000
+split_prefix = "src/humanize-units-support-"
+min_split_bodies = 1
+usecase = "Unit formatting and locale inflection support backend."
+
+[[body]]
+path = "src/humanize-parsing-implementation-support.adb"
+target_lines = 1874
+max_lines = 2050
+min_headroom_lines = 120
+max_bytes = 76000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Shared parser implementation support; future parser-family growth should move to focused helper packages or subunits."
+
+[[body]]
+path = "src/humanize-parsing-implementation.ads"
+target_lines = 1321
+max_lines = 1480
+min_headroom_lines = 120
+max_bytes = 42000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Private parser implementation contract; new parser-family surface should prefer focused child/support packages."
+
+[[body]]
+path = "src/humanize-units-support.ads"
+target_lines = 1484
+max_lines = 1650
+min_headroom_lines = 120
+max_bytes = 70000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Private unit-support contract shared by unit formatting and parsing helpers."
+
+[[body]]
+path = "src/humanize-strings-support.ads"
+target_lines = 1472
+max_lines = 1650
+min_headroom_lines = 120
+max_bytes = 50000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Private string-support contract shared by string child packages and backends."
+
+[[body]]
+path = "src/humanize-phrases-support-backend.ads"
+target_lines = 774
+max_lines = 900
+min_headroom_lines = 90
+max_bytes = 36000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Private phrase-support backend contract; new phrase-family declarations should prefer focused backend children."
+
+[[body]]
 path = "check_humanize/src/check_humanize_policy.adb"
+target_lines = 677
+max_lines = 800
+min_headroom_lines = 80
 max_bytes = 95000
 split_prefix = "check_humanize/src/check_humanize_policy-"
 min_split_bodies = 0

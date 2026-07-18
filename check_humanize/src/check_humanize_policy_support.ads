@@ -1,4 +1,5 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Project_Tools.TOML;
 
 package Check_Humanize_Policy_Support is
    procedure Error
@@ -28,25 +29,25 @@ package Check_Humanize_Policy_Support is
    function Line_Count (Text : String) return Natural;
    function SHA256_Hex (Text : String) return String;
 
-   type Natural_Parse_Status is
-     (Parsed_Natural,
-      Missing_Natural,
-      Malformed_Natural);
+   subtype Natural_Parse_Status is Project_Tools.TOML.Natural_Parse_Status;
+   Parsed_Natural : constant Natural_Parse_Status :=
+     Project_Tools.TOML.Parsed_Natural;
+   Missing_Natural : constant Natural_Parse_Status :=
+     Project_Tools.TOML.Missing_Natural;
+   Malformed_Natural : constant Natural_Parse_Status :=
+     Project_Tools.TOML.Malformed_Natural;
 
-   type Natural_Parse_Result is record
-      Status : Natural_Parse_Status := Missing_Natural;
-      Value  : Natural := 0;
-   end record;
+   subtype Natural_Parse_Result is Project_Tools.TOML.Natural_Parse_Result;
 
-   type String_Parse_Status is
-     (Parsed_String,
-      Missing_String,
-      Malformed_String);
+   subtype String_Parse_Status is Project_Tools.TOML.String_Parse_Status;
+   Parsed_String : constant String_Parse_Status :=
+     Project_Tools.TOML.Parsed_String;
+   Missing_String : constant String_Parse_Status :=
+     Project_Tools.TOML.Missing_String;
+   Malformed_String : constant String_Parse_Status :=
+     Project_Tools.TOML.Malformed_String;
 
-   type String_Parse_Result is record
-      Status : String_Parse_Status := Missing_String;
-      Value  : Unbounded_String;
-   end record;
+   subtype String_Parse_Result is Project_Tools.TOML.String_Parse_Result;
 
    function Parse_Natural_After
      (Text : String;

@@ -1,6 +1,7 @@
 with Ada.Strings.Fixed;
 
 with Check_Humanize_Policy_Support; use Check_Humanize_Policy_Support;
+with Project_Tools.Source_Budgets;
 
 package body Check_Humanize_Policy_Public_Facades is
    function Public_Child_Count
@@ -190,6 +191,9 @@ package body Check_Humanize_Policy_Public_Facades is
          Max_Lines : constant Natural :=
            Natural_Value_After
              (Manifest, ASCII.LF & "max_lines = ", Entry_Pos);
+         Min_Headroom_Lines : constant Natural :=
+           Natural_Value_After
+             (Manifest, ASCII.LF & "min_headroom_lines = ", Entry_Pos);
          Max_Bytes : constant Natural :=
            Natural_Value_After
              (Manifest, ASCII.LF & "max_bytes = ", Entry_Pos);
@@ -220,6 +224,7 @@ package body Check_Humanize_Policy_Public_Facades is
       begin
          if Unit = "" or else Path = "" or else Target_Lines = 0
            or else Max_Lines = 0
+           or else Min_Headroom_Lines = 0
            or else Max_Bytes = 0
            or else Map_Marker = "" or else Child_Units = ""
            or else Child_Unit_Count = 0
@@ -228,21 +233,13 @@ package body Check_Humanize_Policy_Public_Facades is
            or else Usecase = ""
          then
             Error (Errors, "public facade budget entry is incomplete");
-         elsif Target_Lines > Max_Lines then
-            Error
-              (Errors,
-               "public facade target_lines exceeds max_lines for " & Unit);
          else
-            Require_File (Root, Errors, Path);
+            Project_Tools.Source_Budgets.Check_Line_Byte_Budget
+              (Errors, Root, Path, "public facade", Target_Lines, Max_Lines,
+               Min_Headroom_Lines, Max_Bytes);
             declare
                Spec : constant String := Read_File (Root, Path);
-               Lines : constant Natural := Line_Count (Spec);
             begin
-               if Lines > Max_Lines then
-                  Error
-                    (Errors,
-                     "public facade hard line budget exceeded for " & Unit);
-               end if;
                if not Contains (Spec, Map_Marker) then
                   Error (Errors, "public facade map missing from " & Unit);
                end if;

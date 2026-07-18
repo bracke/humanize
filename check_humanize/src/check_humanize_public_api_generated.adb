@@ -4,6 +4,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with Check_Humanize_Policy_Support; use Check_Humanize_Policy_Support;
+with Project_Tools.Generated_Docs;
 
 package body Check_Humanize_Public_API_Generated is
    type Area_Info is record
@@ -147,29 +148,6 @@ package body Check_Humanize_Public_API_Generated is
          return Value (Value'First .. Last);
       end if;
    end Without_Trailing_Blank_Line;
-
-   function Equivalent_Generated_Text
-     (Stored    : String;
-      Generated : String)
-      return Boolean
-   is
-   begin
-      if Stored = Generated then
-         return True;
-      elsif Stored'Length > 0
-        and then Stored (Stored'Last) = ASCII.LF
-        and then Stored (Stored'First .. Stored'Last - 1) = Generated
-      then
-         return True;
-      elsif Generated'Length > 0
-        and then Generated (Generated'Last) = ASCII.LF
-        and then Generated (Generated'First .. Generated'Last - 1) = Stored
-      then
-         return True;
-      end if;
-
-      return False;
-   end Equivalent_Generated_Text;
 
    function Public_API_Index_Text (Root : String) return String is
       Manifest     : constant String :=
@@ -619,15 +597,80 @@ package body Check_Humanize_Public_API_Generated is
          Covered_By : String)
          return String
       is
-         pragma Unreferenced (Name);
+         Class_Name : constant String := Public_API_Class (Name);
       begin
          if Covered_By /= "" then
             return "";
+         elsif Name = "Humanize" then
+            return
+              "crate root facade; exercised by consumers, not a distinct performance path";
+         elsif Name = "Humanize.Status"
+           or else Name = "Humanize.Messages"
+           or else Name = "Humanize.Contexts"
+           or else Name = "Humanize.Locales"
+           or else Name = "Humanize.Styles"
+           or else Name = "Humanize.Parsing.Results"
+           or else Name = "Humanize.Strings.Types"
+         then
+            return
+              "pure type/support package; no standalone performance-smoke loop";
+         elsif Class_Name = "specialized-child-facade" then
+            if Contains (Name, "Humanize.Parsing.") then
+               return
+                 "parser child facade covered by representative parser smoke paths";
+            elsif Contains (Name, "Humanize.Phrases.") then
+               return
+                 "phrase child facade covered by representative phrase smoke paths";
+            else
+               return
+                 "specialized child facade; representative parent/family smoke path is tracked";
+            end if;
+         elsif Name = "Humanize.Catalogs" then
+            return
+              "catalog selection facade; locale data costs are covered by rendering and parser smoke paths";
+         elsif Name = "Humanize.Bounded_Text" then
+            return
+              "bounded-output helper facade; covered by bounded tests and consumer build";
          else
             return
-              "not a representative performance-smoke path; covered by tests, examples, and consumers";
+              "trivial domain label facade; covered by tests, examples, and consumers";
          end if;
       end Perf_Exempt_Reason;
+
+      function Perf_Exempt_Category
+        (Name       : String;
+         Covered_By : String)
+         return String
+      is
+         Class_Name : constant String := Public_API_Class (Name);
+      begin
+         if Covered_By /= "" then
+            return "";
+         elsif Name = "Humanize" then
+            return "root-facade";
+         elsif Name = "Humanize.Status"
+           or else Name = "Humanize.Messages"
+           or else Name = "Humanize.Contexts"
+           or else Name = "Humanize.Locales"
+           or else Name = "Humanize.Styles"
+           or else Name = "Humanize.Parsing.Results"
+           or else Name = "Humanize.Strings.Types"
+         then
+            return "pure-type-package";
+         elsif Contains (Name, "Humanize.Parsing.") then
+            return "parser-wrapper";
+         elsif Contains (Name, "Humanize.Phrases.") then
+            return "phrase-wrapper";
+         elsif Class_Name = "specialized-child-facade" then
+            return "family-child-facade";
+         elsif Name = "Humanize.Catalogs"
+           or else Name = "Humanize.Bounded_Text"
+         then
+            return "support-facade";
+         else
+            return "trivial-label-facade";
+         end if;
+      end Perf_Exempt_Category;
 
       procedure Append_Entry (Entry_Pos : Positive) is
          Name : constant String :=
@@ -650,6 +693,8 @@ package body Check_Humanize_Public_API_Generated is
            (if Covered_By /= "" then 1 else 0);
          Perf_Reason : constant String :=
            Perf_Exempt_Reason (Name, Covered_By);
+         Perf_Category : constant String :=
+           Perf_Exempt_Category (Name, Covered_By);
          Score : constant Natural :=
            Docs + Tests + Unit_Example + Consumers + Unit_Perf;
       begin
@@ -686,6 +731,8 @@ package body Check_Humanize_Public_API_Generated is
                Append_Line (Result, "perf_covered_by = """ & Covered_By & """");
             end if;
             if Perf_Reason /= "" then
+               Append_Line
+                 (Result, "perf_exempt_category = """ & Perf_Category & """");
                Append_Line
                  (Result, "perf_exempt_reason = """ & Perf_Reason & """");
             end if;
@@ -743,37 +790,18 @@ package body Check_Humanize_Public_API_Generated is
       Unit_Coverage : constant String :=
         Read_File (Root, "docs/PUBLIC_API_UNIT_COVERAGE.toml");
    begin
-      if not Equivalent_Generated_Text
-        (API_Index, Public_API_Index_Text (Root))
-      then
-         Error
-           (Errors,
-            "docs/PUBLIC_API_INDEX.md is stale; refresh with --print-public-api-index");
-      end if;
-
-      if not Equivalent_Generated_Text
-        (Classes, Public_API_Classes_Text (Root))
-      then
-         Error
-           (Errors,
-            "docs/PUBLIC_API_CLASSES.toml is stale; refresh with --print-public-api-classes");
-      end if;
-
-      if not Equivalent_Generated_Text
-        (Coverage, Public_API_Coverage_Text (Root))
-      then
-         Error
-           (Errors,
-            "docs/PUBLIC_API_COVERAGE.toml is stale; refresh with --print-public-api-coverage");
-      end if;
-
-      if not Equivalent_Generated_Text
-        (Unit_Coverage, Public_API_Unit_Coverage_Text (Root))
-      then
-         Error
-           (Errors,
-            "docs/PUBLIC_API_UNIT_COVERAGE.toml is stale; refresh with --print-public-api-unit-coverage");
-      end if;
+      Project_Tools.Generated_Docs.Require_Current
+        (Errors, API_Index, Public_API_Index_Text (Root),
+         "docs/PUBLIC_API_INDEX.md is stale; refresh with --print-public-api-index");
+      Project_Tools.Generated_Docs.Require_Current
+        (Errors, Classes, Public_API_Classes_Text (Root),
+         "docs/PUBLIC_API_CLASSES.toml is stale; refresh with --print-public-api-classes");
+      Project_Tools.Generated_Docs.Require_Current
+        (Errors, Coverage, Public_API_Coverage_Text (Root),
+         "docs/PUBLIC_API_COVERAGE.toml is stale; refresh with --print-public-api-coverage");
+      Project_Tools.Generated_Docs.Require_Current
+        (Errors, Unit_Coverage, Public_API_Unit_Coverage_Text (Root),
+         "docs/PUBLIC_API_UNIT_COVERAGE.toml is stale; refresh with --print-public-api-unit-coverage");
 
       for Area of Areas loop
          declare

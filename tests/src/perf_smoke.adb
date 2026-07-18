@@ -3,9 +3,11 @@ with Ada.Command_Line;
 with Ada.Text_IO;
 
 with Humanize.Bytes;
+with Humanize.Builds;
 with Humanize.Colors;
 with Humanize.Colors.Contrast;
 with Humanize.Colors.CSS;
+with Humanize.Capabilities;
 with Humanize.Contexts;
 with Humanize.Datetimes;
 with Humanize.Diagnostics;
@@ -20,6 +22,11 @@ with Humanize.Numbers.Statistics;
 with Humanize.Operations;
 with Humanize.Parsing;
 with Humanize.Phrases;
+with Humanize.Phrases.Fields;
+with Humanize.Phrases.Keys;
+with Humanize.Phrases.Severity;
+with Humanize.Phrases.Summaries;
+with Humanize.Permissions;
 with Humanize.Search;
 with Humanize.Status;
 with Humanize.Strings;
@@ -201,8 +208,27 @@ procedure Perf_Smoke is
                 (Errors => 2, Warnings => 1);
             Search : constant Humanize.Status.Text_Result :=
               Humanize.Search.Search_Result_Summary_Label ("cache", 12);
+            Capability : constant Humanize.Status.Text_Result :=
+              Humanize.Capabilities.Capability_Matrix_Summary;
             Phrase : constant Humanize.Status.Text_Result :=
               Humanize.Phrases.Status_Phrase (Context, Humanize.Phrases.Saved);
+            Field : constant Humanize.Status.Text_Result :=
+              Humanize.Phrases.Fields.Field_Change_Summary
+                (Context, Changed => 3, Added => 1, Removed => 1);
+            Key : constant Humanize.Status.Text_Result :=
+              Humanize.Phrases.Keys.Status_Key (Humanize.Phrases.Saved);
+            Severity : constant Humanize.Status.Text_Result :=
+              Humanize.Phrases.Severity.Severity_Label
+                (Humanize.Phrases.Warning_Severity);
+            Summary : constant Humanize.Status.Text_Result :=
+              Humanize.Phrases.Summaries.Queue_Summary
+                (Context, Queued => 4, Running => 2, Failed => 1);
+            Build : constant Humanize.Status.Text_Result :=
+              Humanize.Builds.Build_Label
+                ("nightly", Humanize.Builds.Build_Running);
+            Permission : constant Humanize.Status.Text_Result :=
+              Humanize.Permissions.Permission_Label
+                ("release-bot", "deploy", Humanize.Permissions.Granted);
             Parsed_Metadata :
               constant Humanize.Domain_Details.Domain_Label_Parse_Result :=
                 Humanize.Domain_Details.Parse_Metadata_Summary_Label
@@ -213,7 +239,14 @@ procedure Perf_Smoke is
             Check_Status (Operation.Status, "operation progress label");
             Check_Status (Diagnostic.Status, "diagnostic summary label");
             Check_Status (Search.Status, "search result summary label");
+            Check_Status (Capability.Status, "capability matrix summary");
             Check_Status (Phrase.Status, "status phrase label");
+            Check_Status (Field.Status, "field phrase label");
+            Check_Status (Key.Status, "phrase key label");
+            Check_Status (Severity.Status, "phrase severity label");
+            Check_Status (Summary.Status, "phrase summary label");
+            Check_Status (Build.Status, "build label");
+            Check_Status (Permission.Status, "permission label");
             Check_Status (Parsed_Metadata.Status, "metadata summary parse");
             Total := Total + I mod 7;
          end;

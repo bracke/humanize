@@ -72,6 +72,14 @@ implemented in the tooling with `CryptoLib.Hashes` from `../cryptolib`. The mark
 human-readable: it tells
 maintainers whether the source is Humanize-owned, generated from a Humanize
 template, or delegated to another Humanize metadata package.
+Generated spellout tables are split into package-body subunits once an
+individual table body dominates review churn. The parent body keeps shared
+helpers and stable private-package entry points, while each generated shard is
+listed separately in `docs/GENERATED_DATA.toml` with its own line-count and
+SHA-256 snapshot.
+Reviewed native catalog fragments use the same strategy: the parent native-data
+body keeps shared catalog helpers and composes locale-family shards that are
+tracked as separate generated-data artifacts.
 When the reviewed generated data changes intentionally, maintainers can run
 `./check_humanize/bin/check_humanize --print-generated-data-manifest` to print a
 refreshed manifest with current line-count and SHA-256 snapshots, then review
@@ -194,11 +202,13 @@ families do not silently drift away from the common Humanize API shape.
 
 ## Structural baselines
 
-`docs/STRUCTURAL_BASELINE.toml` records size budgets and separate-body
-inventories for the largest compatibility backends. `check_humanize` validates
-that large support bodies stay within their reviewed budgets and keep their
-subunit split counts. The same policy pass validates public/private API
-consistency, focused downstream public API consumers, and the short
+`docs/STRUCTURAL_BASELINE.toml` records line ratchets, hard line/byte budgets,
+reserved headroom, and optional separate-body inventories for the largest
+compatibility backends, generated/native data bodies, and private support
+contracts. `check_humanize` validates that large structural units stay within
+their reviewed budgets and, when configured, keep their subunit split counts.
+The same policy pass validates public/private API consistency, focused
+downstream public API consumers, and the short
 `docs/PACKAGE_GUIDE.md` import map.
 `docs/TEST_SOURCE_BUDGETS.toml` records per-suite parent and subunit line
 budgets for `tests/src/humanize-tests-*.adb`. The checker applies the longest

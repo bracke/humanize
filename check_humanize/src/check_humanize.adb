@@ -97,7 +97,9 @@ procedure Check_Humanize is
          Error
            ("wrong Ada compiler: manifests must pin "
             & Check_Humanize_Policy_Config.Required_GNAT_Native_Pin
-            & " and validation must run the matching GNATLS 15.2 compiler; got: "
+            & " and validation must run an Alire-selected GNATLS 15.2.x "
+            & "executable. The gnat_native crate patch may differ from the "
+            & "`gnatls --version` patch string; got: "
             & To_String (Output));
          raise Program_Error;
       end if;

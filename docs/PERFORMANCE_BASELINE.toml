@@ -30,7 +30,14 @@ paths = [
   "Humanize.Operations.Progress_Summary",
   "Humanize.Diagnostics.Issue_Summary_Label",
   "Humanize.Search.Search_Result_Summary_Label",
+  "Humanize.Capabilities.Capability_Matrix_Summary",
   "Humanize.Phrases.Status_Phrase",
+  "Humanize.Phrases.Fields.Field_Change_Summary",
+  "Humanize.Phrases.Keys.Status_Key",
+  "Humanize.Phrases.Severity.Severity_Label",
+  "Humanize.Phrases.Summaries.Queue_Summary",
+  "Humanize.Builds.Build_Label",
+  "Humanize.Permissions.Permission_Label",
   "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
 ]
 
@@ -79,12 +86,21 @@ paths = [
   "Humanize.Operations.Progress_Summary",
   "Humanize.Diagnostics.Issue_Summary_Label",
   "Humanize.Search.Search_Result_Summary_Label",
+  "Humanize.Capabilities.Capability_Matrix_Summary",
   "Humanize.Phrases.Status_Phrase",
+  "Humanize.Phrases.Fields.Field_Change_Summary",
+  "Humanize.Phrases.Keys.Status_Key",
+  "Humanize.Phrases.Severity.Severity_Label",
+  "Humanize.Phrases.Summaries.Queue_Summary",
+  "Humanize.Builds.Build_Label",
+  "Humanize.Permissions.Permission_Label",
   "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
 ]
 
 [perf_smoke.public_api_units]
 Humanize_Bytes = "Humanize.Bytes.Format"
+Humanize_Builds = "Humanize.Builds.Build_Label"
+Humanize_Capabilities = "Humanize.Capabilities.Capability_Matrix_Summary"
 Humanize_Colors = "Humanize.Colors.CSS.CSS_Color_Label"
 Humanize_Colors_Contrast = "Humanize.Colors.Contrast.Contrast_Label"
 Humanize_Colors_CSS = "Humanize.Colors.CSS.CSS_Color_Label"
@@ -102,6 +118,11 @@ Humanize_Operations = "Humanize.Operations.Progress_Summary"
 Humanize_Parsing = "Humanize.Parsing.Parse_Bytes"
 Humanize_Parsing_Colors = "Humanize.Parsing.Parse_RGB_Label"
 Humanize_Phrases = "Humanize.Phrases.Status_Phrase"
+Humanize_Phrases_Fields = "Humanize.Phrases.Fields.Field_Change_Summary"
+Humanize_Phrases_Keys = "Humanize.Phrases.Keys.Status_Key"
+Humanize_Phrases_Severity = "Humanize.Phrases.Severity.Severity_Label"
+Humanize_Phrases_Summaries = "Humanize.Phrases.Summaries.Queue_Summary"
+Humanize_Permissions = "Humanize.Permissions.Permission_Label"
 Humanize_Search = "Humanize.Search.Search_Result_Summary_Label"
 Humanize_Strings = "Humanize.Strings.Title_Case_Smart"
 Humanize_Strings_Core = "Humanize.Strings.Core.Title_Case_Smart"
@@ -110,7 +131,7 @@ Humanize_System_Status = "Humanize.System_Status.HTTP_Status_Label"
 
 [perf_smoke.area_coverage]
 root = "exempt: root facade has no standalone runtime path"
-core = "exempt: type/result helper APIs are covered by public consumers"
+core = "Humanize.Capabilities.Capability_Matrix_Summary"
 formatting = "Humanize.Bytes.Format"
 parsing = "Humanize.Parsing.Parse_Bytes"
 phrases = "Humanize.Phrases.Status_Phrase"
