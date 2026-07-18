@@ -45,7 +45,7 @@ package body Humanize.Parsing.Implementation.Color_Text_Helpers is
       Value := Long_Float'Value (Trim (Text));
       return True;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          Value := 0.0;
          return False;
    end Parse_Float_Field;
@@ -123,7 +123,7 @@ package body Humanize.Parsing.Implementation.Color_Text_Helpers is
          Error_Position => 0,
          Error => Humanize.Parsing.No_Parse_Error);
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_APCA_Contrast_Label;
 
@@ -223,7 +223,7 @@ package body Humanize.Parsing.Implementation.Color_Text_Helpers is
          Error_Position => 0,
          Error => Humanize.Parsing.No_Parse_Error);
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Alpha_Contrast_Label;
 
@@ -309,7 +309,7 @@ package body Humanize.Parsing.Implementation.Color_Text_Helpers is
       Opacity := A;
       return True;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return False;
    end Parse_RGB_Components;
 
@@ -461,7 +461,7 @@ package body Humanize.Parsing.Implementation.Color_Text_Helpers is
       return Failure
         (Humanize.Status.Invalid_Argument, Humanize.Parsing.Expected_Number, Item'First);
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return
            (Status => Humanize.Status.Invalid_Argument,
             Error_Position => (if Item'Length = 0 then Text'First else Item'First),

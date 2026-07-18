@@ -98,6 +98,6 @@ begin
                  others => <>);
       end if;
 exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
 end Parse_Contrast_Remediation_Label;

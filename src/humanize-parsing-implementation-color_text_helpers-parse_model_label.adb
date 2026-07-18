@@ -72,7 +72,7 @@ begin
          Error_Position => 0,
          Error => No_Parse_Error);
 exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return
            (Status => Humanize.Status.Invalid_Argument,
             Error_Position => (if Item'Length = 0 then Text'First else Item'First),
