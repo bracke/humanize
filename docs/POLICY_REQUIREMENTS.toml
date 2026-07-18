@@ -858,6 +858,16 @@ message = "check_humanize must expose the generated per-unit API coverage mode"
 
 [[required_text]]
 path = "check_humanize/src/check_humanize.adb"
+pattern = "--release-fast"
+message = "check_humanize must expose the fast release profile"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "--release-fast"
+message = "quality guard documentation must describe the fast release profile"
+
+[[required_text]]
+path = "check_humanize/src/check_humanize.adb"
 pattern = "--deep-static"
 message = "check_humanize must expose the deeper static analysis profile"
 

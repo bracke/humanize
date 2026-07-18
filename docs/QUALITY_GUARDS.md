@@ -166,6 +166,17 @@ after editing docs, policies, generated manifests, or checker structure because
 it catches stale metadata, missing split checker packages, and nonempty stderr
 logs from the last normal build.
 
+## Fast release profile
+
+`./check_humanize/bin/check_humanize --release-fast` is the build-backed release
+profile for repeated local iterations. It runs source-policy checks, local
+library and test builds, the full AUnit suite, performance smoke, examples,
+public API consumers, `alr test`, GNATdoc, expected-output fixtures, and
+compiler-stderr hygiene while skipping only the staged pin-free release tree.
+Use the default `check_humanize` command or `--staged-release-only` before
+tagging because staged publication checks remain the authoritative packaging
+gate.
+
 Broad exception handlers in both runtime `src/` code and release-tooling
 `check_humanize/src/` code must carry an explicit recovery classification, such
 as `parse failure normalization`, `defensive recovery`, or `intentional silent

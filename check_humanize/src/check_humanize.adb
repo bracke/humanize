@@ -207,6 +207,25 @@ begin
       return;
    end if;
 
+   if Project_Tools.Processes.Has_Argument ("--release-fast") then
+      Check_Humanize_Policy.Check_Manifest (Root, Errors);
+      Print_Check_Context;
+      Check_Required_Release_Surface;
+      Check_Humanize_Policy.Check_AUnit_Metrics (Root, Errors);
+      Check_Humanize_Policy.Check_Generated_Artifacts (Root, Errors);
+      Check_Humanize_Policy.Check_Source_Tree_Artifacts (Root, Errors);
+      Check_Humanize_Policy.Check_Tooling_Boundary (Root, Errors);
+      Check_Humanize_Policy.Check_Public_Documentation (Root, Errors);
+      Check_Humanize_Policy.Check_Examples_Inventory (Root, Errors);
+      Check_Humanize_Policy.Check_Quality_Guards (Root, Errors);
+      Check_Humanize_Release.Run_Release_Builds (Root, Errors);
+      Check_Humanize_Policy.Check_Compiler_Stderr (Root, Errors);
+      Print_Result
+        ("humanize fast release checks passed",
+         "humanize fast release checks failed:");
+      return;
+   end if;
+
    if Project_Tools.Processes.Has_Argument ("--locale-audit") then
       Run_Locale_Audit_Report;
       Print_Result

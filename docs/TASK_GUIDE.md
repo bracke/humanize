@@ -39,11 +39,12 @@ the test tools and run `./bin/locale_audit --summary`,
 
 ## Checking release readiness
 
-Run `check_humanize` for the full guard and `check_humanize --policy-only` for
-source-policy changes. The guard covers manifest state, public documentation,
-generated-data provenance, public API surface expectations, parser smoke tests,
-the `perf_smoke` executable, tooling boundaries, examples, and staged release
-checks.
+Run `check_humanize` for the full guard, `check_humanize --release-fast` for
+build-backed iterations that do not need staged packaging, and
+`check_humanize --policy-only` for source-policy changes. The guard covers
+manifest state, public documentation, generated-data provenance, public API
+surface expectations, parser smoke tests, the `perf_smoke` executable, tooling
+boundaries, examples, and staged release checks.
 Public API changes should update `docs/PUBLIC_API.toml`; example-surface changes
 should update `docs/EXAMPLE_COVERAGE.toml`; performance smoke changes should
 update `docs/PERFORMANCE_BASELINE.toml`. Generated-maintained documentation

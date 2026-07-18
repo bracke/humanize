@@ -64,6 +64,21 @@ builds, staged publication checks, GNATdoc generation, and compiler `.stderr`
 log hygiene; the full release candidate command above remains authoritative
 before tagging.
 
+For a faster build-backed release check that skips only the staged publication
+tree, run:
+
+```sh
+cd check_humanize
+alr build
+./bin/check_humanize --release-fast
+```
+
+This profile runs the source policy checks, local library/tests/performance
+smoke, examples, public API consumers, `alr test`, GNATdoc, expected-output
+fixtures, and compiler `.stderr` hygiene. It intentionally skips
+`/tmp/humanize-release-stage`; run the default command or
+`--staged-release-only` before tagging.
+
 The source-policy gate also enforces the quality guard map in
 `docs/QUALITY_GUARDS.md`, the public API surface snapshot in
 `docs/API_SURFACE.md`, the machine-readable public API allowlist in
@@ -261,6 +276,8 @@ A release may be tagged only after:
 
 * the verified GNAT/GPRbuild and AUnit checks remain passing;
 * `check_humanize` reports success;
+* `check_humanize --release-fast` reports success for quick build-backed
+  release iterations;
 * `check_humanize --policy-only` reports success for source-policy changes;
 * `check_humanize --staged-release-only` reports success for
   `/tmp/humanize-release-stage`;
