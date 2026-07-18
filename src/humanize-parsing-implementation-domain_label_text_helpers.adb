@@ -221,7 +221,7 @@ package body Humanize.Parsing.Implementation.Domain_Label_Text_Helpers is
          return False;
       end if;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error => --  parse failure normalization
          return False;
    end Parse_File_Count_Label;
 
@@ -353,7 +353,7 @@ package body Humanize.Parsing.Implementation.Domain_Label_Text_Helpers is
          return False;
       end if;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error => --  parse failure normalization
          return False;
    end Parse_Validation_Count_Header;
 
@@ -397,7 +397,7 @@ package body Humanize.Parsing.Implementation.Domain_Label_Text_Helpers is
          Error_Position => 0,
          Error => No_Parse_Error);
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Field_Problem_Summary;
 
@@ -481,7 +481,7 @@ package body Humanize.Parsing.Implementation.Domain_Label_Text_Helpers is
          return Result;
       end;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Parse_Boolean_Label;
 
@@ -517,7 +517,7 @@ package body Humanize.Parsing.Implementation.Domain_Label_Text_Helpers is
          return Result;
       end;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Scan_Boolean_Label;
 
@@ -553,7 +553,7 @@ package body Humanize.Parsing.Implementation.Domain_Label_Text_Helpers is
          return Result;
       end;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Parse_Ternary_Label;
 
@@ -589,7 +589,7 @@ package body Humanize.Parsing.Implementation.Domain_Label_Text_Helpers is
          return Result;
       end;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Scan_Ternary_Label;
 

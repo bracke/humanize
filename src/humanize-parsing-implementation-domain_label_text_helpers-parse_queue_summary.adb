@@ -106,6 +106,6 @@ begin
          Error_Position => 0,
          Error => No_Parse_Error);
 exception
-      when others => --  parse failure normalization
+      when Constraint_Error => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
 end Parse_Queue_Summary;

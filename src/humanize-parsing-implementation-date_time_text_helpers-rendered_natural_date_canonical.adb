@@ -51,6 +51,6 @@ begin
 
       return Item;
 exception
-      when others => --  parse failure normalization
+      when Constraint_Error => --  parse failure normalization
          return Clean_Lower (Text);
 end Rendered_Natural_Date_Canonical;

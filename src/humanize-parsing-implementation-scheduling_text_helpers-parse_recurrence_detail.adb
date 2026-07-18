@@ -384,6 +384,6 @@ begin
       Result.Consumed := Item'Length;
       return Result;
 exception
-      when others => --  parse failure normalization
+      when Constraint_Error | Ada.Calendar.Time_Error => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, others => <>);
 end Parse_Recurrence_Detail;
