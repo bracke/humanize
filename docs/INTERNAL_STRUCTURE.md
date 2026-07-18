@@ -230,18 +230,14 @@ Private children:
 
 `Humanize.Numbers` is split by number-formatting concern. The public parent
 remains the compatibility facade, generated spellout data stays isolated from
-the facade, and concern children own deterministic English formatting,
-locale-like spellout tables, rendered-number parsing, editorial style, scales,
-ranges, and statistics labels.
+the facade, public concern children own caller-facing spellout, editorial,
+scale, range, and statistics labels, and private children keep generated
+spellout tables plus rendered-number parsing support out of the public surface.
 
-Private children:
+Public concern children:
 
-* `Humanize.Numbers.Spellout_Data`: generated/native spellout words,
-  ordinal fragments, scale words, and locale spellout predicates.
 * `Humanize.Numbers.Spellout`: cardinal, ordinal, decimal, fraction, percent,
   and currency word spellout.
-* `Humanize.Numbers.Rendered_Parse`: deterministic rendered cardinal and
-  ordinal parsers.
 * `Humanize.Numbers.Editorial`: AP/editorial number, ordinal, percent,
   measurement, and age wording.
 * `Humanize.Numbers.Scales`: compact, scientific, SI prefix, Roman, percent,
@@ -250,6 +246,13 @@ Private children:
   ratios, and change labels.
 * `Humanize.Numbers.Statistics`: distribution, percentile, outlier, and shape
   metadata labels.
+
+Private children:
+
+* `Humanize.Numbers.Spellout_Data`: generated/native spellout words,
+  ordinal fragments, scale words, and locale spellout predicates.
+* `Humanize.Numbers.Rendered_Parse`: deterministic rendered cardinal and
+  ordinal parsers.
 
 ### `Humanize.Durations`
 
@@ -379,6 +382,16 @@ must not force clients to change `with` clauses, child package names, or
 overload resolution. When a public spec becomes broad, prefer moving
 implementation to private children, facades, or subunits; a public child split
 is an API-versioning decision, not a cleanup task.
+
+The large root compatibility specs use `Facade section:` comments as stable
+navigation anchors. `docs/PUBLIC_FACADE_BUDGETS.toml` records the exact ordered
+anchor inventory and the exact child packages named in each facade map; the
+policy checker rejects missing, duplicate, extra, or reordered anchors, stale
+child-map entries, unlisted public child facades, mismatched manifest counts,
+or root-facade growth beyond the reviewed hard line budget. The manifest also
+keeps a `target_lines` ratchet for the reviewed baseline, so small compatibility
+additions do not require immediate policy churn while larger growth still
+forces an explicit split-or-raise decision.
 
 Generated and native data bodies are allowed to be large when they contain
 locale tables, spellout words, aliases, or catalog fragments. Their structural

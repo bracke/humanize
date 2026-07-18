@@ -40,6 +40,14 @@ package Check_Humanize_Policy is
       Errors : in out Natural);
 
    procedure Print_Generated_Data_Manifest (Root : String);
+   procedure Print_Public_API_Index (Root : String);
+   procedure Print_Public_API_Classes (Root : String);
+   procedure Print_Public_API_Coverage (Root : String);
+   procedure Print_Public_API_Unit_Coverage (Root : String);
+
+   procedure Check_Deep_Static
+     (Root   : String;
+      Errors : in out Natural);
 
    procedure Check_Compiler_Stderr
      (Root   : String;

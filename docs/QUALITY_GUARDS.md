@@ -28,8 +28,10 @@ source-root build artifacts so source and package size do not drift through
 accidental generated output.
 `docs/PERFORMANCE_BASELINE.toml` records the iteration count, loose time limit,
 and public operations covered by that smoke executable, including the expanded
-text and domain buckets; `check_humanize` validates that the file stays
-synchronized with the executable constants.
+text and domain buckets. Its `[perf_smoke.public_api_units]` section maps
+representative public API units to smoke paths used by the per-unit coverage
+scorecard; `check_humanize` validates that the file stays synchronized with the
+executable constants and required public API coverage mappings.
 `tests/src/perf_baseline_report.adb` is an optional local trend reporter for
 developers who want per-operation timing output without tightening release
 thresholds.
@@ -49,6 +51,9 @@ describe common use cases: formatting through an application-owned i18n
 runtime, rendering into caller-owned buffers, parsing untrusted human input,
 and auditing locale coverage. `check_humanize` requires those files and checks
 for specific task headings so they stay discoverable.
+`docs/POLICY_REQUIREMENTS.toml` is the machine-readable source for the
+top-level release-surface file inventory and required documentation text
+snippets, keeping those policy lists out of the checker implementation.
 `docs/EXAMPLE_COVERAGE.toml` maps major public task areas to runnable examples
 so new public API families do not silently ship without an example or an
 intentional coverage entry.
@@ -71,6 +76,15 @@ When the reviewed generated data changes intentionally, maintainers can run
 `./check_humanize/bin/check_humanize --print-generated-data-manifest` to print a
 refreshed manifest with current line-count and SHA-256 snapshots, then review
 the resulting metadata before updating `docs/GENERATED_DATA.toml`.
+
+## Generated documentation command index
+
+`docs/GENERATED_DOCS.toml` records every generated-maintained documentation
+artifact, the `check_humanize` command that refreshes it, the maintainer owner,
+and the source metadata used by the generator. `check_humanize` validates that
+each listed artifact exists and that every refresh command is still exposed by
+the checker, so new generated docs cannot be added without a discoverable
+refresh path.
 
 ## Humanize-side locale coverage audit
 
@@ -97,15 +111,60 @@ or get compact CI-friendly output without changing the underlying coverage.
 `docs/API_SURFACE.md` records the intended public package surface and the
 `Text_Result/_Into pairing` convention. `docs/PUBLIC_API.toml` is the
 machine-readable allowlist for public specs, `docs/PUBLIC_API_INDEX.md` is the
-manifest-derived public package index, and `docs/PUBLIC_API_COVERAGE.toml` is
-the public API coverage scorecard. `humanize.gpr` exposes that surface through
-`Library_Interface`. `check_humanize` validates the manifest against the project
-file, the source specs, the public API index, the coverage scorecard, and the
-prose snapshot; it also requires the representative API consistency test and
-keeps the existing GNATdoc policy over the curated public spec list. Adding or
-removing public packages should update the surface snapshot,
-`docs/PUBLIC_API.toml`, `docs/PUBLIC_API_INDEX.md`,
-`docs/PUBLIC_API_COVERAGE.toml`, and the release notes in the same change.
+manifest-derived public package index, `docs/PUBLIC_API_CLASSES.toml` is the
+manifest-derived public package classification map,
+`docs/PUBLIC_API_COVERAGE.toml` is the area-level public API coverage
+scorecard, and
+`docs/PUBLIC_API_UNIT_COVERAGE.toml` is the per-unit coverage scorecard.
+`docs/PUBLIC_FACADE_BUDGETS.toml` records target line ratchets, hard line and
+byte budgets, plus child-package expectations for the largest root
+compatibility facades, so new API families prefer focused child packages
+instead of silently growing `Humanize.Parsing`, `Humanize.Strings`,
+`Humanize.Durations`, `Humanize.Phrases`, or `Humanize.Numbers`. The same
+manifest lists the exact
+child packages that must appear in each facade map and the exact set and order
+of required `Facade section:` anchors that keep long compatibility specs
+navigable. Explicit child and section counts in the same manifest make list
+changes reviewable and are checked against the delimited inventories.
+`humanize.gpr` exposes that surface through `Library_Interface`.
+`check_humanize` validates the manifest against the project file, the source
+specs, the public API index, the coverage scorecard, facade maps, facade
+budgets, and the prose snapshot. It also
+requires each public spec to carry a package-level purpose comment, requires
+per-unit performance coverage to be classified as representative or explicitly
+exempt, requires the representative API consistency test, and keeps the
+existing GNATdoc policy over the curated public spec list. Adding or removing public packages
+should update the surface snapshot, `docs/PUBLIC_API.toml`,
+`docs/PUBLIC_API_INDEX.md`, `docs/PUBLIC_API_CLASSES.toml`,
+`docs/PUBLIC_API_COVERAGE.toml`,
+`docs/PUBLIC_FACADE_BUDGETS.toml`, and the release notes in the same change.
+For reviewed public API changes, maintainers can run
+`./check_humanize/bin/check_humanize --print-public-api-index` and
+`./check_humanize/bin/check_humanize --print-public-api-classes`,
+`./check_humanize/bin/check_humanize --print-public-api-coverage`, and
+`./check_humanize/bin/check_humanize --print-public-api-unit-coverage` to print
+the manifest-derived index, class map, and scorecards before copying reviewed
+output into the tracked docs. The public API generators compute package
+ordering, class rows, package counts, and per-unit coverage rows from
+`docs/PUBLIC_API.toml`, and `check_humanize` compares all generated files
+byte-for-byte with the tracked docs, so stale package lists, class assignments,
+ordering, area totals, per-unit coverage scores, and score text are caught by
+policy checks.
+
+The public surface example is part of the release expected-output set. Its
+`public-surface-demo-output` fixture gives the release checker a runtime smoke
+path through representative child packages without turning every public unit
+into a performance benchmark.
+
+## Deep static profile
+
+`./check_humanize/bin/check_humanize --deep-static` is a no-rebuild static
+profile for local review. It composes manifest, required surface, source tree,
+tooling-boundary, public documentation, example inventory, quality guard, and
+compiler-stderr checks without running release builds. The profile is useful
+after editing docs, policies, generated manifests, or checker structure because
+it catches stale metadata, missing split checker packages, and nonempty stderr
+logs from the last normal build.
 
 ## Domain package consistency
 
@@ -123,3 +182,12 @@ that large support bodies stay within their reviewed budgets and keep their
 subunit split counts. The same policy pass validates public/private API
 consistency, focused downstream public API consumers, and the short
 `docs/PACKAGE_GUIDE.md` import map.
+
+## Non-goal boundary
+
+`docs/specification.md` keeps the Humanize non-goals explicit: no time zone
+database, no arbitrary CLDR import at application runtime, no full CLDR
+currency-formatting engine, and no application-defined runtime classifier
+plugins. `check_humanize` enforces those statements so large locale/data/plugin
+features stay outside Humanize unless the project deliberately changes its
+scope.

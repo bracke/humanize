@@ -1,0 +1,33 @@
+# Source-of-truth numeric floors for check_humanize policy guards.
+# These values are policy data; checker code should reference keys, not literals.
+
+[thresholds]
+aunit_min_sections = 8
+aunit_min_registrations = 65
+aunit_min_assertions = 65
+aunit_min_test_bodies = 60
+required_file_min_entries = 48
+required_text_min_entries = 128
+public_documentation_min_root_specs = 55
+public_api_min_units = 85
+generated_data_exact_artifacts = 7
+structural_baseline_min_bodies = 6
+example_coverage_min_major_tasks = 9
+example_coverage_min_public_api_families = 40
+generated_docs_min_docs = 5
+public_facade_size_min_budgets = 5
+public_facade_budget_min_entries = 5
+domain_min_public_packages = 35
+domain_min_example_covered_units = 6
+performance_root_min_paths = 25
+performance_formatting_min_paths = 10
+performance_parsing_min_paths = 4
+performance_text_min_paths = 5
+performance_domain_min_paths = 6
+performance_public_api_min_mappings = 23
+performance_public_api_min_areas = 6
+exception_marker_max_parse_failure_normalization = 89
+exception_marker_max_defensive_recovery = 18
+exception_marker_max_intentional_silent_recovery = 12
+test_source_parent_max_lines = 2200
+test_source_subunit_max_lines = 2700

@@ -17,6 +17,8 @@ procedure Check_Humanize is
    use Ada.Text_IO;
 
    Stage_Root : constant String := "/tmp/humanize-release-stage";
+   Required_GNAT_Native_Pin : constant String := "gnat_native = ""=15.2.1""";
+   Expected_GNATLS_Prefix   : constant String := "GNATLS 15.2.";
 
    function Root_Directory return String is
       Current : constant String := Ada.Directories.Current_Directory;
@@ -89,9 +91,13 @@ procedure Check_Humanize is
       if Status /= 0 then
          Error ("could not run `alr exec -- gnatls --version`");
          raise Program_Error;
-      elsif Ada.Strings.Fixed.Index (To_String (Output), "GNATLS 15.") = 0 then
+      elsif Ada.Strings.Fixed.Index
+        (To_String (Output), Expected_GNATLS_Prefix) = 0
+      then
          Error
-           ("wrong Ada compiler: humanize validation must use Alire GNAT 15; got: "
+           ("wrong Ada compiler: manifests must pin "
+            & Required_GNAT_Native_Pin
+            & " and validation must run the matching GNATLS 15.2 compiler; got: "
             & To_String (Output));
          raise Program_Error;
       end if;
@@ -109,22 +115,48 @@ procedure Check_Humanize is
          2 => new String'("--"),
          3 => new String'("./bin/locale_audit"));
       Alr_Path : constant String := Project_Tools.Processes.Locate_Command ("alr");
+
+      function Run_Audit_Command
+        (Label : String;
+         Dir   : String;
+         Args  : GNAT.OS_Lib.Argument_List)
+         return Boolean
+      is
+         Output : Unbounded_String;
+         Status : Integer;
+      begin
+         Status :=
+           Project_Tools.Processes.Run_Status
+             (Label   => Label,
+              Dir     => Dir,
+              Program => Alr_Path,
+              Args    => Args,
+              Output  => Output,
+              Quiet   => False);
+
+         if Status /= 0 then
+            Error (Label & " failed with status" & Integer'Image (Status));
+            return False;
+         end if;
+
+         return True;
+      end Run_Audit_Command;
    begin
-      Project_Tools.Release_Checks.Run
+      if not Run_Audit_Command
         (Label   => "build locale audit executable",
          Dir     => Root & "/tests",
-         Program => Alr_Path,
-         Args    => Build_Tests_Args,
-         Quiet   => False);
-      Project_Tools.Release_Checks.Run
+         Args    => Build_Tests_Args)
+      then
+         return;
+      end if;
+
+      if not Run_Audit_Command
         (Label   => "run locale audit report",
          Dir     => Root & "/tests",
-         Program => Alr_Path,
-         Args    => Exec_Audit_Args,
-         Quiet   => False);
-   exception
-      when Program_Error =>
-         Error ("locale audit report failed");
+         Args    => Exec_Audit_Args)
+      then
+         return;
+      end if;
    end Run_Locale_Audit_Report;
 
    procedure Print_Result
@@ -142,6 +174,14 @@ procedure Check_Humanize is
          Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
       end if;
    end Print_Result;
+
+   procedure Print_Check_Context is
+   begin
+      Put_Line
+        ("humanize check context: root=" & Root
+         & "; i18n=../i18n; project_tools=../project_tools; generated_docs="
+         & "docs/GENERATED_DOCS.toml");
+   end Print_Check_Context;
 begin
    Project_Tools.Processes.Require_Command
      ("alr", "alr executable not found on PATH");
@@ -176,6 +216,7 @@ begin
    end if;
 
    if Project_Tools.Processes.Has_Argument ("--policy-only") then
+      Print_Check_Context;
       Check_Humanize_Policy.Check_Manifest (Root, Errors);
       Check_Required_Release_Surface;
       Check_Humanize_Policy.Check_AUnit_Metrics (Root, Errors);
@@ -191,13 +232,53 @@ begin
       return;
    end if;
 
+   if Project_Tools.Processes.Has_Argument ("--deep-static") then
+      Print_Check_Context;
+      Check_Humanize_Policy.Check_Manifest (Root, Errors);
+      Check_Required_Release_Surface;
+      Check_Humanize_Policy.Check_Source_Tree_Artifacts (Root, Errors);
+      Check_Humanize_Policy.Check_Tooling_Boundary (Root, Errors);
+      Check_Humanize_Policy.Check_Public_Documentation (Root, Errors);
+      Check_Humanize_Policy.Check_Examples_Inventory (Root, Errors);
+      Check_Humanize_Policy.Check_Deep_Static (Root, Errors);
+      Print_Result
+        ("humanize deep static checks passed",
+         "humanize deep static checks failed:");
+      return;
+   end if;
+
    if Project_Tools.Processes.Has_Argument ("--print-generated-data-manifest") then
       Check_Humanize_Policy.Print_Generated_Data_Manifest (Root);
       Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Success);
       return;
    end if;
 
+   if Project_Tools.Processes.Has_Argument ("--print-public-api-index") then
+      Check_Humanize_Policy.Print_Public_API_Index (Root);
+      Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Success);
+      return;
+   end if;
+
+   if Project_Tools.Processes.Has_Argument ("--print-public-api-classes") then
+      Check_Humanize_Policy.Print_Public_API_Classes (Root);
+      Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Success);
+      return;
+   end if;
+
+   if Project_Tools.Processes.Has_Argument ("--print-public-api-coverage") then
+      Check_Humanize_Policy.Print_Public_API_Coverage (Root);
+      Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Success);
+      return;
+   end if;
+
+   if Project_Tools.Processes.Has_Argument ("--print-public-api-unit-coverage") then
+      Check_Humanize_Policy.Print_Public_API_Unit_Coverage (Root);
+      Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Success);
+      return;
+   end if;
+
    Check_Humanize_Policy.Check_Manifest (Root, Errors);
+   Print_Check_Context;
    Check_Required_Release_Surface;
    Check_Humanize_Policy.Check_AUnit_Metrics (Root, Errors);
    Check_Humanize_Policy.Check_Generated_Artifacts (Root, Errors);

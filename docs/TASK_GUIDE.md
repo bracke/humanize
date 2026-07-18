@@ -46,7 +46,8 @@ the `perf_smoke` executable, tooling boundaries, examples, and staged release
 checks.
 Public API changes should update `docs/PUBLIC_API.toml`; example-surface changes
 should update `docs/EXAMPLE_COVERAGE.toml`; performance smoke changes should
-update `docs/PERFORMANCE_BASELINE.toml`.
+update `docs/PERFORMANCE_BASELINE.toml`. Generated-maintained documentation
+refresh commands are listed in `docs/GENERATED_DOCS.toml`.
 Use `docs/PACKAGE_GUIDE.md` when choosing imports for new code. Use
 `tests/src/perf_baseline_report.adb` only for optional local trend reporting;
 release checks keep using the looser `perf_smoke` gate.

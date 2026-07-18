@@ -1,6 +1,7 @@
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Environment_Variables;
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
@@ -92,6 +93,68 @@ package body Check_Humanize_Release is
       return Project_Tools.Processes.Locate_Command ("alr");
    end Alr_Path;
 
+   function Compiler_Stderr_Diagnostics (Root : String) return String is
+      Command : constant String :=
+        "find "
+        & Project_Tools.Processes.Shell_Quote (Root & "/obj") & " "
+        & Project_Tools.Processes.Shell_Quote (Root & "/tests/obj") & " "
+        & Project_Tools.Processes.Shell_Quote (Root & "/check_humanize/obj")
+        & " -type f -name '*.stderr' -size +0c -print";
+   begin
+      return Project_Tools.Processes.Shell_Output (Command);
+   end Compiler_Stderr_Diagnostics;
+
+   function Concurrent_Build_Processes return String is
+      Command : constant String :=
+        "ps -eo pid,ppid,stat,etime,comm,args"
+        & " | grep -E '(^|/| )(alr|gprbuild|gcc|gnat1|gnatbind|gnatlink)( |$)'"
+        & " | grep -v grep";
+   begin
+      return Project_Tools.Processes.Shell_Output (Command);
+   end Concurrent_Build_Processes;
+
+   procedure Report_Failed_Command
+     (Root   : String;
+      Label  : String;
+      Status : Integer)
+   is
+      Diagnostics : constant String := Compiler_Stderr_Diagnostics (Root);
+      Processes   : constant String := Concurrent_Build_Processes;
+   begin
+      Put_Line
+        (Standard_Error,
+         Label & " failed with status" & Integer'Image (Status));
+
+      if Diagnostics /= "" then
+         Put_Line
+           (Standard_Error,
+            "nonempty compiler stderr logs were present after the failure:");
+         Put_Line (Standard_Error, Ada.Strings.Fixed.Trim (Diagnostics, Ada.Strings.Both));
+      else
+         Put_Line
+           (Standard_Error,
+            "no nonempty compiler .stderr logs were present after the failure");
+      end if;
+
+      if Processes /= "" then
+         Put_Line
+           (Standard_Error,
+            "active Alire/GPR/GNAT-related processes at failure time:");
+         Put_Line (Standard_Error, Ada.Strings.Fixed.Trim (Processes, Ada.Strings.Both));
+      else
+         Put_Line
+           (Standard_Error,
+            "no other active Alire/GPR/GNAT-related processes were visible");
+      end if;
+
+      if Status < 0 and then Diagnostics = "" then
+         Put_Line
+           (Standard_Error,
+            "negative status without compiler diagnostics usually points to "
+            & "an interrupted child process or resource-related termination");
+      end if;
+   end Report_Failed_Command;
+
    procedure Run_Check
      (Root    : String;
       Errors  : in out Natural;
@@ -100,16 +163,23 @@ package body Check_Humanize_Release is
       Program : String;
       Args    : Argument_List)
    is
-      pragma Unreferenced (Root);
+      Status : Integer;
    begin
-      Project_Tools.Release_Checks.Run
-        (Label   => Label,
-         Dir     => Dir,
-         Program => Program,
-         Args    => Args,
-         Quiet   => False);
+      Status :=
+        Project_Tools.Processes.Run_Status
+          (Label   => Label,
+           Dir     => Dir,
+           Program => Program,
+           Args    => Args,
+           Quiet   => False);
+
+      if Status /= 0 then
+         Report_Failed_Command (Root, Label, Status);
+         Error (Errors, Label & " failed");
+      end if;
    exception
       when Program_Error =>
+         Report_Failed_Command (Root, Label, -1);
          Error (Errors, Label & " failed");
    end Run_Check;
 
@@ -118,18 +188,47 @@ package body Check_Humanize_Release is
       Errors : in out Natural)
    is
       Args : Argument_List (1 .. 0);
+      type Example_Output_Check is record
+         Program     : access constant String;
+         Fence_Label : access constant String;
+         Label       : access constant String;
+      end record;
+      Checks : constant array (Positive range <>) of Example_Output_Check :=
+        [(Program     => new String'("humanize_demo"),
+          Fence_Label => new String'("humanize-demo-output"),
+          Label       => new String'("run humanize demo for expected output")),
+         (Program     => new String'("system_status_demo"),
+          Fence_Label => new String'("system-status-demo-output"),
+          Label       => new String'("run system status demo for expected output")),
+         (Program     => new String'("ui_labels_demo"),
+          Fence_Label => new String'("ui-labels-demo-output"),
+          Label       => new String'("run UI labels demo for expected output")),
+         (Program     => new String'("security_data_demo"),
+          Fence_Label => new String'("security-data-demo-output"),
+         Label       => new String'("run security/data demo for expected output")),
+         (Program     => new String'("workflow_ops_demo"),
+          Fence_Label => new String'("workflow-ops-demo-output"),
+          Label       => new String'("run workflow/operations demo for expected output")),
+         (Program     => new String'("product_details_demo"),
+          Fence_Label => new String'("product-details-demo-output"),
+          Label       => new String'("run product/details demo for expected output")),
+         (Program     => new String'("public_surface_demo"),
+          Fence_Label => new String'("public-surface-demo-output"),
+          Label       => new String'("run public surface demo for expected output"))];
    begin
-      Project_Tools.Release_Checks.Require_Program_Output_Matches_Fenced_Text
-        (Expected_File => Root & "/examples/EXPECTED_OUTPUT.md",
-         Fence_Label   => "text",
-         Dir           => Root,
-         Program       => Root & "/examples/bin/humanize_demo",
-         Args          => Args,
-         Label         => "run humanize demo for expected output",
-         Quiet         => True);
+      for Check of Checks loop
+         Project_Tools.Release_Checks.Require_Program_Output_Matches_Fenced_Text
+           (Expected_File => Root & "/examples/EXPECTED_OUTPUT.md",
+            Fence_Label   => Check.Fence_Label.all,
+            Dir           => Root,
+            Program       => Root & "/examples/bin/" & Check.Program.all,
+            Args          => Args,
+            Label         => Check.Label.all,
+            Quiet         => True);
+      end loop;
    exception
       when Program_Error =>
-         Error (Errors, "humanize_demo expected-output check failed");
+         Error (Errors, "example expected-output check failed");
    end Check_Example_Output;
 
    procedure Check_Staged_Release_Tree
@@ -172,7 +271,6 @@ package body Check_Humanize_Release is
         (1 => new String'("exec"),
          2 => new String'("--"),
          3 => new String'("./tests/public_api_consumer/bin/public_api_consumer"));
-      Empty_Args : Argument_List (1 .. 0);
 
       procedure Run_Staged_Check
         (Label   : String;
@@ -289,14 +387,7 @@ package body Check_Humanize_Release is
         ("run staged public API bounded consumer",
          Stage_Root, Alr_Path,
          Exec_Public_API_Bounded_Consumer_Args);
-      Project_Tools.Release_Checks.Require_Program_Output_Matches_Fenced_Text
-        (Expected_File => Stage_Root & "/examples/EXPECTED_OUTPUT.md",
-         Fence_Label   => "text",
-         Dir           => Stage_Root,
-         Program       => Stage_Root & "/examples/bin/humanize_demo",
-         Args          => Empty_Args,
-         Label         => "run staged humanize demo for expected output",
-         Quiet         => True);
+      Check_Example_Output (Stage_Root, Errors);
    exception
       when Program_Error =>
          Error (Errors, "staged pin-free release tree verification failed");

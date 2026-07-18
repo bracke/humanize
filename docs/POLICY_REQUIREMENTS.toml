@@ -1,0 +1,833 @@
+# Source-of-truth manifest for release-surface file and text requirements.
+# These are tooling guardrails consumed by check_humanize.
+
+[[required_file]]
+path = "README.md"
+
+[[required_file]]
+path = "LICENSE"
+
+[[required_file]]
+path = "alire.release.toml"
+
+[[required_file]]
+path = "alire.build.toml"
+
+[[required_file]]
+path = "humanize.gpr"
+
+[[required_file]]
+path = "docs/specification.md"
+
+[[required_file]]
+path = "docs/INTERNAL_STRUCTURE.md"
+
+[[required_file]]
+path = "docs/RELEASE_VERIFICATION.md"
+
+[[required_file]]
+path = "docs/QUALITY_GUARDS.md"
+
+[[required_file]]
+path = "docs/API_SURFACE.md"
+
+[[required_file]]
+path = "docs/TASK_GUIDE.md"
+
+[[required_file]]
+path = "docs/POLICY_REQUIREMENTS.toml"
+
+[[required_file]]
+path = "docs/POLICY_THRESHOLDS.toml"
+
+[[required_file]]
+path = "docs/GENERATED_DOCS.toml"
+
+[[required_file]]
+path = "docs/GENERATED_DATA.toml"
+
+[[required_file]]
+path = "docs/PUBLIC_API.toml"
+
+[[required_file]]
+path = "docs/PUBLIC_API_CLASSES.toml"
+
+[[required_file]]
+path = "docs/PUBLIC_API_INDEX.md"
+
+[[required_file]]
+path = "docs/PUBLIC_API_COVERAGE.toml"
+
+[[required_file]]
+path = "docs/PUBLIC_API_UNIT_COVERAGE.toml"
+
+[[required_file]]
+path = "docs/PUBLIC_FACADE_BUDGETS.toml"
+
+[[required_file]]
+path = "docs/STRUCTURAL_BASELINE.toml"
+
+[[required_file]]
+path = "docs/PACKAGE_GUIDE.md"
+
+[[required_file]]
+path = "docs/BASELINE_OWNERSHIP.md"
+
+[[required_file]]
+path = "docs/EXAMPLE_COVERAGE.toml"
+
+[[required_file]]
+path = "docs/PERFORMANCE_BASELINE.toml"
+
+[[required_file]]
+path = "tests/tests.gpr"
+
+[[required_file]]
+path = "tests/public_api_consumer/public_api_consumer.gpr"
+
+[[required_file]]
+path = "tests/public_api_consumer/public_api_consumer.adb"
+
+[[required_file]]
+path = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+
+[[required_file]]
+path = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+
+[[required_file]]
+path = "tests/public_api_consumer/public_api_color_consumer.adb"
+
+[[required_file]]
+path = "tests/public_api_consumer/public_api_domain_consumer.adb"
+
+[[required_file]]
+path = "tests/public_api_consumer/public_api_bounded_consumer.adb"
+
+[[required_file]]
+path = "examples/examples.gpr"
+
+[[required_file]]
+path = "examples/README.md"
+
+[[required_file]]
+path = "examples/EXPECTED_OUTPUT.md"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_policy_support.ads"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_policy_support.adb"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_policy_generated.ads"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_policy_generated.adb"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_policy_examples.ads"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_policy_examples.adb"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_policy_boundaries.ads"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_policy_boundaries.adb"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_public_api.ads"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_public_api.adb"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_public_api_generated.ads"
+
+[[required_file]]
+path = "check_humanize/src/check_humanize_public_api_generated.adb"
+
+[[required_file]]
+path = "src/humanize-colors-support-backend-advanced_palette_summary.adb"
+
+[[required_file]]
+path = "src/humanize-colors-support-backend-apca_contrast_label.adb"
+
+[[required_file]]
+path = "src/humanize-colors-support-backend-color_accessibility_summary.adb"
+
+[[required_file]]
+path = "src/humanize-colors-support-backend-color_summary.adb"
+
+[[required_file]]
+path = "src/humanize-colors-support-backend-palette_contrast_matrix_label.adb"
+
+[[required_file]]
+path = "tests/src/humanize-tests-parsing-test_natural_date_time_and_diagnostics.adb"
+
+[[required_file]]
+path = "tests/src/humanize-tests-parsing-test_parser_malformed_input_matrix.adb"
+
+[[required_file]]
+path = "tests/src/humanize-tests-parsing-test_parser_smoke_baseline.adb"
+
+[[required_text]]
+path = "README.md"
+pattern = "docs/RELEASE_VERIFICATION.md"
+message = "README must point maintainers to release verification"
+
+[[required_text]]
+path = "README.md"
+pattern = "check_humanize"
+message = "README must mention the check_humanize release guard"
+
+[[required_text]]
+path = "README.md"
+pattern = "Humanize.Locales"
+message = "README must document the neutral locale metadata package"
+
+[[required_text]]
+path = "README.md"
+pattern = "Language_Code"
+message = "README must document the locale language helper"
+
+[[required_text]]
+path = "README.md"
+pattern = "Region_Code"
+message = "README must document the locale region helper"
+
+[[required_text]]
+path = "README.md"
+pattern = "Is_Norwegian"
+message = "README must document shared locale family predicates"
+
+[[required_text]]
+path = "README.md"
+pattern = "Is_CJK"
+message = "README must document shared CJK locale predicate"
+
+[[required_text]]
+path = "README.md"
+pattern = 'gnat_native = "=15.2.1"'
+message = "README must document the pinned Alire GNAT 15 toolchain"
+
+[[required_text]]
+path = "docs/RELEASE_VERIFICATION.md"
+pattern = 'gnat_native = "=15.2.1"'
+message = "release verification must document the pinned Alire GNAT 15 toolchain"
+
+[[required_text]]
+path = "docs/RELEASE_VERIFICATION.md"
+pattern = "check_humanize"
+message = "release verification must include check_humanize"
+
+[[required_text]]
+path = "docs/RELEASE_VERIFICATION.md"
+pattern = "examples/examples.gpr"
+message = "release verification must include the examples project build"
+
+[[required_text]]
+path = "docs/RELEASE_VERIFICATION.md"
+pattern = "alr test"
+message = "release verification must include the Alire test action"
+
+[[required_text]]
+path = "docs/RELEASE_VERIFICATION.md"
+pattern = "alire.release.toml"
+message = "release verification must describe the pin-free release manifest"
+
+[[required_text]]
+path = "docs/INTERNAL_STRUCTURE.md"
+pattern = "Humanize.Parsing.Support"
+message = "internal structure map must define parsing extraction boundaries"
+
+[[required_text]]
+path = "docs/INTERNAL_STRUCTURE.md"
+pattern = "Humanize.Numbers.Spellout_Data"
+message = "internal structure map must define number data extraction boundaries"
+
+[[required_text]]
+path = "docs/INTERNAL_STRUCTURE.md"
+pattern = "Humanize.Durations.Business_Calendars"
+message = "internal structure map must define duration extraction boundaries"
+
+[[required_text]]
+path = "docs/INTERNAL_STRUCTURE.md"
+pattern = "Humanize.Catalogs.Core_Data"
+message = "internal structure map must define catalog core-data boundary"
+
+[[required_text]]
+path = "docs/INTERNAL_STRUCTURE.md"
+pattern = "Humanize.Catalogs.Unit_Data"
+message = "internal structure map must define generated unit catalog boundary"
+
+[[required_text]]
+path = "docs/INTERNAL_STRUCTURE.md"
+pattern = "Humanize.Catalogs.Native_Data"
+message = "internal structure map must define native catalog boundary"
+
+[[required_text]]
+path = "docs/INTERNAL_STRUCTURE.md"
+pattern = "Humanize.Catalogs.Loader"
+message = "internal structure map must define catalog extraction boundaries"
+
+[[required_text]]
+path = "docs/INTERNAL_STRUCTURE.md"
+pattern = "Humanize.Colors.CSS"
+message = "internal structure map must define color extraction boundaries"
+
+[[required_text]]
+path = "docs/specification.md"
+pattern = "Humanize.Locales"
+message = "specification must document neutral locale metadata"
+
+[[required_text]]
+path = "docs/specification.md"
+pattern = "Language_Code"
+message = "specification must document the locale language helper"
+
+[[required_text]]
+path = "docs/specification.md"
+pattern = "Region_Code"
+message = "specification must document the locale region helper"
+
+[[required_text]]
+path = "docs/specification.md"
+pattern = "Is_Norwegian"
+message = "specification must document shared locale family predicates"
+
+[[required_text]]
+path = "docs/specification.md"
+pattern = "Is_CJK"
+message = "specification must document shared CJK locale predicate"
+
+[[required_text]]
+path = "examples/README.md"
+pattern = "humanize_demo"
+message = "examples README must document humanize_demo"
+
+[[required_text]]
+path = "examples/EXPECTED_OUTPUT.md"
+pattern = "duration 90s : 1 minute"
+message = "examples expected output must include humanize_demo output"
+
+[[required_text]]
+path = "examples/EXPECTED_OUTPUT.md"
+pattern = "system_status_demo"
+message = "examples expected output must include focused system status output"
+
+[[required_text]]
+path = "examples/EXPECTED_OUTPUT.md"
+pattern = "ui_labels_demo"
+message = "examples expected output must include focused UI label output"
+
+[[required_text]]
+path = "examples/EXPECTED_OUTPUT.md"
+pattern = "security_data_demo"
+message = "examples expected output must include focused security/data output"
+
+[[required_text]]
+path = "examples/EXPECTED_OUTPUT.md"
+pattern = "workflow_ops_demo"
+message = "examples expected output must include focused workflow/operations output"
+
+[[required_text]]
+path = "examples/EXPECTED_OUTPUT.md"
+pattern = "product_details_demo"
+message = "examples expected output must include focused product/details output"
+
+[[required_text]]
+path = "examples/EXPECTED_OUTPUT.md"
+pattern = "public_surface_demo"
+message = "examples expected output must include focused public surface output"
+
+[[required_text]]
+path = "alire.toml"
+pattern = 'type = "test"'
+message = "Alire manifest must define a test action"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "Parser/property test expansion"
+message = "quality guards must document parser/property coverage"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "Performance/size baseline smoke checks"
+message = "quality guards must document performance/size smoke coverage"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "tests/src/perf_smoke.adb"
+message = "quality guards must document the executable performance smoke"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "API consistency checks"
+message = "quality guards must document API consistency coverage"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "Task-oriented docs/examples"
+message = "quality guards must document task-oriented examples"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/POLICY_REQUIREMENTS.toml"
+message = "quality guards must document the policy requirements manifest"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "Generated-data provenance/currentness checks"
+message = "quality guards must document generated-data provenance"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "Generated documentation command index"
+message = "quality guards must document generated-doc refresh commands"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/GENERATED_DOCS.toml"
+message = "quality guards must document the generated-docs manifest"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/GENERATED_DATA.toml"
+message = "quality guards must document the generated-data manifest"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/PUBLIC_API.toml"
+message = "quality guards must document the public API manifest"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/PUBLIC_API_INDEX.md"
+message = "quality guards must document the generated public API index"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/PUBLIC_API_CLASSES.toml"
+message = "quality guards must document the generated public API class map"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/PUBLIC_API_COVERAGE.toml"
+message = "quality guards must document the public API coverage scorecard"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/PUBLIC_API_UNIT_COVERAGE.toml"
+message = "quality guards must document per-unit public API coverage"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/PUBLIC_FACADE_BUDGETS.toml"
+message = "quality guards must document public facade budgets"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/EXAMPLE_COVERAGE.toml"
+message = "quality guards must document the example coverage manifest"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/PERFORMANCE_BASELINE.toml"
+message = "quality guards must document the performance baseline manifest"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "Humanize-side locale coverage audit"
+message = "quality guards must document locale audit coverage"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "Public API surface guardrail"
+message = "quality guards must document public API surface coverage"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "Structural baselines"
+message = "quality guards must document structural baselines"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "Non-goal boundary"
+message = "quality guards must document non-goal boundaries"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "Domain package consistency"
+message = "quality guards must document domain package consistency checks"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "line-count and SHA-256 snapshots"
+message = "quality guards must document generated-data snapshots"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "Public API surface snapshot"
+message = "API surface guardrail must define a public API snapshot"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "Public API classes"
+message = "API surface guardrail must document public API classes"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "Internal packages"
+message = "API surface guardrail must document internal packages"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "Library_Interface"
+message = "API surface guardrail must document compiler-enforced API boundary"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "Source-extracted public spec inventory"
+message = "API surface guardrail must document source-extracted spec inventory"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "docs/PUBLIC_API.toml"
+message = "API surface guardrail must document the machine-readable API allowlist"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "docs/PUBLIC_API_INDEX.md"
+message = "API surface guardrail must document the generated public API index"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "docs/PUBLIC_API_CLASSES.toml"
+message = "API surface guardrail must document the generated public API classes"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "docs/PUBLIC_API_COVERAGE.toml"
+message = "API surface guardrail must document the public API coverage scorecard"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "docs/PUBLIC_API_UNIT_COVERAGE.toml"
+message = "API surface guardrail must document per-unit public API coverage"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "src/humanize-parsing.ads"
+message = "API surface guardrail must include the parsing facade"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "src/humanize-values.ads"
+message = "API surface guardrail must include deterministic value labels"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "Text_Result/_Into pairing"
+message = "API surface guardrail must document owned/bounded API pairing"
+
+[[required_text]]
+path = "docs/API_SURFACE.md"
+pattern = "src/humanize-colors-css.ads"
+message = "API surface guardrail must include public child facade examples"
+
+[[required_text]]
+path = "docs/TASK_GUIDE.md"
+pattern = "Parsing untrusted human input"
+message = "task guide must cover parsing use cases"
+
+[[required_text]]
+path = "docs/TASK_GUIDE.md"
+pattern = "Rendering without allocation"
+message = "task guide must cover bounded rendering use cases"
+
+[[required_text]]
+path = "docs/TASK_GUIDE.md"
+pattern = "Auditing locale coverage"
+message = "task guide must cover locale audit use cases"
+
+[[required_text]]
+path = "docs/TASK_GUIDE.md"
+pattern = "--locale"
+message = "task guide must document locale audit filtering"
+
+[[required_text]]
+path = "docs/TASK_GUIDE.md"
+pattern = "perf_smoke"
+message = "task guide must document performance smoke usage"
+
+[[required_text]]
+path = "docs/TASK_GUIDE.md"
+pattern = "docs/PACKAGE_GUIDE.md"
+message = "task guide must point users to the package guide"
+
+[[required_text]]
+path = "docs/PACKAGE_GUIDE.md"
+pattern = "Humanize.Parsing"
+message = "package guide must document the parsing facade"
+
+[[required_text]]
+path = "docs/PACKAGE_GUIDE.md"
+pattern = "Prefer public parser children"
+message = "package guide must steer new callers toward focused parser children"
+
+[[required_text]]
+path = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+pattern = "Humanize.Parsing.Numbers.Parse_Cardinal"
+message = "public parsing consumer must exercise focused parser child packages"
+
+[[required_text]]
+path = "docs/PACKAGE_GUIDE.md"
+pattern = "Humanize.Cross_Domain"
+message = "package guide must document cross-domain labels"
+
+[[required_text]]
+path = "docs/BASELINE_OWNERSHIP.md"
+pattern = "Generated-maintained scorecards and indexes"
+message = "baseline ownership guide must classify generated-maintained files"
+
+[[required_text]]
+path = "docs/BASELINE_OWNERSHIP.md"
+pattern = "--print-public-api-unit-coverage"
+message = "baseline ownership guide must document API scorecard refresh commands"
+
+[[required_text]]
+path = "tests/src/humanize-tests-parsing.adb"
+pattern = "Test_Parser_Malformed_Input_Matrix"
+message = "parser tests must include a malformed-input matrix"
+
+[[required_text]]
+path = "tests/src/humanize-tests-parsing.adb"
+pattern = "Test_Parser_Smoke_Baseline"
+message = "parser tests must include a representative smoke baseline"
+
+[[required_text]]
+path = "tests/src/humanize-tests-compatibility.adb"
+pattern = "Test_Render_Parse_Roundtrip_Corpus"
+message = "compatibility tests must include a render/parse roundtrip corpus"
+
+[[required_text]]
+path = "tests/src/humanize-tests-compatibility.adb"
+pattern = "Check_Scanner_Roundtrips"
+message = "compatibility tests must include scanner consumed-length roundtrips"
+
+[[required_text]]
+path = "tests/src/humanize-tests-compatibility.adb"
+pattern = "Check_Deterministic_Helper_Roundtrips"
+message = "compatibility tests must include deterministic helper roundtrips"
+
+[[required_text]]
+path = "tests/src/perf_smoke.adb"
+pattern = "Max_Format_Seconds"
+message = "tests project must include a bounded performance smoke executable"
+
+[[required_text]]
+path = "tests/src/perf_smoke.adb"
+pattern = "perf smoke parse"
+message = "performance smoke must report per-operation groups"
+
+[[required_text]]
+path = "tests/src/perf_smoke.adb"
+pattern = "perf smoke text"
+message = "performance smoke must report text helper timing"
+
+[[required_text]]
+path = "tests/src/perf_smoke.adb"
+pattern = "perf smoke domain"
+message = "performance smoke must report domain helper timing"
+
+[[required_text]]
+path = "tests/src/perf_baseline_report.adb"
+pattern = "bytes-format"
+message = "tests project must include optional per-operation performance report"
+
+[[required_text]]
+path = "tests/src/perf_baseline_report.adb"
+pattern = "system-status-http"
+message = "optional performance report must include expanded domain paths"
+
+[[required_text]]
+path = "check_humanize/src/check_humanize_release.adb"
+pattern = "public API consumer"
+message = "release checker must build and run a downstream public API consumer"
+
+[[required_text]]
+path = "check_humanize/src/check_humanize_release.adb"
+pattern = "public API formatting consumer"
+message = "release checker must run focused public API consumers"
+
+[[required_text]]
+path = "tests/tests.gpr"
+pattern = "perf_smoke.adb"
+message = "tests project must build the performance smoke executable"
+
+[[required_text]]
+path = "tests/tests.gpr"
+pattern = "perf_baseline_report.adb"
+message = "tests project must build the optional performance report executable"
+
+[[required_text]]
+path = "tests/src/humanize-tests-architecture.adb"
+pattern = "Test_Public_API_Consistency"
+message = "architecture tests must include public API consistency checks"
+
+[[required_text]]
+path = "tests/src/humanize-tests-architecture.adb"
+pattern = "Check_Area"
+message = "architecture tests must include per-area capability checks"
+
+[[required_text]]
+path = "tests/src/locale_audit.adb"
+pattern = "for Locale_Access of Humanize.Locales.Shipped_Locales loop"
+message = "locale audit must iterate Humanize-owned shipped locale metadata"
+
+[[required_text]]
+path = "tests/src/locale_audit.adb"
+pattern = "Audit_Deterministic_Schedule_Spellout"
+message = "locale audit must include deterministic schedule/spellout checks"
+
+[[required_text]]
+path = "tests/src/locale_audit.adb"
+pattern = "Summary_Only"
+message = "locale audit must support summary mode"
+
+[[required_text]]
+path = "tests/src/locale_audit.adb"
+pattern = "Locale_Filter"
+message = "locale audit must support locale filtering"
+
+[[required_text]]
+path = "tests/src/locale_audit.adb"
+pattern = "Generated_Core_Expectations"
+message = "locale audit must keep repeated core expectations data-driven"
+
+[[required_text]]
+path = "tests/src/locale_audit.adb"
+pattern = 'U ("fi")'
+message = "locale audit generated-core table must include Finnish"
+
+[[required_text]]
+path = "tests/src/locale_audit.adb"
+pattern = 'U ("tr")'
+message = "locale audit generated-core table must include Turkish"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-catalogs-core_data.adb"'
+message = "generated-data manifest must include core catalog data"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-catalogs-unit_data.adb"'
+message = "generated-data manifest must include unit catalog data"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-catalogs-native_data.adb"'
+message = "generated-data manifest must include native catalog data"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-numbers-spellout_data.adb"'
+message = "generated-data manifest must include spellout data"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-durations-schedule_data.adb"'
+message = "generated-data manifest must include schedule data"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-locales.adb"'
+message = "generated-data manifest must include locale inventory"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-phrases-locales.adb"'
+message = "generated-data manifest must include phrase locale inventory"
+
+[[required_text]]
+path = "src/humanize-catalogs-core_data.adb"
+pattern = "Provenance: Humanize-owned catalog data"
+message = "core catalog data must carry provenance/currentness text"
+
+[[required_text]]
+path = "src/humanize-catalogs-unit_data.adb"
+pattern = "Provenance: generated from Humanize unit catalog templates"
+message = "unit catalog data must carry provenance/currentness text"
+
+[[required_text]]
+path = "src/humanize-catalogs-native_data.adb"
+pattern = "Provenance: generated from reviewed native catalog fragments"
+message = "native catalog data must carry provenance/currentness text"
+
+[[required_text]]
+path = "src/humanize-numbers-spellout_data.adb"
+pattern = "Provenance: generated from Humanize spellout tables"
+message = "spellout data must carry provenance/currentness text"
+
+[[required_text]]
+path = "src/humanize-durations-schedule_data.adb"
+pattern = "Provenance: Humanize-owned deterministic schedule metadata"
+message = "schedule data must carry provenance/currentness text"
+
+[[required_text]]
+path = "src/humanize-locales.adb"
+pattern = "Provenance: Humanize-owned shipped locale inventory"
+message = "locale inventory must carry provenance/currentness text"
+
+[[required_text]]
+path = "src/humanize-phrases-locales.adb"
+pattern = "Provenance: delegates to Humanize.Phrases.Support locale metadata"
+message = "phrase locale inventory must carry provenance/currentness text"
+
+[[required_text]]
+path = "docs/RELEASE_VERIFICATION.md"
+pattern = "docs/QUALITY_GUARDS.md"
+message = "release verification must link to quality guard documentation"
+
+[[required_text]]
+path = "docs/RELEASE_VERIFICATION.md"
+pattern = "perf_smoke"
+message = "release verification must include performance smoke"
+
+[[required_text]]
+path = "docs/RELEASE_VERIFICATION.md"
+pattern = "--print-public-api-classes"
+message = "release verification must document generated-doc refresh commands"
+
+[[required_text]]
+path = "check_humanize/src/check_humanize.adb"
+pattern = "--print-public-api-index"
+message = "check_humanize must expose the generated public API index mode"
+
+[[required_text]]
+path = "check_humanize/src/check_humanize.adb"
+pattern = "--print-public-api-classes"
+message = "check_humanize must expose the generated public API classes mode"
+
+[[required_text]]
+path = "check_humanize/src/check_humanize.adb"
+pattern = "--print-public-api-coverage"
+message = "check_humanize must expose the generated public API coverage mode"
+
+[[required_text]]
+path = "check_humanize/src/check_humanize.adb"
+pattern = "--print-public-api-unit-coverage"
+message = "check_humanize must expose the generated per-unit API coverage mode"
+
+[[required_text]]
+path = "check_humanize/src/check_humanize.adb"
+pattern = "--deep-static"
+message = "check_humanize must expose the deeper static analysis profile"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "--deep-static"
+message = "quality guard documentation must describe the deep static profile"

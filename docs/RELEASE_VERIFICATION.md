@@ -72,6 +72,33 @@ The source-policy gate also enforces the quality guard map in
 `docs/PERFORMANCE_BASELINE.toml`, and the task-oriented usage guide in
 `docs/TASK_GUIDE.md`.
 
+For static-only review after policy or documentation edits, run
+`./check_humanize/bin/check_humanize --deep-static`. This profile does not build
+or force rebuild anything; it checks the manifest, release surface, source tree,
+tooling boundary, public docs, examples inventory, quality guards, generated
+public API docs, and existing compiler stderr logs.
+
+Generated-maintained documentation has explicit refresh commands. Review the
+output before updating tracked files:
+
+```sh
+./check_humanize/bin/check_humanize --print-generated-data-manifest
+./check_humanize/bin/check_humanize --print-public-api-index
+./check_humanize/bin/check_humanize --print-public-api-classes
+./check_humanize/bin/check_humanize --print-public-api-coverage
+./check_humanize/bin/check_humanize --print-public-api-unit-coverage
+```
+
+`docs/GENERATED_DOCS.toml` is the command index for these generated docs and is
+validated by the policy gate.
+
+Example expected output is release-checked from `examples/EXPECTED_OUTPUT.md`.
+The checked fences include `humanize-demo-output`,
+`system-status-demo-output`, `ui-labels-demo-output`,
+`security-data-demo-output`, `workflow-ops-demo-output`,
+`product-details-demo-output`, and `public-surface-demo-output`; the same
+fixture checks run against the staged release tree.
+
 ## Remaining publication checks
 
 Before publishing or tagging a release, also run:

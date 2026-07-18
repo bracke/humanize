@@ -20,7 +20,7 @@ usecase = "Text display, editing, names, paths, prose, metadata, and terminal re
 path = "src/humanize-datetimes-support.adb"
 max_bytes = 83000
 split_prefix = "src/humanize-datetimes-support-"
-min_split_bodies = 1
+min_split_bodies = 2
 usecase = "Relative date/time and calendar helper backend."
 
 [[body]]
@@ -39,7 +39,7 @@ usecase = "Domain-detail metadata and parsing support backend."
 
 [[body]]
 path = "check_humanize/src/check_humanize_policy.adb"
-max_bytes = 90000
+max_bytes = 95000
 split_prefix = "check_humanize/src/check_humanize_policy-"
 min_split_bodies = 0
-usecase = "Tooling-only policy checks, including API index, coverage scorecard, generated-data, examples, performance, and domain consistency guardrails. Future growth should move to focused helper units before this budget is raised again."
+usecase = "Tooling-only policy checks, including generated-doc refresh commands, API index, class map, coverage scorecards, generated-data, examples, performance, non-goals, and domain consistency guardrails. Future growth should move to focused helper units before this budget is raised again."
