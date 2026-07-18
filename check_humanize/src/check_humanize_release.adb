@@ -294,7 +294,7 @@ package body Check_Humanize_Release is
             Ada.Environment_Variables.Set (Env_Name, Old_Env);
          end if;
       exception
-         when others =>
+         when others => --  defensive recovery
             if Had_Env then
                Ada.Environment_Variables.Set (Env_Name, Old_Env);
             end if;

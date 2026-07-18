@@ -119,7 +119,7 @@ package body Check_Humanize_Policy_Boundaries is
          Ada.Directories.End_Search (Search);
          Search_Open := False;
       exception
-         when others =>
+         when others => --  defensive recovery
             if Search_Open then
                Ada.Directories.End_Search (Search);
             end if;

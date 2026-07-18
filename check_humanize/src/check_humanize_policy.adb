@@ -136,7 +136,7 @@ package body Check_Humanize_Policy is
         (Root, Errors, "aunit_min_test_bodies", Metrics.Test_Body_Count,
          "Humanize AUnit test body inventory is too small");
    exception
-      when others =>
+      when others => --  defensive recovery
          if Ada.Directories.More_Entries (Search) then
             Ada.Directories.End_Search (Search);
          end if;
@@ -533,9 +533,12 @@ package body Check_Humanize_Policy is
       Silent_Marker  : constant String := "intentional silent recovery";
       Parse_Failure_Marker : constant String := "parse failure normalization";
       Defensive_Marker     : constant String := "defensive recovery";
-      Parse_Failure_Count  : Natural := 0;
-      Defensive_Count      : Natural := 0;
-      Silent_Count         : Natural := 0;
+      Runtime_Parse_Failure_Count : Natural := 0;
+      Runtime_Defensive_Count     : Natural := 0;
+      Runtime_Silent_Count        : Natural := 0;
+      Tooling_Parse_Failure_Count : Natural := 0;
+      Tooling_Defensive_Count     : Natural := 0;
+      Tooling_Silent_Count        : Natural := 0;
 
       function Has_Recovery_Marker (Line : String) return Boolean is
         (Contains (Line, Silent_Marker)
@@ -579,7 +582,12 @@ package body Check_Humanize_Policy is
          return Text (First .. Last);
       end Line_Text;
 
-      procedure Check_File (Relative_Path : String) is
+      procedure Check_File
+        (Relative_Path        : String;
+         Parse_Failure_Count  : in out Natural;
+         Defensive_Count      : in out Natural;
+         Silent_Count         : in out Natural)
+      is
          Text     : constant String := Read_File (Root, Relative_Path);
          Position : Natural := Text'First;
          In_Exception_Handler : Boolean := False;
@@ -645,43 +653,74 @@ package body Check_Humanize_Policy is
          end loop;
       end Check_File;
 
-      Search      : Ada.Directories.Search_Type;
-      Search_Open : Boolean := False;
-      Item        : Ada.Directories.Directory_Entry_Type;
+      procedure Check_Directory
+        (Relative_Dir         : String;
+         Parse_Failure_Count  : in out Natural;
+         Defensive_Count      : in out Natural;
+         Silent_Count         : in out Natural)
+      is
+         Search      : Ada.Directories.Search_Type;
+         Search_Open : Boolean := False;
+         Item        : Ada.Directories.Directory_Entry_Type;
+      begin
+         Ada.Directories.Start_Search
+           (Search    => Search,
+            Directory => Root & "/" & Relative_Dir,
+            Pattern   => "*.ad?",
+            Filter    => [Ada.Directories.Ordinary_File => True,
+                          others => False]);
+         Search_Open := True;
+
+         while Ada.Directories.More_Entries (Search) loop
+            Ada.Directories.Get_Next_Entry (Search, Item);
+            Check_File
+              (Relative_Dir & "/" & Ada.Directories.Simple_Name (Item),
+               Parse_Failure_Count, Defensive_Count, Silent_Count);
+         end loop;
+
+         Ada.Directories.End_Search (Search);
+         Search_Open := False;
+      exception
+         when others => --  defensive recovery
+            if Search_Open then
+               Ada.Directories.End_Search (Search);
+            end if;
+            raise;
+      end Check_Directory;
    begin
-      Ada.Directories.Start_Search
-        (Search    => Search,
-         Directory => Root & "/src",
-         Pattern   => "*.ad?",
-         Filter    => [Ada.Directories.Ordinary_File => True, others => False]);
-      Search_Open := True;
-
-      while Ada.Directories.More_Entries (Search) loop
-         Ada.Directories.Get_Next_Entry (Search, Item);
-         Check_File ("src/" & Ada.Directories.Simple_Name (Item));
-      end loop;
-
-      Ada.Directories.End_Search (Search);
-      Search_Open := False;
+      Check_Directory
+        ("src", Runtime_Parse_Failure_Count, Runtime_Defensive_Count,
+         Runtime_Silent_Count);
+      Check_Directory
+        ("check_humanize/src", Tooling_Parse_Failure_Count,
+         Tooling_Defensive_Count, Tooling_Silent_Count);
 
       Require_Maximum
         (Root, Errors, "exception_marker_max_parse_failure_normalization",
-         Parse_Failure_Count,
+         Runtime_Parse_Failure_Count,
          "parse failure normalization handler count grew");
       Require_Maximum
         (Root, Errors, "exception_marker_max_defensive_recovery",
-         Defensive_Count,
+         Runtime_Defensive_Count,
          "defensive recovery handler count grew");
       Require_Maximum
         (Root, Errors, "exception_marker_max_intentional_silent_recovery",
-         Silent_Count,
+         Runtime_Silent_Count,
          "intentional silent recovery handler count grew");
-   exception
-      when others =>
-         if Search_Open then
-            Ada.Directories.End_Search (Search);
-         end if;
-         raise;
+      Require_Maximum
+        (Root, Errors,
+         "tooling_exception_marker_max_parse_failure_normalization",
+         Tooling_Parse_Failure_Count,
+         "tooling parse failure normalization handler count grew");
+      Require_Maximum
+        (Root, Errors, "tooling_exception_marker_max_defensive_recovery",
+         Tooling_Defensive_Count,
+         "tooling defensive recovery handler count grew");
+      Require_Maximum
+        (Root, Errors,
+         "tooling_exception_marker_max_intentional_silent_recovery",
+         Tooling_Silent_Count,
+         "tooling intentional silent recovery handler count grew");
    end Check_Intentional_Silent_Recovery;
 
    procedure Check_Public_Spec_Size_Guards
@@ -763,7 +802,7 @@ package body Check_Humanize_Policy is
       Ada.Directories.End_Search (Search);
       Search_Open := False;
    exception
-      when others =>
+      when others => --  defensive recovery
          if Search_Open then
             Ada.Directories.End_Search (Search);
          end if;

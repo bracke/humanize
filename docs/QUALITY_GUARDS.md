@@ -166,6 +166,13 @@ after editing docs, policies, generated manifests, or checker structure because
 it catches stale metadata, missing split checker packages, and nonempty stderr
 logs from the last normal build.
 
+Broad exception handlers in both runtime `src/` code and release-tooling
+`check_humanize/src/` code must carry an explicit recovery classification, such
+as `parse failure normalization`, `defensive recovery`, or `intentional silent
+recovery`. `docs/POLICY_THRESHOLDS.toml` keeps separate ratchets for runtime
+and tooling handlers so release-policy code cannot gain broad exception
+recovery without review.
+
 ## Domain package consistency
 
 Public domain packages must expose owned `Text_Result` labels, bounded `_Into`

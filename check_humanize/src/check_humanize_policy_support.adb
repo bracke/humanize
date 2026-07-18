@@ -146,7 +146,7 @@ package body Check_Humanize_Policy_Support is
          end if;
       end;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Malformed_Natural, Value => 0);
    end Parse_Natural_After;
 
@@ -225,7 +225,7 @@ package body Check_Humanize_Policy_Support is
          end;
       end;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Malformed_String, Value => Null_Unbounded_String);
    end Parse_String_After;
 
@@ -257,7 +257,7 @@ package body Check_Humanize_Policy_Support is
       begin
          Minimum := Policy_Threshold (Root, Key);
       exception
-         when others =>
+         when others => --  defensive recovery
             Error (Errors, "missing policy threshold: " & Key);
             return;
       end;
@@ -279,7 +279,7 @@ package body Check_Humanize_Policy_Support is
       begin
          Expected := Policy_Threshold (Root, Key);
       exception
-         when others =>
+         when others => --  defensive recovery
             Error (Errors, "missing policy threshold: " & Key);
             return;
       end;
@@ -301,7 +301,7 @@ package body Check_Humanize_Policy_Support is
       begin
          Maximum := Policy_Threshold (Root, Key);
       exception
-         when others =>
+         when others => --  defensive recovery
             Error (Errors, "missing policy threshold: " & Key);
             return;
       end;
@@ -358,6 +358,9 @@ package body Check_Humanize_Policy_Support is
       Require_Key ("exception_marker_max_parse_failure_normalization");
       Require_Key ("exception_marker_max_defensive_recovery");
       Require_Key ("exception_marker_max_intentional_silent_recovery");
+      Require_Key ("tooling_exception_marker_max_parse_failure_normalization");
+      Require_Key ("tooling_exception_marker_max_defensive_recovery");
+      Require_Key ("tooling_exception_marker_max_intentional_silent_recovery");
       Require_Key ("test_source_parent_max_lines");
       Require_Key ("test_source_subunit_max_lines");
    end Check_Policy_Threshold_Keys;
@@ -432,7 +435,7 @@ package body Check_Humanize_Policy_Support is
          Ada.Directories.End_Search (Search);
          return Count;
       exception
-         when others =>
+         when others => --  defensive recovery
             if Ada.Directories.More_Entries (Search) then
                Ada.Directories.End_Search (Search);
             end if;
