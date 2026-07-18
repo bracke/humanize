@@ -89,6 +89,9 @@ path = "docs/EXAMPLE_COVERAGE.toml"
 path = "docs/PERFORMANCE_BASELINE.toml"
 
 [[required_file]]
+path = "docs/PERFORMANCE_EXEMPTION_BUDGETS.toml"
+
+[[required_file]]
 path = "tests/tests.gpr"
 
 [[required_file]]
@@ -465,6 +468,11 @@ message = "quality guards must document the example coverage manifest"
 path = "docs/QUALITY_GUARDS.md"
 pattern = "docs/PERFORMANCE_BASELINE.toml"
 message = "quality guards must document the performance baseline manifest"
+
+[[required_text]]
+path = "docs/QUALITY_GUARDS.md"
+pattern = "docs/PERFORMANCE_EXEMPTION_BUDGETS.toml"
+message = "quality guards must document performance exemption budgets"
 
 [[required_text]]
 path = "docs/QUALITY_GUARDS.md"

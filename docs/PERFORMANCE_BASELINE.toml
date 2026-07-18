@@ -25,10 +25,19 @@ paths = [
   "Humanize.Parsing.Parse_Duration",
   "Humanize.Parsing.Parse_Cardinal",
   "Humanize.Parsing.Parse_RGB_Label",
+  "Humanize.Parsing.Date_Times.Parse_Natural_Date",
+  "Humanize.Parsing.Domain_Labels.Parse_Domain_Summary",
+  "Humanize.Parsing.Durations.Parse_Duration",
+  "Humanize.Parsing.Numbers.Parse_Cardinal",
+  "Humanize.Parsing.Strings.Parse_Identifier_Label",
+  "Humanize.Parsing.Units.Parse_Unit",
   "Humanize.Strings.Title_Case_Smart",
   "Humanize.Strings.Core.Title_Case_Smart",
   "Humanize.Strings.Truncate_Words",
   "Humanize.Strings.Display.Truncate_Display_Width",
+  "Humanize.Strings.Identifiers.Parameterize",
+  "Humanize.Strings.Paths.Path_Basename",
+  "Humanize.Strings.Privacy.Safe_Email_Label",
   "Humanize.Colors.CSS.CSS_Color_Label",
   "Humanize.System_Status.HTTP_Status_Label",
   "Humanize.Operations.Progress_Summary",
@@ -39,8 +48,11 @@ paths = [
   "Humanize.Phrases.Statuses.Status_Phrase",
   "Humanize.Phrases.Fields.Field_Change_Summary",
   "Humanize.Phrases.Keys.Status_Key",
+  "Humanize.Phrases.Locales.Supported_Phrase_Locales",
   "Humanize.Phrases.Severity.Severity_Label",
   "Humanize.Phrases.Summaries.Queue_Summary",
+  "Humanize.Lists.Counted_Noun",
+  "Humanize.Cross_Domain.Metadata_Profile_Label",
   "Humanize.Builds.Build_Label",
   "Humanize.Permissions.Permission_Label",
   "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
@@ -73,7 +85,13 @@ paths = [
   "Humanize.Parsing.Parse_Bytes",
   "Humanize.Parsing.Parse_Duration",
   "Humanize.Parsing.Parse_Cardinal",
-  "Humanize.Parsing.Parse_RGB_Label"
+  "Humanize.Parsing.Parse_RGB_Label",
+  "Humanize.Parsing.Date_Times.Parse_Natural_Date",
+  "Humanize.Parsing.Domain_Labels.Parse_Domain_Summary",
+  "Humanize.Parsing.Durations.Parse_Duration",
+  "Humanize.Parsing.Numbers.Parse_Cardinal",
+  "Humanize.Parsing.Strings.Parse_Identifier_Label",
+  "Humanize.Parsing.Units.Parse_Unit"
 ]
 
 [perf_smoke.text]
@@ -84,6 +102,9 @@ paths = [
   "Humanize.Strings.Core.Title_Case_Smart",
   "Humanize.Strings.Truncate_Words",
   "Humanize.Strings.Display.Truncate_Display_Width",
+  "Humanize.Strings.Identifiers.Parameterize",
+  "Humanize.Strings.Paths.Path_Basename",
+  "Humanize.Strings.Privacy.Safe_Email_Label",
   "Humanize.Colors.CSS.CSS_Color_Label"
 ]
 
@@ -100,8 +121,11 @@ paths = [
   "Humanize.Phrases.Statuses.Status_Phrase",
   "Humanize.Phrases.Fields.Field_Change_Summary",
   "Humanize.Phrases.Keys.Status_Key",
+  "Humanize.Phrases.Locales.Supported_Phrase_Locales",
   "Humanize.Phrases.Severity.Severity_Label",
   "Humanize.Phrases.Summaries.Queue_Summary",
+  "Humanize.Lists.Counted_Noun",
+  "Humanize.Cross_Domain.Metadata_Profile_Label",
   "Humanize.Builds.Build_Label",
   "Humanize.Permissions.Permission_Label",
   "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
@@ -128,9 +152,16 @@ Humanize_Numbers_Statistics = "Humanize.Numbers.Statistics.Outlier_Summary_Label
 Humanize_Operations = "Humanize.Operations.Progress_Summary"
 Humanize_Parsing = "Humanize.Parsing.Parse_Bytes"
 Humanize_Parsing_Colors = "Humanize.Parsing.Parse_RGB_Label"
+Humanize_Parsing_Date_Times = "Humanize.Parsing.Date_Times.Parse_Natural_Date"
+Humanize_Parsing_Domain_Labels = "Humanize.Parsing.Domain_Labels.Parse_Domain_Summary"
+Humanize_Parsing_Durations = "Humanize.Parsing.Durations.Parse_Duration"
+Humanize_Parsing_Numbers = "Humanize.Parsing.Numbers.Parse_Cardinal"
+Humanize_Parsing_Strings = "Humanize.Parsing.Strings.Parse_Identifier_Label"
+Humanize_Parsing_Units = "Humanize.Parsing.Units.Parse_Unit"
 Humanize_Phrases = "Humanize.Phrases.Status_Phrase"
 Humanize_Phrases_Fields = "Humanize.Phrases.Fields.Field_Change_Summary"
 Humanize_Phrases_Keys = "Humanize.Phrases.Keys.Status_Key"
+Humanize_Phrases_Locales = "Humanize.Phrases.Locales.Supported_Phrase_Locales"
 Humanize_Phrases_Severity = "Humanize.Phrases.Severity.Severity_Label"
 Humanize_Phrases_Statuses = "Humanize.Phrases.Statuses.Status_Phrase"
 Humanize_Phrases_Summaries = "Humanize.Phrases.Summaries.Queue_Summary"
@@ -139,6 +170,11 @@ Humanize_Search = "Humanize.Search.Search_Result_Summary_Label"
 Humanize_Strings = "Humanize.Strings.Title_Case_Smart"
 Humanize_Strings_Core = "Humanize.Strings.Core.Title_Case_Smart"
 Humanize_Strings_Display = "Humanize.Strings.Display.Truncate_Display_Width"
+Humanize_Strings_Identifiers = "Humanize.Strings.Identifiers.Parameterize"
+Humanize_Strings_Paths = "Humanize.Strings.Paths.Path_Basename"
+Humanize_Strings_Privacy = "Humanize.Strings.Privacy.Safe_Email_Label"
+Humanize_Lists = "Humanize.Lists.Counted_Noun"
+Humanize_Cross_Domain = "Humanize.Cross_Domain.Metadata_Profile_Label"
 Humanize_System_Status = "Humanize.System_Status.HTTP_Status_Label"
 Humanize_Units = "Humanize.Units.Format_Length"
 

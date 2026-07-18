@@ -87,6 +87,72 @@ package body Check_Humanize_Policy_Public_Facades is
       return Count;
    end Occurrence_Count;
 
+   function Next_Entry_Start
+     (Text : String;
+      From : Positive)
+      return Natural
+   is
+      Next : constant Natural :=
+        Ada.Strings.Fixed.Index
+          (Text, ASCII.LF & "[[facade]]", From => From + 1);
+   begin
+      return (if Next = 0 then Text'Last + 1 else Next);
+   end Next_Entry_Start;
+
+   function Boolean_Value_In_Entry
+     (Text      : String;
+      Key       : String;
+      From      : Positive;
+      Entry_End : Natural;
+      Unit      : String;
+      Errors    : in out Natural)
+      return Boolean
+   is
+      Key_Pos : constant Natural :=
+        Ada.Strings.Fixed.Index
+          (Text, ASCII.LF & Key & " = ", From => From);
+      True_Value  : constant String := "true";
+      False_Value : constant String := "false";
+   begin
+      if Key_Pos = 0 or else Key_Pos >= Entry_End then
+         Error
+           (Errors,
+            "public facade boolean field is missing for " & Unit & ": "
+            & Key);
+         return False;
+      end if;
+
+      declare
+         Value_First : Natural := Key_Pos + Key'Length + 4;
+      begin
+         while Value_First < Entry_End
+           and then Text (Value_First) = ' '
+         loop
+            Value_First := Value_First + 1;
+         end loop;
+
+         if Value_First + True_Value'Length - 1 < Entry_End
+           and then Text
+             (Value_First .. Value_First + True_Value'Length - 1)
+               = True_Value
+         then
+            return True;
+         elsif Value_First + False_Value'Length - 1 < Entry_End
+           and then Text
+             (Value_First .. Value_First + False_Value'Length - 1)
+               = False_Value
+         then
+            return False;
+         else
+            Error
+              (Errors,
+               "public facade boolean field is malformed for " & Unit & ": "
+               & Key);
+            return False;
+         end if;
+      end;
+   end Boolean_Value_In_Entry;
+
    procedure Check_Delimited_Public_Facade_Items
      (Spec       : String;
       Public_API : String;
@@ -179,6 +245,7 @@ package body Check_Humanize_Policy_Public_Facades is
       Count    : Natural := 0;
 
       procedure Check_Entry (Entry_Pos : Positive) is
+         Entry_End : constant Natural := Next_Entry_Start (Manifest, Entry_Pos);
          Unit : constant String :=
            Manifest_String_Value_After
              (Manifest, ASCII.LF & "unit = ", Entry_Pos);
@@ -203,9 +270,14 @@ package body Check_Humanize_Policy_Public_Facades is
          Min_Child_Units : constant Natural :=
            Natural_Value_After
              (Manifest, ASCII.LF & "min_child_units = ", Entry_Pos);
+         Map_Required : constant Boolean :=
+           Boolean_Value_In_Entry
+             (Manifest, "map_required", Entry_Pos, Entry_End, Unit, Errors);
          Map_Marker : constant String :=
-           Manifest_String_Value_After
-             (Manifest, ASCII.LF & "map_marker = ", Entry_Pos);
+           (if Map_Required then
+              Manifest_String_Value_After
+                (Manifest, ASCII.LF & "map_marker = ", Entry_Pos)
+            else "");
          Child_Unit_Count : constant Natural :=
            Natural_Value_After
              (Manifest, ASCII.LF & "child_unit_count = ", Entry_Pos);
@@ -226,7 +298,7 @@ package body Check_Humanize_Policy_Public_Facades is
            or else Max_Lines = 0
            or else Min_Headroom_Lines = 0
            or else Max_Bytes = 0
-           or else Map_Marker = ""
+           or else (Map_Required and then Map_Marker = "")
            or else Section_Markers = ""
            or else Section_Marker_Count = 0
            or else Usecase = ""
@@ -239,7 +311,7 @@ package body Check_Humanize_Policy_Public_Facades is
             declare
                Spec : constant String := Read_File (Root, Path);
             begin
-               if not Contains (Spec, Map_Marker) then
+               if Map_Required and then not Contains (Spec, Map_Marker) then
                   Error (Errors, "public facade map missing from " & Unit);
                end if;
                if Public_Child_Count (Public_API, Child_Prefix)

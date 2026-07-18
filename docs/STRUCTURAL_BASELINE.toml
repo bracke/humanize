@@ -188,7 +188,7 @@ usecase = "Parser implementation dispatcher and shared plumbing; parser-family l
 
 [[body]]
 path = "check_humanize/src/check_humanize_policy.adb"
-target_lines = 617
+target_lines = 619
 max_lines = 720
 min_headroom_lines = 80
 max_bytes = 80000
@@ -295,3 +295,63 @@ max_bytes = 50000
 split_prefix = ""
 min_split_bodies = 0
 usecase = "String support backend contract shared across text, path, display, and terminal helpers; new declarations should stay focused."
+
+[[body]]
+path = "src/humanize-durations-schedules.adb"
+target_lines = 1183
+max_lines = 1320
+min_headroom_lines = 100
+max_bytes = 54000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Duration schedule recurrence, cron, and operational schedule helpers; new schedule families should prefer focused child helpers."
+
+[[body]]
+path = "src/humanize-system_status-support.adb"
+target_lines = 1175
+max_lines = 1310
+min_headroom_lines = 100
+max_bytes = 48000
+split_prefix = "src/humanize-system_status-support-"
+min_split_bodies = 3
+usecase = "System-status support dispatcher and shared reason-code helpers; large errno, signal, HTTP, and SQLSTATE tables stay in focused shards."
+
+[[body]]
+path = "src/humanize-strings-identifiers.adb"
+target_lines = 1118
+max_lines = 1250
+min_headroom_lines = 100
+max_bytes = 53000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Identifier, slug, token, acronym, and source-location helpers; new identifier families should move behind focused support units."
+
+[[body]]
+path = "src/humanize-phrases-support.adb"
+target_lines = 1074
+max_lines = 1210
+min_headroom_lines = 100
+max_bytes = 48000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Shared phrase support helpers for keys, fallback text, and phrase metadata; new phrase domains should prefer backend subunits."
+
+[[body]]
+path = "src/humanize-units.adb"
+target_lines = 1017
+max_lines = 1150
+min_headroom_lines = 100
+max_bytes = 50000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Root unit facade implementation; new unit rendering and parsing behavior should prefer support children."
+
+[[body]]
+path = "src/humanize-numbers.adb"
+target_lines = 1005
+max_lines = 1140
+min_headroom_lines = 100
+max_bytes = 46000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Root number facade implementation; new numeric families should prefer scales, ranges, spellout, statistics, or editorial children."

@@ -259,6 +259,7 @@ package body Check_Humanize_Policy_Support is
       Require_Key ("public_documentation_min_root_specs");
       Require_Key ("public_api_min_units");
       Require_Key ("generated_data_exact_artifacts");
+      Require_Key ("generated_data_max_shard_lines");
       Require_Key ("structural_baseline_min_bodies");
       Require_Key ("structural_baseline_min_lines");
       Require_Key ("example_coverage_min_major_tasks");
@@ -274,13 +275,7 @@ package body Check_Humanize_Policy_Support is
       Require_Key ("performance_domain_min_paths");
       Require_Key ("performance_public_api_min_mappings");
       Require_Key ("performance_public_api_min_areas");
-      Require_Key ("performance_exempt_max_family_child_facade");
-      Require_Key ("performance_exempt_max_parser_wrapper");
-      Require_Key ("performance_exempt_max_phrase_wrapper");
-      Require_Key ("performance_exempt_max_pure_type_package");
-      Require_Key ("performance_exempt_max_root_facade");
-      Require_Key ("performance_exempt_max_support_facade");
-      Require_Key ("performance_exempt_max_trivial_label_facade");
+      Require_Key ("performance_exemption_budget_min_categories");
       Require_Key ("exception_marker_max_parse_failure_normalization");
       Require_Key ("exception_marker_max_defensive_recovery");
       Require_Key ("exception_marker_max_intentional_silent_recovery");

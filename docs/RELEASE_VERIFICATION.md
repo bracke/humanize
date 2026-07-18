@@ -224,7 +224,7 @@ that workspace can rewrite `../i18n/lib` while Humanize public API consumers are
 linking, so the checker reports the active process list and exits early instead
 of racing a changing archive.
 
-Release builds also use a workspace-level lock file,
+Release builds also use a workspace-level lock directory,
 `/tmp/humanize-i18n-build.lock`, while Humanize is linking against the sibling
 `i18n` checkout. Other local release/build tooling can use the same lock
 protocol through `Project_Tools.Release_Checks` to wait before touching shared

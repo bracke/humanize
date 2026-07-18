@@ -388,7 +388,9 @@ navigation anchors. `docs/PUBLIC_FACADE_BUDGETS.toml` records the exact ordered
 anchor inventory and the exact child packages named in each facade map; the
 policy checker rejects missing, duplicate, extra, or reordered anchors, stale
 child-map entries, unlisted public child facades, mismatched manifest counts,
-or root-facade growth beyond the reviewed hard line budget. The manifest also
+or root-facade growth beyond the reviewed hard line budget. Root-only facades
+declare `map_required = false` instead of carrying an empty facade-map marker.
+The manifest also
 keeps a `target_lines` ratchet for the reviewed baseline, so small compatibility
 additions do not require immediate policy churn while larger growth still
 forces an explicit split-or-raise decision.

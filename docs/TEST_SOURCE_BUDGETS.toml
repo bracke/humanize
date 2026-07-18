@@ -5,9 +5,9 @@
 
 [[suite]]
 prefix = "tests/src/humanize-tests-"
-parent_max_lines = 950
-subunit_max_lines = 900
-usecase = "Default budget for ordinary Humanize AUnit suite bodies."
+parent_max_lines = 900
+subunit_max_lines = 850
+usecase = "Default budget for ordinary Humanize AUnit suite bodies; architecture is the largest unsplit parent."
 
 [[suite]]
 prefix = "tests/src/humanize-tests-compatibility"
@@ -30,20 +30,20 @@ usecase = "Duration tests keep compact, clock, schedule, natural-distance, and w
 [[suite]]
 prefix = "tests/src/humanize-tests-numbers"
 parent_max_lines = 750
-subunit_max_lines = 850
-usecase = "Number tests keep spellout/cardinal and bounded checks in focused subunits."
+subunit_max_lines = 810
+usecase = "Number tests keep spellout/cardinal and bounded checks in focused subunits; cardinal/fractional stays close to its ratchet."
 
 [[suite]]
 prefix = "tests/src/humanize-tests-parsing"
 parent_max_lines = 500
-subunit_max_lines = 950
-usecase = "Parser coverage is split into focused parser-family and corpus subunits."
+subunit_max_lines = 925
+usecase = "Parser coverage is split into focused parser-family and corpus subunits; frequency/rate/list stays close to its ratchet."
 
 [[suite]]
 prefix = "tests/src/humanize-tests-rendering"
 parent_max_lines = 450
-subunit_max_lines = 820
-usecase = "Rendering tests allow generated-locale and style-preset subunits."
+subunit_max_lines = 775
+usecase = "Rendering tests allow generated-locale and style-preset subunits; style presets stay close to their ratchet."
 
 [[suite]]
 prefix = "tests/src/humanize-tests-strings"
@@ -53,15 +53,15 @@ usecase = "String helper coverage is split into focused text, path, Unicode, and
 
 [[suite]]
 prefix = "tests/src/locale_audit"
-parent_max_lines = 1050
-subunit_max_lines = 1050
-usecase = "Locale audit is a standalone integration-style source outside the AUnit suite prefix."
+parent_max_lines = 1000
+subunit_max_lines = 1000
+usecase = "Locale audit is a standalone integration-style source outside the AUnit suite prefix and stays close to its ratchet."
 
 [[suite]]
 prefix = "tests/src/perf_smoke"
-parent_max_lines = 430
-subunit_max_lines = 430
-usecase = "Performance smoke is a standalone executable with representative release paths."
+parent_max_lines = 460
+subunit_max_lines = 460
+usecase = "Performance smoke is a standalone executable with representative release paths, including parser, phrase, string, list, and domain helpers."
 
 [[suite]]
 prefix = "tests/src/perf_baseline_report"

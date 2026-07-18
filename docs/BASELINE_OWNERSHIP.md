@@ -7,7 +7,9 @@ This repository has three kinds of review surface:
   `check_humanize/src/`.
 * Policy manifests: `docs/POLICY_REQUIREMENTS.toml`,
   `docs/POLICY_THRESHOLDS.toml`, `docs/STRUCTURAL_BASELINE.toml`,
-  `docs/PERFORMANCE_BASELINE.toml`, and `docs/PUBLIC_FACADE_BUDGETS.toml`.
+  `docs/PERFORMANCE_BASELINE.toml`,
+  `docs/PERFORMANCE_EXEMPTION_BUDGETS.toml`, and
+  `docs/PUBLIC_FACADE_BUDGETS.toml`.
   These files are hand-maintained guardrails.
 * Generated-maintained scorecards and indexes:
   `docs/PUBLIC_API_INDEX.md`, `docs/PUBLIC_API_CLASSES.toml`,

@@ -22,9 +22,16 @@ with Humanize.Numbers.Spellout;
 with Humanize.Numbers.Statistics;
 with Humanize.Operations;
 with Humanize.Parsing;
+with Humanize.Parsing.Date_Times;
+with Humanize.Parsing.Domain_Labels;
+with Humanize.Parsing.Durations;
+with Humanize.Parsing.Numbers;
+with Humanize.Parsing.Strings;
+with Humanize.Parsing.Units;
 with Humanize.Phrases;
 with Humanize.Phrases.Fields;
 with Humanize.Phrases.Keys;
+with Humanize.Phrases.Locales;
 with Humanize.Phrases.Severity;
 with Humanize.Phrases.Statuses;
 with Humanize.Phrases.Summaries;
@@ -34,6 +41,11 @@ with Humanize.Status;
 with Humanize.Strings;
 with Humanize.Strings.Core;
 with Humanize.Strings.Display;
+with Humanize.Strings.Identifiers;
+with Humanize.Strings.Paths;
+with Humanize.Strings.Privacy;
+with Humanize.Lists;
+with Humanize.Cross_Domain;
 with Humanize.System_Status;
 with Humanize.Tests.Support;
 with Humanize.Units;
@@ -152,17 +164,46 @@ procedure Perf_Smoke is
             Parsed_Color_Label :
               constant Humanize.Parsing.Color_Label_Parse_Result :=
                 Humanize.Parsing.Parse_RGB_Label ("rgb(12, 34, 56)");
+            Parsed_Date : constant Humanize.Parsing.Date_Parse_Result :=
+              Humanize.Parsing.Date_Times.Parse_Natural_Date
+                (Ada.Calendar.Time_Of (2024, 1, 1, 0.0), "next friday");
+            Parsed_Domain : constant Humanize.Parsing.Domain_Summary_Parse_Result :=
+              Humanize.Parsing.Domain_Labels.Parse_Domain_Summary
+                ("job running: 3 of 10 tasks complete, 1 failed");
+            Parsed_Duration_Child :
+              constant Humanize.Parsing.Duration_Parse_Result :=
+                Humanize.Parsing.Durations.Parse_Duration
+                  ("2 hours, 30 minutes");
+            Parsed_Number_Child : constant Humanize.Parsing.Number_Parse_Result :=
+              Humanize.Parsing.Numbers.Parse_Cardinal ("forty two");
+            Parsed_String : constant Humanize.Parsing.Identifier_Label_Parse_Result :=
+              Humanize.Parsing.Strings.Parse_Identifier_Label
+                ("release_candidate");
+            Parsed_Unit : constant Humanize.Parsing.Unit_Parse_Result :=
+              Humanize.Parsing.Units.Parse_Unit ("5 km");
          begin
             Check_Status (Parsed_Bytes.Status, "bytes parse");
             Check_Status (Parsed_Duration.Status, "duration parse");
             Check_Status (Parsed_Number.Status, "cardinal parse");
             Check_Status (Parsed_Color_Label.Status, "rgb label parse");
+            Check_Status (Parsed_Date.Status, "date child parse");
+            Check_Status (Parsed_Domain.Status, "domain child parse");
+            Check_Status (Parsed_Duration_Child.Status, "duration child parse");
+            Check_Status (Parsed_Number_Child.Status, "number child parse");
+            Check_Status (Parsed_String.Status, "string child parse");
+            Check_Status (Parsed_Unit.Status, "unit child parse");
             Total :=
               Total
               + Parsed_Bytes.Consumed
               + Parsed_Duration.Consumed
               + Parsed_Number.Consumed
               + Parsed_Color_Label.Consumed
+              + Parsed_Date.Consumed
+              + Parsed_Domain.Consumed
+              + Parsed_Duration_Child.Consumed
+              + Parsed_Number_Child.Consumed
+              + Parsed_String.Consumed
+              + Parsed_Unit.Consumed
               + I mod 3;
          end;
       end loop;
@@ -190,6 +231,15 @@ procedure Perf_Smoke is
             Display_Text : constant Humanize.Status.Text_Result :=
               Humanize.Strings.Display.Truncate_Display_Width
                 ("alpha beta gamma delta epsilon", 16);
+            Identifier : constant Humanize.Status.Text_Result :=
+              Humanize.Strings.Identifiers.Parameterize
+                ("Release Candidate ID");
+            Path_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Strings.Paths.Path_Basename
+                ("/tmp/releases/humanize.tar.gz");
+            Privacy_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Strings.Privacy.Safe_Email_Label
+                ("release-bot@example.com");
             CSS : constant Humanize.Status.Text_Result :=
               Humanize.Colors.CSS.CSS_Color_Label (Color);
          begin
@@ -198,6 +248,9 @@ procedure Perf_Smoke is
             Check_Status (Core_Title.Status, "core title-case text");
             Check_Status (Truncated.Status, "truncate words text");
             Check_Status (Display_Text.Status, "display-width text");
+            Check_Status (Identifier.Status, "identifier text");
+            Check_Status (Path_Text.Status, "path text");
+            Check_Status (Privacy_Text.Status, "privacy text");
             Check_Status (CSS.Status, "css color label");
             Total := Total + I mod 5;
          end;
@@ -242,6 +295,26 @@ procedure Perf_Smoke is
             Summary : constant Humanize.Status.Text_Result :=
               Humanize.Phrases.Summaries.Queue_Summary
                 (Context, Queued => 4, Running => 2, Failed => 1);
+            Phrase_Locales : constant Humanize.Status.Text_Result :=
+              Humanize.Phrases.Locales.Supported_Phrase_Locales;
+            List_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Lists.Counted_Noun
+                (Context, 1_200, "file", "files",
+                 (Number_Style   => Humanize.Lists.Compact_Count,
+                  Zero_Style     => Humanize.Lists.No_Zero,
+                  Include_Noun   => True,
+                  Compact_At     => 1_000,
+                  Prefer_Article => False));
+            Cross_Domain : constant Humanize.Status.Text_Result :=
+              Humanize.Cross_Domain.Metadata_Profile_Label
+                ("metadata",
+                 (Log_Safe          => True,
+                  Privacy_Safe      => True,
+                  Parseable         => True,
+                  Bounded_Available => True,
+                  Stable            => True,
+                  Approximate       => False,
+                  Lossless          => True));
             Build : constant Humanize.Status.Text_Result :=
               Humanize.Builds.Build_Label
                 ("nightly", Humanize.Builds.Build_Running);
@@ -265,6 +338,9 @@ procedure Perf_Smoke is
             Check_Status (Key.Status, "phrase key label");
             Check_Status (Severity.Status, "phrase severity label");
             Check_Status (Summary.Status, "phrase summary label");
+            Check_Status (Phrase_Locales.Status, "phrase locale wrapper");
+            Check_Status (List_Text.Status, "list counted noun");
+            Check_Status (Cross_Domain.Status, "cross-domain metadata profile");
             Check_Status (Build.Status, "build label");
             Check_Status (Permission.Status, "permission label");
             Check_Status (Parsed_Metadata.Status, "metadata summary parse");

@@ -32,6 +32,12 @@ text and domain buckets. Its `[perf_smoke.public_api_units]` section maps
 representative public API units to smoke paths used by the per-unit coverage
 scorecard; `check_humanize` validates that the file stays synchronized with the
 executable constants and required public API coverage mappings.
+`docs/PERFORMANCE_EXEMPTION_BUDGETS.toml` records category ratchets for public
+API units that are intentionally exempt from direct performance-smoke mappings;
+new exemption categories or count increases must be reviewed in that manifest.
+`docs/POLICY_THRESHOLDS.toml` also owns generated-data shard caps, including
+`generated_data_max_shard_lines`, so generated table shard growth is reviewed
+as policy data rather than hidden in checker code.
 `tests/src/perf_baseline_report.adb` is an optional local trend reporter for
 developers who want per-operation timing output without tightening release
 thresholds.
@@ -129,9 +135,9 @@ byte budgets, plus child-package expectations for the largest root
 compatibility facades, so new API families prefer focused child packages
 instead of silently growing `Humanize.Parsing`, `Humanize.Strings`,
 `Humanize.Durations`, `Humanize.Phrases`, or `Humanize.Numbers`. The same
-manifest lists the exact
-child packages that must appear in each facade map and the exact set and order
-of required `Facade section:` anchors that keep long compatibility specs
+manifest marks whether a child facade map is required, lists the exact child
+packages that must appear in each required map, and records the exact set and
+order of required `Facade section:` anchors that keep long compatibility specs
 navigable. Explicit child and section counts in the same manifest make list
 changes reviewable and are checked against the delimited inventories.
 `humanize.gpr` exposes that surface through `Library_Interface`.

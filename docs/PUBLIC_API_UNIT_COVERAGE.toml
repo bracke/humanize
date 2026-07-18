@@ -447,11 +447,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Lists.Counted_Noun"
+score = 5
 
 [[unit]]
 name = "Humanize.Frequencies"
@@ -556,11 +555,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Identifiers.Parameterize"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings.Inflections"
@@ -652,11 +650,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Paths.Path_Basename"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings.Privacy"
@@ -668,11 +665,10 @@ examples = 1
 example_file = "examples/security_data_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Privacy.Safe_Email_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings.Prose"
@@ -794,11 +790,10 @@ examples = 1
 example_file = "examples/parse_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "parser-wrapper"
-perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Parsing.Date_Times.Parse_Natural_Date"
+score = 5
 
 [[unit]]
 name = "Humanize.Parsing.Domain_Labels"
@@ -810,11 +805,10 @@ examples = 1
 example_file = "examples/parse_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "parser-wrapper"
-perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Parsing.Domain_Labels.Parse_Domain_Summary"
+score = 5
 
 [[unit]]
 name = "Humanize.Parsing.Durations"
@@ -826,11 +820,10 @@ examples = 1
 example_file = "examples/parse_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "parser-wrapper"
-perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Parsing.Durations.Parse_Duration"
+score = 5
 
 [[unit]]
 name = "Humanize.Parsing.Numbers"
@@ -842,11 +835,10 @@ examples = 1
 example_file = "examples/parse_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "parser-wrapper"
-perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Parsing.Numbers.Parse_Cardinal"
+score = 5
 
 [[unit]]
 name = "Humanize.Parsing.Strings"
@@ -858,11 +850,10 @@ examples = 1
 example_file = "examples/parse_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "parser-wrapper"
-perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Parsing.Strings.Parse_Identifier_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Parsing.Units"
@@ -874,11 +865,10 @@ examples = 1
 example_file = "examples/parse_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "parser-wrapper"
-perf_exempt_reason = "parser child facade covered by representative parser smoke paths"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Parsing.Units.Parse_Unit"
+score = 5
 
 [[unit]]
 name = "Humanize.Phrases"
@@ -935,11 +925,10 @@ examples = 1
 example_file = "examples/public_surface_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "phrase-wrapper"
-perf_exempt_reason = "phrase child facade covered by representative phrase smoke paths"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Phrases.Locales.Supported_Phrase_Locales"
+score = 5
 
 [[unit]]
 name = "Humanize.Phrases.Severity"
@@ -1392,11 +1381,10 @@ examples = 1
 example_file = "examples/domain_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Cross_Domain.Metadata_Profile_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Moderation"

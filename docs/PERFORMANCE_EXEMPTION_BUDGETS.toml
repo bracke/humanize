@@ -1,0 +1,39 @@
+# Public API performance exemption category ratchets.
+# The checker compares these max_count values against
+# docs/PUBLIC_API_UNIT_COVERAGE.toml so exemption categories can change without
+# editing Ada checker code.
+
+[[category]]
+category = "family-child-facade"
+max_count = 13
+usecase = "Child facades whose covered root or backend path provides representative performance evidence."
+
+[[category]]
+category = "parser-wrapper"
+max_count = 0
+usecase = "Parser child wrappers should have representative parser smoke paths."
+
+[[category]]
+category = "phrase-wrapper"
+max_count = 0
+usecase = "Phrase wrappers should have representative phrase/domain smoke paths."
+
+[[category]]
+category = "pure-type-package"
+max_count = 7
+usecase = "Pure type or constant packages without representative executable work."
+
+[[category]]
+category = "root-facade"
+max_count = 1
+usecase = "Root compatibility facade covered by child/root performance smoke paths."
+
+[[category]]
+category = "support-facade"
+max_count = 2
+usecase = "Support facades whose concrete backends carry representative performance evidence."
+
+[[category]]
+category = "trivial-label-facade"
+max_count = 30
+usecase = "Small deterministic label facades covered by broader domain smoke paths."

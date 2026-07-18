@@ -102,7 +102,8 @@ package body Check_Humanize_Policy_Generated is
             new String'("humanize-owned-metadata"),
             new String'("humanize-owned-inventory"),
             new String'("delegated-inventory")],
-         Max_Shard_Lines => 1000);
+         Max_Shard_Lines =>
+           Policy_Threshold (Root, "generated_data_max_shard_lines"));
    end Check_Generated_Data_Manifest;
 
    procedure Check_Generated_Docs_Manifest

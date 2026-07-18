@@ -162,11 +162,51 @@ package body Check_Humanize_Release is
          return False;
    end Acquire_Workspace_Build_Lock;
 
-   procedure Release_Workspace_Build_Lock (Root : String) is
+   type Workspace_Build_Lock_Guard is
+     new Ada.Finalization.Limited_Controlled with record
+      Lock_Path : String (1 .. 4096);
+      Last      : Natural := 0;
+      Active    : Boolean := False;
+   end record;
+
+   pragma Warnings (Off, "not dispatching*");
+   procedure Finalize
+     (Guard : in out Workspace_Build_Lock_Guard);
+   pragma Warnings (On, "not dispatching*");
+
+   pragma Warnings (Off, "not dispatching*");
+   procedure Arm_Workspace_Build_Lock_Guard
+     (Guard : in out Workspace_Build_Lock_Guard;
+      Root  : String);
+   pragma Warnings (On, "not dispatching*");
+
+   pragma Warnings (Off, "not dispatching*");
+   procedure Finalize
+     (Guard : in out Workspace_Build_Lock_Guard)
+   is
    begin
-      Project_Tools.Release_Checks.Remove_Workspace_Build_Lock
-        (Workspace_Build_Lock_Path (Root), Quiet => True);
-   end Release_Workspace_Build_Lock;
+      if Guard.Active and then Guard.Last > 0 then
+         Project_Tools.Release_Checks.Remove_Workspace_Build_Lock
+           (Guard.Lock_Path (1 .. Guard.Last), Quiet => True);
+         Guard.Active := False;
+      end if;
+   end Finalize;
+   pragma Warnings (On, "not dispatching*");
+
+   procedure Arm_Workspace_Build_Lock_Guard
+     (Guard : in out Workspace_Build_Lock_Guard;
+      Root  : String)
+   is
+      Path : constant String := Workspace_Build_Lock_Path (Root);
+   begin
+      if Path'Length > Guard.Lock_Path'Length then
+         raise Constraint_Error;
+      end if;
+
+      Guard.Lock_Path (1 .. Path'Length) := Path;
+      Guard.Last := Path'Length;
+      Guard.Active := True;
+   end Arm_Workspace_Build_Lock_Guard;
 
    function Local_Release_Builds_Are_Isolated
      (Root   : String;
@@ -448,97 +488,101 @@ package body Check_Humanize_Release is
          return;
       end if;
 
-      Project_Tools.Files.Delete_Tree (Stage_Root);
-      Project_Tools.Files.Copy_Release_Source_Tree
-        (Source_Dir   => Root,
-         Target_Dir   => Stage_Root,
-         Skip_Entries =>
-           [To_Unbounded_String (".git"),
-            To_Unbounded_String ("alire"),
-            To_Unbounded_String ("check_humanize"),
-            To_Unbounded_String ("lib"),
-            To_Unbounded_String ("obj")],
-         Skip_Files   =>
-           [To_Unbounded_String ("alire.lock"),
-            To_Unbounded_String (Config.Build_Overlay_File)],
-         Quiet        => True);
-      Project_Tools.Alire_Manifests.Copy_Release_Manifest
-        (Template => Root & Config.Humanize_Release_Manifest,
-         Target   => Stage_Root & Config.Humanize_Development_Manifest,
-         Quiet    => True);
-      Project_Tools.Alire_Manifests.Require_Staged_Crate_Source
-        (Stage_Root, "humanize", "humanize.gpr", Quiet => True);
-      Project_Tools.Alire_Manifests.Require_No_Local_Pins
-        (Stage_Root & Config.Humanize_Development_Manifest, Quiet => True);
-      Project_Tools.Release_Checks.Require_Absolute_Directory
-        (I18N_Root, Quiet => True);
-      Project_Tools.Alire_Manifests.Write_Build_Manifest_Overlay
-        (Template => Stage_Root & Config.Humanize_Development_Manifest,
-         Target   => Stage_Root & Config.Humanize_Build_Overlay,
-         Pins     => Stage_Pins,
-         Quiet    => True);
-      Project_Tools.Alire_Manifests.Require_Build_Overlay
-        (Stage_Root & Config.Humanize_Build_Overlay,
-         Stage_Root & Config.Humanize_Development_Manifest,
-         [1 => To_Unbounded_String ("i18n = { path = """ & I18N_Root & """ }")],
-         Quiet => True);
-      Project_Tools.Alire_Manifests.Activate_Build_Manifest
-        (Stage_Root, Quiet => True);
+      declare
+         Lock_Guard : Workspace_Build_Lock_Guard;
+      begin
+         Arm_Workspace_Build_Lock_Guard (Lock_Guard, Root);
+         Project_Tools.Files.Delete_Tree (Stage_Root);
+         Project_Tools.Files.Copy_Release_Source_Tree
+           (Source_Dir   => Root,
+            Target_Dir   => Stage_Root,
+            Skip_Entries =>
+              [To_Unbounded_String (".git"),
+               To_Unbounded_String ("alire"),
+               To_Unbounded_String ("check_humanize"),
+               To_Unbounded_String ("lib"),
+               To_Unbounded_String ("obj")],
+            Skip_Files   =>
+              [To_Unbounded_String ("alire.lock"),
+               To_Unbounded_String (Config.Build_Overlay_File)],
+            Quiet        => True);
+         Project_Tools.Alire_Manifests.Copy_Release_Manifest
+           (Template => Root & Config.Humanize_Release_Manifest,
+            Target   => Stage_Root & Config.Humanize_Development_Manifest,
+            Quiet    => True);
+         Project_Tools.Alire_Manifests.Require_Staged_Crate_Source
+           (Stage_Root, "humanize", "humanize.gpr", Quiet => True);
+         Project_Tools.Alire_Manifests.Require_No_Local_Pins
+           (Stage_Root & Config.Humanize_Development_Manifest, Quiet => True);
+         Project_Tools.Release_Checks.Require_Absolute_Directory
+           (I18N_Root, Quiet => True);
+         Project_Tools.Alire_Manifests.Write_Build_Manifest_Overlay
+           (Template => Stage_Root & Config.Humanize_Development_Manifest,
+            Target   => Stage_Root & Config.Humanize_Build_Overlay,
+            Pins     => Stage_Pins,
+            Quiet    => True);
+         Project_Tools.Alire_Manifests.Require_Build_Overlay
+           (Stage_Root & Config.Humanize_Build_Overlay,
+            Stage_Root & Config.Humanize_Development_Manifest,
+            [1 => To_Unbounded_String
+              ("i18n = { path = """ & I18N_Root & """ }")],
+            Quiet => True);
+         Project_Tools.Alire_Manifests.Activate_Build_Manifest
+           (Stage_Root, Quiet => True);
 
-      Run_Staged_Check
-        ("update staged release dependencies",
-         Stage_Root, Alr_Path, Alr_Staged_Update_Args);
-      Run_Staged_Check
-        ("build staged release library",
-         Stage_Root, Alr_Path, Alr_Staged_Build_Args);
-      Run_Staged_Check
-        ("update staged release test dependencies",
-         Stage_Root & "/tests", Alr_Path, Alr_Staged_Update_Args);
-      Run_Staged_Check
-        ("build staged release tests",
-         Stage_Root & "/tests", Alr_Path, Build_Tests_Stage_Args);
-      Run_Staged_Check
-        ("run staged release tests",
-         Stage_Root & "/tests", Alr_Path, Exec_Tests_Stage_Args);
-      Run_Staged_Check
-        ("run staged release performance smoke",
-         Stage_Root & "/tests", Alr_Path, Exec_Perf_Smoke_Stage_Args);
-      Run_Staged_Check
-        ("build staged release examples",
-         Stage_Root, Alr_Path, Build_Examples_Stage_Args);
-      Run_Staged_Check
-        ("build staged public API consumer",
-         Stage_Root, Alr_Path,
-         Build_Public_API_Consumer_Stage_Args);
-      Run_Staged_Check
-        ("run staged public API consumer",
-         Stage_Root, Alr_Path,
-         Exec_Public_API_Consumer_Stage_Args);
-      Run_Staged_Check
-        ("run staged public API formatting consumer",
-         Stage_Root, Alr_Path,
-         Exec_Public_API_Formatting_Consumer_Stage_Args);
-      Run_Staged_Check
-        ("run staged public API parsing consumer",
-         Stage_Root, Alr_Path,
-         Exec_Public_API_Parsing_Consumer_Stage_Args);
-      Run_Staged_Check
-        ("run staged public API color consumer",
-         Stage_Root, Alr_Path,
-         Exec_Public_API_Color_Consumer_Stage_Args);
-      Run_Staged_Check
-        ("run staged public API domain consumer",
-         Stage_Root, Alr_Path,
-         Exec_Public_API_Domain_Consumer_Stage_Args);
-      Run_Staged_Check
-        ("run staged public API bounded consumer",
-         Stage_Root, Alr_Path,
-         Exec_Public_API_Bounded_Consumer_Stage_Args);
-      Check_Example_Output (Stage_Root, Errors);
-      Release_Workspace_Build_Lock (Root);
+         Run_Staged_Check
+           ("update staged release dependencies",
+            Stage_Root, Alr_Path, Alr_Staged_Update_Args);
+         Run_Staged_Check
+           ("build staged release library",
+            Stage_Root, Alr_Path, Alr_Staged_Build_Args);
+         Run_Staged_Check
+           ("update staged release test dependencies",
+            Stage_Root & "/tests", Alr_Path, Alr_Staged_Update_Args);
+         Run_Staged_Check
+           ("build staged release tests",
+            Stage_Root & "/tests", Alr_Path, Build_Tests_Stage_Args);
+         Run_Staged_Check
+           ("run staged release tests",
+            Stage_Root & "/tests", Alr_Path, Exec_Tests_Stage_Args);
+         Run_Staged_Check
+           ("run staged release performance smoke",
+            Stage_Root & "/tests", Alr_Path, Exec_Perf_Smoke_Stage_Args);
+         Run_Staged_Check
+           ("build staged release examples",
+            Stage_Root, Alr_Path, Build_Examples_Stage_Args);
+         Run_Staged_Check
+           ("build staged public API consumer",
+            Stage_Root, Alr_Path,
+            Build_Public_API_Consumer_Stage_Args);
+         Run_Staged_Check
+           ("run staged public API consumer",
+            Stage_Root, Alr_Path,
+            Exec_Public_API_Consumer_Stage_Args);
+         Run_Staged_Check
+           ("run staged public API formatting consumer",
+            Stage_Root, Alr_Path,
+            Exec_Public_API_Formatting_Consumer_Stage_Args);
+         Run_Staged_Check
+           ("run staged public API parsing consumer",
+            Stage_Root, Alr_Path,
+            Exec_Public_API_Parsing_Consumer_Stage_Args);
+         Run_Staged_Check
+           ("run staged public API color consumer",
+            Stage_Root, Alr_Path,
+            Exec_Public_API_Color_Consumer_Stage_Args);
+         Run_Staged_Check
+           ("run staged public API domain consumer",
+            Stage_Root, Alr_Path,
+            Exec_Public_API_Domain_Consumer_Stage_Args);
+         Run_Staged_Check
+           ("run staged public API bounded consumer",
+            Stage_Root, Alr_Path,
+            Exec_Public_API_Bounded_Consumer_Stage_Args);
+         Check_Example_Output (Stage_Root, Errors);
+      end;
    exception
       when Program_Error =>
-         Release_Workspace_Build_Lock (Root);
          Error (Errors, "staged pin-free release tree verification failed");
    end Check_Staged_Release_Tree;
 
@@ -554,57 +598,59 @@ package body Check_Humanize_Release is
          return;
       end if;
 
-      Run_Check (Root, Errors, "build humanize library", Root, Alr_Path, Alr_Build_Args);
-      Run_Check
-        (Root, Errors, "build humanize tests",
-         Root & "/tests", Alr_Path, Build_Tests_Args);
-      Run_Check
-        (Root, Errors, "run humanize tests",
-         Root & "/tests", Alr_Path, Exec_Tests_Args);
-      Run_Check
-        (Root, Errors, "run humanize performance smoke",
-         Root & "/tests", Alr_Path, Exec_Perf_Smoke_Args);
-      Run_Check
-        (Root, Errors, "build humanize examples",
-         Root, Alr_Path, Build_Examples_Args);
-      Run_Check
-        (Root, Errors, "build public API consumer",
-         Root, Alr_Path, Build_Public_API_Consumer_Args);
-      Run_Check
-        (Root, Errors, "run public API consumer",
-         Root, Alr_Path,
-         Exec_Public_API_Consumer_Args);
-      Run_Check
-        (Root, Errors, "run public API formatting consumer",
-         Root, Alr_Path,
-         Exec_Public_API_Formatting_Consumer_Args);
-      Run_Check
-        (Root, Errors, "run public API parsing consumer",
-         Root, Alr_Path,
-         Exec_Public_API_Parsing_Consumer_Args);
-      Run_Check
-        (Root, Errors, "run public API color consumer",
-         Root, Alr_Path,
-         Exec_Public_API_Color_Consumer_Args);
-      Run_Check
-        (Root, Errors, "run public API domain consumer",
-         Root, Alr_Path,
-         Exec_Public_API_Domain_Consumer_Args);
-      Run_Check
-        (Root, Errors, "run public API bounded consumer",
-         Root, Alr_Path,
-         Exec_Public_API_Bounded_Consumer_Args);
-      Check_Example_Output (Root, Errors);
-      Run_Check
-        (Root, Errors, "build humanize through alr test action",
-         Root, Alr_Path, Alr_Test_Args);
-      Run_Check
-        (Root, Errors, "generate humanize GNATdoc",
-         Root, Alr_Path, Gnatdoc_Args);
-      Release_Workspace_Build_Lock (Root);
-   exception
-      when Program_Error =>
-         Release_Workspace_Build_Lock (Root);
-         raise;
+      declare
+         Lock_Guard : Workspace_Build_Lock_Guard;
+      begin
+         Arm_Workspace_Build_Lock_Guard (Lock_Guard, Root);
+         Run_Check
+           (Root, Errors, "build humanize library",
+            Root, Alr_Path, Alr_Build_Args);
+         Run_Check
+           (Root, Errors, "build humanize tests",
+            Root & "/tests", Alr_Path, Build_Tests_Args);
+         Run_Check
+           (Root, Errors, "run humanize tests",
+            Root & "/tests", Alr_Path, Exec_Tests_Args);
+         Run_Check
+           (Root, Errors, "run humanize performance smoke",
+            Root & "/tests", Alr_Path, Exec_Perf_Smoke_Args);
+         Run_Check
+           (Root, Errors, "build humanize examples",
+            Root, Alr_Path, Build_Examples_Args);
+         Run_Check
+           (Root, Errors, "build public API consumer",
+            Root, Alr_Path, Build_Public_API_Consumer_Args);
+         Run_Check
+           (Root, Errors, "run public API consumer",
+            Root, Alr_Path,
+            Exec_Public_API_Consumer_Args);
+         Run_Check
+           (Root, Errors, "run public API formatting consumer",
+            Root, Alr_Path,
+            Exec_Public_API_Formatting_Consumer_Args);
+         Run_Check
+           (Root, Errors, "run public API parsing consumer",
+            Root, Alr_Path,
+            Exec_Public_API_Parsing_Consumer_Args);
+         Run_Check
+           (Root, Errors, "run public API color consumer",
+            Root, Alr_Path,
+            Exec_Public_API_Color_Consumer_Args);
+         Run_Check
+           (Root, Errors, "run public API domain consumer",
+            Root, Alr_Path,
+            Exec_Public_API_Domain_Consumer_Args);
+         Run_Check
+           (Root, Errors, "run public API bounded consumer",
+            Root, Alr_Path,
+            Exec_Public_API_Bounded_Consumer_Args);
+         Check_Example_Output (Root, Errors);
+         Run_Check
+           (Root, Errors, "build humanize through alr test action",
+            Root, Alr_Path, Alr_Test_Args);
+         Run_Check
+           (Root, Errors, "generate humanize GNATdoc",
+            Root, Alr_Path, Gnatdoc_Args);
+      end;
    end Run_Release_Builds;
 end Check_Humanize_Release;
