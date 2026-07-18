@@ -717,7 +717,7 @@ pattern = "Check_Area"
 message = "architecture tests must include per-area capability checks"
 
 [[required_text]]
-path = "tests/src/locale_audit.adb"
+path = "tests/src/locale_audit-run_audit.adb"
 pattern = "for Locale_Access of Humanize.Locales.Shipped_Locales loop"
 message = "locale audit must iterate Humanize-owned shipped locale metadata"
 
