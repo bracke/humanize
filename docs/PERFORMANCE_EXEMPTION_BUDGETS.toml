@@ -5,8 +5,8 @@
 
 [[category]]
 category = "family-child-facade"
-max_count = 13
-usecase = "Child facades whose covered root or backend path provides representative performance evidence."
+max_count = 5
+usecase = "Child facades whose covered root or backend path provides representative performance evidence; string child facades should have direct smoke paths."
 
 [[category]]
 category = "parser-wrapper"

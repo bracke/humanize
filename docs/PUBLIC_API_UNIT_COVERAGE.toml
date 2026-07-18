@@ -539,11 +539,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Editing.Excerpt"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings.Identifiers"
@@ -570,11 +569,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Inflections.Pluralize"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings.Markup"
@@ -586,11 +584,10 @@ examples = 1
 example_file = "examples/security_data_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Markup.Strip_Tags"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings.Metadata"
@@ -602,11 +599,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Metadata.Text_Metadata_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings.Metrics"
@@ -618,11 +614,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Metrics.Text_Summary"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings.Names"
@@ -634,11 +629,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Names.Display_Name"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings.Paths"
@@ -680,11 +674,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Prose.Prose_List"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings.Terminal"
@@ -696,11 +689,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Strings.Terminal.Terminal_Paragraph"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings.Types"

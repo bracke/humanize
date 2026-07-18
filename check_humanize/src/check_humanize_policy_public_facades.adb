@@ -2,8 +2,11 @@ with Ada.Strings.Fixed;
 
 with Check_Humanize_Policy_Support; use Check_Humanize_Policy_Support;
 with Project_Tools.Source_Budgets;
+with Project_Tools.TOML;
 
 package body Check_Humanize_Policy_Public_Facades is
+   use type Project_Tools.TOML.Boolean_Parse_Status;
+
    function Public_Child_Count
      (Public_API   : String;
       Child_Prefix : String)
@@ -108,49 +111,28 @@ package body Check_Humanize_Policy_Public_Facades is
       Errors    : in out Natural)
       return Boolean
    is
-      Key_Pos : constant Natural :=
-        Ada.Strings.Fixed.Index
-          (Text, ASCII.LF & Key & " = ", From => From);
-      True_Value  : constant String := "true";
-      False_Value : constant String := "false";
+      Parsed : constant Project_Tools.TOML.Boolean_Parse_Result :=
+        Project_Tools.TOML.Parse_Boolean_After
+          (Text, ASCII.LF & Key & " =", From);
    begin
-      if Key_Pos = 0 or else Key_Pos >= Entry_End then
+      if Parsed.Status = Project_Tools.TOML.Missing_Boolean then
          Error
            (Errors,
             "public facade boolean field is missing for " & Unit & ": "
             & Key);
          return False;
+      elsif Parsed.Status = Project_Tools.TOML.Malformed_Boolean
+        or else Ada.Strings.Fixed.Index
+          (Text, ASCII.LF & Key & " =", From => From) >= Entry_End
+      then
+         Error
+           (Errors,
+            "public facade boolean field is malformed for " & Unit & ": "
+            & Key);
+         return False;
+      else
+         return Parsed.Value;
       end if;
-
-      declare
-         Value_First : Natural := Key_Pos + Key'Length + 4;
-      begin
-         while Value_First < Entry_End
-           and then Text (Value_First) = ' '
-         loop
-            Value_First := Value_First + 1;
-         end loop;
-
-         if Value_First + True_Value'Length - 1 < Entry_End
-           and then Text
-             (Value_First .. Value_First + True_Value'Length - 1)
-               = True_Value
-         then
-            return True;
-         elsif Value_First + False_Value'Length - 1 < Entry_End
-           and then Text
-             (Value_First .. Value_First + False_Value'Length - 1)
-               = False_Value
-         then
-            return False;
-         else
-            Error
-              (Errors,
-               "public facade boolean field is malformed for " & Unit & ": "
-               & Key);
-            return False;
-         end if;
-      end;
    end Boolean_Value_In_Entry;
 
    procedure Check_Delimited_Public_Facade_Items

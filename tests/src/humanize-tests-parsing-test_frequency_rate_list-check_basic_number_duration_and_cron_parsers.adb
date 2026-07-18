@@ -1,5 +1,113 @@
 separate (Humanize.Tests.Parsing.Test_Frequency_Rate_List)
    procedure Check_Basic_Number_Duration_And_Cron_Parsers is
+      Frequency : constant Humanize.Parsing.Frequency_Parse_Result :=
+        Humanize.Parsing.Parse_Frequency ("4 times");
+      Rate : constant Humanize.Parsing.Rate_Parse_Result :=
+        Humanize.Parsing.Parse_Rate ("approximately 4 times per week");
+      Rate_Alias : constant Humanize.Parsing.Rate_Parse_Result :=
+        Humanize.Parsing.Parse_Rate ("approximately 4 times per weeks");
+      Less : constant Humanize.Parsing.Rate_Parse_Result :=
+        Humanize.Parsing.Parse_Rate ("less than once per day");
+      List : constant Humanize.Parsing.List_Parse_Result :=
+        Humanize.Parsing.Parse_List ("Ada, SPARK and Alire");
+      Bad_Rate : constant Humanize.Parsing.Rate_Parse_Result :=
+        Humanize.Parsing.Parse_Rate ("per day");
+      Single : constant Humanize.Parsing.List_Parse_Result :=
+        Humanize.Parsing.Parse_List ("Ada");
+      German_List : constant Humanize.Parsing.List_Parse_Result :=
+        Humanize.Parsing.Parse_List ("Ada, SPARK und Alire");
+      Japanese_List : constant Humanize.Parsing.List_Parse_Result :=
+        Humanize.Parsing.Parse_List
+          ("Ada " & B ("E381A8") & " SPARK");
+      Localized_Frequency : constant Humanize.Parsing.Frequency_Parse_Result :=
+        Humanize.Parsing.Parse_Frequency
+          ("2 " & B ("D180D0B0D0B7D0B0"));
+      Localized_Rate : constant Humanize.Parsing.Rate_Parse_Result :=
+        Humanize.Parsing.Parse_Rate
+          (B ("756E676566C3A472") & " 2 gange per uge");
+      Percent : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Percent ("12.5%");
+      Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Ordinal ("21st");
+      Word_Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Cardinal ("twenty one");
+      Word_Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Ordinal ("twenty first");
+      German_Word_Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Cardinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Locale_Cardinal
+                (Humanize.Tests.Support.De, 42)));
+      Finnish_Word_Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Cardinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Locale_Cardinal
+                (Humanize.Tests.Support.Locale ("fi"), 2_345)));
+      French_Large_Word_Cardinal :
+        constant Humanize.Parsing.Number_Parse_Result :=
+          Humanize.Parsing.Parse_Cardinal
+            (Humanize.Tests.Support.Text
+               (Humanize.Numbers.Locale_Cardinal
+                  (Humanize.Tests.Support.Fr, 2_000_000_001)));
+      Japanese_Word_Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Cardinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Locale_Cardinal
+                (Humanize.Tests.Support.Locale ("ja"), 2_345)));
+      Korean_Word_Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Cardinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Locale_Cardinal
+                (Humanize.Tests.Support.Locale ("ko"), 2_345)));
+      Chinese_Word_Cardinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Cardinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Locale_Cardinal
+                (Humanize.Tests.Support.Locale ("zh"), 2_345)));
+      Polish_Word_Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Ordinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Ordinal_Words
+                (Humanize.Tests.Support.Locale ("pl"), 121)));
+      Polish_Thousands_Word_Ordinal :
+        constant Humanize.Parsing.Number_Parse_Result :=
+          Humanize.Parsing.Parse_Ordinal
+            (Humanize.Tests.Support.Text
+               (Humanize.Numbers.Ordinal_Words
+                  (Humanize.Tests.Support.Locale ("pl"), 2_345)));
+      Japanese_Word_Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Ordinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Ordinal_Words
+                (Humanize.Tests.Support.Locale ("ja"), 12)));
+      Korean_Word_Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Ordinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Ordinal_Words
+                (Humanize.Tests.Support.Locale ("ko"), 12)));
+      Chinese_Word_Ordinal : constant Humanize.Parsing.Number_Parse_Result :=
+        Humanize.Parsing.Parse_Ordinal
+          (Humanize.Tests.Support.Text
+             (Humanize.Numbers.Ordinal_Words
+                (Humanize.Tests.Support.Locale ("zh"), 12)));
+      Japanese_Thousands_Word_Ordinal :
+        constant Humanize.Parsing.Number_Parse_Result :=
+          Humanize.Parsing.Parse_Ordinal
+            (Humanize.Tests.Support.Text
+               (Humanize.Numbers.Ordinal_Words
+                  (Humanize.Tests.Support.Locale ("ja"), 2_345)));
+      Scientific : constant Humanize.Parsing.Float_Parse_Result :=
+        Humanize.Parsing.Parse_Scientific_Number ("1.23e6");
+      Duration_Range : constant Humanize.Parsing.Duration_Range_Parse_Result :=
+        Humanize.Parsing.Parse_Duration_Range ("1 hour-2 hours");
+      Countdown : constant Humanize.Parsing.Duration_Parse_Result :=
+        Humanize.Parsing.Parse_Countdown ("1 minute remaining");
+      SLA : constant Humanize.Parsing.Duration_Parse_Result :=
+        Humanize.Parsing.Parse_SLA_Window ("within 1 day");
+      Age : constant Humanize.Parsing.Duration_Parse_Result :=
+        Humanize.Parsing.Parse_Age ("3 days old");
+      Modified : constant Humanize.Parsing.Duration_Parse_Result :=
+        Humanize.Parsing.Parse_Modified_Ago ("modified 2 hours ago");
    begin
       AUnit.Assertions.Assert
         (Frequency.Status = Humanize.Status.Ok and then Frequency.Count = 4,

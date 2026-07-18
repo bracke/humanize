@@ -35,9 +35,17 @@ paths = [
   "Humanize.Strings.Core.Title_Case_Smart",
   "Humanize.Strings.Truncate_Words",
   "Humanize.Strings.Display.Truncate_Display_Width",
+  "Humanize.Strings.Editing.Excerpt",
   "Humanize.Strings.Identifiers.Parameterize",
+  "Humanize.Strings.Inflections.Pluralize",
+  "Humanize.Strings.Markup.Strip_Tags",
+  "Humanize.Strings.Metadata.Text_Metadata_Label",
+  "Humanize.Strings.Metrics.Text_Summary",
+  "Humanize.Strings.Names.Display_Name",
   "Humanize.Strings.Paths.Path_Basename",
   "Humanize.Strings.Privacy.Safe_Email_Label",
+  "Humanize.Strings.Prose.Prose_List",
+  "Humanize.Strings.Terminal.Terminal_Paragraph",
   "Humanize.Colors.CSS.CSS_Color_Label",
   "Humanize.System_Status.HTTP_Status_Label",
   "Humanize.Operations.Progress_Summary",
@@ -102,9 +110,17 @@ paths = [
   "Humanize.Strings.Core.Title_Case_Smart",
   "Humanize.Strings.Truncate_Words",
   "Humanize.Strings.Display.Truncate_Display_Width",
+  "Humanize.Strings.Editing.Excerpt",
   "Humanize.Strings.Identifiers.Parameterize",
+  "Humanize.Strings.Inflections.Pluralize",
+  "Humanize.Strings.Markup.Strip_Tags",
+  "Humanize.Strings.Metadata.Text_Metadata_Label",
+  "Humanize.Strings.Metrics.Text_Summary",
+  "Humanize.Strings.Names.Display_Name",
   "Humanize.Strings.Paths.Path_Basename",
   "Humanize.Strings.Privacy.Safe_Email_Label",
+  "Humanize.Strings.Prose.Prose_List",
+  "Humanize.Strings.Terminal.Terminal_Paragraph",
   "Humanize.Colors.CSS.CSS_Color_Label"
 ]
 
@@ -170,9 +186,17 @@ Humanize_Search = "Humanize.Search.Search_Result_Summary_Label"
 Humanize_Strings = "Humanize.Strings.Title_Case_Smart"
 Humanize_Strings_Core = "Humanize.Strings.Core.Title_Case_Smart"
 Humanize_Strings_Display = "Humanize.Strings.Display.Truncate_Display_Width"
+Humanize_Strings_Editing = "Humanize.Strings.Editing.Excerpt"
 Humanize_Strings_Identifiers = "Humanize.Strings.Identifiers.Parameterize"
+Humanize_Strings_Inflections = "Humanize.Strings.Inflections.Pluralize"
+Humanize_Strings_Markup = "Humanize.Strings.Markup.Strip_Tags"
+Humanize_Strings_Metadata = "Humanize.Strings.Metadata.Text_Metadata_Label"
+Humanize_Strings_Metrics = "Humanize.Strings.Metrics.Text_Summary"
+Humanize_Strings_Names = "Humanize.Strings.Names.Display_Name"
 Humanize_Strings_Paths = "Humanize.Strings.Paths.Path_Basename"
 Humanize_Strings_Privacy = "Humanize.Strings.Privacy.Safe_Email_Label"
+Humanize_Strings_Prose = "Humanize.Strings.Prose.Prose_List"
+Humanize_Strings_Terminal = "Humanize.Strings.Terminal.Terminal_Paragraph"
 Humanize_Lists = "Humanize.Lists.Counted_Noun"
 Humanize_Cross_Domain = "Humanize.Cross_Domain.Metadata_Profile_Label"
 Humanize_System_Status = "Humanize.System_Status.HTTP_Status_Label"

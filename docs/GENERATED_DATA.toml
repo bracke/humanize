@@ -32,8 +32,8 @@ source = "reviewed native catalog fragments"
 coverage = "native catalog additions"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from reviewed native catalog fragments"
-line_count = 833
-sha256 = "e328af102970a0ee7bf20e776cce23fa382665b68a309bc160cd5601aea46bd4"
+line_count = 837
+sha256 = "49bc5005b091c7eb0946668e7ef94522b3b91052079be4f97081bdd61e05a00b"
 
 [[artifact]]
 path = "src/humanize-catalogs-native_data-nordic_slavic_locale_catalogs.adb"
@@ -54,8 +54,30 @@ source = "reviewed native catalog fragments"
 coverage = "additional Latin-script native catalog fragments"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from reviewed native catalog fragments"
-line_count = 933
-sha256 = "616d7bae4a00ce724096e422910d9d2d960a6beeae925a2aff10cd217b46b593"
+line_count = 10
+sha256 = "569b5423ed86057aaa65f71a624039e230ff28f9bf3fdede4adf044d248b28ac"
+
+[[artifact]]
+path = "src/humanize-catalogs-native_data-additional_latin_european_locale_catalogs.adb"
+kind = "reviewed-native-catalog-shard"
+owner = "humanize"
+source = "reviewed native catalog fragments"
+coverage = "additional Turkish, Romanian, Lithuanian, and Slovenian Latin-script native catalog fragments"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from reviewed native catalog fragments"
+line_count = 317
+sha256 = "2453fb80f64f70180ae5630ada2bf8de0231b03da7a42477063754dbefcf3c33"
+
+[[artifact]]
+path = "src/humanize-catalogs-native_data-additional_latin_global_locale_catalogs.adb"
+kind = "reviewed-native-catalog-shard"
+owner = "humanize"
+source = "reviewed native catalog fragments"
+coverage = "additional Indonesian, Malay, Esperanto, Vietnamese, Swahili, Afrikaans, Hungarian, and Slovak Latin-script native catalog fragments"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from reviewed native catalog fragments"
+line_count = 626
+sha256 = "ef8259d3ead03062af14ae9c426ad937b0783c399440c1d35d6f012413623070"
 
 [[artifact]]
 path = "src/humanize-catalogs-native_data-native_script_locale_catalogs.adb"

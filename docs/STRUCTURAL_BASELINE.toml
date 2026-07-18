@@ -58,13 +58,13 @@ usecase = "Domain-detail metadata and parsing support backend."
 
 [[body]]
 path = "src/humanize-catalogs-native_data.adb"
-target_lines = 833
+target_lines = 837
 max_lines = 1000
 min_headroom_lines = 120
 max_bytes = 40000
 split_prefix = "src/humanize-catalogs-native_data-"
-min_split_bodies = 3
-usecase = "Reviewed native catalog data; broad locale-family fragments live in split shards."
+min_split_bodies = 5
+usecase = "Reviewed native catalog data; broad locale-family and Latin subfamily fragments live in split shards."
 
 [[body]]
 path = "src/humanize-phrases-support-backend.adb"
@@ -135,6 +135,76 @@ max_bytes = 36000
 split_prefix = ""
 min_split_bodies = 0
 usecase = "Private phrase-support backend contract; new phrase-family declarations should prefer focused backend children."
+
+[[body]]
+path = "src/humanize-parsing-implementation-support.ads"
+target_lines = 994
+max_lines = 1120
+min_headroom_lines = 80
+max_bytes = 38000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Shared parser implementation support contract; new parser helpers should prefer focused implementation packages before growing this spec."
+
+[[body]]
+path = "src/humanize-markup.adb"
+target_lines = 983
+max_lines = 1100
+min_headroom_lines = 80
+max_bytes = 39000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Markup label and bounded rendering facade body; new markup families should move to support helpers or child packages."
+
+[[body]]
+path = "src/humanize-parsing-implementation-color_text_helpers.adb"
+target_lines = 959
+max_lines = 1080
+min_headroom_lines = 80
+max_bytes = 40000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Color parser text helpers; new color parsing families should be split before this shard grows."
+
+[[body]]
+path = "src/humanize-numbers-spellout.adb"
+target_lines = 934
+max_lines = 1050
+min_headroom_lines = 80
+max_bytes = 43000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Spellout rendering dispatcher and locale lookup helpers; new spellout families should prefer generated data shards or focused helpers."
+
+[[body]]
+path = "src/humanize-phrases.adb"
+target_lines = 932
+max_lines = 1050
+min_headroom_lines = 80
+max_bytes = 40000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Root phrase facade body; new phrase behavior should prefer child packages and backend support."
+
+[[body]]
+path = "src/humanize-phrases-support.ads"
+target_lines = 926
+max_lines = 1040
+min_headroom_lines = 80
+max_bytes = 34000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Phrase support contract; new phrase-family declarations should prefer focused backend/support children."
+
+[[body]]
+path = "src/humanize-strings-paths.adb"
+target_lines = 924
+max_lines = 1040
+min_headroom_lines = 80
+max_bytes = 34000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Path and filename string helpers; new path helper families should move to support/backend units before this body grows."
 
 [[body]]
 path = "src/humanize-durations-business_calendars.adb"

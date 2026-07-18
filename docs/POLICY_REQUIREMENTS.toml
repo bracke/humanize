@@ -720,7 +720,7 @@ pattern = "Test_Public_API_Consistency"
 message = "architecture tests must include public API consistency checks"
 
 [[required_text]]
-path = "tests/src/humanize-tests-architecture.adb"
+path = "tests/src/humanize-tests-architecture-test_capability_metadata.adb"
 pattern = "Check_Area"
 message = "architecture tests must include per-area capability checks"
 
@@ -783,6 +783,16 @@ message = "generated-data manifest must include Nordic/Slavic native catalog sha
 path = "docs/GENERATED_DATA.toml"
 pattern = 'path = "src/humanize-catalogs-native_data-additional_latin_locale_catalogs.adb"'
 message = "generated-data manifest must include additional Latin native catalog shard"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-catalogs-native_data-additional_latin_european_locale_catalogs.adb"'
+message = "generated-data manifest must include additional Latin European native catalog shard"
+
+[[required_text]]
+path = "docs/GENERATED_DATA.toml"
+pattern = 'path = "src/humanize-catalogs-native_data-additional_latin_global_locale_catalogs.adb"'
+message = "generated-data manifest must include additional Latin global native catalog shard"
 
 [[required_text]]
 path = "docs/GENERATED_DATA.toml"

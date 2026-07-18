@@ -194,8 +194,11 @@ gate.
 Broad exception handlers in both runtime `src/` code and release-tooling
 `check_humanize/src/` code must carry an explicit recovery classification, such
 as `parse failure normalization`, `defensive recovery`, or `intentional silent
-recovery`. `docs/POLICY_THRESHOLDS.toml` keeps separate ratchets for runtime
-and tooling handlers so release-policy code cannot gain broad exception
+recovery`. The audit uses the shared token-aware Ada source scanner from
+`project_tools`, so generated/data-style `case` defaults such as
+`when others => return ...` are ignored structurally instead of being exempted
+with marker comments. `docs/POLICY_THRESHOLDS.toml` keeps separate ratchets for
+runtime and tooling handlers so release-policy code cannot gain broad exception
 recovery without review.
 
 ## Domain package consistency

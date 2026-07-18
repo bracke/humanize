@@ -760,6 +760,10 @@ package body Humanize.Catalogs.Native_Data is
 
    function Nordic_Slavic_Locale_Catalogs return String is separate;
 
+   function Additional_Latin_European_Locale_Catalogs return String is separate;
+
+   function Additional_Latin_Global_Locale_Catalogs return String is separate;
+
    function Additional_Latin_Locale_Catalogs return String is separate;
 
    function Native_Script_Locale_Catalogs return String is separate;
