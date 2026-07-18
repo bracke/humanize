@@ -650,6 +650,12 @@ package body Check_Humanize_Release is
          Run_Staged_Check
            ("update staged release test dependencies",
             Stage_Root & "/tests", Alr_Path, Alr_Staged_Update_Args);
+         --  The staged tree is a fresh copy, so tests/config/tests_config.gpr
+         --  does not exist yet; a raw gprbuild against tests.gpr cannot import
+         --  it. Let Alire generate it first.
+         Run_Staged_Check
+           ("configure staged release tests",
+            Stage_Root & "/tests", Alr_Path, Alr_Staged_Build_Args);
          Run_Staged_Check
            ("build staged release tests",
             Stage_Root & "/tests", Alr_Path, Build_Tests_Stage_Args);
