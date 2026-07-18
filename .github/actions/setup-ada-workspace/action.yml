@@ -1,0 +1,35 @@
+name: Set up Ada workspace
+description: Check out sibling Ada crates and configure the pinned Alire toolchain.
+inputs:
+  install-gnatdoc:
+    description: Install GNATdoc through Alire and add it to PATH.
+    required: false
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - name: Check out i18n sibling
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository_owner }}/i18n
+        path: i18n
+    - name: Check out project_tools sibling
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository_owner }}/project_tools
+        path: project_tools
+    - name: Check out cryptolib sibling
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository_owner }}/cryptolib
+        path: cryptolib
+    - name: Set up Alire
+      uses: alire-project/setup-alire@v5
+      with:
+        toolchain: gnat_native=15.2.1 gprbuild
+    - name: Install GNATdoc
+      if: ${{ inputs.install-gnatdoc == 'true' }}
+      shell: bash
+      run: |
+        alr install gnatdoc
+        echo "$HOME/.alire/bin" >> "$GITHUB_PATH"

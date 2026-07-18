@@ -13,6 +13,9 @@ This repository has three kinds of review surface:
   `docs/PUBLIC_API_INDEX.md`, `docs/PUBLIC_API_CLASSES.toml`,
   `docs/PUBLIC_API_COVERAGE.toml`, `docs/PUBLIC_API_UNIT_COVERAGE.toml`, and
   `docs/GENERATED_DATA.toml`.
+* Generated-maintained command metadata: `docs/GENERATED_DOCS.toml`. This file
+  is hand-reviewed but records the refresh commands for generated-maintained
+  documentation outputs.
 
 Refresh generated-maintained API files with:
 
@@ -29,6 +32,13 @@ Refresh generated-data manifests with:
 ```sh
 cd check_humanize
 ./bin/check_humanize --print-generated-data-manifest > ../docs/GENERATED_DATA.toml
+```
+
+Review generated-doc command metadata with:
+
+```sh
+cd check_humanize
+./bin/check_humanize --policy-only
 ```
 
 For review, split changes by ownership: checker/policy changes first, source API

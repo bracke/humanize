@@ -17,6 +17,12 @@ path = "alire.build.toml"
 path = "humanize.gpr"
 
 [[required_file]]
+path = ".github/workflows/ci.yml"
+
+[[required_file]]
+path = ".github/actions/setup-ada-workspace/action.yml"
+
+[[required_file]]
 path = "docs/specification.md"
 
 [[required_file]]
@@ -403,6 +409,16 @@ pattern = "docs/PUBLIC_API.toml"
 message = "quality guards must document the public API manifest"
 
 [[required_text]]
+path = ".github/workflows/ci.yml"
+pattern = "./humanize/.github/actions/setup-ada-workspace"
+message = "CI workflow must use the shared Ada workspace setup action"
+
+[[required_text]]
+path = ".github/actions/setup-ada-workspace/action.yml"
+pattern = "toolchain: gnat_native=15.2.1 gprbuild"
+message = "shared Ada workspace action must pin the CI GNAT toolchain"
+
+[[required_text]]
 path = "docs/QUALITY_GUARDS.md"
 pattern = "docs/PUBLIC_API_INDEX.md"
 message = "quality guards must document the generated public API index"
@@ -596,6 +612,11 @@ message = "baseline ownership guide must classify generated-maintained files"
 path = "docs/BASELINE_OWNERSHIP.md"
 pattern = "--print-public-api-unit-coverage"
 message = "baseline ownership guide must document API scorecard refresh commands"
+
+[[required_text]]
+path = "docs/BASELINE_OWNERSHIP.md"
+pattern = "docs/GENERATED_DOCS.toml"
+message = "baseline ownership guide must document generated-doc command metadata"
 
 [[required_text]]
 path = "tests/src/humanize-tests-parsing.adb"
