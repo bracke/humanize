@@ -72,6 +72,6 @@ begin
       Value := Best;
       return True;
 exception
-      when others => --  parse failure normalization
+      when Constraint_Error | Ada.Calendar.Time_Error =>
          return False;
 end Parse_Weekday_Day_Ordinal_Date;

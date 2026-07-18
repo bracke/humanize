@@ -224,6 +224,6 @@ begin
          Error_Position => Item'First,
          others => <>);
 exception
-      when others => --  parse failure normalization
+      when Constraint_Error | Ada.Calendar.Time_Error =>
          return (Status => Humanize.Status.Invalid_Value, others => <>);
 end Parse_Natural_Date_Range_With_Rules;

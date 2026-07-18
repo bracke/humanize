@@ -362,7 +362,7 @@ begin
                  (Year, Month, Ada.Calendar.Day_Number (Day_Number), 0.0),
                Item'Length);
          exception
-            when others => --  parse failure normalization
+            when Constraint_Error | Ada.Calendar.Time_Error =>
                return
                   (Status => Humanize.Status.Invalid_Value,
                   Error => Out_Of_Range,
@@ -433,7 +433,7 @@ begin
             others => <>);
       end if;
 exception
-      when others => --  parse failure normalization
+      when Constraint_Error | Ada.Calendar.Time_Error =>
          return
            (Status => Humanize.Status.Invalid_Value,
             Error_Position => Text'First,
