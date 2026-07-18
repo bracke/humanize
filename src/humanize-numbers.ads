@@ -10,6 +10,16 @@ with Humanize.Status;
 --  grouping. This package selects keys only and must not call I18N.Runtime
 --  directly (HUM-INV-002).
 package Humanize.Numbers is
+   --  Facade map:
+   --  * Humanize.Numbers.Editorial: editorial number helpers.
+   --  * Humanize.Numbers.Ranges: range, proportion, and threshold helpers.
+   --  * Humanize.Numbers.Scales: compact, SI, scientific, and currency helpers.
+   --  * Humanize.Numbers.Spellout: word, ordinal-word, and fraction helpers.
+   --  * Humanize.Numbers.Statistics: dataset and uncertainty helpers.
+   --  New number families should move behind a child facade before broad root
+   --  exposure, keeping this package as the compatibility import surface.
+
+   --  Facade section: shared number option and metadata types.
 
    type Number_Options is record
       Maximum_Fraction_Digits : Natural range 0 .. 3 := 1;
@@ -165,6 +175,8 @@ package Humanize.Numbers is
       Outliers          : Natural := 0;
       Strong_Conclusion : Boolean := False;
    end record;
+
+   --  Facade section: spellout and editorial wording helpers.
 
    function Cardinal
      (Context : Humanize.Contexts.Context;
@@ -536,6 +548,8 @@ package Humanize.Numbers is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   --  Facade section: scale and currency helpers.
+
    function Scientific_Notation
      (Context : Humanize.Contexts.Context;
       Value   : Long_Float;
@@ -675,6 +689,8 @@ package Humanize.Numbers is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Options Fraction approximation policy.
+
+   --  Facade section: range, ratio, and change helpers.
 
    function Bounded_Number
      (Context : Humanize.Contexts.Context;
@@ -1387,6 +1403,8 @@ package Humanize.Numbers is
    --  @param Plural Optional plural unit noun.
    --  @param Options Direction, zero, and number formatting policy.
 
+   --  Facade section: ordinal, compact, and approximate helpers.
+
    function Roman
      (Value : Natural)
       return Humanize.Status.Text_Result;
@@ -1555,6 +1573,8 @@ package Humanize.Numbers is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
    --  @param Options Threshold policy for choosing the phrase.
+
+   --  Facade section: statistics and distribution helpers.
 
    function Distribution_Summary_Label
      (Count   : Natural;

@@ -1,3 +1,4 @@
+--  Text type classification helpers for recognizing common string shapes.
 package Humanize.Strings.Types is
    subtype Name_Item is Humanize.Strings.Name_Item;
    subtype Name_List is Humanize.Strings.Name_List;

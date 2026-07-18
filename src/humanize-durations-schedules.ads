@@ -1,6 +1,7 @@
 with Humanize.Contexts;
 with Humanize.Status;
 
+--  Schedule-oriented duration summaries for intervals, lateness, and cadence.
 package Humanize.Durations.Schedules is
 
    function Recurrence

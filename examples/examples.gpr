@@ -16,7 +16,8 @@ project Examples is
       "ui_labels_demo.adb",
       "security_data_demo.adb",
       "workflow_ops_demo.adb",
-      "product_details_demo.adb");
+      "product_details_demo.adb",
+      "public_surface_demo.adb");
 
    package Compiler is
       for Default_Switches ("Ada") use ("-gnat2022", "-gnatyM120", "-gnatX");

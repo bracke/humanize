@@ -1,5 +1,7 @@
 with Humanize.Status;
 
+--  Capability descriptors used to summarize which humanization areas are
+--  available to callers.
 package Humanize.Capabilities is
    type Capability_Area is
      (Datetime_Area,

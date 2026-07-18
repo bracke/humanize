@@ -1,17 +1,4 @@
-with Ada.Calendar;
-
-with Humanize.Bytes;
-with Humanize.Colors;
-with Humanize.Durations;
-with Humanize.Frequencies;
-with Humanize.Numbers;
-with Humanize.Phrases;
-with Humanize.Rates;
-with Humanize.Status;
-with Humanize.Strings;
-with Humanize.Units;
-with Humanize.Values;
-
+--  Color parsers for user-entered CSS, hex, RGB, HSL, and named color text.
 package Humanize.Parsing.Colors is
 
    function Parse_Palette_Contrast_Matrix

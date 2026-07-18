@@ -12,6 +12,7 @@ with Humanize.Strings;
 with Humanize.Units;
 with Humanize.Values;
 
+--  Date and time parsers for human-entered absolute and relative labels.
 package Humanize.Parsing.Date_Times is
 
    function Parse_Natural_Date

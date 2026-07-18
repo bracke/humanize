@@ -1,3 +1,4 @@
+--  Path and file-name labeling helpers for filesystem-style text.
 package Humanize.Strings.Paths is
    function Safe_Filename
      (Text      : String;

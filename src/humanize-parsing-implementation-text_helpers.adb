@@ -222,7 +222,7 @@ package body Humanize.Parsing.Implementation.Text_Helpers is
          Error_Position => 0,
          Error => Humanize.Parsing.No_Parse_Error);
    exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Text_Count_Summary;
 

@@ -89,6 +89,6 @@ begin
       Value := Rounded_Nonnegative (Total);
       return Value >= 0;
 exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
 end Parse_ISO_Duration_Microseconds;

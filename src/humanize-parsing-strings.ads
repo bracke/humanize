@@ -1,17 +1,4 @@
-with Ada.Calendar;
-
-with Humanize.Bytes;
-with Humanize.Colors;
-with Humanize.Durations;
-with Humanize.Frequencies;
-with Humanize.Numbers;
-with Humanize.Phrases;
-with Humanize.Rates;
-with Humanize.Status;
-with Humanize.Strings;
-with Humanize.Units;
-with Humanize.Values;
-
+--  String parsers for booleans, enums, key-value text, and tokenized input.
 package Humanize.Parsing.Strings is
 
    function Parse_Text_Count_Summary

@@ -799,7 +799,7 @@ package body Humanize.Cross_Domain.Support is
          return Checksum_Mismatch;
       end if;
    exception
-      when others =>
+      when others => --  defensive recovery
          return Checksum_Mismatch;
    end Luhn_Digits_Checksum;
 

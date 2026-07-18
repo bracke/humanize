@@ -5,6 +5,8 @@ with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Status;
 
+--  Status phrase helpers for progress, health, availability, and workflow
+--  states.
 package Humanize.Phrases.Statuses is
 
    function Status_Phrase

@@ -1,3 +1,4 @@
+--  Identifier formatting helpers for code-like names, slugs, and labels.
 package Humanize.Strings.Identifiers is
    function Parameterize
      (Text      : String;

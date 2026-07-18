@@ -1,3 +1,4 @@
+--  English inflection helpers for plural, singular, article, and ordinal text.
 package Humanize.Strings.Inflections is
    function Pluralize
      (Word : String)

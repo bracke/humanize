@@ -1,3 +1,4 @@
+--  String metric summaries for counts, readability, entropy, and similarity.
 package Humanize.Strings.Metrics is
    function Word_Count (Text : String) return Natural;
 

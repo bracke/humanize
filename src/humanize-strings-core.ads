@@ -1,5 +1,6 @@
 with Humanize.Status;
 
+--  Core string cleanup, casing, truncation, and text-shape helpers.
 package Humanize.Strings.Core is
 
    function Truncate

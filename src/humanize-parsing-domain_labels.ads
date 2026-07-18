@@ -12,6 +12,7 @@ with Humanize.Strings;
 with Humanize.Units;
 with Humanize.Values;
 
+--  Domain-label parsers for host, URL, email, and related identifier text.
 package Humanize.Parsing.Domain_Labels is
 
    function Parse_Domain_Summary

@@ -1,6 +1,8 @@
 with Humanize.Contexts;
 with Humanize.Status;
 
+--  Color value types and facade helpers for labels, contrast, CSS, and
+--  palette-oriented formatting.
 package Humanize.Colors is
    subtype Color_Channel is Natural range 0 .. 255;
 

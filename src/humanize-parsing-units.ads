@@ -1,17 +1,4 @@
-with Ada.Calendar;
-
-with Humanize.Bytes;
-with Humanize.Colors;
-with Humanize.Durations;
-with Humanize.Frequencies;
-with Humanize.Numbers;
-with Humanize.Phrases;
-with Humanize.Rates;
-with Humanize.Status;
-with Humanize.Strings;
-with Humanize.Units;
-with Humanize.Values;
-
+--  Unit parsers for byte sizes, measurements, temperatures, and rates.
 package Humanize.Parsing.Units is
 
    function Parse_Frequency

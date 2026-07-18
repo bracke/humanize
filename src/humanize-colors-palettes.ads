@@ -1,6 +1,7 @@
 with Humanize.Contexts;
 with Humanize.Status;
 
+--  Palette labels and summaries for ordered color groups and scheme choices.
 package Humanize.Colors.Palettes is
 
    function Palette_Summary

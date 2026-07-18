@@ -86,7 +86,7 @@ package body Humanize.Parsing.Implementation.Date_Text_Helpers is
       Day := Integer'Value (Item);
       return Day in 1 .. 31;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
    end Parse_Day_Token;
 
@@ -114,7 +114,7 @@ package body Humanize.Parsing.Implementation.Date_Text_Helpers is
       Year := Ada.Calendar.Year_Number (Value);
       return True;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
    end Parse_Year_Token;
 
@@ -137,7 +137,7 @@ package body Humanize.Parsing.Implementation.Date_Text_Helpers is
          end if;
       end if;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return 0;
    end Quarter_Value;
 
@@ -161,7 +161,7 @@ package body Humanize.Parsing.Implementation.Date_Text_Helpers is
          end if;
       end if;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return 0;
    end Half_Value;
 
@@ -205,7 +205,7 @@ package body Humanize.Parsing.Implementation.Date_Text_Helpers is
       High := Add_Calendar_Days (Low, 7);
       return True;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
    end Parse_Week_Number;
 
@@ -491,7 +491,7 @@ package body Humanize.Parsing.Implementation.Date_Text_Helpers is
       Value := Natural (Raw);
       return True;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
    end Parse_Hour;
 
@@ -553,7 +553,7 @@ package body Humanize.Parsing.Implementation.Date_Text_Helpers is
       Day := Ada.Calendar.Day_Number (D);
       return True;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
    end Month_Day_From_Text;
 
@@ -596,7 +596,7 @@ package body Humanize.Parsing.Implementation.Date_Text_Helpers is
          0.0);
       return True;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
    end Parse_ISO_Date;
 
@@ -634,7 +634,7 @@ package body Humanize.Parsing.Implementation.Date_Text_Helpers is
          Ordinal - 1);
       return True;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
    end Parse_ISO_Ordinal_Date;
 
@@ -803,7 +803,7 @@ package body Humanize.Parsing.Implementation.Date_Text_Helpers is
       High := Add_Months (Low, 1);
       return True;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
    end Parse_Month_Period_Range;
 end Humanize.Parsing.Implementation.Date_Text_Helpers;

@@ -1,17 +1,4 @@
-with Ada.Calendar;
-
-with Humanize.Bytes;
-with Humanize.Colors;
-with Humanize.Durations;
-with Humanize.Frequencies;
-with Humanize.Numbers;
-with Humanize.Phrases;
-with Humanize.Rates;
-with Humanize.Status;
-with Humanize.Strings;
-with Humanize.Units;
-with Humanize.Values;
-
+--  Number parsers for localized, compact, percentage, and ordinal inputs.
 package Humanize.Parsing.Numbers is
 
    function Parse_Compact_Number

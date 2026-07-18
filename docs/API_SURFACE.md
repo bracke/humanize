@@ -6,8 +6,10 @@ package families that are intentionally public.
 
 ## Public API classes
 
-`docs/PUBLIC_API_CLASSES.toml` classifies the public surface into three
-callable classes and one non-callable class:
+`docs/PUBLIC_API_CLASSES.toml` is generated-maintained from
+`docs/PUBLIC_API.toml`. It classifies the public surface into three callable
+classes and one non-callable class, then records one `unit_class` row for every
+public unit:
 
 * `primary-facade`: stable packages that callers import directly for common
   formatting, parsing, context, phrase, and deterministic domain-label work.
@@ -27,9 +29,12 @@ which specs downstream crates can import.
 
 `docs/PUBLIC_API.toml` is the machine-readable allowlist, while
 `docs/PUBLIC_API_INDEX.md` is the generated-maintained public API index derived
-from that allowlist. `docs/PUBLIC_API_COVERAGE.toml` records the coarse public
-API coverage scorecard used by `check_humanize` to keep docs, tests, examples,
-downstream consumers, and performance smoke coverage visible by area.
+from that allowlist. `docs/PUBLIC_API_CLASSES.toml` is the generated-maintained
+classification manifest. `docs/PUBLIC_API_COVERAGE.toml` records the area-level
+public API coverage scorecard, and `docs/PUBLIC_API_UNIT_COVERAGE.toml` records
+the per-package scorecard used by `check_humanize` to keep docs, tests,
+examples, downstream consumers, and performance smoke coverage visible for each
+public unit.
 
 ## Public API surface snapshot
 
@@ -60,6 +65,11 @@ Formatting and parsing packages:
 * `src/humanize-colors-names.ads`
 * `src/humanize-colors-palettes.ads`
 * `src/humanize-numbers.ads`
+* `src/humanize-numbers-editorial.ads`
+* `src/humanize-numbers-ranges.ads`
+* `src/humanize-numbers-scales.ads`
+* `src/humanize-numbers-spellout.ads`
+* `src/humanize-numbers-statistics.ads`
 * `src/humanize-units.ads`
 * `src/humanize-lists.ads`
 * `src/humanize-frequencies.ads`

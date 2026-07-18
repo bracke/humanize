@@ -1,5 +1,6 @@
 with Humanize.Status;
 
+--  Prose helpers for excerpts, sentence labels, quotes, and reading summaries.
 package Humanize.Strings.Prose is
 
    function Prose_List

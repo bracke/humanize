@@ -59,6 +59,6 @@ begin
       return Checksum_Mismatch;
    end if;
 exception
-   when others =>
+   when others => --  defensive recovery
       return Checksum_Mismatch;
 end Product_Code_Checksum;

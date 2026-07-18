@@ -68,6 +68,6 @@ begin
       High := Add_Quarters (Low, 1);
       return True;
 exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
 end Parse_Quarter_Label;

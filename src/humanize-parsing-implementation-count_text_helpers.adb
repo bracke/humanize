@@ -125,7 +125,7 @@ package body Humanize.Parsing.Implementation.Count_Text_Helpers is
       end if;
       return (Status => Humanize.Status.Invalid_Argument, others => <>);
    exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Result_Count;
 
@@ -206,7 +206,7 @@ package body Humanize.Parsing.Implementation.Count_Text_Helpers is
 
       return (Status => Humanize.Status.Invalid_Argument, others => <>);
    exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Counted_Noun;
 

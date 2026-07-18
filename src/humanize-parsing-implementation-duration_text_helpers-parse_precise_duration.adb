@@ -102,7 +102,7 @@ begin
             Total := Total + Rounded;
             Seen := True;
          exception
-            when others =>
+            when others => --  parse failure normalization
                return (Status => Humanize.Status.Invalid_Value, Value => 0, others => <>);
          end;
       end loop;

@@ -1,6 +1,7 @@
 with Humanize.Contexts;
 with Humanize.Status;
 
+--  Natural-language duration labels for prose-oriented user interfaces.
 package Humanize.Durations.Natural is
 
    function Natural_Duration

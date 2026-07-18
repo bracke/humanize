@@ -1,3 +1,4 @@
+--  Display-width aware string helpers for terminal and UI presentation.
 package Humanize.Strings.Display is
    function UTF8_Length
      (Text : String)

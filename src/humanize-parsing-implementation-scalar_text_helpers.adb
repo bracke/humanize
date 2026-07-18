@@ -94,7 +94,7 @@ package body Humanize.Parsing.Implementation.Scalar_Text_Helpers is
          Error_Position => 0,
          Error => No_Parse_Error);
    exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, Value => 0, others => <>);
    end Parse_Bounded_Number;
 
@@ -226,7 +226,7 @@ package body Humanize.Parsing.Implementation.Scalar_Text_Helpers is
             Error => No_Parse_Error);
       end;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Parse_Frequency;
 
@@ -974,7 +974,7 @@ package body Humanize.Parsing.Implementation.Scalar_Text_Helpers is
          Error_Position => 0,
          Error => No_Parse_Error);
    exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Parse_Percent;
 
@@ -1068,7 +1068,7 @@ package body Humanize.Parsing.Implementation.Scalar_Text_Helpers is
 
       return (Status => Humanize.Status.Invalid_Argument, others => <>);
    exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Parse_Ordinal;
 
@@ -1159,7 +1159,7 @@ package body Humanize.Parsing.Implementation.Scalar_Text_Helpers is
          Error_Position => 0,
          Error => No_Parse_Error);
    exception
-      when others =>
+      when others => --  parse failure normalization
          return
            (Status => Humanize.Status.Invalid_Value,
             Error => Out_Of_Range,
@@ -1255,7 +1255,7 @@ package body Humanize.Parsing.Implementation.Scalar_Text_Helpers is
          Error_Position => 0,
          Error => No_Parse_Error);
    exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Parse_Aspect_Ratio;
 

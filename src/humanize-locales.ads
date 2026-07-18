@@ -1,3 +1,5 @@
+--  Locale lists and lookup helpers for the locale data shipped with
+--  Humanize.
 package Humanize.Locales is
 
    type Locale_Code_Access is access constant String;

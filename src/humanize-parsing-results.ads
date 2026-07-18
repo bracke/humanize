@@ -1,3 +1,4 @@
+--  Shared parsing result records and status helpers for Humanize parsers.
 package Humanize.Parsing.Results is
    subtype Parse_Error_Kind is Humanize.Parsing.Parse_Error_Kind;
    subtype Scheduling_Phrase_Kind is Humanize.Parsing.Scheduling_Phrase_Kind;

@@ -1,3 +1,4 @@
+--  Name formatting helpers for people, initials, lists, and display names.
 package Humanize.Strings.Names is
    function Initials
      (Text : String)

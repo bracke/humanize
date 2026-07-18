@@ -105,7 +105,7 @@ begin
               Error => Unsupported_Form,
               others => <>);
 exception
-      when others =>
+      when others => --  parse failure normalization
          return
            (Status => Humanize.Status.Invalid_Argument,
             Error => Unsupported_Form,

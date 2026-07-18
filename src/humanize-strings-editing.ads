@@ -1,5 +1,6 @@
 with Humanize.Status;
 
+--  Editing-oriented string summaries for diffs, cursor positions, and changes.
 package Humanize.Strings.Editing is
 
    function Excerpt

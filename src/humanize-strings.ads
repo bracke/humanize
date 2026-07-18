@@ -4,6 +4,26 @@ with Humanize.Status;
 
 --  Deterministic string humanization helpers.
 package Humanize.Strings is
+   --  Facade map:
+   --  * Humanize.Strings.Core: core character/text transforms.
+   --  * Humanize.Strings.Display: UTF-8/display-width helpers.
+   --  * Humanize.Strings.Editing: cleanup/editing helpers.
+   --  * Humanize.Strings.Identifiers: identifier and key formatting.
+   --  * Humanize.Strings.Inflections: plural/singular helpers.
+   --  * Humanize.Strings.Markup: markup escaping and stripping.
+   --  * Humanize.Strings.Metadata: text metadata labels.
+   --  * Humanize.Strings.Metrics: word/count/reading-time helpers.
+   --  * Humanize.Strings.Names: person/name helpers.
+   --  * Humanize.Strings.Paths: path and filename helpers.
+   --  * Humanize.Strings.Privacy: privacy-preserving labels.
+   --  * Humanize.Strings.Prose: prose/list helpers.
+   --  * Humanize.Strings.Terminal: terminal formatting helpers.
+   --  * Humanize.Strings.Types: shared string helper types.
+   --  New string families should prefer a child facade and keep this root
+   --  package as the compatibility import surface.
+
+   --  Facade section: shared string option and metadata types.
+
    subtype Name_Item is Ada.Strings.Unbounded.Unbounded_String;
    type Name_List is array (Positive range <>) of Name_Item;
 
@@ -422,6 +442,8 @@ package Humanize.Strings is
      (Match_Mode => Default_Match_Options,
       Count_Mode => All_Matches);
 
+   --  Facade section: core transforms, markup, metrics, and highlights.
+
    function Truncate
      (Text      : String;
       Max_Chars : Natural;
@@ -772,6 +794,8 @@ package Humanize.Strings is
    --  @param Options Matching case, word-boundary, and count policy.
    --  @param Escape_HTML_Output Escape excerpt text while preserving markers.
    --  @return Excerpt with matching original text wrapped in marker strings.
+
+   --  Facade section: privacy, paths, names, and inflection helpers.
 
    function Mask
      (Text         : String;
@@ -1157,6 +1181,8 @@ package Humanize.Strings is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   --  Facade section: display-width and terminal layout helpers.
+
    function UTF8_Length
      (Text : String)
       return Natural;
@@ -1374,6 +1400,8 @@ package Humanize.Strings is
    --  @param Max_Chars Maximum output grapheme-cluster length including Ellipsis.
    --  @param Ellipsis Suffix used when truncating.
    --  @return Grapheme-safe truncation at a word boundary when possible.
+
+   --  Facade section: bounded output adapters.
 
    procedure Truncate_Into
      (Text      : String;

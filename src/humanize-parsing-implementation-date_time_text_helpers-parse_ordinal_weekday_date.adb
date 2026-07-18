@@ -80,6 +80,6 @@ begin
         (Year, Ada.Calendar.Month_Number (Month), Weekday, Ordinal);
       return True;
 exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
 end Parse_Ordinal_Weekday_Date;

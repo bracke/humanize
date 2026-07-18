@@ -115,6 +115,6 @@ begin
       High := Add_Months (Low, 6);
       return Fiscal or else Semester or else Half_Label;
 exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
 end Parse_Half_Label;

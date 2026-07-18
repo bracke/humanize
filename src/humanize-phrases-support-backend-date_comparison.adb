@@ -53,6 +53,6 @@ begin
             & " before " & Reference_Label);
       end if;
 exception
-      when others =>
+      when others => --  defensive recovery
          return Invalid_Text;
 end Date_Comparison;

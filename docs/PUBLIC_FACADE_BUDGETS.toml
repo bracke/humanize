@@ -1,0 +1,81 @@
+# Public facade navigation and growth budgets.
+# target_lines records the reviewed ratchet baseline. max_lines is the hard
+# release gate and gives small compatibility additions room before maintainers
+# must either split into child facades or deliberately raise the hard cap.
+# These guards keep large compatibility facades navigable and make new API
+# families prefer child packages instead of silently growing root specs.
+
+[[facade]]
+unit = "Humanize.Parsing"
+path = "src/humanize-parsing.ads"
+target_lines = 3282
+max_lines = 3450
+max_bytes = 130000
+child_prefix = "Humanize.Parsing."
+min_child_units = 8
+map_marker = "Facade map:"
+child_unit_count = 8
+child_units = "Humanize.Parsing.Results|Humanize.Parsing.Colors|Humanize.Parsing.Date_Times|Humanize.Parsing.Domain_Labels|Humanize.Parsing.Durations|Humanize.Parsing.Numbers|Humanize.Parsing.Strings|Humanize.Parsing.Units"
+section_marker_count = 8
+section_markers = "Facade section: shared result and diagnostic types.|Facade section: normalization and parse diagnostics.|Facade section: duration, date, and scheduling parsers.|Facade section: numeric and comparison parsers.|Facade section: color parsers.|Facade section: phrase, field, and collection parsers.|Facade section: text and string parsers.|Facade section: unit, rate, and measurement parsers."
+usecase = "Root parser compatibility facade; new parser families should prefer child parsing packages."
+
+[[facade]]
+unit = "Humanize.Strings"
+path = "src/humanize-strings.ads"
+target_lines = 2908
+max_lines = 3050
+max_bytes = 120000
+child_prefix = "Humanize.Strings."
+min_child_units = 12
+map_marker = "Facade map:"
+child_unit_count = 14
+child_units = "Humanize.Strings.Core|Humanize.Strings.Display|Humanize.Strings.Editing|Humanize.Strings.Identifiers|Humanize.Strings.Inflections|Humanize.Strings.Markup|Humanize.Strings.Metadata|Humanize.Strings.Metrics|Humanize.Strings.Names|Humanize.Strings.Paths|Humanize.Strings.Privacy|Humanize.Strings.Prose|Humanize.Strings.Terminal|Humanize.Strings.Types"
+section_marker_count = 5
+section_markers = "Facade section: shared string option and metadata types.|Facade section: core transforms, markup, metrics, and highlights.|Facade section: privacy, paths, names, and inflection helpers.|Facade section: display-width and terminal layout helpers.|Facade section: bounded output adapters."
+usecase = "Root string compatibility facade; new string families should prefer focused child packages."
+
+[[facade]]
+unit = "Humanize.Durations"
+path = "src/humanize-durations.ads"
+target_lines = 2163
+max_lines = 2280
+max_bytes = 95000
+child_prefix = "Humanize.Durations."
+min_child_units = 3
+map_marker = "Facade map:"
+child_unit_count = 3
+child_units = "Humanize.Durations.Formatting|Humanize.Durations.Natural|Humanize.Durations.Schedules"
+section_marker_count = 6
+section_markers = "Facade section: duration option and metadata types.|Facade section: schedule and calendar option types.|Facade section: business-calendar rule builders.|Facade section: formatting and progress labels.|Facade section: natural duration and business-calendar labels.|Facade section: bounded output adapters."
+usecase = "Root duration compatibility facade; new schedule/natural/formatting families should prefer child packages."
+
+[[facade]]
+unit = "Humanize.Phrases"
+path = "src/humanize-phrases.ads"
+target_lines = 1884
+max_lines = 1980
+max_bytes = 75000
+child_prefix = "Humanize.Phrases."
+min_child_units = 6
+map_marker = "Facade map:"
+child_unit_count = 6
+child_units = "Humanize.Phrases.Fields|Humanize.Phrases.Keys|Humanize.Phrases.Locales|Humanize.Phrases.Severity|Humanize.Phrases.Statuses|Humanize.Phrases.Summaries"
+section_marker_count = 7
+section_markers = "Facade section: status, severity, and summary types.|Facade section: severity, tone, and summary labels.|Facade section: locale and phrase-key metadata.|Facade section: status phrase renderers.|Facade section: field and comparison summaries.|Facade section: bounded output adapters.|Facade section: compatibility status-family phrase renderers."
+usecase = "Root phrase compatibility facade; new phrase families should prefer phrase child packages."
+
+[[facade]]
+unit = "Humanize.Numbers"
+path = "src/humanize-numbers.ads"
+target_lines = 1721
+max_lines = 1810
+max_bytes = 80000
+child_prefix = "Humanize.Numbers."
+min_child_units = 5
+map_marker = "Facade map:"
+child_unit_count = 5
+child_units = "Humanize.Numbers.Editorial|Humanize.Numbers.Ranges|Humanize.Numbers.Scales|Humanize.Numbers.Spellout|Humanize.Numbers.Statistics"
+section_marker_count = 6
+section_markers = "Facade section: shared number option and metadata types.|Facade section: spellout and editorial wording helpers.|Facade section: scale and currency helpers.|Facade section: range, ratio, and change helpers.|Facade section: ordinal, compact, and approximate helpers.|Facade section: statistics and distribution helpers."
+usecase = "Root number compatibility facade; new scale/spellout/range families should move behind child facades before becoming broad root APIs."

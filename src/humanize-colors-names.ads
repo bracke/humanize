@@ -1,6 +1,7 @@
 with Humanize.Contexts;
 with Humanize.Status;
 
+--  Color naming helpers for common, approximate, temperature, and mood labels.
 package Humanize.Colors.Names is
 
    function Hue_Family_Label

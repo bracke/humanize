@@ -1,6 +1,8 @@
 with Humanize.Contexts;
 with Humanize.Status;
 
+--  Color model conversion and descriptive labels for RGB, HSL, HSV, CMYK, and
+--  temperature-oriented values.
 package Humanize.Colors.Models is
 
    function HSL

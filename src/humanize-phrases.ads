@@ -7,6 +7,17 @@ with Humanize.Status;
 
 --  Deterministic UI/status phrase helpers.
 package Humanize.Phrases is
+   --  Facade map:
+   --  * Humanize.Phrases.Fields: field and state labels.
+   --  * Humanize.Phrases.Keys: stable phrase-key metadata.
+   --  * Humanize.Phrases.Locales: phrase locale metadata.
+   --  * Humanize.Phrases.Severity: severity/tone labels.
+   --  * Humanize.Phrases.Statuses: reusable status phrase labels.
+   --  * Humanize.Phrases.Summaries: reusable summary labels.
+   --  New phrase families should prefer a child facade and keep this root
+   --  package as the compatibility import surface.
+
+   --  Facade section: status, severity, and summary types.
 
    type Phrase_Severity is
      (Neutral_Severity,
@@ -308,6 +319,8 @@ package Humanize.Phrases is
       Summary_Failed,
       Summary_Stale,
       Summary_Skipped);
+
+   --  Facade section: severity, tone, and summary labels.
 
    function Severity_Label
      (Severity : Phrase_Severity)
@@ -622,6 +635,8 @@ package Humanize.Phrases is
    --  @param Status Database/storage phrase.
    --  @return Stable severity category for the phrase.
 
+   --  Facade section: locale and phrase-key metadata.
+
    Phrase_Locale_Count : constant Positive := 22;
 
    Generated_Phrase_Locale_Count : constant Positive := 19;
@@ -727,6 +742,8 @@ package Humanize.Phrases is
       return Humanize.Status.Text_Result;
    --  @param Status Invoice/refund phrase.
    --  @return Stable machine key for the phrase.
+
+   --  Facade section: status phrase renderers.
 
    function Status_Phrase
      (Context : Humanize.Contexts.Context;
@@ -840,6 +857,8 @@ package Humanize.Phrases is
    --  @param Status Database/storage phrase to render.
    --  @return Deterministic phrase text.
 
+   --  Facade section: field and comparison summaries.
+
    function Field_Change_Summary
      (Context  : Humanize.Contexts.Context;
       Changed  : Natural;
@@ -897,6 +916,8 @@ package Humanize.Phrases is
    --  @param Field Field name.
    --  @param Value Current value label.
    --  @return Deterministic unchanged-field summary.
+
+   --  Facade section: bounded output adapters.
 
    procedure Status_Phrase_Into
      (Context : Humanize.Contexts.Context;
@@ -1457,6 +1478,8 @@ package Humanize.Phrases is
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Code Humanize status for the operation.
+
+   --  Facade section: compatibility status-family phrase renderers.
 
    function File_Phrase
      (Context : Humanize.Contexts.Context;

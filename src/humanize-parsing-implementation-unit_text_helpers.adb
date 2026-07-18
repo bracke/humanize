@@ -169,7 +169,7 @@ package body Humanize.Parsing.Implementation.Unit_Text_Helpers is
 
       return False;
    exception
-      when others =>
+      when others => --  parse failure normalization
          Unit := Humanize.Units.Meter;
          return False;
    end Rendered_Unit_Value;

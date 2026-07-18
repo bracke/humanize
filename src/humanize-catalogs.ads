@@ -4,6 +4,8 @@ with Humanize.Contexts;
 with Humanize.Locales;
 with Humanize.Messages;
 
+--  Public accessors for Humanize's built-in message catalogs and locale
+--  availability metadata.
 package Humanize.Catalogs is
 
    subtype Locale_Code_Access is Humanize.Locales.Locale_Code_Access;

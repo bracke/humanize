@@ -1,5 +1,6 @@
 with Humanize.Status;
 
+--  Metadata string summaries for hashes, versions, MIME types, and encodings.
 package Humanize.Strings.Metadata is
 
    function Text_Change_Metadata_For

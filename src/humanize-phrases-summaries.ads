@@ -5,6 +5,7 @@ with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Status;
 
+--  Summary phrase helpers for counts, changes, comparisons, and highlights.
 package Humanize.Phrases.Summaries is
 
    function Domain_Label

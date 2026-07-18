@@ -1,4 +1,7 @@
-private package Humanize.Numbers.Ranges is
+--  Range, threshold, uncertainty, ratio, proportion, and change wording for
+--  numeric values. These helpers expose focused number-comparison labels while
+--  `Humanize.Numbers` remains the compatibility facade.
+package Humanize.Numbers.Ranges is
    function Bounded_Number
      (Context : Humanize.Contexts.Context;
       Value   : Long_Long_Integer;

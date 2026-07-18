@@ -1,3 +1,5 @@
+--  Stable semantic message identifiers and catalog keys shared by public
+--  humanizers and the internal I18N rendering bridge.
 package Humanize.Messages is
    pragma Preelaborate;
 

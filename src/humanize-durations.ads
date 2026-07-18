@@ -9,6 +9,14 @@ with Humanize.Status;
 --  "1 minute"). Multi-unit lists are deferred. This package selects keys only;
 --  it must not call I18N.Runtime directly (HUM-INV-002).
 package Humanize.Durations is
+   --  Facade map:
+   --  * Humanize.Durations.Formatting: duration and progress formatting.
+   --  * Humanize.Durations.Natural: natural duration wording.
+   --  * Humanize.Durations.Schedules: schedule and recurrence labels.
+   --  New duration families should prefer a child facade and keep this root
+   --  package as the compatibility import surface.
+
+   --  Facade section: duration option and metadata types.
 
    type Duration_Seconds is new Long_Long_Integer;
    type Duration_Microseconds is new Long_Long_Integer;
@@ -79,6 +87,8 @@ package Humanize.Durations is
 
    Default_Duration_Phrase_Options : constant Duration_Phrase_Options :=
      (Style => Natural_Wording);
+
+   --  Facade section: schedule and calendar option types.
 
    type Recurrence_Unit is (Every_Second, Every_Minute, Every_Hour, Every_Day,
                             Every_Week, Every_Month, Every_Quarter,
@@ -328,6 +338,8 @@ package Humanize.Durations is
    procedure Clear_Business_Calendar_Rules
      (Rules : in out Business_Calendar_Rules);
    --  @param Rules Business calendar rule set to reset in place.
+
+   --  Facade section: business-calendar rule builders.
 
    function Add_One_Off_Holiday
      (Rules : in out Business_Calendar_Rules;
@@ -708,6 +720,8 @@ package Humanize.Durations is
    --  @return Weekday 9-to-5 rules with common Singapore public holidays.
 
    --  Convenience API: humanize Seconds, owned result.
+   --  Facade section: formatting and progress labels.
+
    function Format
      (Context : Humanize.Contexts.Context;
       Seconds : Duration_Seconds;
@@ -1232,6 +1246,8 @@ package Humanize.Durations is
    --  @param Weekday Cron day-of-week field.
    --  @return Deterministic schedule phrase for common cron forms.
 
+   --  Facade section: natural duration and business-calendar labels.
+
    function Natural_Duration
      (Context : Humanize.Contexts.Context;
       Seconds : Duration_Seconds;
@@ -1466,6 +1482,8 @@ package Humanize.Durations is
    --  @param Holidays Date-only holiday exclusions.
    --  @param Options Business-day counting policy.
    --  @return ISO date label for the resulting business date.
+
+   --  Facade section: bounded output adapters.
 
    procedure Format_Range_Into
      (Context : Humanize.Contexts.Context;

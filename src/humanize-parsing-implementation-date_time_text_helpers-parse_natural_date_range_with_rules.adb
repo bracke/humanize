@@ -224,6 +224,6 @@ begin
          Error_Position => Item'First,
          others => <>);
 exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, others => <>);
 end Parse_Natural_Date_Range_With_Rules;

@@ -5,6 +5,7 @@ with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Status;
 
+--  Key and identifier phrase helpers for settings, shortcuts, and maps.
 package Humanize.Phrases.Keys is
 
    function Status_Key

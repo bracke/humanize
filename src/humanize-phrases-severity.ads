@@ -5,6 +5,7 @@ with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Status;
 
+--  Severity phrase helpers for alerts, diagnostics, and operational status.
 package Humanize.Phrases.Severity is
 
    function Severity_Label

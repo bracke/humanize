@@ -61,6 +61,6 @@ begin
          0.0);
       return True;
 exception
-      when others =>
+      when others => --  parse failure normalization
          return False;
 end Parse_Month_Name_Date;

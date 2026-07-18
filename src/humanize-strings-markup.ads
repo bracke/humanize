@@ -1,3 +1,4 @@
+--  Markup-oriented string helpers for tags, links, headings, and plain text.
 package Humanize.Strings.Markup is
    function NL_To_BR
      (Text : String)

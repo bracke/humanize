@@ -46,6 +46,6 @@ begin
          Error_Position => 0,
          Error => No_Parse_Error);
 exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Value, others => <>);
 end Parse_Unit;

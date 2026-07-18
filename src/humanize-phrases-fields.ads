@@ -5,6 +5,7 @@ with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Status;
 
+--  Field-change phrase helpers for records, forms, and structured values.
 package Humanize.Phrases.Fields is
 
    function Field_Change_Summary

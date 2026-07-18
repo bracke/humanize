@@ -5,6 +5,7 @@ with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Status;
 
+--  Locale phrase helpers for language, region, script, and fallback labels.
 package Humanize.Phrases.Locales is
 
    function Phrase_Pack_Summary

@@ -1,5 +1,7 @@
 with Humanize.Status;
 
+--  Small bounded-string utilities used by public formatters that need stable
+--  ASCII-safe text operations.
 package Humanize.Bounded_Text is
 
    function Clean (Text : String) return String;

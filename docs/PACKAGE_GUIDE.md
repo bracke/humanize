@@ -10,9 +10,11 @@ the long feature matrix out of the critical path for first-time use.
 * Use `Humanize.Bytes`, `Humanize.Durations`, `Humanize.Numbers`,
   `Humanize.Units`, `Humanize.Lists`, `Humanize.Frequencies`, and
   `Humanize.Rates` for common localized formatting.
-* Use `Humanize.Parsing` as the compatibility parsing facade. Focused parser
-  child packages are available for broad parser families, but private children
-  such as `Humanize.Parsing.Bytes` are not caller APIs.
+* Use `Humanize.Parsing` as the compatibility parsing facade. Prefer public parser children
+  such as `Humanize.Parsing.Numbers`,
+  `Humanize.Parsing.Durations`, `Humanize.Parsing.Colors`, and
+  `Humanize.Parsing.Date_Times` for new focused imports; private children such
+  as `Humanize.Parsing.Bytes` are not caller APIs.
 * Use the focused `Humanize.Strings.*` child packages when the parent string
   facade feels too broad.
 * Use the focused `Humanize.Colors.*` child packages to import only CSS,
@@ -23,7 +25,9 @@ the long feature matrix out of the critical path for first-time use.
 
 ## Stability Classes
 
-`docs/PUBLIC_API_CLASSES.toml` is the machine-readable stability map:
+`docs/PUBLIC_API_CLASSES.toml` is the generated-maintained stability map. It
+defines the allowed classes and records one `unit_class` row for each public
+package in `docs/PUBLIC_API.toml`:
 
 * `primary-facade` packages are the default user-facing imports.
 * `specialized-child-facade` packages are stable focused imports for large
@@ -36,6 +40,7 @@ the long feature matrix out of the critical path for first-time use.
 ## Examples
 
 The `examples/` directory has one broad demo and focused demos for parsing,
-bounded output, colors, and cross-domain labels. The staged public API consumer
-under `tests/public_api_consumer/` is the compatibility smoke test for
-downstream code.
+bounded output, colors, cross-domain labels, product/details labels, and
+public child-package imports. The staged public API consumer under
+`tests/public_api_consumer/` is the compatibility smoke test for downstream
+code.

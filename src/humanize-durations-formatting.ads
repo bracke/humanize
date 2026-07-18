@@ -1,6 +1,7 @@
 with Humanize.Contexts;
 with Humanize.Status;
 
+--  Duration formatting helpers for clock-style, compact, and verbose labels.
 package Humanize.Durations.Formatting is
 
    function Format_Metadata

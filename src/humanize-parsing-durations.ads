@@ -1,17 +1,4 @@
-with Ada.Calendar;
-
-with Humanize.Bytes;
-with Humanize.Colors;
-with Humanize.Durations;
-with Humanize.Frequencies;
-with Humanize.Numbers;
-with Humanize.Phrases;
-with Humanize.Rates;
-with Humanize.Status;
-with Humanize.Strings;
-with Humanize.Units;
-with Humanize.Values;
-
+--  Duration parsers for compact, clock-style, ISO-like, and prose inputs.
 package Humanize.Parsing.Durations is
 
    function Parse_Duration

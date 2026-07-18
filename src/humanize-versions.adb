@@ -189,7 +189,7 @@ package body Humanize.Versions is
       Result.Valid := True;
       return Result;
    exception
-      when others =>
+      when others => --  defensive recovery
          return (others => <>);
    end Parse_Semver;
 

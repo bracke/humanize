@@ -173,7 +173,7 @@ package body Humanize.Parsing.Implementation.String_Text_Helpers is
       end if;
       return Result;
    exception
-      when others =>
+      when others => --  parse failure normalization
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Text_Summary;
 

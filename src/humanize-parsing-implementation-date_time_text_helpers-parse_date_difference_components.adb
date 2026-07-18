@@ -49,7 +49,7 @@ function Parse_Date_Difference_Components
          Saw_Component := True;
          return True;
       exception
-         when others =>
+         when others => --  parse failure normalization
             return False;
       end Parse_Component;
 begin

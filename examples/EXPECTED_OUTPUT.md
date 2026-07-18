@@ -2,7 +2,7 @@
 
 For `./examples/bin/humanize_demo`:
 
-```text
+```humanize-demo-output
 English:
   duration 90s : 1 minute
   bytes 1536   : 1.5 KiB
@@ -210,4 +210,83 @@ Spanish:
   4 hours ago  : hace 4 horas
   3 kilometers : 3 kilómetros
   1.5 km       : 1,5 kilómetros
+```
+
+For `./examples/bin/system_status_demo`:
+
+```system-status-demo-output
+http : HTTP 503 service unavailable
+service : API degraded performance
+diagnostic : 2 errors, 1 warning
+threshold : 3 normal, 1 warning, 1 critical
+```
+
+For `./examples/bin/ui_labels_demo`:
+
+```ui-labels-demo-output
+form : 1 of 5 required fields missing
+navigation : breadcrumb 2 of 4: Settings
+badge : build status, success
+notification : 1 unread of 3 notifications
+search : results for "cache": 12 results
+comment : release checklist open thread
+task : publish package open task
+table : 42 rows by 6 columns
+```
+
+For `./examples/bin/security_data_demo`:
+
+```security-data-demo-output
+secret : database URL secret ending in e/db
+permission : release-bot deploy granted
+attachment : invoice.pdf document uploaded
+media : preview.png image ready
+data : customers.csv partial import: 98 accepted, 2 rejected
+schema : field age expected integer, got string
+markup : checkout form has 2 accessibility issues
+```
+
+For `./examples/bin/workflow_ops_demo`:
+
+```workflow-ops-demo-output
+operation : sync running: 8 of 10 items complete, 1 item failed
+comparison : settings: 3 changed, 7 unchanged, 10 total
+workflow : 6 items, 4 completed, 1 active, 1 blocked
+change : 6 items, 3 added, 1 removed, 2 changed
+build : nightly build running
+deployment : api to production deploying
+```
+
+For `./examples/bin/product_details_demo`:
+
+```product-details-demo-output
+account : admin active account
+payment : invoice INV-42 open
+event : release review scheduled event
+endpoint : https api.example.test:443 domain host endpoint
+geo : 55.6761° N, 12.5683° E
+version : minor upgrade: 1.2.0 -> 1.3.0
+resource : 82 of 100 CPU units used (82%, high utilization)
+moderation : comment 42 approved
+notifications : email notifications enabled
+details : release
+```
+
+For `./examples/bin/public_surface_demo`:
+
+```public-surface-demo-output
+Public surface:
+  number editorial : 9.5 ms
+  number range : greater than 3 and up to 7
+  number scale : 1.2e6
+  number spellout : twelve dollars and fifty cents
+  number statistics : right-skewed distribution, median 3.00000000000000E+00 ms
+  color contrast : 8.2:1 enhanced contrast
+  color model : dark
+  string core : API Response URL
+  string display : alpha b...
+  phrase status : complete
+  phrase field : 3 fields: 2 changed, 1 added, 0 removed
+  phrase severity : warning
+  parsing color : OK
 ```

@@ -1,6 +1,8 @@
 with Humanize.Contexts;
 with Humanize.Status;
 
+--  Contrast and accessibility labels for comparing foreground and background
+--  colors.
 package Humanize.Colors.Contrast is
 
    function Opacity_Label

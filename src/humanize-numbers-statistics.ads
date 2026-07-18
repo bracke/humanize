@@ -1,4 +1,6 @@
-private package Humanize.Numbers.Statistics is
+--  Dataset and distribution wording for summaries, percentiles, outliers, and
+--  conservative distribution-shape metadata.
+package Humanize.Numbers.Statistics is
    function Distribution_Summary_Label
      (Count   : Natural;
       Minimum : Long_Float;

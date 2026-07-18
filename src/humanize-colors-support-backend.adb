@@ -485,7 +485,7 @@ package body Humanize.Colors.Support.Backend is
       Value := Long_Float'Value (Trim (Text));
       return True;
    exception
-      when others =>
+      when others => --  defensive recovery
          Value := 0.0;
          return False;
    end Parse_Float;
@@ -1179,45 +1179,7 @@ package body Humanize.Colors.Support.Backend is
    function Palette_Contrast_Matrix_Label
      (Colors : Color_List)
       return Humanize.Status.Text_Result
-   is
-      Total    : Natural := 0;
-      Fail     : Natural := 0;
-      Large    : Natural := 0;
-      Normal   : Natural := 0;
-      Enhanced : Natural := 0;
-   begin
-      if Colors'Length < 2 then
-         return Invalid_Text;
-      end if;
-
-      for I in Colors'Range loop
-         for J in I + 1 .. Colors'Last loop
-            declare
-               Level : constant Contrast_Level :=
-                 Contrast_Level_For (Contrast_Ratio (Colors (I), Colors (J)));
-            begin
-               Total := Total + 1;
-               case Level is
-                  when Contrast_Fail =>
-                     Fail := Fail + 1;
-                  when Contrast_Large_Text =>
-                     Large := Large + 1;
-                  when Contrast_Normal_Text =>
-                     Normal := Normal + 1;
-                  when Contrast_Enhanced_Text =>
-                     Enhanced := Enhanced + 1;
-               end case;
-            end;
-         end loop;
-      end loop;
-
-      return Ok_Text
-        (Natural_Text (Enhanced) & " enhanced, "
-         & Natural_Text (Normal) & " normal, "
-         & Natural_Text (Large) & " large-only, "
-         & Natural_Text (Fail) & " fail out of "
-         & Natural_Text (Total) & " pairs");
-   end Palette_Contrast_Matrix_Label;
+      is separate;
 
    function Palette_Mood_Label
      (Colors : Color_List)
@@ -1227,40 +1189,12 @@ package body Humanize.Colors.Support.Backend is
    function Advanced_Palette_Summary
      (Colors : Color_List)
       return Humanize.Status.Text_Result
-   is
-      Harmony : constant Humanize.Status.Text_Result :=
-        Palette_Harmony_Label (Colors);
-      Mood : constant Humanize.Status.Text_Result := Palette_Mood_Label (Colors);
-      Accessibility : constant Humanize.Status.Text_Result :=
-        Palette_Accessibility_Label (Colors);
-      Roles : constant Humanize.Status.Text_Result := Palette_Roles (Colors);
-   begin
-      if Harmony.Status /= Humanize.Status.Ok then
-         return Harmony;
-      elsif Mood.Status /= Humanize.Status.Ok then
-         return Mood;
-      elsif Accessibility.Status /= Humanize.Status.Ok then
-         return Accessibility;
-      elsif Roles.Status /= Humanize.Status.Ok then
-         return Roles;
-      end if;
-
-      return Ok_Text
-        (Result_Text (Harmony) & ", "
-         & Result_Text (Mood) & ", "
-         & Result_Text (Accessibility) & "; "
-         & Result_Text (Roles));
-   end Advanced_Palette_Summary;
+      is separate;
 
    function Color_Summary
      (Color : RGB_Color)
       return Humanize.Status.Text_Result
-   is
-   begin
-      return Ok_Text
-        (Result_Text (Hex_Color (Color)) & " "
-         & Result_Text (RGB_Label (Color)));
-   end Color_Summary;
+      is separate;
 
    function Brightness
      (Color : RGB_Color)
@@ -1985,17 +1919,7 @@ package body Humanize.Colors.Support.Backend is
      (Foreground : RGB_Color;
       Background : RGB_Color)
       return Humanize.Status.Text_Result
-   is
-      Score     : constant Long_Float := APCA_Contrast (Foreground, Background);
-      Magnitude : constant Long_Float := abs Score;
-      Polarity  : constant String :=
-        (if Score >= 0.0 then "dark text on light background"
-         else "light text on dark background");
-   begin
-      return Ok_Text
-        ("Lc " & Humanize.Decimal_Images.Decimal_Image (Magnitude, 0, True)
-         & ", " & APCA_Strength_Label (Magnitude) & ", " & Polarity);
-   end APCA_Contrast_Label;
+      is separate;
 
    function Simulated_CVD
      (Color      : RGB_Color;
@@ -2108,17 +2032,7 @@ package body Humanize.Colors.Support.Backend is
      (Foreground : RGB_Color;
       Background : RGB_Color)
       return Humanize.Status.Text_Result
-   is
-      WCAG : constant Humanize.Status.Text_Result :=
-        Contrast_Label (Foreground, Background);
-      APCA : constant Humanize.Status.Text_Result :=
-        APCA_Contrast_Label (Foreground, Background);
-   begin
-      return Ok_Text
-        (Result_Text (WCAG) & "; "
-         & Result_Text (APCA) & "; "
-         & Worst_CVD_Risk (Foreground, Background));
-   end Color_Accessibility_Summary;
+      is separate;
 
    function Color_Difference
      (Left  : RGB_Color;

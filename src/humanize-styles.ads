@@ -6,6 +6,8 @@ with Humanize.Lists;
 with Humanize.Numbers;
 with Humanize.Units;
 
+--  Higher-level presentation presets that combine common formatting choices
+--  across Humanize domains.
 package Humanize.Styles is
 
    type Style_Preset is

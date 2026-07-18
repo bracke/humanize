@@ -1,4 +1,7 @@
-private package Humanize.Numbers.Scales is
+--  Numeric scale and notation helpers, including compact numbers, scientific
+--  notation, SI prefixes, currency labels, fractions, Roman numerals, ordinals,
+--  percentages, and approximations.
+package Humanize.Numbers.Scales is
    function Scientific_Notation
      (Context : Humanize.Contexts.Context;
       Value   : Long_Float;

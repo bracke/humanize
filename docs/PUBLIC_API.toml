@@ -113,6 +113,31 @@ spec = "src/humanize-numbers.ads"
 area = "formatting"
 
 [[unit]]
+name = "Humanize.Numbers.Editorial"
+spec = "src/humanize-numbers-editorial.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Numbers.Ranges"
+spec = "src/humanize-numbers-ranges.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Numbers.Scales"
+spec = "src/humanize-numbers-scales.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Numbers.Spellout"
+spec = "src/humanize-numbers-spellout.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Numbers.Statistics"
+spec = "src/humanize-numbers-statistics.ads"
+area = "formatting"
+
+[[unit]]
 name = "Humanize.Units"
 spec = "src/humanize-units.ads"
 area = "formatting"

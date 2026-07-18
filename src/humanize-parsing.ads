@@ -13,6 +13,19 @@ with Humanize.Units;
 with Humanize.Values;
 
 package Humanize.Parsing is
+   --  Facade map:
+   --  * Humanize.Parsing.Results: lightweight parse result aliases.
+   --  * Humanize.Parsing.Colors: color parser facade.
+   --  * Humanize.Parsing.Date_Times: date/time parser facade.
+   --  * Humanize.Parsing.Domain_Labels: domain-label parser facade.
+   --  * Humanize.Parsing.Durations: duration parser facade.
+   --  * Humanize.Parsing.Numbers: number parser facade.
+   --  * Humanize.Parsing.Strings: string/text parser facade.
+   --  * Humanize.Parsing.Units: unit parser facade.
+   --  New parser families should prefer a child facade and keep this root
+   --  package as the compatibility import surface.
+
+   --  Facade section: shared result and diagnostic types.
 
    type Parse_Error_Kind is
      (No_Parse_Error,
@@ -1231,6 +1244,8 @@ package Humanize.Parsing is
       Error : Parse_Error_Kind := Unsupported_Form;
    end record;
 
+   --  Facade section: normalization and parse diagnostics.
+
    function Parse_Bytes
      (Text : String)
       return Byte_Parse_Result;
@@ -1344,6 +1359,8 @@ package Humanize.Parsing is
       return Byte_Parse_Result;
    --  @param Text Text beginning with a byte-size expression.
    --  @return Parsed byte count and consumed prefix length.
+
+   --  Facade section: duration, date, and scheduling parsers.
 
    function Parse_Duration
      (Text : String)
@@ -1767,6 +1784,8 @@ package Humanize.Parsing is
    --  @param Text Text beginning with a precise duration expression.
    --  @return Parsed precise duration and consumed prefix length.
 
+   --  Facade section: numeric and comparison parsers.
+
    function Parse_Compact_Number
      (Text : String)
       return Number_Parse_Result;
@@ -1887,6 +1906,8 @@ package Humanize.Parsing is
       return Date_Comparison_Parse_Result;
    --  @param Text Text beginning with a deterministic date comparison.
    --  @return Parsed date comparison and consumed prefix length.
+
+   --  Facade section: color parsers.
 
    function Parse_Palette_Contrast_Matrix
      (Text : String)
@@ -2038,6 +2059,8 @@ package Humanize.Parsing is
    --  @param Text OKLab difference label.
    --  @return Parsed delta and perceptual difference label.
 
+   --  Facade section: phrase, field, and collection parsers.
+
    function Parse_Domain_Summary
      (Text : String)
       return Domain_Summary_Parse_Result;
@@ -2187,6 +2210,8 @@ package Humanize.Parsing is
       return Collection_Display_Parse_Result;
    --  @param Text Collection display label in compact, summary, or screen-reader form.
    --  @return Parsed collection display kind and count metadata.
+
+   --  Facade section: text and string parsers.
 
    function Parse_Text_Count_Summary
      (Text : String)
@@ -2620,6 +2645,8 @@ package Humanize.Parsing is
    --  @param Text Text beginning with a bounded number expression.
    --  @param Suffix Suffix accepted after the numeric value.
    --  @return Parsed bounded number and consumed prefix length.
+
+   --  Facade section: unit, rate, and measurement parsers.
 
    function Parse_Frequency
      (Text : String)

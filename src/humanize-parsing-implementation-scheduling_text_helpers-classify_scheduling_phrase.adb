@@ -21,7 +21,7 @@ function Classify_Scheduling_Phrase
             when Business_Day_Phrase => Has_Business := True;
             when Period_Boundary_Phrase => Has_Period := True;
             when Recurrence_Phrase => Has_Recur := True;
-            when others => null;
+            when others => null; --  intentional silent recovery
          end case;
          if Kind = No_Scheduling_Phrase then
             Kind := Candidate;

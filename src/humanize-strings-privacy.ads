@@ -1,5 +1,6 @@
 with Humanize.Status;
 
+--  Privacy-preserving string helpers for masking, redaction, and summaries.
 package Humanize.Strings.Privacy is
 
    function Safe_Email_Label

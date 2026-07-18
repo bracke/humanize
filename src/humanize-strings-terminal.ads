@@ -1,5 +1,6 @@
 with Humanize.Status;
 
+--  Terminal text helpers for ANSI-aware labels, prompts, and columns.
 package Humanize.Strings.Terminal is
 
    function Terminal_Paragraph
