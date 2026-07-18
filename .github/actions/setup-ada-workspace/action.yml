@@ -29,7 +29,13 @@ runs:
         toolchain: gnat_native=15.2.1 gprbuild
     - name: Report selected GNAT
       shell: bash
-      run: alr exec -- gnatls --version
+      # `alr exec` needs a workspace, and this action runs from the checkout
+      # root, where the crates sit in subdirectories. Probe from a throwaway
+      # crate so the report does not depend on the caller's checkout layout.
+      run: |
+        alr -n -q init --bin gnat_probe >/dev/null
+        cd gnat_probe && alr exec -- gnatls --version
+        cd .. && rm -rf gnat_probe
     - name: Install GNATdoc
       if: ${{ inputs.install-gnatdoc == 'true' }}
       shell: bash
