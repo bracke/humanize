@@ -41,7 +41,7 @@ package body Humanize.Parsing.Implementation.Numeric_Text_Helpers is
       Right := Natural (Long_Float'Rounding (R));
       return Long_Float (Left) = L and then Long_Float (Right) = R;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return False;
    end Parse_Two_Naturals;
 
@@ -207,7 +207,7 @@ package body Humanize.Parsing.Implementation.Numeric_Text_Helpers is
       Value := Natural (Long_Float'Rounding (Amount));
       return Long_Float (Value) = Amount;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return False;
    end Parse_Natural_Field;
 
@@ -243,7 +243,7 @@ package body Humanize.Parsing.Implementation.Numeric_Text_Helpers is
          end if;
       end;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return 0;
    end Parse_Other_Count_From_Details;
 

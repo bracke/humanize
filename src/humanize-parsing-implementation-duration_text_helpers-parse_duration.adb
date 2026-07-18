@@ -106,7 +106,7 @@ begin
             Total := Total + Rounded;
             Seen := True;
          exception
-            when others => --  parse failure normalization
+            when Constraint_Error =>
                return (Status => Humanize.Status.Invalid_Value, Value => 0, others => <>);
          end;
       end loop;

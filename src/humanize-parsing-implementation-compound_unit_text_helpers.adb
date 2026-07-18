@@ -102,7 +102,7 @@ package body Humanize.Parsing.Implementation.Compound_Unit_Text_Helpers is
          end if;
       end;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Parse_CSS_Length;
 
@@ -176,7 +176,7 @@ package body Humanize.Parsing.Implementation.Compound_Unit_Text_Helpers is
          end if;
       end;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Parse_Compound_Unit;
 

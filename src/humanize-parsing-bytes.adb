@@ -155,7 +155,7 @@ package body Humanize.Parsing.Bytes is
             Error_Position => 0,
             Error => No_Parse_Error);
       exception
-         when others => --  parse failure normalization
+         when Constraint_Error =>
             return
               (Status => Humanize.Status.Invalid_Value,
                Value => 0,

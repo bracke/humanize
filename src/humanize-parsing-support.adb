@@ -124,7 +124,7 @@ package body Humanize.Parsing.Support is
       Value := Long_Float'Value (Clean (1 .. Last));
       return True;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return False;
    end Numeric_Value;
 
@@ -135,7 +135,7 @@ package body Humanize.Parsing.Support is
       end if;
       return Long_Long_Integer (Long_Float'Rounding (Value));
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return -1;
    end Rounded_Nonnegative;
 

@@ -88,7 +88,7 @@ function Time_Of_Day_Seconds
          Minutes := Sign * (Hour * 60 + Minute);
          return True;
       exception
-         when others => --  parse failure normalization
+         when Constraint_Error =>
             return False;
       end Parse_Timezone_Minutes;
 
@@ -338,7 +338,7 @@ function Time_Of_Day_Seconds
          Value := Natural'Value (Source);
          return True;
       exception
-         when others => --  parse failure normalization
+         when Constraint_Error =>
             Value := 0;
             return False;
       end Parse_Natural_Text;

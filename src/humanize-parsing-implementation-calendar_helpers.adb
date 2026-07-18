@@ -73,7 +73,7 @@ package body Humanize.Parsing.Implementation.Calendar_Helpers is
       end loop;
       return Ada.Calendar.Time_Of (Year, Month, Day, 0.0);
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error | Ada.Calendar.Time_Error =>
          return Value;
    end Add_Calendar_Days;
 
@@ -102,7 +102,7 @@ package body Humanize.Parsing.Implementation.Calendar_Helpers is
         (Day, Days_In_Month (New_Year, New_Month));
       return Ada.Calendar.Time_Of (New_Year, New_Month, New_Day, 0.0);
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error | Ada.Calendar.Time_Error =>
          return Value;
    end Add_Months;
 

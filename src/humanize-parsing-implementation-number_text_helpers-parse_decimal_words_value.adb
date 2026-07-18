@@ -55,7 +55,7 @@ begin
       end if;
       return True;
 exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          Value := 0.0;
          return False;
 end Parse_Decimal_Words_Value;

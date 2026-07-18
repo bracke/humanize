@@ -452,7 +452,7 @@ package body Humanize.Parsing.Implementation.Number_Text_Helpers is
          Error_Position => 0,
          Error => No_Parse_Error);
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Scientific_Number;
 
@@ -622,7 +622,7 @@ package body Humanize.Parsing.Implementation.Number_Text_Helpers is
          Error_Position => 0,
          Error => No_Parse_Error);
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return (Status => Humanize.Status.Invalid_Value, others => <>);
    end Parse_Approximate_Number;
 
@@ -651,7 +651,7 @@ package body Humanize.Parsing.Implementation.Number_Text_Helpers is
          begin
             Value := Long_Long_Integer'Value (Numeric);
          exception
-            when others => --  parse failure normalization
+            when Constraint_Error =>
                return (Status => Humanize.Status.Invalid_Argument,
                        Error => Expected_Number,
                        Error_Position => Text'First,
