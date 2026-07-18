@@ -132,29 +132,78 @@ package body Check_Humanize_Release is
       return Project_Tools.Processes.Shell_Output (Command);
    end Sibling_I18N_Build_Processes;
 
+   function Sibling_I18N_Build_Wait_Seconds return Natural is
+      Name : constant String := "HUMANIZE_WAIT_FOR_I18N_BUILD_SECONDS";
+   begin
+      if Ada.Environment_Variables.Exists (Name) then
+         return Natural'Value (Ada.Environment_Variables.Value (Name));
+      else
+         return 0;
+      end if;
+   exception
+      when Constraint_Error =>
+         return 0;
+   end Sibling_I18N_Build_Wait_Seconds;
+
    function Local_Release_Builds_Are_Isolated
      (Root   : String;
       Errors : in out Natural)
       return Boolean
    is
-      Processes : constant String := Sibling_I18N_Build_Processes (Root);
+      Wait_Seconds  : constant Natural := Sibling_I18N_Build_Wait_Seconds;
+      Poll_Seconds  : constant Natural := 5;
+      Waited_Seconds : Natural := 0;
    begin
-      if Processes = "" then
-         return True;
-      elsif Sibling_Build_Preflight_Failed then
-         return False;
-      end if;
+      loop
+         declare
+            Processes : constant String := Sibling_I18N_Build_Processes (Root);
+         begin
+            if Processes = "" then
+               if Waited_Seconds > 0 then
+                  Put_Line
+                    ("sibling i18n workspace is idle after waiting"
+                     & Natural'Image (Waited_Seconds) & " second(s)");
+               end if;
 
-      Sibling_Build_Preflight_Failed := True;
-      Put_Line
-        (Standard_Error,
-         "active sibling i18n build processes can rewrite ../i18n/lib while "
-         & "local public API consumers are linking:");
-      Put_Line (Standard_Error, Ada.Strings.Fixed.Trim (Processes, Ada.Strings.Both));
-      Error
-        (Errors,
-         "local release builds require an idle sibling i18n workspace");
-      return False;
+               return True;
+            elsif Waited_Seconds = 0
+              and then Wait_Seconds > 0
+              and then not Sibling_Build_Preflight_Failed
+            then
+               Put_Line
+                 (Standard_Error,
+                  "waiting up to" & Natural'Image (Wait_Seconds)
+                  & " second(s) for sibling i18n builds to finish");
+            elsif Waited_Seconds >= Wait_Seconds
+              or else Sibling_Build_Preflight_Failed
+            then
+               if Sibling_Build_Preflight_Failed then
+                  return False;
+               end if;
+
+               Sibling_Build_Preflight_Failed := True;
+               Put_Line
+                 (Standard_Error,
+                  "active sibling i18n build processes can rewrite ../i18n/lib while "
+                  & "local public API consumers are linking:");
+               Put_Line
+                 (Standard_Error,
+                  Ada.Strings.Fixed.Trim (Processes, Ada.Strings.Both));
+               Error
+                 (Errors,
+                  "local release builds require an idle sibling i18n workspace");
+               return False;
+            end if;
+         end;
+
+         declare
+            Remaining : constant Natural := Wait_Seconds - Waited_Seconds;
+            Sleep_For : constant Natural := Natural'Min (Poll_Seconds, Remaining);
+         begin
+            delay Duration (Sleep_For);
+            Waited_Seconds := Waited_Seconds + Sleep_For;
+         end;
+      end loop;
    end Local_Release_Builds_Are_Isolated;
 
    procedure Report_Failed_Command

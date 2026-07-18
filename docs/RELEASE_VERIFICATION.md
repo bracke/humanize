@@ -212,6 +212,19 @@ that workspace can rewrite `../i18n/lib` while Humanize public API consumers are
 linking, so the checker reports the active process list and exits early instead
 of racing a changing archive.
 
+For local validation during a long sibling `i18n` build, set
+`HUMANIZE_WAIT_FOR_I18N_BUILD_SECONDS` to a positive timeout before starting the
+release checker:
+
+```sh
+HUMANIZE_WAIT_FOR_I18N_BUILD_SECONDS=600 ./bin/check_humanize --release-fast
+```
+
+The checker still requires an idle sibling workspace before any Humanize release
+build or staged release build begins. The timeout only waits for active sibling
+Alire/GPR/GNAT processes to finish; if they are still running when the timeout
+expires, the checker reports the process list and fails.
+
 ## Dependency and boundary checks
 
 Humanize depends on `i18n` and must keep the dependency one-way:
