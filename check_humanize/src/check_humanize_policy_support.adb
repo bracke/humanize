@@ -146,7 +146,7 @@ package body Check_Humanize_Policy_Support is
          end if;
       end;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return (Status => Malformed_Natural, Value => 0);
    end Parse_Natural_After;
 
@@ -225,7 +225,7 @@ package body Check_Humanize_Policy_Support is
          end;
       end;
    exception
-      when others => --  parse failure normalization
+      when Constraint_Error =>
          return (Status => Malformed_String, Value => Null_Unbounded_String);
    end Parse_String_After;
 
