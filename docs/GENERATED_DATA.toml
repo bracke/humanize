@@ -21,8 +21,52 @@ source = "Humanize unit catalog templates"
 coverage = "generated unit catalog keys"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize unit catalog templates"
-line_count = 1586
-sha256 = "f7feca78bcf8d7851f2bbcdbfa7fa003a4e1b0cb1c5ec5adde02c9eab9115721"
+line_count = 107
+sha256 = "5a37f3ad3341cb577eb737b05dd2f9dc2b788417dbf6179890305aeb26c07e1a"
+
+[[artifact]]
+path = "src/humanize-catalogs-unit_data-added_unit_keys.adb"
+kind = "generated-catalog"
+owner = "humanize"
+source = "Humanize unit catalog templates"
+coverage = "added unit catalog keys"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from Humanize unit catalog templates"
+line_count = 709
+sha256 = "3e220df9af2a0418efa4b72a42901686e233f4952ca743b10b4a0c64b2f12221"
+
+[[artifact]]
+path = "src/humanize-catalogs-unit_data-added_unit_non_latin_tail.adb"
+kind = "generated-catalog"
+owner = "humanize"
+source = "Humanize unit catalog templates"
+coverage = "added non-Latin unit catalog tail"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from Humanize unit catalog templates"
+line_count = 153
+sha256 = "d824aad7089b9428cb81818201a5b8b3dda372d552f95dd5db37dab297bb9b1d"
+
+[[artifact]]
+path = "src/humanize-catalogs-unit_data-extra_unit_keys.adb"
+kind = "generated-catalog"
+owner = "humanize"
+source = "Humanize unit catalog templates"
+coverage = "extra unit catalog keys"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from Humanize unit catalog templates"
+line_count = 417
+sha256 = "6f7edc26ba99a9a1573816619e427d19b2eefefa2d9245486455db7f8937fe49"
+
+[[artifact]]
+path = "src/humanize-catalogs-unit_data-extra_unit_non_latin_tail.adb"
+kind = "generated-catalog"
+owner = "humanize"
+source = "Humanize unit catalog templates"
+coverage = "extra non-Latin unit catalog tail"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from Humanize unit catalog templates"
+line_count = 232
+sha256 = "dadd196f4bd55821d85f6086fdbc34d10b65be4bc218bf4711123a34471566a2"
 
 [[artifact]]
 path = "src/humanize-catalogs-native_data.adb"
@@ -98,8 +142,8 @@ source = "Humanize spellout tables"
 coverage = "locale spellout words"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize spellout tables"
-line_count = 1089
-sha256 = "34b2e6816cc1e8384be82e3d518f8763b846d89f6bade0e315311f945902e9d8"
+line_count = 357
+sha256 = "f28484ebb2c6a1312b5d258517f7774da18b6297198be794127fc7aaab1530bd"
 
 [[artifact]]
 path = "src/humanize-numbers-spellout_data-small_locale_word.adb"
@@ -133,6 +177,50 @@ currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize spellout tables"
 line_count = 826
 sha256 = "86eb40a24f191c095ef25d7f79683b731372565bc7730517719ad7eb8ea3dd3a"
+
+[[artifact]]
+path = "src/humanize-numbers-spellout_data-locale_word_99.adb"
+kind = "generated-spellout-shard"
+owner = "humanize"
+source = "Humanize spellout tables"
+coverage = "locale spellout words below one hundred"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from Humanize spellout tables"
+line_count = 112
+sha256 = "a77cd5d88b97e4ff1ef9550e4dae8dde3d5a19cb4016d06d6cde99b5e41e4dea"
+
+[[artifact]]
+path = "src/humanize-numbers-spellout_data-locale_hundred_word.adb"
+kind = "generated-spellout-shard"
+owner = "humanize"
+source = "Humanize spellout tables"
+coverage = "locale spellout hundred words"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from Humanize spellout tables"
+line_count = 213
+sha256 = "36cbfbbc959934308fff2f9786b48ec781982b49814ac301d3429ed7907f7f7b"
+
+[[artifact]]
+path = "src/humanize-numbers-spellout_data-locale_scale_word.adb"
+kind = "generated-spellout-shard"
+owner = "humanize"
+source = "Humanize spellout tables"
+coverage = "locale spellout scale words"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from Humanize spellout tables"
+line_count = 302
+sha256 = "f48ce4f5b0b83487c1dd0850cb115d0b733c04b748a11b252ad98fe11eb92c11"
+
+[[artifact]]
+path = "src/humanize-numbers-spellout_data-locale_long_word.adb"
+kind = "generated-spellout-shard"
+owner = "humanize"
+source = "Humanize spellout tables"
+coverage = "locale long-number spellout composition"
+currentness = "reviewed with release verification"
+marker = "Provenance: generated from Humanize spellout tables"
+line_count = 138
+sha256 = "8884f5710fd929ef849c157d1f68743abdb819db2b97713e65b58fadfc0c9b20"
 
 [[artifact]]
 path = "src/humanize-durations-schedule_data.adb"

@@ -443,108 +443,20 @@ package body Humanize.Strings.Support.Backend is
       end;
    end Excerpt_With_Options;
 
-   function Is_Unicode_Combining_Mark (Code : Natural) return Boolean is
-     ((Code in 16#0300# .. 16#036F#)
-      or else (Code in 16#1AB0# .. 16#1AFF#)
-      or else (Code in 16#1DC0# .. 16#1DFF#)
-      or else (Code in 16#20D0# .. 16#20FF#)
-      or else (Code in 16#FE20# .. 16#FE2F#));
+   function Is_Unicode_Combining_Mark (Code : Natural) return Boolean
+      is separate;
 
-   function Is_Unicode_Default_Ignorable (Code : Natural) return Boolean is
-     (Code = 16#00AD#
-      or else Code = 16#034F#
-      or else (Code in 16#061C# .. 16#061C#)
-      or else (Code in 16#115F# .. 16#1160#)
-      or else (Code in 16#17B4# .. 16#17B5#)
-      or else (Code in 16#180B# .. 16#180F#)
-      or else (Code in 16#200B# .. 16#200F#)
-      or else (Code in 16#202A# .. 16#202E#)
-      or else (Code in 16#2060# .. 16#206F#)
-      or else (Code in 16#3164# .. 16#3164#)
-      or else (Code in 16#FE00# .. 16#FE0F#)
-      or else (Code in 16#FEFF# .. 16#FEFF#)
-      or else (Code in 16#FFA0# .. 16#FFA0#)
-      or else (Code in 16#FFF0# .. 16#FFF8#)
-      or else (Code in 16#1BCA0# .. 16#1BCA3#)
-      or else (Code in 16#1D173# .. 16#1D17A#)
-      or else (Code in 16#E0000# .. 16#E0FFF#));
+   function Is_Unicode_Default_Ignorable (Code : Natural) return Boolean
+      is separate;
 
-   function Is_Unicode_Space (Code : Natural) return Boolean is
-     (Code = 16#0009# or else Code = 16#000A# or else Code = 16#000B#
-      or else Code = 16#000C# or else Code = 16#000D#
-      or else Code = 16#0020# or else Code = 16#0085#
-      or else Code = 16#00A0# or else Code = 16#1680#
-      or else (Code in 16#2000# .. 16#200A#)
-      or else Code = 16#2028# or else Code = 16#2029#
-      or else Code = 16#202F# or else Code = 16#205F#
-      or else Code = 16#3000#);
+   function Is_Unicode_Space (Code : Natural) return Boolean
+      is separate;
 
-   function Is_Unicode_Punctuation (Code : Natural) return Boolean is
-     ((Code in 16#0021# .. 16#002F#)
-      or else (Code in 16#003A# .. 16#0040#)
-      or else (Code in 16#005B# .. 16#0060#)
-      or else (Code in 16#007B# .. 16#007E#)
-      or else Code = 16#00A1# or else Code = 16#00A7#
-      or else Code = 16#00AB# or else Code = 16#00B6#
-      or else Code = 16#00B7# or else Code = 16#00BB#
-      or else Code = 16#00BF# or else Code = 16#037E#
-      or else Code = 16#0387# or else Code = 16#05BE#
-      or else Code = 16#05C0# or else Code = 16#05C3#
-      or else Code = 16#05C6# or else Code = 16#060C#
-      or else Code = 16#061B# or else Code = 16#061F#
-      or else Code = 16#06D4#
-      or else (Code in 16#2000# .. 16#206F#)
-      or else (Code in 16#3000# .. 16#303F#)
-      or else (Code in 16#FE10# .. 16#FE1F#)
-      or else (Code in 16#FE30# .. 16#FE6F#)
-      or else (Code in 16#FF01# .. 16#FF0F#)
-      or else (Code in 16#FF1A# .. 16#FF20#)
-      or else (Code in 16#FF3B# .. 16#FF40#)
-      or else (Code in 16#FF5B# .. 16#FF65#));
+   function Is_Unicode_Punctuation (Code : Natural) return Boolean
+      is separate;
 
-   function Is_Unicode_Word_Start (Code : Natural) return Boolean is
-     (not Is_Unicode_Space (Code)
-      and then not Is_Unicode_Punctuation (Code)
-      and then not Is_Unicode_Combining_Mark (Code)
-      and then
-     ((Code in Character'Pos ('0') .. Character'Pos ('9'))
-      or else (Code in Character'Pos ('A') .. Character'Pos ('Z'))
-      or else (Code in Character'Pos ('a') .. Character'Pos ('z'))
-      or else (Code in 16#00AA# .. 16#00AA#)
-      or else (Code in 16#00B2# .. 16#00B3#)
-      or else (Code in 16#00B5# .. 16#00B5#)
-      or else (Code in 16#00B9# .. 16#00BA#)
-      or else (Code in 16#00C0# .. 16#00D6#)
-      or else (Code in 16#00D8# .. 16#00F6#)
-      or else (Code in 16#00F8# .. 16#02AF#)
-      or else (Code in 16#0370# .. 16#03FF#)
-      or else (Code in 16#0400# .. 16#052F#)
-      or else (Code in 16#0530# .. 16#058F#)
-      or else (Code in 16#0590# .. 16#05FF#)
-      or else (Code in 16#0600# .. 16#06FF#)
-      or else (Code in 16#0750# .. 16#077F#)
-      or else (Code in 16#08A0# .. 16#08FF#)
-      or else (Code in 16#0900# .. 16#0DFF#)
-      or else (Code in 16#0E00# .. 16#0E7F#)
-      or else (Code in 16#0F00# .. 16#0FFF#)
-      or else (Code in 16#1000# .. 16#109F#)
-      or else (Code in 16#10A0# .. 16#10FF#)
-      or else (Code in 16#1100# .. 16#11FF#)
-      or else (Code in 16#1200# .. 16#137F#)
-      or else (Code in 16#13A0# .. 16#13FF#)
-      or else (Code in 16#1780# .. 16#17FF#)
-      or else (Code in 16#1800# .. 16#18AF#)
-      or else (Code in 16#1E00# .. 16#1EFF#)
-      or else (Code in 16#1F00# .. 16#1FFF#)
-      or else (Code in 16#3040# .. 16#30FF#)
-      or else (Code in 16#3400# .. 16#4DBF#)
-      or else (Code in 16#4E00# .. 16#9FFF#)
-      or else (Code in 16#AC00# .. 16#D7AF#)
-      or else (Code in 16#F900# .. 16#FAFF#)
-      or else (Code in 16#FF10# .. 16#FF19#)
-      or else (Code in 16#FF21# .. 16#FF3A#)
-      or else (Code in 16#FF41# .. 16#FF5A#)
-      or else (Code in 16#20000# .. 16#2FA1F#)));
+   function Is_Unicode_Word_Start (Code : Natural) return Boolean
+      is separate;
 
    function Is_Unicode_Word_Continuation (Code : Natural) return Boolean is
      (Is_Unicode_Word_Start (Code) or else Is_Unicode_Combining_Mark (Code));
@@ -568,29 +480,8 @@ package body Humanize.Strings.Support.Backend is
    function Is_Paragraph_Break (Code : Natural) return Boolean is
      (Code = 16#2029#);
 
-   function Is_Wide_Code_Point (Code : Natural) return Boolean is
-     ((Code in 16#1100# .. 16#115F#)
-      or else (Code in 16#2329# .. 16#232A#)
-      or else (Code in 16#2E80# .. 16#A4CF#)
-      or else (Code in 16#AC00# .. 16#D7A3#)
-      or else (Code in 16#F900# .. 16#FAFF#)
-      or else (Code in 16#FE10# .. 16#FE19#)
-      or else (Code in 16#FE30# .. 16#FE6F#)
-      or else (Code in 16#FF00# .. 16#FF60#)
-      or else (Code in 16#FFE0# .. 16#FFE6#)
-      or else (Code in 16#16FE0# .. 16#16FE4#)
-      or else (Code in 16#17000# .. 16#187F7#)
-      or else (Code in 16#18800# .. 16#18CD5#)
-      or else (Code in 16#18D00# .. 16#18D08#)
-      or else (Code in 16#1AFF0# .. 16#1AFFF#)
-      or else (Code in 16#1B000# .. 16#1B122#)
-      or else (Code in 16#1B132# .. 16#1B132#)
-      or else (Code in 16#1B150# .. 16#1B152#)
-      or else (Code in 16#1B155# .. 16#1B155#)
-      or else (Code in 16#1B164# .. 16#1B167#)
-      or else (Code in 16#1F200# .. 16#1F2FF#)
-      or else (Code in 16#1F300# .. 16#1FAFF#)
-      or else (Code in 16#20000# .. 16#3FFFD#));
+   function Is_Wide_Code_Point (Code : Natural) return Boolean
+      is separate;
 
    function Unicode_Display_Cell_Width (Code : Natural) return Natural is
    begin

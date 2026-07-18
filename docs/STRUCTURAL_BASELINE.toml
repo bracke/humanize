@@ -8,22 +8,22 @@
 
 [[body]]
 path = "src/humanize-colors-support-backend.adb"
-target_lines = 2701
-max_lines = 2900
+target_lines = 2586
+max_lines = 2760
 min_headroom_lines = 150
 max_bytes = 95000
 split_prefix = "src/humanize-colors-support-backend-"
-min_split_bodies = 18
+min_split_bodies = 27
 usecase = "CSS parsing, palette, accessibility, color-space conversion, and bounded color rendering backend."
 
 [[body]]
 path = "src/humanize-strings-support-backend.adb"
-target_lines = 2764
-max_lines = 2950
+target_lines = 2655
+max_lines = 2830
 min_headroom_lines = 150
 max_bytes = 93000
 split_prefix = "src/humanize-strings-support-backend-"
-min_split_bodies = 22
+min_split_bodies = 28
 usecase = "Text display, editing, names, paths, prose, metadata, and terminal rendering backend."
 
 [[body]]
@@ -68,12 +68,12 @@ usecase = "Reviewed native catalog data; broad locale-family and Latin subfamily
 
 [[body]]
 path = "src/humanize-phrases-support-backend.adb"
-target_lines = 2451
-max_lines = 2650
+target_lines = 2231
+max_lines = 2400
 min_headroom_lines = 150
 max_bytes = 85000
 split_prefix = "src/humanize-phrases-support-backend-"
-min_split_bodies = 24
+min_split_bodies = 33
 usecase = "Phrase support backend dispatcher and shared helpers; new phrase families should prefer focused subunits."
 
 [[body]]
@@ -238,13 +238,13 @@ usecase = "Unit alias tables and normalization helpers; new alias families shoul
 
 [[body]]
 path = "src/humanize-catalogs-unit_data.adb"
-target_lines = 1586
-max_lines = 1750
-min_headroom_lines = 120
-max_bytes = 110000
-split_prefix = ""
-min_split_bodies = 0
-usecase = "Generated unit catalog data; tracked both as generated provenance and structural size to limit review churn."
+target_lines = 107
+max_lines = 260
+min_headroom_lines = 80
+max_bytes = 12000
+split_prefix = "src/humanize-catalogs-unit_data-"
+min_split_bodies = 4
+usecase = "Generated unit catalog data composer; generated unit catalog families should remain in focused data shards."
 
 [[body]]
 path = "src/humanize-parsing-implementation.adb"
@@ -425,3 +425,103 @@ max_bytes = 46000
 split_prefix = ""
 min_split_bodies = 0
 usecase = "Root number facade implementation; new numeric families should prefer scales, ranges, spellout, statistics, or editorial children."
+
+[[body]]
+path = "src/humanize-datetimes.ads"
+target_lines = 873
+max_lines = 980
+min_headroom_lines = 80
+max_bytes = 42000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Root datetime facade specification; new calendar and natural-time surface should prefer focused support or child packages before this API grows."
+
+[[body]]
+path = "src/humanize-changes.adb"
+target_lines = 846
+max_lines = 950
+min_headroom_lines = 80
+max_bytes = 34000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Change-set label facade body; new change families should move behind focused helpers before this body grows."
+
+[[body]]
+path = "src/humanize-parsing-implementation-date_time_text_helpers.adb"
+target_lines = 843
+max_lines = 950
+min_headroom_lines = 80
+max_bytes = 38000
+split_prefix = "src/humanize-parsing-implementation-date_time_text_helpers-"
+min_split_bodies = 16
+usecase = "Date/time parser text-helper dispatcher and shared logic; new date/time parser families should move to focused separate bodies."
+
+[[body]]
+path = "check_humanize/src/check_humanize_public_api_generated.adb"
+target_lines = 834
+max_lines = 940
+min_headroom_lines = 80
+max_bytes = 40000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Generated-maintained public API coverage and scorecard emitter; future generated-checker growth should move to focused helper units."
+
+[[body]]
+path = "src/humanize-endpoints.adb"
+target_lines = 822
+max_lines = 930
+min_headroom_lines = 80
+max_bytes = 32000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Endpoint, URL, and host label facade body; new endpoint families should prefer focused support helpers."
+
+[[body]]
+path = "src/humanize-system_status.ads"
+target_lines = 818
+max_lines = 930
+min_headroom_lines = 80
+max_bytes = 38000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "System status facade specification; new status-code families should prefer support packages before expanding the public root surface."
+
+[[body]]
+path = "src/humanize-diagnostics.adb"
+target_lines = 815
+max_lines = 920
+min_headroom_lines = 80
+max_bytes = 34000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Diagnostics label facade body; new diagnostic families should move behind focused helpers or support packages before this body grows."
+
+[[body]]
+path = "src/humanize-parsing-implementation-date_text_helpers.adb"
+target_lines = 809
+max_lines = 920
+min_headroom_lines = 80
+max_bytes = 36000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Date parser text-helper dispatcher and shared logic; new date parser families should move to focused separate bodies."
+
+[[body]]
+path = "src/humanize-parsing-implementation-compound_unit_text_helpers.adb"
+target_lines = 805
+max_lines = 910
+min_headroom_lines = 80
+max_bytes = 30000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Compound-unit parser helpers; new compound-unit parsing families should move to focused helper units before this shard grows."
+
+[[body]]
+path = "src/humanize-notifications.adb"
+target_lines = 805
+max_lines = 910
+min_headroom_lines = 80
+max_bytes = 32000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Notification and delivery label facade body; new notification families should prefer focused support helpers."

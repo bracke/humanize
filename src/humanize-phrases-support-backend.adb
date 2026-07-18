@@ -923,34 +923,8 @@ package body Humanize.Phrases.Support.Backend is
       return String
       is separate;
 
-   function File_Text (Locale : String; Status : File_Status) return String is
-   begin
-      if Has_Generated_Phrase_Pack (Locale) then
-         return Generated_Phrase (Locale, File_Status'Image (Status));
-      elsif Locale = "de" then
-         case Status is
-            when Uploading => return "wird hochgeladen";
-            when Downloading => return "wird heruntergeladen";
-            when Copying => return "wird kopiert";
-            when Moving => return "wird verschoben";
-            when Deleting => return "wird geloscht";
-            when Deleted => return "geloscht";
-            when Restoring => return "wird wiederhergestellt";
-            when Synced => return "synchronisiert";
-         end case;
-      else
-         case Status is
-            when Uploading => return "uploading";
-            when Downloading => return "downloading";
-            when Copying => return "copying";
-            when Moving => return "moving";
-            when Deleting => return "deleting";
-            when Deleted => return "deleted";
-            when Restoring => return "restoring";
-            when Synced => return "synced";
-         end case;
-      end if;
-   end File_Text;
+   function File_Text (Locale : String; Status : File_Status) return String
+      is separate;
 
    function Validation_Text
      (Locale : String;
@@ -958,28 +932,8 @@ package body Humanize.Phrases.Support.Backend is
       return String
       is separate;
 
-   function Empty_Text (Locale : String; State : Empty_State) return String is
-   begin
-      if Has_Generated_Phrase_Pack (Locale) then
-         return Generated_Phrase (Locale, Empty_State'Image (State));
-      elsif Locale = "de" then
-         case State is
-            when No_Items => return "keine Elemente";
-            when No_Results => return "keine Ergebnisse";
-            when No_Messages => return "keine Nachrichten";
-            when No_Selection => return "keine Auswahl";
-            when Nothing_To_Show => return "nichts anzuzeigen";
-         end case;
-      else
-         case State is
-            when No_Items => return "no items";
-            when No_Results => return "no results";
-            when No_Messages => return "no messages";
-            when No_Selection => return "no selection";
-            when Nothing_To_Show => return "nothing to show";
-         end case;
-      end if;
-   end Empty_Text;
+   function Empty_Text (Locale : String; State : Empty_State) return String
+      is separate;
 
    function Network_Text
      (Locale : String;
@@ -987,28 +941,8 @@ package body Humanize.Phrases.Support.Backend is
       return String
       is separate;
 
-   function Auth_Text (Locale : String; Status : Auth_Status) return String is
-   begin
-      if Has_Generated_Phrase_Pack (Locale) then
-         return Generated_Phrase (Locale, Auth_Status'Image (Status));
-      elsif Locale = "de" then
-         case Status is
-            when Signed_In => return "angemeldet";
-            when Signed_Out => return "abgemeldet";
-            when Session_Expired => return "Sitzung abgelaufen";
-            when Locked => return "gesperrt";
-            when Two_Factor_Required => return "Zwei-Faktor erforderlich";
-         end case;
-      else
-         case Status is
-            when Signed_In => return "signed in";
-            when Signed_Out => return "signed out";
-            when Session_Expired => return "session expired";
-            when Locked => return "locked";
-            when Two_Factor_Required => return "two-factor required";
-         end case;
-      end if;
-   end Auth_Text;
+   function Auth_Text (Locale : String; Status : Auth_Status) return String
+      is separate;
 
    function Billing_Text
      (Locale : String;
@@ -1022,30 +956,8 @@ package body Humanize.Phrases.Support.Backend is
       return String
       is separate;
 
-   function Queue_Text (Locale : String; Status : Queue_Status) return String is
-   begin
-      if Has_Generated_Phrase_Pack (Locale) then
-         return Generated_Phrase (Locale, Queue_Status'Image (Status));
-      elsif Locale = "de" then
-         case Status is
-            when Queued => return "in Warteschlange";
-            when Running => return "laufend";
-            when Waiting => return "wartend";
-            when Blocked => return "blockiert";
-            when Canceled_Job => return "Auftrag abgebrochen";
-            when Completed_Job => return "Auftrag abgeschlossen";
-         end case;
-      else
-         case Status is
-            when Queued => return "queued";
-            when Running => return "running";
-            when Waiting => return "waiting";
-            when Blocked => return "blocked";
-            when Canceled_Job => return "job canceled";
-            when Completed_Job => return "job completed";
-         end case;
-      end if;
-   end Queue_Text;
+   function Queue_Text (Locale : String; Status : Queue_Status) return String
+      is separate;
 
    function Security_Text
      (Locale : String;
@@ -1077,55 +989,11 @@ package body Humanize.Phrases.Support.Backend is
       return String
       is separate;
 
-   function Access_Text (Locale : String; Status : Access_Status) return String is
-   begin
-      if Has_Generated_Phrase_Pack (Locale) then
-         return Generated_Phrase (Locale, Access_Status'Image (Status));
-      elsif Locale = "de" then
-         case Status is
-            when Allowed => return "erlaubt";
-            when Denied => return "verweigert";
-            when Owner => return "Besitzer";
-            when Admin => return "Administrator";
-            when Viewer => return "Betrachter";
-            when Editor => return "Bearbeiter";
-         end case;
-      else
-         case Status is
-            when Allowed => return "allowed";
-            when Denied => return "denied";
-            when Owner => return "owner";
-            when Admin => return "admin";
-            when Viewer => return "viewer";
-            when Editor => return "editor";
-         end case;
-      end if;
-   end Access_Text;
+   function Access_Text (Locale : String; Status : Access_Status) return String
+      is separate;
 
-   function Sync_Text (Locale : String; Status : Sync_Status) return String is
-   begin
-      if Has_Generated_Phrase_Pack (Locale) then
-         return Generated_Phrase (Locale, Sync_Status'Image (Status));
-      elsif Locale = "de" then
-         case Status is
-            when Sync_Idle => return "Synchronisierung bereit";
-            when Syncing_Now => return "Synchronisierung lauft";
-            when Sync_Queued => return "Synchronisierung geplant";
-            when Sync_Conflict => return "Synchronisierungskonflikt";
-            when Sync_Complete => return "Synchronisierung abgeschlossen";
-            when Sync_Error => return "Synchronisierungsfehler";
-         end case;
-      else
-         case Status is
-            when Sync_Idle => return "sync idle";
-            when Syncing_Now => return "syncing now";
-            when Sync_Queued => return "sync queued";
-            when Sync_Conflict => return "sync conflict";
-            when Sync_Complete => return "sync complete";
-            when Sync_Error => return "sync error";
-         end case;
-      end if;
-   end Sync_Text;
+   function Sync_Text (Locale : String; Status : Sync_Status) return String
+      is separate;
 
    function Transfer_Text
      (Locale : String;
@@ -1133,30 +1001,8 @@ package body Humanize.Phrases.Support.Backend is
       return String
       is separate;
 
-   function Search_Text (Locale : String; Status : Search_Status) return String is
-   begin
-      if Has_Generated_Phrase_Pack (Locale) then
-         return Generated_Phrase (Locale, Search_Status'Image (Status));
-      elsif Locale = "de" then
-         case Status is
-            when Filtering => return "Filterung lauft";
-            when Filtered => return "gefiltert";
-            when No_Matches => return "keine Treffer";
-            when Search_Ready => return "Suche bereit";
-            when Search_Failed => return "Suche fehlgeschlagen";
-            when Query_Too_Short => return "Suchanfrage zu kurz";
-         end case;
-      else
-         case Status is
-            when Filtering => return "filtering";
-            when Filtered => return "filtered";
-            when No_Matches => return "no matches";
-            when Search_Ready => return "search ready";
-            when Search_Failed => return "search failed";
-            when Query_Too_Short => return "query too short";
-         end case;
-      end if;
-   end Search_Text;
+   function Search_Text (Locale : String; Status : Search_Status) return String
+      is separate;
 
    function Collaboration_Text
      (Locale : String;
@@ -1164,80 +1010,14 @@ package body Humanize.Phrases.Support.Backend is
       return String
       is separate;
 
-   function Issue_Text (Locale : String; Status : Issue_Status) return String is
-   begin
-      if Has_Generated_Phrase_Pack (Locale) then
-         return Generated_Phrase (Locale, Issue_Status'Image (Status));
-      elsif Locale = "de" then
-         case Status is
-            when Open => return "offen";
-            when Closed => return "geschlossen";
-            when Reopened => return "wieder geoffnet";
-            when Assigned => return "zugewiesen";
-            when Unassigned => return "nicht zugewiesen";
-            when Merged => return "zusammengefuhrt";
-         end case;
-      else
-         case Status is
-            when Open => return "open";
-            when Closed => return "closed";
-            when Reopened => return "reopened";
-            when Assigned => return "assigned";
-            when Unassigned => return "unassigned";
-            when Merged => return "merged";
-         end case;
-      end if;
-   end Issue_Text;
+   function Issue_Text (Locale : String; Status : Issue_Status) return String
+      is separate;
 
-   function Task_Text (Locale : String; Status : Task_Status) return String is
-   begin
-      if Has_Generated_Phrase_Pack (Locale) then
-         return Generated_Phrase (Locale, Task_Status'Image (Status));
-      elsif Locale = "de" then
-         case Status is
-            when Todo => return "zu erledigen";
-            when In_Progress => return "in Arbeit";
-            when Done => return "erledigt";
-            when Skipped => return "ubersprungen";
-            when Blocked_Task => return "blockiert";
-            when Waiting_On => return "wartet auf";
-         end case;
-      else
-         case Status is
-            when Todo => return "to do";
-            when In_Progress => return "in progress";
-            when Done => return "done";
-            when Skipped => return "skipped";
-            when Blocked_Task => return "blocked";
-            when Waiting_On => return "waiting on";
-         end case;
-      end if;
-   end Task_Text;
+   function Task_Text (Locale : String; Status : Task_Status) return String
+      is separate;
 
-   function CI_Text (Locale : String; Status : CI_Status) return String is
-   begin
-      if Has_Generated_Phrase_Pack (Locale) then
-         return Generated_Phrase (Locale, CI_Status'Image (Status));
-      elsif Locale = "de" then
-         case Status is
-            when Pipeline_Pending => return "Pipeline ausstehend";
-            when Pipeline_Running => return "Pipeline lauft";
-            when Pipeline_Passed => return "Pipeline bestanden";
-            when Pipeline_Failed => return "Pipeline fehlgeschlagen";
-            when Review_Required => return "Review erforderlich";
-            when Deploy_Blocked => return "Deployment blockiert";
-         end case;
-      else
-         case Status is
-            when Pipeline_Pending => return "pipeline pending";
-            when Pipeline_Running => return "pipeline running";
-            when Pipeline_Passed => return "pipeline passed";
-            when Pipeline_Failed => return "pipeline failed";
-            when Review_Required => return "review required";
-            when Deploy_Blocked => return "deploy blocked";
-         end case;
-      end if;
-   end CI_Text;
+   function CI_Text (Locale : String; Status : CI_Status) return String
+      is separate;
 
    function Ticket_Text
      (Locale : String;

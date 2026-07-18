@@ -5,7 +5,7 @@
 
 [[category]]
 category = "family-child-facade"
-max_count = 5
+max_count = 0
 usecase = "Child facades whose covered root or backend path provides representative performance evidence; string child facades should have direct smoke paths."
 
 [[category]]
@@ -35,5 +35,5 @@ usecase = "Support facades whose concrete backends carry representative performa
 
 [[category]]
 category = "trivial-label-facade"
-max_count = 30
+max_count = 25
 usecase = "Small deterministic label facades covered by broader domain smoke paths."

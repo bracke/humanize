@@ -86,6 +86,10 @@ SHA-256 snapshot.
 Reviewed native catalog fragments use the same strategy: the parent native-data
 body keeps shared catalog helpers and composes locale-family shards that are
 tracked as separate generated-data artifacts.
+Generated unit catalog fragments follow that pattern as well: the parent unit
+data body keeps shared line builders and composes added/extra key shards plus
+non-Latin tails, with each shard tracked separately in the generated-data
+manifest.
 When the reviewed generated data changes intentionally, maintainers can run
 `./check_humanize/bin/check_humanize --print-generated-data-manifest` to print a
 refreshed manifest with current line-count and SHA-256 snapshots, then review

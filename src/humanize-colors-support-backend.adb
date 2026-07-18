@@ -507,43 +507,7 @@ package body Humanize.Colors.Support.Backend is
      (Text  : String;
       Value : out Long_Float)
       return Boolean
-   is
-      Item : constant String := Trim (Text);
-      Raw  : Long_Float;
-   begin
-      if Item'Length = 0 then
-         Value := 1.0;
-         return False;
-      elsif Item = "none" then
-         Value := 1.0;
-         return True;
-      elsif Starts_With (Item, "calc(") then
-         if not Parse_Calc (Item, 1.0, Raw) or else Raw < 0.0 or else Raw > 1.0 then
-            Value := 1.0;
-            return False;
-         end if;
-         Value := Raw;
-         return True;
-      elsif Ends_With (Item, "%") then
-         if not Parse_Float (Item (Item'First .. Item'Last - 1), Raw) then
-            Value := 1.0;
-            return False;
-         end if;
-         if Raw < 0.0 or else Raw > 100.0 then
-            Value := 1.0;
-            return False;
-         end if;
-         Value := Raw / 100.0;
-         return True;
-      else
-         if not Parse_Float (Item, Raw) or else Raw < 0.0 or else Raw > 1.0 then
-            Value := 1.0;
-            return False;
-         end if;
-         Value := Raw;
-         return True;
-      end if;
-   end Parse_Alpha;
+      is separate;
 
    function Parse_Hue
      (Text  : String;
@@ -556,56 +520,14 @@ package body Humanize.Colors.Support.Backend is
       Percent_Base : Long_Float;
       Value        : out Long_Float)
       return Boolean
-   is
-      Item : constant String := Trim (Text);
-      Raw  : Long_Float;
-   begin
-      if Item = "none" then
-         Value := 0.0;
-         return True;
-      elsif Starts_With (Item, "calc(") then
-         return Parse_Calc (Item, Percent_Base, Value);
-      end if;
-      if Ends_With (Item, "%") then
-         if not Parse_Float (Item (Item'First .. Item'Last - 1), Raw) then
-            Value := 0.0;
-            return False;
-         end if;
-         Value := Raw * Percent_Base / 100.0;
-         return True;
-      elsif Parse_Float (Item, Raw) then
-         Value := Raw;
-         return True;
-      else
-         Value := 0.0;
-         return False;
-      end if;
-   end Parse_Percent_Or_Number;
+      is separate;
 
    function Hue_To_RGB
      (P : Long_Float;
       Q : Long_Float;
       T : Long_Float)
       return Long_Float
-   is
-      Hue : Long_Float := T;
-   begin
-      if Hue < 0.0 then
-         Hue := Hue + 1.0;
-      elsif Hue > 1.0 then
-         Hue := Hue - 1.0;
-      end if;
-
-      if Hue < 1.0 / 6.0 then
-         return P + (Q - P) * 6.0 * Hue;
-      elsif Hue < 1.0 / 2.0 then
-         return Q;
-      elsif Hue < 2.0 / 3.0 then
-         return P + (Q - P) * (2.0 / 3.0 - Hue) * 6.0;
-      else
-         return P;
-      end if;
-   end Hue_To_RGB;
+      is separate;
 
    function HSL_To_RGB
      (Hue        : Long_Float;
@@ -1096,44 +1018,7 @@ package body Humanize.Colors.Support.Backend is
    function Palette_Roles
      (Colors : Color_List)
       return Humanize.Status.Text_Result
-   is
-      Background_Index : Positive := Colors'First;
-      Text_Index       : Positive := Colors'First;
-      Accent_Index     : Positive := Colors'First;
-      Best_Light       : Long_Float := -1.0;
-      Best_Dark        : Long_Float := 2.0;
-      Best_Accent      : Long_Float := -1.0;
-      Bright           : Long_Float;
-      Sat              : Long_Float;
-      Accent_Score     : Long_Float;
-   begin
-      if Colors'Length = 0 then
-         return Invalid_Text;
-      end if;
-
-      for Index in Colors'Range loop
-         Bright := Brightness (Colors (Index));
-         Sat := HSL (Colors (Index)).Saturation;
-         Accent_Score := Sat * 0.70 + abs (Bright - 0.50) * 0.30;
-         if Bright > Best_Light then
-            Best_Light := Bright;
-            Background_Index := Index;
-         end if;
-         if Bright < Best_Dark then
-            Best_Dark := Bright;
-            Text_Index := Index;
-         end if;
-         if Accent_Score > Best_Accent then
-            Best_Accent := Accent_Score;
-            Accent_Index := Index;
-         end if;
-      end loop;
-
-      return Ok_Text
-        ("background " & Hex_Text (Colors (Background_Index))
-         & ", text " & Hex_Text (Colors (Text_Index))
-         & ", accent " & Hex_Text (Colors (Accent_Index)));
-   end Palette_Roles;
+      is separate;
 
    function Palette_Harmony_Label
      (Colors : Color_List)

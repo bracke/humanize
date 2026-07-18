@@ -202,11 +202,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Durations.Natural.Natural_Duration"
+score = 5
 
 [[unit]]
 name = "Humanize.Durations.Schedules"
@@ -218,11 +217,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Durations.Schedules.Weekly_Schedule"
+score = 5
 
 [[unit]]
 name = "Humanize.Bytes"
@@ -294,11 +292,10 @@ examples = 1
 example_file = "examples/public_surface_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Colors.Models.Brightness_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Colors.Names"
@@ -310,11 +307,10 @@ examples = 1
 example_file = "examples/color_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Colors.Names.Color_Description"
+score = 5
 
 [[unit]]
 name = "Humanize.Colors.Palettes"
@@ -326,11 +322,10 @@ examples = 1
 example_file = "examples/color_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "family-child-facade"
-perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Colors.Palettes.Palette_Summary"
+score = 5
 
 [[unit]]
 name = "Humanize.Numbers"
@@ -462,11 +457,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Frequencies.Times"
+score = 5
 
 [[unit]]
 name = "Humanize.Rates"
@@ -478,11 +472,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Rates.Pace"
+score = 5
 
 [[unit]]
 name = "Humanize.Strings"
@@ -720,11 +713,10 @@ examples = 1
 example_file = "examples/humanize_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Values.Boolean_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Parsing"
@@ -977,11 +969,10 @@ examples = 1
 example_file = "examples/product_details_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Endpoints.Endpoint_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Resources"
@@ -993,11 +984,10 @@ examples = 1
 example_file = "examples/product_details_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Resources.Quota_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Versions"
@@ -1009,11 +999,10 @@ examples = 1
 example_file = "examples/product_details_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Versions.Version_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Geo"
@@ -1025,11 +1014,10 @@ examples = 1
 example_file = "examples/product_details_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Geo.Coordinate_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Markup"
@@ -1041,11 +1029,10 @@ examples = 1
 example_file = "examples/security_data_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Markup.Accessibility_Summary_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Secrets"
@@ -1057,11 +1044,10 @@ examples = 1
 example_file = "examples/security_data_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Secrets.Secret_Count_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Schema"
@@ -1073,11 +1059,10 @@ examples = 1
 example_file = "examples/security_data_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Schema.Field_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Diagnostics"
@@ -1104,11 +1089,10 @@ examples = 1
 example_file = "examples/system_status_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Thresholds.Metric_Value_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Workflows"
@@ -1120,11 +1104,10 @@ examples = 1
 example_file = "examples/workflow_ops_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Workflows.Step_Status_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Changes"
@@ -1136,11 +1119,10 @@ examples = 1
 example_file = "examples/workflow_ops_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Changes.Change_Set_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Tables"
@@ -1152,11 +1134,10 @@ examples = 1
 example_file = "examples/ui_labels_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Tables.Table_Size_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Forms"
@@ -1168,11 +1149,10 @@ examples = 1
 example_file = "examples/ui_labels_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Forms.Field_State_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Navigation"
@@ -1184,11 +1164,10 @@ examples = 1
 example_file = "examples/ui_labels_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Navigation.Navigation_Item_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Badges"
@@ -1200,11 +1179,10 @@ examples = 1
 example_file = "examples/ui_labels_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Badges.Status_Badge_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Notifications"
@@ -1216,11 +1194,10 @@ examples = 1
 example_file = "examples/ui_labels_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Notifications.Notification_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Search"
@@ -1247,11 +1224,10 @@ examples = 1
 example_file = "examples/ui_labels_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Comments.Comment_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Tasks"
@@ -1263,11 +1239,10 @@ examples = 1
 example_file = "examples/ui_labels_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Tasks.Task_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Attachments"
@@ -1279,11 +1254,10 @@ examples = 1
 example_file = "examples/security_data_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Attachments.Attachment_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Events"
@@ -1295,11 +1269,10 @@ examples = 1
 example_file = "examples/product_details_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Events.Event_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Payments"
@@ -1311,11 +1284,10 @@ examples = 1
 example_file = "examples/product_details_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Payments.Payment_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.System_Status"
@@ -1357,11 +1329,10 @@ examples = 1
 example_file = "examples/workflow_ops_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Comparisons.Multi_Value_Summary"
+score = 5
 
 [[unit]]
 name = "Humanize.Cross_Domain"
@@ -1388,11 +1359,10 @@ examples = 1
 example_file = "examples/product_details_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Moderation.Review_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Accounts"
@@ -1404,11 +1374,10 @@ examples = 1
 example_file = "examples/product_details_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Accounts.Account_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Deployments"
@@ -1420,11 +1389,10 @@ examples = 1
 example_file = "examples/workflow_ops_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Deployments.Deployment_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Data_Quality"
@@ -1436,11 +1404,10 @@ examples = 1
 example_file = "examples/security_data_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Data_Quality.Import_Result_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Media"
@@ -1452,11 +1419,10 @@ examples = 1
 example_file = "examples/security_data_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Media.Media_Summary"
+score = 5
 
 [[unit]]
 name = "Humanize.Notification_Preferences"
@@ -1468,11 +1434,10 @@ examples = 1
 example_file = "examples/product_details_demo.adb"
 consumers = 1
 consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
-perf = 0
-perf_applicable = 0
-perf_exempt_category = "trivial-label-facade"
-perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
-score = 4
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Notification_Preferences.Channel_Preference_Label"
+score = 5
 
 [[unit]]
 name = "Humanize.Permissions"

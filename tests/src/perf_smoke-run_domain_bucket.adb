@@ -5,7 +5,9 @@ with Humanize.Capabilities;
 with Humanize.Cross_Domain;
 with Humanize.Diagnostics;
 with Humanize.Domain_Details;
+with Humanize.Geo;
 with Humanize.Lists;
+with Humanize.Markup;
 with Humanize.Operations;
 with Humanize.Permissions;
 with Humanize.Phrases;
@@ -17,6 +19,7 @@ with Humanize.Phrases.Statuses;
 with Humanize.Phrases.Summaries;
 with Humanize.Search;
 with Humanize.System_Status;
+with Humanize.Values;
 
 separate (Perf_Smoke)
    procedure Run_Domain_Bucket
@@ -24,6 +27,8 @@ separate (Perf_Smoke)
       Started : out Ada.Calendar.Time;
       Stopped : out Ada.Calendar.Time)
    is
+      procedure Check_Domain_Data_Facades is separate;
+      procedure Check_Domain_UI_Facades is separate;
    begin
       Started := Ada.Calendar.Clock;
       for I in 1 .. Iterations loop
@@ -82,6 +87,14 @@ separate (Perf_Smoke)
             Permission : constant Humanize.Status.Text_Result :=
               Humanize.Permissions.Permission_Label
                 ("release-bot", "deploy", Humanize.Permissions.Granted);
+            Value_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Values.Boolean_Label
+                (True, Humanize.Values.Enabled_Disabled);
+            Geo_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Geo.Coordinate_Label (55.6761, 12.5683, Decimals => 2);
+            Markup_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Markup.Accessibility_Summary_Label
+                (Issues => 2, Target => "checkout form");
             Parsed_Metadata :
               constant Humanize.Domain_Details.Domain_Label_Parse_Result :=
                 Humanize.Domain_Details.Parse_Metadata_Summary_Label
@@ -104,6 +117,11 @@ separate (Perf_Smoke)
             Check_Status (Cross_Domain.Status, "cross-domain metadata profile");
             Check_Status (Build.Status, "build label");
             Check_Status (Permission.Status, "permission label");
+            Check_Status (Value_Text.Status, "boolean value label");
+            Check_Status (Geo_Text.Status, "geo coordinate label");
+            Check_Status (Markup_Text.Status, "markup accessibility label");
+            Check_Domain_Data_Facades;
+            Check_Domain_UI_Facades;
             Check_Status (Parsed_Metadata.Status, "metadata summary parse");
             Total := Total + I mod 7;
          end;

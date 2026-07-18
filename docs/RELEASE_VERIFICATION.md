@@ -224,9 +224,15 @@ that workspace can rewrite `../i18n/lib` while Humanize public API consumers are
 linking, so the checker reports the active process list and exits early instead
 of racing a changing archive.
 
-Release builds also use a workspace-level lock directory,
-`/tmp/humanize-i18n-build.lock`, while Humanize is linking against the sibling
-`i18n` checkout. Other local release/build tooling can use the same lock
+Release builds also use a workspace-specific lock directory,
+`/tmp/humanize-i18n-build-<i18n-workspace>-<hash>.lock`, while Humanize is
+linking against the sibling `i18n` checkout. The suffix is derived from the
+canonical `i18n` checkout path, using a bounded readable tail plus a deterministic
+hash, so separate `i18n` workspaces do not block each other while multiple
+Humanize workspaces sharing one `i18n` checkout still serialize correctly. The
+lock's `owner` file records the release checker PID, start time, Humanize
+workspace, `i18n` workspace, lock path, and command line; stale-lock errors
+report those details. Other local release/build tooling can use the same lock
 protocol through `Project_Tools.Release_Checks` to wait before touching shared
 `lib` outputs.
 

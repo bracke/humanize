@@ -3,15 +3,22 @@ with Ada.Calendar;
 with Humanize.Bytes;
 with Humanize.Colors;
 with Humanize.Colors.Contrast;
+with Humanize.Colors.Models;
+with Humanize.Colors.Names;
+with Humanize.Colors.Palettes;
 with Humanize.Datetimes;
 with Humanize.Durations;
 with Humanize.Durations.Formatting;
+with Humanize.Durations.Natural;
+with Humanize.Durations.Schedules;
+with Humanize.Frequencies;
 with Humanize.Numbers;
 with Humanize.Numbers.Editorial;
 with Humanize.Numbers.Ranges;
 with Humanize.Numbers.Scales;
 with Humanize.Numbers.Spellout;
 with Humanize.Numbers.Statistics;
+with Humanize.Rates;
 with Humanize.Units;
 
 separate (Perf_Smoke)
@@ -33,6 +40,16 @@ separate (Perf_Smoke)
                 (Context, 5_430, Max_Components => 3);
             Duration_Clock : constant Humanize.Status.Text_Result :=
               Humanize.Durations.Formatting.Format_Clock (Context, 5_430);
+            Natural_Duration : constant Humanize.Status.Text_Result :=
+              Humanize.Durations.Natural.Natural_Duration (Context, 5_430);
+            Schedule_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Durations.Schedules.Weekly_Schedule
+                (Context, Humanize.Durations.Weekdays,
+                 Has_Time => True, Hour => 9);
+            Frequency_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Frequencies.Times (Context, 3);
+            Rate_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Rates.Pace (Context, 4, Humanize.Rates.Per_Week);
             Number_Text : constant Humanize.Status.Text_Result :=
               Humanize.Numbers.Compact (Context, 1_200_000);
             Editorial_Text : constant Humanize.Status.Text_Result :=
@@ -57,6 +74,13 @@ separate (Perf_Smoke)
             Contrast_Text : constant Humanize.Status.Text_Result :=
               Humanize.Colors.Contrast.Contrast_Label
                 (Context, Black, White);
+            Model_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Colors.Models.Brightness_Label (Context, White);
+            Name_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Colors.Names.Color_Description (Context, White);
+            Palette_Text : constant Humanize.Status.Text_Result :=
+              Humanize.Colors.Palettes.Palette_Summary
+                ([1 => Black, 2 => White]);
             Unit_Length : constant Humanize.Status.Text_Result :=
               Humanize.Units.Format_Length (Context, 1_500.0);
             Unit_CSS : constant Humanize.Status.Text_Result :=
@@ -66,6 +90,10 @@ separate (Perf_Smoke)
             Check_Status (Duration_Text.Status, "duration format");
             Check_Status (Duration_Compact.Status, "duration compact format");
             Check_Status (Duration_Clock.Status, "duration clock format");
+            Check_Status (Natural_Duration.Status, "natural duration format");
+            Check_Status (Schedule_Text.Status, "duration schedule format");
+            Check_Status (Frequency_Text.Status, "frequency format");
+            Check_Status (Rate_Text.Status, "rate format");
             Check_Status (Number_Text.Status, "compact format");
             Check_Status (Editorial_Text.Status, "editorial number format");
             Check_Status (Range_Text.Status, "number range format");
@@ -74,6 +102,9 @@ separate (Perf_Smoke)
             Check_Status (Stats_Text.Status, "number statistics format");
             Check_Status (Relative_Text.Status, "relative datetime format");
             Check_Status (Contrast_Text.Status, "contrast label format");
+            Check_Status (Model_Text.Status, "color model label");
+            Check_Status (Name_Text.Status, "color name label");
+            Check_Status (Palette_Text.Status, "color palette label");
             Check_Status (Unit_Length.Status, "unit length format");
             Check_Status (Unit_CSS.Status, "unit css length format");
             Total := Total + I mod 3;

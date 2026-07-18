@@ -2,6 +2,7 @@ with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Finalization;
+with Ada.Calendar.Formatting;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
@@ -132,10 +133,115 @@ package body Check_Humanize_Release is
    end Sibling_I18N_Build_Wait_Seconds;
 
    function Workspace_Build_Lock_Path (Root : String) return String is
-      pragma Unreferenced (Root);
+      type Hash_Value is mod 2 ** 32;
+
+      function Hash_Image (Text : String) return String is
+         Hex    : constant String := "0123456789abcdef";
+         Hash   : Hash_Value := 2_166_136_261;
+         Value  : Hash_Value;
+         Result : String (1 .. 8);
+      begin
+         for Ch of Text loop
+            Hash := (Hash xor Hash_Value (Character'Pos (Ch))) * 16_777_619;
+         end loop;
+
+         Value := Hash;
+         for Index in reverse Result'Range loop
+            Result (Index) := Hex (Integer (Value mod 16) + 1);
+            Value := Value / 16;
+         end loop;
+
+         return Result;
+      end Hash_Image;
+
+      function Sanitized_Tail
+        (Text      : String;
+         Max_Chars : Positive)
+         return String
+      is
+         Sanitized : Unbounded_String := Null_Unbounded_String;
+      begin
+         for Ch of Text loop
+            if Ch in 'A' .. 'Z'
+              or else Ch in 'a' .. 'z'
+              or else Ch in '0' .. '9'
+              or else Ch in '.' | '-' | '_'
+            then
+               Append (Sanitized, Ch);
+            else
+               Append (Sanitized, '_');
+            end if;
+         end loop;
+
+         declare
+            Value : constant String := To_String (Sanitized);
+         begin
+            if Value'Length <= Max_Chars then
+               return Value;
+            else
+               return Value (Value'Last - Max_Chars + 1 .. Value'Last);
+            end if;
+         end;
+      end Sanitized_Tail;
+
+      I18N_Root : constant String :=
+        Ada.Directories.Full_Name (Root & "/../i18n");
+      Slug : constant String := Sanitized_Tail (I18N_Root, 48);
    begin
-      return "/tmp/humanize-i18n-build.lock";
+      return "/tmp/humanize-i18n-build-"
+        & Slug & "-" & Hash_Image (I18N_Root) & ".lock";
    end Workspace_Build_Lock_Path;
+
+   function Current_Process_Id return Integer is
+      function Getpid return Integer;
+      pragma Import (C, Getpid, "getpid");
+   begin
+      return Getpid;
+   end Current_Process_Id;
+
+   function Command_Line_Image return String is
+      Result : Unbounded_String :=
+        To_Unbounded_String (Ada.Command_Line.Command_Name);
+   begin
+      for Index in 1 .. Ada.Command_Line.Argument_Count loop
+         Append (Result, " ");
+         Append (Result, Ada.Command_Line.Argument (Index));
+      end loop;
+
+      return To_String (Result);
+   end Command_Line_Image;
+
+   function Workspace_Build_Lock_Owner (Root : String) return String is
+      Lock_Path : constant String := Workspace_Build_Lock_Path (Root);
+   begin
+      return
+        "owner=humanize release validation" & ASCII.LF
+        & "pid=" & Ada.Strings.Fixed.Trim
+          (Integer'Image (Current_Process_Id), Ada.Strings.Left) & ASCII.LF
+        & "started_at="
+        & Ada.Calendar.Formatting.Image (Ada.Calendar.Clock) & ASCII.LF
+        & "workspace=" & Ada.Directories.Full_Name (Root) & ASCII.LF
+        & "i18n_workspace="
+        & Ada.Directories.Full_Name (Root & "/../i18n") & ASCII.LF
+        & "lock_path=" & Lock_Path & ASCII.LF
+        & "command=" & Command_Line_Image;
+   end Workspace_Build_Lock_Owner;
+
+   function Workspace_Build_Lock_Details (Root : String) return String is
+      Lock_Path  : constant String := Workspace_Build_Lock_Path (Root);
+      Owner_Path : constant String := Lock_Path & "/owner";
+   begin
+      if Project_Tools.Files.File_Exists (Owner_Path) then
+         return Project_Tools.Files.Read_Raw_File (Owner_Path);
+      elsif Project_Tools.Files.Exists (Lock_Path) then
+         return "lock_path=" & Lock_Path & ASCII.LF & "owner=<missing>";
+      else
+         return "lock_path=" & Lock_Path & ASCII.LF & "owner=<cleared>";
+      end if;
+   exception
+      when Ada.Directories.Name_Error | Ada.Directories.Use_Error =>
+         return "lock_path=" & Lock_Path & ASCII.LF & "owner=<unreadable>";
+   end Workspace_Build_Lock_Details;
 
    function Acquire_Workspace_Build_Lock
      (Root   : String;
@@ -147,7 +253,7 @@ package body Check_Humanize_Release is
       Project_Tools.Release_Checks.Wait_For_Workspace_Build_Lock
         (Lock_Path, Sibling_I18N_Build_Wait_Seconds, Quiet => True);
       Project_Tools.Release_Checks.Create_Workspace_Build_Lock
-        (Lock_Path, "humanize release validation", Quiet => True);
+        (Lock_Path, Workspace_Build_Lock_Owner (Root), Quiet => True);
       return True;
    exception
       when Program_Error =>
@@ -155,6 +261,11 @@ package body Check_Humanize_Release is
            (Errors,
             "workspace build lock is active; release builds require exclusive "
             & "linking access");
+         Put_Line (Standard_Error, "active workspace build lock details:");
+         Put_Line
+           (Standard_Error,
+            Ada.Strings.Fixed.Trim
+              (Workspace_Build_Lock_Details (Root), Ada.Strings.Both));
          Put_Line
            (Standard_Error,
             "hint: wait for the lock to clear or rerun with "

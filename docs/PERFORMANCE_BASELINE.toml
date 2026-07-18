@@ -11,6 +11,10 @@ paths = [
   "Humanize.Durations.Format",
   "Humanize.Durations.Formatting.Format_Compact",
   "Humanize.Durations.Formatting.Format_Clock",
+  "Humanize.Durations.Natural.Natural_Duration",
+  "Humanize.Durations.Schedules.Weekly_Schedule",
+  "Humanize.Frequencies.Times",
+  "Humanize.Rates.Pace",
   "Humanize.Numbers.Compact",
   "Humanize.Numbers.Editorial.Editorial_Number",
   "Humanize.Numbers.Ranges.Between",
@@ -19,6 +23,9 @@ paths = [
   "Humanize.Numbers.Statistics.Outlier_Summary_Label",
   "Humanize.Datetimes.Relative",
   "Humanize.Colors.Contrast.Contrast_Label",
+  "Humanize.Colors.Models.Brightness_Label",
+  "Humanize.Colors.Names.Color_Description",
+  "Humanize.Colors.Palettes.Palette_Summary",
   "Humanize.Units.Format_Length",
   "Humanize.Units.Format_CSS_Length",
   "Humanize.Parsing.Parse_Bytes",
@@ -63,6 +70,34 @@ paths = [
   "Humanize.Cross_Domain.Metadata_Profile_Label",
   "Humanize.Builds.Build_Label",
   "Humanize.Permissions.Permission_Label",
+  "Humanize.Values.Boolean_Label",
+  "Humanize.Geo.Coordinate_Label",
+  "Humanize.Markup.Accessibility_Summary_Label",
+  "Humanize.Endpoints.Endpoint_Label",
+  "Humanize.Resources.Quota_Label",
+  "Humanize.Versions.Version_Label",
+  "Humanize.Secrets.Secret_Count_Label",
+  "Humanize.Schema.Field_Label",
+  "Humanize.Thresholds.Metric_Value_Label",
+  "Humanize.Workflows.Step_Status_Label",
+  "Humanize.Changes.Change_Set_Label",
+  "Humanize.Tables.Table_Size_Label",
+  "Humanize.Forms.Field_State_Label",
+  "Humanize.Navigation.Navigation_Item_Label",
+  "Humanize.Badges.Status_Badge_Label",
+  "Humanize.Notifications.Notification_Label",
+  "Humanize.Comments.Comment_Label",
+  "Humanize.Tasks.Task_Label",
+  "Humanize.Attachments.Attachment_Label",
+  "Humanize.Events.Event_Label",
+  "Humanize.Payments.Payment_Label",
+  "Humanize.Comparisons.Multi_Value_Summary",
+  "Humanize.Moderation.Review_Label",
+  "Humanize.Accounts.Account_Label",
+  "Humanize.Deployments.Deployment_Label",
+  "Humanize.Data_Quality.Import_Result_Label",
+  "Humanize.Media.Media_Summary",
+  "Humanize.Notification_Preferences.Channel_Preference_Label",
   "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
 ]
 
@@ -74,6 +109,10 @@ paths = [
   "Humanize.Durations.Format",
   "Humanize.Durations.Formatting.Format_Compact",
   "Humanize.Durations.Formatting.Format_Clock",
+  "Humanize.Durations.Natural.Natural_Duration",
+  "Humanize.Durations.Schedules.Weekly_Schedule",
+  "Humanize.Frequencies.Times",
+  "Humanize.Rates.Pace",
   "Humanize.Numbers.Compact",
   "Humanize.Numbers.Editorial.Editorial_Number",
   "Humanize.Numbers.Ranges.Between",
@@ -82,6 +121,9 @@ paths = [
   "Humanize.Numbers.Statistics.Outlier_Summary_Label",
   "Humanize.Datetimes.Relative",
   "Humanize.Colors.Contrast.Contrast_Label",
+  "Humanize.Colors.Models.Brightness_Label",
+  "Humanize.Colors.Names.Color_Description",
+  "Humanize.Colors.Palettes.Palette_Summary",
   "Humanize.Units.Format_Length",
   "Humanize.Units.Format_CSS_Length"
 ]
@@ -144,21 +186,73 @@ paths = [
   "Humanize.Cross_Domain.Metadata_Profile_Label",
   "Humanize.Builds.Build_Label",
   "Humanize.Permissions.Permission_Label",
+  "Humanize.Values.Boolean_Label",
+  "Humanize.Geo.Coordinate_Label",
+  "Humanize.Markup.Accessibility_Summary_Label",
+  "Humanize.Endpoints.Endpoint_Label",
+  "Humanize.Resources.Quota_Label",
+  "Humanize.Versions.Version_Label",
+  "Humanize.Secrets.Secret_Count_Label",
+  "Humanize.Schema.Field_Label",
+  "Humanize.Thresholds.Metric_Value_Label",
+  "Humanize.Workflows.Step_Status_Label",
+  "Humanize.Changes.Change_Set_Label",
+  "Humanize.Tables.Table_Size_Label",
+  "Humanize.Forms.Field_State_Label",
+  "Humanize.Navigation.Navigation_Item_Label",
+  "Humanize.Badges.Status_Badge_Label",
+  "Humanize.Notifications.Notification_Label",
+  "Humanize.Comments.Comment_Label",
+  "Humanize.Tasks.Task_Label",
+  "Humanize.Attachments.Attachment_Label",
+  "Humanize.Events.Event_Label",
+  "Humanize.Payments.Payment_Label",
+  "Humanize.Comparisons.Multi_Value_Summary",
+  "Humanize.Moderation.Review_Label",
+  "Humanize.Accounts.Account_Label",
+  "Humanize.Deployments.Deployment_Label",
+  "Humanize.Data_Quality.Import_Result_Label",
+  "Humanize.Media.Media_Summary",
+  "Humanize.Notification_Preferences.Channel_Preference_Label",
   "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
 ]
 
 [perf_smoke.public_api_units]
+Humanize_Accounts = "Humanize.Accounts.Account_Label"
+Humanize_Attachments = "Humanize.Attachments.Attachment_Label"
+Humanize_Badges = "Humanize.Badges.Status_Badge_Label"
 Humanize_Bytes = "Humanize.Bytes.Format"
 Humanize_Builds = "Humanize.Builds.Build_Label"
 Humanize_Capabilities = "Humanize.Capabilities.Capability_Matrix_Summary"
+Humanize_Changes = "Humanize.Changes.Change_Set_Label"
 Humanize_Colors = "Humanize.Colors.CSS.CSS_Color_Label"
 Humanize_Colors_Contrast = "Humanize.Colors.Contrast.Contrast_Label"
 Humanize_Colors_CSS = "Humanize.Colors.CSS.CSS_Color_Label"
+Humanize_Colors_Models = "Humanize.Colors.Models.Brightness_Label"
+Humanize_Colors_Names = "Humanize.Colors.Names.Color_Description"
+Humanize_Colors_Palettes = "Humanize.Colors.Palettes.Palette_Summary"
+Humanize_Comments = "Humanize.Comments.Comment_Label"
+Humanize_Comparisons = "Humanize.Comparisons.Multi_Value_Summary"
+Humanize_Data_Quality = "Humanize.Data_Quality.Import_Result_Label"
 Humanize_Datetimes = "Humanize.Datetimes.Relative"
+Humanize_Deployments = "Humanize.Deployments.Deployment_Label"
 Humanize_Diagnostics = "Humanize.Diagnostics.Issue_Summary_Label"
 Humanize_Domain_Details = "Humanize.Domain_Details.Parse_Metadata_Summary_Label"
 Humanize_Durations = "Humanize.Durations.Format"
 Humanize_Durations_Formatting = "Humanize.Durations.Formatting.Format_Compact"
+Humanize_Durations_Natural = "Humanize.Durations.Natural.Natural_Duration"
+Humanize_Durations_Schedules = "Humanize.Durations.Schedules.Weekly_Schedule"
+Humanize_Endpoints = "Humanize.Endpoints.Endpoint_Label"
+Humanize_Events = "Humanize.Events.Event_Label"
+Humanize_Frequencies = "Humanize.Frequencies.Times"
+Humanize_Forms = "Humanize.Forms.Field_State_Label"
+Humanize_Geo = "Humanize.Geo.Coordinate_Label"
+Humanize_Markup = "Humanize.Markup.Accessibility_Summary_Label"
+Humanize_Media = "Humanize.Media.Media_Summary"
+Humanize_Moderation = "Humanize.Moderation.Review_Label"
+Humanize_Navigation = "Humanize.Navigation.Navigation_Item_Label"
+Humanize_Notification_Preferences = "Humanize.Notification_Preferences.Channel_Preference_Label"
+Humanize_Notifications = "Humanize.Notifications.Notification_Label"
 Humanize_Numbers = "Humanize.Numbers.Compact"
 Humanize_Numbers_Editorial = "Humanize.Numbers.Editorial.Editorial_Number"
 Humanize_Numbers_Ranges = "Humanize.Numbers.Ranges.Between"
@@ -181,8 +275,13 @@ Humanize_Phrases_Locales = "Humanize.Phrases.Locales.Supported_Phrase_Locales"
 Humanize_Phrases_Severity = "Humanize.Phrases.Severity.Severity_Label"
 Humanize_Phrases_Statuses = "Humanize.Phrases.Statuses.Status_Phrase"
 Humanize_Phrases_Summaries = "Humanize.Phrases.Summaries.Queue_Summary"
+Humanize_Payments = "Humanize.Payments.Payment_Label"
 Humanize_Permissions = "Humanize.Permissions.Permission_Label"
+Humanize_Rates = "Humanize.Rates.Pace"
+Humanize_Resources = "Humanize.Resources.Quota_Label"
+Humanize_Schema = "Humanize.Schema.Field_Label"
 Humanize_Search = "Humanize.Search.Search_Result_Summary_Label"
+Humanize_Secrets = "Humanize.Secrets.Secret_Count_Label"
 Humanize_Strings = "Humanize.Strings.Title_Case_Smart"
 Humanize_Strings_Core = "Humanize.Strings.Core.Title_Case_Smart"
 Humanize_Strings_Display = "Humanize.Strings.Display.Truncate_Display_Width"
@@ -200,7 +299,13 @@ Humanize_Strings_Terminal = "Humanize.Strings.Terminal.Terminal_Paragraph"
 Humanize_Lists = "Humanize.Lists.Counted_Noun"
 Humanize_Cross_Domain = "Humanize.Cross_Domain.Metadata_Profile_Label"
 Humanize_System_Status = "Humanize.System_Status.HTTP_Status_Label"
+Humanize_Tables = "Humanize.Tables.Table_Size_Label"
+Humanize_Tasks = "Humanize.Tasks.Task_Label"
+Humanize_Thresholds = "Humanize.Thresholds.Metric_Value_Label"
 Humanize_Units = "Humanize.Units.Format_Length"
+Humanize_Values = "Humanize.Values.Boolean_Label"
+Humanize_Versions = "Humanize.Versions.Version_Label"
+Humanize_Workflows = "Humanize.Workflows.Step_Status_Label"
 
 [perf_smoke.area_coverage]
 root = "exempt: root facade has no standalone runtime path"
