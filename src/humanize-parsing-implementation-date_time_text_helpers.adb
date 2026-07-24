@@ -2,11 +2,8 @@ with Ada.Calendar.Formatting;
 with Ada.Strings.Unbounded;
 
 with Humanize.Bounded_Text;
-with Humanize.Contexts;
-with Humanize.Datetimes;
-with Humanize.I18N_Rendering;
-with Humanize.Locales;
 with Humanize.Parsing.Implementation.Calendar_Helpers;
+with Humanize.Parsing.Implementation.Canonical_Day_Index;
 with Humanize.Parsing.Implementation.Date_Text_Helpers;
 with Humanize.Parsing.Implementation.Numeric_Text_Helpers;
 with Humanize.Parsing.Implementation.Support;
@@ -17,8 +14,6 @@ package body Humanize.Parsing.Implementation.Date_Time_Text_Helpers is
    use type Ada.Calendar.Time;
    use type Humanize.Status.Status_Code;
 
-   function Result_Text (Result : Humanize.Status.Text_Result) return String
-      renames Humanize.Bounded_Text.Result_Text;
    function Trim (Text : String) return String
       renames Humanize.Bounded_Text.Clean;
    function B (Hex : String) return String
