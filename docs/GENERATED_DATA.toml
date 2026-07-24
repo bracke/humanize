@@ -21,8 +21,8 @@ source = "Humanize unit catalog templates"
 coverage = "generated unit catalog keys"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize unit catalog templates"
-line_count = 107
-sha256 = "5a37f3ad3341cb577eb737b05dd2f9dc2b788417dbf6179890305aeb26c07e1a"
+line_count = 102
+sha256 = "8c8b563a3c262282ae6ebd06fe6082e020cd87158df64a5801905647a3ffd013"
 
 [[artifact]]
 path = "src/humanize-catalogs-unit_data-added_unit_keys.adb"
@@ -142,8 +142,8 @@ source = "Humanize spellout tables"
 coverage = "locale spellout words"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize spellout tables"
-line_count = 357
-sha256 = "f28484ebb2c6a1312b5d258517f7774da18b6297198be794127fc7aaab1530bd"
+line_count = 351
+sha256 = "ee16abc8bacb1400c2371d6098290cff90058ad4e8dec52b4c614200bc427680"
 
 [[artifact]]
 path = "src/humanize-numbers-spellout_data-small_locale_word.adb"
