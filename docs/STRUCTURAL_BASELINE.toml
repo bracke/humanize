@@ -258,7 +258,7 @@ usecase = "Parser implementation dispatcher and shared plumbing; parser-family l
 
 [[body]]
 path = "check_humanize/src/check_humanize_policy.adb"
-target_lines = 619
+target_lines = 628
 max_lines = 720
 min_headroom_lines = 80
 max_bytes = 80000
@@ -458,7 +458,7 @@ usecase = "Date/time parser text-helper dispatcher and shared logic; new date/ti
 
 [[body]]
 path = "check_humanize/src/check_humanize_public_api_generated.adb"
-target_lines = 834
+target_lines = 835
 max_lines = 940
 min_headroom_lines = 80
 max_bytes = 40000

@@ -1,6 +1,6 @@
 with Ada.Text_IO;
 
-with I18N.Runtime;
+with Messages.Runtime;
 
 with Humanize.Bounded_Text;
 with Humanize.Catalogs;
@@ -37,7 +37,7 @@ procedure Public_Surface_Demo is
       Put_Line ("  " & Label & " : " & Text (Result));
    end Show;
 
-   Loaded : I18N.Runtime.Load_Result;
+   Loaded : Messages.Runtime.Load_Result;
    Indigo : constant Humanize.Colors.RGB_Color :=
      (Red => 46, Green => 76, Blue => 146);
    White  : constant Humanize.Colors.RGB_Color :=

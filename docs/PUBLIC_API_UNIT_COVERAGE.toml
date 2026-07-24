@@ -37,7 +37,7 @@ perf_exempt_reason = "pure type/support package; no standalone performance-smoke
 score = 4
 
 [[unit]]
-name = "Humanize.Messages"
+name = "Humanize.Message_Keys"
 area = "core"
 docs = 1
 tests = 1

@@ -11,7 +11,7 @@ class map and coverage scorecards.
 ## core
 
 - `Humanize.Status` - `src/humanize-status.ads`
-- `Humanize.Messages` - `src/humanize-messages.ads`
+- `Humanize.Message_Keys` - `src/humanize-message_keys.ads`
 - `Humanize.Contexts` - `src/humanize-contexts.ads`
 - `Humanize.Locales` - `src/humanize-locales.ads`
 - `Humanize.Catalogs` - `src/humanize-catalogs.ads`

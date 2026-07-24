@@ -13,8 +13,8 @@ spec = "src/humanize-status.ads"
 area = "core"
 
 [[unit]]
-name = "Humanize.Messages"
-spec = "src/humanize-messages.ads"
+name = "Humanize.Message_Keys"
+spec = "src/humanize-message_keys.ads"
 area = "core"
 
 [[unit]]

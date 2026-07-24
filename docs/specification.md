@@ -205,7 +205,7 @@ Public packages:
 ```text
 Humanize
 Humanize.Status
-Humanize.Messages
+Humanize.Message_Keys
 Humanize.Contexts
 Humanize.Catalogs
 Humanize.Datetimes
@@ -347,7 +347,7 @@ Rules:
 `Humanize.Status` defines `Status_Code`, `Text_Result`, `Is_Ok`, and
 `Status_Image`.
 
-`Humanize.Messages` defines the stable semantic `Message_Id` enumeration and
+`Humanize.Message_Keys` defines the stable semantic `Message_Id` enumeration and
 `Key`, which maps every non-`No_Message` value to a non-empty `humanize.*`
 catalog key.
 

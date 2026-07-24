@@ -513,9 +513,12 @@ package body Check_Humanize_Release is
    is
       I18N_Root : constant String :=
         Ada.Directories.Full_Name (Root & "/../i18n");
+      Messages_Root : constant String :=
+        Ada.Directories.Full_Name (Root & "/../messages");
       Stage_Pins : constant String :=
         "[[pins]]" & ASCII.LF
-        & "i18n = { path = """ & I18N_Root & """ }" & ASCII.LF;
+        & "i18n = { path = """ & I18N_Root & """ }" & ASCII.LF
+        & "messages = { path = """ & Messages_Root & """ }" & ASCII.LF;
       Build_Tests_Stage_Args : constant Argument_List :=
         Project_Tools.Alire.Noninteractive_Exec_Args
           ([new String'("gprbuild"), new String'("-P"),

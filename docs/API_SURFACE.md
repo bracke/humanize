@@ -42,7 +42,7 @@ Core context, status, and catalog packages:
 
 * `src/humanize.ads`
 * `src/humanize-status.ads`
-* `src/humanize-messages.ads`
+* `src/humanize-message_keys.ads`
 * `src/humanize-contexts.ads`
 * `src/humanize-locales.ads`
 * `src/humanize-catalogs.ads`

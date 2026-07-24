@@ -284,7 +284,7 @@ usecase = "inspect status codes from parser results and bounded rendering workfl
 
 [[coverage]]
 area = "public-surface"
-unit = "Humanize.Messages"
+unit = "Humanize.Message_Keys"
 example = "examples/public_surface_demo.adb"
 usecase = "exercise message-key-backed public functions through higher-level humanize calls"
 

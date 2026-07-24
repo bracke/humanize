@@ -208,7 +208,7 @@ package body Check_Humanize_Public_API_Generated is
    begin
       if Name = "Humanize.Bounded_Text"
         or else Name = "Humanize.Capabilities"
-        or else Name = "Humanize.Messages"
+        or else Name = "Humanize.Message_Keys"
         or else Name = "Humanize.Parsing.Results"
         or else Name = "Humanize.Status"
         or else Name = "Humanize.Styles"
@@ -354,7 +354,7 @@ package body Check_Humanize_Public_API_Generated is
       Append_Line
         (Result,
          "units = [""Humanize.Bounded_Text"", ""Humanize.Capabilities"", "
-         & """Humanize.Messages"", ""Humanize.Parsing.Results"", "
+         & """Humanize.Message_Keys"", ""Humanize.Parsing.Results"", "
          & """Humanize.Status"", ""Humanize.Styles""]");
       Append_Line (Result);
       Append_Line (Result, "[[class]]");
@@ -544,7 +544,7 @@ package body Check_Humanize_Public_API_Generated is
             if Name = "Humanize.Catalogs"
               or else Name = "Humanize.Contexts"
               or else Name = "Humanize.Locales"
-              or else Name = "Humanize.Messages"
+              or else Name = "Humanize.Message_Keys"
               or else Name = "Humanize.Status"
             then
                return "tests/src/humanize-tests-rendering.adb";
@@ -606,7 +606,7 @@ package body Check_Humanize_Public_API_Generated is
             return
               "crate root facade; exercised by consumers, not a distinct performance path";
          elsif Name = "Humanize.Status"
-           or else Name = "Humanize.Messages"
+           or else Name = "Humanize.Message_Keys"
            or else Name = "Humanize.Contexts"
            or else Name = "Humanize.Locales"
            or else Name = "Humanize.Styles"
@@ -650,7 +650,7 @@ package body Check_Humanize_Public_API_Generated is
          elsif Name = "Humanize" then
             return "root-facade";
          elsif Name = "Humanize.Status"
-           or else Name = "Humanize.Messages"
+           or else Name = "Humanize.Message_Keys"
            or else Name = "Humanize.Contexts"
            or else Name = "Humanize.Locales"
            or else Name = "Humanize.Styles"

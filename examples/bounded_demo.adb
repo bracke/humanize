@@ -1,6 +1,6 @@
 with Ada.Text_IO;
 
-with I18N.Runtime;
+with Messages.Runtime;
 
 with Humanize.Bounded_Text;
 with Humanize.Bytes;
@@ -14,7 +14,7 @@ procedure Bounded_Demo is
    use Ada.Text_IO;
    use type Humanize.Status.Status_Code;
 
-   Loaded  : I18N.Runtime.Load_Result;
+   Loaded  : Messages.Runtime.Load_Result;
    Buffer  : String (1 .. 32) := (others => ' ');
    Written : Natural := 0;
    Code    : Humanize.Status.Status_Code := Humanize.Status.Ok;

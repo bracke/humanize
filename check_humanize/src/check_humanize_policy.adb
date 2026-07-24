@@ -31,7 +31,8 @@ package body Check_Humanize_Policy is
       Errors : in out Natural)
    is
       Release_Dependencies : constant Project_Tools.Alire_Manifests.String_List :=
-        [1 => To_Unbounded_String (Config.Development_I18N_Pin)];
+        [1 => To_Unbounded_String (Config.Development_I18N_Pin),
+         2 => To_Unbounded_String (Config.Development_Messages_Pin)];
    begin
       Project_Tools.Files.Require_Contains
         (Root & Config.Humanize_Development_Manifest,
@@ -62,14 +63,24 @@ package body Check_Humanize_Policy is
         (Root & Config.Humanize_Development_Manifest,
          Config.Required_I18N_Constraint,
          "humanize development manifest must require i18n >= 1.1.0");
+      Project_Tools.Files.Require_Contains
+        (Root & Config.Humanize_Development_Manifest,
+         Config.Required_Messages_Constraint,
+         "humanize development manifest must require messages >= 0.1.0");
       Project_Tools.Alire_Manifests.Require_Workspace_Pin
         (Root & Config.Humanize_Development_Manifest, "i18n", "../i18n");
+      Project_Tools.Alire_Manifests.Require_Workspace_Pin
+        (Root & Config.Humanize_Development_Manifest, "messages", "../messages");
       Project_Tools.Alire_Manifests.Require_No_Local_Pins
         (Root & Config.Humanize_Release_Manifest);
       Project_Tools.Files.Require_Contains
         (Root & Config.Humanize_Release_Manifest,
          Config.Required_I18N_Constraint,
          "humanize release manifest must require i18n >= 1.1.0");
+      Project_Tools.Files.Require_Contains
+        (Root & Config.Humanize_Release_Manifest,
+         Config.Required_Messages_Constraint,
+         "humanize release manifest must require messages >= 0.1.0");
       Project_Tools.Alire_Manifests.Require_Build_Overlay
         (Root & Config.Humanize_Build_Overlay,
          Root & Config.Humanize_Release_Manifest,
@@ -275,7 +286,7 @@ package body Check_Humanize_Policy is
       begin
          if Name = "Humanize.Bounded_Text"
            or else Name = "Humanize.Capabilities"
-           or else Name = "Humanize.Messages"
+           or else Name = "Humanize.Message_Keys"
            or else Name = "Humanize.Parsing.Results"
            or else Name = "Humanize.Status"
            or else Name = "Humanize.Styles"

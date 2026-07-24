@@ -79,7 +79,7 @@ Focused product/detail example for accounts, payments, events, endpoints, geo,
 versions, resources, moderation, notification preferences, and domain details.
 
 The expected output is recorded in `EXPECTED_OUTPUT.md`. The demo loads the
-built-in catalog into an application-owned `I18N.Runtime.Instance`, creates
+built-in catalog into an application-owned `Messages.Runtime.Instance`, creates
 English, Danish, and Spanish contexts, and formats representative durations,
 byte sizes, relative datetimes, date ranges, numbers, native and
 generated-locale cardinal words, decimal/fraction/ordinal words, currency

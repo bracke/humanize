@@ -14,22 +14,22 @@ package body Check_Humanize_Policy_Boundaries is
       Tooling_Tokens  : constant Project_Tools.Tree_Checks.Text_List :=
         [1 => To_Unbounded_String ("Project_Tools")];
       I18N_Private_Tokens : constant Project_Tools.Tree_Checks.Text_List :=
-        [To_Unbounded_String ("I18N.AST"),
-         To_Unbounded_String ("I18N.Buffer"),
-         To_Unbounded_String ("I18N.Cache"),
-         To_Unbounded_String ("I18N.Compiled"),
-         To_Unbounded_String ("I18N.Compiler"),
+        [To_Unbounded_String ("Messages.AST"),
+         To_Unbounded_String ("Messages.Buffer"),
+         To_Unbounded_String ("Messages.Cache"),
+         To_Unbounded_String ("Messages.Compiled"),
+         To_Unbounded_String ("Messages.Compiler"),
          To_Unbounded_String ("I18N.CLDR_Data"),
          To_Unbounded_String ("I18N.Currency"),
          To_Unbounded_String ("I18N.Date_Time_Format"),
-         To_Unbounded_String ("I18N.Errors"),
-         To_Unbounded_String ("I18N.Extra_Format"),
-         To_Unbounded_String ("I18N.Fast_Render"),
+         To_Unbounded_String ("Messages.Errors"),
+         To_Unbounded_String ("Messages.Extra_Format"),
+         To_Unbounded_String ("Messages.Fast_Render"),
          To_Unbounded_String ("I18N.Number_Format"),
-         To_Unbounded_String ("I18N.Parser"),
-         To_Unbounded_String ("I18N.Render"),
+         To_Unbounded_String ("Messages.Parser"),
+         To_Unbounded_String ("Messages.Render"),
          To_Unbounded_String ("I18N.Runtime_Data"),
-         To_Unbounded_String ("I18N.Validation")];
+         To_Unbounded_String ("Messages.Validation")];
       Localized_Code_Tokens : constant Project_Tools.Ada_Source.String_List :=
         [To_Unbounded_String ("yesterday"),
          To_Unbounded_String ("tomorrow"),
@@ -54,7 +54,7 @@ package body Check_Humanize_Policy_Boundaries is
          Next    : Positive := Allowed'First;
       begin
          if Allows_Arguments then
-            Allowed (Next) := To_Unbounded_String ("I18N.Arguments");
+            Allowed (Next) := To_Unbounded_String ("Messages.Arguments");
             Next := Next + 1;
          end if;
          if Allows_Locales then
@@ -62,11 +62,11 @@ package body Check_Humanize_Policy_Boundaries is
             Next := Next + 1;
          end if;
          if Allows_Result then
-            Allowed (Next) := To_Unbounded_String ("I18N.Result");
+            Allowed (Next) := To_Unbounded_String ("Messages.Result");
             Next := Next + 1;
          end if;
          if Allows_Runtime then
-            Allowed (Next) := To_Unbounded_String ("I18N.Runtime");
+            Allowed (Next) := To_Unbounded_String ("Messages.Runtime");
          end if;
 
          Project_Tools.Ada_Source.Require_Only_Allowed_With_Clauses
@@ -147,7 +147,7 @@ package body Check_Humanize_Policy_Boundaries is
       procedure Check_Message_Key_Mapping is
       begin
          Project_Tools.Ada_Source.Require_Unique_String_Returns
-           (Root & "/src/humanize-messages.adb",
+           (Root & "/src/humanize-message_keys.adb",
             "Key",
             Allow_Empty => True);
       exception
@@ -211,7 +211,7 @@ package body Check_Humanize_Policy_Boundaries is
               To_Unbounded_String ("humanize-frequencies.adb"),
               To_Unbounded_String ("humanize-i18n_rendering.adb"),
               To_Unbounded_String ("humanize-lists.adb"),
-              To_Unbounded_String ("humanize-messages.adb"),
+              To_Unbounded_String ("humanize-message_keys.adb"),
               To_Unbounded_String ("humanize-number_classification.adb"),
               To_Unbounded_String ("humanize-numbers.adb"),
               To_Unbounded_String ("humanize-parsing.adb"),

@@ -20,4 +20,7 @@ package Check_Humanize_Policy_Config is
 
    Required_I18N_Constraint : constant String := "i18n = "">=1.1.0""";
    Development_I18N_Pin     : constant String := "i18n = { path = ""../i18n"" }";
+   Required_Messages_Constraint : constant String := "messages = "">=0.1.0""";
+   Development_Messages_Pin     : constant String :=
+     "messages = { path = ""../messages"" }";
 end Check_Humanize_Policy_Config;

@@ -22,7 +22,7 @@ prefixes = ["Humanize.Colors.", "Humanize.Durations.", "Humanize.Numbers.", "Hum
 [[class]]
 name = "support-type-facade"
 usecase = "Small public packages whose main purpose is shared result, style, metadata, bounded-output, or option types used by primary facades."
-units = ["Humanize.Bounded_Text", "Humanize.Capabilities", "Humanize.Messages", "Humanize.Parsing.Results", "Humanize.Status", "Humanize.Styles"]
+units = ["Humanize.Bounded_Text", "Humanize.Capabilities", "Humanize.Message_Keys", "Humanize.Parsing.Results", "Humanize.Status", "Humanize.Styles"]
 
 [[class]]
 name = "internal"
@@ -42,7 +42,7 @@ class = "support-type-facade"
 reason = "shared public support types used by callable facade packages"
 
 [[unit_class]]
-name = "Humanize.Messages"
+name = "Humanize.Message_Keys"
 area = "core"
 class = "support-type-facade"
 reason = "shared public support types used by callable facade packages"

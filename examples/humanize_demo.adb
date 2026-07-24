@@ -2,7 +2,7 @@ with Ada.Calendar;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
-with I18N.Runtime;
+with Messages.Runtime;
 
 with Humanize.Bytes;
 with Humanize.Bounded_Text;
@@ -40,7 +40,7 @@ procedure Humanize_Demo is
    function Text (Result : Humanize.Status.Text_Result) return String is
      (Humanize.Bounded_Text.Result_Text (Result));
 
-   Loaded    : I18N.Runtime.Load_Result;
+   Loaded    : Messages.Runtime.Load_Result;
    Reference : constant Time := Time_Of (2026, 3, 21, Day_Duration (43_200));
    Earlier   : constant Time := Reference - Duration (14_400);  --  4 hours
 begin
