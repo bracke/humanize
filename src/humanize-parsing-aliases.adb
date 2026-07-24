@@ -103,4 +103,47 @@ package body Humanize.Parsing.Aliases is
 
       return 0;
    end Alias_Prefix_Length;
+
+   function Decode_Hex_Alias (Segment : String) return String is
+      function Nibble (C : Character) return Natural is
+      begin
+         case C is
+            when '0' .. '9' =>
+               return Digit_Value (C);
+            when 'A' .. 'F' =>
+               return 10 + Character'Pos (C) - Character'Pos ('A');
+            when 'a' .. 'f' =>
+               return 10 + Character'Pos (C) - Character'Pos ('a');
+            when others =>
+               return 0;
+         end case;
+      end Nibble;
+   begin
+      if Segment'Length < 1 or else Segment (Segment'First) /= '#' then
+         return "";
+      end if;
+
+      declare
+         Hex : constant String := Segment (Segment'First + 1 .. Segment'Last);
+         Result : String (1 .. Hex'Length / 2);
+      begin
+         if Hex'Length mod 2 /= 0 then
+            return "";
+         end if;
+
+         for Index in Result'Range loop
+            declare
+               Hex_Index : constant Natural :=
+                 Hex'First + 2 * (Index - Result'First);
+            begin
+               Result (Index) :=
+                 Character'Val
+                   (Nibble (Hex (Hex_Index)) * 16
+                    + Nibble (Hex (Hex_Index + 1)));
+            end;
+         end loop;
+
+         return Result;
+      end;
+   end Decode_Hex_Alias;
 end Humanize.Parsing.Aliases;

@@ -228,8 +228,8 @@ usecase = "Duration formatting and progress label helpers; new duration presenta
 
 [[body]]
 path = "src/humanize-parsing-unit_aliases.adb"
-target_lines = 1572
-max_lines = 1720
+target_lines = 1628
+max_lines = 1780
 min_headroom_lines = 120
 max_bytes = 72000
 split_prefix = ""

@@ -1,7 +1,11 @@
+with Ada.Containers.Indefinite_Ordered_Maps;
+
 with Humanize.Bounded_Text;
 with Humanize.Parsing.Aliases;
 
 package body Humanize.Parsing.Unit_Aliases is
+   use type Humanize.Units.Unit_Kind;
+
    function Clean_Lower (Text : String) return String
       renames Humanize.Bounded_Text.Clean_Lower_Text;
 
@@ -16,22 +20,70 @@ package body Humanize.Parsing.Unit_Aliases is
    type Unit_Alias_Group_Array is
      array (Positive range <>) of Unit_Alias_Group;
 
-   function Lookup_Unit_Alias
-     (Item   : String;
-      Groups : Unit_Alias_Group_Array;
-      Unit   : out Humanize.Units.Unit_Kind)
-      return Boolean
-   is
+   package Unit_Maps is new Ada.Containers.Indefinite_Ordered_Maps
+     (Key_Type => String, Element_Type => Humanize.Units.Unit_Kind);
+
+   --  Flatten the LF-delimited alias lists into a sorted (alias -> unit) index
+   --  built once at elaboration. Lookup is then a binary search rather than a
+   --  linear scan that re-splits every group's alias string on each call. The
+   --  first group to claim an alias wins, matching the old scan order.
+   function Build_Index (Groups : Unit_Alias_Group_Array) return Unit_Maps.Map is
+      Result : Unit_Maps.Map;
+
+      procedure Add (Key : String; Unit : Humanize.Units.Unit_Kind) is
+      begin
+         if Key'Length > 0 and then not Result.Contains (Key) then
+            Result.Insert (Key, Unit);
+         end if;
+      end Add;
    begin
       for Group of Groups loop
-         if Humanize.Parsing.Aliases.Has_Alias (Item, Group.Aliases.all) then
-            Unit := Group.Unit;
-            return True;
-         end if;
+         declare
+            Aliases : constant String := Group.Aliases.all;
+            First   : Natural := Aliases'First;
+            Last    : Natural;
+         begin
+            while First <= Aliases'Last loop
+               Last := First;
+               while Last <= Aliases'Last
+                 and then Aliases (Last) /= ASCII.LF
+               loop
+                  Last := Last + 1;
+               end loop;
+
+               if Last > First then
+                  declare
+                     Segment : constant String := Aliases (First .. Last - 1);
+                  begin
+                     Add (Segment, Group.Unit);
+                     Add (Humanize.Parsing.Aliases.Decode_Hex_Alias (Segment),
+                          Group.Unit);
+                  end;
+               end if;
+
+               First := Last + 1;
+            end loop;
+         end;
       end loop;
 
+      return Result;
+   end Build_Index;
+
+   function Lookup_Indexed
+     (Index : Unit_Maps.Map;
+      Item  : String;
+      Unit  : out Humanize.Units.Unit_Kind)
+      return Boolean
+   is
+      Position : constant Unit_Maps.Cursor := Index.Find (Item);
+   begin
+      if Unit_Maps.Has_Element (Position) then
+         Unit := Unit_Maps.Element (Position);
+         return True;
+      end if;
+
       return False;
-   end Lookup_Unit_Alias;
+   end Lookup_Indexed;
 
    pragma Style_Checks (Off);
    Generated_Unit_Alias_01 : aliased constant String :=
@@ -1548,6 +1600,10 @@ package body Humanize.Parsing.Unit_Aliases is
       (Unit => Humanize.Units.Ton, Aliases => Unit_Alias_41'Access)
      ];
 
+   Static_Unit_Index : constant Unit_Maps.Map := Build_Index (Unit_Aliases);
+   Generated_Unit_Index : constant Unit_Maps.Map :=
+     Build_Index (Generated_Unit_Aliases);
+
    function Static_Unit_Value
      (Text : String;
       Unit : out Humanize.Units.Unit_Kind)
@@ -1555,7 +1611,7 @@ package body Humanize.Parsing.Unit_Aliases is
    is
       Item : constant String := Clean_Lower (Text);
    begin
-      return Lookup_Unit_Alias (Item, Unit_Aliases, Unit);
+      return Lookup_Indexed (Static_Unit_Index, Item, Unit);
    end Static_Unit_Value;
 
    function Generated_Unit_Value
@@ -1565,7 +1621,7 @@ package body Humanize.Parsing.Unit_Aliases is
    is
       Item : constant String := Clean_Lower (Text);
    begin
-      return Lookup_Unit_Alias (Item, Generated_Unit_Aliases, Unit);
+      return Lookup_Indexed (Generated_Unit_Index, Item, Unit);
    end Generated_Unit_Value;
 
    pragma Style_Checks (On);

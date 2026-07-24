@@ -1,3 +1,5 @@
+with Ada.Containers.Indefinite_Ordered_Maps;
+
 with Humanize.Parsing.Aliases;
 
 package body Humanize.Parsing.Frequency_Aliases is
@@ -12,22 +14,74 @@ package body Humanize.Parsing.Frequency_Aliases is
    type Frequency_Alias_Group_Array is
      array (Positive range <>) of Frequency_Alias_Group;
 
-   function Lookup_Frequency_Alias
-     (Item   : String;
-      Groups : Frequency_Alias_Group_Array;
-      Count  : out Humanize.Frequencies.Occurrence_Count)
-      return Boolean
+   package Count_Maps is new Ada.Containers.Indefinite_Ordered_Maps
+     (Key_Type => String,
+      Element_Type => Humanize.Frequencies.Occurrence_Count);
+
+   --  Flatten the LF-delimited alias lists into a sorted (alias -> count)
+   --  index built once at elaboration, so lookup is a binary search instead of
+   --  a linear scan that re-splits every group's alias string on each call. The
+   --  first group to claim an alias wins, matching the old scan order.
+   function Build_Index
+     (Groups : Frequency_Alias_Group_Array) return Count_Maps.Map
    is
+      Result : Count_Maps.Map;
+
+      procedure Add
+        (Key : String; Count : Humanize.Frequencies.Occurrence_Count) is
+      begin
+         if Key'Length > 0 and then not Result.Contains (Key) then
+            Result.Insert (Key, Count);
+         end if;
+      end Add;
    begin
       for Group of Groups loop
-         if Humanize.Parsing.Aliases.Has_Alias (Item, Group.Aliases.all) then
-            Count := Group.Count;
-            return True;
-         end if;
+         declare
+            Aliases : constant String := Group.Aliases.all;
+            First   : Natural := Aliases'First;
+            Last    : Natural;
+         begin
+            while First <= Aliases'Last loop
+               Last := First;
+               while Last <= Aliases'Last
+                 and then Aliases (Last) /= ASCII.LF
+               loop
+                  Last := Last + 1;
+               end loop;
+
+               if Last > First then
+                  declare
+                     Segment : constant String := Aliases (First .. Last - 1);
+                  begin
+                     Add (Segment, Group.Count);
+                     Add (Humanize.Parsing.Aliases.Decode_Hex_Alias (Segment),
+                          Group.Count);
+                  end;
+               end if;
+
+               First := Last + 1;
+            end loop;
+         end;
       end loop;
 
+      return Result;
+   end Build_Index;
+
+   function Lookup_Indexed
+     (Index : Count_Maps.Map;
+      Item  : String;
+      Count : out Humanize.Frequencies.Occurrence_Count)
+      return Boolean
+   is
+      Position : constant Count_Maps.Cursor := Index.Find (Item);
+   begin
+      if Count_Maps.Has_Element (Position) then
+         Count := Count_Maps.Element (Position);
+         return True;
+      end if;
+
       return False;
-   end Lookup_Frequency_Alias;
+   end Lookup_Indexed;
 
    Frequency_Never_Aliases : aliased constant String :=
       "never"
@@ -170,13 +224,16 @@ package body Humanize.Parsing.Frequency_Aliases is
       & Alias_Separator & "#D985D8B1D8A7D8AA"
       & Alias_Separator & "#E0A4ACE0A4BEE0A4B0";
 
+   Frequency_Count_Index : constant Count_Maps.Map :=
+     Build_Index (Frequency_Count_Aliases);
+
    function Known_Count_Alias
      (Text  : String;
       Count : out Humanize.Frequencies.Occurrence_Count)
       return Boolean
    is
    begin
-      return Lookup_Frequency_Alias (Text, Frequency_Count_Aliases, Count);
+      return Lookup_Indexed (Frequency_Count_Index, Text, Count);
    end Known_Count_Alias;
 
    function Is_Count_Unit (Unit : String) return Boolean is
