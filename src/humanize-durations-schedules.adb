@@ -3,7 +3,7 @@ with Ada.Strings.Unbounded;
 with Humanize.Bounded_Text;
 with Humanize.Durations.Schedule_Data;
 with Humanize.Locales;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 
 package body Humanize.Durations.Schedules is
 
@@ -28,16 +28,6 @@ package body Humanize.Durations.Schedules is
       Status  : out Humanize.Status.Status_Code)
       renames Humanize.Bounded_Text.Copy_Text;
 
-   function Two_Digits (Value : Natural) return String is
-      Tens : constant Natural := (Value / 10) mod 10;
-      Ones : constant Natural := Value mod 10;
-   begin
-      return
-        String'
-          (1 => Character'Val (Character'Pos ('0') + Tens),
-           2 => Character'Val (Character'Pos ('0') + Ones));
-   end Two_Digits;
-
    function Recurrence
      (Context : Humanize.Contexts.Context;
       Every   : Positive;
@@ -61,7 +51,7 @@ package body Humanize.Durations.Schedules is
          Text => To_Unbounded_String
            ("every " & No_Space (Positive'Image (Every)) & " "
             & Unit_Text & (if Every = 1 then "" else "s")),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end Recurrence;
 
    function Is_Norwegian (Locale : String) return Boolean
@@ -199,16 +189,6 @@ package body Humanize.Durations.Schedules is
 
       return To_String (Text);
    end Weekday_Set_Label;
-
-   function With_Time (Base : String; Options : Schedule_Options) return String is
-   begin
-      if Options.Has_Time then
-         return Base & " at "
-           & Time_Label (Options.Hour, Options.Minute, Options.Use_12_Hour);
-      else
-         return Base;
-      end if;
-   end With_Time;
 
    function With_Time
      (Locale  : String;
@@ -711,7 +691,7 @@ package body Humanize.Durations.Schedules is
                      Schedule_Interval_Label
                        (Locale, Options.Every, Options.Unit),
                      Options)),
-               Key => Humanize.Messages.No_Message);
+               Key => Humanize.Message_Keys.No_Message);
 
          when Schedule_Weekday =>
             if Options.Weekday = 0 then
@@ -763,7 +743,7 @@ package body Humanize.Durations.Schedules is
         (Status => Humanize.Status.Ok,
          Text => To_Unbounded_String
            (With_Time (Locale, To_String (Base), Options)),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end Schedule;
 
    function Weekly_Schedule
@@ -857,7 +837,7 @@ package body Humanize.Durations.Schedules is
            (Status => Humanize.Status.Ok,
             Text => To_Unbounded_String
               (With_Time (Locale, Monthly_Day_Label (Locale, Day), Options)),
-            Key => Humanize.Messages.No_Message);
+            Key => Humanize.Message_Keys.No_Message);
       end;
    end Monthly_Day_Schedule;
 
@@ -998,7 +978,7 @@ package body Humanize.Durations.Schedules is
            (Status => Humanize.Status.Ok,
             Text => To_Unbounded_String
               ("every hour at minute " & No_Space (Natural'Image (Minute_Value))),
-            Key => Humanize.Messages.No_Message);
+            Key => Humanize.Message_Keys.No_Message);
       end if;
 
       if not Is_Number (H, Hour_Value) or else Hour_Value > 23 then
@@ -1044,7 +1024,7 @@ package body Humanize.Durations.Schedules is
                    Hour        => Hour_Value,
                    Minute      => Minute_Value,
                    Use_12_Hour => False))),
-            Key => Humanize.Messages.No_Message);
+            Key => Humanize.Message_Keys.No_Message);
       end if;
 
       return (Status => Humanize.Status.Invalid_Argument, others => <>);

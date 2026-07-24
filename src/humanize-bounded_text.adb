@@ -2,7 +2,7 @@ with Ada.Characters.Handling;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Humanize.Messages;
+with Humanize.Message_Keys;
 
 package body Humanize.Bounded_Text is
    use type Humanize.Status.Status_Code;
@@ -337,7 +337,7 @@ package body Humanize.Bounded_Text is
       return
         (Status => Humanize.Status.Ok,
          Text   => To_Unbounded_String (Text),
-         Key    => Humanize.Messages.No_Message);
+         Key    => Humanize.Message_Keys.No_Message);
    end Ok_Text;
 
    function Status_Text
@@ -349,7 +349,7 @@ package body Humanize.Bounded_Text is
       return
         (Status => Status,
          Text   => To_Unbounded_String (Text),
-         Key    => Humanize.Messages.No_Message);
+         Key    => Humanize.Message_Keys.No_Message);
    end Status_Text;
 
    function Invalid_Text (Text : String) return Humanize.Status.Text_Result is
@@ -357,7 +357,7 @@ package body Humanize.Bounded_Text is
       return
         (Status => Humanize.Status.Invalid_Argument,
          Text   => To_Unbounded_String (Text),
-         Key    => Humanize.Messages.No_Message);
+         Key    => Humanize.Message_Keys.No_Message);
    end Invalid_Text;
 
    function Invalid_Value_Text return Humanize.Status.Text_Result is

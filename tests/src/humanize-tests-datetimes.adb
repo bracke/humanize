@@ -1,7 +1,7 @@
 with AUnit.Assertions;
 
 with Ada.Calendar;
-with I18N.Runtime;
+with Messages.Runtime;
 
 with Humanize.Contexts;
 with Humanize.Datetimes;
@@ -34,14 +34,14 @@ package body Humanize.Tests.Datetimes is
 
    --  Fallback fixture: a runtime that has the generic relative.day.past key
    --  but NOT the calendar day.previous key, so fallback must kick in.
-   Fallback_Runtime : aliased I18N.Runtime.Instance;
+   Fallback_Runtime : aliased Messages.Runtime.Instance;
    Fallback_Loaded  : Boolean := False;
 
    procedure Ensure_Fallback is
-      Result : I18N.Runtime.Load_Result;
+      Result : Messages.Runtime.Load_Result;
    begin
       if not Fallback_Loaded then
-         I18N.Runtime.Load_Text
+         Messages.Runtime.Load_Text
            (Fallback_Runtime, "partial",
             "en.humanize.datetime.relative.day.past = "
             & "{count, plural, one {# day ago} other {# days ago}}" & LF,

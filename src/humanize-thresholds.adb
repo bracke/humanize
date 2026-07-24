@@ -3,7 +3,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Humanize.Bounded_Text;
 
 package body Humanize.Thresholds is
-   use type Humanize.Status.Status_Code;
 
    Max_Decimals : constant Natural := 9;
 

@@ -4,7 +4,6 @@ with Humanize.Bounded_Text;
 with Humanize.Status;
 
 package body Humanize.Strings.Metrics is
-   use type Humanize.Status.Status_Code;
 
    function Natural_Text (Value : Natural) return String
       renames Humanize.Bounded_Text.Image;
@@ -126,25 +125,6 @@ package body Humanize.Strings.Metrics is
       or else (Code in 16#20D0# .. 16#20FF#)
       or else (Code in 16#FE20# .. 16#FE2F#));
 
-   function Is_Unicode_Default_Ignorable (Code : Natural) return Boolean is
-     (Code = 16#00AD#
-      or else Code = 16#034F#
-      or else (Code in 16#061C# .. 16#061C#)
-      or else (Code in 16#115F# .. 16#1160#)
-      or else (Code in 16#17B4# .. 16#17B5#)
-      or else (Code in 16#180B# .. 16#180F#)
-      or else (Code in 16#200B# .. 16#200F#)
-      or else (Code in 16#202A# .. 16#202E#)
-      or else (Code in 16#2060# .. 16#206F#)
-      or else (Code in 16#3164# .. 16#3164#)
-      or else (Code in 16#FE00# .. 16#FE0F#)
-      or else (Code in 16#FEFF# .. 16#FEFF#)
-      or else (Code in 16#FFA0# .. 16#FFA0#)
-      or else (Code in 16#FFF0# .. 16#FFF8#)
-      or else (Code in 16#1BCA0# .. 16#1BCA3#)
-      or else (Code in 16#1D173# .. 16#1D17A#)
-      or else (Code in 16#E0000# .. 16#E0FFF#));
-
    function Is_Unicode_Space (Code : Natural) return Boolean is
      (Code = 16#0009# or else Code = 16#000A# or else Code = 16#000B#
       or else Code = 16#000C# or else Code = 16#000D#
@@ -243,46 +223,6 @@ package body Humanize.Strings.Metrics is
 
    function Is_Paragraph_Break (Code : Natural) return Boolean is
      (Code = 16#2029#);
-
-   function Is_Wide_Code_Point (Code : Natural) return Boolean is
-     ((Code in 16#1100# .. 16#115F#)
-      or else (Code in 16#2329# .. 16#232A#)
-      or else (Code in 16#2E80# .. 16#A4CF#)
-      or else (Code in 16#AC00# .. 16#D7A3#)
-      or else (Code in 16#F900# .. 16#FAFF#)
-      or else (Code in 16#FE10# .. 16#FE19#)
-      or else (Code in 16#FE30# .. 16#FE6F#)
-      or else (Code in 16#FF00# .. 16#FF60#)
-      or else (Code in 16#FFE0# .. 16#FFE6#)
-      or else (Code in 16#16FE0# .. 16#16FE4#)
-      or else (Code in 16#17000# .. 16#187F7#)
-      or else (Code in 16#18800# .. 16#18CD5#)
-      or else (Code in 16#18D00# .. 16#18D08#)
-      or else (Code in 16#1AFF0# .. 16#1AFFF#)
-      or else (Code in 16#1B000# .. 16#1B122#)
-      or else (Code in 16#1B132# .. 16#1B132#)
-      or else (Code in 16#1B150# .. 16#1B152#)
-      or else (Code in 16#1B155# .. 16#1B155#)
-      or else (Code in 16#1B164# .. 16#1B167#)
-      or else (Code in 16#1F200# .. 16#1F2FF#)
-      or else (Code in 16#1F300# .. 16#1FAFF#)
-      or else (Code in 16#20000# .. 16#3FFFD#));
-
-   function Unicode_Display_Cell_Width (Code : Natural) return Natural is
-   begin
-      if Code = 0
-        or else Code < 16#20#
-        or else (Code in 16#007F# .. 16#009F#)
-        or else Is_Unicode_Combining_Mark (Code)
-        or else Is_Unicode_Default_Ignorable (Code)
-      then
-         return 0;
-      elsif Is_Wide_Code_Point (Code) then
-         return 2;
-      else
-         return 1;
-      end if;
-   end Unicode_Display_Cell_Width;
 
    function Next_Code_Point_Is_Word_Start
      (Text  : String;

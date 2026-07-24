@@ -8,9 +8,6 @@ package body Humanize.Operations is
    function Image (Value : Natural) return String
       renames Humanize.Bounded_Text.Image;
 
-   function Clean (Text : String) return String
-      renames Humanize.Bounded_Text.Clean;
-
    function Find_Text (Text, Pattern : String) return Natural
       renames Humanize.Bounded_Text.Index_Text;
 

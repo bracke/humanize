@@ -115,12 +115,6 @@ package body Humanize.Parsing.Implementation.Domain_Label_Text_Helpers is
    function Count_Words (Text : String) return Natural
       renames Humanize.Parsing.Implementation.Text_Helpers.Count_Words;
 
-   function Contains_Word
-     (Text : String;
-      Word : String)
-     return Boolean
-      renames Humanize.Parsing.Implementation.Phrase_Text_Helpers.Contains_Word;
-
    function Parse_Phrase_Pack_Summary
      (Text : String)
      return Phrase_Pack_Summary_Parse_Result

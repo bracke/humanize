@@ -14,15 +14,15 @@ package body Humanize.Catalogs is
 
    function Available
      (Context : Humanize.Contexts.Context;
-      Id      : Humanize.Messages.Message_Id)
+      Id      : Humanize.Message_Keys.Message_Id)
       return Boolean
       renames Humanize.I18N_Rendering.Available;
 
    procedure Load_Defaults
-     (Runtime : in out I18N.Runtime.Instance;
-      Result  : out I18N.Runtime.Load_Result;
-      Policy  : I18N.Runtime.Duplicate_Policy :=
-        I18N.Runtime.Reject_Duplicates)
+     (Runtime : in out Messages.Runtime.Instance;
+      Result  : out Messages.Runtime.Load_Result;
+      Policy  : Messages.Runtime.Duplicate_Policy :=
+        Messages.Runtime.Reject_Duplicates)
       renames Humanize.Catalogs.Loader.Load_Defaults;
 
 end Humanize.Catalogs;

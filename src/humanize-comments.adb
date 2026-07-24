@@ -3,7 +3,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Humanize.Bounded_Text;
 
 package body Humanize.Comments is
-   use type Humanize.Status.Status_Code;
 
    function Ok_Text (Text : String) return Humanize.Status.Text_Result
       renames Humanize.Bounded_Text.Ok_Text;
@@ -13,9 +12,6 @@ package body Humanize.Comments is
 
    function Clean (Text : String) return String
       renames Humanize.Bounded_Text.Clean;
-
-   function Image (Value : Natural) return String
-      renames Humanize.Bounded_Text.Image;
 
    function Count_Text
      (Count    : Natural;

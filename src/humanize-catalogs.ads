@@ -1,8 +1,8 @@
-with I18N.Runtime;
+with Messages.Runtime;
 
 with Humanize.Contexts;
 with Humanize.Locales;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 
 --  Public accessors for Humanize's built-in message catalogs and locale
 --  availability metadata.
@@ -60,7 +60,7 @@ package Humanize.Catalogs is
 
    function Available
      (Context : Humanize.Contexts.Context;
-      Id      : Humanize.Messages.Message_Id)
+      Id      : Humanize.Message_Keys.Message_Id)
       return Boolean;
    --  @param Context Humanize context backed by a loaded runtime.
    --  @param Id Humanize message id to resolve through locale fallback.
@@ -77,16 +77,16 @@ package Humanize.Catalogs is
    --  date, duration, compact-number, unit, frequency, rate, and list words,
    --  with long-form wording for the broad engineering-unit tail.
    --  Loading is delegated to the public
-   --  I18N.Runtime.Load_Text operation; duplicate handling follows Policy.
+   --  Messages.Runtime.Load_Text operation; duplicate handling follows Policy.
    --  Humanize never silently overrides application catalog keys (the default
    --  policy rejects duplicates), and only defines humanize.* keys.
    procedure Load_Defaults
-     (Runtime : in out I18N.Runtime.Instance;
-      Result  : out I18N.Runtime.Load_Result;
-      Policy  : I18N.Runtime.Duplicate_Policy :=
-        I18N.Runtime.Reject_Duplicates);
+     (Runtime : in out Messages.Runtime.Instance;
+      Result  : out Messages.Runtime.Load_Result;
+      Policy  : Messages.Runtime.Duplicate_Policy :=
+        Messages.Runtime.Reject_Duplicates);
    --  @param Runtime Runtime that receives the built-in catalog fragments.
-   --  @param Result Load result reported by I18N.Runtime.Load_Text.
+   --  @param Result Load result reported by Messages.Runtime.Load_Text.
    --  @param Policy Duplicate-key policy passed through to I18N.
 
 end Humanize.Catalogs;

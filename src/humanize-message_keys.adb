@@ -1,4 +1,4 @@
-package body Humanize.Messages is
+package body Humanize.Message_Keys is
 
    function Key
      (Id : Message_Id)
@@ -236,4 +236,4 @@ package body Humanize.Messages is
       end case;
    end Key;
 
-end Humanize.Messages;
+end Humanize.Message_Keys;

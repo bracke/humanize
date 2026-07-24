@@ -1,7 +1,6 @@
 with Humanize.Bounded_Text;
 
 package body Humanize.Attachments is
-   use type Humanize.Status.Status_Code;
 
    function Ok_Text (Text : String) return Humanize.Status.Text_Result
       renames Humanize.Bounded_Text.Ok_Text;

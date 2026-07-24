@@ -7,7 +7,7 @@ with Humanize.Status;
 --  Danish) using i18n selectordinal mechanics; Romance locales offer a feminine
 --  form (French "1re", Spanish "1.a", Italian "1a"). Compact renders large
 --  values as "1.2K"/"3.4M" with locale-specific suffixes and locale decimal
---  grouping. This package selects keys only and must not call I18N.Runtime
+--  grouping. This package selects keys only and must not call Messages.Runtime
 --  directly (HUM-INV-002).
 package Humanize.Numbers is
    --  Facade map:

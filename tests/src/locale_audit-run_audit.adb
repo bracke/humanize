@@ -1,6 +1,6 @@
 separate (Locale_Audit)
    procedure Run_Audit is
-      Load_Result : I18N.Runtime.Load_Result;
+      Load_Result : Messages.Runtime.Load_Result;
    begin
       Humanize.Catalogs.Load_Defaults (Runtime, Load_Result);
       if not Summary_Only and then not Failures_Only then

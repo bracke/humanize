@@ -1,5 +1,5 @@
 with Ada.Strings.Unbounded;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 
 package Humanize.Status is
 
@@ -21,7 +21,7 @@ package Humanize.Status is
    type Text_Result is record
       Status : Status_Code := Internal_Error;
       Text   : Ada.Strings.Unbounded.Unbounded_String;
-      Key    : Humanize.Messages.Message_Id := Humanize.Messages.No_Message;
+      Key    : Humanize.Message_Keys.Message_Id := Humanize.Message_Keys.No_Message;
    end record;
 
    function Is_Ok

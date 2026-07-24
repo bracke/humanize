@@ -1,5 +1,4 @@
 with "config/humanize_config.gpr";
-with "i18n.gpr";
 project Humanize is
 
    for Library_Name use "Humanize";
@@ -48,7 +47,7 @@ project Humanize is
       "Humanize.Locales",
       "Humanize.Markup",
       "Humanize.Media",
-      "Humanize.Messages",
+      "Humanize.Message_Keys",
       "Humanize.Moderation",
       "Humanize.Navigation",
       "Humanize.Notification_Preferences",
@@ -115,7 +114,7 @@ project Humanize is
    for Library_Kind use Library_Type;
 
    package Compiler is
-      for Default_Switches ("Ada") use Humanize_Config.Ada_Compiler_Switches & ("-gnat2022", "-gnatyM120", "-gnatX", "-gnatwU");
+      for Default_Switches ("Ada") use Humanize_Config.Ada_Compiler_Switches & ("-gnat2022", "-gnatyM120", "-gnatX");
    end Compiler;
 
    package Binder is

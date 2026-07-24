@@ -16,18 +16,6 @@ package body Humanize.System_Status.Support is
       return String
       renames Humanize.Bounded_Text.Result_Text;
 
-   function Invalid_Text (Text : String) return Humanize.Status.Text_Result
-      renames Humanize.Bounded_Text.Invalid_Text;
-
-   function Clean (Text : String) return String
-      renames Humanize.Bounded_Text.Clean;
-
-   function Count_Text
-     (Count    : Natural;
-      Singular : String;
-      Plural   : String)
-      return String
-      renames Humanize.Bounded_Text.Count_Text;
    function Count_Or_No_Text
      (Count    : Natural;
       Singular : String;

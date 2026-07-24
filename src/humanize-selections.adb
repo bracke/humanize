@@ -3,7 +3,7 @@ package body Humanize.Selections is
    use Ada.Strings.Unbounded;
 
    function No_Arg
-     (Key : Humanize.Messages.Message_Id)
+     (Key : Humanize.Message_Keys.Message_Id)
       return Message_Selection
    is
    begin
@@ -16,7 +16,7 @@ package body Humanize.Selections is
    end No_Arg;
 
    function Count
-     (Key   : Humanize.Messages.Message_Id;
+     (Key   : Humanize.Message_Keys.Message_Id;
       Value : Count_Value)
       return Message_Selection
    is
@@ -30,7 +30,7 @@ package body Humanize.Selections is
    end Count;
 
    function Text_Value
-     (Key   : Humanize.Messages.Message_Id;
+     (Key   : Humanize.Message_Keys.Message_Id;
       Value : String)
       return Message_Selection
    is
@@ -44,7 +44,7 @@ package body Humanize.Selections is
    end Text_Value;
 
    function Value_Suffix
-     (Key    : Humanize.Messages.Message_Id;
+     (Key    : Humanize.Message_Keys.Message_Id;
       Value  : String;
       Suffix : String)
       return Message_Selection
@@ -59,7 +59,7 @@ package body Humanize.Selections is
    end Value_Suffix;
 
    function Decimal
-     (Key          : Humanize.Messages.Message_Id;
+     (Key          : Humanize.Message_Keys.Message_Id;
       Decimal_Text : String)
       return Message_Selection
    is

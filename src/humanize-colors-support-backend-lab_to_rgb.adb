@@ -5,7 +5,6 @@ function Lab_To_RGB
       B         : Long_Float)
       return RGB_Color
    is
-      use Ada.Numerics.Long_Elementary_Functions;
       Epsilon : constant Long_Float := 216.0 / 24_389.0;
       Kappa   : constant Long_Float := 24_389.0 / 27.0;
 

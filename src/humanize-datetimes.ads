@@ -7,7 +7,7 @@ with Humanize.Status;
 --
 --  Picks a semantic key (now / yesterday / "4 hours ago" / ...) from an
 --  explicit Value and Reference time and renders it through the context's
---  i18n runtime. This package selects keys only; it must not call I18N.Runtime
+--  i18n runtime. This package selects keys only; it must not call Messages.Runtime
 --  directly (HUM-INV-002) -- rendering is delegated to Humanize.I18N_Rendering.
 package Humanize.Datetimes is
 

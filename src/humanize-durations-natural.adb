@@ -1,7 +1,7 @@
 with Ada.Strings.Unbounded;
 
 with Humanize.Bounded_Text;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 
 package body Humanize.Durations.Natural is
 
@@ -251,7 +251,7 @@ package body Humanize.Durations.Natural is
             return
               (Status => Humanize.Status.Ok,
                Text => To_Unbounded_String (Text),
-               Key => Humanize.Messages.No_Message);
+               Key => Humanize.Message_Keys.No_Message);
          end;
       elsif Options.Style = Few_Duration then
          return
@@ -261,7 +261,7 @@ package body Humanize.Durations.Natural is
                elsif Abs_Seconds < 300 then "a few minutes"
                else "a few " & To_String
                  (Format (Context, Abs_Seconds).Text)),
-            Key => Humanize.Messages.No_Message);
+            Key => Humanize.Message_Keys.No_Message);
       elsif Options.Style = Almost_Duration then
          return
            (Status => Humanize.Status.Ok,
@@ -269,7 +269,7 @@ package body Humanize.Durations.Natural is
               (Natural_Approximation_Text
                  ("almost", Abs_Seconds, Round_Up => True,
                   Options => Approximation)),
-            Key => Humanize.Messages.No_Message);
+            Key => Humanize.Message_Keys.No_Message);
       elsif Options.Style = Over_Duration then
          return
            (Status => Humanize.Status.Ok,
@@ -277,7 +277,7 @@ package body Humanize.Durations.Natural is
               (Natural_Approximation_Text
                  ("over", Abs_Seconds, Round_Up => False,
                   Options => Approximation)),
-            Key => Humanize.Messages.No_Message);
+            Key => Humanize.Message_Keys.No_Message);
       elsif Options.Style = Just_Over_Duration then
          return
            (Status => Humanize.Status.Ok,
@@ -285,7 +285,7 @@ package body Humanize.Durations.Natural is
               (Natural_Approximation_Text
                  ("just over", Abs_Seconds, Round_Up => False,
                   Options => Approximation)),
-            Key => Humanize.Messages.No_Message);
+            Key => Humanize.Message_Keys.No_Message);
       elsif Options.Style = Little_Under_Duration then
          return
            (Status => Humanize.Status.Ok,
@@ -294,17 +294,17 @@ package body Humanize.Durations.Natural is
                  ("a little under", Abs_Seconds, Round_Up => True,
                   Options => Approximation,
                   Prefer_Larger => True)),
-            Key => Humanize.Messages.No_Message);
+            Key => Humanize.Message_Keys.No_Message);
       elsif Abs_Seconds < 60 then
          return
            (Status => Humanize.Status.Ok,
             Text => To_Unbounded_String ("less than a minute"),
-            Key => Humanize.Messages.No_Message);
+            Key => Humanize.Message_Keys.No_Message);
       elsif Abs_Seconds = 1_800 and then Options.Style = Plain_Duration then
          return
            (Status => Humanize.Status.Ok,
             Text => To_Unbounded_String ("half an hour"),
-            Key => Humanize.Messages.No_Message);
+            Key => Humanize.Message_Keys.No_Message);
       elsif Options.Style = Approximate_Duration then
          declare
             Base : constant Humanize.Status.Text_Result :=
@@ -314,7 +314,7 @@ package body Humanize.Durations.Natural is
                return
                  (Status => Humanize.Status.Ok,
                   Text => To_Unbounded_String ("about half an hour"),
-                  Key => Humanize.Messages.No_Message);
+                  Key => Humanize.Message_Keys.No_Message);
             end if;
             if Base.Status /= Humanize.Status.Ok then
                return Base;
@@ -322,7 +322,7 @@ package body Humanize.Durations.Natural is
             return
               (Status => Humanize.Status.Ok,
                Text => To_Unbounded_String ("about " & To_String (Base.Text)),
-               Key => Humanize.Messages.No_Message);
+               Key => Humanize.Message_Keys.No_Message);
          end;
       else
          return Format (Context, Abs_Seconds);
@@ -401,12 +401,12 @@ package body Humanize.Durations.Natural is
             return
               (Status => Humanize.Status.Ok,
                Text => To_Unbounded_String (To_String (Base.Text) & " ago"),
-               Key => Humanize.Messages.No_Message);
+               Key => Humanize.Message_Keys.No_Message);
          when Duration_Distance_Future =>
             return
               (Status => Humanize.Status.Ok,
                Text => To_Unbounded_String ("in " & To_String (Base.Text)),
-               Key => Humanize.Messages.No_Message);
+               Key => Humanize.Message_Keys.No_Message);
       end case;
    end Duration_Distance;
 
@@ -445,7 +445,7 @@ package body Humanize.Durations.Natural is
       return
         (Status => Humanize.Status.Ok,
          Text => To_Unbounded_String (Prefix & To_String (Base.Text)),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end Natural_Duration_Detailed;
 
    procedure Natural_Duration_Into

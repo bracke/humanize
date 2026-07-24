@@ -7,14 +7,15 @@ with Check_Humanize_Policy_Support; use Check_Humanize_Policy_Support;
 with Project_Tools.Generated_Docs;
 
 package body Check_Humanize_Public_API_Generated is
+   type Constant_String_Access is access constant String;
    type Area_Info is record
-      Name      : access constant String;
+      Name      : Constant_String_Access;
       Docs      : Natural;
       Tests     : Natural;
       Examples  : Natural;
       Consumers : Natural;
       Perf      : Natural;
-      Usecase   : access constant String;
+      Usecase   : Constant_String_Access;
    end record;
 
    Areas : constant array (Positive range <>) of Area_Info :=
@@ -171,7 +172,7 @@ package body Check_Humanize_Public_API_Generated is
                Append_Line (Result);
                Append_Line (Result, "## " & Area);
                Append_Line (Result);
-               Current_Area := (others => ' ');
+               Current_Area := [others => ' '];
                Current_Area (1 .. Area'Length) := Area;
                Current_Last := Area'Length;
             end if;

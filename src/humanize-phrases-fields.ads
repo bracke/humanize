@@ -1,8 +1,4 @@
-with Humanize.Bytes;
 with Humanize.Contexts;
-with Humanize.Datetimes;
-with Humanize.Locales;
-with Humanize.Numbers;
 with Humanize.Status;
 
 --  Field-change phrase helpers for records, forms, and structured values.

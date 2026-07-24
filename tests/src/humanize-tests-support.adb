@@ -1,16 +1,16 @@
-with I18N.Runtime;
+with Messages.Runtime;
 with Humanize.Bounded_Text;
 with Humanize.Catalogs;
 
 package body Humanize.Tests.Support is
 
    --  Library-level so 'Access satisfies the accessibility of Runtime_Access.
-   Full_Runtime  : aliased I18N.Runtime.Instance;
-   Empty_Runtime : aliased I18N.Runtime.Instance;
+   Full_Runtime  : aliased Messages.Runtime.Instance;
+   Empty_Runtime : aliased Messages.Runtime.Instance;
    Loaded        : Boolean := False;
 
    procedure Ensure_Loaded is
-      Result : I18N.Runtime.Load_Result;
+      Result : Messages.Runtime.Load_Result;
    begin
       if not Loaded then
          Humanize.Catalogs.Load_Defaults (Full_Runtime, Result);

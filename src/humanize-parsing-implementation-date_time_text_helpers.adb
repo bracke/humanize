@@ -101,8 +101,6 @@ package body Humanize.Parsing.Implementation.Date_Time_Text_Helpers is
       renames Humanize.Parsing.Implementation.Calendar_Helpers.Weekday_Number;
    function Weekday_Value (Text : String) return Natural
       renames Humanize.Parsing.Implementation.Calendar_Helpers.Weekday_Value;
-   function Localized_Weekday_Value (Text : String) return Natural
-      renames Humanize.Parsing.Implementation.Date_Text_Helpers.Localized_Weekday_Value;
    function Weekday_Value_Flexible (Text : String) return Natural
       renames Humanize.Parsing.Implementation.Date_Text_Helpers.Weekday_Value_Flexible;
    function Week_Start (Value : Ada.Calendar.Time) return Ada.Calendar.Time
@@ -119,13 +117,6 @@ package body Humanize.Parsing.Implementation.Date_Time_Text_Helpers is
       Quarters : Integer)
       return Ada.Calendar.Time
       renames Humanize.Parsing.Implementation.Calendar_Helpers.Add_Quarters;
-   function Week_Number_Start
-     (Reference : Ada.Calendar.Time;
-      Week      : Natural)
-      return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Week_Number_Start;
-   function Is_Default_Business_Day (Value : Ada.Calendar.Time) return Boolean
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Is_Default_Business_Day;
    function Month_Value (Text : String) return Natural
       renames Humanize.Parsing.Implementation.Calendar_Helpers.Month_Value;
 
@@ -170,8 +161,6 @@ package body Humanize.Parsing.Implementation.Date_Time_Text_Helpers is
       Value     : out Ada.Calendar.Time)
       return Boolean
       is separate;
-   function Strip_Day_Ordinal_Suffix (Text : String) return String
-      renames Humanize.Parsing.Implementation.Date_Text_Helpers.Strip_Day_Ordinal_Suffix;
    function Parse_Day_Token (Text : String; Day : out Integer) return Boolean
       renames Humanize.Parsing.Implementation.Date_Text_Helpers.Parse_Day_Token;
    function Parse_Month_Day_Ordinal_Date
@@ -644,8 +633,6 @@ package body Humanize.Parsing.Implementation.Date_Time_Text_Helpers is
       Day   : out Ada.Calendar.Day_Number)
       return Boolean
       renames Humanize.Parsing.Implementation.Date_Text_Helpers.Month_Day_From_Text;
-   function Is_Default_Open_Hour (Value : Ada.Calendar.Time) return Boolean
-      renames Humanize.Parsing.Implementation.Date_Text_Helpers.Is_Default_Open_Hour;
    function Next_Default_Open_Hour
      (Reference : Ada.Calendar.Time;
       Hour      : out Natural)

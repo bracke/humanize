@@ -10,10 +10,10 @@ private package Humanize.Catalogs.Loader is
    --  @return Array of access values for every shipped locale tag.
 
    procedure Load_Defaults
-     (Runtime : in out I18N.Runtime.Instance;
-      Result  : out I18N.Runtime.Load_Result;
-      Policy  : I18N.Runtime.Duplicate_Policy :=
-        I18N.Runtime.Reject_Duplicates);
+     (Runtime : in out Messages.Runtime.Instance;
+      Result  : out Messages.Runtime.Load_Result;
+      Policy  : Messages.Runtime.Duplicate_Policy :=
+        Messages.Runtime.Reject_Duplicates);
    --  Load the built-in catalog fragments into Runtime.
 
 end Humanize.Catalogs.Loader;

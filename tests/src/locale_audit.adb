@@ -3,7 +3,7 @@ with Ada.Command_Line;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
-with I18N.Runtime;
+with Messages.Runtime;
 
 with Humanize.Bytes;
 with Humanize.Catalogs;
@@ -25,7 +25,7 @@ procedure Locale_Audit is
    use type Ada.Calendar.Time;
    use type Humanize.Status.Status_Code;
 
-   Runtime : aliased I18N.Runtime.Instance;
+   Runtime : aliased Messages.Runtime.Instance;
    Errors  : Natural := 0;
    Audited_Locales : Natural := 0;
 

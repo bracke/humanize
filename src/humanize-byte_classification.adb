@@ -1,9 +1,9 @@
 with Humanize.Bounded_Text;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 package body Humanize.Byte_Classification is
 
    use Humanize.Bytes;
-   use Humanize.Messages;
+   use Humanize.Message_Keys;
 
    type Unit_Range is range 1 .. 4;
    type Threshold_Array is array (Unit_Range) of Byte_Count;

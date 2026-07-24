@@ -1,11 +1,11 @@
-with Humanize.Messages;
+with Humanize.Message_Keys;
 with Humanize.Decimal_Images;
 with Humanize.Bounded_Text;
 with Humanize.Locales;
 
 package body Humanize.Number_Classification is
 
-   use Humanize.Messages;
+   use Humanize.Message_Keys;
    use Humanize.Selections;
 
    Thousand : constant Long_Long_Integer := 1_000;

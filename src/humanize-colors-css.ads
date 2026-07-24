@@ -1,4 +1,3 @@
-with Humanize.Contexts;
 with Humanize.Status;
 
 --  CSS color parsing and labeling helpers for hex, rgb, hsl, and named colors.

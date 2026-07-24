@@ -1,0 +1,40 @@
+name = "humanize_examples"
+description = "Worked examples for the humanize crate"
+version = "0.1.0-dev"
+
+authors = ["Bent Bracke"]
+maintainers = ["Bent Bracke <bent@bracke.dk>"]
+maintainers-logins = ["bracke"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = ["humanize"]
+project-files = ["examples.gpr"]
+
+executables = [
+   "humanize_demo",
+   "parse_demo",
+   "bounded_demo",
+   "color_demo",
+   "domain_demo",
+   "system_status_demo",
+   "ui_labels_demo",
+   "security_data_demo",
+   "workflow_ops_demo",
+   "product_details_demo",
+   "public_surface_demo",
+]
+
+[[depends-on]]
+gnat_native = "=15.2.1"
+
+[[depends-on]]
+humanize = "*"
+
+[[pins]]
+humanize = { path = ".." }
+
+# Build dependencies in the development profile (-Og) too, not the default
+# release (-O3), so this root and the parent share humanize object files
+# rather than forcing each other into full rebuilds.
+[build-profiles]
+"*" = "development"

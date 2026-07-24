@@ -1,16 +1,7 @@
 with Ada.Calendar;
 
-with Humanize.Bytes;
-with Humanize.Colors;
 with Humanize.Durations;
-with Humanize.Frequencies;
-with Humanize.Numbers;
-with Humanize.Phrases;
-with Humanize.Rates;
 with Humanize.Status;
-with Humanize.Strings;
-with Humanize.Units;
-with Humanize.Values;
 
 --  Date and time parsers for human-entered absolute and relative labels.
 package Humanize.Parsing.Date_Times is

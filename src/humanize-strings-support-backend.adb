@@ -10,7 +10,6 @@ with Humanize.Strings.Names;
 with Humanize.Strings.Paths;
 
 package body Humanize.Strings.Support.Backend is
-   use type Humanize.Status.Status_Code;
 
    function Is_Upper (C : Character) return Boolean
       renames Humanize.Bounded_Text.Is_ASCII_Uppercase;
@@ -36,14 +35,8 @@ package body Humanize.Strings.Support.Backend is
       end if;
    end Upper;
 
-   function Is_Alpha (C : Character) return Boolean
-      renames Humanize.Bounded_Text.Is_ASCII_Letter;
-
    function Is_Digit (C : Character) return Boolean
       renames Humanize.Bounded_Text.Is_Digit;
-
-   function Digit_Value (C : Character) return Natural
-      renames Humanize.Bounded_Text.Digit_Value;
 
    function Is_Alnum (C : Character) return Boolean
       renames Humanize.Bounded_Text.Is_ASCII_Alphanumeric;
@@ -56,9 +49,6 @@ package body Humanize.Strings.Support.Backend is
 
    function Result_Text (Result : Humanize.Status.Text_Result) return String
       renames Humanize.Bounded_Text.Result_Text;
-
-   function Ends_With (Text, Suffix : String) return Boolean
-      renames Humanize.Bounded_Text.Ends_With;
 
    function Truncate
      (Text      : String;
@@ -197,20 +187,6 @@ package body Humanize.Strings.Support.Backend is
      (Text : String)
       return Humanize.Status.Text_Result
       renames Humanize.Strings.Identifiers.Humanize_String;
-
-   function Last_Index
-     (Text : String;
-      Ch   : Character)
-      return Natural
-   is
-   begin
-      for Index in reverse Text'Range loop
-         if Text (Index) = Ch then
-            return Index;
-         end if;
-      end loop;
-      return 0;
-   end Last_Index;
 
    function Deconstantize
      (Text : String)
@@ -446,9 +422,6 @@ package body Humanize.Strings.Support.Backend is
    function Is_Unicode_Combining_Mark (Code : Natural) return Boolean
       is separate;
 
-   function Is_Unicode_Default_Ignorable (Code : Natural) return Boolean
-      is separate;
-
    function Is_Unicode_Space (Code : Natural) return Boolean
       is separate;
 
@@ -460,57 +433,6 @@ package body Humanize.Strings.Support.Backend is
 
    function Is_Unicode_Word_Continuation (Code : Natural) return Boolean is
      (Is_Unicode_Word_Start (Code) or else Is_Unicode_Combining_Mark (Code));
-
-   function Is_Internal_Word_Connector (Code : Natural) return Boolean is
-     (Code = Character'Pos (''') or else Code = Character'Pos ('-')
-      or else Code = 16#2019# or else Code = 16#02BC#);
-
-   function Is_Sentence_Terminator (Code : Natural) return Boolean is
-     (Code = Character'Pos ('.') or else Code = Character'Pos ('?')
-      or else Code = Character'Pos ('!') or else Code = 16#061F#
-      or else Code = 16#06D4# or else Code = 16#0964#
-      or else Code = 16#0965# or else Code = 16#2026#
-      or else Code = 16#3002# or else Code = 16#FF01#
-      or else Code = 16#FF1F#);
-
-   function Is_Line_Break (Code : Natural) return Boolean is
-     (Code = 16#000A# or else Code = 16#000D# or else Code = 16#0085#
-      or else Code = 16#2028#);
-
-   function Is_Paragraph_Break (Code : Natural) return Boolean is
-     (Code = 16#2029#);
-
-   function Is_Wide_Code_Point (Code : Natural) return Boolean
-      is separate;
-
-   function Unicode_Display_Cell_Width (Code : Natural) return Natural is
-   begin
-      if Code = 0
-        or else Code < 16#20#
-        or else (Code in 16#007F# .. 16#009F#)
-        or else Is_Unicode_Combining_Mark (Code)
-        or else Is_Unicode_Default_Ignorable (Code)
-      then
-         return 0;
-      elsif Is_Wide_Code_Point (Code) then
-         return 2;
-      else
-         return 1;
-      end if;
-   end Unicode_Display_Cell_Width;
-
-   function Next_Code_Point_Is_Word_Start
-     (Text  : String;
-      Index : Natural)
-      return Boolean
-   is
-      Width : Positive;
-   begin
-      if Index > Text'Last then
-         return False;
-      end if;
-      return Is_Unicode_Word_Start (UTF8_Code_Point (Text, Index, Width));
-   end Next_Code_Point_Is_Word_Start;
 
    function Text_Metrics
      (Text : String)

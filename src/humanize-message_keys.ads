@@ -1,6 +1,6 @@
 --  Stable semantic message identifiers and catalog keys shared by public
 --  humanizers and the internal I18N rendering bridge.
-package Humanize.Messages is
+package Humanize.Message_Keys is
    pragma Preelaborate;
 
    --  Stable semantic message identifiers used by Humanize classifiers.
@@ -138,4 +138,4 @@ package Humanize.Messages is
    --  @param Id Semantic message identifier.
    --  @return Stable catalog key for Id, or the empty string for No_Message.
 
-end Humanize.Messages;
+end Humanize.Message_Keys;

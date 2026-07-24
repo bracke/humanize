@@ -24,65 +24,65 @@ package body Check_Humanize_Release is
    Sibling_Build_Preflight_Failed : Boolean := False;
 
    Alr_Build_Args : constant Argument_List :=
-     (1 => new String'("build"));
+     [1 => new String'("build")];
    Alr_Test_Args : constant Argument_List :=
-     (1 => new String'("test"));
+     [1 => new String'("test")];
    Build_Tests_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
       3 => new String'("gprbuild"),
       4 => new String'("-P"),
-      5 => new String'("tests.gpr"));
+      5 => new String'("tests.gpr")];
    Exec_Tests_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
-      3 => new String'("./bin/tests"));
+      3 => new String'("./bin/tests")];
    Exec_Perf_Smoke_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
-      3 => new String'("./bin/perf_smoke"));
+      3 => new String'("./bin/perf_smoke")];
    Build_Examples_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
       3 => new String'("gprbuild"),
       4 => new String'("-P"),
-      5 => new String'("examples/examples.gpr"));
+      5 => new String'("examples/examples.gpr")];
    Build_Public_API_Consumer_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
       3 => new String'("gprbuild"),
       4 => new String'("-P"),
-      5 => new String'("tests/public_api_consumer/public_api_consumer.gpr"));
+      5 => new String'("tests/public_api_consumer/public_api_consumer.gpr")];
    Exec_Public_API_Consumer_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
-      3 => new String'("./tests/public_api_consumer/bin/public_api_consumer"));
+      3 => new String'("./tests/public_api_consumer/bin/public_api_consumer")];
    Exec_Public_API_Formatting_Consumer_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
-      3 => new String'("./tests/public_api_consumer/bin/public_api_formatting_consumer"));
+      3 => new String'("./tests/public_api_consumer/bin/public_api_formatting_consumer")];
    Exec_Public_API_Parsing_Consumer_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
-      3 => new String'("./tests/public_api_consumer/bin/public_api_parsing_consumer"));
+      3 => new String'("./tests/public_api_consumer/bin/public_api_parsing_consumer")];
    Exec_Public_API_Color_Consumer_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
-      3 => new String'("./tests/public_api_consumer/bin/public_api_color_consumer"));
+      3 => new String'("./tests/public_api_consumer/bin/public_api_color_consumer")];
    Exec_Public_API_Domain_Consumer_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
-      3 => new String'("./tests/public_api_consumer/bin/public_api_domain_consumer"));
+      3 => new String'("./tests/public_api_consumer/bin/public_api_domain_consumer")];
    Exec_Public_API_Bounded_Consumer_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
-      3 => new String'("./tests/public_api_consumer/bin/public_api_bounded_consumer"));
+      3 => new String'("./tests/public_api_consumer/bin/public_api_bounded_consumer")];
    Gnatdoc_Args : constant Argument_List :=
-     (1 => new String'("exec"),
+     [1 => new String'("exec"),
       2 => new String'("--"),
       3 => new String'("gnatdoc"),
       4 => new String'("-P"),
-      5 => new String'("humanize.gpr"));
+      5 => new String'("humanize.gpr")];
 
    procedure Error
      (Errors  : in out Natural;
@@ -281,6 +281,7 @@ package body Check_Humanize_Release is
    end record;
 
    pragma Warnings (Off, "not dispatching*");
+   overriding
    procedure Finalize
      (Guard : in out Workspace_Build_Lock_Guard);
    pragma Warnings (On, "not dispatching*");
@@ -292,6 +293,7 @@ package body Check_Humanize_Release is
    pragma Warnings (On, "not dispatching*");
 
    pragma Warnings (Off, "not dispatching*");
+   overriding
    procedure Finalize
      (Guard : in out Workspace_Build_Lock_Guard)
    is
@@ -460,10 +462,11 @@ package body Check_Humanize_Release is
       Errors : in out Natural)
    is
       Args : Argument_List (1 .. 0);
+      type Constant_String_Access is access constant String;
       type Example_Output_Check is record
-         Program     : access constant String;
-         Fence_Label : access constant String;
-         Label       : access constant String;
+         Program     : Constant_String_Access;
+         Fence_Label : Constant_String_Access;
+         Label       : Constant_String_Access;
       end record;
       Checks : constant array (Positive range <>) of Example_Output_Check :=
         [(Program     => new String'("humanize_demo"),

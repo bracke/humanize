@@ -71,10 +71,10 @@ procedure Check_Humanize is
 
    procedure Require_Alire_GNAT_15 is
       Args   : constant GNAT.OS_Lib.Argument_List :=
-        (1 => new String'("exec"),
+        [1 => new String'("exec"),
          2 => new String'("--"),
          3 => new String'("gnatls"),
-         4 => new String'("--version"));
+         4 => new String'("--version")];
       Output : Unbounded_String;
       Status : Integer;
    begin
@@ -107,15 +107,15 @@ procedure Check_Humanize is
 
    procedure Run_Locale_Audit_Report is
       Build_Tests_Args : constant GNAT.OS_Lib.Argument_List :=
-        (1 => new String'("exec"),
+        [1 => new String'("exec"),
          2 => new String'("--"),
          3 => new String'("gprbuild"),
          4 => new String'("-P"),
-         5 => new String'("tests.gpr"));
+         5 => new String'("tests.gpr")];
       Exec_Audit_Args : constant GNAT.OS_Lib.Argument_List :=
-        (1 => new String'("exec"),
+        [1 => new String'("exec"),
          2 => new String'("--"),
-         3 => new String'("./bin/locale_audit"));
+         3 => new String'("./bin/locale_audit")];
       Alr_Path : constant String := Project_Tools.Processes.Locate_Command ("alr");
 
       function Run_Audit_Command

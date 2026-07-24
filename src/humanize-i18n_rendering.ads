@@ -1,19 +1,19 @@
 with Humanize.Contexts;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 with Humanize.Selections;
 with Humanize.Status;
 
 --  The single boundary between Humanize and the i18n runtime.
 --
---  This is the only package permitted to call I18N.Runtime, I18N.Arguments, or
---  I18N.Result.Output_Text (HUM-INV-002, HUM-INV-003). It also performs the
+--  This is the only package permitted to call Messages.Runtime, Messages.Arguments, or
+--  Messages.Result.Output_Text (HUM-INV-002, HUM-INV-003). It also performs the
 --  I18N-status to Humanize-status mapping.
 private package Humanize.I18N_Rendering is
 
    --  True when Key resolves through the context's locale fallback chain.
    function Available
      (Context : Humanize.Contexts.Context;
-      Key     : Humanize.Messages.Message_Id)
+      Key     : Humanize.Message_Keys.Message_Id)
       return Boolean;
 
    --  Return a context backed by Humanize's built-in catalog runtime. Loaded is

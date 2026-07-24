@@ -1,6 +1,6 @@
 with Ada.Strings.Unbounded;
 with I18N.Locales;
-with I18N.Runtime;
+with Messages.Runtime;
 
 package Humanize.Contexts is
 
@@ -9,7 +9,7 @@ package Humanize.Contexts is
    --  The referenced runtime must outlive every Humanize context that uses it.
    --  Humanize never initializes, finalizes, or mutates the runtime during
    --  formatting.
-   type Runtime_Access is not null access constant I18N.Runtime.Instance;
+   type Runtime_Access is not null access constant Messages.Runtime.Instance;
 
    type Context is private;
 

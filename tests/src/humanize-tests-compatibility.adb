@@ -28,7 +28,6 @@ package body Humanize.Tests.Compatibility is
    use type Humanize.Colors.RGB_Color;
    use type Humanize.Durations.Duration_Microseconds;
    use type Humanize.Durations.Duration_Seconds;
-   use type Humanize.Frequencies.Occurrence_Count;
    use type Humanize.Parsing.Selection_Summary_Kind;
    use type Humanize.Parsing.Validation_Severity_Label;
    use type Humanize.Phrases.Phrase_Severity;

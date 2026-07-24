@@ -15,9 +15,6 @@ package body Humanize.Strings.Identifiers is
    function Is_Digit (C : Character) return Boolean
       renames Humanize.Bounded_Text.Is_Digit;
 
-   function Digit_Value (C : Character) return Natural
-      renames Humanize.Bounded_Text.Digit_Value;
-
    function Is_Alnum (C : Character) return Boolean
       renames Humanize.Bounded_Text.Is_ASCII_Alphanumeric;
 

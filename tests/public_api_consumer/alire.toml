@@ -1,0 +1,35 @@
+name = "humanize_public_api_consumer"
+description = "External-consumer smoke build for humanize"
+version = "0.1.0-dev"
+
+authors = ["Bent Bracke"]
+maintainers = ["Bent Bracke <bent@bracke.dk>"]
+maintainers-logins = ["bracke"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = ["humanize"]
+project-files = ["public_api_consumer.gpr"]
+
+executables = [
+   "public_api_consumer",
+   "public_api_formatting_consumer",
+   "public_api_parsing_consumer",
+   "public_api_color_consumer",
+   "public_api_domain_consumer",
+   "public_api_bounded_consumer",
+]
+
+[[depends-on]]
+gnat_native = "=15.2.1"
+
+[[depends-on]]
+humanize = "*"
+
+[[pins]]
+humanize = { path = "../.." }
+
+# Build dependencies in the development profile (-Og) too, not the default
+# release (-O3), so this root and the parent share humanize object files
+# rather than forcing each other into full rebuilds.
+[build-profiles]
+"*" = "development"

@@ -1,183 +1,20 @@
-with Ada.Calendar.Formatting;
-with Ada.Strings.Unbounded;
 
-with Humanize.Contexts;
-with Humanize.Datetimes;
-with Humanize.I18N_Rendering;
-with Humanize.Locales;
-with Humanize.Messages;
-with Humanize.Bounded_Text;
-with Humanize.Parsing.Implementation.Calendar_Helpers;
 with Humanize.Parsing.Implementation.Color_Text_Helpers;
 with Humanize.Parsing.Implementation.Compound_Unit_Text_Helpers;
 with Humanize.Parsing.Implementation.Count_Text_Helpers;
 with Humanize.Parsing.Implementation.Date_Time_Text_Helpers;
-with Humanize.Parsing.Implementation.Date_Text_Helpers;
 with Humanize.Parsing.Implementation.Duration_Text_Helpers;
 with Humanize.Parsing.Implementation.Domain_Label_Text_Helpers;
 with Humanize.Parsing.Implementation.Number_Text_Helpers;
-with Humanize.Parsing.Implementation.Numeric_Text_Helpers;
-with Humanize.Parsing.Implementation.Phrase_Text_Helpers;
 with Humanize.Parsing.Implementation.Scalar_Text_Helpers;
 with Humanize.Parsing.Implementation.Scheduling_Text_Helpers;
 with Humanize.Parsing.Implementation.String_Text_Helpers;
-with Humanize.Parsing.Implementation.Text_Helpers;
 with Humanize.Parsing.Implementation.Unit_Text_Helpers;
-with Humanize.Parsing.Aliases;
 with Humanize.Parsing.Bytes;
 with Humanize.Parsing.Diagnostics;
-with Humanize.Parsing.Duration_Aliases;
-with Humanize.Parsing.Frequency_Aliases;
 with Humanize.Parsing.Normalization;
 with Humanize.Parsing.Success_Labels;
-with Humanize.Parsing.Support;
 package body Humanize.Parsing.Implementation.Support is
-   use type Humanize.Status.Status_Code;
-   use type Humanize.Durations.Duration_Seconds;
-   use type Humanize.Colors.RGB_Color;
-   use type Ada.Calendar.Time;
-   use Ada.Strings.Unbounded;
-
-   function Result_Text (Result : Humanize.Status.Text_Result) return String
-      renames Humanize.Bounded_Text.Result_Text;
-
-   function Trim (Text : String) return String
-      renames Humanize.Bounded_Text.Clean;
-
-   function No_Space (Image : String) return String
-      renames Humanize.Bounded_Text.No_Space;
-
-   function Integer_Text (Value : Long_Long_Integer) return String
-      renames Humanize.Bounded_Text.Image;
-
-   function B (Hex : String) return String
-      renames Humanize.Bounded_Text.Hex_Bytes;
-
-   function U (Code : Natural) return String
-      renames Humanize.Bounded_Text.UTF8_Code_Point;
-
-   function Is_Digit (Item : Character) return Boolean
-      renames Humanize.Bounded_Text.Is_Digit;
-
-   function Digit_Value (Item : Character) return Natural
-      renames Humanize.Bounded_Text.Digit_Value;
-
-   function Is_Space (Item : Character) return Boolean
-      renames Humanize.Bounded_Text.Is_Space;
-
-   function Is_ASCII_Letter (Item : Character) return Boolean
-      renames Humanize.Bounded_Text.Is_ASCII_Letter;
-
-   function Is_Upper (Item : Character) return Boolean
-      renames Humanize.Bounded_Text.Is_ASCII_Uppercase;
-
-   function Is_Lower (Item : Character) return Boolean
-      renames Humanize.Bounded_Text.Is_ASCII_Lowercase;
-
-   function Is_Alphanumeric (Item : Character) return Boolean
-      renames Humanize.Bounded_Text.Is_Alphanumeric;
-
-   function Starts_With (Text, Prefix : String) return Boolean
-      renames Humanize.Bounded_Text.Starts_With;
-
-   function Ok_Text (Text : String) return Humanize.Status.Text_Result
-      renames Humanize.Bounded_Text.Ok_Text;
-
-   function Status_Text
-     (Status : Humanize.Status.Status_Code;
-      Text   : String)
-      return Humanize.Status.Text_Result
-      renames Humanize.Bounded_Text.Status_Text;
-
-   function Image (Value : Natural) return String
-      renames Humanize.Bounded_Text.Image;
-
-   procedure Copy_Text
-     (Result  : Humanize.Status.Text_Result;
-      Target  : in out String;
-      Written : out Natural;
-      Status  : out Humanize.Status.Status_Code)
-      renames Humanize.Bounded_Text.Copy_Text;
-
-   function Lower (Text : String) return String
-      renames Humanize.Bounded_Text.Lower_Text;
-
-   function Upper (Text : String) return String
-      renames Humanize.Bounded_Text.Upper_Text;
-
-   function Upper_Char (Item : Character) return Character
-      renames Humanize.Bounded_Text.Upper_Char;
-
-   function First_Alphabetic_Token_Last (Text : String) return Natural
-      renames Humanize.Parsing.Implementation.Text_Helpers.First_Alphabetic_Token_Last;
-
-   Alias_Separator : String
-      renames Humanize.Parsing.Aliases.Alias_Separator;
-
-   function Has_Alias
-     (Item    : String;
-      Aliases : String)
-      return Boolean
-      renames Humanize.Parsing.Aliases.Has_Alias;
-
-   function Alias_Prefix_Length
-     (Item    : String;
-      Aliases : String)
-      return Natural
-      renames Humanize.Parsing.Aliases.Alias_Prefix_Length;
-
-   function Is_Alnum (Item : Character) return Boolean
-      renames Humanize.Parsing.Implementation.Text_Helpers.Is_Alnum;
-
-   function Is_Lower_Alnum_Or
-     (Item      : Character;
-      Separator : Character)
-      return Boolean
-      renames Humanize.Parsing.Implementation.Text_Helpers.Is_Lower_Alnum_Or;
-
-   function Word_Count (Text : String) return Natural
-      renames Humanize.Parsing.Implementation.Text_Helpers.Word_Count;
-
-   function Lowercase_Label (Text : String) return Boolean
-      renames Humanize.Parsing.Implementation.Text_Helpers.Lowercase_Label;
-
-   function Uppercase_Label (Text : String) return Boolean
-      renames Humanize.Parsing.Implementation.Text_Helpers.Uppercase_Label;
-
-   function Title_Case_Label (Text : String) return Boolean
-      renames Humanize.Parsing.Implementation.Text_Helpers.Title_Case_Label;
-
-   function ASCII_Only_Label (Text : String) return Boolean
-      renames Humanize.Parsing.Implementation.Text_Helpers.ASCII_Only_Label;
-
-   function Find_Substring (Text, Pattern : String) return Natural
-      renames Humanize.Bounded_Text.Index_Text;
-
-   function Has_Spaced_Token (Text, Token : String) return Boolean
-      renames Humanize.Parsing.Implementation.Text_Helpers.Has_Spaced_Token;
-
-   function Starts_At (Text : String; Index : Natural; Pattern : String)
-      return Boolean
-      renames Humanize.Parsing.Implementation.Text_Helpers.Starts_At;
-
-   function Normalize_Native_Digits (Text : String) return String
-      renames Humanize.Parsing.Support.Normalize_Native_Digits;
-
-   function Has_Decimal_Comma (Text : String) return Boolean
-      renames Humanize.Parsing.Support.Has_Decimal_Comma;
-
-   function Rounded_Nonnegative (Value : Long_Float) return Long_Long_Integer
-      renames Humanize.Parsing.Support.Rounded_Nonnegative;
-
-   function Split_Number_Unit
-     (Text        : String;
-      Number_Text : out Natural;
-      Unit_Start  : out Natural)
-      return Boolean
-      renames Humanize.Parsing.Support.Split_Number_Unit;
-
-   function Scan_Number_End (Text : String) return Natural
-      renames Humanize.Parsing.Support.Scan_Number_End;
 
    function Normalize_Number_Text
      (Text : String)
@@ -264,12 +101,6 @@ package body Humanize.Parsing.Implementation.Support is
       return Byte_Parse_Result
       renames Humanize.Parsing.Bytes.Scan_Bytes;
 
-   function Unit_Seconds (Unit : String) return Long_Long_Integer
-      renames Humanize.Parsing.Implementation.Duration_Text_Helpers.Unit_Seconds;
-
-   function Unit_Microseconds (Unit : String) return Long_Long_Integer
-      renames Humanize.Parsing.Implementation.Duration_Text_Helpers.Unit_Microseconds;
-
    function Parse_Duration
      (Text : String)
       return Duration_Parse_Result
@@ -289,83 +120,6 @@ package body Humanize.Parsing.Implementation.Support is
      (Text : String)
       return Duration_Parse_Result
       renames Humanize.Parsing.Implementation.Duration_Text_Helpers.Scan_Lenient_Duration;
-
-   function Day_Start (Value : Ada.Calendar.Time) return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Day_Start;
-
-   function Days_In_Month
-     (Year  : Ada.Calendar.Year_Number;
-      Month : Ada.Calendar.Month_Number)
-      return Ada.Calendar.Day_Number
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Days_In_Month;
-
-   function Add_Calendar_Days
-     (Value : Ada.Calendar.Time;
-      Days  : Integer)
-      return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Add_Calendar_Days;
-
-   function Add_Months
-     (Value  : Ada.Calendar.Time;
-      Months : Integer)
-      return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Add_Months;
-
-   function Add_Years
-     (Value : Ada.Calendar.Time;
-      Years : Integer)
-      return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Add_Years;
-
-   function Month_Start (Value : Ada.Calendar.Time) return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Month_Start;
-
-   function Year_Start (Value : Ada.Calendar.Time) return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Year_Start;
-
-   function Weekday_Number
-     (Day : Ada.Calendar.Formatting.Day_Name)
-      return Natural
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Weekday_Number;
-
-   function Weekday_Value (Text : String) return Natural
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Weekday_Value;
-
-   function Localized_Weekday_Value (Text : String) return Natural
-      renames Humanize.Parsing.Implementation.Date_Text_Helpers.Localized_Weekday_Value;
-
-   function Weekday_Value_Flexible (Text : String) return Natural
-      renames Humanize.Parsing.Implementation.Date_Text_Helpers.Weekday_Value_Flexible;
-
-   function Week_Start (Value : Ada.Calendar.Time) return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Week_Start;
-
-   function Quarter_Start (Value : Ada.Calendar.Time) return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Quarter_Start;
-
-   function Quarter_Start
-     (Year    : Ada.Calendar.Year_Number;
-      Quarter : Natural)
-      return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Quarter_Start;
-
-   function Add_Quarters
-     (Value    : Ada.Calendar.Time;
-      Quarters : Integer)
-      return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Add_Quarters;
-
-   function Week_Number_Start
-     (Reference : Ada.Calendar.Time;
-      Week      : Natural)
-      return Ada.Calendar.Time
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Week_Number_Start;
-
-   function Is_Default_Business_Day (Value : Ada.Calendar.Time) return Boolean
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Is_Default_Business_Day;
-
-   function Month_Value (Text : String) return Natural
-      renames Humanize.Parsing.Implementation.Calendar_Helpers.Month_Value;
 
    function Parse_Natural_Date
      (Reference : Ada.Calendar.Time;
@@ -492,22 +246,6 @@ package body Humanize.Parsing.Implementation.Support is
      (Text : String)
       return Counted_Noun_Parse_Result
       renames Humanize.Parsing.Implementation.Count_Text_Helpers.Scan_Counted_Noun;
-
-   function Parse_Number_And_Tail
-     (Text   : String;
-      Value  : out Long_Float;
-      Tail   : out Unbounded_String)
-      return Boolean
-      renames Humanize.Parsing.Implementation.Numeric_Text_Helpers.Parse_Number_And_Tail;
-
-   procedure Store
-     (Source : String;
-      Target : out String;
-      Length : out Natural)
-      renames Humanize.Parsing.Implementation.Numeric_Text_Helpers.Store;
-
-   function Number_Token_End (Text : String) return Natural
-      renames Humanize.Parsing.Implementation.Numeric_Text_Helpers.Number_Token_End;
 
    function Parse_Number_Range
      (Text : String)
@@ -805,12 +543,6 @@ package body Humanize.Parsing.Implementation.Support is
      (Text : String)
       return Date_Comparison_Parse_Result
       renames Humanize.Parsing.Implementation.Date_Time_Text_Helpers.Scan_Date_Comparison;
-
-   function Parse_Natural_Field
-     (Text  : String;
-      Value : out Natural)
-      return Boolean
-      renames Humanize.Parsing.Implementation.Numeric_Text_Helpers.Parse_Natural_Field;
 
    function Parse_Palette_Contrast_Matrix
      (Text : String)

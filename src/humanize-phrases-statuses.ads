@@ -1,8 +1,4 @@
-with Humanize.Bytes;
 with Humanize.Contexts;
-with Humanize.Datetimes;
-with Humanize.Locales;
-with Humanize.Numbers;
 with Humanize.Status;
 
 --  Status phrase helpers for progress, health, availability, and workflow

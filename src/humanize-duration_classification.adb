@@ -1,9 +1,9 @@
-with Humanize.Messages;
+with Humanize.Message_Keys;
 
 package body Humanize.Duration_Classification is
 
    use Humanize.Durations;
-   use Humanize.Messages;
+   use Humanize.Message_Keys;
 
    function Size (Unit : Duration_Unit) return Duration_Seconds is
      (case Unit is

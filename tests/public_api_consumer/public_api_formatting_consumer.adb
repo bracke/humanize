@@ -1,7 +1,7 @@
 with Ada.Command_Line;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with I18N.Runtime;
+with Messages.Runtime;
 
 with Humanize.Bounded_Text;
 with Humanize.Bytes;
@@ -23,7 +23,7 @@ with Public_API_Consumer_Runtime;
 procedure Public_API_Formatting_Consumer is
    use type Humanize.Status.Status_Code;
 
-   Loaded : I18N.Runtime.Load_Result;
+   Loaded : Messages.Runtime.Load_Result;
    Errors : Natural := 0;
 
    procedure Check (Result : Humanize.Status.Text_Result) is

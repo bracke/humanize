@@ -1,5 +1,5 @@
 with Humanize.I18N_Rendering;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 with Humanize.Selections;
 with Humanize.Bounded_Text;
 
@@ -22,7 +22,7 @@ package body Humanize.Frequencies is
       Count   : Occurrence_Count)
       return Humanize.Status.Text_Result
    is
-      use Humanize.Messages;
+      use Humanize.Message_Keys;
       Selection : Humanize.Selections.Message_Selection;
    begin
       case Count is

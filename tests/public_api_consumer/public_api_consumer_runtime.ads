@@ -1,5 +1,5 @@
-with I18N.Runtime;
+with Messages.Runtime;
 
 package Public_API_Consumer_Runtime is
-   Runtime : aliased I18N.Runtime.Instance;
+   Runtime : aliased Messages.Runtime.Instance;
 end Public_API_Consumer_Runtime;

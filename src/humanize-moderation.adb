@@ -2,7 +2,6 @@
 with Humanize.Bounded_Text;
 
 package body Humanize.Moderation is
-   use type Humanize.Status.Status_Code;
 
    function Image (Value : Natural) return String
       renames Humanize.Bounded_Text.Image;

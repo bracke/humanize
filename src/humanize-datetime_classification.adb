@@ -1,8 +1,8 @@
-with Humanize.Messages;
+with Humanize.Message_Keys;
 
 package body Humanize.Datetime_Classification is
 
-   use Humanize.Messages;
+   use Humanize.Message_Keys;
    use Humanize.Selections;
    use type Ada.Calendar.Time;
 

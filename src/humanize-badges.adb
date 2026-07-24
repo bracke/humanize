@@ -1,7 +1,6 @@
 with Humanize.Bounded_Text;
 
 package body Humanize.Badges is
-   use type Humanize.Status.Status_Code;
 
    function Ok_Text (Text : String) return Humanize.Status.Text_Result
       renames Humanize.Bounded_Text.Ok_Text;
@@ -14,13 +13,6 @@ package body Humanize.Badges is
 
    function Image (Value : Natural) return String
       renames Humanize.Bounded_Text.Image;
-
-   function Count_Text
-     (Count    : Natural;
-      Singular : String;
-      Plural   : String)
-      return String
-      renames Humanize.Bounded_Text.Count_Text;
 
    function Count_Or_No_Text
      (Count    : Natural;

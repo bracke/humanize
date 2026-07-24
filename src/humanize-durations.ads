@@ -7,7 +7,7 @@ with Humanize.Status;
 --
 --  Renders the largest useful whole unit (e.g. "1 hour", "90 seconds" ->
 --  "1 minute"). Multi-unit lists are deferred. This package selects keys only;
---  it must not call I18N.Runtime directly (HUM-INV-002).
+--  it must not call Messages.Runtime directly (HUM-INV-002).
 package Humanize.Durations is
    --  Facade map:
    --  * Humanize.Durations.Formatting: duration and progress formatting.

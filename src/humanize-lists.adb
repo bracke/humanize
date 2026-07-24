@@ -1,7 +1,7 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Humanize.I18N_Rendering;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 with Humanize.Selections;
 with Humanize.Bounded_Text;
 
@@ -267,7 +267,7 @@ package body Humanize.Lists is
    function Conjunction (Context : Humanize.Contexts.Context) return String is
       Result : constant Humanize.Status.Text_Result :=
         Humanize.I18N_Rendering.Render
-          (Context, Humanize.Selections.No_Arg (Humanize.Messages.List_And));
+          (Context, Humanize.Selections.No_Arg (Humanize.Message_Keys.List_And));
    begin
       if Result.Status = Humanize.Status.Ok then
          return Result_Text (Result);
@@ -327,10 +327,10 @@ package body Humanize.Lists is
       Count   : Positive)
       return Humanize.Status.Text_Result
    is
-      Key : constant Humanize.Messages.Message_Id :=
+      Key : constant Humanize.Message_Keys.Message_Id :=
         (if Count = 1
-         then Humanize.Messages.List_Other
-         else Humanize.Messages.List_Others);
+         then Humanize.Message_Keys.List_Other
+         else Humanize.Message_Keys.List_Others);
    begin
       return Humanize.I18N_Rendering.Render
         (Context,

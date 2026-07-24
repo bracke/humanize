@@ -12,8 +12,6 @@ package body Humanize.Numbers.Spellout_Data is
    --  locale fragments. Keep formatting/parsing behavior in the caller
    --  packages; do not move table data into public facades to reduce size.
 
-   U_A_Acute : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#A1#);
    U_A_Ring : constant String :=
      Character'Val (16#C3#) & Character'Val (16#A5#);
    U_A_Umlaut : constant String :=
@@ -30,8 +28,6 @@ package body Humanize.Numbers.Spellout_Data is
      Character'Val (16#C3#) & Character'Val (16#A8#);
    U_E_Umlaut : constant String :=
      Character'Val (16#C3#) & Character'Val (16#AB#);
-   U_I_Acute : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#AD#);
    U_I_Dotless : constant String :=
      Character'Val (16#C4#) & Character'Val (16#B1#);
    U_O_Acute : constant String :=
@@ -46,8 +42,6 @@ package body Humanize.Numbers.Spellout_Data is
      Character'Val (16#C3#) & Character'Val (16#9F#);
    U_S_Cedilla : constant String :=
      Character'Val (16#C5#) & Character'Val (16#9F#);
-   U_U_Acute : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#BA#);
    U_U_Umlaut : constant String :=
      Character'Val (16#C3#) & Character'Val (16#BC#);
 

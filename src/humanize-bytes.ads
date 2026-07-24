@@ -5,7 +5,7 @@ with Humanize.Status;
 --
 --  Humanize chooses the byte unit and prepares a locale-neutral numeric value;
 --  i18n renders the number and unit text through the catalog.
---  This package selects keys only; it must not call I18N.Runtime directly
+--  This package selects keys only; it must not call Messages.Runtime directly
 --  (HUM-INV-002).
 package Humanize.Bytes is
 

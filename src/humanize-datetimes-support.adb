@@ -4,7 +4,7 @@ with Ada.Strings.Unbounded;
 with Humanize.Datetime_Classification;
 with Humanize.I18N_Rendering;
 with Humanize.Locales;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 with Humanize.Selections;
 with Humanize.Datetimes.Support.Relative_Locales;
 with Humanize.Bounded_Text;
@@ -13,10 +13,6 @@ package body Humanize.Datetimes.Support is
 
    use type Ada.Calendar.Time;
    use type Humanize.Status.Status_Code;
-   use type Humanize.Selections.Argument_Kind;
-
-   function No_Space (Image : String) return String
-      renames Humanize.Bounded_Text.No_Space;
 
    function Natural_Text (Value : Natural) return String
       renames Humanize.Bounded_Text.Image;
@@ -49,7 +45,7 @@ package body Humanize.Datetimes.Support is
       Selection : Humanize.Selections.Message_Selection)
       return Humanize.Selections.Message_Selection
    is
-      use Humanize.Messages;
+      use Humanize.Message_Keys;
    begin
       case Selection.Key is
          when Datetime_Day_Previous =>
@@ -133,26 +129,26 @@ package body Humanize.Datetimes.Support is
       Day_Delta : constant Long_Long_Integer :=
         Date_Ordinal (Value) - Date_Ordinal (Reference);
       Selection : Humanize.Selections.Message_Selection :=
-        Humanize.Selections.No_Arg (Humanize.Messages.No_Message);
+        Humanize.Selections.No_Arg (Humanize.Message_Keys.No_Message);
    begin
       if Day_Delta = -1 then
          Selection :=
            Resolve_Selection
              (Context,
               Humanize.Selections.No_Arg
-                (Humanize.Messages.Datetime_Day_Previous));
+                (Humanize.Message_Keys.Datetime_Day_Previous));
       elsif Day_Delta = 0 then
          Selection :=
            Resolve_Selection
              (Context,
               Humanize.Selections.No_Arg
-                (Humanize.Messages.Datetime_Day_Current));
+                (Humanize.Message_Keys.Datetime_Day_Current));
       elsif Day_Delta = 1 then
          Selection :=
            Resolve_Selection
              (Context,
               Humanize.Selections.No_Arg
-                (Humanize.Messages.Datetime_Day_Next));
+                (Humanize.Message_Keys.Datetime_Day_Next));
       else
          return Ok_Text (ISO_Date (Value));
       end if;
@@ -192,7 +188,7 @@ package body Humanize.Datetimes.Support is
    begin
       if Seconds <= Long_Long_Integer (Options.Now_Threshold_Seconds) then
          return Humanize.I18N_Rendering.Render
-           (Context, Humanize.Selections.No_Arg (Humanize.Messages.Datetime_Now));
+           (Context, Humanize.Selections.No_Arg (Humanize.Message_Keys.Datetime_Now));
       end if;
 
       Base := Humanize.Durations.Format_Components
@@ -696,21 +692,21 @@ package body Humanize.Datetimes.Support is
                Resolve_Selection
                  (Context,
                   Humanize.Selections.No_Arg
-                    (Humanize.Messages.Datetime_Day_Previous)));
+                    (Humanize.Message_Keys.Datetime_Day_Previous)));
          when 0 =>
             return Humanize.I18N_Rendering.Render
               (Context,
                Resolve_Selection
                  (Context,
                   Humanize.Selections.No_Arg
-                    (Humanize.Messages.Datetime_Day_Current)));
+                    (Humanize.Message_Keys.Datetime_Day_Current)));
          when 1 =>
             return Humanize.I18N_Rendering.Render
               (Context,
                Resolve_Selection
                  (Context,
                   Humanize.Selections.No_Arg
-                    (Humanize.Messages.Datetime_Day_Next)));
+                    (Humanize.Message_Keys.Datetime_Day_Next)));
          when others =>
             return Ok_Text (ISO_Date (Value));
       end case;

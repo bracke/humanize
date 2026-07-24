@@ -1,4 +1,3 @@
-with Humanize.Contexts;
 with Humanize.Status;
 
 --  Palette labels and summaries for ordered color groups and scheme choices.

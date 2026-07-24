@@ -2,7 +2,6 @@ with Humanize.Bounded_Text;
 with Humanize.Durations;
 with Humanize.Parsing.Diagnostics;
 with Humanize.Parsing.Duration_Aliases;
-with Humanize.Parsing.Implementation.Numeric_Text_Helpers;
 with Humanize.Parsing.Implementation.Text_Helpers;
 with Humanize.Parsing.Support;
 with Humanize.Status;
@@ -21,8 +20,6 @@ package body Humanize.Parsing.Implementation.Duration_Text_Helpers is
       renames Humanize.Bounded_Text.Is_Digit;
    function Starts_With (Text, Prefix : String) return Boolean
       renames Humanize.Bounded_Text.Starts_With;
-   function Ends_With (Text, Suffix : String) return Boolean
-      renames Humanize.Bounded_Text.Ends_With;
 
    function Clean_Lower (Text : String) return String
       renames Humanize.Bounded_Text.Clean_Lower_Text;

@@ -10,11 +10,6 @@ package body Humanize.Catalogs.Unit_Data is
 
    LF : constant String := [1 => ASCII.LF];
 
-   AA     : String renames Humanize.Catalogs.Encoding.AA;
-   ECIRC  : String renames Humanize.Catalogs.Encoding.ECIRC;
-   IACUTE : String renames Humanize.Catalogs.Encoding.IACUTE;
-   NTILDE : String renames Humanize.Catalogs.Encoding.NTILDE;
-
    function B (Hex : String) return String
       renames Humanize.Catalogs.Encoding.B;
 

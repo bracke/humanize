@@ -1,5 +1,5 @@
 with Ada.Strings.Unbounded;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 
 --  Semantic message selection produced by Humanize classifiers.
 --
@@ -18,7 +18,7 @@ private package Humanize.Selections is
       Value_Suffix_Argument);
 
    type Message_Selection is record
-      Key       : Humanize.Messages.Message_Id := Humanize.Messages.No_Message;
+      Key       : Humanize.Message_Keys.Message_Id := Humanize.Message_Keys.No_Message;
       Arguments : Argument_Kind := No_Arguments;
       Count     : Count_Value := 0;
       Value     : Ada.Strings.Unbounded.Unbounded_String;
@@ -27,24 +27,24 @@ private package Humanize.Selections is
 
    --  Selection for a key that takes no render arguments.
    function No_Arg
-     (Key : Humanize.Messages.Message_Id)
+     (Key : Humanize.Message_Keys.Message_Id)
       return Message_Selection;
 
    --  Selection for a key that takes a "count" plural argument.
    function Count
-     (Key   : Humanize.Messages.Message_Id;
+     (Key   : Humanize.Message_Keys.Message_Id;
       Value : Count_Value)
       return Message_Selection;
 
    --  Selection for a key that takes a "value" string argument.
    function Text_Value
-     (Key   : Humanize.Messages.Message_Id;
+     (Key   : Humanize.Message_Keys.Message_Id;
       Value : String)
       return Message_Selection;
 
    --  Selection for a raw numeric "value" plus a literal text "suffix".
    function Value_Suffix
-     (Key    : Humanize.Messages.Message_Id;
+     (Key    : Humanize.Message_Keys.Message_Id;
       Value  : String;
       Suffix : String)
       return Message_Selection;
@@ -53,7 +53,7 @@ private package Humanize.Selections is
    --  locale-neutral ASCII decimal (e.g. "1.5"): it is the plural selector
    --  (passed as "count") and the raw numeric "value".
    function Decimal
-     (Key          : Humanize.Messages.Message_Id;
+     (Key          : Humanize.Message_Keys.Message_Id;
       Decimal_Text : String)
       return Message_Selection;
 

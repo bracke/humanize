@@ -63,8 +63,6 @@ package body Humanize.Numbers.Spellout is
      Character'Val (16#C3#) & Character'Val (16#A8#);
    U_I_Dotless : constant String :=
      Character'Val (16#C4#) & Character'Val (16#B1#);
-   U_O_Slash : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#B8#);
    U_O_Umlaut : constant String :=
      Character'Val (16#C3#) & Character'Val (16#B6#);
    U_S_Cedilla : constant String :=

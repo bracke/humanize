@@ -29,7 +29,6 @@ package body Humanize.Tests.Parsing is
    use type Humanize.Durations.Duration_Seconds;
    use type Humanize.Durations.Recurrence_Unit;
    use type Humanize.Durations.Weekday_Set;
-   use type Humanize.Frequencies.Occurrence_Count;
    use type Humanize.Numbers.Approximation_Kind;
    use type Humanize.Numbers.Uncertainty_Style;
    use type Humanize.Parsing.Business_Calendar_Parse_Kind;

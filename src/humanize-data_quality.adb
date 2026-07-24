@@ -1,7 +1,6 @@
 with Humanize.Bounded_Text;
 
 package body Humanize.Data_Quality is
-   use type Humanize.Status.Status_Code;
    function Image (Value : Natural) return String
       renames Humanize.Bounded_Text.Image;
    function Ok_Text (Text : String) return Humanize.Status.Text_Result

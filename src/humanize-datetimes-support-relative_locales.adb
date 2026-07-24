@@ -1,6 +1,6 @@
 with Humanize.Bounded_Text;
 with Humanize.Locales;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 
 package body Humanize.Datetimes.Support.Relative_Locales is
    use type Humanize.Selections.Argument_Kind;
@@ -223,7 +223,7 @@ package body Humanize.Datetimes.Support.Relative_Locales is
       Selection : Humanize.Selections.Message_Selection)
       return Humanize.Status.Text_Result
    is
-      use Humanize.Messages;
+      use Humanize.Message_Keys;
 
       Lang      : constant String :=
         Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context));
@@ -301,12 +301,12 @@ package body Humanize.Datetimes.Support.Relative_Locales is
    end Slavic_Relative_Result;
 
    function Future_Relative_Unit
-     (Key       : Humanize.Messages.Message_Id;
+     (Key       : Humanize.Message_Keys.Message_Id;
       Unit      : out Relative_Unit;
       Is_Future : out Boolean)
       return Boolean
    is
-      use Humanize.Messages;
+      use Humanize.Message_Keys;
    begin
       Is_Future := True;
       case Key is

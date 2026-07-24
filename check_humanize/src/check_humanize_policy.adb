@@ -1,4 +1,3 @@
-with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
@@ -24,7 +23,6 @@ with Project_Tools.Text;
 with Project_Tools.Tree_Checks;
 
 package body Check_Humanize_Policy is
-   use type Ada.Directories.File_Size;
 
    package Config renames Check_Humanize_Policy_Config;
 

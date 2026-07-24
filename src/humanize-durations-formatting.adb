@@ -6,7 +6,7 @@ with Humanize.Duration_Classification;
 with Humanize.I18N_Rendering;
 with Humanize.Lists;
 with Humanize.Locales;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 with Humanize.Selections;
 
 package body Humanize.Durations.Formatting is
@@ -24,25 +24,11 @@ package body Humanize.Durations.Formatting is
    function No_Space (Image : String) return String
       renames Humanize.Bounded_Text.No_Space;
 
-   function Natural_Text (Value : Standard.Natural) return String
-      renames Humanize.Bounded_Text.Image;
-
    function Integer_Text (Value : Long_Long_Integer) return String
       renames Humanize.Bounded_Text.Image;
 
-   function Padded_Text (Value : Standard.Natural; Width : Standard.Natural) return String
-      renames Humanize.Bounded_Text.Padded_Image;
-
-   function Padded_Text (Value : Long_Long_Integer; Width : Standard.Natural) return String
-      renames Humanize.Bounded_Text.Padded_Image;
-
    function Ok_Text (Text : String) return Humanize.Status.Text_Result
       renames Humanize.Bounded_Text.Ok_Text;
-
-   function Result_Text
-     (Result : Humanize.Status.Text_Result)
-      return String
-      renames Humanize.Bounded_Text.Result_Text;
 
    procedure Copy_Result
      (Result  : Humanize.Status.Text_Result;
@@ -58,53 +44,8 @@ package body Humanize.Durations.Formatting is
       Status  : out Humanize.Status.Status_Code)
       renames Humanize.Bounded_Text.Copy_Text;
 
-   function U (Code : Standard.Natural) return String
-      renames Humanize.Bounded_Text.UTF8_Code_Point;
-
    function B (Hex : String) return String
       renames Humanize.Bounded_Text.Hex_Bytes;
-
-   function Lower (Text : String) return String
-      renames Humanize.Bounded_Text.Lower_Text;
-
-   function Locale_Prefix (Locale : String) return String
-      renames Humanize.Locales.Locale_Prefix;
-
-   function Locale_Prefix (Context : Humanize.Contexts.Context) return String is
-     (Humanize.Locales.Locale_Prefix (Humanize.Contexts.Locale (Context)));
-
-   function Is_Digit (Char : Character) return Boolean
-      renames Humanize.Bounded_Text.Is_Digit;
-
-   function Digit_Value (Char : Character) return Standard.Natural
-      renames Humanize.Bounded_Text.Digit_Value;
-
-   function Two_Digits (Value : Standard.Natural) return String is
-      Tens : constant Standard.Natural := (Value / 10) mod 10;
-      Ones : constant Standard.Natural := Value mod 10;
-   begin
-      return
-        String'
-          (1 => Character'Val (Character'Pos ('0') + Tens),
-           2 => Character'Val (Character'Pos ('0') + Ones));
-   end Two_Digits;
-
-   function Pad2 (Value : Standard.Natural) return String is
-     (Padded_Text (Value, 2));
-
-   function Unit_Name
-     (Unit_Count : Duration_Seconds;
-      Singular   : String;
-      Plural     : String)
-      return String
-   is
-   begin
-      if Unit_Count = 1 then
-         return Singular;
-      else
-         return Plural;
-      end if;
-   end Unit_Name;
 
    type Slavic_Form is (One_Form, Few_Form, Many_Form);
 
@@ -632,7 +573,7 @@ package body Humanize.Durations.Formatting is
          --  The locale conjunction joining the final component ("and"/"og"/...).
          Conj_Result : constant Humanize.Status.Text_Result :=
            Humanize.I18N_Rendering.Render
-             (Context, Humanize.Selections.No_Arg (Humanize.Messages.List_And));
+             (Context, Humanize.Selections.No_Arg (Humanize.Message_Keys.List_And));
          Conjunction : constant String :=
            (if Conj_Result.Status = Humanize.Status.Ok
             then To_String (Conj_Result.Text)
@@ -677,7 +618,7 @@ package body Humanize.Durations.Formatting is
       return
         (Status => Humanize.Status.Ok,
          Text   => Joined,
-         Key    => Humanize.Messages.No_Message);
+         Key    => Humanize.Message_Keys.No_Message);
    end Format_Components;
 
    procedure Format_Components_Into
@@ -769,7 +710,7 @@ package body Humanize.Durations.Formatting is
       return
         (Status => Humanize.Status.Ok,
          Text   => Result,
-         Key    => Humanize.Messages.No_Message);
+         Key    => Humanize.Message_Keys.No_Message);
    end Format_Compact;
 
    procedure Format_Compact_Into
@@ -831,7 +772,7 @@ package body Humanize.Durations.Formatting is
       return
         (Status => Humanize.Status.Ok,
          Text   => Text,
-         Key    => Humanize.Messages.No_Message);
+         Key    => Humanize.Message_Keys.No_Message);
    end Format_Clock;
 
    procedure Format_Clock_Into
@@ -867,22 +808,22 @@ package body Humanize.Durations.Formatting is
 
    function Message_For
      (Unit : Precise_Duration_Unit)
-      return Humanize.Messages.Message_Id
+      return Humanize.Message_Keys.Message_Id
    is
    begin
       case Unit is
          when Microsecond =>
-            return Humanize.Messages.Duration_Unit_Microsecond;
+            return Humanize.Message_Keys.Duration_Unit_Microsecond;
          when Millisecond =>
-            return Humanize.Messages.Duration_Unit_Millisecond;
+            return Humanize.Message_Keys.Duration_Unit_Millisecond;
          when Precise_Second =>
-            return Humanize.Messages.Duration_Unit_Second;
+            return Humanize.Message_Keys.Duration_Unit_Second;
          when Precise_Minute =>
-            return Humanize.Messages.Duration_Unit_Minute;
+            return Humanize.Message_Keys.Duration_Unit_Minute;
          when Precise_Hour =>
-            return Humanize.Messages.Duration_Unit_Hour;
+            return Humanize.Message_Keys.Duration_Unit_Hour;
          when Precise_Day =>
-            return Humanize.Messages.Duration_Unit_Day;
+            return Humanize.Message_Keys.Duration_Unit_Day;
       end case;
    end Message_For;
 
@@ -1063,7 +1004,7 @@ package body Humanize.Durations.Formatting is
            (Status => Humanize.Status.Ok,
             Text   => To_Unbounded_String
               (To_String (Left.Text) & "-" & To_String (Right.Text)),
-            Key    => Humanize.Messages.No_Message);
+            Key    => Humanize.Message_Keys.No_Message);
       end if;
    end Format_Range;
 
@@ -1081,7 +1022,7 @@ package body Humanize.Durations.Formatting is
       return
         (Status => Humanize.Status.Ok,
          Text   => To_Unbounded_String (To_String (Base.Text) & " remaining"),
-         Key    => Humanize.Messages.No_Message);
+         Key    => Humanize.Message_Keys.No_Message);
    end Countdown;
 
    function SLA_Window
@@ -1098,7 +1039,7 @@ package body Humanize.Durations.Formatting is
       return
         (Status => Humanize.Status.Ok,
          Text   => To_Unbounded_String ("within " & To_String (Base.Text)),
-         Key    => Humanize.Messages.No_Message);
+         Key    => Humanize.Message_Keys.No_Message);
    end SLA_Window;
 
    function Duration_Text
@@ -1111,7 +1052,7 @@ package body Humanize.Durations.Formatting is
          return
            (Status => Humanize.Status.Ok,
             Text   => To_Unbounded_String ("just now"),
-            Key    => Humanize.Messages.No_Message);
+            Key    => Humanize.Message_Keys.No_Message);
       else
          return Format (Context, Seconds, Options);
       end if;
@@ -1129,7 +1070,7 @@ package body Humanize.Durations.Formatting is
       return
         (Status => Humanize.Status.Ok,
          Text   => To_Unbounded_String (Prefix & To_String (Base.Text) & Suffix),
-         Key    => Humanize.Messages.No_Message);
+         Key    => Humanize.Message_Keys.No_Message);
    end With_Base;
 
    function Interval
@@ -1162,7 +1103,7 @@ package body Humanize.Durations.Formatting is
            (Status => Humanize.Status.Ok,
             Text   => To_Unbounded_String
               (Prefix & To_String (Left.Text) & Joiner & To_String (Right.Text)),
-            Key    => Humanize.Messages.No_Message);
+            Key    => Humanize.Message_Keys.No_Message);
       end if;
    end Interval;
 
@@ -1249,7 +1190,7 @@ package body Humanize.Durations.Formatting is
          Text   => To_Unbounded_String
            (No_Space (Standard.Natural'Image (Done)) & " of "
             & No_Space (Standard.Natural'Image (Total)) & " complete"),
-         Key    => Humanize.Messages.No_Message);
+         Key    => Humanize.Message_Keys.No_Message);
    end Complete_Count;
 
    function Percent_Complete
@@ -1264,7 +1205,7 @@ package body Humanize.Durations.Formatting is
          Text   => To_Unbounded_String
            (Humanize.Decimal_Images.Decimal_Image (Percent, 1, True)
             & "% complete"),
-         Key    => Humanize.Messages.No_Message);
+         Key    => Humanize.Message_Keys.No_Message);
    end Percent_Complete;
 
    function Retry_In
@@ -1289,7 +1230,7 @@ package body Humanize.Durations.Formatting is
          Text => To_Unbounded_String
            ("step " & No_Space (Standard.Natural'Image (Step)) & " of "
             & No_Space (Standard.Natural'Image (Total))),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end Step_Count;
 
    function Attempt_Count
@@ -1305,7 +1246,7 @@ package body Humanize.Durations.Formatting is
          Text => To_Unbounded_String
            ("attempt " & No_Space (Standard.Natural'Image (Attempt)) & " of "
             & No_Space (Standard.Natural'Image (Total))),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end Attempt_Count;
 
    function ETA
@@ -1334,7 +1275,7 @@ package body Humanize.Durations.Formatting is
            (No_Space (Standard.Natural'Image (Remaining)) & " " & Noun
             & " remaining at " & No_Space (Standard.Natural'Image (Rate)) & " "
             & Unit_Name & "/s"),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end Throughput_Remaining;
 
    function Progress_Bar
@@ -1358,7 +1299,7 @@ package body Humanize.Durations.Formatting is
       return
         (Status => Humanize.Status.Ok,
          Text => Text,
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end Progress_Bar;
 
    function Accessible_Progress
@@ -1376,7 +1317,7 @@ package body Humanize.Durations.Formatting is
            (No_Space (Standard.Natural'Image (Done)) & " of "
             & No_Space (Positive'Image (Total)) & " complete, "
             & No_Space (Standard.Natural'Image (Percent)) & " percent"),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end Accessible_Progress;
 
    function Business_Days
@@ -1391,7 +1332,7 @@ package body Humanize.Durations.Formatting is
          Text => To_Unbounded_String
            (No_Space (Standard.Natural'Image (Days)) & " business "
             & (if Days = 1 then "day" else "days")),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end Business_Days;
 
    function Working_Hours
@@ -1406,7 +1347,7 @@ package body Humanize.Durations.Formatting is
          Text => To_Unbounded_String
            (No_Space (Standard.Natural'Image (Hours)) & " working "
             & (if Hours = 1 then "hour" else "hours")),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end Working_Hours;
 
    function End_Of_Week
@@ -1418,7 +1359,7 @@ package body Humanize.Durations.Formatting is
       return
         (Status => Humanize.Status.Ok,
          Text => To_Unbounded_String ("end of week"),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end End_Of_Week;
 
    function End_Of_Month
@@ -1430,7 +1371,7 @@ package body Humanize.Durations.Formatting is
       return
         (Status => Humanize.Status.Ok,
          Text => To_Unbounded_String ("end of month"),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end End_Of_Month;
 
    function End_Of_Quarter
@@ -1442,7 +1383,7 @@ package body Humanize.Durations.Formatting is
       return
         (Status => Humanize.Status.Ok,
          Text => To_Unbounded_String ("end of quarter"),
-         Key => Humanize.Messages.No_Message);
+         Key => Humanize.Message_Keys.No_Message);
    end End_Of_Quarter;
 
    procedure Format_Range_Into

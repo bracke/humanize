@@ -1,10 +1,9 @@
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Humanize.Bounded_Text;
 with Humanize.Decimal_Images;
 with Humanize.I18N_Rendering;
 with Humanize.Locales;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 with Humanize.Selections;
 
 package body Humanize.Numbers.Ranges is
@@ -49,7 +48,7 @@ package body Humanize.Numbers.Ranges is
       return Humanize.I18N_Rendering.Render
         (Context,
          Humanize.Selections.Value_Suffix
-           (Humanize.Messages.Number_Bounded,
+           (Humanize.Message_Keys.Number_Bounded,
            Image,
             (if Value > Maximum then Suffix else "")));
    end Bounded_Number;
@@ -695,6 +694,7 @@ package body Humanize.Numbers.Ranges is
       Right   : Natural)
       return Humanize.Status.Text_Result
    is
+      pragma Unreferenced (Context);
    begin
       return Ok_Text
         (Natural_Text (Left) & ":" & Natural_Text (Right));
@@ -970,7 +970,7 @@ package body Humanize.Numbers.Ranges is
       Humanize.I18N_Rendering.Render_Into
         (Context,
          Humanize.Selections.Value_Suffix
-           (Humanize.Messages.Number_Bounded,
+           (Humanize.Message_Keys.Number_Bounded,
             Image,
             (if Value > Maximum then Suffix else "")),
          Target,

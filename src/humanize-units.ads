@@ -7,7 +7,7 @@ with Humanize.Status;
 --  Renders a quantity of a measurement unit with the locale's word and plural
 --  form. Whole quantities use the Natural overloads; fractional quantities use
 --  the Long_Float overloads (plural agreement via i18n CLDR fractional
---  operands). This package selects keys only and must not call I18N.Runtime
+--  operands). This package selects keys only and must not call Messages.Runtime
 --  directly (HUM-INV-002).
 package Humanize.Units is
    --  Facade map:

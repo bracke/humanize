@@ -2,7 +2,7 @@ with AUnit.Assertions;
 
 with Ada.Calendar;
 with Ada.Strings.Unbounded;
-with I18N.Runtime;
+with Messages.Runtime;
 
 with Humanize.Bytes;
 with Humanize.Contexts;
@@ -139,13 +139,13 @@ package body Humanize.Tests.Rendering is
 
    --  A runtime made invalid (Initialize on a missing file) to provoke an i18n
    --  Execution_Error -> Humanize Runtime_Error.
-   Bad_Runtime : aliased I18N.Runtime.Instance;
+   Bad_Runtime : aliased Messages.Runtime.Instance;
    Bad_Ready   : Boolean := False;
 
    procedure Ensure_Bad is
    begin
       if not Bad_Ready then
-         I18N.Runtime.Initialize
+         Messages.Runtime.Initialize
            (Bad_Runtime, "/humanize/no/such/catalog/file.catalog");
          Bad_Ready := True;
       end if;

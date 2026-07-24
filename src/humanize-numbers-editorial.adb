@@ -13,11 +13,6 @@ package body Humanize.Numbers.Editorial is
    function Ok_Text (Text : String) return Humanize.Status.Text_Result
       renames Humanize.Bounded_Text.Ok_Text;
 
-   function Result_Text
-     (Result : Humanize.Status.Text_Result)
-      return String
-      renames Humanize.Bounded_Text.Result_Text;
-
    procedure Copy_Result
      (Result  : Humanize.Status.Text_Result;
       Target  : in out String;

@@ -1,6 +1,6 @@
 with AUnit.Assertions;
 
-with I18N.Runtime;
+with Messages.Runtime;
 
 with Humanize.Capabilities;
 with Humanize.Bytes;
@@ -8,7 +8,7 @@ with Humanize.Catalogs;
 with Humanize.Contexts;
 with Humanize.Durations;
 with Humanize.Locales;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 with Humanize.Phrases;
 with Humanize.Status;
 with Humanize.Tests.Support;
@@ -16,14 +16,13 @@ with Humanize.Values;
 
 package body Humanize.Tests.Architecture is
 
-   use Humanize.Messages;
-   use type I18N.Runtime.Load_Status;
+   use Humanize.Message_Keys;
+   use type Messages.Runtime.Load_Status;
    use type Humanize.Capabilities.Locale_Behavior;
    use type Humanize.Locales.Locale_Code_Array;
-   use type Humanize.Rendering_Source;
    use type Humanize.Status.Status_Code;
 
-   Duplicate_Runtime : aliased I18N.Runtime.Instance;
+   Duplicate_Runtime : aliased Messages.Runtime.Instance;
 
    --  HUM-INV-004: every Message_Id except No_Message maps to exactly one
    --  non-empty catalog key.
@@ -333,21 +332,21 @@ package body Humanize.Tests.Architecture is
      (T : in out AUnit.Test_Cases.Test_Case'Class)
    is
       pragma Unreferenced (T);
-      First   : I18N.Runtime.Load_Result;
-      Reject  : I18N.Runtime.Load_Result;
-      Keep    : I18N.Runtime.Load_Result;
-      Replace : I18N.Runtime.Load_Result;
+      First   : Messages.Runtime.Load_Result;
+      Reject  : Messages.Runtime.Load_Result;
+      Keep    : Messages.Runtime.Load_Result;
+      Replace : Messages.Runtime.Load_Result;
       Swedish : Humanize.Status.Text_Result;
    begin
       Humanize.Catalogs.Load_Defaults (Duplicate_Runtime, First);
       AUnit.Assertions.Assert
-        (First.Status = I18N.Runtime.Loaded
+        (First.Status = Messages.Runtime.Loaded
          and then First.Entries_Added > 0,
          "initial built-in catalog load");
 
       Humanize.Catalogs.Load_Defaults (Duplicate_Runtime, Reject);
       AUnit.Assertions.Assert
-        (Reject.Status = I18N.Runtime.Duplicate_Rejected,
+        (Reject.Status = Messages.Runtime.Duplicate_Rejected,
          "default duplicate policy rejects second built-in catalog load");
 
       Swedish :=
@@ -359,17 +358,17 @@ package body Humanize.Tests.Architecture is
          "rejected duplicate load leaves generated catalog usable");
 
       Humanize.Catalogs.Load_Defaults
-        (Duplicate_Runtime, Keep, I18N.Runtime.Keep_First);
+        (Duplicate_Runtime, Keep, Messages.Runtime.Keep_First);
       AUnit.Assertions.Assert
-        (Keep.Status = I18N.Runtime.Loaded
+        (Keep.Status = Messages.Runtime.Loaded
          and then Keep.Entries_Added = 0
          and then Keep.Entries_Ignored > 0,
          "explicit duplicate policy can keep existing built-in catalog keys");
 
       Humanize.Catalogs.Load_Defaults
-        (Duplicate_Runtime, Replace, I18N.Runtime.Override_Previous);
+        (Duplicate_Runtime, Replace, Messages.Runtime.Override_Previous);
       AUnit.Assertions.Assert
-        (Replace.Status = I18N.Runtime.Loaded
+        (Replace.Status = Messages.Runtime.Loaded
          and then Replace.Entries_Added = 0
          and then Replace.Entries_Replaced > 0,
          "explicit duplicate policy can replace built-in catalog keys");

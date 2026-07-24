@@ -36,8 +36,6 @@ package body Humanize.Tests.Numbers is
      Character'Val (16#C3#) & Character'Val (16#A5#);
    U_A_Umlaut : constant String :=
      Character'Val (16#C3#) & Character'Val (16#A4#);
-   U_I_Acute : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#AD#);
    U_I_Dotless : constant String :=
      Character'Val (16#C4#) & Character'Val (16#B1#);
    U_O_Acute : constant String :=

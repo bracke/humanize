@@ -1,4 +1,3 @@
-
 with Humanize.Bounded_Text;
 
 package body Humanize.Payments is
@@ -18,15 +17,6 @@ package body Humanize.Payments is
    function Clean (Text : String) return String
       renames Humanize.Bounded_Text.Clean;
 
-   function Image (Value : Natural) return String
-      renames Humanize.Bounded_Text.Image;
-
-   function Count_Text
-     (Count    : Natural;
-      Singular : String;
-      Plural   : String)
-      return String
-      renames Humanize.Bounded_Text.Count_Text;
    function Count_Or_No_Text
      (Count    : Natural;
       Singular : String;

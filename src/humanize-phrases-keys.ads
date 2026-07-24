@@ -1,8 +1,3 @@
-with Humanize.Bytes;
-with Humanize.Contexts;
-with Humanize.Datetimes;
-with Humanize.Locales;
-with Humanize.Numbers;
 with Humanize.Status;
 
 --  Key and identifier phrase helpers for settings, shortcuts, and maps.

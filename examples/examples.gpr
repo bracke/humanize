@@ -1,9 +1,9 @@
-with "../humanize.gpr";
+with "config/humanize_examples_config.gpr";
 
 project Examples is
 
-   for Source_Dirs use (".");
-   for Object_Dir use "../obj/examples";
+   for Source_Dirs use (".", "config");
+   for Object_Dir use "obj/" & Humanize_Examples_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
    for Exec_Dir use "bin";
    for Main use
@@ -20,7 +20,8 @@ project Examples is
       "public_surface_demo.adb");
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-gnat2022", "-gnatyM120", "-gnatX");
+      for Default_Switches ("Ada") use
+        Humanize_Examples_Config.Ada_Compiler_Switches & ("-gnat2022", "-gnatyM120", "-gnatX");
    end Compiler;
 
    package Binder is

@@ -15,9 +15,13 @@ procedure Public_API_Color_Consumer is
      Humanize.Bounded_Text.Result_Text
        (Humanize.Colors.CSS.Hex_Color
           ((Red => 51, Green => 102, Blue => 153)));
+   --  Exercise the parsed Color through the public label API so the round trip
+   --  is actually demonstrated, not just the parse status.
+   Name  : constant String :=
+     Humanize.Bounded_Text.Result_Text (Humanize.Colors.CSS_Color_Label (Color));
 begin
    Ada.Command_Line.Set_Exit_Status
-     (if Code = Humanize.Status.Ok and then Hex = "#336699"
+     (if Code = Humanize.Status.Ok and then Hex = "#336699" and then Name'Length > 0
       then Ada.Command_Line.Success
       else Ada.Command_Line.Failure);
 end Public_API_Color_Consumer;

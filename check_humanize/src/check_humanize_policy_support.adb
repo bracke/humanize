@@ -1,15 +1,14 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Streams;
 with Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with CryptoLib.Hashes;
 
 with Project_Tools.Release_Checks;
 with Project_Tools.Text;
-with Project_Tools.TOML;
 
 package body Check_Humanize_Policy_Support is
    use type Project_Tools.TOML.Natural_Parse_Status;

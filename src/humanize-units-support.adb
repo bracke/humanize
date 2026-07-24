@@ -67,9 +67,6 @@ package body Humanize.Units.Support is
    function Natural_Text (Value : Natural) return String
       renames Humanize.Bounded_Text.Image;
 
-   function No_Space (Image : String) return String
-      renames Humanize.Bounded_Text.No_Space;
-
    function B (Hex : String) return String
       renames Humanize.Bounded_Text.Hex_Bytes;
 

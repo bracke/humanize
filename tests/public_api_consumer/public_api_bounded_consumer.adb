@@ -1,6 +1,6 @@
 with Ada.Command_Line;
 
-with I18N.Runtime;
+with Messages.Runtime;
 
 with Humanize.Bytes;
 with Humanize.Catalogs;
@@ -12,7 +12,7 @@ with Public_API_Consumer_Runtime;
 procedure Public_API_Bounded_Consumer is
    use type Humanize.Status.Status_Code;
 
-   Loaded  : I18N.Runtime.Load_Result;
+   Loaded  : Messages.Runtime.Load_Result;
    Buffer  : String (1 .. 32) := (others => ' ');
    Written : Natural := 0;
    Code    : Humanize.Status.Status_Code := Humanize.Status.Ok;

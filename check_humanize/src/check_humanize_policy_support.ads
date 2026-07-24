@@ -1,4 +1,3 @@
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Project_Tools.TOML;
 
 package Check_Humanize_Policy_Support is

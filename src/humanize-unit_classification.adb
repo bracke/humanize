@@ -1,9 +1,9 @@
-with Humanize.Messages;
+with Humanize.Message_Keys;
 with Humanize.Decimal_Images;
 
 package body Humanize.Unit_Classification is
 
-   use Humanize.Messages;
+   use Humanize.Message_Keys;
    use Humanize.Units;
 
    function Unit_Key (Unit : Unit_Kind) return Message_Id is

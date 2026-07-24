@@ -19,13 +19,13 @@ package body Humanize.Catalogs.Loader is
    end All_Shipped_Locales;
 
    procedure Load_Defaults
-     (Runtime : in out I18N.Runtime.Instance;
-      Result  : out I18N.Runtime.Load_Result;
-      Policy  : I18N.Runtime.Duplicate_Policy :=
-        I18N.Runtime.Reject_Duplicates)
+     (Runtime : in out Messages.Runtime.Instance;
+      Result  : out Messages.Runtime.Load_Result;
+      Policy  : Messages.Runtime.Duplicate_Policy :=
+        Messages.Runtime.Reject_Duplicates)
    is
    begin
-      I18N.Runtime.Load_Text
+      Messages.Runtime.Load_Text
         (Item        => Runtime,
          Source_Name => "humanize.builtin.catalog",
          Text        =>

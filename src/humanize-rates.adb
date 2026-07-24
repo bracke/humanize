@@ -1,7 +1,7 @@
 
 with Humanize.I18N_Rendering;
 with Humanize.Locales;
-with Humanize.Messages;
+with Humanize.Message_Keys;
 with Humanize.Selections;
 with Humanize.Bounded_Text;
 
@@ -138,28 +138,28 @@ package body Humanize.Rates is
       end;
    end Standard_Rate_Result;
 
-   function Key_For (Period : Rate_Period) return Humanize.Messages.Message_Id is
+   function Key_For (Period : Rate_Period) return Humanize.Message_Keys.Message_Id is
    begin
       case Period is
-         when Per_Second => return Humanize.Messages.Rate_Per_Second;
-         when Per_Minute => return Humanize.Messages.Rate_Per_Minute;
-         when Per_Hour   => return Humanize.Messages.Rate_Per_Hour;
-         when Per_Day    => return Humanize.Messages.Rate_Per_Day;
-         when Per_Week   => return Humanize.Messages.Rate_Per_Week;
+         when Per_Second => return Humanize.Message_Keys.Rate_Per_Second;
+         when Per_Minute => return Humanize.Message_Keys.Rate_Per_Minute;
+         when Per_Hour   => return Humanize.Message_Keys.Rate_Per_Hour;
+         when Per_Day    => return Humanize.Message_Keys.Rate_Per_Day;
+         when Per_Week   => return Humanize.Message_Keys.Rate_Per_Week;
       end case;
    end Key_For;
 
    function Less_Key_For
      (Period : Rate_Period)
-      return Humanize.Messages.Message_Id
+      return Humanize.Message_Keys.Message_Id
    is
    begin
       case Period is
-         when Per_Second => return Humanize.Messages.Rate_Less_Than_Per_Second;
-         when Per_Minute => return Humanize.Messages.Rate_Less_Than_Per_Minute;
-         when Per_Hour   => return Humanize.Messages.Rate_Less_Than_Per_Hour;
-         when Per_Day    => return Humanize.Messages.Rate_Less_Than_Per_Day;
-         when Per_Week   => return Humanize.Messages.Rate_Less_Than_Per_Week;
+         when Per_Second => return Humanize.Message_Keys.Rate_Less_Than_Per_Second;
+         when Per_Minute => return Humanize.Message_Keys.Rate_Less_Than_Per_Minute;
+         when Per_Hour   => return Humanize.Message_Keys.Rate_Less_Than_Per_Hour;
+         when Per_Day    => return Humanize.Message_Keys.Rate_Less_Than_Per_Day;
+         when Per_Week   => return Humanize.Message_Keys.Rate_Less_Than_Per_Week;
       end case;
    end Less_Key_For;
 
