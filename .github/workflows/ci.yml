@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out humanize
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: humanize
       - name: Set up Ada workspace
@@ -41,7 +41,7 @@ jobs:
     needs: linux-fast-feedback
     steps:
       - name: Check out humanize
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: humanize
       - name: Set up Ada workspace
@@ -61,7 +61,7 @@ jobs:
     needs: linux-fast-feedback
     steps:
       - name: Check out humanize
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: humanize
       - name: Set up Ada workspace
