@@ -47,12 +47,12 @@ package body Check_Humanize_Release is
       3 => new String'("gprbuild"),
       4 => new String'("-P"),
       5 => new String'("examples/examples.gpr")];
+   --  `alr build` (run in the consumer crate) rather than `alr exec -- gprbuild`,
+   --  so Alire regenerates the gitignored config gpr that the consumer needs; a
+   --  raw gprbuild cannot import it. See Build_Public_API_Consumer_Dir below.
    Build_Public_API_Consumer_Args : constant Argument_List :=
-     [1 => new String'("exec"),
-      2 => new String'("--"),
-      3 => new String'("gprbuild"),
-      4 => new String'("-P"),
-      5 => new String'("tests/public_api_consumer/public_api_consumer.gpr")];
+     [1 => new String'("--non-interactive"),
+      2 => new String'("build")];
    Exec_Public_API_Consumer_Args : constant Argument_List :=
      [1 => new String'("exec"),
       2 => new String'("--"),
@@ -533,10 +533,9 @@ package body Check_Humanize_Release is
         Project_Tools.Alire.Noninteractive_Exec_Args
           ([new String'("gprbuild"), new String'("-P"),
             new String'("examples/examples.gpr")]);
+      --  `alr build` in the consumer crate so Alire regenerates its config gpr.
       Build_Public_API_Consumer_Stage_Args : constant Argument_List :=
-        Project_Tools.Alire.Noninteractive_Exec_Args
-          ([new String'("gprbuild"), new String'("-P"),
-            new String'("tests/public_api_consumer/public_api_consumer.gpr")]);
+        [new String'("--non-interactive"), new String'("build")];
       Exec_Public_API_Consumer_Stage_Args : constant Argument_List :=
         Project_Tools.Alire.Noninteractive_Exec_Args
           ([1 => new String'("./tests/public_api_consumer/bin/public_api_consumer")]);
@@ -676,7 +675,7 @@ package body Check_Humanize_Release is
             Stage_Root, Alr_Path, Build_Examples_Stage_Args);
          Run_Staged_Check
            ("build staged public API consumer",
-            Stage_Root, Alr_Path,
+            Stage_Root & "/tests/public_api_consumer", Alr_Path,
             Build_Public_API_Consumer_Stage_Args);
          Run_Staged_Check
            ("run staged public API consumer",
@@ -748,7 +747,8 @@ package body Check_Humanize_Release is
             Root, Alr_Path, Build_Examples_Args);
          Run_Check
            (Root, Errors, "build public API consumer",
-            Root, Alr_Path, Build_Public_API_Consumer_Args);
+            Root & "/tests/public_api_consumer", Alr_Path,
+            Build_Public_API_Consumer_Args);
          Run_Check
            (Root, Errors, "run public API consumer",
             Root, Alr_Path,
