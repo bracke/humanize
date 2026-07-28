@@ -18,8 +18,9 @@ runs:
       with:
         repository: ${{ github.repository_owner }}/messages
         path: messages
-    # i18n now depends on awklib (tzdb generation), which in turn pins regexp, so
-    # both must be present for the transitive pin paths to resolve.
+    # i18n's tzdb generation pulls in a chain of siblings (awklib -> regexp,
+    # tarlib, hostkit, httpclient -> zlib), all of which must be present for the
+    # transitive pin paths to resolve. This mirrors i18n's own CI sibling set.
     - name: Check out awklib sibling
       uses: actions/checkout@v7
       with:
@@ -30,6 +31,26 @@ runs:
       with:
         repository: ${{ github.repository_owner }}/regexp
         path: regexp
+    - name: Check out tarlib sibling
+      uses: actions/checkout@v7
+      with:
+        repository: ${{ github.repository_owner }}/tarlib
+        path: tarlib
+    - name: Check out hostkit sibling
+      uses: actions/checkout@v7
+      with:
+        repository: ${{ github.repository_owner }}/hostkit
+        path: hostkit
+    - name: Check out httpclient sibling
+      uses: actions/checkout@v7
+      with:
+        repository: ${{ github.repository_owner }}/httpclient
+        path: httpclient
+    - name: Check out zlib sibling
+      uses: actions/checkout@v7
+      with:
+        repository: ${{ github.repository_owner }}/zlib
+        path: zlib
     - name: Check out project_tools sibling
       uses: actions/checkout@v7
       with:
