@@ -13,6 +13,11 @@ runs:
       with:
         repository: ${{ github.repository_owner }}/i18n
         path: i18n
+    - name: Check out messages sibling
+      uses: actions/checkout@v7
+      with:
+        repository: ${{ github.repository_owner }}/messages
+        path: messages
     - name: Check out project_tools sibling
       uses: actions/checkout@v7
       with:
