@@ -18,6 +18,18 @@ runs:
       with:
         repository: ${{ github.repository_owner }}/messages
         path: messages
+    # i18n now depends on awklib (tzdb generation), which in turn pins regexp, so
+    # both must be present for the transitive pin paths to resolve.
+    - name: Check out awklib sibling
+      uses: actions/checkout@v7
+      with:
+        repository: ${{ github.repository_owner }}/awklib
+        path: awklib
+    - name: Check out regexp sibling
+      uses: actions/checkout@v7
+      with:
+        repository: ${{ github.repository_owner }}/regexp
+        path: regexp
     - name: Check out project_tools sibling
       uses: actions/checkout@v7
       with:
