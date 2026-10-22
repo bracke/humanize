@@ -1,8 +1,30 @@
 separate (Humanize.Parsing.Implementation.Date_Time_Text_Helpers)
 function Canonical_Natural_Date_Text (Text : String) return String is
       Item : constant String := Clean_Lower (Text);
+
+      --  CLDR's Korean, Japanese and Chinese write the count against its
+      --  unit ("3일", "3天"); the rules below read "3 일".
+      function Spaced_Count (Amount : String) return String is
+         Digit_End : Natural := Amount'First - 1;
+      begin
+         while Digit_End < Amount'Last and then Amount (Digit_End + 1) in '0' .. '9' loop
+            Digit_End := Digit_End + 1;
+         end loop;
+         if Digit_End >= Amount'First and then Digit_End < Amount'Last
+           and then Amount (Digit_End + 1) /= ' '
+         then
+            return Amount (Amount'First .. Digit_End) & " " & Amount (Digit_End + 1 .. Amount'Last);
+         end if;
+         return Amount;
+      end Spaced_Count;
+      CLDR_Form : constant String :=
+        Humanize.Parsing.Implementation.CLDR_Vocabulary.Relative_Canonical (Text);
 begin
-      if Item = "today" or else Item = "now"
+      --  First the relative time as CLDR writes it in a shipped locale, which
+      --  is what humanize renders; then the hand-kept phrasings.
+      if CLDR_Form /= "" then
+         return CLDR_Form;
+      elsif Item = "today" or else Item = "now"
         or else Item = "i dag" or else Item = "heute"
         or else Item = "aujourd'hui" or else Item = "hoy"
         or else Item = "oggi" or else Item = "hoje"
@@ -132,9 +154,16 @@ begin
       elsif Ends_With (Item, " sonra") then
          return "in " & Item (Item'First .. Item'Last - 6);
       elsif Ends_With (Item, B ("20ED9B84")) then
-         return "in " & Item (Item'First .. Item'Last - 4);
+         return "in " & Spaced_Count (Item (Item'First .. Item'Last - 4));
+      --  CLDR's Japanese and Chinese put the direction after the amount:
+      --  "3 日後", "3天后".
+      elsif Ends_With (Item, B ("E5BE8C")) or else Ends_With (Item, B ("E5908E")) then
+         return "in " & Spaced_Count (Item (Item'First .. Item'Last - 3));
       elsif Ends_With (Item, B ("20E0A4ACE0A4BEE0A4A6")) then
          return "in " & Item (Item'First .. Item'Last - 10);
+      --  CLDR's Arabic: "قبل ٣ أيام".
+      elsif Starts_With (Item, B ("D982D8A8D98420")) then
+         return Item (Item'First + 7 .. Item'Last) & " ago";
       elsif Starts_With (Item, "hace ") then
          return Item (Item'First + 5 .. Item'Last) & " ago";
       elsif Starts_With (Item, "il y a ") then
@@ -162,7 +191,18 @@ begin
       elsif Ends_With (Item, " truoc") then
          return Item (Item'First .. Item'Last - 6) & " ago";
       elsif Ends_With (Item, " sedan") then
-         return Item (Item'First .. Item'Last - 6) & " ago";
+         --  CLDR's Swedish says "för 3 dagar sedan".
+         declare
+            Body_Text : constant String := Item (Item'First .. Item'Last - 6);
+            For_Word  : constant String := B ("66C3B67220");
+         begin
+            if Body_Text'Length > For_Word'Length
+              and then Body_Text (Body_Text'First .. Body_Text'First + For_Word'Length - 1) = For_Word
+            then
+               return Body_Text (Body_Text'First + For_Word'Length .. Body_Text'Last) & " ago";
+            end if;
+            return Body_Text & " ago";
+         end;
       elsif Ends_With (Item, " sitten") then
          return Item (Item'First .. Item'Last - 7) & " ago";
       elsif Ends_With (Item, B ("20C3B66E6365")) then
@@ -188,9 +228,9 @@ begin
       elsif Ends_With (Item, B ("20D182D0BED0BCD183")) then
          return Item (Item'First .. Item'Last - 9) & " ago";
       elsif Ends_With (Item, B ("E5898D")) then
-         return Item (Item'First .. Item'Last - 3) & " ago";
+         return Spaced_Count (Item (Item'First .. Item'Last - 3)) & " ago";
       elsif Ends_With (Item, B ("20ECA084")) then
-         return Item (Item'First .. Item'Last - 4) & " ago";
+         return Spaced_Count (Item (Item'First .. Item'Last - 4)) & " ago";
       elsif Ends_With (Item, B ("20D985D986D8B0")) then
          return Item (Item'First .. Item'Last - 7) & " ago";
       elsif Ends_With (Item, B ("20E0A4AAE0A4B9E0A4B2E0A587")) then

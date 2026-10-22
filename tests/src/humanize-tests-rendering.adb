@@ -32,8 +32,6 @@ package body Humanize.Tests.Rendering is
    AA : constant String :=
      Character'Val (16#C3#) & Character'Val (16#A5#);
    --  UTF-8 Arabic-Indic digit two (U+0662) for Arabic number rendering.
-   ARABIC_TWO : constant String :=
-     Character'Val (16#D9#) & Character'Val (16#A2#);
 
    function B (Hex : String) return String is
       Result : String (1 .. Hex'Length / 2);
@@ -205,20 +203,22 @@ package body Humanize.Tests.Rendering is
 
    procedure Test_French (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
+      --  CLDR's French writes a no-break space between a value and its unit.
+      NBSP : constant String := Character'Val (16#C2#) & Character'Val (16#A0#);
       use Ada.Calendar;
       Ref     : constant Time := Time_Of (2026, 3, 21, Day_Duration (43_200));
       Earlier : constant Time := Ref - Duration (14_400);  --  4 hours
    begin
       --  French plural "one" covers 0 and 1.
       AUnit.Assertions.Assert
-        (Support.Text (Humanize.Durations.Format (Support.Fr, 1)) = "1 seconde",
+        (Support.Text (Humanize.Durations.Format (Support.Fr, 1)) = "1" & NBSP & "seconde",
          "French duration one");
       AUnit.Assertions.Assert
-        (Support.Text (Humanize.Durations.Format (Support.Fr, 0)) = "0 seconde",
+        (Support.Text (Humanize.Durations.Format (Support.Fr, 0)) = "0" & NBSP & "seconde",
          "French zero uses the one form");
       AUnit.Assertions.Assert
         (Support.Text (Humanize.Durations.Format (Support.Fr, 2))
-           = "2 secondes",
+           = "2" & NBSP & "secondes",
          "French duration other");
       AUnit.Assertions.Assert
         (Support.Text

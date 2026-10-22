@@ -38,7 +38,7 @@ separate (Locale_Audit)
                     (Locale, Texts, "4 Mal", "ungefaehr 4 Mal pro Woche");
             elsif Locale = "fr" then
                   Audit_Generated_Core
-                    (Locale, Texts, "2 minutes", "2 jours", "2 semaines",
+                    (Locale, Texts, "2 minutes", B ("32C2A06A6F757273"), "2 semaines",
                      "2 mois", "2 ans", B ("35206B696C6F6DC3A874726573"),
                      B ("352063656E74696DC3A874726573"),
                      B ("35206D696C6C696DC3A874726573"), "5 grammes",
@@ -83,13 +83,13 @@ separate (Locale_Audit)
                      "5 milliliter");
             elsif Locale = "sv" then
                   Audit_Generated_Core
-                    (Locale, Texts, "2 minuter", "2 dagar", "2 veckor",
+                    (Locale, Texts, "2 minuter", "2 dygn", "2 veckor",
                      B ("32206DC3A56E61646572"), B ("3220C3A572"),
                      "5 kilometer", "5 centimeter", "5 millimeter",
                      "5 gram", "5 milligram", "5 liter", "5 milliliter");
             elsif Humanize.Locales.Is_Norwegian (Locale) then
                   Audit_Generated_Core
-                    (Locale, Texts, "2 minutter", "2 dager", "2 uker",
+                    (Locale, Texts, "2 minutter", B ("322064C3B8676E"), "2 uker",
                      B ("32206DC3A56E65646572"), B ("3220C3A572"),
                      "5 kilometer", "5 centimeter", "5 millimeter",
                      "5 gram", "5 milligram", "5 liter", "5 milliliter");
@@ -219,7 +219,7 @@ separate (Locale_Audit)
                      Audit_Non_ASCII_Core (Locale, Texts);
                      Audit_Native_Script_No_Latin (Locale, Texts);
                      Audit_Generated_Core
-                       (Locale, Texts, B ("3220EBB684"), B ("3220EC9DBC"),
+                       (Locale, Texts, B ("32EBB684"), B ("32EC9DBC"),
                         B ("3220ECA3BC"), B ("3220EAB09CEC9B94"),
                         B ("3220EB8584"), Kilometer, Centimeter, Millimeter,
                         B ("3520EAB7B8EB9EA8"), Milligram,
@@ -275,8 +275,8 @@ separate (Locale_Audit)
                   Audit_Non_ASCII_Core (Locale, Texts);
                   Audit_Native_Script_No_Latin (Locale, Texts);
                   Audit_Generated_Core
-                    (Locale, Texts, B ("3220E58886E9929F"),
-                     B ("3220E5A4A9"), B ("3220E591A8"),
+                    (Locale, Texts, B ("32E58886E9929F"),
+                     B ("32E5A4A9"), B ("3220E591A8"),
                      B ("3220E4B8AAE69C88"), B ("3220E5B9B4"),
                      B ("3520E58D83E7B1B3"), B ("3520E58E98E7B1B3"),
                      B ("3520E6AFABE7B1B3"), B ("3520E5858B"),
@@ -379,9 +379,9 @@ separate (Locale_Audit)
             if Locale = "ar" then
                declare
                   Core_Minute : constant String :=
-                    B ("D9A220D8AFD982D8A7D8A6D982");
+                    B ("D8AFD982D98AD982D8AAD8A7D986");   --  CLDR's dual
                   Core_Day    : constant String :=
-                    B ("D9A220D8A3D98AD8A7D985");
+                    B ("D98AD988D985D8A7D986");   --  CLDR's dual
                   Core_Week   : constant String :=
                     B ("D9A220D8A3D8B3D8A7D8A8D98AD8B9");
                   Core_Month  : constant String :=

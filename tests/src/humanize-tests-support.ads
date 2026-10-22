@@ -22,4 +22,13 @@ package Humanize.Tests.Support is
    --  Rendered text of a convenience result.
    function Text (Item : Humanize.Status.Text_Result) return String;
 
+   --  A rendered duration the locale-free parser cannot read back as the
+   --  locale meant it, because CLDR gives another shipped locale the same
+   --  words for something else: Malay's second is "saat", Turkish's hour.
+   function Duration_Parse_Collides
+     (Locale  : String;
+      Seconds : Long_Long_Integer)
+      return Boolean
+   is (Locale = "ms" and then Seconds mod 60 /= 0);
+
 end Humanize.Tests.Support;

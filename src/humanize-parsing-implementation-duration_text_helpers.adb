@@ -2,6 +2,7 @@ with Humanize.Bounded_Text;
 with Humanize.Durations;
 with Humanize.Parsing.Diagnostics;
 with Humanize.Parsing.Duration_Aliases;
+with Humanize.Parsing.Implementation.CLDR_Vocabulary;
 with Humanize.Parsing.Implementation.Text_Helpers;
 with Humanize.Parsing.Support;
 with Humanize.Status;
@@ -73,6 +74,7 @@ package body Humanize.Parsing.Implementation.Duration_Text_Helpers is
         or else U = B ("D181D0B5D0BAD183D0BDD0B4")
         or else U = B ("D181D0B5D0BAD183D0BDD0B4D0B8")
         or else U = B ("E7A792")
+        or else U = B ("E7A792E9929F")
         or else U = B ("ECB488")
         or else U = B ("E7A792")
         or else U = B ("D8ABD8A7D986D98AD8A9")
@@ -99,6 +101,7 @@ package body Humanize.Parsing.Implementation.Duration_Text_Helpers is
         or else U = B ("D185D0B2D0B8D0BBD0B8D0BDD0B0")
         or else U = B ("D185D0B2D0B8D0BBD0B8D0BDD0B8")
         or else U = B ("E58886")
+        or else U = B ("E58886E9929F")
         or else U = B ("E58886E9929F")
         or else U = B ("EBB684")
         or else U = B ("D8AFD982D98AD982D8A9")
@@ -148,6 +151,8 @@ package body Humanize.Parsing.Implementation.Duration_Text_Helpers is
         or else U = B ("64C3AD61") or else U = B ("64C3AD6173")
         or else U = "giorno" or else U = "giorni"
         or else U = "dagar" or else U = "paiva" or else U = "paivaa"
+        --  CLDR's Swedish and Norwegian for a day of twenty-four hours.
+        or else U = "dygn" or else U = B ("64C3B8676E")
         or else U = B ("70C3A46976C3A4")
         or else U = B ("70C3A46976C3A4C3A4")
         or else U = B ("70C3A46976C3A46E")
@@ -283,8 +288,15 @@ package body Humanize.Parsing.Implementation.Duration_Text_Helpers is
       then
          return 365 * 86_400;
       else
-         return Humanize.Parsing.Duration_Aliases.Generated_Duration_Seconds
-           (U);
+         declare
+            Generated : constant Long_Long_Integer :=
+              Humanize.Parsing.Duration_Aliases.Generated_Duration_Seconds (U);
+         begin
+            --  Last, CLDR's own names for the unit in the shipped locales.
+            return
+              (if Generated /= 0 then Generated
+               else Humanize.Parsing.Implementation.CLDR_Vocabulary.Unit_Seconds (Unit));
+         end;
       end if;
    end Unit_Seconds;
 

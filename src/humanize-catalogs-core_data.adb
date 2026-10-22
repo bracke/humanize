@@ -7,62 +7,46 @@ package body Humanize.Catalogs.Core_Data is
 
    LF : constant String := [1 => ASCII.LF];
 
-   AA     : String renames Humanize.Catalogs.Encoding.AA;
-   AACUTE : String renames Humanize.Catalogs.Encoding.AACUTE;
    ATILDE : String renames Humanize.Catalogs.Encoding.ATILDE;
-   ECIRC  : String renames Humanize.Catalogs.Encoding.ECIRC;
    EGRAVE : String renames Humanize.Catalogs.Encoding.EGRAVE;
    FEMORD : String renames Humanize.Catalogs.Encoding.FEMORD;
    IACUTE : String renames Humanize.Catalogs.Encoding.IACUTE;
-   NTILDE : String renames Humanize.Catalogs.Encoding.NTILDE;
    OACUTE : String renames Humanize.Catalogs.Encoding.OACUTE;
    ORDM   : String renames Humanize.Catalogs.Encoding.ORDM;
    OTILDE : String renames Humanize.Catalogs.Encoding.OTILDE;
 
+   --  Locale-neutral entries: CLDR-backed patterns that messages renders in
+   --  the requested locale ("vor 2 Stunden", "í gær", "5 klukkustundir"), so
+   --  relative times, the named days and duration units read natively in
+   --  every locale CLDR covers rather than in a hand-kept few.
+   Neutral : constant String :=
+     "und.humanize.datetime.now = {zero, relative, second}" & LF
+     & "und.humanize.datetime.day.previous = {minus_one, relative, day}" & LF
+     & "und.humanize.datetime.day.current = {zero, relative, day}" & LF
+     & "und.humanize.datetime.day.next = {plus_one, relative, day}" & LF
+     & "und.humanize.datetime.relative.second.past = {past_count, relative, second}" & LF
+     & "und.humanize.datetime.relative.second.future = {count, relative, second}" & LF
+     & "und.humanize.datetime.relative.minute.past = {past_count, relative, minute}" & LF
+     & "und.humanize.datetime.relative.minute.future = {count, relative, minute}" & LF
+     & "und.humanize.datetime.relative.hour.past = {past_count, relative, hour}" & LF
+     & "und.humanize.datetime.relative.hour.future = {count, relative, hour}" & LF
+     & "und.humanize.datetime.relative.day.past = {past_count, relative, day}" & LF
+     & "und.humanize.datetime.relative.day.future = {count, relative, day}" & LF
+     & "und.humanize.datetime.relative.week.past = {past_count, relative, week}" & LF
+     & "und.humanize.datetime.relative.week.future = {count, relative, week}" & LF
+     & "und.humanize.datetime.relative.month.past = {past_count, relative, month}" & LF
+     & "und.humanize.datetime.relative.month.future = {count, relative, month}" & LF
+     & "und.humanize.datetime.relative.year.past = {past_count, relative, year}" & LF
+     & "und.humanize.datetime.relative.year.future = {count, relative, year}" & LF
+     & "und.humanize.duration.unit.second = {value, unit, second/unit-width-long}" & LF
+     & "und.humanize.duration.unit.minute = {value, unit, minute/unit-width-long}" & LF
+     & "und.humanize.duration.unit.hour = {value, unit, hour/unit-width-long}" & LF
+     & "und.humanize.duration.unit.day = {value, unit, day/unit-width-long}" & LF;
+
    --  English catalog fragment. Catalog values are unquoted; i18n trims the
    --  text after the first '=' separator.
    English : constant String :=
-     "en.humanize.datetime.now = now" & LF
-     & "en.humanize.datetime.day.previous = yesterday" & LF
-     & "en.humanize.datetime.day.current = today" & LF
-     & "en.humanize.datetime.day.next = tomorrow" & LF
-     & "en.humanize.datetime.relative.second.past = "
-     & "{count, plural, one {{value, number} second ago} other {{value, number} seconds ago}}" & LF
-     & "en.humanize.datetime.relative.second.future = "
-     & "{count, plural, one {in {value, number} second} other {in {value, number} seconds}}" & LF
-     & "en.humanize.datetime.relative.minute.past = "
-     & "{count, plural, one {{value, number} minute ago} other {{value, number} minutes ago}}" & LF
-     & "en.humanize.datetime.relative.minute.future = "
-     & "{count, plural, one {in {value, number} minute} other {in {value, number} minutes}}" & LF
-     & "en.humanize.datetime.relative.hour.past = "
-     & "{count, plural, one {{value, number} hour ago} other {{value, number} hours ago}}" & LF
-     & "en.humanize.datetime.relative.hour.future = "
-     & "{count, plural, one {in {value, number} hour} other {in {value, number} hours}}" & LF
-     & "en.humanize.datetime.relative.day.past = "
-     & "{count, plural, one {{value, number} day ago} other {{value, number} days ago}}" & LF
-     & "en.humanize.datetime.relative.day.future = "
-     & "{count, plural, one {in {value, number} day} other {in {value, number} days}}" & LF
-     & "en.humanize.datetime.relative.week.past = "
-     & "{count, plural, one {{value, number} week ago} other {{value, number} weeks ago}}" & LF
-     & "en.humanize.datetime.relative.week.future = "
-     & "{count, plural, one {in {value, number} week} other {in {value, number} weeks}}" & LF
-     & "en.humanize.datetime.relative.month.past = "
-     & "{count, plural, one {{value, number} month ago} other {{value, number} months ago}}" & LF
-     & "en.humanize.datetime.relative.month.future = "
-     & "{count, plural, one {in {value, number} month} other {in {value, number} months}}" & LF
-     & "en.humanize.datetime.relative.year.past = "
-     & "{count, plural, one {{value, number} year ago} other {{value, number} years ago}}" & LF
-     & "en.humanize.datetime.relative.year.future = "
-     & "{count, plural, one {in {value, number} year} other {in {value, number} years}}" & LF
-     & "en.humanize.duration.unit.second = "
-     & "{count, plural, one {{value, number} second} other {{value, number} seconds}}" & LF
-     & "en.humanize.duration.unit.minute = "
-     & "{count, plural, one {{value, number} minute} other {{value, number} minutes}}" & LF
-     & "en.humanize.duration.unit.hour = "
-     & "{count, plural, one {{value, number} hour} other {{value, number} hours}}" & LF
-     & "en.humanize.duration.unit.day = "
-     & "{count, plural, one {{value, number} day} other {{value, number} days}}" & LF
-     & "en.humanize.bytes.byte = "
+     "en.humanize.bytes.byte = "
      & "{count, plural, one {{value, number} byte} other {{value, number} bytes}}" & LF
      & "en.humanize.bytes.kb = {value, number} kB" & LF
      & "en.humanize.bytes.mb = {value, number} MB" & LF
@@ -116,52 +100,7 @@ package body Humanize.Catalogs.Core_Data is
 
    --  Danish catalog fragment. 'å' is spliced via AA to keep UTF-8 output.
    Danish : constant String :=
-     "da.humanize.datetime.now = nu" & LF
-     & "da.humanize.datetime.day.previous = i g" & AA & "r" & LF
-     & "da.humanize.datetime.day.current = i dag" & LF
-     & "da.humanize.datetime.day.next = i morgen" & LF
-     & "da.humanize.datetime.relative.second.past = "
-     & "{count, plural, one {for {value, number} sekund siden} "
-     & "other {for {value, number} sekunder siden}}" & LF
-     & "da.humanize.datetime.relative.second.future = "
-     & "{count, plural, one {om {value, number} sekund} other {om {value, number} sekunder}}" & LF
-     & "da.humanize.datetime.relative.minute.past = "
-     & "{count, plural, one {for {value, number} minut siden} "
-     & "other {for {value, number} minutter siden}}" & LF
-     & "da.humanize.datetime.relative.minute.future = "
-     & "{count, plural, one {om {value, number} minut} other {om {value, number} minutter}}" & LF
-     & "da.humanize.datetime.relative.hour.past = "
-     & "{count, plural, one {for {value, number} time siden} other {for {value, number} timer siden}}" & LF
-     & "da.humanize.datetime.relative.hour.future = "
-     & "{count, plural, one {om {value, number} time} other {om {value, number} timer}}" & LF
-     & "da.humanize.datetime.relative.day.past = "
-     & "{count, plural, one {for {value, number} dag siden} other {for {value, number} dage siden}}" & LF
-     & "da.humanize.datetime.relative.day.future = "
-     & "{count, plural, one {om {value, number} dag} other {om {value, number} dage}}" & LF
-     & "da.humanize.datetime.relative.week.past = "
-     & "{count, plural, one {for {value, number} uge siden} other {for {value, number} uger siden}}" & LF
-     & "da.humanize.datetime.relative.week.future = "
-     & "{count, plural, one {om {value, number} uge} other {om {value, number} uger}}" & LF
-     & "da.humanize.datetime.relative.month.past = "
-     & "{count, plural, one {for {value, number} m" & AA & "ned siden} "
-     & "other {for {value, number} m" & AA & "neder siden}}" & LF
-     & "da.humanize.datetime.relative.month.future = "
-     & "{count, plural, one {om {value, number} m" & AA & "ned} "
-     & "other {om {value, number} m" & AA & "neder}}" & LF
-     & "da.humanize.datetime.relative.year.past = "
-     & "{count, plural, one {for {value, number} " & AA & "r siden} "
-     & "other {for {value, number} " & AA & "r siden}}" & LF
-     & "da.humanize.datetime.relative.year.future = "
-     & "{count, plural, one {om {value, number} " & AA & "r} other {om {value, number} " & AA & "r}}" & LF
-     & "da.humanize.duration.unit.second = "
-     & "{count, plural, one {{value, number} sekund} other {{value, number} sekunder}}" & LF
-     & "da.humanize.duration.unit.minute = "
-     & "{count, plural, one {{value, number} minut} other {{value, number} minutter}}" & LF
-     & "da.humanize.duration.unit.hour = "
-     & "{count, plural, one {{value, number} time} other {{value, number} timer}}" & LF
-     & "da.humanize.duration.unit.day = "
-     & "{count, plural, one {{value, number} dag} other {{value, number} dage}}" & LF
-     & "da.humanize.bytes.byte = "
+     "da.humanize.bytes.byte = "
      & "{count, plural, one {{value, number} byte} other {{value, number} bytes}}" & LF
      & "da.humanize.bytes.kb = {value, number} kB" & LF
      & "da.humanize.bytes.mb = {value, number} MB" & LF
@@ -211,47 +150,7 @@ package body Humanize.Catalogs.Core_Data is
 
    --  German catalog fragment (pure ASCII: no umlauts in these words).
    German : constant String :=
-     "de.humanize.datetime.now = jetzt" & LF
-     & "de.humanize.datetime.day.previous = gestern" & LF
-     & "de.humanize.datetime.day.current = heute" & LF
-     & "de.humanize.datetime.day.next = morgen" & LF
-     & "de.humanize.datetime.relative.second.past = "
-     & "{count, plural, one {vor {value, number} Sekunde} other {vor {value, number} Sekunden}}" & LF
-     & "de.humanize.datetime.relative.second.future = "
-     & "{count, plural, one {in {value, number} Sekunde} other {in {value, number} Sekunden}}" & LF
-     & "de.humanize.datetime.relative.minute.past = "
-     & "{count, plural, one {vor {value, number} Minute} other {vor {value, number} Minuten}}" & LF
-     & "de.humanize.datetime.relative.minute.future = "
-     & "{count, plural, one {in {value, number} Minute} other {in {value, number} Minuten}}" & LF
-     & "de.humanize.datetime.relative.hour.past = "
-     & "{count, plural, one {vor {value, number} Stunde} other {vor {value, number} Stunden}}" & LF
-     & "de.humanize.datetime.relative.hour.future = "
-     & "{count, plural, one {in {value, number} Stunde} other {in {value, number} Stunden}}" & LF
-     & "de.humanize.datetime.relative.day.past = "
-     & "{count, plural, one {vor {value, number} Tag} other {vor {value, number} Tagen}}" & LF
-     & "de.humanize.datetime.relative.day.future = "
-     & "{count, plural, one {in {value, number} Tag} other {in {value, number} Tagen}}" & LF
-     & "de.humanize.datetime.relative.week.past = "
-     & "{count, plural, one {vor {value, number} Woche} other {vor {value, number} Wochen}}" & LF
-     & "de.humanize.datetime.relative.week.future = "
-     & "{count, plural, one {in {value, number} Woche} other {in {value, number} Wochen}}" & LF
-     & "de.humanize.datetime.relative.month.past = "
-     & "{count, plural, one {vor {value, number} Monat} other {vor {value, number} Monaten}}" & LF
-     & "de.humanize.datetime.relative.month.future = "
-     & "{count, plural, one {in {value, number} Monat} other {in {value, number} Monaten}}" & LF
-     & "de.humanize.datetime.relative.year.past = "
-     & "{count, plural, one {vor {value, number} Jahr} other {vor {value, number} Jahren}}" & LF
-     & "de.humanize.datetime.relative.year.future = "
-     & "{count, plural, one {in {value, number} Jahr} other {in {value, number} Jahren}}" & LF
-     & "de.humanize.duration.unit.second = "
-     & "{count, plural, one {{value, number} Sekunde} other {{value, number} Sekunden}}" & LF
-     & "de.humanize.duration.unit.minute = "
-     & "{count, plural, one {{value, number} Minute} other {{value, number} Minuten}}" & LF
-     & "de.humanize.duration.unit.hour = "
-     & "{count, plural, one {{value, number} Stunde} other {{value, number} Stunden}}" & LF
-     & "de.humanize.duration.unit.day = "
-     & "{count, plural, one {{value, number} Tag} other {{value, number} Tage}}" & LF
-     & "de.humanize.bytes.byte = "
+     "de.humanize.bytes.byte = "
      & "{count, plural, one {{value, number} Byte} other {{value, number} Bytes}}" & LF
      & "de.humanize.bytes.kb = {value, number} kB" & LF
      & "de.humanize.bytes.mb = {value, number} MB" & LF
@@ -302,49 +201,7 @@ package body Humanize.Catalogs.Core_Data is
    --  French catalog fragment (pure ASCII; French plural "one" covers 0 and 1).
    --  "byte" is "octet"; unit symbols stay international (kB/KiB).
    French : constant String :=
-     "fr.humanize.datetime.now = maintenant" & LF
-     & "fr.humanize.datetime.day.previous = hier" & LF
-     & "fr.humanize.datetime.day.current = aujourd'hui" & LF
-     & "fr.humanize.datetime.day.next = demain" & LF
-     & "fr.humanize.datetime.relative.second.past = "
-     & "{count, plural, one {il y a {value, number} seconde} "
-     & "other {il y a {value, number} secondes}}" & LF
-     & "fr.humanize.datetime.relative.second.future = "
-     & "{count, plural, one {dans {value, number} seconde} other {dans {value, number} secondes}}" & LF
-     & "fr.humanize.datetime.relative.minute.past = "
-     & "{count, plural, one {il y a {value, number} minute} other {il y a {value, number} minutes}}" & LF
-     & "fr.humanize.datetime.relative.minute.future = "
-     & "{count, plural, one {dans {value, number} minute} other {dans {value, number} minutes}}" & LF
-     & "fr.humanize.datetime.relative.hour.past = "
-     & "{count, plural, one {il y a {value, number} heure} other {il y a {value, number} heures}}" & LF
-     & "fr.humanize.datetime.relative.hour.future = "
-     & "{count, plural, one {dans {value, number} heure} other {dans {value, number} heures}}" & LF
-     & "fr.humanize.datetime.relative.day.past = "
-     & "{count, plural, one {il y a {value, number} jour} other {il y a {value, number} jours}}" & LF
-     & "fr.humanize.datetime.relative.day.future = "
-     & "{count, plural, one {dans {value, number} jour} other {dans {value, number} jours}}" & LF
-     & "fr.humanize.datetime.relative.week.past = "
-     & "{count, plural, one {il y a {value, number} semaine} "
-     & "other {il y a {value, number} semaines}}" & LF
-     & "fr.humanize.datetime.relative.week.future = "
-     & "{count, plural, one {dans {value, number} semaine} other {dans {value, number} semaines}}" & LF
-     & "fr.humanize.datetime.relative.month.past = "
-     & "{count, plural, one {il y a {value, number} mois} other {il y a {value, number} mois}}" & LF
-     & "fr.humanize.datetime.relative.month.future = "
-     & "{count, plural, one {dans {value, number} mois} other {dans {value, number} mois}}" & LF
-     & "fr.humanize.datetime.relative.year.past = "
-     & "{count, plural, one {il y a {value, number} an} other {il y a {value, number} ans}}" & LF
-     & "fr.humanize.datetime.relative.year.future = "
-     & "{count, plural, one {dans {value, number} an} other {dans {value, number} ans}}" & LF
-     & "fr.humanize.duration.unit.second = "
-     & "{count, plural, one {{value, number} seconde} other {{value, number} secondes}}" & LF
-     & "fr.humanize.duration.unit.minute = "
-     & "{count, plural, one {{value, number} minute} other {{value, number} minutes}}" & LF
-     & "fr.humanize.duration.unit.hour = "
-     & "{count, plural, one {{value, number} heure} other {{value, number} heures}}" & LF
-     & "fr.humanize.duration.unit.day = "
-     & "{count, plural, one {{value, number} jour} other {{value, number} jours}}" & LF
-     & "fr.humanize.bytes.byte = "
+     "fr.humanize.bytes.byte = "
      & "{count, plural, one {{value, number} octet} other {{value, number} octets}}" & LF
      & "fr.humanize.bytes.kb = {value, number} kB" & LF
      & "fr.humanize.bytes.mb = {value, number} MB" & LF
@@ -400,62 +257,7 @@ package body Humanize.Catalogs.Core_Data is
    --  Spanish catalog fragment. 'n'-tilde, 'i'/'o'-acute and the ordinal
    --  indicator are spliced as UTF-8 bytes.
    Spanish : constant String :=
-     "es.humanize.datetime.now = ahora" & LF
-     & "es.humanize.datetime.day.previous = ayer" & LF
-     & "es.humanize.datetime.day.current = hoy" & LF
-     & "es.humanize.datetime.day.next = ma" & NTILDE & "ana" & LF
-     & "es.humanize.datetime.relative.second.past = "
-     & "{count, plural, one {hace {value, number} segundo} "
-     & "other {hace {value, number} segundos}}" & LF
-     & "es.humanize.datetime.relative.second.future = "
-     & "{count, plural, one {dentro de {value, number} segundo} "
-     & "other {dentro de {value, number} segundos}}" & LF
-     & "es.humanize.datetime.relative.minute.past = "
-     & "{count, plural, one {hace {value, number} minuto} "
-     & "other {hace {value, number} minutos}}" & LF
-     & "es.humanize.datetime.relative.minute.future = "
-     & "{count, plural, one {dentro de {value, number} minuto} "
-     & "other {dentro de {value, number} minutos}}" & LF
-     & "es.humanize.datetime.relative.hour.past = "
-     & "{count, plural, one {hace {value, number} hora} "
-     & "other {hace {value, number} horas}}" & LF
-     & "es.humanize.datetime.relative.hour.future = "
-     & "{count, plural, one {dentro de {value, number} hora} "
-     & "other {dentro de {value, number} horas}}" & LF
-     & "es.humanize.datetime.relative.day.past = "
-     & "{count, plural, one {hace {value, number} d" & IACUTE & "a} "
-     & "other {hace {value, number} d" & IACUTE & "as}}" & LF
-     & "es.humanize.datetime.relative.day.future = "
-     & "{count, plural, one {dentro de {value, number} d" & IACUTE & "a} "
-     & "other {dentro de {value, number} d" & IACUTE & "as}}" & LF
-     & "es.humanize.datetime.relative.week.past = "
-     & "{count, plural, one {hace {value, number} semana} "
-     & "other {hace {value, number} semanas}}" & LF
-     & "es.humanize.datetime.relative.week.future = "
-     & "{count, plural, one {dentro de {value, number} semana} "
-     & "other {dentro de {value, number} semanas}}" & LF
-     & "es.humanize.datetime.relative.month.past = "
-     & "{count, plural, one {hace {value, number} mes} "
-     & "other {hace {value, number} meses}}" & LF
-     & "es.humanize.datetime.relative.month.future = "
-     & "{count, plural, one {dentro de {value, number} mes} "
-     & "other {dentro de {value, number} meses}}" & LF
-     & "es.humanize.datetime.relative.year.past = "
-     & "{count, plural, one {hace {value, number} a" & NTILDE & "o} "
-     & "other {hace {value, number} a" & NTILDE & "os}}" & LF
-     & "es.humanize.datetime.relative.year.future = "
-     & "{count, plural, one {dentro de {value, number} a" & NTILDE & "o} "
-     & "other {dentro de {value, number} a" & NTILDE & "os}}" & LF
-     & "es.humanize.duration.unit.second = "
-     & "{count, plural, one {{value, number} segundo} other {{value, number} segundos}}" & LF
-     & "es.humanize.duration.unit.minute = "
-     & "{count, plural, one {{value, number} minuto} other {{value, number} minutos}}" & LF
-     & "es.humanize.duration.unit.hour = "
-     & "{count, plural, one {{value, number} hora} other {{value, number} horas}}" & LF
-     & "es.humanize.duration.unit.day = "
-     & "{count, plural, one {{value, number} d" & IACUTE & "a} "
-     & "other {{value, number} d" & IACUTE & "as}}" & LF
-     & "es.humanize.bytes.byte = "
+     "es.humanize.bytes.byte = "
      & "{count, plural, one {{value, number} byte} other {{value, number} bytes}}" & LF
      & "es.humanize.bytes.kb = {value, number} kB" & LF
      & "es.humanize.bytes.mb = {value, number} MB" & LF
@@ -511,53 +313,7 @@ package body Humanize.Catalogs.Core_Data is
 
    --  Italian catalog fragment (the ordinal indicator is spliced as UTF-8).
    Italian : constant String :=
-     "it.humanize.datetime.now = adesso" & LF
-     & "it.humanize.datetime.day.previous = ieri" & LF
-     & "it.humanize.datetime.day.current = oggi" & LF
-     & "it.humanize.datetime.day.next = domani" & LF
-     & "it.humanize.datetime.relative.second.past = "
-     & "{count, plural, one {{value, number} secondo fa} other {{value, number} secondi fa}}"
-     & LF
-     & "it.humanize.datetime.relative.second.future = "
-     & "{count, plural, one {tra {value, number} secondo} other {tra {value, number} secondi}}"
-     & LF
-     & "it.humanize.datetime.relative.minute.past = "
-     & "{count, plural, one {{value, number} minuto fa} other {{value, number} minuti fa}}" & LF
-     & "it.humanize.datetime.relative.minute.future = "
-     & "{count, plural, one {tra {value, number} minuto} other {tra {value, number} minuti}}"
-     & LF
-     & "it.humanize.datetime.relative.hour.past = "
-     & "{count, plural, one {{value, number} ora fa} other {{value, number} ore fa}}" & LF
-     & "it.humanize.datetime.relative.hour.future = "
-     & "{count, plural, one {tra {value, number} ora} other {tra {value, number} ore}}" & LF
-     & "it.humanize.datetime.relative.day.past = "
-     & "{count, plural, one {{value, number} giorno fa} other {{value, number} giorni fa}}" & LF
-     & "it.humanize.datetime.relative.day.future = "
-     & "{count, plural, one {tra {value, number} giorno} other {tra {value, number} giorni}}"
-     & LF
-     & "it.humanize.datetime.relative.week.past = "
-     & "{count, plural, one {{value, number} settimana fa} "
-     & "other {{value, number} settimane fa}}" & LF
-     & "it.humanize.datetime.relative.week.future = "
-     & "{count, plural, one {tra {value, number} settimana} "
-     & "other {tra {value, number} settimane}}" & LF
-     & "it.humanize.datetime.relative.month.past = "
-     & "{count, plural, one {{value, number} mese fa} other {{value, number} mesi fa}}" & LF
-     & "it.humanize.datetime.relative.month.future = "
-     & "{count, plural, one {tra {value, number} mese} other {tra {value, number} mesi}}" & LF
-     & "it.humanize.datetime.relative.year.past = "
-     & "{count, plural, one {{value, number} anno fa} other {{value, number} anni fa}}" & LF
-     & "it.humanize.datetime.relative.year.future = "
-     & "{count, plural, one {tra {value, number} anno} other {tra {value, number} anni}}" & LF
-     & "it.humanize.duration.unit.second = "
-     & "{count, plural, one {{value, number} secondo} other {{value, number} secondi}}" & LF
-     & "it.humanize.duration.unit.minute = "
-     & "{count, plural, one {{value, number} minuto} other {{value, number} minuti}}" & LF
-     & "it.humanize.duration.unit.hour = "
-     & "{count, plural, one {{value, number} ora} other {{value, number} ore}}" & LF
-     & "it.humanize.duration.unit.day = "
-     & "{count, plural, one {{value, number} giorno} other {{value, number} giorni}}" & LF
-     & "it.humanize.bytes.byte = "
+     "it.humanize.bytes.byte = "
      & "{count, plural, one {{value, number} byte} other {{value, number} byte}}" & LF
      & "it.humanize.bytes.kb = {value, number} kB" & LF
      & "it.humanize.bytes.mb = {value, number} MB" & LF
@@ -609,65 +365,7 @@ package body Humanize.Catalogs.Core_Data is
 
    --  Portuguese catalog fragment (one iff i in {0,1}; accents spliced).
    Portuguese : constant String :=
-     "pt.humanize.datetime.now = " & "agora" & LF
-     & "pt.humanize.datetime.day.previous = " & "ontem" & LF
-     & "pt.humanize.datetime.day.current = " & "hoje" & LF
-     & "pt.humanize.datetime.day.next = " & "amanh" & ATILDE & LF
-     & "pt.humanize.datetime.relative.second.past = "
-     & "{count, plural, one {h" & AACUTE & " {value, number} segundo} "
-     & "other {h" & AACUTE & " {value, number} segundos}}" & LF
-     & "pt.humanize.datetime.relative.second.future = "
-     & "{count, plural, one {dentro de {value, number} segundo} "
-     & "other {dentro de {value, number} segundos}}" & LF
-     & "pt.humanize.datetime.relative.minute.past = "
-     & "{count, plural, one {h" & AACUTE & " {value, number} minuto} "
-     & "other {h" & AACUTE & " {value, number} minutos}}" & LF
-     & "pt.humanize.datetime.relative.minute.future = "
-     & "{count, plural, one {dentro de {value, number} minuto} "
-     & "other {dentro de {value, number} minutos}}" & LF
-     & "pt.humanize.datetime.relative.hour.past = "
-     & "{count, plural, one {h" & AACUTE & " {value, number} hora} "
-     & "other {h" & AACUTE & " {value, number} horas}}" & LF
-     & "pt.humanize.datetime.relative.hour.future = "
-     & "{count, plural, one {dentro de {value, number} hora} "
-     & "other {dentro de {value, number} horas}}" & LF
-     & "pt.humanize.datetime.relative.day.past = "
-     & "{count, plural, one {h" & AACUTE & " {value, number} dia} "
-     & "other {h" & AACUTE & " {value, number} dias}}" & LF
-     & "pt.humanize.datetime.relative.day.future = "
-     & "{count, plural, one {dentro de {value, number} dia} "
-     & "other {dentro de {value, number} dias}}" & LF
-     & "pt.humanize.datetime.relative.week.past = "
-     & "{count, plural, one {h" & AACUTE & " {value, number} semana} "
-     & "other {h" & AACUTE & " {value, number} semanas}}" & LF
-     & "pt.humanize.datetime.relative.week.future = "
-     & "{count, plural, one {dentro de {value, number} semana} "
-     & "other {dentro de {value, number} semanas}}" & LF
-     & "pt.humanize.datetime.relative.month.past = "
-     & "{count, plural, one {h" & AACUTE & " {value, number} m" & ECIRC
-     & "s} other {h" & AACUTE & " {value, number} meses}}" & LF
-     & "pt.humanize.datetime.relative.month.future = "
-     & "{count, plural, one {dentro de {value, number} m" & ECIRC
-     & "s} other {dentro de {value, number} meses}}" & LF
-     & "pt.humanize.datetime.relative.year.past = "
-     & "{count, plural, one {h" & AACUTE & " {value, number} ano} "
-     & "other {h" & AACUTE & " {value, number} anos}}" & LF
-     & "pt.humanize.datetime.relative.year.future = "
-     & "{count, plural, one {dentro de {value, number} ano} "
-     & "other {dentro de {value, number} anos}}" & LF
-     & "pt.humanize.duration.unit.second = "
-     & "{count, plural, one {{value, number} segundo} "
-     & "other {{value, number} segundos}}" & LF
-     & "pt.humanize.duration.unit.minute = "
-     & "{count, plural, one {{value, number} minuto} "
-     & "other {{value, number} minutos}}" & LF
-     & "pt.humanize.duration.unit.hour = "
-     & "{count, plural, one {{value, number} hora} "
-     & "other {{value, number} horas}}" & LF
-     & "pt.humanize.duration.unit.day = "
-     & "{count, plural, one {{value, number} dia} "
-     & "other {{value, number} dias}}" & LF
-     & "pt.humanize.bytes.byte = "
+     "pt.humanize.bytes.byte = "
      & "{count, plural, one {{value, number} byte} "
      & "other {{value, number} bytes}}" & LF
      & "pt.humanize.bytes.kb = " & "{value, number} kB" & LF
@@ -732,7 +430,7 @@ package body Humanize.Catalogs.Core_Data is
 
    function Default_Catalog return String is
    begin
-      return English & Danish & German & French & Spanish & Italian & Portuguese;
+      return Neutral & English & Danish & German & French & Spanish & Italian & Portuguese;
    end Default_Catalog;
 
 end Humanize.Catalogs.Core_Data;

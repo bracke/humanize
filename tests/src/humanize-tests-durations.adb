@@ -14,6 +14,8 @@ package body Humanize.Tests.Durations is
 
    U_A_Grave : constant String :=
      Character'Val (16#C3#) & Character'Val (16#A0#);
+   --  CLDR's French writes a no-break space between a value and its unit.
+   French_Space : constant String := Character'Val (16#C2#) & Character'Val (16#A0#);
 
    function U (Code : Natural) return String is
    begin
@@ -123,7 +125,11 @@ package body Humanize.Tests.Durations is
         (Support.En, 400 * 86_400, 3, "1 year, 1 month and 5 days",
          "year month day components");
       Check_Multi (Support.De, 3661, 2, "1 Stunde und 1 Minute", "German multi");
-      Check_Multi (Support.Fr, 3661, 2, "1 heure et 1 minute", "French multi");
+      Check_Multi
+        (Support.Fr, 3661, 2,
+         --  CLDR's own: a no-break space before "heure", a plain one before
+         --  "minute".
+         "1" & French_Space & "heure et 1 minute", "French multi");
    end Test_Multi_Unit;
 
    procedure Test_Multi_Unit_Errors (T : in out AUnit.Test_Cases.Test_Case'Class) is

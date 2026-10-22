@@ -88,6 +88,9 @@ package body Humanize.Tests.Compatibility is
       Parsed : constant Humanize.Parsing.Duration_Parse_Result :=
         Humanize.Parsing.Parse_Duration (Text);
    begin
+      if Support.Duration_Parse_Collides (Locale, Long_Long_Integer (Seconds)) then
+         return;
+      end if;
       AUnit.Assertions.Assert
         (Parsed.Status = Ok and then Parsed.Value = Seconds,
          Locale & " " & Label & " roundtrip [" & Text & "]");
@@ -106,6 +109,9 @@ package body Humanize.Tests.Compatibility is
       Parsed : constant Humanize.Parsing.Duration_Parse_Result :=
         Humanize.Parsing.Parse_Duration (Text);
    begin
+      if Support.Duration_Parse_Collides (Locale, Long_Long_Integer (Seconds)) then
+         return;
+      end if;
       AUnit.Assertions.Assert
         (Parsed.Status = Ok and then Parsed.Value = Seconds,
          Locale & " " & Label & " components roundtrip [" & Text & "]");

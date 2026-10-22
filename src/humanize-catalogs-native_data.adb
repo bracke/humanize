@@ -355,64 +355,8 @@ package body Humanize.Catalogs.Native_Data is
         & "other {{value, number} " & Plural & "}}" & LF;
    end Count_Line;
 
-   function Relative_Line
-     (Locale   : String;
-      Key      : String;
-      Singular : String;
-      Plural   : String;
-      Prefix   : String;
-      Suffix   : String)
-      return String
-   is
-      Many : constant String := Slavic_Many_Form (Locale, Singular, Plural);
-   begin
-      if Locale = "pl"
-        or else Locale = "cs"
-        or else Locale = "ru"
-        or else Locale = "uk"
-        or else Locale = "sk"
-      then
-         return
-           Locale & "." & Key & " = "
-           & "{count, plural, one {" & Prefix & "{value, number} "
-           & Singular & Suffix & "} few {" & Prefix & "{value, number} "
-           & Plural & Suffix & "} many {" & Prefix & "{value, number} "
-           & Many & Suffix
-           & "} other {" & Prefix & "{value, number} "
-           & (if Locale = "sk" then Many else Plural)
-           & Suffix
-           & "}}" & LF;
-      end if;
-
-      return
-        Locale & "." & Key & " = "
-        & "{count, plural, one {" & Prefix & "{value, number} "
-        & Singular & Suffix & "} other {" & Prefix & "{value, number} "
-        & Plural & Suffix & "}}" & LF;
-   end Relative_Line;
-
    function Core_Locale_Catalog
      (Locale            : String;
-      Now_Text          : String;
-      Yesterday_Text    : String;
-      Today_Text        : String;
-      Tomorrow_Text     : String;
-      Past_Suffix       : String;
-      Future_Prefix     : String;
-      Second_Singular   : String;
-      Second_Plural     : String;
-      Minute_Singular   : String;
-      Minute_Plural     : String;
-      Hour_Singular     : String;
-      Hour_Plural       : String;
-      Day_Singular      : String;
-      Day_Plural        : String;
-      Week_Singular     : String;
-      Week_Plural       : String;
-      Month_Singular    : String;
-      Month_Plural      : String;
-      Year_Singular     : String;
-      Year_Plural       : String;
       Byte_Singular     : String;
       Byte_Plural       : String;
       Thousand_Short    : String;
@@ -446,64 +390,7 @@ package body Humanize.Catalogs.Native_Data is
    is
    begin
       return
-        Locale & ".humanize.datetime.now = " & Now_Text & LF
-        & Locale & ".humanize.datetime.day.previous = " & Yesterday_Text & LF
-        & Locale & ".humanize.datetime.day.current = " & Today_Text & LF
-        & Locale & ".humanize.datetime.day.next = " & Tomorrow_Text & LF
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.second.past",
-             Second_Singular, Second_Plural, "", Past_Suffix)
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.second.future",
-             Second_Singular, Second_Plural, Future_Prefix, "")
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.minute.past",
-             Minute_Singular, Minute_Plural, "", Past_Suffix)
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.minute.future",
-             Minute_Singular, Minute_Plural, Future_Prefix, "")
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.hour.past",
-             Hour_Singular, Hour_Plural, "", Past_Suffix)
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.hour.future",
-             Hour_Singular, Hour_Plural, Future_Prefix, "")
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.day.past",
-             Day_Singular, Day_Plural, "", Past_Suffix)
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.day.future",
-             Day_Singular, Day_Plural, Future_Prefix, "")
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.week.past",
-             Week_Singular, Week_Plural, "", Past_Suffix)
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.week.future",
-             Week_Singular, Week_Plural, Future_Prefix, "")
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.month.past",
-             Month_Singular, Month_Plural, "", Past_Suffix)
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.month.future",
-             Month_Singular, Month_Plural, Future_Prefix, "")
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.year.past",
-             Year_Singular, Year_Plural, "", Past_Suffix)
-        & Relative_Line
-            (Locale, "humanize.datetime.relative.year.future",
-             Year_Singular, Year_Plural, Future_Prefix, "")
-        & Count_Line
-            (Locale, "humanize.duration.unit.second",
-             Second_Singular, Second_Plural)
-        & Count_Line
-            (Locale, "humanize.duration.unit.minute",
-             Minute_Singular, Minute_Plural)
-        & Count_Line
-            (Locale, "humanize.duration.unit.hour",
-             Hour_Singular, Hour_Plural)
-        & Count_Line
-            (Locale, "humanize.duration.unit.day", Day_Singular, Day_Plural)
-        & Count_Line (Locale, "humanize.bytes.byte", Byte_Singular, Byte_Plural)
+        Count_Line (Locale, "humanize.bytes.byte", Byte_Singular, Byte_Plural)
         & Locale & ".humanize.bytes.kb = {value, number} kB" & LF
         & Locale & ".humanize.bytes.mb = {value, number} MB" & LF
         & Locale & ".humanize.bytes.gb = {value, number} GB" & LF
@@ -707,26 +594,6 @@ package body Humanize.Catalogs.Native_Data is
       return
         Core_Locale_Catalog
           ("nl",
-           "nu",
-           "gisteren",
-           "vandaag",
-           "morgen",
-           " geleden",
-           "over ",
-           "seconde",
-           "seconden",
-           "minuut",
-           "minuten",
-           "uur",
-           "uur",
-           "dag",
-           "dagen",
-           "week",
-           "weken",
-           "maand",
-           "maanden",
-           "jaar",
-           "jaar",
            "byte",
            "bytes",
            "K",

@@ -57,12 +57,19 @@ package body Humanize.I18N_Rendering is
    is
       pragma Unreferenced (Locale);
    begin
+      --  The fixed offsets the locale-neutral entries name: now, yesterday,
+      --  today, tomorrow.
+      Messages.Arguments.Set_Integer (Args, "zero", 0);
+      Messages.Arguments.Set_Integer (Args, "minus_one", -1);
+      Messages.Arguments.Set_Integer (Args, "plus_one", 1);
       case Selection.Arguments is
          when Humanize.Selections.No_Arguments =>
             null;
          when Humanize.Selections.Count_Argument =>
             Messages.Arguments.Set_Integer
               (Args, "count", Long_Long_Integer (Selection.Count));
+            Messages.Arguments.Set_Integer
+              (Args, "past_count", -Long_Long_Integer (Selection.Count));
             Messages.Arguments.Set
               (Args, "value", Image (Long_Long_Integer (Selection.Count)));
          when Humanize.Selections.Value_Argument =>

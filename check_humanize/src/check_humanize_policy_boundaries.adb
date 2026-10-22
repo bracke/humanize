@@ -42,14 +42,16 @@ package body Check_Humanize_Policy_Boundaries is
          Allows_Arguments : Boolean := False;
          Allows_Locales   : Boolean := False;
          Allows_Result    : Boolean := False;
-         Allows_Runtime   : Boolean := False)
+         Allows_Runtime   : Boolean := False;
+         Allows_CLDR_Text : Boolean := False)
       is
          Path : constant String := Root & "/src/" & Source_Name;
          Allowed_Count : constant Natural :=
            Boolean'Pos (Allows_Arguments)
            + Boolean'Pos (Allows_Locales)
            + Boolean'Pos (Allows_Result)
-           + Boolean'Pos (Allows_Runtime);
+           + Boolean'Pos (Allows_Runtime)
+           + 2 * Boolean'Pos (Allows_CLDR_Text);
          Allowed : Project_Tools.Ada_Source.String_List (1 .. Allowed_Count);
          Next    : Positive := Allowed'First;
       begin
@@ -67,6 +69,11 @@ package body Check_Humanize_Policy_Boundaries is
          end if;
          if Allows_Runtime then
             Allowed (Next) := To_Unbounded_String ("Messages.Runtime");
+            Next := Next + 1;
+         end if;
+         if Allows_CLDR_Text then
+            Allowed (Next) := To_Unbounded_String ("I18N.Relative_Format");
+            Allowed (Next + 1) := To_Unbounded_String ("I18N.Unit_Format");
          end if;
 
          Project_Tools.Ada_Source.Require_Only_Allowed_With_Clauses
@@ -104,6 +111,10 @@ package body Check_Humanize_Policy_Boundaries is
                elsif Name = "humanize-contexts.adb" then
                   Check_Allowed_I18N_Imports
                     (Name, Allows_Locales => True);
+               elsif Name = "humanize-parsing-implementation-cldr_vocabulary.adb" then
+                  --  The parser reads back what the formatters render, so it
+                  --  learns CLDR's unit names and relative patterns.
+                  Check_Allowed_I18N_Imports (Name, Allows_CLDR_Text => True);
                elsif Name = "humanize-i18n_rendering.adb" then
                   Check_Allowed_I18N_Imports
                     (Name,

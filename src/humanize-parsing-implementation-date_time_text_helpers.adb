@@ -3,6 +3,7 @@ with Ada.Strings.Unbounded;
 
 with Humanize.Bounded_Text;
 with Humanize.Parsing.Implementation.Calendar_Helpers;
+with Humanize.Parsing.Implementation.CLDR_Vocabulary;
 with Humanize.Parsing.Implementation.Canonical_Day_Index;
 with Humanize.Parsing.Implementation.Date_Text_Helpers;
 with Humanize.Parsing.Implementation.Numeric_Text_Helpers;

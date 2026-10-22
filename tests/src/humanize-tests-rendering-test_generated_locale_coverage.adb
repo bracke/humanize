@@ -226,9 +226,9 @@ separate (Humanize.Tests.Rendering)
       Check_Duration ("ru", B ("3220D181D0B5D0BAD183D0BDD0B4D18B"));
       Check_Duration ("uk", B ("3220D181D0B5D0BAD183D0BDD0B4D0B8"));
       Check_Duration ("ja", B ("3220E7A792"));
-      Check_Duration ("ko", B ("3220ECB488"));
-      Check_Duration ("zh", B ("3220E7A792"));
-      Check_Duration ("ar", ARABIC_TWO & B ("20D8ABD988D8A7D986D98D"));
+      Check_Duration ("ko", B ("32ECB488"));   --  CLDR's Korean: "2초"
+      Check_Duration ("zh", B ("32E7A792E9929F"));   --  CLDR's Chinese: "2秒钟"
+      Check_Duration ("ar", B ("D8ABD8A7D986D98AD8AAD8A7D986"));   --  CLDR's Arabic dual: "ثانيتان"
       Check_Duration ("hi", B ("3220E0A4B8E0A587E0A495E0A482E0A4A1"));
       Check_Duration_5_Hours ("pl", "5 godzin");
       Check_Duration_5_Hours ("cs", "5 hodin");

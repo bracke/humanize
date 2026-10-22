@@ -1,5 +1,28 @@
 # Changelog
 
+## Unreleased
+
+* **Relative times, now/today/yesterday/tomorrow and the duration units come
+  from CLDR**, in every locale CLDR covers rather than in 33 hand-kept
+  catalogs. Each is one locale-neutral `und` entry ("{past_count, relative,
+  hour}", "{value, unit, hour/unit-width-long}") that messages renders in the
+  requested locale, and the 22 keys' hand translations are gone from every
+  catalog fragment. This fixes the accentless Vietnamese, Hungarian and
+  Slovak text ("2 gio truoc" is "2 giờ trước"), Arabic word order and duals
+  ("قبل ساعتين", "ساعتان"), and Slovenian, Lithuanian and Czech plural
+  forms, and uses CLDR's named offsets ("gestern", "í gær"). Output changes
+  where CLDR differs from the old wording: French and German no-break spaces,
+  Swedish "dygn", "för 2 timmar sedan", Japanese and Chinese spacing.
+* **The parser reads CLDR's wording back.** A new
+  `Humanize.Parsing.Implementation.CLDR_Vocabulary` learns the shipped
+  locales' CLDR unit names, number-less forms and relative patterns from
+  i18n (the only unit allowed to import `I18N.Unit_Format` and
+  `I18N.Relative_Format`), after the hand tables for units and before them
+  for relative text. No-break spaces are read as spaces, a unit written
+  before its number ("sekunde 2") is turned round, and Arabic duals are
+  given their count. Malay's "saat" (second) is Turkish's hour, which a
+  locale-free parser cannot tell apart; that round trip is a known gap.
+
 ## 0.5.0
 
 * Fractional unit quantities ("1.5 kilometers"), with CLDR fractional plural
