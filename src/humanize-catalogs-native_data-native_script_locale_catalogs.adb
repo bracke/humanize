@@ -7,8 +7,6 @@ separate (Humanize.Catalogs.Native_Data)
       return
         Core_Locale_Catalog
           ("ru",
-           B ("D0B1D0B0D0B9D182"),
-           B ("D0B1D0B0D0B9D182D0B0"),
            B ("20D182D18BD1812E"),
            B ("20D0BCD0BBD0BD"),
            B ("20D0BCD0BBD180D0B4"),
@@ -64,8 +62,6 @@ separate (Humanize.Catalogs.Native_Data)
            B ("D0B4D180D183D0B3D0B8D0B5"))
         & Core_Locale_Catalog
           ("uk",
-           B ("D0B1D0B0D0B9D182"),
-           B ("D0B1D0B0D0B9D182D0B8"),
            B ("20D182D0B8D1812E"),
            B ("20D0BCD0BBD0BD"),
            B ("20D0BCD0BBD180D0B4"),
@@ -121,8 +117,6 @@ separate (Humanize.Catalogs.Native_Data)
            B ("D196D0BDD188D196"))
         & Core_Locale_Catalog
           ("ja",
-           B ("E38390E382A4E38388"),
-           B ("E38390E382A4E38388"),
            B ("20E58D83"),
            B ("20E4B887"),
            B ("20E58484"),
@@ -178,8 +172,6 @@ separate (Humanize.Catalogs.Native_Data)
            B ("E3819DE381AEE4BB96"))
         & Core_Locale_Catalog
           ("ko",
-           B ("EBB094EC9DB4ED8AB8"),
-           B ("EBB094EC9DB4ED8AB8"),
            B ("20ECB29C"),
            B ("20EBB0B1EBA78C"),
            B ("20EC8BADEC96B5"),
@@ -235,8 +227,6 @@ separate (Humanize.Catalogs.Native_Data)
            B ("EAB8B0ED8380"))
         & Core_Locale_Catalog
           ("zh",
-           B ("E5AD97E88A82"),
-           B ("E5AD97E88A82"),
            B ("20E58D83"),
            B ("20E799BEE4B887"),
            B ("20E58D81E4BABF"),
@@ -292,8 +282,6 @@ separate (Humanize.Catalogs.Native_Data)
            B ("E585B6E4BB96"))
         & Core_Locale_Catalog
           ("ar",
-           B ("D8A8D8A7D98AD8AA"),
-           B ("D8A8D8A7D98AD8AAD8A7D8AA"),
            B ("20D8A3D984D981"),
            B ("20D985D984D98AD988D986"),
            B ("20D985D984D98AD8A7D8B1"),
@@ -349,8 +337,6 @@ separate (Humanize.Catalogs.Native_Data)
            B ("D8A3D8AED8B1D989"))
         & Core_Locale_Catalog
           ("hi",
-           B ("E0A4ACE0A4BEE0A487E0A49F"),
-           B ("E0A4ACE0A4BEE0A487E0A49F"),
            B ("20E0A4B9E0A49CE0A4BCE0A4BEE0A4B0"),
            B ("20E0A4B2E0A4BEE0A496"),
            B ("20E0A495E0A4B0E0A58BE0A4A1E0A4BC"),

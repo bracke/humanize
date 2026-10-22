@@ -357,8 +357,6 @@ package body Humanize.Catalogs.Native_Data is
 
    function Core_Locale_Catalog
      (Locale            : String;
-      Byte_Singular     : String;
-      Byte_Plural       : String;
       Thousand_Short    : String;
       Million_Short     : String;
       Billion_Short     : String;
@@ -390,12 +388,7 @@ package body Humanize.Catalogs.Native_Data is
    is
    begin
       return
-        Count_Line (Locale, "humanize.bytes.byte", Byte_Singular, Byte_Plural)
-        & Locale & ".humanize.bytes.kb = {value, number} kB" & LF
-        & Locale & ".humanize.bytes.mb = {value, number} MB" & LF
-        & Locale & ".humanize.bytes.gb = {value, number} GB" & LF
-        & Locale & ".humanize.bytes.tb = {value, number} TB" & LF
-        & Locale & ".humanize.bytes.kib = {value, number} KiB" & LF
+        Locale & ".humanize.bytes.kib = {value, number} KiB" & LF
         & Locale & ".humanize.bytes.mib = {value, number} MiB" & LF
         & Locale & ".humanize.bytes.gib = {value, number} GiB" & LF
         & Locale & ".humanize.bytes.tib = {value, number} TiB" & LF
@@ -594,8 +587,6 @@ package body Humanize.Catalogs.Native_Data is
       return
         Core_Locale_Catalog
           ("nl",
-           "byte",
-           "bytes",
            "K",
            " mln.",
            " mld.",

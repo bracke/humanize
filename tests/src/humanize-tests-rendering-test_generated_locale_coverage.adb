@@ -318,7 +318,7 @@ separate (Humanize.Tests.Rendering)
         (Chinese_Compact, B ("312E3220E58D83"),
          "Chinese generated catalog renders compact-number suffix");
       Check_Text
-        (Korean_Byte, B ("3120EBB094EC9DB4ED8AB8"),
+        (Korean_Byte, B ("31EBB094EC9DB4ED8AB8"),   --  CLDR's Korean: "1바이트"
          "Korean generated catalog renders byte word");
       Check_Regional_Duration_Fallbacks;
       Check_Text

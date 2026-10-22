@@ -1,5 +1,6 @@
 with Humanize.Bounded_Text;
 with Humanize.Bytes;
+with Humanize.Parsing.Implementation.CLDR_Vocabulary;
 with Humanize.Parsing.Support;
 with Humanize.Status;
 
@@ -85,15 +86,45 @@ package body Humanize.Parsing.Bytes is
       elsif U = "tib" then
          return 1_099_511_627_776.0;
       else
-         return 0.0;
+         --  Last, CLDR's names for the decimal units in the shipped locales.
+         return Humanize.Parsing.Implementation.CLDR_Vocabulary.Byte_Multiplier (Unit);
       end if;
    end Byte_Multiplier;
+
+   --  CLDR writes some units before the number -- Swahili "baiti 1" -- where
+   --  the parser reads the number first: a known unit word followed by a
+   --  number is turned round.
+   function Number_First (Text : String) return String is
+      Space : Natural := 0;
+   begin
+      for Index in Text'Range loop
+         if Text (Index) = ' ' then
+            Space := Index;
+            exit;
+         end if;
+      end loop;
+      if Space = 0 or else Space = Text'Last then
+         return Text;
+      end if;
+      declare
+         Word   : constant String := Text (Text'First .. Space - 1);
+         Number : constant String := Text (Space + 1 .. Text'Last);
+      begin
+         for C of Number loop
+            if C not in '0' .. '9' | '.' | ',' then
+               return Text;
+            end if;
+         end loop;
+         return (if Byte_Multiplier (Word) /= 0.0 then Number & " " & Word else Text);
+      end;
+   end Number_First;
 
    function Parse_Bytes
      (Text : String)
       return Byte_Parse_Result
    is
-      Source      : constant String := Normalize_Native_Digits (Text);
+      Source      : constant String :=
+        Number_First (Normalize_Native_Digits (Humanize.Parsing.Implementation.CLDR_Vocabulary.Spaced (Text)));
       Last_Number : Natural;
       Unit_Start  : Natural;
    begin

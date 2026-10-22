@@ -10,8 +10,8 @@ source = "checked-in catalog fragments"
 coverage = "core native catalog keys"
 currentness = "reviewed with release verification"
 marker = "Provenance: Humanize-owned catalog data"
-line_count = 461
-sha256 = "c96f92de567996e83e60bfd062a7acafeebe5f717f6049b37a28cc454e934cda"
+line_count = 425
+sha256 = "4bce485969c5148535201804cf4d7783af90de13be71c9edaa8371f2965ce806"
 
 [[artifact]]
 path = "src/humanize-catalogs-unit_data.adb"
@@ -76,8 +76,8 @@ source = "reviewed native catalog fragments"
 coverage = "native catalog additions"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from reviewed native catalog fragments"
-line_count = 704
-sha256 = "25eaa73e39e789df3150d0ee2a60e6c243b76bdb06d7470de9e56ef127a9abc8"
+line_count = 695
+sha256 = "98871c34db6f61715dbd44149904848ace27a9f8eb50e06eb58a74156678556e"
 
 [[artifact]]
 path = "src/humanize-catalogs-native_data-nordic_slavic_locale_catalogs.adb"
@@ -87,8 +87,8 @@ source = "reviewed native catalog fragments"
 coverage = "Nordic and Slavic Latin-script native catalog fragments"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from reviewed native catalog fragments"
-line_count = 351
-sha256 = "f2124712f62c6709b594e7ec6995a3214f1db25306df5121b3c1fe860b5e7554"
+line_count = 339
+sha256 = "d6cd02f1e7ba4b67bd66585a093caeec1142c5de1a2b5a08f0f6430c6e7706d4"
 
 [[artifact]]
 path = "src/humanize-catalogs-native_data-additional_latin_locale_catalogs.adb"
@@ -109,8 +109,8 @@ source = "reviewed native catalog fragments"
 coverage = "additional Turkish, Romanian, Lithuanian, and Slovenian Latin-script native catalog fragments"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from reviewed native catalog fragments"
-line_count = 237
-sha256 = "a809776f649e7b2a83830777815cb55ecc4b8fa93544a5809ed49faefaa12602"
+line_count = 229
+sha256 = "91b86da4a2ddb64bb82203305a709ff31254133686d264f4287ccbabf2fd8b11"
 
 [[artifact]]
 path = "src/humanize-catalogs-native_data-additional_latin_global_locale_catalogs.adb"
@@ -120,8 +120,8 @@ source = "reviewed native catalog fragments"
 coverage = "additional Indonesian, Malay, Esperanto, Vietnamese, Swahili, Afrikaans, Hungarian, and Slovak Latin-script native catalog fragments"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from reviewed native catalog fragments"
-line_count = 466
-sha256 = "80bd023cb3181efd031630352f6725ec84054317b87cdafed53fbed081864539"
+line_count = 450
+sha256 = "d61620b350e9a0021aa9184b0cedee681f67e17062754cae3cf21a5037bd60dc"
 
 [[artifact]]
 path = "src/humanize-catalogs-native_data-native_script_locale_catalogs.adb"
@@ -131,8 +131,8 @@ source = "reviewed native catalog fragments"
 coverage = "native-script catalog fragments"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from reviewed native catalog fragments"
-line_count = 410
-sha256 = "d79c8f5251d3917fa72e6072d394aa0236e665d8ec846d5892896dd1a54ade9a"
+line_count = 396
+sha256 = "14903b9589d76d775229a4208a5fb44eeb841d6d7e77067df31a94f8ce61cccf"
 
 [[artifact]]
 path = "src/humanize-numbers-spellout_data.adb"

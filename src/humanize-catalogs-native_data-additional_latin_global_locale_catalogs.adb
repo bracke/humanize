@@ -8,8 +8,6 @@ separate (Humanize.Catalogs.Native_Data)
       return
         Core_Locale_Catalog
           ("id",
-           "byte",
-           "byte",
            " rb",
            " jt",
            " M",
@@ -65,8 +63,6 @@ separate (Humanize.Catalogs.Native_Data)
            "lainnya")
         & Core_Locale_Catalog
           ("ms",
-           "bait",
-           "bait",
            " rb",
            " jt",
            " B",
@@ -122,8 +118,6 @@ separate (Humanize.Catalogs.Native_Data)
            "lain-lain")
         & Core_Locale_Catalog
           ("eo",
-           "bajto",
-           "bajtoj",
            " mil",
            " mln",
            " mld",
@@ -179,8 +173,6 @@ separate (Humanize.Catalogs.Native_Data)
            "aliaj")
         & Core_Locale_Catalog
           ("vi",
-           "byte",
-           "byte",
            " nghin",
            " tr",
            " ty",
@@ -236,8 +228,6 @@ separate (Humanize.Catalogs.Native_Data)
            "khac")
         & Core_Locale_Catalog
           ("sw",
-           "baiti",
-           "baiti",
            " elfu",
            " mln",
            " bln",
@@ -293,8 +283,6 @@ separate (Humanize.Catalogs.Native_Data)
            "nyingine")
         & Core_Locale_Catalog
           ("af",
-           "greep",
-           "grepe",
            " k",
            " mln",
            " mld",
@@ -350,8 +338,6 @@ separate (Humanize.Catalogs.Native_Data)
            "ander")
         & Core_Locale_Catalog
           ("hu",
-           "bajt",
-           "bajt",
            " e",
            " M",
            " Mrd",
@@ -407,8 +393,6 @@ separate (Humanize.Catalogs.Native_Data)
            "masik")
         & Core_Locale_Catalog
           ("sk",
-           "bajt",
-           "bajty",
            " tis.",
            " mil.",
            " mld.",

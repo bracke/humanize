@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+* **Decimal byte sizes use CLDR's unit names** -- "4,5 Mo" in French,
+  "2 кБ" in Russian, "٤٫٥ م.ب" in Arabic, "1바이트" in Korean -- through
+  locale-neutral entries, so every CLDR locale has them (an unshipped one
+  such as Icelandic rendered nothing). The binary KiB family, which CLDR does
+  not name, keeps its per-locale entries. The byte parser reads CLDR's names
+  back, no-break spaces included, and a unit before its number ("baiti 1").
 * **`Humanize.Datetimes.Calendar_Clock_Label`**: a modified-time label from
   CLDR in every locale -- the day's name and the time today, yesterday and
   tomorrow ("today 2:30 PM", "gestern 09:05"), the weekday within a week

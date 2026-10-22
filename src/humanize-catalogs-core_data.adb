@@ -42,6 +42,13 @@ package body Humanize.Catalogs.Core_Data is
      & "und.humanize.duration.unit.minute = {value, unit, minute/unit-width-long}" & LF
      & "und.humanize.duration.unit.hour = {value, unit, hour/unit-width-long}" & LF
      & "und.humanize.duration.unit.day = {value, unit, day/unit-width-long}" & LF
+     --  Decimal byte sizes in CLDR's own unit names ("4,5 Mo", "2 КБ"); the
+     --  binary KiB family, which CLDR does not name, stays per locale.
+     & "und.humanize.bytes.byte = {value, unit, byte/unit-width-long}" & LF
+     & "und.humanize.bytes.kb = {value, unit, kilobyte/unit-width-short}" & LF
+     & "und.humanize.bytes.mb = {value, unit, megabyte/unit-width-short}" & LF
+     & "und.humanize.bytes.gb = {value, unit, gigabyte/unit-width-short}" & LF
+     & "und.humanize.bytes.tb = {value, unit, terabyte/unit-width-short}" & LF
      --  The clock label: the time in the locale's own hour cycle, a weekday,
      --  a date, and CLDR's "last Monday" / "next Monday".
      & "und.humanize.datetime.clock.time = {value, time, ::jm}" & LF
@@ -71,13 +78,7 @@ package body Humanize.Catalogs.Core_Data is
    --  English catalog fragment. Catalog values are unquoted; i18n trims the
    --  text after the first '=' separator.
    English : constant String :=
-     "en.humanize.bytes.byte = "
-     & "{count, plural, one {{value, number} byte} other {{value, number} bytes}}" & LF
-     & "en.humanize.bytes.kb = {value, number} kB" & LF
-     & "en.humanize.bytes.mb = {value, number} MB" & LF
-     & "en.humanize.bytes.gb = {value, number} GB" & LF
-     & "en.humanize.bytes.tb = {value, number} TB" & LF
-     & "en.humanize.bytes.kib = {value, number} KiB" & LF
+     "en.humanize.bytes.kib = {value, number} KiB" & LF
      & "en.humanize.bytes.mib = {value, number} MiB" & LF
      & "en.humanize.bytes.gib = {value, number} GiB" & LF
      & "en.humanize.bytes.tib = {value, number} TiB" & LF
@@ -125,13 +126,7 @@ package body Humanize.Catalogs.Core_Data is
 
    --  Danish catalog fragment. 'å' is spliced via AA to keep UTF-8 output.
    Danish : constant String :=
-     "da.humanize.bytes.byte = "
-     & "{count, plural, one {{value, number} byte} other {{value, number} bytes}}" & LF
-     & "da.humanize.bytes.kb = {value, number} kB" & LF
-     & "da.humanize.bytes.mb = {value, number} MB" & LF
-     & "da.humanize.bytes.gb = {value, number} GB" & LF
-     & "da.humanize.bytes.tb = {value, number} TB" & LF
-     & "da.humanize.bytes.kib = {value, number} KiB" & LF
+     "da.humanize.bytes.kib = {value, number} KiB" & LF
      & "da.humanize.bytes.mib = {value, number} MiB" & LF
      & "da.humanize.bytes.gib = {value, number} GiB" & LF
      & "da.humanize.bytes.tib = {value, number} TiB" & LF
@@ -175,13 +170,7 @@ package body Humanize.Catalogs.Core_Data is
 
    --  German catalog fragment (pure ASCII: no umlauts in these words).
    German : constant String :=
-     "de.humanize.bytes.byte = "
-     & "{count, plural, one {{value, number} Byte} other {{value, number} Bytes}}" & LF
-     & "de.humanize.bytes.kb = {value, number} kB" & LF
-     & "de.humanize.bytes.mb = {value, number} MB" & LF
-     & "de.humanize.bytes.gb = {value, number} GB" & LF
-     & "de.humanize.bytes.tb = {value, number} TB" & LF
-     & "de.humanize.bytes.kib = {value, number} KiB" & LF
+     "de.humanize.bytes.kib = {value, number} KiB" & LF
      & "de.humanize.bytes.mib = {value, number} MiB" & LF
      & "de.humanize.bytes.gib = {value, number} GiB" & LF
      & "de.humanize.bytes.tib = {value, number} TiB" & LF
@@ -226,13 +215,7 @@ package body Humanize.Catalogs.Core_Data is
    --  French catalog fragment (pure ASCII; French plural "one" covers 0 and 1).
    --  "byte" is "octet"; unit symbols stay international (kB/KiB).
    French : constant String :=
-     "fr.humanize.bytes.byte = "
-     & "{count, plural, one {{value, number} octet} other {{value, number} octets}}" & LF
-     & "fr.humanize.bytes.kb = {value, number} kB" & LF
-     & "fr.humanize.bytes.mb = {value, number} MB" & LF
-     & "fr.humanize.bytes.gb = {value, number} GB" & LF
-     & "fr.humanize.bytes.tb = {value, number} TB" & LF
-     & "fr.humanize.bytes.kib = {value, number} KiB" & LF
+     "fr.humanize.bytes.kib = {value, number} KiB" & LF
      & "fr.humanize.bytes.mib = {value, number} MiB" & LF
      & "fr.humanize.bytes.gib = {value, number} GiB" & LF
      & "fr.humanize.bytes.tib = {value, number} TiB" & LF
@@ -282,13 +265,7 @@ package body Humanize.Catalogs.Core_Data is
    --  Spanish catalog fragment. 'n'-tilde, 'i'/'o'-acute and the ordinal
    --  indicator are spliced as UTF-8 bytes.
    Spanish : constant String :=
-     "es.humanize.bytes.byte = "
-     & "{count, plural, one {{value, number} byte} other {{value, number} bytes}}" & LF
-     & "es.humanize.bytes.kb = {value, number} kB" & LF
-     & "es.humanize.bytes.mb = {value, number} MB" & LF
-     & "es.humanize.bytes.gb = {value, number} GB" & LF
-     & "es.humanize.bytes.tb = {value, number} TB" & LF
-     & "es.humanize.bytes.kib = {value, number} KiB" & LF
+     "es.humanize.bytes.kib = {value, number} KiB" & LF
      & "es.humanize.bytes.mib = {value, number} MiB" & LF
      & "es.humanize.bytes.gib = {value, number} GiB" & LF
      & "es.humanize.bytes.tib = {value, number} TiB" & LF
@@ -338,13 +315,7 @@ package body Humanize.Catalogs.Core_Data is
 
    --  Italian catalog fragment (the ordinal indicator is spliced as UTF-8).
    Italian : constant String :=
-     "it.humanize.bytes.byte = "
-     & "{count, plural, one {{value, number} byte} other {{value, number} byte}}" & LF
-     & "it.humanize.bytes.kb = {value, number} kB" & LF
-     & "it.humanize.bytes.mb = {value, number} MB" & LF
-     & "it.humanize.bytes.gb = {value, number} GB" & LF
-     & "it.humanize.bytes.tb = {value, number} TB" & LF
-     & "it.humanize.bytes.kib = {value, number} KiB" & LF
+     "it.humanize.bytes.kib = {value, number} KiB" & LF
      & "it.humanize.bytes.mib = {value, number} MiB" & LF
      & "it.humanize.bytes.gib = {value, number} GiB" & LF
      & "it.humanize.bytes.tib = {value, number} TiB" & LF
@@ -390,14 +361,7 @@ package body Humanize.Catalogs.Core_Data is
 
    --  Portuguese catalog fragment (one iff i in {0,1}; accents spliced).
    Portuguese : constant String :=
-     "pt.humanize.bytes.byte = "
-     & "{count, plural, one {{value, number} byte} "
-     & "other {{value, number} bytes}}" & LF
-     & "pt.humanize.bytes.kb = " & "{value, number} kB" & LF
-     & "pt.humanize.bytes.mb = " & "{value, number} MB" & LF
-     & "pt.humanize.bytes.gb = " & "{value, number} GB" & LF
-     & "pt.humanize.bytes.tb = " & "{value, number} TB" & LF
-     & "pt.humanize.bytes.kib = " & "{value, number} KiB" & LF
+     "pt.humanize.bytes.kib = " & "{value, number} KiB" & LF
      & "pt.humanize.bytes.mib = " & "{value, number} MiB" & LF
      & "pt.humanize.bytes.gib = " & "{value, number} GiB" & LF
      & "pt.humanize.bytes.tib = " & "{value, number} TiB" & LF

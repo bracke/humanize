@@ -13,6 +13,16 @@ package Humanize.Parsing.Implementation.CLDR_Vocabulary is
    --  different units in different locales.
    function Unit_Seconds (Word : String) return Long_Long_Integer;
 
+   --  Bytes in one Word of a decimal digital unit (byte .. terabyte) by any of
+   --  CLDR's names for it in a shipped locale ("Mo", "кБ", "Byte"); 0.0 for
+   --  a word CLDR does not name so, or names as different units.
+   function Byte_Multiplier (Word : String) return Long_Float;
+
+   --  Text with CLDR's no-break, narrow no-break and thin spaces written as
+   --  ASCII spaces of the same byte length, so what a parse consumes still
+   --  counts the caller's bytes.
+   function Spaced (Text : String) return String;
+
    --  A Word that names a count of a unit without a number, as Arabic
    --  "ساعتان" (two hours) does: Count and the unit's seconds. 0 seconds
    --  for any other word.

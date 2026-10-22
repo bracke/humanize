@@ -8,8 +8,6 @@ separate (Humanize.Catalogs.Native_Data)
       return
         Core_Locale_Catalog
           ("tr",
-           "bayt",
-           "bayt",
            " B",
            " Mn",
            " Mr",
@@ -65,8 +63,6 @@ separate (Humanize.Catalogs.Native_Data)
            B ("6469C49F6572"))
         & Core_Locale_Catalog
           ("ro",
-           "octet",
-           B ("6F637465C89B69"),
            " mii",
            " mil.",
            " mld.",
@@ -122,8 +118,6 @@ separate (Humanize.Catalogs.Native_Data)
            B ("616CC89B6969"))
         & Core_Locale_Catalog
           ("lt",
-           "baitas",
-           "baitai",
            B ("20C5AB6B7374"),
            " mln.",
            " mlrd.",
@@ -179,8 +173,6 @@ separate (Humanize.Catalogs.Native_Data)
            "kiti")
         & Core_Locale_Catalog
           ("sl",
-           "bajt",
-           "bajti",
            " tis.",
            " mio.",
            " mrd.",

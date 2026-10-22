@@ -35,6 +35,19 @@ package body Humanize.Parsing.Implementation.CLDR_Vocabulary is
       (Month_Base'Access, 30 * 86_400),
       (Year_Base'Access, 365 * 86_400)];
 
+   Byte_Base      : aliased constant String := "byte";
+   Kilobyte_Base  : aliased constant String := "kilobyte";
+   Megabyte_Base  : aliased constant String := "megabyte";
+   Gigabyte_Base  : aliased constant String := "gigabyte";
+   Terabyte_Base  : aliased constant String := "terabyte";
+
+   Byte_Units : constant array (1 .. 5) of Unit_Info :=
+     [(Byte_Base'Access, 1),
+      (Kilobyte_Base'Access, 1_000),
+      (Megabyte_Base'Access, 1_000_000),
+      (Gigabyte_Base'Access, 1_000_000_000),
+      (Terabyte_Base'Access, 1_000_000_000_000)];
+
    Full_Width   : aliased constant String := "unit-width-full-name";
    Short_Width  : aliased constant String := "unit-width-short";
    Narrow_Width : aliased constant String := "unit-width-narrow";
@@ -133,14 +146,17 @@ package body Humanize.Parsing.Implementation.CLDR_Vocabulary is
       function Is_Built return Boolean;
       procedure Install
         (Words    : Word_Maps.Map;
+         Bytes    : Word_Maps.Map;
          Counts   : Counted_Maps.Map;
          Patterns : Relative_Vectors.Vector);
       function Unit_Of (Word : String) return Long_Long_Integer;
+      function Byte_Unit_Of (Word : String) return Long_Long_Integer;
       function Counted_Of (Word : String) return Counted_Info;
       function Relative_Of (Text : String) return String;
    private
       Built         : Boolean := False;
       Unit_Words    : Word_Maps.Map;
+      Byte_Words    : Word_Maps.Map;
       Counted_Words : Counted_Maps.Map;
       Relatives     : Relative_Vectors.Vector;
    end Tables;
@@ -150,11 +166,13 @@ package body Humanize.Parsing.Implementation.CLDR_Vocabulary is
 
       procedure Install
         (Words    : Word_Maps.Map;
+         Bytes    : Word_Maps.Map;
          Counts   : Counted_Maps.Map;
          Patterns : Relative_Vectors.Vector)
       is
       begin
          Unit_Words := Words;
+         Byte_Words := Bytes;
          Counted_Words := Counts;
          Relatives := Patterns;
          Built := True;
@@ -172,6 +190,19 @@ package body Humanize.Parsing.Implementation.CLDR_Vocabulary is
             return (if Value = Ambiguous then 0 else Value);
          end;
       end Unit_Of;
+
+      function Byte_Unit_Of (Word : String) return Long_Long_Integer is
+         Position : constant Word_Maps.Cursor := Byte_Words.Find (Key (Word));
+      begin
+         if not Word_Maps.Has_Element (Position) then
+            return 0;
+         end if;
+         declare
+            Value : constant Long_Long_Integer := Word_Maps.Element (Position);
+         begin
+            return (if Value = Ambiguous then 0 else Value);
+         end;
+      end Byte_Unit_Of;
 
       function Counted_Of (Word : String) return Counted_Info is
          Position : constant Counted_Maps.Cursor := Counted_Words.Find (Key (Word));
@@ -240,20 +271,26 @@ package body Humanize.Parsing.Implementation.CLDR_Vocabulary is
 
    procedure Build is
       Words    : Word_Maps.Map;
+      Bytes    : Word_Maps.Map;
       Counts   : Counted_Maps.Map;
       Patterns : Relative_Vectors.Vector;
 
-      procedure Add_Word (Word : String; Seconds : Long_Long_Integer) is
+      procedure Add_To (Map : in out Word_Maps.Map; Word : String; Value : Long_Long_Integer) is
          K        : constant String := Key (Word);
-         Position : constant Word_Maps.Cursor := Words.Find (K);
+         Position : constant Word_Maps.Cursor := Map.Find (K);
       begin
          if K = "" then
             return;
          elsif not Word_Maps.Has_Element (Position) then
-            Words.Insert (K, Seconds);
-         elsif Word_Maps.Element (Position) /= Seconds then
-            Words.Replace_Element (Position, Ambiguous);
+            Map.Insert (K, Value);
+         elsif Word_Maps.Element (Position) /= Value then
+            Map.Replace_Element (Position, Ambiguous);
          end if;
+      end Add_To;
+
+      procedure Add_Word (Word : String; Seconds : Long_Long_Integer) is
+      begin
+         Add_To (Words, Word, Seconds);
       end Add_Word;
 
       --  The same words for two meanings -- Hindi "कल" is yesterday and
@@ -296,6 +333,16 @@ package body Humanize.Parsing.Implementation.CLDR_Vocabulary is
          declare
             Locale : constant String := Locale_Code.all;
          begin
+            for Unit of Byte_Units loop
+               for Width of Widths loop
+                  for Category of Categories loop
+                     Add_To
+                       (Bytes,
+                        I18N.Unit_Format.Display_Name (Locale, Unit.Base.all, Width.all, Category.all),
+                        Unit.Seconds);
+                  end loop;
+               end loop;
+            end loop;
             for Unit of Units loop
                for Width of Widths loop
                   for Category of Categories loop
@@ -369,7 +416,7 @@ package body Humanize.Parsing.Implementation.CLDR_Vocabulary is
             end loop;
          end;
       end loop;
-      Tables.Install (Words, Counts, Patterns);
+      Tables.Install (Words, Bytes, Counts, Patterns);
    end Build;
 
    --  Built outside the protected object: the lookups read i18n's files.
@@ -380,6 +427,40 @@ package body Humanize.Parsing.Implementation.CLDR_Vocabulary is
          Build;
       end if;
    end Ensure_Built;
+
+   function Byte_Multiplier (Word : String) return Long_Float is
+   begin
+      Ensure_Built;
+      return Long_Float (Tables.Byte_Unit_Of (Word));
+   end Byte_Multiplier;
+
+   function Spaced (Text : String) return String is
+      NBSP   : constant String := Character'Val (16#C2#) & Character'Val (16#A0#);
+      Narrow : constant String := Character'Val (16#E2#) & Character'Val (16#80#) & Character'Val (16#AF#);
+      Thin   : constant String := Character'Val (16#E2#) & Character'Val (16#80#) & Character'Val (16#89#);
+      Result : String (1 .. Text'Length);
+      Last   : Natural := 0;
+      Index  : Natural := Text'First;
+   begin
+      while Index <= Text'Last loop
+         if Index + 1 <= Text'Last and then Text (Index .. Index + 1) = NBSP then
+            Result (Last + 1 .. Last + 2) := "  ";
+            Last := Last + 2;
+            Index := Index + 2;
+         elsif Index + 2 <= Text'Last
+           and then (Text (Index .. Index + 2) = Narrow or else Text (Index .. Index + 2) = Thin)
+         then
+            Result (Last + 1 .. Last + 3) := "   ";
+            Last := Last + 3;
+            Index := Index + 3;
+         else
+            Last := Last + 1;
+            Result (Last) := Text (Index);
+            Index := Index + 1;
+         end if;
+      end loop;
+      return Result (1 .. Last);
+   end Spaced;
 
    function Unit_Seconds (Word : String) return Long_Long_Integer is
    begin

@@ -7,8 +7,6 @@ separate (Humanize.Catalogs.Native_Data)
       return
         Core_Locale_Catalog
           ("sv",
-           "byte",
-           "byte",
            " tn",
            " mn",
            " md",
@@ -64,8 +62,6 @@ separate (Humanize.Catalogs.Native_Data)
            "andra")
         & Core_Locale_Catalog
           ("no",
-           "byte",
-           "byte",
            " k",
            " mill.",
            " mrd.",
@@ -121,8 +117,6 @@ separate (Humanize.Catalogs.Native_Data)
            "andre")
         & Core_Locale_Catalog
           ("nb",
-           "byte",
-           "byte",
            " k",
            " mill.",
            " mrd.",
@@ -178,8 +172,6 @@ separate (Humanize.Catalogs.Native_Data)
            "andre")
         & Core_Locale_Catalog
           ("fi",
-           "tavu",
-           "tavua",
            " t",
            " milj.",
            " mrd.",
@@ -235,8 +227,6 @@ separate (Humanize.Catalogs.Native_Data)
            "muuta")
         & Core_Locale_Catalog
           ("pl",
-           "bajt",
-           "bajty",
            " tys.",
            " mln",
            " mld",
@@ -292,8 +282,6 @@ separate (Humanize.Catalogs.Native_Data)
            "inne")
         & Core_Locale_Catalog
           ("cs",
-           "bajt",
-           "bajty",
            " tis.",
            " mil.",
            " mld.",
