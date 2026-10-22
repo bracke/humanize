@@ -635,4 +635,41 @@ separate (Humanize.Tests.Datetimes)
       AUnit.Assertions.Assert
         (Code = Ok and then Range_Buffer (1 .. Written) = "next Friday",
          "calendar-relative bounded");
+
+      --  The clock label and the non-English relative label, from CLDR.
+      declare
+         NNBSP : constant String :=
+           Character'Val (16#E2#) & Character'Val (16#80#) & Character'Val (16#AF#);
+         Afternoon : constant Civil_Date_Time :=
+           (Year => 2026, Month => 3, Day => 21, Hour => 14, Minute => 30, others => 0);
+         Yesterday_Morning : constant Civil_Date_Time :=
+           (Year => 2026, Month => 3, Day => 20, Hour => 9, Minute => 5, others => 0);
+         Tuesday_Evening : constant Civil_Date_Time :=
+           (Year => 2026, Month => 3, Day => 17, Hour => 18, others => 0);
+         Distant : constant Civil_Date_Time :=
+           (Year => 2026, Month => 2, Day => 1, Hour => 8, others => 0);
+      begin
+         AUnit.Assertions.Assert
+           (Support.Text (Calendar_Clock_Label (Support.En, Afternoon, Ref)) = "today 2:30" & NNBSP & "PM",
+            "English clock label today");
+         AUnit.Assertions.Assert
+           (Support.Text (Calendar_Clock_Label (Support.En, Tuesday_Evening, Ref)) = "Tuesday 6:00" & NNBSP & "PM",
+            "English clock label weekday");
+         AUnit.Assertions.Assert
+           (Support.Text (Calendar_Clock_Label (Support.En, Distant, Ref)) = "Feb 1, 2026 8:00" & NNBSP & "AM",
+            "English clock label date");
+         AUnit.Assertions.Assert
+           (Support.Text (Calendar_Clock_Label (Support.De, Yesterday_Morning, Ref)) = "gestern 09:05",
+            "German clock label yesterday, CLDR's 24-hour cycle");
+         AUnit.Assertions.Assert
+           (Support.Text (Calendar_Clock_Label (Support.De, Distant, Ref)) = "01.02.2026 08:00",
+            "German clock label date");
+         AUnit.Assertions.Assert
+           (Support.Text (Calendar_Relative_Label (Support.De, Tuesday_Evening, Ref))
+              = "letzten Dienstag",
+            "German calendar-relative label is CLDR's last-weekday name");
+         AUnit.Assertions.Assert
+           (Support.Text (Calendar_Relative_Label (Support.De, Distant, Ref)) = "01.02.2026",
+            "German calendar-relative label beyond the window is the localized date");
+      end;
    end Test_Natural_Time_And_Ranges;

@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+* **`Humanize.Datetimes.Calendar_Clock_Label`**: a modified-time label from
+  CLDR in every locale -- the day's name and the time today, yesterday and
+  tomorrow ("today 2:30 PM", "gestern 09:05"), the weekday within a week
+  ("Tuesday 6:00 PM"), the localized date beyond ("Feb 1, 2026 8:00 AM",
+  "01.02.2026 08:00"), the time in the region's own hour cycle.
+* **`Calendar_Relative_Label` outside English is CLDR's**: named days,
+  "letzten Dienstag" / "先週の月曜日" within the weekday window, the localized
+  date beyond it (not ISO), and the clock time when asked. English keeps its
+  idioms (tonight, later today, this weekend), which CLDR has no form for.
 * **Relative times, now/today/yesterday/tomorrow and the duration units come
   from CLDR**, in every locale CLDR covers rather than in 33 hand-kept
   catalogs. Each is one locale-neutral `und` entry ("{past_count, relative,

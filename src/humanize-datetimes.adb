@@ -212,6 +212,13 @@ package body Humanize.Datetimes is
       return Humanize.Status.Text_Result
       renames Humanize.Datetimes.Support.Calendar_Relative_Label;
 
+   function Calendar_Clock_Label
+     (Context   : Humanize.Contexts.Context;
+      Value     : Civil_Date_Time;
+      Reference : Civil_Date_Time)
+      return Humanize.Status.Text_Result
+      renames Humanize.Datetimes.Support.Calendar_Clock_Label;
+
    procedure Natural_Day_Into
      (Context   : Humanize.Contexts.Context;
       Value     : Civil_Date_Time;

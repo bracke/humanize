@@ -41,7 +41,32 @@ package body Humanize.Catalogs.Core_Data is
      & "und.humanize.duration.unit.second = {value, unit, second/unit-width-long}" & LF
      & "und.humanize.duration.unit.minute = {value, unit, minute/unit-width-long}" & LF
      & "und.humanize.duration.unit.hour = {value, unit, hour/unit-width-long}" & LF
-     & "und.humanize.duration.unit.day = {value, unit, day/unit-width-long}" & LF;
+     & "und.humanize.duration.unit.day = {value, unit, day/unit-width-long}" & LF
+     --  The clock label: the time in the locale's own hour cycle, a weekday,
+     --  a date, and CLDR's "last Monday" / "next Monday".
+     & "und.humanize.datetime.clock.time = {value, time, ::jm}" & LF
+     & "und.humanize.datetime.clock.weekday = {value, date, ::EEEE}" & LF
+     & "und.humanize.datetime.clock.date = {value, date, medium}" & LF
+     & "und.humanize.datetime.weekday.previous = "
+     & "{value, select,"
+     & " mon {{minus_one, relative, mon}}"
+     & " tue {{minus_one, relative, tue}}"
+     & " wed {{minus_one, relative, wed}}"
+     & " thu {{minus_one, relative, thu}}"
+     & " fri {{minus_one, relative, fri}}"
+     & " sat {{minus_one, relative, sat}}"
+     & " sun {{minus_one, relative, sun}}"
+     & " other {}}" & LF
+     & "und.humanize.datetime.weekday.next = "
+     & "{value, select,"
+     & " mon {{plus_one, relative, mon}}"
+     & " tue {{plus_one, relative, tue}}"
+     & " wed {{plus_one, relative, wed}}"
+     & " thu {{plus_one, relative, thu}}"
+     & " fri {{plus_one, relative, fri}}"
+     & " sat {{plus_one, relative, sat}}"
+     & " sun {{plus_one, relative, sun}}"
+     & " other {}}" & LF;
 
    --  English catalog fragment. Catalog values are unquoted; i18n trims the
    --  text after the first '=' separator.

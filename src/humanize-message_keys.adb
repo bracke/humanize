@@ -17,6 +17,16 @@ package body Humanize.Message_Keys is
             return "humanize.datetime.day.current";
          when Datetime_Day_Next =>
             return "humanize.datetime.day.next";
+         when Datetime_Clock_Time =>
+            return "humanize.datetime.clock.time";
+         when Datetime_Clock_Weekday =>
+            return "humanize.datetime.clock.weekday";
+         when Datetime_Clock_Date =>
+            return "humanize.datetime.clock.date";
+         when Datetime_Weekday_Previous =>
+            return "humanize.datetime.weekday.previous";
+         when Datetime_Weekday_Next =>
+            return "humanize.datetime.weekday.next";
 
          when Datetime_Relative_Second_Past =>
             return "humanize.datetime.relative.second.past";

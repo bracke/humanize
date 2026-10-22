@@ -28,7 +28,7 @@ usecase = "Text display, editing, names, paths, prose, metadata, and terminal re
 
 [[body]]
 path = "src/humanize-datetimes-support.adb"
-target_lines = 2146
+target_lines = 2172
 max_lines = 2300
 min_headroom_lines = 120
 max_bytes = 83000
@@ -428,7 +428,7 @@ usecase = "Root number facade implementation; new numeric families should prefer
 
 [[body]]
 path = "src/humanize-datetimes.ads"
-target_lines = 873
+target_lines = 888
 max_lines = 980
 min_headroom_lines = 80
 max_bytes = 42000

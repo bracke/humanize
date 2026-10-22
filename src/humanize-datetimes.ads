@@ -500,6 +500,21 @@ package Humanize.Datetimes is
    --  @param Options Weekday/weekend/time-of-day wording policy.
    --  @return Deterministic calendar-relative label such as "next Friday".
 
+   function Calendar_Clock_Label
+     (Context   : Humanize.Contexts.Context;
+      Value     : Civil_Date_Time;
+      Reference : Civil_Date_Time)
+      return Humanize.Status.Text_Result;
+   --  A file manager's modified-time label, from CLDR in every locale: the
+   --  day's name and the time today, yesterday and tomorrow ("today 2:30 PM",
+   --  "gestern 14:30"), the weekday and the time within a week ("Monday
+   --  2:30 PM"), the date and the time beyond it ("Oct 19, 2026 2:30 PM").
+   --  The time is in the locale's own hour cycle.
+   --  @param Context Formatting context.
+   --  @param Value Civil date/time to label.
+   --  @param Reference Civil date/time used as today/now.
+   --  @return The label, or a non-Ok status when a part does not render.
+
    procedure Natural_Day_Into
      (Context   : Humanize.Contexts.Context;
       Value     : Civil_Date_Time;

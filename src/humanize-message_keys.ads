@@ -14,6 +14,11 @@ package Humanize.Message_Keys is
       Datetime_Day_Previous,
       Datetime_Day_Current,
       Datetime_Day_Next,
+      Datetime_Clock_Time,
+      Datetime_Clock_Weekday,
+      Datetime_Clock_Date,
+      Datetime_Weekday_Previous,
+      Datetime_Weekday_Next,
 
       Datetime_Relative_Second_Past,
       Datetime_Relative_Second_Future,

@@ -149,6 +149,12 @@ private package Humanize.Datetimes.Support is
       Options : Calendar_Difference_Options :=
         Default_Calendar_Difference_Options)
       return Humanize.Status.Text_Result;
+   function Calendar_Clock_Label
+     (Context   : Humanize.Contexts.Context;
+      Value     : Civil_Date_Time;
+      Reference : Civil_Date_Time)
+      return Humanize.Status.Text_Result;
+
    function Calendar_Relative_Label
      (Context   : Humanize.Contexts.Context;
       Value     : Civil_Date_Time;

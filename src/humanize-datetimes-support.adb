@@ -1077,6 +1077,34 @@ package body Humanize.Datetimes.Support is
       end if;
    end Weekend_Relative_Label;
 
+   --  The labels CLDR writes in every locale: Calendar_Clock_Label, and
+   --  Calendar_Relative_Label outside English.
+   package CLDR_Labels is
+      function Calendar_Clock_Label
+        (Context   : Humanize.Contexts.Context;
+         Value     : Civil_Date_Time;
+         Reference : Civil_Date_Time)
+         return Humanize.Status.Text_Result;
+
+      function Is_English (Context : Humanize.Contexts.Context) return Boolean;
+
+      function Relative_Label
+        (Context   : Humanize.Contexts.Context;
+         Value     : Civil_Date_Time;
+         Reference : Civil_Date_Time;
+         Options   : Calendar_Relative_Options)
+         return Humanize.Status.Text_Result;
+   end CLDR_Labels;
+
+   package body CLDR_Labels is separate;
+
+   function Calendar_Clock_Label
+     (Context   : Humanize.Contexts.Context;
+      Value     : Civil_Date_Time;
+      Reference : Civil_Date_Time)
+      return Humanize.Status.Text_Result
+      renames CLDR_Labels.Calendar_Clock_Label;
+
    function Calendar_Relative_Label
      (Context   : Humanize.Contexts.Context;
       Value     : Civil_Date_Time;
@@ -1085,8 +1113,10 @@ package body Humanize.Datetimes.Support is
         Default_Calendar_Relative_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
+      if not CLDR_Labels.Is_English (Context) then
+         return CLDR_Labels.Relative_Label (Context, Value, Reference, Options);
+      end if;
       declare
          Days       : constant Integer :=
            Day_Diff (Date_Only (Reference), Date_Only (Value));
