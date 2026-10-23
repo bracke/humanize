@@ -653,7 +653,7 @@ begin
    P ("number.above", "{value}高於{bounds}");
    P ("number.per", "每{denominator}{numerator}");
    P ("number.one_in", "{whole}分之一");
-   P ("number.out_of", "{whole}中的{value}");
+   P ("number.out_of", "{whole}個中的{value}個");
    P ("number.unchanged", "無變化");
    P ("number.change_up", "上升{quantity}");
    P ("number.change_down", "下降{quantity}");

@@ -578,7 +578,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_ru.adb"
-target_lines = 867
+target_lines = 869
 max_lines = 1267
 min_headroom_lines = 100
 max_bytes = 76000

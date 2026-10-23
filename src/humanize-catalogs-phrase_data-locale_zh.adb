@@ -594,7 +594,7 @@ begin
       & "警告，{required}个必填字段，{hidden}个隐藏问题");
    P ("file.kind.plain", "文件");
    P ("file.kind.directory", "目录");
-   P ("file.kind.archive", "归档");
+   P ("file.kind.archive", "归档文件");
    P ("file.kind.compressed", "压缩文件");
    P ("file.kind.image", "图像");
    P ("file.kind.script", "脚本");
@@ -653,7 +653,7 @@ begin
    P ("number.above", "{value}高于{bounds}");
    P ("number.per", "每{denominator}{numerator}");
    P ("number.one_in", "{whole}分之一");
-   P ("number.out_of", "{whole}中的{value}");
+   P ("number.out_of", "{whole}个中的{value}个");
    P ("number.unchanged", "无变化");
    P ("number.change_up", "上升{quantity}");
    P ("number.change_down", "下降{quantity}");

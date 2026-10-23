@@ -772,11 +772,13 @@ begin
    P ("errno.reason.unknown", "неизвестная ошибка");
    P ("signal.reason.unknown", "неизвестный сигнал");
    P ("sqlstate.reason.unknown", "неизвестный класс SQLSTATE");
-   P ("diff.changed", "разница {path}: изменено с {before} на {after}");
-   P ("diff.added", "разница {path}: добавлено {after}");
-   P ("diff.removed", "разница {path}: удалено {before}");
-   P ("diff.unchanged", "разница {path}: без изменений");
-   P ("diff.redacted", "разница {path}: изменено; значения скрыты");
+   P ("diff.changed", "различия {path}: изменено с {before} на {after}");
+   P ("diff.added", "различия {path}: добавлено {after}");
+   P ("diff.removed", "различия {path}: удалено {before}");
+   P ("diff.unchanged", "различия {path}: без изменений");
+   P ("diff.redacted",
+      "различия {path}: изменено; значения "
+      & "скрыты");
    P ("validation.result",
       "результат проверки: {fields} {fields, plural, one "
       & "{поле} few {поля} many {полей} other {поля}}, "

@@ -763,11 +763,11 @@ begin
       "výsledok overenia: {fields} {fields, plural, one {pole} few {polia} "
       & "many {poľa} other {polí}}, {errors} {errors, plural, one {chyba} few "
       & "{chyby} many {chyby} other {chýb}}, {warnings} {warnings, plural, one "
-      & "{upozornenie} few {upozornenia} many {upozornenia} other "
-      & "{upozornení}}, {required} {required, plural, one {povinné pole} few "
-      & "{povinné polia} many {povinného poľa} other {povinných polí}}, "
-      & "{hidden} {hidden, plural, one {skrytý problém} few {skryté "
-      & "problémy} many {skrytého problému} other {skrytých problémov}}");
+      & "{varovanie} few {varovania} many {varovania} other {varovaní}}, "
+      & "{required} {required, plural, one {povinné pole} few {povinné polia} "
+      & "many {povinného poľa} other {povinných polí}}, {hidden} {hidden, "
+      & "plural, one {skrytý problém} few {skryté problémy} many {skrytého "
+      & "problému} other {skrytých problémov}}");
    P ("file.kind.plain", "súbor");
    P ("file.kind.directory", "adresár");
    P ("file.kind.archive", "archív");

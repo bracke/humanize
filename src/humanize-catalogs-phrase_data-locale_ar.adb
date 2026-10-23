@@ -839,7 +839,7 @@ begin
    P ("file.signature_match", "توقيع الملف {name}: {kind}، يطابق الامتداد");
    P ("file.signature_mismatch",
       "توقيع الملف {name}: الامتداد يشير إلى "
-      & "{expected}، والمحتوى يبدو {actual}");
+      & "{expected}، والمحتوى يبدو أنه {actual}");
    P ("network_event.connecting", "جارٍ الاتصال");
    P ("network_event.connected", "متصل");
    P ("network_event.redirected", "تمت إعادة التوجيه");

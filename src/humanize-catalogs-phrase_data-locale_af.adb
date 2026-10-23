@@ -643,10 +643,10 @@ begin
    P ("file.kind.unknown", "onbekende lêer");
    P ("file.metadata", "lêer {name}: {kind}");
    P ("file.checksum", "{text}, kontrolesom {checksum}");
-   P ("file.signature_match", "lêerhandtekening {name}: {kind}, stem ooreen met uitbreiding");
+   P ("file.signature_match", "lêerhandtekening {name}: {kind}, stem ooreen met die uitbreiding");
    P ("file.signature_mismatch",
-      "lêerhandtekening {name}: volgens uitbreiding {expected}, volgens "
-      & "inhoud {actual}");
+      "lêerhandtekening {name}: volgens die uitbreiding {expected}, volgens "
+      & "die inhoud {actual}");
    P ("network_event.connecting", "koppel tans");
    P ("network_event.connected", "gekoppel");
    P ("network_event.redirected", "herlei");
@@ -700,7 +700,7 @@ begin
    P ("number.unchanged", "onveranderd");
    P ("number.change_up", "gestyg met {quantity}");
    P ("number.change_down", "gedaal met {quantity}");
-   P ("number.change_more", "{quantity} meer {tail}");
-   P ("number.change_fewer", "{quantity} minder {tail}");
+   P ("number.change_more", "{quantity} {tail} meer");
+   P ("number.change_fewer", "{quantity} {tail} minder");
    P ("number.since", "{change} sedert {since}");
 end Locale_Af;

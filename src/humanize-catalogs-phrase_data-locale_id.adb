@@ -644,7 +644,7 @@ begin
    P ("number.range_inclusive", "{low} sampai {high} (inklusif)");
    P ("number.range_exclusive", "lebih dari {low} dan kurang dari {high}");
    P ("number.range_low_inclusive", "{low} atau lebih dan kurang dari {high}");
-   P ("number.range_high_inclusive", "lebih dari {low} dan hingga {high}");
+   P ("number.range_high_inclusive", "lebih dari {low} dan maksimal {high}");
    P ("number.at_least", "minimal {value}");
    P ("number.more_than", "lebih dari {value}");
    P ("number.at_most", "maksimal {value}");

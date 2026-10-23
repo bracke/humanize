@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+* An independent review pass over the technical labels and number phrases
+  (rounds 13 and 14, 72 keys in every locale) fixed 30 translations: missing
+  articles (Dutch, Afrikaans, Danish, Swedish "volgens de extensie"), word
+  order (Turkish, Afrikaans), wrong words (Esperanto "validiga rezulto",
+  Russian "различия", Hungarian "kérések korlátozva"), Korean "와(과) … 사이",
+  Chinese and Japanese counted forms, an Arabic accusative.
+
 * `Parsing.Localized.Parse_Calendar_Difference` reads the relative style too
   ("vor 2 Jahren, 2 Monaten und 4 Tagen", "через 2 года", "am selben Tag") and
   says which way it points (`Direction`: past, future, same day; unstated for

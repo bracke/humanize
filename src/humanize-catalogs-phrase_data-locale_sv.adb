@@ -663,7 +663,7 @@ begin
    P ("file.checksum", "{text}, kontrollsumma {checksum}");
    P ("file.signature_match", "filsignatur {name}: {kind}, stämmer med filändelsen");
    P ("file.signature_mismatch",
-      "filsignatur {name}: enligt filändelse {expected}, enligt innehåll "
+      "filsignatur {name}: enligt filändelsen {expected}, enligt innehållet "
       & "{actual}");
    P ("network_event.connecting", "ansluter");
    P ("network_event.connected", "ansluten");

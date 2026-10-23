@@ -643,7 +643,7 @@ begin
    P ("zoned_time.ambiguous", "{text}, 모호한 현지 시각");
    P ("number.under", "{value} 미만");
    P ("number.up_to", "최대 {value}");
-   P ("number.between", "{low}에서 {high} 사이");
+   P ("number.between", "{low}와(과) {high} 사이");
    P ("number.range_words", "{low}에서 {high}까지");
    P ("number.uncertainty_words", "{value} 플러스 마이너스 {delta}");
    P ("number.range_inclusive", "{low} 이상 {high} 이하");

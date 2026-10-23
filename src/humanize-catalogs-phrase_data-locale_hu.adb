@@ -627,7 +627,7 @@ begin
    P ("network_event.connected", "csatlakozva");
    P ("network_event.redirected", "átirányítva");
    P ("network_event.retrying", "újrapróbálkozás");
-   P ("network_event.rate_limited", "sebességkorlátozva");
+   P ("network_event.rate_limited", "kérések korlátozva");
    P ("network_event.tls_failed", "TLS sikertelen");
    P ("network_event.stalled", "elakadt");
    P ("network_event.complete", "kész");

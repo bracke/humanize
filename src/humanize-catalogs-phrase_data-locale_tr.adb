@@ -591,8 +591,8 @@ begin
    P ("signal.reason.unknown", "bilinmeyen sinyal");
    P ("sqlstate.reason.unknown", "bilinmeyen SQLSTATE sınıfı");
    P ("diff.changed", "fark {path}: değiştirildi, önceki: {before}, yeni: {after}");
-   P ("diff.added", "fark {path}: eklendi: {after}");
-   P ("diff.removed", "fark {path}: kaldırıldı: {before}");
+   P ("diff.added", "fark {path}: {after} eklendi");
+   P ("diff.removed", "fark {path}: {before} kaldırıldı");
    P ("diff.unchanged", "fark {path}: değişmedi");
    P ("diff.redacted", "fark {path}: değiştirildi; değerler gizlendi");
    P ("validation.result",

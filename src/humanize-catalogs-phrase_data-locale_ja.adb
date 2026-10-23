@@ -658,7 +658,7 @@ begin
    P ("number.above", "{value}は{bounds}を上回る");
    P ("number.per", "{denominator}あたり{numerator}");
    P ("number.one_in", "{whole}分の1");
-   P ("number.out_of", "{whole}中{value}");
+   P ("number.out_of", "{whole}のうち{value}");
    P ("number.unchanged", "変化なし");
    P ("number.change_up", "{quantity}増");
    P ("number.change_down", "{quantity}減");

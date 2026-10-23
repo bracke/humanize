@@ -647,10 +647,10 @@ begin
    P ("file.kind.unknown", "onbekend bestand");
    P ("file.metadata", "bestand {name}: {kind}");
    P ("file.checksum", "{text}, controlesom {checksum}");
-   P ("file.signature_match", "bestandshandtekening {name}: {kind}, komt overeen met extensie");
+   P ("file.signature_match", "bestandshandtekening {name}: {kind}, komt overeen met de extensie");
    P ("file.signature_mismatch",
-      "bestandshandtekening {name}: volgens extensie {expected}, volgens "
-      & "inhoud {actual}");
+      "bestandshandtekening {name}: volgens de extensie {expected}, volgens "
+      & "de inhoud {actual}");
    P ("network_event.connecting", "verbinding maken");
    P ("network_event.connected", "verbonden");
    P ("network_event.redirected", "omgeleid");

@@ -714,7 +714,7 @@ begin
    P ("network_event.tls_failed", "falha de TLS");
    P ("network_event.stalled", "travado");
    P ("network_event.complete", "concluído");
-   P ("network_event.failed", "falhou");
+   P ("network_event.failed", "com falha");
    P ("network.session", "rede {endpoint}: {state}");
    P ("diff_node.field", "campo");
    P ("diff_node.object", "objeto");
@@ -722,7 +722,7 @@ begin
    P ("diff.node",
       "nó de diff {path}: {kind}, {count} {count, plural, one {alteração} "
       & "many {de alterações} other {alterações}}");
-   P ("checksum.not_checked", "soma de verificação não verificada");
+   P ("checksum.not_checked", "soma de verificação não conferida");
    P ("checksum.valid", "soma de verificação válida");
    P ("checksum.mismatch", "soma de verificação divergente");
    P ("checksum.missing", "soma de verificação ausente");

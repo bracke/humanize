@@ -639,12 +639,12 @@ begin
    P ("diff.unchanged", "diferenco {path}: neŝanĝita");
    P ("diff.redacted", "diferenco {path}: ŝanĝita; valoroj kaŝitaj");
    P ("validation.result",
-      "valida rezulto: {fields} {fields, plural, one {kampo} other {kampoj}}, "
-      & "{errors} {errors, plural, one {eraro} other {eraroj}}, {warnings} "
-      & "{warnings, plural, one {averto} other {avertoj}}, {required} "
-      & "{required, plural, one {deviga kampo} other {devigaj kampoj}}, "
-      & "{hidden} {hidden, plural, one {kaŝita problemo} other {kaŝitaj "
-      & "problemoj}}");
+      "validiga rezulto: {fields} {fields, plural, one {kampo} other "
+      & "{kampoj}}, {errors} {errors, plural, one {eraro} other {eraroj}}, "
+      & "{warnings} {warnings, plural, one {averto} other {avertoj}}, "
+      & "{required} {required, plural, one {deviga kampo} other {devigaj "
+      & "kampoj}}, {hidden} {hidden, plural, one {kaŝita problemo} other "
+      & "{kaŝitaj problemoj}}");
    P ("file.kind.plain", "dosiero");
    P ("file.kind.directory", "dosierujo");
    P ("file.kind.archive", "arkivo");
@@ -663,7 +663,7 @@ begin
    P ("network_event.connected", "konektita");
    P ("network_event.redirected", "alidirektita");
    P ("network_event.retrying", "reprovanta");
-   P ("network_event.rate_limited", "rapide limigita");
+   P ("network_event.rate_limited", "rapidlimigita");
    P ("network_event.tls_failed", "TLS malsukcesis");
    P ("network_event.stalled", "haltinta");
    P ("network_event.complete", "kompleta");

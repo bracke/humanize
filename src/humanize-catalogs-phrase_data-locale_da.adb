@@ -651,8 +651,8 @@ begin
    P ("file.checksum", "{text}, kontrolsum {checksum}");
    P ("file.signature_match", "filsignatur {name}: {kind}, svarer til filtypenavnet");
    P ("file.signature_mismatch",
-      "filsignatur {name}: ifølge filtypenavn {expected}, ifølge indhold "
-      & "{actual}");
+      "filsignatur {name}: ifølge filtypenavnet {expected}, ifølge "
+      & "indholdet {actual}");
    P ("network_event.connecting", "forbinder");
    P ("network_event.connected", "forbundet");
    P ("network_event.redirected", "omdirigeret");
