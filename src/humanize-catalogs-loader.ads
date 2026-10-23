@@ -23,4 +23,9 @@ private package Humanize.Catalogs.Loader is
       Policy  : Messages.Runtime.Duplicate_Policy :=
         Messages.Runtime.Reject_Duplicates);
 
+   procedure Load_Phrases
+     (Runtime : in out Messages.Runtime.Instance;
+      Result  : out Messages.Runtime.Load_Result;
+      Locale  : String);
+
 end Humanize.Catalogs.Loader;

@@ -39,6 +39,11 @@ package body Humanize.Catalogs.Phrase_Data is
    function Locale_Af return Wide_Wide_String is separate;
    function Locale_Hu return Wide_Wide_String is separate;
    function Locale_Sk return Wide_Wide_String is separate;
+   --  Regional variants: Traditional Chinese whole, European Portuguese and
+   --  Latin-American Spanish where they differ from pt and es.
+   function Locale_Zh_Hant return Wide_Wide_String is separate;
+   function Locale_Pt_Pt return Wide_Wide_String is separate;
+   function Locale_Es_419 return Wide_Wide_String is separate;
 
    function Default_Catalog return String is
      (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode
@@ -73,7 +78,10 @@ package body Humanize.Catalogs.Phrase_Data is
            & Locale_Sw
            & Locale_Af
            & Locale_Hu
-           & Locale_Sk));
+           & Locale_Sk
+           & Locale_Zh_Hant
+           & Locale_Pt_Pt
+           & Locale_Es_419));
 
    function Catalog_For (Language : String) return String is
       function Encode (Text : Wide_Wide_String) return String is
@@ -86,11 +94,11 @@ package body Humanize.Catalogs.Phrase_Data is
       elsif Language = "fr" then
          return Encode (Locale_Fr);
       elsif Language = "es" then
-         return Encode (Locale_Es);
+         return Encode (Locale_Es & Locale_Es_419);
       elsif Language = "it" then
          return Encode (Locale_It);
       elsif Language = "pt" then
-         return Encode (Locale_Pt);
+         return Encode (Locale_Pt & Locale_Pt_Pt);
       elsif Language = "nl" then
          return Encode (Locale_Nl);
       elsif Language = "sv" then
@@ -114,7 +122,7 @@ package body Humanize.Catalogs.Phrase_Data is
       elsif Language = "ko" then
          return Encode (Locale_Ko);
       elsif Language = "zh" then
-         return Encode (Locale_Zh);
+         return Encode (Locale_Zh & Locale_Zh_Hant);
       elsif Language = "ar" then
          return Encode (Locale_Ar);
       elsif Language = "hi" then

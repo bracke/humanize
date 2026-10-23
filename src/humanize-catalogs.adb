@@ -33,4 +33,10 @@ package body Humanize.Catalogs is
         Messages.Runtime.Reject_Duplicates)
       renames Humanize.Catalogs.Loader.Load_Defaults;
 
+   procedure Load_Phrases
+     (Runtime : in out Messages.Runtime.Instance;
+      Result  : out Messages.Runtime.Load_Result;
+      Locale  : String)
+      renames Humanize.Catalogs.Loader.Load_Phrases;
+
 end Humanize.Catalogs;

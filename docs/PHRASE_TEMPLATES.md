@@ -129,6 +129,14 @@ The measure argument is the value in CLDR's unit for the locale
 | `editorial_percent.word` | value | `{value} percent` |
 | `recurrence.<unit>`, unit second, minute, hour, day, week, month, quarter, year | every | `every {every} {every, plural, one {<unit>} other {<unit>s}}` |
 
+## Regional variants
+
+`zh-Hant` is a whole Traditional Chinese catalog (Taiwan usage), which zh-TW,
+zh-HK and zh-MO reach through CLDR's likely scripts. `pt-PT` and `es-419` hold
+only the entries that differ from `pt` (Brazilian) and `es`; pt-AO, pt-MZ, ...
+reach pt-PT and es-MX, es-AR, ... reach es-419 through CLDR's parent locales.
+A regional file may leave any key out.
+
 ## Nouns by language
 
 What a caller passes as the plural (`Plural`) and registers, so the

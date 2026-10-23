@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+* **Regional phrase variants**: Traditional Chinese (zh-TW, zh-HK through
+  CLDR's likely script), European Portuguese and Latin-American Spanish
+  overrides; they load with their language.
+* **`Load_Phrases (Runtime, Result, Locale)`** adds one more language's phrases
+  to a runtime holding the defaults, for applications that switch language.
+
 * **Registered noun forms reach the plain counts too.** `Lists.Count` and
   `Counted_Noun` outside English, and `Unit_Change`'s noun, take the locale's
   plural category with the forms registered on the context (Polish "5

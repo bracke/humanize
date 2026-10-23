@@ -103,4 +103,16 @@ package Humanize.Catalogs is
    --  @param Locale Locale ("de", "pt-BR") whose phrase translations to load.
    --  @param Policy Duplicate-key policy passed through to I18N.
 
+   --  Add the phrase translations of Locale's language to a runtime that
+   --  already holds the defaults (from either Load_Defaults): an application
+   --  that switches language loads each language's phrases when it first
+   --  needs them. Loading a language again changes nothing.
+   procedure Load_Phrases
+     (Runtime : in out Messages.Runtime.Instance;
+      Result  : out Messages.Runtime.Load_Result;
+      Locale  : String);
+   --  @param Runtime Runtime holding Humanize's default catalogs.
+   --  @param Result Load result reported by Messages.Runtime.Load_Text.
+   --  @param Locale Locale ("fr", "zh-TW") whose phrase translations to add.
+
 end Humanize.Catalogs;

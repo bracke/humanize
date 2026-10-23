@@ -57,4 +57,19 @@ package body Humanize.Catalogs.Loader is
          Policy      => Policy);
    end Load_Defaults;
 
+   procedure Load_Phrases
+     (Runtime : in out Messages.Runtime.Instance;
+      Result  : out Messages.Runtime.Load_Result;
+      Locale  : String)
+   is
+   begin
+      --  A language loaded before keeps its entries.
+      Messages.Runtime.Load_Text
+        (Item        => Runtime,
+         Source_Name => "humanize.builtin.phrases",
+         Text        => Humanize.Catalogs.Phrase_Data.Catalog_For (Humanize.Locales.Language_Code (Locale)),
+         Result      => Result,
+         Policy      => Messages.Runtime.Keep_First);
+   end Load_Phrases;
+
 end Humanize.Catalogs.Loader;

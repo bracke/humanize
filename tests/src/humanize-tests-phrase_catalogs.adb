@@ -106,7 +106,7 @@ package body Humanize.Tests.Phrase_Catalogs is
    Locales : constant array (Positive range <>) of Unbounded_String :=
      [+"da", +"de", +"fr", +"es", +"it", +"pt", +"nl", +"sv", +"no", +"nb", +"fi", +"pl", +"cs",
       +"tr", +"ru", +"uk", +"ja", +"ko", +"zh", +"ar", +"hi", +"ro", +"lt", +"sl", +"id", +"ms",
-      +"eo", +"vi", +"sw", +"af", +"hu", +"sk"];
+      +"eo", +"vi", +"sw", +"af", +"hu", +"sk", +"zh-Hant", +"zh-TW", +"pt-PT", +"es-419"];
 
    --  The numeric arguments any phrase takes, and the text ones.
    Numbers : constant array (Positive range <>) of Unbounded_String :=
@@ -274,7 +274,47 @@ package body Humanize.Tests.Phrase_Catalogs is
          AUnit.Assertions.Assert (De = "Sicherung fehlgeschlagen", "German loaded: [" & De & "]");
          AUnit.Assertions.Assert (Fr = "backup failed", "French not loaded: [" & Fr & "]");
       end;
+      Humanize.Catalogs.Load_Phrases (Runtime, Loaded, Locale => "fr");
+      Humanize.Catalogs.Load_Phrases (Runtime, Loaded, Locale => "fr-CA");
+      AUnit.Assertions.Assert (Messages.Runtime."=" (Loaded.Status, Messages.Runtime.Loaded), "adds French");
+      declare
+         Fr : constant String :=
+           Image (Humanize.Phrases.Backup_Phrase
+                    (Humanize.Contexts.Create (Runtime'Unchecked_Access, "fr"), Humanize.Phrases.Backup_Failed));
+      begin
+         AUnit.Assertions.Assert (Fr /= "backup failed", "French added later: [" & Fr & "]");
+      end;
    end Test_Load_One_Locale;
+
+   --  Regional variants: zh-TW reaches Traditional Chinese, pt-PT overrides
+   --  the Brazilian base where it differs, pt-BR keeps it.
+   procedure Test_Regional_Variants
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      Runtime : aliased Messages.Runtime.Instance;
+      Loaded  : Messages.Runtime.Load_Result;
+
+      function Loading (Locale : String) return String is
+        (Image (Humanize.Phrases.Status_Phrase
+                  (Humanize.Contexts.Create (Runtime'Unchecked_Access, Locale), Humanize.Phrases.Loading)));
+
+      function Bytes (Hex : String) return String is
+         Result : String (1 .. Hex'Length / 2);
+      begin
+         for I in Result'Range loop
+            Result (I) :=
+              Character'Val (Natural'Value ("16#" & Hex (Hex'First + 2 * (I - 1) .. Hex'First + 2 * I - 1) & "#"));
+         end loop;
+         return Result;
+      end Bytes;
+   begin
+      Humanize.Catalogs.Load_Defaults (Runtime, Loaded);
+      AUnit.Assertions.Assert
+        (Loading ("zh-TW") = Bytes ("E8BC89E585A5E4B8AD"), "zh-TW Traditional: [" & Loading ("zh-TW") & "]");
+      AUnit.Assertions.Assert (Loading ("pt-PT") = "a carregar", "pt-PT: [" & Loading ("pt-PT") & "]");
+      AUnit.Assertions.Assert (Loading ("pt-BR") = "carregando", "pt-BR: [" & Loading ("pt-BR") & "]");
+   end Test_Regional_Variants;
 
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
@@ -290,6 +330,7 @@ package body Humanize.Tests.Phrase_Catalogs is
       Register_Routine (T, Test_Registered_Noun_Forms'Access, "registered noun forms");
       Register_Routine (T, Test_Governed_Case'Access, "governed case in date differences");
       Register_Routine (T, Test_Load_One_Locale'Access, "load one locale's phrases");
+      Register_Routine (T, Test_Regional_Variants'Access, "regional variants");
    end Register_Tests;
 
 end Humanize.Tests.Phrase_Catalogs;
