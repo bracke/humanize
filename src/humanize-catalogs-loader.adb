@@ -1,5 +1,6 @@
 with Humanize.Catalogs.Core_Data;
 with Humanize.Catalogs.Native_Data;
+with Humanize.Catalogs.Phrase_Data;
 
 package body Humanize.Catalogs.Loader is
 
@@ -30,7 +31,8 @@ package body Humanize.Catalogs.Loader is
          Source_Name => "humanize.builtin.catalog",
          Text        =>
            Humanize.Catalogs.Core_Data.Default_Catalog
-           & Humanize.Catalogs.Native_Data.Default_Catalog,
+           & Humanize.Catalogs.Native_Data.Default_Catalog
+           & Humanize.Catalogs.Phrase_Data.Default_Catalog,
          Result      => Result,
          Policy      => Policy);
    end Load_Defaults;

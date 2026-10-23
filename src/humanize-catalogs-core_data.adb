@@ -119,7 +119,17 @@ package body Humanize.Catalogs.Core_Data is
      & " day {{value, unit, day/unit-width-long}}"
      & " other {}}" & LF
      & "und.humanize.phrase.calendar_difference.join = {value, list, unit}" & LF
-     & "und.humanize.phrase.summary.join = {value, list, unit}" & LF
+     & "und.humanize.phrase.summary.join = {value, list}" & LF
+     --  "last week", "this month", "next year": CLDR's relative names.
+     & "und.humanize.phrase.calendar_relation.week.past = {minus_one, relative, week}" & LF
+     & "und.humanize.phrase.calendar_relation.week.current = {zero, relative, week}" & LF
+     & "und.humanize.phrase.calendar_relation.week.next = {plus_one, relative, week}" & LF
+     & "und.humanize.phrase.calendar_relation.month.past = {minus_one, relative, month}" & LF
+     & "und.humanize.phrase.calendar_relation.month.current = {zero, relative, month}" & LF
+     & "und.humanize.phrase.calendar_relation.month.next = {plus_one, relative, month}" & LF
+     & "und.humanize.phrase.calendar_relation.year.past = {minus_one, relative, year}" & LF
+     & "und.humanize.phrase.calendar_relation.year.current = {zero, relative, year}" & LF
+     & "und.humanize.phrase.calendar_relation.year.next = {plus_one, relative, year}" & LF
      --  An amount in a currency CLDR knows, by the locale's currency pattern
      --  and symbol (one branch per ISO code in i18n's currency data).
      & "und.humanize.number.currency = {suffix, select,"

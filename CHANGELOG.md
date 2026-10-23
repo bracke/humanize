@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+* **Phrase formatters speak every shipped locale.** List, pagination,
+  progress, business-time, due-date, status, summary, comparison and
+  measurement phrases render through `humanize.phrase.<name>` catalog keys
+  outside English; English keeps its own wording. 128 phrases are
+  translated into the 32 shipped non-English locales
+  (`Humanize.Catalogs.Phrase_Data`, one subunit per locale).
+  `docs/PHRASE_TEMPLATES.md` lists each key's arguments and English.
+  - Calendar differences and relations ("2 Jahre, 3 Monate und 2 Tage",
+    "letzte Woche") come from CLDR's units, unit list and relative names in
+    every locale.
+  - The caller's singular/plural nouns are only two forms, so languages
+    with more number forms (Polish "5 plików") use label shapes or the
+    plural form; frames around a rendered difference take its nominative
+    (Russian "через 1 неделя").
+  - Loading the default catalogs costs about 15 ms and 16 MB more.
+
 * **Number words and currency amounts outside English come from CLDR.**
   - `Locale_Cardinal`, `Ordinal_Words` and `Decimal_Words` spell by CLDR's
     rules. The hand tables matched ICU in only 60% of cases (Finnish

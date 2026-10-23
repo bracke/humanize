@@ -21,6 +21,13 @@ here.
 
 The English column is what the formatter writes in English, as a template.
 
+The translations live in `src/humanize-catalogs-phrase_data-locale_<locale>.adb`,
+one function per locale. Each entry is `P ("<name>", "<template>")`, written in
+UTF-8. Every non-English shipped locale must render every key here; the test
+"every locale renders every phrase" checks that each one renders without
+error and leaves no braces behind. Avoid the ASCII apostrophe, which ICU
+reads as a quote; write U+2019 instead.
+
 ## Lists
 
 | Key | Arguments | English |
