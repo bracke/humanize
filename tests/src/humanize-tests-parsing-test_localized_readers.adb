@@ -1,4 +1,5 @@
 with Humanize.Contexts;
+with Humanize.Parsing.Phrases;
 with Humanize.Numbers.Spellout;
 
 separate (Humanize.Tests.Parsing)
@@ -144,6 +145,17 @@ separate (Humanize.Tests.Parsing)
             Locale & " count read back: " & Text);
       end Check_Times;
 
+      --  A number phrase as the locale writes it, read back by the phrase
+      --  catalog that wrote it, with its numbers as text arguments.
+      procedure Check_Number_Phrase (Locale, Name, Text : String; Arguments : Natural) is
+         Parsed : constant Humanize.Parsing.Phrases.Phrase_Parse_Result :=
+           Humanize.Parsing.Phrases.Parse (Humanize.Tests.Support.Locale (Locale), Name, Text);
+      begin
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok and then Parsed.Text_Count = Arguments,
+            Locale & " " & Name & " read back: " & Text);
+      end Check_Number_Phrase;
+
       procedure Check_Grouped (Locale, Text : String; Value : Long_Float) is
          Parsed : constant Humanize.Parsing.Float_Parse_Result :=
            L.Parse_Number (Humanize.Tests.Support.Locale (Locale), Text);
@@ -227,6 +239,21 @@ separate (Humanize.Tests.Parsing)
                Check_Date_Range (Name, Day (2026, 12, 28), Day (2027, 1, 4));
                Check_Date_Range (Name, Day (2026, 10, 9), Day (2026, 10, 9));
             end if;
+            declare
+               C : constant Humanize.Contexts.Context := Humanize.Tests.Support.Locale (Name);
+            begin
+               Check_Number_Phrase
+                 (Name, "number.at_least",
+                  Humanize.Tests.Support.Text
+                    (Humanize.Numbers.Threshold (C, 1_200, Humanize.Numbers.At_Least_Threshold)),
+                  1);
+               Check_Number_Phrase
+                 (Name, "number.between", Humanize.Tests.Support.Text (Humanize.Numbers.Between (C, 10, 20)), 2);
+               Check_Number_Phrase
+                 (Name, "number.out_of", Humanize.Tests.Support.Text (Humanize.Numbers.Out_Of (C, 3, 12)), 2);
+               Check_Number_Phrase
+                 (Name, "number.under", Humanize.Tests.Support.Text (Humanize.Numbers.Under_Number (C, 7)), 1);
+            end;
             Check_Duration_Range (Name, 3_600, 7_200);
             Check_Duration_Range (Name, 120, 7_200);
             for Count of Integer_Samples loop
