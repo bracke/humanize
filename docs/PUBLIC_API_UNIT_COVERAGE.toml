@@ -795,6 +795,21 @@ perf_covered_by = "Humanize.Parsing.Domain_Labels.Parse_Domain_Summary"
 score = 5
 
 [[unit]]
+name = "Humanize.Parsing.Phrases"
+area = "parsing"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-parsing.adb"
+examples = 1
+example_file = "examples/parse_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_parsing_consumer.adb"
+perf = 1
+perf_applicable = 1
+perf_covered_by = "Humanize.Parsing.Phrases.Parse"
+score = 5
+
+[[unit]]
 name = "Humanize.Parsing.Durations"
 area = "parsing"
 docs = 1

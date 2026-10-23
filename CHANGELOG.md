@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+* **`Humanize.Parsing.Phrases` reads phrases back in every shipped locale**
+  ("Seite 3 von 5", a translated status label) by the catalog that wrote
+  them: `Parse` for one phrase, `Parse_Any` to identify one under a prefix
+  ("backup."). A reading is one that renders the text exactly. English reads
+  through `en` phrase templates, now in the catalog.
+* `Humanize.Selections.Max_Named` is 16 (was 8).
+
 * **Regional phrase variants**: Traditional Chinese (zh-TW, zh-HK through
   CLDR's likely script), European Portuguese and Latin-American Spanish
   overrides; they load with their language.

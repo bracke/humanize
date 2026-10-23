@@ -530,6 +530,12 @@ usecase = "parse deterministic operational and domain-label text"
 
 [[coverage]]
 area = "public-surface"
+unit = "Humanize.Parsing.Phrases"
+example = "examples/parse_demo.adb"
+usecase = "read a localized phrase back into its arguments"
+
+[[coverage]]
+area = "public-surface"
 unit = "Humanize.Parsing.Durations"
 example = "examples/parse_demo.adb"
 usecase = "parse plain, ISO, range, and precise duration labels"

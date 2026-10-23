@@ -67,6 +67,7 @@ class map and coverage scorecards.
 - `Humanize.Parsing.Colors` - `src/humanize-parsing-colors.ads`
 - `Humanize.Parsing.Date_Times` - `src/humanize-parsing-date_times.ads`
 - `Humanize.Parsing.Domain_Labels` - `src/humanize-parsing-domain_labels.ads`
+- `Humanize.Parsing.Phrases` - `src/humanize-parsing-phrases.ads`
 - `Humanize.Parsing.Durations` - `src/humanize-parsing-durations.ads`
 - `Humanize.Parsing.Numbers` - `src/humanize-parsing-numbers.ads`
 - `Humanize.Parsing.Strings` - `src/humanize-parsing-strings.ads`

@@ -18,12 +18,12 @@ package Humanize.Parsing is
    --  * Humanize.Parsing.Colors: color parser facade.
    --  * Humanize.Parsing.Date_Times: date/time parser facade.
    --  * Humanize.Parsing.Domain_Labels: domain-label parser facade.
+   --  * Humanize.Parsing.Phrases: phrases read back in any shipped locale.
    --  * Humanize.Parsing.Durations: duration parser facade.
    --  * Humanize.Parsing.Numbers: number parser facade.
    --  * Humanize.Parsing.Strings: string/text parser facade.
    --  * Humanize.Parsing.Units: unit parser facade.
-   --  New parser families should prefer a child facade and keep this root
-   --  package as the compatibility import surface.
+   --  New parser families get a child facade; this root stays the import surface.
 
    --  Facade section: shared result and diagnostic types.
 

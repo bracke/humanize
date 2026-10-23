@@ -34,6 +34,7 @@ paths = [
   "Humanize.Parsing.Parse_RGB_Label",
   "Humanize.Parsing.Date_Times.Parse_Natural_Date",
   "Humanize.Parsing.Domain_Labels.Parse_Domain_Summary",
+  "Humanize.Parsing.Phrases.Parse",
   "Humanize.Parsing.Durations.Parse_Duration",
   "Humanize.Parsing.Numbers.Parse_Cardinal",
   "Humanize.Parsing.Strings.Parse_Identifier_Label",
@@ -138,6 +139,7 @@ paths = [
   "Humanize.Parsing.Parse_RGB_Label",
   "Humanize.Parsing.Date_Times.Parse_Natural_Date",
   "Humanize.Parsing.Domain_Labels.Parse_Domain_Summary",
+  "Humanize.Parsing.Phrases.Parse",
   "Humanize.Parsing.Durations.Parse_Duration",
   "Humanize.Parsing.Numbers.Parse_Cardinal",
   "Humanize.Parsing.Strings.Parse_Identifier_Label",
@@ -264,6 +266,7 @@ Humanize_Parsing = "Humanize.Parsing.Parse_Bytes"
 Humanize_Parsing_Colors = "Humanize.Parsing.Parse_RGB_Label"
 Humanize_Parsing_Date_Times = "Humanize.Parsing.Date_Times.Parse_Natural_Date"
 Humanize_Parsing_Domain_Labels = "Humanize.Parsing.Domain_Labels.Parse_Domain_Summary"
+Humanize_Parsing_Phrases = "Humanize.Parsing.Phrases.Parse"
 Humanize_Parsing_Durations = "Humanize.Parsing.Durations.Parse_Duration"
 Humanize_Parsing_Numbers = "Humanize.Parsing.Numbers.Parse_Cardinal"
 Humanize_Parsing_Strings = "Humanize.Parsing.Strings.Parse_Identifier_Label"

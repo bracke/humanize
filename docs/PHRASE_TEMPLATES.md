@@ -129,6 +129,14 @@ The measure argument is the value in CLDR's unit for the locale
 | `editorial_percent.word` | value | `{value} percent` |
 | `recurrence.<unit>`, unit second, minute, hour, day, week, month, quarter, year | every | `every {every} {every, plural, one {<unit>} other {<unit>s}}` |
 
+## Reading phrases back
+
+`Humanize.Parsing.Phrases.Parse (Context, "page_count", "Seite 3 von 5")`
+returns the arguments that render the text in the context's locale; a
+translation that leaves a number out (German "heute fällig") still reads,
+with that number 0 or 1. The catalog's `en` entries are the English column
+here, so English output reads back too.
+
 ## Regional variants
 
 `zh-Hant` is a whole Traditional Chinese catalog (Taiwan usage), which zh-TW,

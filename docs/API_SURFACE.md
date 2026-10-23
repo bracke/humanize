@@ -95,6 +95,7 @@ Formatting and parsing packages:
 * `src/humanize-parsing-colors.ads`
 * `src/humanize-parsing-date_times.ads`
 * `src/humanize-parsing-domain_labels.ads`
+* `src/humanize-parsing-phrases.ads`
 * `src/humanize-parsing-durations.ads`
 * `src/humanize-parsing-numbers.ads`
 * `src/humanize-parsing-strings.ads`

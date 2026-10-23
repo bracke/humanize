@@ -41,7 +41,7 @@ usecase = "duration, datetime, byte, number, unit, color, string, list, frequenc
 
 [[area]]
 name = "parsing"
-units = 9
+units = 10
 docs = 1
 tests = 1
 examples = 1

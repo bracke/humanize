@@ -263,6 +263,11 @@ spec = "src/humanize-parsing-domain_labels.ads"
 area = "parsing"
 
 [[unit]]
+name = "Humanize.Parsing.Phrases"
+spec = "src/humanize-parsing-phrases.ads"
+area = "parsing"
+
+[[unit]]
 name = "Humanize.Parsing.Durations"
 spec = "src/humanize-parsing-durations.ads"
 area = "parsing"

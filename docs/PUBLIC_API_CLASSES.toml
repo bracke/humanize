@@ -4,9 +4,9 @@
 # unit_class rows classify every public package in the allowlist.
 
 [summary]
-total_units = 98
+total_units = 99
 primary_facades = 52
-specialized_child_facades = 40
+specialized_child_facades = 41
 support_type_facades = 6
 
 [[class]]
@@ -337,6 +337,12 @@ reason = "focused public child package for a large Humanize feature family"
 
 [[unit_class]]
 name = "Humanize.Parsing.Domain_Labels"
+area = "parsing"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Parsing.Phrases"
 area = "parsing"
 class = "specialized-child-facade"
 reason = "focused public child package for a large Humanize feature family"

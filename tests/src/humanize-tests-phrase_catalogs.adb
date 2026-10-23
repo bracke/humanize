@@ -10,6 +10,7 @@ with Humanize.Catalogs;
 with Humanize.Contexts;
 with Humanize.Datetimes;
 with Humanize.Lists;
+with Humanize.Parsing.Phrases;
 with Humanize.Phrases;
 with Humanize.Status;
 
@@ -316,6 +317,109 @@ package body Humanize.Tests.Phrase_Catalogs is
       AUnit.Assertions.Assert (Loading ("pt-BR") = "carregando", "pt-BR: [" & Loading ("pt-BR") & "]");
    end Test_Regional_Variants;
 
+   Read_Back_Locales : constant array (Positive range <>) of Unbounded_String :=
+     [+"en", +"de", +"ru", +"ja", +"ar"];
+   Noun_Arguments : constant array (Positive range <>) of Unbounded_String :=
+     [+"one", +"other", +"zero", +"two", +"few", +"many"];
+   Text_Arguments : constant array (Positive range <>) of Unbounded_String :=
+     [+"unit", +"field", +"before", +"after", +"current", +"baseline", +"quantity",
+      +"details", +"difference", +"measure"];
+
+   function Digits_Of (Value : Natural) return String is
+     (Natural'Image (Value) (2 .. Natural'Image (Value)'Last));
+
+   --  Phrases read back by the catalog that wrote them.
+   procedure Test_Read_Phrases_Back
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      package P renames Humanize.Parsing.Phrases;
+      use type Humanize.Status.Status_Code;
+      Runtime : aliased Messages.Runtime.Instance;
+      Loaded  : Messages.Runtime.Load_Result;
+
+      function Ctx (Locale : String) return Humanize.Contexts.Context is
+        (Humanize.Contexts.Create (Runtime'Unchecked_Access, Locale));
+   begin
+      Humanize.Catalogs.Load_Defaults (Runtime, Loaded);
+      declare
+         Page   : constant P.Phrase_Parse_Result :=
+           P.Parse (Ctx ("de"), "page_count", Image (Humanize.Lists.Page_Count (Ctx ("de"), 3, 5)));
+         En     : constant P.Phrase_Parse_Result :=
+           P.Parse (Ctx ("en"), "page_count", Image (Humanize.Lists.Page_Count (Ctx ("en"), 3, 5)));
+         Picked : constant P.Phrase_Parse_Result :=
+           P.Parse (Ctx ("ja"), "selection_count",
+                    Image (Humanize.Lists.Selection_Count (Ctx ("ja"), 2, 5, "file-noun", "file-noun")));
+         Status : constant P.Phrase_Parse_Result :=
+           P.Parse_Any (Ctx ("fr"), "backup.",
+                        Image (Humanize.Phrases.Backup_Phrase (Ctx ("fr"), Humanize.Phrases.Backup_Failed)));
+         Warnings : constant P.Phrase_Parse_Result :=
+           P.Parse (Ctx ("de"), "validation_count",
+                    Image (Humanize.Lists.Validation_Count
+                             (Ctx ("de"), 4,
+                              (Humanize.Lists.Default_Validation_Summary_Options with delta
+                                 Severity => Humanize.Lists.Validation_Warning))));
+      begin
+         AUnit.Assertions.Assert
+           (Page.Status = Humanize.Status.Ok and then P.Number (Page, "page") = 3 and then P.Number (Page, "total") = 5,
+            "German page count read back");
+         AUnit.Assertions.Assert
+           (En.Status = Humanize.Status.Ok and then P.Number (En, "page") = 3, "English page count read back");
+         AUnit.Assertions.Assert
+           (Picked.Status = Humanize.Status.Ok and then P.Number (Picked, "selected") = 2
+            and then P.Number (Picked, "total") = 5
+            and then (for some I in 1 .. Picked.Text_Count => To_String (Picked.Texts (I)) = "file-noun"),
+            "Japanese selection read back with its noun");
+         AUnit.Assertions.Assert
+           (Status.Status = Humanize.Status.Ok and then To_String (Status.Name) = "backup.backup_failed",
+            "French status label identified: [" & To_String (Status.Name) & "]");
+         AUnit.Assertions.Assert
+           (Warnings.Status = Humanize.Status.Ok and then P.Number (Warnings, "count") = 4
+            and then To_String (Warnings.Choices (1)) = "warning",
+            "German validation count read back with its severity");
+         AUnit.Assertions.Assert
+           (P.Parse (Ctx ("de"), "page_count", "Kapitel 3 von 5").Status /= Humanize.Status.Ok,
+            "text the phrase does not render is rejected");
+      end;
+      --  Every phrase, rendered with distinct numbers, reads back in these
+      --  locales.
+      for Locale of Read_Back_Locales loop
+         for Key of Keys loop
+            declare
+               Args : Messages.Arguments.Arguments;
+               Next : Natural := 2;
+            begin
+               for Name of Numbers loop
+                  Next := Next + 1;
+                  Messages.Arguments.Set (Args, To_String (Name), Digits_Of (Next * 3));
+               end loop;
+               for Noun of Noun_Arguments loop
+                  Messages.Arguments.Set (Args, To_String (Noun), "thing");
+               end loop;
+               for Name of Text_Arguments loop
+                  Messages.Arguments.Set (Args, To_String (Name), "TXT");
+               end loop;
+               Messages.Arguments.Set (Args, "percent", "50");
+               Messages.Arguments.Set (Args, "value", "2.5");
+               Messages.Arguments.Set (Args, "severity", "warning");
+               Messages.Arguments.Set (Args, "domain", "sync");
+               Messages.Arguments.Set (Args, "state", "running");
+               declare
+                  Rendered : constant Messages.Result.Render_Result :=
+                    Messages.Runtime.Render
+                      (Runtime, To_String (Locale), "humanize.phrase." & To_String (Key), Args);
+                  Text : constant String := Messages.Result.Output_Text (Rendered.Text);
+                  Read : constant P.Phrase_Parse_Result := P.Parse (Ctx (To_String (Locale)), To_String (Key), Text);
+               begin
+                  AUnit.Assertions.Assert
+                    (Read.Status = Humanize.Status.Ok,
+                     To_String (Locale) & ":" & To_String (Key) & " does not read back: [" & Text & "]");
+               end;
+            end;
+         end loop;
+      end loop;
+   end Test_Read_Phrases_Back;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -331,6 +435,7 @@ package body Humanize.Tests.Phrase_Catalogs is
       Register_Routine (T, Test_Governed_Case'Access, "governed case in date differences");
       Register_Routine (T, Test_Load_One_Locale'Access, "load one locale's phrases");
       Register_Routine (T, Test_Regional_Variants'Access, "regional variants");
+      Register_Routine (T, Test_Read_Phrases_Back'Access, "read phrases back");
    end Register_Tests;
 
 end Humanize.Tests.Phrase_Catalogs;

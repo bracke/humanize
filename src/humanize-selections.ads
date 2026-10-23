@@ -22,7 +22,7 @@ private package Humanize.Selections is
    --  A phrase template's arguments by name ("shown", "total", "noun"),
    --  values as text: digits stay ASCII so a template can show them as they
    --  are or as the locale writes numbers ({total, number}).
-   Max_Named : constant := 8;
+   Max_Named : constant := 16;
    type Named_Argument is record
       Name  : Ada.Strings.Unbounded.Unbounded_String;
       Value : Ada.Strings.Unbounded.Unbounded_String;

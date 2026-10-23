@@ -63,6 +63,7 @@ project Humanize is
       "Humanize.Parsing.Colors",
       "Humanize.Parsing.Date_Times",
       "Humanize.Parsing.Domain_Labels",
+      "Humanize.Parsing.Phrases",
       "Humanize.Parsing.Durations",
       "Humanize.Parsing.Numbers",
       "Humanize.Parsing.Results",

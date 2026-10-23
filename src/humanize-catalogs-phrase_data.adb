@@ -7,6 +7,9 @@ package body Humanize.Catalogs.Phrase_Data is
    function Entry_Line (Locale, Name, Template : Wide_Wide_String) return Wide_Wide_String is
      (Locale & ".humanize.phrase." & Name & " = " & Template & Ada.Characters.Wide_Wide_Latin_1.LF);
 
+   --  English, as the formatters write it: for reading phrases back
+   --  (Humanize.Parsing.Phrases); the formatters keep their own English.
+   function Locale_En return Wide_Wide_String is separate;
    function Locale_Da return Wide_Wide_String is separate;
    function Locale_De return Wide_Wide_String is separate;
    function Locale_Fr return Wide_Wide_String is separate;
@@ -47,7 +50,8 @@ package body Humanize.Catalogs.Phrase_Data is
 
    function Default_Catalog return String is
      (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode
-        (Locale_Da
+        (Locale_En
+           & Locale_Da
            & Locale_De
            & Locale_Fr
            & Locale_Es
@@ -87,7 +91,9 @@ package body Humanize.Catalogs.Phrase_Data is
       function Encode (Text : Wide_Wide_String) return String is
         (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode (Text));
    begin
-      if Language = "da" then
+      if Language in "en" | "" then
+         return Encode (Locale_En);
+      elsif Language = "da" then
          return Encode (Locale_Da);
       elsif Language = "de" then
          return Encode (Locale_De);

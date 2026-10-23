@@ -8,6 +8,6 @@ private package Humanize.Catalogs.Phrase_Data is
    function Catalog_For (Language : String) return String;
    --  @param Language A language code ("de", "nb"), without region.
    --  @return That language's humanize.phrase.* entries, UTF-8; Norwegian
-   --  "no" and "nb" bring each other's; "" for English or an unshipped one.
+   --  "no" and "nb" bring each other's; "" for an unshipped one.
 
 end Humanize.Catalogs.Phrase_Data;
