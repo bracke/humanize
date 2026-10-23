@@ -238,7 +238,7 @@ begin
      & P ("ui.paused", "dijeda")
      & P ("ui.complete", "selesai")
      & P ("ui.failed", "gagal")
-     & P ("ui.due_soon", "hampir tamat tempoh")
+     & P ("ui.due_soon", "tarikh akhir hampir tiba")
      & P ("ui.overdue", "lewat")
      & P ("ui.last_seen", "kali terakhir dilihat")
      & P ("ui.updated_just_now", "baru dikemas kini")

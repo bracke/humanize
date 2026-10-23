@@ -198,7 +198,7 @@ begin
      & P ("time_of_day.afternoon", "tarde")
      & P ("time_of_day.evening", "noite")
      & P ("calendar_difference.same_day", "mesmo dia")
-     & P ("calendar_difference.zero", "0 dia")
+     & P ("calendar_difference.zero", "0 dias")
      & P ("queue_summary.empty", "fila vazia")
      & P ("access.allowed", "permitido")
      & P ("access.denied", "negado")

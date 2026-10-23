@@ -4,7 +4,7 @@ function Locale_Af return Wide_Wide_String is
 begin
    return
      P ("all_count", "al {total} {total, plural, one {{one}} other {{other}}}")
-     & P ("filtered_count.none", "geen ooreenstemmende {other}")
+     & P ("filtered_count.none", "geen ooreenstemmende {other} nie")
      & P ("filtered_count.all", "al {total} {total, plural, one {{one}} other {{other}}} stem ooreen")
      & P ("filtered_count.some",
           "{matching} van {total} {total, plural, one {{one}} other {{other}}} "
@@ -27,12 +27,12 @@ begin
           & "gewys")
      & P ("validation_count",
           "{count, plural, =0 {geen {severity, select, error {foute} warning "
-          & "{waarskuwings} other {kennisgewings}}} one {1 {severity, select, error "
-          & "{fout} warning {waarskuwing} other {kennisgewing}}} other {{count} "
-          & "{severity, select, error {foute} warning {waarskuwings} other "
+          & "{waarskuwings} other {kennisgewings}} nie} one {1 {severity, select, "
+          & "error {fout} warning {waarskuwing} other {kennisgewing}}} other "
+          & "{{count} {severity, select, error {foute} warning {waarskuwings} other "
           & "{kennisgewings}}}}")
-     & P ("collection.empty", "geen {other}")
-     & P ("collection.none_shown", "geen {other} gewys")
+     & P ("collection.empty", "geen {other} nie")
+     & P ("collection.none_shown", "geen {other} gewys nie")
      & P ("collection.showing_hidden",
           "{visible} van {total} {total, plural, one {{one}} other {{other}}} "
           & "gewys, {hidden} versteek")
@@ -76,7 +76,7 @@ begin
      & P ("recurrence.month", "{every, plural, one {elke maand} other {elke {every} maande}}")
      & P ("recurrence.quarter", "{every, plural, one {elke kwartaal} other {elke {every} kwartale}}")
      & P ("recurrence.year", "{every, plural, one {elke jaar} other {elke {every} jaar}}")
-     & P ("cache_summary.empty", "kas: geen versoeke")
+     & P ("cache_summary.empty", "kas: geen versoeke nie")
      & P ("cache_summary",
           "kas: {hits} {hits, plural, one {treffer} other {treffers}}, {misses} "
           & "{misses, plural, one {mis} other {misse}}, {rate}% trefferkoers")
@@ -105,9 +105,9 @@ begin
           "{domain, select, queue {tou} job {taak} run {lopie} cache {kas} sync "
           & "{sinkronisasie} import {invoer} export {uitvoer} other {{domain}}} "
           & "{state, select, queued {in tou} running {loop} waiting {wag} paused "
-          & "{gepouseer} complete {voltooi} failed {misluk} stale {verouderd} "
+          & "{onderbreek} complete {voltooi} failed {misluk} stale {verouderd} "
           & "skipped {oorgeslaan} other {{state}}}: {details}")
-     & P ("summary.none", "geen {other}")
+     & P ("summary.none", "geen {other} nie")
      & P ("summary.completed", "{count} {count, plural, one {{one}} other {{other}}} voltooi")
      & P ("summary.completed_of",
           "{count} van {total} {total, plural, one {{one}} other {{other}}} "
@@ -182,7 +182,7 @@ begin
      & P ("billing.paid", "betaal")
      & P ("billing.past_due", "agterstallig")
      & P ("billing.canceled", "gekanselleer")
-     & P ("ci.pipeline_pending", "pyplyn hangende")
+     & P ("ci.pipeline_pending", "pyplyn hangend")
      & P ("ci.pipeline_running", "pyplyn loop")
      & P ("ci.pipeline_passed", "pyplyn geslaag")
      & P ("ci.pipeline_failed", "pyplyn misluk")
@@ -255,11 +255,11 @@ begin
      & P ("ui.saving", "stoor tans")
      & P ("ui.saved", "gestoor")
      & P ("ui.unsaved", "nie gestoor nie")
-     & P ("ui.retrying", "probeer weer")
+     & P ("ui.retrying", "nuwe poging")
      & P ("ui.paused", "onderbreek")
      & P ("ui.complete", "voltooi")
      & P ("ui.failed", "misluk")
-     & P ("ui.due_soon", "binnekort verskuldig")
+     & P ("ui.due_soon", "verval binnekort")
      & P ("ui.overdue", "agterstallig")
      & P ("ui.last_seen", "laas gesien")
      & P ("ui.updated_just_now", "sopas bygewerk")
@@ -333,7 +333,7 @@ begin
      & P ("availability.all",
           "{available} van {total} {total, plural, one {{one}} other {{other}}} "
           & "beskikbaar")
-     & P ("availability.none", "geen {other} beskikbaar")
+     & P ("availability.none", "geen {other} beskikbaar nie")
      & P ("availability.partial",
           "{available} van {total} {total, plural, one {{one}} other {{other}}} "
           & "beskikbaar, {unavailable} onbeskikbaar")

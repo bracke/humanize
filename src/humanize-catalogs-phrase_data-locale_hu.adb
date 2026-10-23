@@ -119,7 +119,7 @@ begin
      & P ("webhook.webhook_pending", "webhook függőben")
      & P ("webhook.webhook_delivered", "webhook kézbesítve")
      & P ("webhook.webhook_failed", "webhook sikertelen")
-     & P ("webhook.webhook_retrying", "webhook újrapróbálása")
+     & P ("webhook.webhook_retrying", "webhook újrapróbálása folyamatban")
      & P ("api_key.api_key_active", "API-kulcs aktív")
      & P ("api_key.api_key_revoked", "API-kulcs visszavonva")
      & P ("api_key.api_key_expired", "API-kulcs lejárt")

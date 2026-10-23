@@ -21,7 +21,7 @@ begin
           "{first} a {remaining, plural, one {{remaining} další} few "
           & "{{remaining} další} many {{remaining} dalšího} other {{remaining} "
           & "dalších}}")
-     & P ("page_count", "strana {page} z {total}")
+     & P ("page_count", "stránka {page} z {total}")
      & P ("page_size",
           "{size} {size, plural, one {{one}} few {{few}} many {{genitive_one}} "
           & "other {{genitive_other}}} na stránku")

@@ -40,7 +40,7 @@ begin
           & "{{other}}}")
      & P ("collection.shown_hidden",
           "{visible} {visible, plural, one {{one}} other {{other}}} vises, "
-          & "{hidden} skjules")
+          & "{hidden} skjult")
      & P ("collection.shown", "{visible} {visible, plural, one {{one}} other {{other}}} vises")
      & P ("collection.visible_out_of",
           "{visible} av {total} {total, plural, one {{one}} other {{other}}} "
@@ -217,7 +217,7 @@ begin
      & P ("form.pristine", "uendret")
      & P ("form.submitted", "sendt inn")
      & P ("form.submission_failed", "innsending mislyktes")
-     & P ("health.healthy", "frisk")
+     & P ("health.healthy", "sunn")
      & P ("health.degraded", "redusert ytelse")
      & P ("health.unhealthy", "usunn")
      & P ("health.incident", "hendelse")
@@ -253,7 +253,7 @@ begin
      & P ("ui.saving", "lagrer")
      & P ("ui.saved", "lagret")
      & P ("ui.unsaved", "ikke lagret")
-     & P ("ui.retrying", "prøver igjen")
+     & P ("ui.retrying", "prøver på nytt")
      & P ("ui.paused", "satt på pause")
      & P ("ui.complete", "fullført")
      & P ("ui.failed", "mislyktes")
@@ -361,7 +361,7 @@ begin
      & P ("system.service.major_outage", "større driftsavbrudd")
      & P ("system.service.maintenance", "under vedlikehold")
      & P ("system.service.unknown", "ukjent tjenestestatus")
-     & P ("system.health.healthy", "frisk")
+     & P ("system.health.healthy", "sunn")
      & P ("system.health.warning", "advarsel")
      & P ("system.health.critical", "kritisk")
      & P ("system.health.unavailable", "utilgjengelig")

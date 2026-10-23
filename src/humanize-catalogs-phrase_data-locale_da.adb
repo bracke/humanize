@@ -41,16 +41,16 @@ begin
           & "{{other}}}")
      & P ("collection.shown_hidden",
           "{visible} {visible, plural, one {{one}} other {{other}}} vises, "
-          & "{hidden} skjules")
+          & "{hidden} skjult")
      & P ("collection.shown", "{visible} {visible, plural, one {{one}} other {{other}}} vises")
      & P ("collection.visible_out_of",
           "{visible} af {total} {total, plural, one {{one}} other {{other}}} "
-          & "synlige")
+          & "{visible, plural, one {synlig} other {synlige}}")
      & P ("complete_count", "{done} af {total} fuldført")
-     & P ("percent_complete", "{percent} % fuldført")
+     & P ("percent_complete", "{percent} % fuldført")
      & P ("step_count", "trin {step} af {total}")
      & P ("attempt_count", "forsøg {attempt} af {total}")
-     & P ("throughput_remaining", "{remaining} tilbage ved {rate} {unit}/s")
+     & P ("throughput_remaining", "{remaining} {unit} tilbage ved {rate} {unit}/s")
      & P ("accessible_progress", "{done} af {total} fuldført, {percent} procent")
      & P ("business_days", "{days} {days, plural, one {arbejdsdag} other {arbejdsdage}}")
      & P ("working_hours", "{hours} {hours, plural, one {arbejdstime} other {arbejdstimer}}")
@@ -64,7 +64,7 @@ begin
      & P ("battery", "batteri {measure}")
      & P ("screen_size", "skærm {measure}")
      & P ("refresh_rate", "opdateringshastighed {measure}")
-     & P ("editorial_percent.symbol", "{value} %")
+     & P ("editorial_percent.symbol", "{value} %")
      & P ("editorial_percent.word", "{value} procent")
      & P ("recurrence.second", "{every, plural, one {hvert sekund} other {hvert {every}. sekund}}")
      & P ("recurrence.minute", "{every, plural, one {hvert minut} other {hvert {every}. minut}}")
@@ -75,7 +75,7 @@ begin
      & P ("recurrence.quarter", "{every, plural, one {hvert kvartal} other {hvert {every}. kvartal}}")
      & P ("recurrence.year", "{every, plural, one {hvert år} other {hvert {every}. år}}")
      & P ("cache_summary.empty", "cache: ingen forespørgsler")
-     & P ("cache_summary", "cache: {hits} træf, {misses} bom, {rate} % træfrate")
+     & P ("cache_summary", "cache: {hits} træf, {misses} bom, {rate} % træfrate")
      & P ("field_change_summary",
           "{total} {total, plural, one {{one}} other {{other}}}: {changed} "
           & "ændret, {added} tilføjet, {removed} fjernet")
@@ -176,7 +176,7 @@ begin
      & P ("auth.locked", "låst")
      & P ("auth.two_factor_required", "totrinsbekræftelse påkrævet")
      & P ("billing.trialing", "prøveperiode")
-     & P ("billing.payment_due", "betaling forfalden")
+     & P ("billing.payment_due", "betaling forfalder")
      & P ("billing.payment_failed", "betaling mislykkedes")
      & P ("billing.paid", "betalt")
      & P ("billing.past_due", "overskredet betalingsfrist")
@@ -232,7 +232,7 @@ begin
      & P ("issue.merged", "flettet")
      & P ("network.offline", "offline")
      & P ("network.online", "online")
-     & P ("network.connecting", "forbinder")
+     & P ("network.connecting", "opretter forbindelse")
      & P ("network.syncing", "synkroniserer")
      & P ("network.sync_failed", "synkronisering mislykkedes")
      & P ("network.permission_denied", "adgang nægtet")

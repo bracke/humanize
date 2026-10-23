@@ -46,7 +46,7 @@ begin
           "{visible} von {total} {total, plural, one {{one}} other {{other}}} "
           & "sichtbar")
      & P ("complete_count", "{done} von {total} abgeschlossen")
-     & P ("percent_complete", "{percent} % abgeschlossen")
+     & P ("percent_complete", "{percent} % abgeschlossen")
      & P ("step_count", "Schritt {step} von {total}")
      & P ("attempt_count", "Versuch {attempt} von {total}")
      & P ("throughput_remaining", "noch {remaining} {unit} bei {rate} {unit}/s")
@@ -65,7 +65,7 @@ begin
      & P ("battery", "Akku {measure}")
      & P ("screen_size", "Bildschirm {measure}")
      & P ("refresh_rate", "Bildwiederholrate {measure}")
-     & P ("editorial_percent.symbol", "{value} %")
+     & P ("editorial_percent.symbol", "{value} %")
      & P ("editorial_percent.word", "{value} Prozent")
      & P ("recurrence.second", "{every, plural, one {jede Sekunde} other {alle {every} Sekunden}}")
      & P ("recurrence.minute", "{every, plural, one {jede Minute} other {alle {every} Minuten}}")
@@ -78,7 +78,7 @@ begin
      & P ("cache_summary.empty", "Cache: keine Anfragen")
      & P ("cache_summary",
           "Cache: {hits} Treffer, {misses} {misses, plural, one {Fehlzugriff} "
-          & "other {Fehlzugriffe}}, {rate} % Trefferquote")
+          & "other {Fehlzugriffe}}, {rate} % Trefferquote")
      & P ("field_change_summary",
           "{total} {total, plural, one {{one}} other {{other}}}: {changed} "
           & "geändert, {added} hinzugefügt, {removed} entfernt")
@@ -192,7 +192,7 @@ begin
      & P ("collaboration.away", "abwesend")
      & P ("collaboration.do_not_disturb", "nicht stören")
      & P ("collaboration.typing", "schreibt")
-     & P ("collaboration.viewing", "sieht sich das an")
+     & P ("collaboration.viewing", "betrachtet")
      & P ("collaboration.editing", "bearbeitet")
      & P ("deployment.deploying", "wird bereitgestellt")
      & P ("deployment.deployed", "bereitgestellt")
@@ -233,8 +233,8 @@ begin
      & P ("issue.merged", "zusammengeführt")
      & P ("network.offline", "offline")
      & P ("network.online", "online")
-     & P ("network.connecting", "verbindet")
-     & P ("network.syncing", "synchronisiert")
+     & P ("network.connecting", "wird verbunden")
+     & P ("network.syncing", "wird synchronisiert")
      & P ("network.sync_failed", "Synchronisierung fehlgeschlagen")
      & P ("network.permission_denied", "Zugriff verweigert")
      & P ("network.read_only", "schreibgeschützt")

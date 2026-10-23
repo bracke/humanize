@@ -78,7 +78,7 @@ begin
           & "few {{hours} delovne ure} other {{hours} delovnih ur}}")
      & P ("due.overdue",
           "zamuda: {days, plural, one {{days} dan} two {{days} dneva} few {{days} "
-          & "dni} other {{days} dni}}")
+          & "dnevi} other {{days} dni}}")
      & P ("due.today", "rok danes")
      & P ("due.tomorrow", "rok jutri")
      & P ("due.in",
@@ -337,7 +337,7 @@ begin
      & P ("search.search_failed", "iskanje ni uspelo")
      & P ("search.query_too_short", "poizvedba je prekratka")
      & P ("security.secure", "varno")
-     & P ("security.insecure", "nevarno")
+     & P ("security.insecure", "ni varno")
      & P ("security.vulnerable", "ranljivo")
      & P ("security.encrypted", "šifrirano")
      & P ("security.unencrypted", "nešifrirano")

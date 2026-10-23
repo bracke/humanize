@@ -201,7 +201,7 @@ begin
      & P ("health.unhealthy", "tidak sehat")
      & P ("health.incident", "insiden")
      & P ("health.maintenance", "pemeliharaan")
-     & P ("health.recovering", "memulihkan")
+     & P ("health.recovering", "sedang pulih")
      & P ("issue.open", "terbuka")
      & P ("issue.closed", "ditutup")
      & P ("issue.reopened", "dibuka kembali")

@@ -253,7 +253,7 @@ begin
      & P ("health.healthy", "operativo")
      & P ("health.degraded", "degradado")
      & P ("health.unhealthy", "con problemas")
-     & P ("health.incident", "incidencia")
+     & P ("health.incident", "incidente")
      & P ("health.maintenance", "mantenimiento")
      & P ("health.recovering", "recuperándose")
      & P ("issue.open", "abierto")

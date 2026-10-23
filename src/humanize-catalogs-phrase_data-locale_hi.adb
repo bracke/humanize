@@ -75,7 +75,9 @@ begin
           & "अतिदेय")
      & P ("due.today", "आज देय")
      & P ("due.tomorrow", "कल देय")
-     & P ("due.in", "{days} दिनों में देय")
+     & P ("due.in",
+          "{days, plural, one {{days} दिन में देय} other "
+          & "{{days} दिनों में देय}}")
      & P ("calendar_difference.future", "{difference} में")
      & P ("calendar_difference.past", "{difference} पहले")
      & P ("calendar_difference.same_day", "उसी दिन")
@@ -439,8 +441,8 @@ begin
      & P ("system.component.stopping", "रुक रहा है")
      & P ("system.component.restarting", "पुनः आरंभ हो रहा है")
      & P ("system.component.unknown", "घटक की स्थिति अज्ञात")
-     & P ("system.check.passing", "पास")
-     & P ("system.check.failing", "फ़ेल")
+     & P ("system.check.passing", "सफल")
+     & P ("system.check.failing", "विफल")
      & P ("system.check.warning", "चेतावनी")
      & P ("system.check.skipped", "छोड़ा गया")
      & P ("system.check.timed_out", "समय समाप्त")

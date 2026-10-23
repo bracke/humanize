@@ -7,7 +7,6 @@ begin
      & P ("api_key.api_key_expired", "clave de API vencida")
      & P ("auth.session_expired", "sesión expirada")
      & P ("billing.trialing", "período de prueba")
-     & P ("health.incident", "incidente")
      & P ("payment.payment_expired", "pago vencido")
      & P ("security.token_expired", "token vencido")
      & P ("system.check.unknown", "estado de la verificación desconocido")

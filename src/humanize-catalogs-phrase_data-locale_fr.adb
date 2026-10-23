@@ -454,6 +454,6 @@ begin
      & P ("system.exit.usage_error", "code de sortie {code} : erreur d’utilisation")
      & P ("system.exit.not_executable", "code de sortie {code} : commande non exécutable")
      & P ("system.exit.not_found", "code de sortie {code} : commande introuvable")
-     & P ("system.exit.invalid_argument", "code de sortie {code} : argument de sortie invalide")
+     & P ("system.exit.invalid_argument", "code de sortie {code} : argument de sortie non valide")
      & P ("system.exit.signal", "code de sortie {code} : terminé par {signal}");
 end Locale_Fr;

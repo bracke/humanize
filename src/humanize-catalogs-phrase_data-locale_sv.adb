@@ -46,10 +46,10 @@ begin
           "{visible} av {total} {total, plural, one {{one}} other {{other}}} "
           & "visas")
      & P ("complete_count", "{done} av {total} klara")
-     & P ("percent_complete", "{percent} % klart")
+     & P ("percent_complete", "{percent} % klart")
      & P ("step_count", "steg {step} av {total}")
      & P ("attempt_count", "försök {attempt} av {total}")
-     & P ("throughput_remaining", "{remaining} kvar med {rate} {unit}/s")
+     & P ("throughput_remaining", "{remaining} {unit} kvar med {rate} {unit}/s")
      & P ("accessible_progress", "{done} av {total} klara, {percent} procent")
      & P ("business_days", "{days} {days, plural, one {arbetsdag} other {arbetsdagar}}")
      & P ("working_hours", "{hours} {hours, plural, one {arbetstimme} other {arbetstimmar}}")
@@ -63,7 +63,7 @@ begin
      & P ("battery", "batteri {measure}")
      & P ("screen_size", "skärm {measure}")
      & P ("refresh_rate", "uppdateringsfrekvens {measure}")
-     & P ("editorial_percent.symbol", "{value} %")
+     & P ("editorial_percent.symbol", "{value} %")
      & P ("editorial_percent.word", "{value} procent")
      & P ("recurrence.second",
           "{every, plural, one {varje sekund} other {med {every} sekunders "
@@ -88,7 +88,7 @@ begin
      & P ("cache_summary.empty", "cache: inga förfrågningar")
      & P ("cache_summary",
           "cache: {hits} {hits, plural, one {träff} other {träffar}}, {misses} "
-          & "{misses, plural, one {miss} other {missar}}, {rate} % träffkvot")
+          & "{misses, plural, one {miss} other {missar}}, {rate} % träffkvot")
      & P ("field_change_summary",
           "{total} {total, plural, one {{one}} other {{other}}}: ändrade "
           & "{changed}, tillagda {added}, borttagna {removed}")
@@ -190,7 +190,7 @@ begin
      & P ("billing.payment_failed", "betalningen misslyckades")
      & P ("billing.paid", "betald")
      & P ("billing.past_due", "förfallen")
-     & P ("billing.canceled", "avbruten")
+     & P ("billing.canceled", "uppsagd")
      & P ("ci.pipeline_pending", "pipeline väntar")
      & P ("ci.pipeline_running", "pipeline körs")
      & P ("ci.pipeline_passed", "pipeline godkänd")
@@ -230,7 +230,7 @@ begin
      & P ("form.submission_failed", "det gick inte att skicka")
      & P ("health.healthy", "felfri")
      & P ("health.degraded", "försämrad")
-     & P ("health.unhealthy", "ohälsosam")
+     & P ("health.unhealthy", "inte felfri")
      & P ("health.incident", "incident")
      & P ("health.maintenance", "underhåll")
      & P ("health.recovering", "återhämtar sig")
@@ -372,7 +372,7 @@ begin
      & P ("system.service.major_outage", "större avbrott")
      & P ("system.service.maintenance", "under underhåll")
      & P ("system.service.unknown", "okänd tjänststatus")
-     & P ("system.health.healthy", "frisk")
+     & P ("system.health.healthy", "felfri")
      & P ("system.health.warning", "varning")
      & P ("system.health.critical", "kritisk")
      & P ("system.health.unavailable", "otillgänglig")

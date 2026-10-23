@@ -436,7 +436,7 @@ begin
           "доступно {available} из {total} {total, plural, one "
           & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
           & "{{genitive_one}}}, недоступно {unavailable}")
-     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation_progress", "{name} — {state}: {details}")
      & P ("operation.queued", "в очереди")
      & P ("operation.running", "выполняется")
      & P ("operation.blocked", "заблокировано")
@@ -448,9 +448,9 @@ begin
      & P ("operation.skipped", "пропущено")
      & P ("operation.stale", "устарело")
      & P ("operation.unknown_state", "неизвестно")
-     & P ("operation.last_success", "{name} – последний успешный запуск: {time}")
-     & P ("operation.next_retry", "{name} – следующая попытка: {time}")
-     & P ("operation.stale_run", "{name} – не обновлялось {time}")
+     & P ("operation.last_success", "{name} — последний успешный запуск: {time}")
+     & P ("operation.next_retry", "{name} — следующая попытка: {time}")
+     & P ("operation.stale_run", "{name} — не обновлялось {time}")
      & P ("summary.skipped", "пропущено: {count}")
      & P ("summary.retried", "повторено: {count}")
      & P ("summary.canceled", "отменено: {count}")

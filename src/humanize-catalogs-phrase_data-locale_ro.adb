@@ -56,7 +56,7 @@ begin
           & "plural, one {{one}} few {{few}} other {de {other}}} din {total} "
           & "{total, plural, one {{one}} few {{few}} other {de {other}}}")
      & P ("complete_count", "finalizate: {done} din {total}")
-     & P ("percent_complete", "{percent} % finalizat")
+     & P ("percent_complete", "{percent} % finalizat")
      & P ("step_count", "pasul {step} din {total}")
      & P ("attempt_count", "încercarea {attempt} din {total}")
      & P ("throughput_remaining", "rămas: {remaining} {unit}, la {rate} {unit}/s")
@@ -83,7 +83,7 @@ begin
      & P ("battery", "baterie {measure}")
      & P ("screen_size", "ecran {measure}")
      & P ("refresh_rate", "rată de reîmprospătare {measure}")
-     & P ("editorial_percent.symbol", "{value} %")
+     & P ("editorial_percent.symbol", "{value} %")
      & P ("editorial_percent.word", "{value} la sută")
      & P ("recurrence.second",
           "{every, plural, one {în fiecare secundă} few {la fiecare {every} "
@@ -114,7 +114,7 @@ begin
           "cache: {hits} {hits, plural, one {accesare reușită} few {accesări "
           & "reușite} other {de accesări reușite}}, {misses} {misses, plural, "
           & "one {ratare} few {ratări} other {de ratări}}, rată de reușită "
-          & "{rate} %")
+          & "{rate} %")
      & P ("field_change_summary",
           "{total} {total, plural, one {{one}} few {{few}} other {de {other}}}: "
           & "modificate {changed}, adăugate {added}, eliminate {removed}")
@@ -408,7 +408,7 @@ begin
      & P ("system.service.major_outage", "întrerupere majoră")
      & P ("system.service.maintenance", "în mentenanță")
      & P ("system.service.unknown", "stare necunoscută a serviciului")
-     & P ("system.health.healthy", "sănătos")
+     & P ("system.health.healthy", "funcțional")
      & P ("system.health.warning", "avertisment")
      & P ("system.health.critical", "critic")
      & P ("system.health.unavailable", "indisponibil")

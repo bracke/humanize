@@ -333,7 +333,7 @@ begin
      & P ("system.service.operational", "정상 운영")
      & P ("system.service.degraded", "성능 저하")
      & P ("system.service.partial_outage", "부분 장애")
-     & P ("system.service.major_outage", "주요 장애")
+     & P ("system.service.major_outage", "대규모 장애")
      & P ("system.service.maintenance", "점검 중")
      & P ("system.service.unknown", "서비스 상태 알 수 없음")
      & P ("system.health.healthy", "정상")

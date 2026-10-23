@@ -50,3 +50,22 @@ zh-Hant	Taiwan vocabulary (檔案, 資料庫, 權杖, 快取). Ticket = 票證 (
 ar	Six plural forms; 100+ take the singular.
 ar	"خلال/قبل" frames keep the nominative (no CLDR case data).
 hi	=1 for singulars, since CLDR puts 0 in "one".
+de	Review: throughput_remaining shows the caller's singular {unit} after any count ("noch 5 Datei"); the template has no plural argument.
+da	Review: throughput_remaining now shows {unit}, singular after any count; others_count's "1 anden" assumes a common-gender referent.
+sv	Review: billing.canceled is "uppsagd" (a cancelled subscription); "avslutad" would also do.
+fr	Review: "feature flag" kept as the usual anglicism (fr-CA says "indicateur de fonctionnalité"); throughput_remaining never pluralizes {unit}.
+it	Review: ticket.ticket_escalated "ticket inoltrato" loses the higher-level sense of escalation.
+pt-PT	Review: "a cada {every} dias" kept; "de {every} em {every} dias" is the more Portuguese idiom.
+fi	Review: online/offline unified as "verkossa"/"ei verkossa"; system.uptime "käytettävyys" assumes a percentage.
+tr	Review: states use the -mamış form (kaydedilmemiş); form.pristine "değiştirilmedi" kept to pair with form.dirty.
+ru	Review: recurrence "каждые 21 минуту" keeps the common plural rather than strict "каждую 21 минуту".
+uk	Review: times_noun's fraction form "раза" is the counting genitive ("у півтора раза"), deliberately not "разу".
+lt	Review: no number_comparison.case, so the quantity stays nominative; access.viewer "peržiūrėtojas" unverified against Google's wording.
+cs	Review: availability.none "žádné dostupné {other}" agrees only with masculine-inanimate and feminine nouns.
+sk	Review: payment.payment_captured "platba stiahnutá"; "strhnutá" may be the more formal term.
+zh	Review: times_noun =0 "从未{other}" reads well only with verb-like nouns (重试), not plain nouns (文件).
+hi	Review: verb and participle agreement is masculine throughout; "कल" is both yesterday and tomorrow, so it reads back as the past and not exact.
+sw	Review: "hamisha" serves export, move and migrate; "hoja" serves both query and argument.
+vi	Review: others_count adds "mục" (item), wrong if the others are people.
+eo	Review: editorial_percent.word always says "procentoj" ("1 procentoj").
+ar	Review: recurrence second/minute/hour/quarter/year and business_days/working_hours have no separate many form; the accusative only shows as optional tanween there.

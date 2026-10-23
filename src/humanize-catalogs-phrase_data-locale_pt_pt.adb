@@ -30,16 +30,16 @@ begin
           & "{cache} sync {sincronização} import {importação} export "
           & "{exportação} other {{domain}}} {state, select, queued {na fila} "
           & "running {em execução} waiting {em espera} paused {{domain, select, "
-          & "queue {pausada} job {pausada} run {pausada} cache {pausado} sync "
+          & "queue {pausada} job {pausada} run {pausada} cache {pausada} sync "
           & "{pausada} import {pausada} export {pausada} other {pausado}}} complete "
           & "{{domain, select, queue {concluída} job {concluída} run {concluída} "
-          & "cache {concluído} sync {concluída} import {concluída} export "
+          & "cache {concluída} sync {concluída} import {concluída} export "
           & "{concluída} other {concluído}}} failed {com falha} stale {{domain, "
           & "select, queue {desatualizada} job {desatualizada} run {desatualizada} "
-          & "cache {desatualizado} sync {desatualizada} import {desatualizada} "
+          & "cache {desatualizada} sync {desatualizada} import {desatualizada} "
           & "export {desatualizada} other {desatualizado}}} skipped {{domain, "
           & "select, queue {ignorada} job {ignorada} run {ignorada} cache "
-          & "{ignorado} sync {ignorada} import {ignorada} export {ignorada} other "
+          & "{ignorada} sync {ignorada} import {ignorada} export {ignorada} other "
           & "{ignorado}}} other {{state}}}: {details}")
      & P ("backup.backup_running", "cópia de segurança em curso")
      & P ("backup.backup_completed", "cópia de segurança concluída")

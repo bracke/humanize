@@ -38,8 +38,10 @@ begin
           & "{ملاحظة واحدة}}} two {{severity, select, error {خطآن} "
           & "warning {تحذيران} other {ملاحظتان}}} few {{count} "
           & "{severity, select, error {أخطاء} warning {تحذيرات} other "
-          & "{ملاحظات}}} other {{count} {severity, select, error {خطأ} "
-          & "warning {تحذير} other {ملاحظة}}}}")
+          & "{ملاحظات}}} many {{count} {severity, select, error {خطأً} "
+          & "warning {تحذيرًا} other {ملاحظةً}}} other {{count} "
+          & "{severity, select, error {خطأ} warning {تحذير} other "
+          & "{ملاحظة}}}}")
      & P ("collection.empty", "لا توجد {other}")
      & P ("collection.none_shown", "لا توجد {other} معروضة")
      & P ("collection.showing_hidden",
@@ -105,13 +107,16 @@ begin
           & "{every} ساعات} other {كل {every} ساعة}}")
      & P ("recurrence.day",
           "{every, plural, one {كل يوم} two {كل يومين} few {كل "
-          & "{every} أيام} other {كل {every} يوم}}")
+          & "{every} أيام} many {كل {every} يومًا} other {كل {every} "
+          & "يوم}}")
      & P ("recurrence.week",
           "{every, plural, one {كل أسبوع} two {كل أسبوعين} few "
-          & "{كل {every} أسابيع} other {كل {every} أسبوع}}")
+          & "{كل {every} أسابيع} many {كل {every} أسبوعًا} other "
+          & "{كل {every} أسبوع}}")
      & P ("recurrence.month",
           "{every, plural, one {كل شهر} two {كل شهرين} few {كل "
-          & "{every} أشهر} other {كل {every} شهر}}")
+          & "{every} أشهر} many {كل {every} شهرًا} other {كل {every} "
+          & "شهر}}")
      & P ("recurrence.quarter",
           "{every, plural, one {كل ربع سنة} two {كل ربعي سنة} "
           & "few {كل {every} أرباع سنة} other {كل {every} ربع "

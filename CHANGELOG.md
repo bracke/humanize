@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+* **Translation review.** An independent second pass over every locale
+  fixed about 90 phrases: agreement and case (Afrikaans double negation,
+  Slovenian "dnevi", Arabic accusative after 11-99), wrong meanings (Swedish
+  "ohälsosam", Slovenian "nevarno", Turkish "bekleniyor", Korean "주요"),
+  inconsistent terms across keys, and no-break spaces before "%" where CLDR
+  has them. Open questions are notes on the review page.
+
 * **`Humanize.Parsing.Localized`** reads numbers, durations, relative times
   and byte sizes back in the locale that wrote them, by what the localized
   formatters write: round-trips in 36 locales (Arabic number-less duals,

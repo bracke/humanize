@@ -325,7 +325,7 @@ begin
      & P ("operation.unknown_state", "未知")
      & P ("operation.last_success", "{name}上次成功：{time}")
      & P ("operation.next_retry", "{name}下次重試：{time}")
-     & P ("operation.stale_run", "{name}已過時{time}")
+     & P ("operation.stale_run", "{name}已有{time}未更新")
      & P ("summary.skipped", "{count}個已略過")
      & P ("summary.retried", "{count}個已重試")
      & P ("summary.canceled", "{count}個已取消")
