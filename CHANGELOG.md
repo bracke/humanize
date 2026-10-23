@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+* Ranges are localized outside English. `Datetimes.Date_Range` with month
+  names uses CLDR's interval formats ("9.–15. Okt. 2026", "2026年10月9日～15日"),
+  and `Numbers.Number_Range`, `Approximate_Range` and `Decimal_Range` use the
+  locale's numbers and CLDR's range and approximately patterns ("1.200–5.000",
+  "≈10–20", "1,2–3,4"). Before, they wrote "1200-5000", "ungefaehr 10-20" (and
+  English "about" in most locales) and "1.2 bis 3.4".
+* `Parsing.Localized` reads ranges and counts back: `Parse_Number_Range`,
+  `Parse_Date_Range`, `Parse_Duration_Range` and `Parse_Times`, each checked by
+  writing its reading back.
+
 * `Numbers.Spellout.Ordinal_Words` in the locales CLDR spells no ordinals
   for (Czech, Polish, Slovak, Slovenian, Lithuanian, Romanian, Ukrainian)
   writes the numeric ordinal where humanize's own words went wrong: round

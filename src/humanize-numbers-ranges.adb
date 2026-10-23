@@ -1,3 +1,4 @@
+with Ada.Strings.Unbounded;
 
 with Humanize.Bounded_Text;
 with Humanize.Decimal_Images;
@@ -89,24 +90,29 @@ package body Humanize.Numbers.Ranges is
       Key     : Number_Phrase_Key)
       return String;
 
+   --  Outside English, a range ("low/high") or an approximate one ("~low/high")
+   --  in the locale's own numbers and CLDR's patterns for them: "1.200–5.000",
+   --  "≈10–20". Not Ok in English, where the caller's separator stands.
+   function CLDR_Range
+     (Context : Humanize.Contexts.Context;
+      Value   : String)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      if Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | "" then
+         return (Status => Humanize.Status.Missing_Message, others => <>);
+      end if;
+      return Humanize.I18N_Rendering.Render
+        (Context, Humanize.Selections.Text_Value (Humanize.Message_Keys.Number_Plain, Value));
+   end CLDR_Range;
+
    function Number_Range
      (Context : Humanize.Contexts.Context;
       Low     : Long_Long_Integer;
       High    : Long_Long_Integer;
       Options : Number_Range_Options := Default_Number_Range_Options)
       return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Sep : constant String :=
-        (if Options.Spaces_Around
-         then " " & Options.Separator & " "
-         else [1 => Options.Separator]);
-   begin
-      if High < Low then
-         return (Status => Humanize.Status.Invalid_Value, others => <>);
-      end if;
-      return Ok_Text (Plain (Low) & Sep & Plain (High));
-   end Number_Range;
+   is separate;
 
    function Approximate_Range
      (Context : Humanize.Contexts.Context;
@@ -114,16 +120,7 @@ package body Humanize.Numbers.Ranges is
       High    : Long_Long_Integer;
       Options : Number_Range_Options := Default_Number_Range_Options)
       return Humanize.Status.Text_Result
-   is
-      Base : constant Humanize.Status.Text_Result :=
-        Number_Range (Context, Low, High, Options);
-   begin
-      if Base.Status /= Humanize.Status.Ok then
-         return Base;
-      end if;
-      return Ok_Text
-        (Number_Phrase (Context, Phrase_About) & " " & Result_Text (Base));
-   end Approximate_Range;
+   is separate;
 
    function Decimal_Text
      (Value   : Long_Float;
@@ -143,17 +140,7 @@ package body Humanize.Numbers.Ranges is
       High    : Long_Float;
       Options : Number_Options := Default_Number_Options)
       return Humanize.Status.Text_Result
-   is
-   begin
-      if High < Low then
-         return (Status => Humanize.Status.Invalid_Value, others => <>);
-      end if;
-
-      return Ok_Text
-        (Decimal_Text (Low, Options) & " "
-         & Number_Phrase (Context, Phrase_To) & " "
-         & Decimal_Text (High, Options));
-   end Decimal_Range;
+   is separate;
 
    function Decimal_Range_Metadata
      (Low     : Long_Float;

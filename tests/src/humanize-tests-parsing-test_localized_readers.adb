@@ -83,6 +83,67 @@ separate (Humanize.Tests.Parsing)
             and then Parsed.Period = Period and then Parsed.Offset = Offset,
             Locale & " calendar relation read back: " & Text);
       end Check_Relation;
+      procedure Check_Number_Range (Locale : String) is
+         Context : constant Humanize.Contexts.Context := Humanize.Tests.Support.Locale (Locale);
+         Plain   : constant String :=
+           Humanize.Tests.Support.Text (Humanize.Numbers.Number_Range (Context, 1200, 5000));
+         About   : constant String :=
+           Humanize.Tests.Support.Text (Humanize.Numbers.Approximate_Range (Context, 10, 20));
+         Decimal : constant String :=
+           Humanize.Tests.Support.Text (Humanize.Numbers.Decimal_Range (Context, 1.2, 3.4));
+         P       : constant L.Number_Range_Parse_Result := L.Parse_Number_Range (Context, Plain);
+         A       : constant L.Number_Range_Parse_Result := L.Parse_Number_Range (Context, About);
+         D       : constant L.Number_Range_Parse_Result := L.Parse_Number_Range (Context, Decimal);
+      begin
+         AUnit.Assertions.Assert
+           (P.Status = Humanize.Status.Ok and then P.Low = 1200.0 and then P.High = 5000.0 and then not P.Approximate,
+            Locale & " number range read back: " & Plain);
+         AUnit.Assertions.Assert
+           (A.Status = Humanize.Status.Ok and then A.Low = 10.0 and then A.High = 20.0 and then A.Approximate,
+            Locale & " approximate range read back: " & About);
+         AUnit.Assertions.Assert
+           (D.Status = Humanize.Status.Ok and then abs (D.Low - 1.2) < 1.0E-9 and then abs (D.High - 3.4) < 1.0E-9,
+            Locale & " decimal range read back: " & Decimal);
+      end Check_Number_Range;
+
+      procedure Check_Date_Range (Locale : String; First, Last : DT.Civil_Date_Time) is
+         Context : constant Humanize.Contexts.Context := Humanize.Tests.Support.Locale (Locale);
+         Named   : constant DT.Range_Options := (DT.Default_Range_Options with delta Use_Month_Names => True);
+         Text    : constant String := Humanize.Tests.Support.Text (DT.Date_Range (Context, First, Last, Named));
+         Parsed  : constant L.Date_Range_Parse_Result := L.Parse_Date_Range (Context, Text);
+      begin
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok
+            and then Parsed.First.Year = First.Year and then Parsed.First.Month = First.Month
+            and then Parsed.First.Day = First.Day and then Parsed.Last.Year = Last.Year
+            and then Parsed.Last.Month = Last.Month and then Parsed.Last.Day = Last.Day,
+            Locale & " date range read back: " & Text);
+      end Check_Date_Range;
+
+      procedure Check_Duration_Range (Locale : String; Low, High : Humanize.Durations.Duration_Seconds) is
+         Context  : constant Humanize.Contexts.Context := Humanize.Tests.Support.Locale (Locale);
+         Text     : constant String :=
+           Humanize.Tests.Support.Text (Humanize.Durations.Format_Range (Context, Low, High));
+         Got_Low  : Humanize.Durations.Duration_Seconds;
+         Got_High : Humanize.Durations.Duration_Seconds;
+         Status   : constant Humanize.Status.Status_Code := L.Parse_Duration_Range (Context, Text, Got_Low, Got_High);
+      begin
+         AUnit.Assertions.Assert
+           (Status = Humanize.Status.Ok and then Got_Low = Low and then Got_High = High,
+            Locale & " duration range read back: " & Text);
+      end Check_Duration_Range;
+
+      procedure Check_Times (Locale : String; Count : Natural) is
+         Context : constant Humanize.Contexts.Context := Humanize.Tests.Support.Locale (Locale);
+         Text    : constant String :=
+           Humanize.Tests.Support.Text (Humanize.Frequencies.Times (Context, Long_Long_Integer (Count)));
+         Parsed  : constant Humanize.Parsing.Float_Parse_Result := L.Parse_Times (Context, Text);
+      begin
+         AUnit.Assertions.Assert
+           (Parsed.Status = Humanize.Status.Ok and then Parsed.Value = Long_Float (Count),
+            Locale & " count read back: " & Text);
+      end Check_Times;
+
       procedure Check_Grouped (Locale, Text : String; Value : Long_Float) is
          Parsed : constant Humanize.Parsing.Float_Parse_Result :=
            L.Parse_Number (Humanize.Tests.Support.Locale (Locale), Text);
@@ -96,6 +157,13 @@ separate (Humanize.Tests.Parsing)
       Check_Grouped ("en", "1,234,567", 1_234_567.0);
       Check_Grouped ("hi", "12,34,567", 1_234_567.0);
       Check_Grouped ("de", "-12.000", -12_000.0);
+      AUnit.Assertions.Assert
+        (Humanize.Tests.Support.Text
+           (DT.Date_Range
+              (Humanize.Tests.Support.Locale ("de"), Day (2026, 10, 9), Day (2026, 10, 15),
+               (DT.Default_Range_Options with delta Use_Month_Names => True)))
+         = "9." & Humanize.Tests.Support.U (16#2013#) & "15. Okt. 2026",
+         "a German date range writes the month and year once");
       --  Weeks start where the locale's region starts them: the Sunday after
       --  a Saturday is next week in the United States, this week in Germany.
       AUnit.Assertions.Assert
@@ -131,6 +199,19 @@ separate (Humanize.Tests.Parsing)
             Check_Relation (Name, Day (2026, 11, 14), L.Month_Period, 1);
             Check_Relation (Name, Day (2025, 10, 14), L.Year_Period, -1);
             Check_Relation (Name, Day (2027, 10, 14), L.Year_Period, 1);
+            Check_Number_Range (Name);
+            --  English keeps its own wording, with no year within one month.
+            if Name /= "en" then
+               Check_Date_Range (Name, Day (2026, 10, 9), Day (2026, 10, 15));
+               Check_Date_Range (Name, Day (2026, 10, 9), Day (2026, 11, 15));
+               Check_Date_Range (Name, Day (2026, 12, 28), Day (2027, 1, 4));
+               Check_Date_Range (Name, Day (2026, 10, 9), Day (2026, 10, 9));
+            end if;
+            Check_Duration_Range (Name, 3_600, 7_200);
+            Check_Duration_Range (Name, 120, 7_200);
+            for Count of Integer_Samples loop
+               Check_Times (Name, Count);
+            end loop;
          end;
       end loop;
    end Test_Localized_Readers;

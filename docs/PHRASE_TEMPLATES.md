@@ -232,7 +232,9 @@ Stunden, 30 Minuten", Swahili "dakika 5", Arabic "ساعتان"), `Parse_Relativ
 (`Lists.Format`'s "a, b und c", "a、b、c", "a أو b", item by item),
 `Parse_Spellout` and `Parse_Ordinal_Words` ("vierunddreißig", "vingt-troisième"),
 `Parse_Calendar_Difference` ("2 Jahre, 2 Monate und 4 Tage", "2年2个月4天") and
-`Parse_Calendar_Relation` ("letzten Monat", "来週"). It learns a
+`Parse_Calendar_Relation` ("letzten Monat", "来週"), `Parse_Number_Range`
+("1.200–5.000", "≈10–20"), `Parse_Date_Range` ("9.–15. Okt. 2026"),
+`Parse_Duration_Range` ("1 Stunde-2 Stunden") and `Parse_Times` ("3 Mal"). It learns a
 locale's forms by rendering sample values with `Durations.Format_Components`,
 `Datetimes.Relative` and `Bytes.Format` (cached per runtime and locale, about
 70 ms the first time), so it reads exactly what those write. A text the locale

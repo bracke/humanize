@@ -2,6 +2,7 @@ with Ada.Strings.Unbounded;
 
 with Humanize.Contexts;
 with Humanize.Datetimes;
+with Humanize.Durations;
 with Humanize.Lists;
 
 --  Reading back, in a context's locale, what humanize's localized formatters
@@ -199,5 +200,55 @@ package Humanize.Parsing.Localized is
    --  ("letzten Monat", "来週", "cette année").
    --  @return The period and its offset from the current one (-1 last, 0
    --  this, 1 next).
+
+   type Number_Range_Parse_Result is record
+      Status      : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Low         : Long_Float := 0.0;
+      High        : Long_Float := 0.0;
+      Approximate : Boolean := False;
+   end record;
+
+   function Parse_Number_Range
+     (Context : Humanize.Contexts.Context;
+      Text    : String)
+      return Number_Range_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A range as Humanize.Numbers.Number_Range, Approximate_Range
+   --  or Decimal_Range writes it ("1.200–5.000", "≈10–20", "1,2–3,4").
+   --  @return Its bounds, and whether it was approximate.
+
+   type Date_Range_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      First  : Humanize.Datetimes.Civil_Date_Time;
+      Last   : Humanize.Datetimes.Civil_Date_Time;
+   end record;
+
+   function Parse_Date_Range
+     (Context : Humanize.Contexts.Context;
+      Text    : String)
+      return Date_Range_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A range as Humanize.Datetimes.Date_Range writes it with
+   --  month names and no weekdays ("9.–15. Okt. 2026", "2026年10月9日～15日").
+   --  @return Its first and last day.
+
+   function Parse_Duration_Range
+     (Context : Humanize.Contexts.Context;
+      Text    : String;
+      Low     : out Humanize.Durations.Duration_Seconds;
+      High    : out Humanize.Durations.Duration_Seconds)
+      return Humanize.Status.Status_Code;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A range as Humanize.Durations.Format_Range writes it ("1
+   --  Stunde-2 Stunden").
+   --  @param Low Its lower bound in seconds.
+   --  @param High Its upper bound in seconds.
+   --  @return Ok, else Invalid_Argument.
+
+   function Parse_Times (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A count as Humanize.Frequencies.Times writes it ("3 Mal",
+   --  Arabic "٣ مرات").
+   --  @return The count.
 
 end Humanize.Parsing.Localized;

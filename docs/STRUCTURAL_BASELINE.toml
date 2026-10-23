@@ -28,7 +28,7 @@ usecase = "Text display, editing, names, paths, prose, metadata, and terminal re
 
 [[body]]
 path = "src/humanize-datetimes-support.adb"
-target_lines = 2172
+target_lines = 2119
 max_lines = 2300
 min_headroom_lines = 120
 max_bytes = 83000
@@ -318,7 +318,7 @@ usecase = "Root parsing facade implementation; new parser bodies should remain i
 
 [[body]]
 path = "src/humanize-numbers-ranges.adb"
-target_lines = 1331
+target_lines = 1317
 max_lines = 1480
 min_headroom_lines = 120
 max_bytes = 56000
@@ -528,7 +528,7 @@ usecase = "Notification and delivery label facade body; new notification familie
 
 [[body]]
 path = "src/humanize-parsing-localized.adb"
-target_lines = 836
+target_lines = 794
 max_lines = 966
 min_headroom_lines = 100
 max_bytes = 45000

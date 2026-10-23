@@ -109,6 +109,10 @@ package body Humanize.Catalogs.Core_Data is
      --  Lists.Format outside English: CLDR's "and" and "or" list patterns.
      & "und.humanize.list.joined_and = {value, list}" & LF
      & "und.humanize.list.joined_or = {value, list, or}" & LF
+     --  Datetimes.Date_Range with month names outside English: CLDR's
+     --  interval formats over an ISO interval "first/last".
+     & "und.humanize.datetime.range.day = {value, date, ::yMMMd}" & LF
+     & "und.humanize.datetime.range.weekday = {value, date, ::yMMMEd}" & LF
      --  Ordinal words, a percentage in words and a plain number, by CLDR.
      & "und.humanize.number.ordinal_words = {value, number, ::ordinal-words}" & LF
      & "und.humanize.number.percent_unit = {value, unit, percent/unit-width-full-name}" & LF

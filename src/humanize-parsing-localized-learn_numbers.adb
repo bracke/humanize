@@ -1,3 +1,4 @@
+with Humanize.Frequencies;
 with Humanize.Numbers;
 
 separate (Humanize.Parsing.Localized)
@@ -49,6 +50,13 @@ begin
                Take (N.Currency (Context, Step * Scale + 0.25, Code), Step * Scale + 0.25);
             end loop;
             Scale := Scale * 10.0;
+         end loop;
+      when Times_Kind =>
+         --  None ("never"), and counts that take every plural category.
+         Take (Humanize.Frequencies.Times (Context, 0), 0.0);
+         for Count of Samples loop
+            Take (Humanize.Frequencies.Times (Context, Humanize.Frequencies.Occurrence_Count (Count)),
+                  Long_Float (Count));
          end loop;
       when others =>
          null;
