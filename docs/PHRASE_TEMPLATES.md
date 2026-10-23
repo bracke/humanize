@@ -133,6 +133,13 @@ The measure argument is the value in CLDR's unit for the locale
 | `editorial_percent.word` | value | `{value} percent` |
 | `recurrence.<unit>`, unit second, minute, hour, day, week, month, quarter, year | every | `every {every} {every, plural, one {<unit>} other {<unit>s}}` |
 
+## Review page
+
+The phrase review page (https://claude.ai/artifact/4gdexMdU8CmmxUaysWinzu) shows
+every phrase as each locale renders it and lets reviewers suggest fixes. Its
+data is `examples/bin/phrase_review_data docs/phrase_notes.tsv > data.json`,
+republished beside the page whenever the catalogs or the notes change.
+
 ## Reading phrases back
 
 `Humanize.Parsing.Phrases.Parse (Context, "page_count", "Seite 3 von 5")`

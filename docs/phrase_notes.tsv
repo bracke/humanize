@@ -1,0 +1,52 @@
+# Translator notes per phrase locale, shown on the phrase review page.
+# <locale><TAB><note>, one note per line.
+en-GB	"cancelled", "authorised".
+da	Passive verbs ("vises/skjules") avoid agreement with the unknown noun.
+da	Recurrence uses ordinals: "hver {n}. dag".
+de	Reference translation. Date differences take the dative: "in 2 Jahren", "vor 2 Jahren".
+de-CH	ß written as ss (3 entries).
+fr	Agreeing words next to the noun avoided; masculine used where no noun is passed.
+fr	No-break spaces before ":" and narrow no-break space before "%".
+fr-CA	12 overrides: "téléversement", "jours ouvrables", "billet" (OQLF) for ticket, "indicateur de fonctionnalité".
+es	Gerunds for ongoing states ("subiendo"); failures as nouns ("error de importación").
+es-419	7 overrides: "vencido", "agregado", "período", "incidente".
+it	Keeps IT loanwords (deployment, rollback, build, backup).
+pt	Brazilian Portuguese.
+pt-PT	74 overrides: "a + infinitive" progressives, "ficheiro", "eliminar", "base de dados".
+nl	Ongoing states as "wordt …"; job, pipeline, build kept as loanwords.
+sv	Participles pick singular/plural but use the common gender ("markerad/markerade").
+sv	Ticket = "ärende" (neuter).
+no	Same text as "nb".
+nb	Same text as "no". Cache = "hurtigbuffer"; online/offline = "tilkoblet/frakoblet".
+fi	Nouns never right after a number (partitive needed).
+fi	"kuluttua" + genitive for future differences.
+pl	Noun forms: other = nominative plural, genitive for 5+ and after "z".
+pl	"do zapłaty" for payment due.
+cs	Ticket = "požadavek". "{other}: žádné" can read wrong for neuter plurals.
+cs	Date differences: "před 2 lety" (instrumental).
+sk	Ticket = "požiadavka". "zhoda pri všetkých:" kept as a label (locative not available).
+sl	Dual via {two}; "vsako 101 sekundo" for the one category above 1.
+sl	"plačilo prejeto" for payment captured is a judgment call.
+ru	Noun after "из N" in the genitive; plain counts genitive for 2+.
+ru	"через 1 неделю" via CLDR accusative.
+uk	Noun after "з N" in the genitive; "через"/"тому" + accusative.
+lt	Noun forms: few = nominative plural, 10+ genitive plural.
+lt	"po 2 metų" (genitive), "prieš 2 metus" (accusative).
+hu	Singular noun after numbers; "közül" avoids suffixes on arguments.
+ro	20+ take "de" ("20 de fișiere"); reflexive verbs avoid gender agreement.
+ro	"așteaptă răspuns" for waiting on.
+tr	Singular noun after numbers; % before the number ("%50").
+tr	"talep yükseltildi" for ticket escalated.
+id	English tech loanwords with Indonesian affixes ("di-deploy").
+ms	Native terms ("saluran paip", "atur letak").
+eo	Plural agreement through plural selects; "retkroĉilo" for webhook.
+vi	"pipeline" and "token" kept in English.
+sw	Noun before the number ("siku 5"); "kabla ya sasa" for past differences.
+af	"SVE-las" for CPU load; "kas" for cache.
+ja	Counter 件 with the noun; 週の終わり for end of week (週末 means weekend).
+ko	Label shapes avoid particles that depend on the inserted word.
+zh	Counter 个; 本周结束 for end of week.
+zh-Hant	Taiwan vocabulary (檔案, 資料庫, 權杖, 快取). Ticket = 票證 (工單 is the alternative).
+ar	Six plural forms; 100+ take the singular.
+ar	"خلال/قبل" frames keep the nominative (no CLDR case data).
+hi	=1 for singulars, since CLDR puts 0 in "one".

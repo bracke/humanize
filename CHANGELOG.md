@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+* `Humanize.Parsing.Phrases.Phrase_Count` / `Phrase_Name` list every phrase;
+  `examples/phrase_review_data` writes the phrase review page's data from the
+  catalogs and `docs/phrase_notes.tsv`.
+
 * **Case forms of the caller's noun.** `With_Noun_Forms` takes
   `Genitive_One/Other` and `Accusative_One/Other`; Polish, Czech, Slovak,
   Slovenian, Russian, Ukrainian and Lithuanian phrases use them ("z 5

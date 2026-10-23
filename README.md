@@ -69,6 +69,10 @@ Focused runnable examples are also provided for
 [`examples/product_details_demo.adb`](examples/product_details_demo.adb), plus
 [`examples/public_surface_demo.adb`](examples/public_surface_demo.adb) for
 focused child-package imports.
+[`examples/phrase_review_data.adb`](examples/phrase_review_data.adb) writes the
+phrase review data: every phrase as each locale renders it, with the notes in
+[`docs/phrase_notes.tsv`](docs/phrase_notes.tsv)
+(`phrase_review_data docs/phrase_notes.tsv > data.json`).
 For a shorter import map than the full feature matrix, see
 [`docs/PACKAGE_GUIDE.md`](docs/PACKAGE_GUIDE.md).
 

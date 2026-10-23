@@ -548,4 +548,9 @@ package body Humanize.Parsing.Phrases is
       return 0;
    end Number;
 
+   function Phrase_Count return Natural is (Humanize.Parsing.Phrase_Keys.Entries'Length);
+
+   function Phrase_Name (Index : Positive) return String is
+     (Field (Humanize.Parsing.Phrase_Keys.Entries (Humanize.Parsing.Phrase_Keys.Entries'First + Index - 1).all, 1));
+
 end Humanize.Parsing.Phrases;

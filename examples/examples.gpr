@@ -17,7 +17,8 @@ project Examples is
       "security_data_demo.adb",
       "workflow_ops_demo.adb",
       "product_details_demo.adb",
-      "public_surface_demo.adb");
+      "public_surface_demo.adb",
+      "phrase_review_data.adb");
 
    package Compiler is
       for Default_Switches ("Ada") use

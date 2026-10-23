@@ -60,4 +60,11 @@ package Humanize.Parsing.Phrases is
    --  @param Name A numeric argument's name.
    --  @return Its value; 0 where the phrase has no such argument.
 
+   function Phrase_Count return Natural;
+   --  @return How many phrases the catalogs translate.
+
+   function Phrase_Name (Index : Positive) return String;
+   --  @param Index 1 .. Phrase_Count.
+   --  @return That phrase's name ("page_count"), for listing every phrase.
+
 end Humanize.Parsing.Phrases;
