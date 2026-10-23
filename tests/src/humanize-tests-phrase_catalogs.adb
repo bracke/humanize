@@ -1,3 +1,4 @@
+with Ada.Calendar;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with AUnit.Assertions;
@@ -380,6 +381,50 @@ package body Humanize.Tests.Phrase_Catalogs is
          AUnit.Assertions.Assert
            (P.Parse (Ctx ("de"), "page_count", "Kapitel 3 von 5").Status /= Humanize.Status.Ok,
             "text the phrase does not render is rejected");
+      end;
+      --  The locale's own digits and grouping read back too.
+      declare
+         Grouped : constant P.Phrase_Parse_Result := P.Parse (Ctx ("de"), "page_count", "Seite 1.234 von 5.000");
+         --  Arabic page_count with Arabic-Indic digits for 3 and 9.
+         Arabic  : constant String :=
+           Image (Humanize.Lists.Page_Count (Ctx ("ar"), 3, 9));
+         function Indic (Text : String) return String is
+            Result : Unbounded_String;
+         begin
+            for C of Text loop
+               if C in '0' .. '9' then
+                  --  U+0660 + digit: D9 A0 .. D9 A9.
+                  Append (Result, Character'Val (16#D9#) & Character'Val (16#A0# + Character'Pos (C) - 48));
+               else
+                  Append (Result, C);
+               end if;
+            end loop;
+            return To_String (Result);
+         end Indic;
+         Read_Arabic : constant P.Phrase_Parse_Result := P.Parse (Ctx ("ar"), "page_count", Indic (Arabic));
+         Started : constant Ada.Calendar.Time := Ada.Calendar.Clock;
+         Fields  : P.Phrase_Parse_Result;
+         use type Ada.Calendar.Time;
+      begin
+         AUnit.Assertions.Assert
+           (Grouped.Status = Humanize.Status.Ok and then P.Number (Grouped, "page") = 1234
+            and then P.Number (Grouped, "total") = 5000,
+            "German grouped numbers read back");
+         AUnit.Assertions.Assert
+           (Read_Arabic.Status = Humanize.Status.Ok and then P.Number (Read_Arabic, "page") = 3
+            and then P.Number (Read_Arabic, "total") = 9,
+            "Arabic-Indic digits read back: [" & Indic (Arabic) & "]");
+         for Repeat in 1 .. 20 loop
+            Fields := P.Parse
+              (Ctx ("de"), "field_change_summary",
+               Image (Humanize.Phrases.Field_Change_Summary (Ctx ("de"), 4, 3, 2)));
+         end loop;
+         AUnit.Assertions.Assert
+           (Fields.Status = Humanize.Status.Ok and then P.Number (Fields, "changed") = 4
+            and then P.Number (Fields, "removed") = 2,
+            "four numbers read back in order");
+         AUnit.Assertions.Assert
+           (Ada.Calendar.Clock - Started < 2.0, "four-number phrases read back quickly");
       end;
       --  Every phrase, rendered with distinct numbers, reads back in these
       --  locales.

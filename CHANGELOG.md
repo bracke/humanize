@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+* Phrase reading accepts the locale's own digits and grouping ("Seite 1.234
+  von 5.000", Arabic-Indic digits), learnt from how the locale writes
+  1234567890, and tries the numbers in the order the phrase shows its
+  arguments first.
+* A test reads every English formatter's output back through its `en`
+  template, so code and catalog English cannot drift apart.
+
 * **`Humanize.Parsing.Phrases` reads phrases back in every shipped locale**
   ("Seite 3 von 5", a translated status label) by the catalog that wrote
   them: `Parse` for one phrase, `Parse_Any` to identify one under a prefix

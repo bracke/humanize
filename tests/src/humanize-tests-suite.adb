@@ -25,6 +25,7 @@ with Humanize.Tests.Forms;
 with Humanize.Tests.Navigation;
 with Humanize.Tests.Badges;
 with Humanize.Tests.Phrase_Catalogs;
+with Humanize.Tests.Phrase_Consistency;
 with Humanize.Tests.Notifications;
 with Humanize.Tests.Search;
 with Humanize.Tests.Comments;
@@ -71,6 +72,7 @@ package body Humanize.Tests.Suite is
       Result.Add_Test (AUnit.Test_Cases.Test_Case_Access'(new Humanize.Tests.Navigation.Test_Case));
       Result.Add_Test (AUnit.Test_Cases.Test_Case_Access'(new Humanize.Tests.Badges.Test_Case));
       Result.Add_Test (AUnit.Test_Cases.Test_Case_Access'(new Humanize.Tests.Phrase_Catalogs.Test_Case));
+      Result.Add_Test (AUnit.Test_Cases.Test_Case_Access'(new Humanize.Tests.Phrase_Consistency.Test_Case));
       Result.Add_Test (AUnit.Test_Cases.Test_Case_Access'(new Humanize.Tests.Notifications.Test_Case));
       Result.Add_Test (AUnit.Test_Cases.Test_Case_Access'(new Humanize.Tests.Search.Test_Case));
       Result.Add_Test (AUnit.Test_Cases.Test_Case_Access'(new Humanize.Tests.Comments.Test_Case));
