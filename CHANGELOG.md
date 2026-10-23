@@ -3,7 +3,7 @@
 ## Unreleased
 
 * **Translation review.** An independent second pass over every locale
-  fixed about 90 phrases: agreement and case (Afrikaans double negation,
+  fixed 115 phrases: agreement and case (Afrikaans double negation,
   Slovenian "dnevi", Arabic accusative after 11-99), wrong meanings (Swedish
   "ohälsosam", Slovenian "nevarno", Turkish "bekleniyor", Korean "주요"),
   inconsistent terms across keys, and no-break spaces before "%" where CLDR
