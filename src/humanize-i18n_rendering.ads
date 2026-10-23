@@ -39,4 +39,13 @@ private package Humanize.I18N_Rendering is
       Written   : out Natural;
       Status    : out Humanize.Status.Status_Code);
 
+   --  A phrase outside English, through its template in the context's
+   --  locale; English -- the formatter's own wording, computed by the caller
+   --  -- in English, where the locale has no translation, or where it fails.
+   function Phrase_Or
+     (Context   : Humanize.Contexts.Context;
+      Selection : Humanize.Selections.Message_Selection;
+      English   : Humanize.Status.Text_Result)
+      return Humanize.Status.Text_Result;
+
 end Humanize.I18N_Rendering;

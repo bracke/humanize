@@ -29,6 +29,14 @@ package body Humanize.Lists is
    function Ends_With (Text, Suffix : String) return Boolean
       renames Humanize.Bounded_Text.Ends_With;
 
+   --  A phrase template's arguments: a number as ASCII digits, and the
+   --  caller's singular and plural noun for the template's own plural.
+   package Sel renames Humanize.Selections;
+   function Num (S : Sel.Message_Selection; Name : String; Value : Natural) return Sel.Message_Selection is
+     (Sel.With_Arg (S, Name, Long_Long_Integer (Value)));
+   function With_Nouns (S : Sel.Message_Selection; Singular, Plural : String) return Sel.Message_Selection is
+     (Sel.With_Arg (Sel.With_Arg (S, "one", Singular), "other", (if Plural'Length > 0 then Plural else Singular)));
+
    function Is_Upper (Item : Character) return Boolean
       renames Humanize.Bounded_Text.Is_ASCII_Uppercase;
 
@@ -426,19 +434,7 @@ package body Humanize.Lists is
       Count   : Natural;
       Options : Validation_Summary_Options :=
         Default_Validation_Summary_Options)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Noun : constant String := Severity_Noun (Options.Severity, Count);
-   begin
-      if Count = 0 and then not Options.Include_Ok then
-         return Ok_Text ("");
-      elsif Count = 0 then
-         return Ok_Text ("no " & Noun);
-      else
-         return Ok_Text (Natural_Text (Count) & " " & Noun);
-      end if;
-   end Validation_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function Validation_Summary
      (Context : Humanize.Contexts.Context;
@@ -501,14 +497,7 @@ package body Humanize.Lists is
       Total    : Natural;
       Singular : String;
       Plural   : String := "")
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Noun : constant String := Noun_For (Total, Singular, Plural);
-   begin
-      return Ok_Text (Natural_Text (Selected) & " of "
-         & Natural_Text (Total) & " " & Noun & " selected");
-   end Selection_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function Remaining_Count
      (Context   : Humanize.Contexts.Context;
@@ -530,25 +519,14 @@ package body Humanize.Lists is
      (Context  : Humanize.Contexts.Context;
       Position : Natural;
       Total    : Natural)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text (Natural_Text (Position) & " of " & Natural_Text (Total));
-   end Position_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function All_Count
      (Context  : Humanize.Contexts.Context;
       Total    : Natural;
       Singular : String;
       Plural   : String := "")
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text ("all " & Natural_Text (Total) & " "
-         & Noun_For (Total, Singular, Plural));
-   end All_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function None_Count
      (Context  : Humanize.Contexts.Context;
@@ -576,56 +554,25 @@ package body Humanize.Lists is
       Total    : Natural;
       Singular : String := "result";
       Plural   : String := "results")
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text ("showing " & Natural_Text (Showing) & " of "
-         & Natural_Text (Total) & " "
-         & Noun_For (Total, Singular, Plural));
-   end Showing_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function Page_Count
      (Context : Humanize.Contexts.Context;
       Page    : Natural;
       Total   : Natural)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text ("page " & Natural_Text (Page) & " of "
-         & Natural_Text (Total));
-   end Page_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function More_Count
      (Context   : Humanize.Contexts.Context;
       Visible   : Natural;
       Remaining : Natural)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text (Natural_Text (Visible) & " shown, +"
-         & Natural_Text (Remaining) & " more");
-   end More_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function Others_Count
      (Context   : Humanize.Contexts.Context;
       First     : String;
       Remaining : Natural)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      if Remaining = 0 then
-         return Ok_Text (First);
-      elsif Remaining = 1 then
-         return Ok_Text (First & " and 1 other");
-      else
-         return Ok_Text (First & " and " & Natural_Text (Remaining)
-            & " others");
-      end if;
-   end Others_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function Selection_Summary
      (Context  : Humanize.Contexts.Context;
@@ -652,22 +599,7 @@ package body Humanize.Lists is
       Total    : Natural;
       Singular : String := "result";
       Plural   : String := "results")
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Noun : constant String := Noun_For (Total, Singular, Plural);
-   begin
-      if Matching = 0 then
-         return Ok_Text ("no " & Noun & " match");
-      elsif Matching = Total then
-         return Ok_Text ("all " & Natural_Text (Total) & " "
-            & Noun & " match");
-      else
-         return Ok_Text (Natural_Text (Matching) & " of "
-            & Natural_Text (Total) & " "
-            & Noun & " match");
-      end if;
-   end Filtered_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function Pagination_Range
      (Context  : Humanize.Contexts.Context;
@@ -676,15 +608,7 @@ package body Humanize.Lists is
       Total    : Natural;
       Singular : String := "result";
       Plural   : String := "results")
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text (Natural_Text (First) & "-"
-         & Natural_Text (Last) & " of "
-         & Natural_Text (Total) & " "
-         & Noun_For (Total, Singular, Plural));
-   end Pagination_Range;
+      return Humanize.Status.Text_Result is separate;
 
    function Collection_Display
      (Context   : Humanize.Contexts.Context;
@@ -731,60 +655,7 @@ package body Humanize.Lists is
       Plural    : String := "items";
       Options   : Collection_Summary_Options :=
         Default_Collection_Summary_Options)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Hidden : Natural := 0;
-      Visible_Text : constant String := Natural_Text (Visible);
-      Total_Text : constant String := Natural_Text (Total);
-   begin
-      if Visible > Total then
-         return Invalid_Text ("invalid collection summary");
-      elsif Total = 0 then
-         return Ok_Text ("no " & Noun_For (0, Singular, Plural));
-      elsif Visible = 0 then
-         return Ok_Text ("no " & Noun_For (Total, Singular, Plural) & " shown");
-      end if;
-
-      Hidden := Total - Visible;
-      declare
-         Hidden_Text : constant String := Natural_Text (Hidden);
-      begin
-         case Options.Style is
-            when Collection_Compact_Summary =>
-               if Options.Include_Total then
-                  return Ok_Text (Visible_Text & "/" & Total_Text);
-               elsif Options.Include_Hidden and then Hidden > 0 then
-                  return Ok_Text (Visible_Text & " +" & Hidden_Text);
-               else
-                  return Ok_Text (Visible_Text);
-               end if;
-
-            when Collection_Detailed_Summary =>
-               if Options.Include_Total and then Options.Include_Hidden
-                 and then Hidden > 0
-               then
-                  return Ok_Text ("showing " & Visible_Text & " of " & Total_Text & " "
-                     & Noun_For (Total, Singular, Plural) & ", "
-                     & Hidden_Text & " hidden");
-               elsif Options.Include_Total then
-                  return Ok_Text ("showing " & Visible_Text & " of " & Total_Text & " "
-                     & Noun_For (Total, Singular, Plural));
-               elsif Options.Include_Hidden and then Hidden > 0 then
-                  return Ok_Text (Visible_Text & " " & Noun_For (Visible, Singular, Plural)
-                     & " shown, " & Hidden_Text & " hidden");
-               else
-                  return Ok_Text (Visible_Text & " " & Noun_For (Visible, Singular, Plural)
-                     & " shown");
-               end if;
-
-            when Collection_Accessible_Summary =>
-               return Ok_Text (Visible_Text & " " & Noun_For (Visible, Singular, Plural)
-                  & " visible out of " & Total_Text & " "
-                  & Noun_For (Total, Singular, Plural));
-         end case;
-      end;
-   end Collection_Summary;
+      return Humanize.Status.Text_Result is separate;
 
    function Empty_Collection_Label
      (Context  : Humanize.Contexts.Context;
@@ -800,17 +671,7 @@ package body Humanize.Lists is
      (Context : Humanize.Contexts.Context;
       Page    : Positive;
       Total   : Positive)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      if Page > Total then
-         return Invalid_Text ("invalid page position");
-      else
-         return Ok_Text ("page " & Natural_Text (Page) & " of "
-            & Natural_Text (Total));
-      end if;
-   end Page_Position_Label;
+      return Humanize.Status.Text_Result is separate;
 
    function Page_Range_Label
      (Context  : Humanize.Contexts.Context;
@@ -833,35 +694,14 @@ package body Humanize.Lists is
      (Context : Humanize.Contexts.Context;
       Page    : Positive;
       Total   : Positive)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      if Page > Total then
-         return Invalid_Text ("invalid page position");
-      elsif Total = 1 then
-         return Ok_Text ("only page");
-      elsif Page = 1 then
-         return Ok_Text ("first page, next available");
-      elsif Page = Total then
-         return Ok_Text ("last page, previous available");
-      else
-         return Ok_Text ("previous and next available");
-      end if;
-   end Page_Navigation_Label;
+      return Humanize.Status.Text_Result is separate;
 
    function Page_Size_Label
      (Context   : Humanize.Contexts.Context;
       Page_Size : Positive;
       Singular  : String := "result";
       Plural    : String := "results")
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text (Natural_Text (Page_Size) & " "
-         & Noun_For (Page_Size, Singular, Plural) & " per page");
-   end Page_Size_Label;
+      return Humanize.Status.Text_Result is separate;
 
    procedure Format_Into
      (Context : Humanize.Contexts.Context;

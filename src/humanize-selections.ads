@@ -16,7 +16,18 @@ private package Humanize.Selections is
       Value_Argument,
       Decimal_Argument,
       Value_Suffix_Argument,
-      Count_Value_Suffix_Argument);
+      Count_Value_Suffix_Argument,
+      Named_Arguments);
+
+   --  A phrase template's arguments by name ("shown", "total", "noun"),
+   --  values as text: digits stay ASCII so a template can show them as they
+   --  are or as the locale writes numbers ({total, number}).
+   Max_Named : constant := 8;
+   type Named_Argument is record
+      Name  : Ada.Strings.Unbounded.Unbounded_String;
+      Value : Ada.Strings.Unbounded.Unbounded_String;
+   end record;
+   type Named_Argument_Array is array (1 .. Max_Named) of Named_Argument;
 
    type Message_Selection is record
       Key       : Humanize.Message_Keys.Message_Id := Humanize.Message_Keys.No_Message;
@@ -24,7 +35,31 @@ private package Humanize.Selections is
       Count     : Count_Value := 0;
       Value     : Ada.Strings.Unbounded.Unbounded_String;
       Suffix    : Ada.Strings.Unbounded.Unbounded_String;
+      Named     : Named_Argument_Array;
+      Phrase_Name : Ada.Strings.Unbounded.Unbounded_String;
+      Named_Count : Natural range 0 .. Max_Named := 0;
    end record;
+
+   --  Selection for the phrase template "humanize.phrase." & Name; add its
+   --  arguments with With_Arg.
+   function Phrase (Name : String) return Message_Selection;
+
+   --  The catalog key Selection renders: its phrase's own for a phrase.
+   function Catalog_Key (Selection : Message_Selection) return String;
+
+   --  Selection plus one named argument.
+   function With_Arg
+     (Selection : Message_Selection;
+      Name      : String;
+      Value     : String)
+      return Message_Selection;
+
+   --  Selection plus one named whole-number argument, as ASCII digits.
+   function With_Arg
+     (Selection : Message_Selection;
+      Name      : String;
+      Value     : Long_Long_Integer)
+      return Message_Selection;
 
    --  Selection for a key that takes no render arguments.
    function No_Arg

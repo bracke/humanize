@@ -1,3 +1,4 @@
+with Humanize.Locales;
 with Ada.Strings.Unbounded;
 
 with Humanize.Catalogs;
@@ -82,6 +83,11 @@ package body Humanize.I18N_Rendering is
               (Args, "count", Long_Long_Integer (Selection.Count));
             Messages.Arguments.Set (Args, "value", To_String (Selection.Value));
             Messages.Arguments.Set (Args, "suffix", To_String (Selection.Suffix));
+         when Humanize.Selections.Named_Arguments =>
+            for Index in 1 .. Selection.Named_Count loop
+               Messages.Arguments.Set
+                 (Args, To_String (Selection.Named (Index).Name), To_String (Selection.Named (Index).Value));
+            end loop;
          when Humanize.Selections.Decimal_Argument =>
             --  ASCII decimal selects the plural category ("count") and is also
             --  passed to catalog-side number formatting as "value".
@@ -144,7 +150,7 @@ package body Humanize.I18N_Rendering is
            Messages.Runtime.Render
              (Item      => Humanize.Contexts.Runtime (Context).all,
               Locale    => Humanize.Contexts.Locale (Context),
-              Key       => Humanize.Message_Keys.Key (Selection.Key),
+              Key       => Humanize.Selections.Catalog_Key (Selection),
               Arguments => Args);
       begin
          Output.Status := To_Status (Result.Status);
@@ -181,7 +187,7 @@ package body Humanize.I18N_Rendering is
       Messages.Runtime.Render_Into
         (Item      => Humanize.Contexts.Runtime (Context).all,
          Locale    => Humanize.Contexts.Locale (Context),
-         Key       => Humanize.Message_Keys.Key (Selection.Key),
+         Key       => Humanize.Selections.Catalog_Key (Selection),
          Arguments => Args,
          Target    => Target,
          Last      => Last,
@@ -198,5 +204,26 @@ package body Humanize.I18N_Rendering is
             Written := 0;
       end case;
    end Render_Into;
+
+   function Phrase_Or
+     (Context   : Humanize.Contexts.Context;
+      Selection : Humanize.Selections.Message_Selection;
+      English   : Humanize.Status.Text_Result)
+      return Humanize.Status.Text_Result
+   is
+      Locale : constant String := Humanize.Contexts.Locale (Context);
+   begin
+      if English.Status /= Humanize.Status.Ok
+        or else Humanize.Locales.Language_Code (Locale) in "en" | ""
+      then
+         return English;
+      end if;
+      declare
+         Localized : constant Humanize.Status.Text_Result := Render (Context, Selection);
+      begin
+         return (if Localized.Status = Humanize.Status.Ok and then Length (Localized.Text) > 0
+                 then Localized else English);
+      end;
+   end Phrase_Or;
 
 end Humanize.I18N_Rendering;

@@ -68,6 +68,9 @@ package Humanize.Message_Keys is
       Number_Percent_Unit,
       Number_Plain,
       Number_Currency,
+      --  A phrase template; its full key ("humanize.phrase.page_count")
+      --  travels in the selection.
+      Phrase,
 
       Number_Ordinal,
       Number_Ordinal_Feminine,

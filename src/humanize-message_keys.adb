@@ -115,6 +115,8 @@ package body Humanize.Message_Keys is
             return "humanize.number.plain";
          when Number_Currency =>
             return "humanize.number.currency";
+         when Phrase =>
+            return "humanize.phrase";
 
          when Number_Ordinal =>
             return "humanize.number.ordinal";

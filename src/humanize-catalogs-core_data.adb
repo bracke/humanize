@@ -107,6 +107,8 @@ package body Humanize.Catalogs.Core_Data is
      & "und.humanize.number.ordinal_words = {value, number, ::ordinal-words}" & LF
      & "und.humanize.number.percent_unit = {value, unit, percent/unit-width-full-name}" & LF
      & "und.humanize.number.plain = {value, number}" & LF
+     --  The generic phrase key; each phrase has its own key below it.
+     & "und.humanize.phrase = {value}" & LF
      --  An amount in a currency CLDR knows, by the locale's currency pattern
      --  and symbol (one branch per ISO code in i18n's currency data).
      & "und.humanize.number.currency = {suffix, select,"
