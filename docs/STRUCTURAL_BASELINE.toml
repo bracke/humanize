@@ -168,7 +168,7 @@ usecase = "Color parser text helpers; new color parsing families should be split
 
 [[body]]
 path = "src/humanize-numbers-spellout.adb"
-target_lines = 953
+target_lines = 970
 max_lines = 1050
 min_headroom_lines = 80
 max_bytes = 43000

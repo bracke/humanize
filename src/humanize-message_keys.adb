@@ -107,6 +107,14 @@ package body Humanize.Message_Keys is
             return "humanize.duration.narrow";
          when List_Unit_Narrow =>
             return "humanize.list.unit_narrow";
+         when Number_Ordinal_Words =>
+            return "humanize.number.ordinal_words";
+         when Number_Percent_Unit =>
+            return "humanize.number.percent_unit";
+         when Number_Plain =>
+            return "humanize.number.plain";
+         when Number_Currency =>
+            return "humanize.number.currency";
 
          when Number_Ordinal =>
             return "humanize.number.ordinal";

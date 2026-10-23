@@ -3,7 +3,10 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Humanize.Bounded_Text;
 with Humanize.Decimal_Images;
 with Humanize.I18N_Rendering;
+with Humanize.Locales;
+with Humanize.Message_Keys;
 with Humanize.Number_Classification;
+with Humanize.Selections;
 
 package body Humanize.Numbers.Scales is
    use type Humanize.Status.Status_Code;
@@ -220,10 +223,22 @@ package body Humanize.Numbers.Scales is
       Options : Number_Options := Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
+      --  Outside English, CLDR's currency format for the locale: its pattern,
+      --  its symbol, the currency's digits ("12,50 EUR", "US$12.50").
+      Localized : constant Humanize.Status.Text_Result :=
+        (if Code'Length = 0
+           or else Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | ""
+         then (Status => Humanize.Status.Missing_Message, others => <>)
+         else Humanize.I18N_Rendering.Render
+                (Context,
+                 Humanize.Selections.Value_Suffix
+                   (Humanize.Message_Keys.Number_Currency,
+                    Humanize.Decimal_Images.Decimal_Image (Amount, 9, True), Code)));
    begin
       if Code'Length = 0 then
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
+      elsif Localized.Status = Humanize.Status.Ok and then Length (Localized.Text) > 0 then
+         return Localized;
       end if;
 
       return Ok_Text

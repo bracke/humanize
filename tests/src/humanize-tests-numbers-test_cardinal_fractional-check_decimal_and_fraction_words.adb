@@ -50,12 +50,12 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (German_Decimal_Text.Status = Ok
          and then Support.Text (German_Decimal_Text)
-           = "zw" & U_O_Umlaut & "lf komma f" & U_U_Umlaut & "nf null",
+           = "zw" & U_O_Umlaut & "lf Komma f" & U_U_Umlaut & "nf null",
          "locale decimal words");
       AUnit.Assertions.Assert
         (German_Regional_Decimal_Text.Status = Ok
          and then Support.Text (German_Regional_Decimal_Text)
-           = "zw" & U_O_Umlaut & "lf komma f" & U_U_Umlaut & "nf null",
+           = "zw" & U_O_Umlaut & "lf Komma f" & U_U_Umlaut & "nf null",
          "regional German decimal words use language-code fallback");
       AUnit.Assertions.Assert
         (Swedish_Decimal_Text.Status = Ok
@@ -82,8 +82,7 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (Japanese_Decimal_Text.Status = Ok
          and then Support.Text (Japanese_Decimal_Text)
-           = U (16#5341#) & U (16#4E8C#) & " " & U (16#70B9#)
-             & " " & U (16#4E94#) & " " & U (16#96F6#),
+           = U (16#5341#) & U (16#4E8C#) & U (16#30FB#) & U (16#4E94#) & U (16#3007#),
          "generated Japanese decimal words");
       AUnit.Assertions.Assert
         (Arabic_Decimal_Text.Status = Ok

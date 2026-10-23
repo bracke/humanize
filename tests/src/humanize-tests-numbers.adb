@@ -24,32 +24,18 @@ package body Humanize.Tests.Numbers is
    NNBSP : constant String :=
      Character'Val (16#E2#) & Character'Val (16#80#)
      & Character'Val (16#AF#);
-   U_E_Acute : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#A9#);
-   U_E_Circumflex : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#AA#);
-   U_E_Grave : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#A8#);
-   U_E_Umlaut : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#AB#);
-   U_A_Ring : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#A5#);
    U_A_Umlaut : constant String :=
      Character'Val (16#C3#) & Character'Val (16#A4#);
    U_I_Dotless : constant String :=
      Character'Val (16#C4#) & Character'Val (16#B1#);
    U_O_Acute : constant String :=
      Character'Val (16#C3#) & Character'Val (16#B3#);
-   U_A_Tilde : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#A3#);
    U_C_Cedilla : constant String :=
      Character'Val (16#C3#) & Character'Val (16#A7#);
    U_U_Umlaut : constant String :=
      Character'Val (16#C3#) & Character'Val (16#BC#);
    U_O_Umlaut : constant String :=
      Character'Val (16#C3#) & Character'Val (16#B6#);
-   U_O_Slash : constant String :=
-     Character'Val (16#C3#) & Character'Val (16#B8#);
    U_S_Cedilla : constant String :=
      Character'Val (16#C5#) & Character'Val (16#9F#);
 

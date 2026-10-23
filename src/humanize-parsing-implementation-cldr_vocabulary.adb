@@ -7,6 +7,7 @@ with Humanize.Bounded_Text;
 with Humanize.Locales;
 
 with I18N.Relative_Format;
+with I18N.Spellout;
 with I18N.Unit_Format;
 
 package body Humanize.Parsing.Implementation.CLDR_Vocabulary is
@@ -486,5 +487,14 @@ package body Humanize.Parsing.Implementation.CLDR_Vocabulary is
       Ensure_Built;
       return Tables.Relative_Of (Text);
    end Relative_Canonical;
+
+   procedure Spelled_Number
+     (Text     : String;
+      Ordinal  : Boolean;
+      Value    : out Long_Long_Integer;
+      Consumed : out Natural) is separate;
+
+   function Has_Ordinal_Rules (Locale : String) return Boolean is
+     (I18N.Spellout.Ordinal_Ruleset (Locale) /= "");
 
 end Humanize.Parsing.Implementation.CLDR_Vocabulary;

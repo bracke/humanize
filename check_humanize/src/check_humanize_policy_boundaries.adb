@@ -51,7 +51,7 @@ package body Check_Humanize_Policy_Boundaries is
            + Boolean'Pos (Allows_Locales)
            + Boolean'Pos (Allows_Result)
            + Boolean'Pos (Allows_Runtime)
-           + 2 * Boolean'Pos (Allows_CLDR_Text);
+           + 3 * Boolean'Pos (Allows_CLDR_Text);
          Allowed : Project_Tools.Ada_Source.String_List (1 .. Allowed_Count);
          Next    : Positive := Allowed'First;
       begin
@@ -74,6 +74,7 @@ package body Check_Humanize_Policy_Boundaries is
          if Allows_CLDR_Text then
             Allowed (Next) := To_Unbounded_String ("I18N.Relative_Format");
             Allowed (Next + 1) := To_Unbounded_String ("I18N.Unit_Format");
+            Allowed (Next + 2) := To_Unbounded_String ("I18N.Spellout");
          end if;
 
          Project_Tools.Ada_Source.Require_Only_Allowed_With_Clauses
@@ -113,7 +114,8 @@ package body Check_Humanize_Policy_Boundaries is
                     (Name, Allows_Locales => True);
                elsif Name = "humanize-parsing-implementation-cldr_vocabulary.adb" then
                   --  The parser reads back what the formatters render, so it
-                  --  learns CLDR's unit names and relative patterns.
+                  --  learns CLDR's unit names, relative patterns and spelled
+                  --  numbers.
                   Check_Allowed_I18N_Imports (Name, Allows_CLDR_Text => True);
                elsif Name = "humanize-i18n_rendering.adb" then
                   Check_Allowed_I18N_Imports

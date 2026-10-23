@@ -6,6 +6,7 @@ with Humanize.Decimal_Images;
 with Humanize.I18N_Rendering;
 with Humanize.Locales;
 with Humanize.Message_Keys;
+with Humanize.Parsing.Implementation.CLDR_Vocabulary;
 with Humanize.Selections;
 with Humanize.Numbers.Spellout_Data;
 
@@ -200,25 +201,26 @@ package body Humanize.Numbers.Spellout is
       return To_String (Result);
    end Cardinal_Long_Text;
 
-   --  Value in words by CLDR's spell-out rules outside English
-   --  ("dreiundzwanzig", "минус сорок два"); not Ok in English, which keeps
-   --  its own words, or where the locale cannot render.
+   --  Value_Text through the locale-neutral entry Key outside English; not
+   --  Ok in English, which keeps its own words, or where nothing renders.
+   function CLDR_Text
+     (Context    : Humanize.Contexts.Context;
+      Key        : Humanize.Message_Keys.Message_Id;
+      Value_Text : String)
+      return Humanize.Status.Text_Result is separate;
+
+   --  CLDR's percent unit around Words, in the language's order ("yüzde ...").
+   function CLDR_Percent
+     (Context : Humanize.Contexts.Context;
+      Words   : Humanize.Status.Text_Result;
+      Decimal : String)
+      return Humanize.Status.Text_Result is separate;
+
    function CLDR_Words
      (Context : Humanize.Contexts.Context;
       Value   : Long_Long_Integer)
       return Humanize.Status.Text_Result
-   is
-      Words : constant Humanize.Status.Text_Result :=
-        (if Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | ""
-         then (Status => Humanize.Status.Missing_Message, others => <>)
-         else Humanize.I18N_Rendering.Render
-                (Context,
-                 Humanize.Selections.Text_Value
-                   (Humanize.Message_Keys.Number_Spellout, Humanize.Bounded_Text.Image (Value))));
-   begin
-      return (if Length (Words.Text) = 0 then (Status => Humanize.Status.Missing_Message, others => <>)
-              else Words);
-   end CLDR_Words;
+   is (CLDR_Text (Context, Humanize.Message_Keys.Number_Spellout, Humanize.Bounded_Text.Image (Value)));
 
    function Either (Preferred, Fallback : Humanize.Status.Text_Result) return Humanize.Status.Text_Result is
      (if Preferred.Status = Humanize.Status.Ok then Preferred else Fallback);
@@ -276,8 +278,11 @@ package body Humanize.Numbers.Spellout is
         Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context));
       Abs_Value : constant Long_Long_Integer := abs Value;
       Word      : constant String := Locale_Long_Word (Locale, Abs_Value);
+      Words     : constant Humanize.Status.Text_Result := CLDR_Words (Context, Value);
    begin
-      if Word'Length = 0 then
+      if Words.Status = Humanize.Status.Ok then
+         return Words;
+      elsif Word'Length = 0 then
          return Signed_Cardinal (Context, Value);
       elsif Value < 0 then
          return Ok_Text
@@ -368,9 +373,15 @@ package body Humanize.Numbers.Spellout is
           (abs Value, Fraction_Digits, False);
       Dot : Natural := 0;
       Result : Unbounded_String;
+      Words : constant Humanize.Status.Text_Result :=
+        (if Fraction_Digits > 9 then (Status => Humanize.Status.Invalid_Options, others => <>)
+         else CLDR_Text (Context, Humanize.Message_Keys.Number_Spellout,
+                         Humanize.Decimal_Images.Decimal_Image (Value, Fraction_Digits, False)));
    begin
       if Fraction_Digits > 9 then
          return (Status => Humanize.Status.Invalid_Options, others => <>);
+      elsif Words.Status = Humanize.Status.Ok then
+         return Words;
       end if;
 
       for Index in Image'Range loop
@@ -738,9 +749,11 @@ package body Humanize.Numbers.Spellout is
       Locale : constant String :=
         Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context));
    begin
-      return Ok_Text
-        (Humanize.Numbers.Spellout_Data.Locale_Ordinal_Words_Text
-           (Locale, Value));
+      return Either
+        ((if Humanize.Parsing.Implementation.CLDR_Vocabulary.Has_Ordinal_Rules (Locale)
+          then CLDR_Text (Context, Humanize.Message_Keys.Number_Ordinal_Words, Humanize.Bounded_Text.Image (Value))
+          else (Status => Humanize.Status.Missing_Message, others => <>)),
+         Ok_Text (Humanize.Numbers.Spellout_Data.Locale_Ordinal_Words_Text (Locale, Value)));
    end Ordinal_Words;
 
    procedure Ordinal_Words_Into
@@ -860,9 +873,13 @@ package body Humanize.Numbers.Spellout is
    is
       Base : constant Humanize.Status.Text_Result :=
         Decimal_Words (Context, Value, Fraction_Digits);
+      Localized : constant Humanize.Status.Text_Result :=
+        CLDR_Percent (Context, Base, Humanize.Decimal_Images.Decimal_Image (Value, Fraction_Digits, False));
    begin
       if Base.Status /= Humanize.Status.Ok then
          return Base;
+      elsif Localized.Status = Humanize.Status.Ok then
+         return Localized;
       else
          return Ok_Text (Result_Text (Base) & " percent");
       end if;

@@ -36,4 +36,18 @@ package Humanize.Parsing.Implementation.CLDR_Vocabulary is
    --  ago", "yesterday". "" for text that matches no CLDR pattern.
    function Relative_Canonical (Text : String) return String;
 
+   --  Text read as a number spelled out by CLDR's rules in a shipped locale
+   --  ("zwei" SHY "und" SHY "vierzig", "kolmesataa"), as a cardinal or, with
+   --  Ordinal, an ordinal: Value and how many of Text's bytes the longest
+   --  reading took, 0 when none.
+   procedure Spelled_Number
+     (Text     : String;
+      Ordinal  : Boolean;
+      Value    : out Long_Long_Integer;
+      Consumed : out Natural);
+
+   --  True where CLDR spells ordinals for Locale (Czech has no such rules,
+   --  so humanize's own words, which this parser reads, stand).
+   function Has_Ordinal_Rules (Locale : String) return Boolean;
+
 end Humanize.Parsing.Implementation.CLDR_Vocabulary;

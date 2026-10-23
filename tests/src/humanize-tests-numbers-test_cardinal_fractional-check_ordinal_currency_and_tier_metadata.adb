@@ -93,20 +93,20 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
          "ordinal words");
       AUnit.Assertions.Assert
         (German_Ordinal_Text.Status = Ok
-         and then Support.Text (German_Ordinal_Text) = "einundzwanzigste",
+         and then Support.Text (German_Ordinal_Text) = "ein" & Support.U (16#AD#) & "und" & Support.U (16#AD#) & "zwanzigste",
          "locale ordinal words");
       AUnit.Assertions.Assert
         (German_Regional_Ordinal_Text.Status = Ok
-         and then Support.Text (German_Regional_Ordinal_Text) = "einundzwanzigste",
+         and then Support.Text (German_Regional_Ordinal_Text) = "ein" & Support.U (16#AD#) & "und" & Support.U (16#AD#) & "zwanzigste",
          "regional German ordinal words use language-code fallback");
       AUnit.Assertions.Assert
         (Dutch_Ordinal_Text.Status = Ok
-         and then Support.Text (Dutch_Ordinal_Text) = "eenentwintigste",
+         and then Support.Text (Dutch_Ordinal_Text) = "een" & Support.U (16#AD#) & "en" & Support.U (16#AD#) & "twintigste",
          "Dutch locale ordinal words");
       AUnit.Assertions.Assert
         (French_Ordinal_Seventeen.Status = Ok
          and then Support.Text (French_Ordinal_Seventeen)
-           = "dix-septi" & U_E_Grave & "me",
+           = "dix-septi" & Support.U (16#E8#) & "me",
          "French direct teen ordinal words");
       AUnit.Assertions.Assert
         (Danish_Ordinal_Eleven.Status = Ok
@@ -115,7 +115,7 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (Spanish_Ordinal_Twelve.Status = Ok
          and then Support.Text (Spanish_Ordinal_Twelve)
-           = "duod" & U_E_Acute & "cimo",
+           = "decimosegundo",
          "Spanish direct teen ordinal words");
       AUnit.Assertions.Assert
         (Italian_Ordinal_Twenty.Status = Ok
@@ -124,7 +124,7 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (Portuguese_Ordinal_Twenty.Status = Ok
          and then Support.Text (Portuguese_Ordinal_Twenty)
-           = "vig" & U_E_Acute & "simo",
+           = "vig" & Support.U (16#E9#) & "simo",
          "Portuguese direct tens ordinal words");
       AUnit.Assertions.Assert
         (Dutch_Ordinal_Twelve.Status = Ok
@@ -161,7 +161,7 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (Polish_Ordinal_Twenty_One.Status = Ok
          and then Support.Text (Polish_Ordinal_Twenty_One)
-           = "dwadzie" & U (16#15B#) & "cia pierwszy",
+           = "dwudziesty pierwszy",
          "generated Polish compound ordinal words");
       AUnit.Assertions.Assert
         (Polish_Ordinal_Thirty.Status = Ok
@@ -170,23 +170,22 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (Polish_Ordinal_One_Twenty_One.Status = Ok
          and then Support.Text (Polish_Ordinal_One_Twenty_One)
-           = "sto dwadzie" & U (16#15B#) & "cia pierwszy",
+           = "sto dwudziesty pierwszy",
          "generated Polish hundreds compound ordinal words");
       AUnit.Assertions.Assert
         (Polish_Ordinal_Two_Thousand_Three_Forty_Five.Status = Ok
          and then Support.Text (Polish_Ordinal_Two_Thousand_Three_Forty_Five)
-           = "dwa tysi" & U (16#105#) & "ce trzysta czterdzie"
-             & U (16#15B#) & "ci pi" & U (16#105#) & "ty",
+           = "dwa tysi" & Support.U (16#105#) & "ce trzysta czterdziesty pi" & Support.U (16#105#) & "ty",
          "generated Polish thousands compound ordinal words");
       AUnit.Assertions.Assert
         (Czech_Ordinal_Twenty_One.Status = Ok
          and then Support.Text (Czech_Ordinal_Twenty_One)
-           = "dvacet prvn" & U (16#ED#),
+           = "dvacet prvn" & Support.U (16#ED#),
          "generated Czech compound ordinal words");
       AUnit.Assertions.Assert
         (Czech_Ordinal_Thirty.Status = Ok
          and then Support.Text (Czech_Ordinal_Thirty)
-           = "t" & U (16#159#) & "ic" & U (16#E1#) & "t" & U (16#FD#),
+           = "t" & Support.U (16#159#) & "ic" & Support.U (16#E1#) & "t" & Support.U (16#FD#),
          "generated Czech exact tens ordinal words");
       AUnit.Assertions.Assert
         (Russian_Ordinal_Twenty_One.Status = Ok
@@ -196,7 +195,7 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (Japanese_Ordinal_Twelve.Status = Ok
          and then Support.Text (Japanese_Ordinal_Twelve)
-           = U (16#7B2C#) & U (16#5341#) & U (16#4E8C#),
+           = Support.U (16#7B2C#) & Support.U (16#5341#) & Support.U (16#4E8C#),
          "generated Japanese ordinal words");
       AUnit.Assertions.Assert
         (Arabic_Ordinal_Twelve.Status = Ok
@@ -350,4 +349,21 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
         (Fallback_Tier.Status = Ok
          and then Support.Text (Fallback_Tier) = "english-fallback-spellout",
          "fallback spellout tier label");
+      --  Outside English: the locale's CLDR currency pattern and symbol, and
+      --  the percent unit around the spelled-out number.
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Numbers.Currency (Support.De, 1234.5, "EUR"))
+         = "1.234,50" & Support.U (16#A0#) & Support.U (16#20AC#),
+         "German currency by CLDR's pattern");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Numbers.Currency (Support.Locale ("tr"), 1234.5, "EUR"))
+         = Support.U (16#20AC#) & "1.234,50",
+         "Turkish currency symbol leads");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Numbers.Currency (Support.De, 12.5, "ZZZ")) = "12.5 ZZZ",
+         "a code CLDR does not know keeps the plain form");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Numbers.Percent_Words (Support.Locale ("tr"), 12.5, 1))
+         = "y" & Support.U (16#FC#) & "zde on iki virg" & Support.U (16#FC#) & "l be" & Support.U (16#15F#),
+         "Turkish percent words put yuzde first, as CLDR's unit does");
    end Check_Ordinal_Currency_And_Tier_Metadata;

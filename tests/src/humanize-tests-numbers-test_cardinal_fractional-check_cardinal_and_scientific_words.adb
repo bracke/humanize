@@ -116,11 +116,11 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
          "signed large cardinal");
       AUnit.Assertions.Assert
         (Localized.Status = Ok
-         and then Support.Text (Localized) = "f" & U_U_Umlaut & "nf",
+         and then Support.Text (Localized) = "f" & Support.U (16#FC#) & "nf",
          "limited locale cardinal");
       AUnit.Assertions.Assert
         (Spanish_Localized.Status = Ok
-         and then Support.Text (Spanish_Localized) = "diecis" & U_E_Acute & "is",
+         and then Support.Text (Spanish_Localized) = "diecis" & Support.U (16#E9#) & "is",
          "Spanish limited locale cardinal");
       AUnit.Assertions.Assert
         (Dutch_Localized.Status = Ok
@@ -128,11 +128,14 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
          "Dutch limited locale cardinal");
       AUnit.Assertions.Assert
         (German_Expanded.Status = Ok
-         and then Support.Text (German_Expanded) = "zweiundvierzig",
+         and then Support.Text (German_Expanded)
+           = "zwei" & Support.U (16#AD#) & "und" & Support.U (16#AD#) & "vierzig",
          "expanded locale cardinal");
       AUnit.Assertions.Assert
         (German_Hundreds.Status = Ok
-         and then Support.Text (German_Hundreds) = "dreihundertzweiundvierzig",
+         and then Support.Text (German_Hundreds)
+           = "drei" & Support.U (16#AD#) & "hundert" & Support.U (16#AD#) & "zwei" & Support.U (16#AD#)
+             & "und" & Support.U (16#AD#) & "vierzig",
          "expanded hundreds locale cardinal");
       AUnit.Assertions.Assert
         (French_Compound.Status = Ok
@@ -141,20 +144,20 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (Spanish_Compound.Status = Ok
          and then Support.Text (Spanish_Compound)
-           = "ciento veintis" & U_E_Acute & "is",
+           = "ciento veintis" & Support.U (16#E9#) & "is",
          "native Spanish compound cardinal");
       AUnit.Assertions.Assert
         (Italian_Compound.Status = Ok
-         and then Support.Text (Italian_Compound) = "ventuno",
+         and then Support.Text (Italian_Compound) = "vent" & Support.U (16#AD#) & "uno",
          "native Italian elided compound cardinal");
       AUnit.Assertions.Assert
         (Portuguese_Compound.Status = Ok
          and then Support.Text (Portuguese_Compound)
-           = "trinta e tr" & U_E_Circumflex & "s",
+           = "trinta e tr" & Support.U (16#EA#) & "s",
          "native Portuguese compound cardinal");
       AUnit.Assertions.Assert
         (Danish_Thousand.Status = Ok
-         and then Support.Text (Danish_Thousand) = "et tusind",
+         and then Support.Text (Danish_Thousand) = "tusind",
          "native Danish singular thousand");
       AUnit.Assertions.Assert
         (Italian_Thousand.Status = Ok
@@ -162,12 +165,12 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
          "native Italian singular thousand");
       AUnit.Assertions.Assert
         (Spanish_Million.Status = Ok
-         and then Support.Text (Spanish_Million) = "un mill" & U_O_Acute & "n",
+         and then Support.Text (Spanish_Million) = "un mill" & Support.U (16#F3#) & "n",
          "native Spanish singular million");
       AUnit.Assertions.Assert
         (Portuguese_Million.Status = Ok
          and then Support.Text (Portuguese_Million)
-           = "um milh" & U_A_Tilde & "o",
+           = "um milh" & Support.U (16#E3#) & "o",
          "native Portuguese singular million");
       AUnit.Assertions.Assert
         (Spanish_Billion.Status = Ok
@@ -175,7 +178,7 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
          "native Spanish singular billion phrase");
       AUnit.Assertions.Assert
         (Danish_Hundred_One.Status = Ok
-         and then Support.Text (Danish_Hundred_One) = "et hundrede og en",
+         and then Support.Text (Danish_Hundred_One) = "hundrede og et",
          "native Danish hundred connector");
       AUnit.Assertions.Assert
         (Spanish_Five_Hundred.Status = Ok
@@ -183,7 +186,7 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
          "native Spanish irregular hundred");
       AUnit.Assertions.Assert
         (Italian_One_Eighty_One.Status = Ok
-         and then Support.Text (Italian_One_Eighty_One) = "centottantuno",
+         and then Support.Text (Italian_One_Eighty_One) = "cent" & Support.U (16#AD#) & "ottant" & Support.U (16#AD#) & "uno",
          "native Italian cento elision");
       AUnit.Assertions.Assert
         (Portuguese_Nine_Ninety_Nine.Status = Ok
@@ -193,61 +196,63 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (Dutch_Twenty_Two.Status = Ok
          and then Support.Text (Dutch_Twenty_Two)
-           = "twee" & U_E_Umlaut & "ntwintig",
+           = "twee" & Support.U (16#AD#) & Support.U (16#EB#) & "n" & Support.U (16#AD#) & "twintig",
          "native Dutch diaeresis compound");
       AUnit.Assertions.Assert
         (Dutch_Three_Forty_Two.Status = Ok
          and then Support.Text (Dutch_Three_Forty_Two)
-           = "driehonderdtwee" & U_E_Umlaut & "nveertig",
+           = "drie" & Support.U (16#AD#) & "honderd" & Support.U (16#AD#) & "twee" & Support.U (16#AD#)
+             & Support.U (16#EB#) & "n" & Support.U (16#AD#) & "veertig",
          "native Dutch hundred compound");
       AUnit.Assertions.Assert
         (German_Two_Thousand.Status = Ok
-         and then Support.Text (German_Two_Thousand) = "zweitausend",
+         and then Support.Text (German_Two_Thousand) = "zwei" & Support.U (16#AD#) & "tausend",
          "native German compound thousand");
       AUnit.Assertions.Assert
         (Italian_Two_Thousand.Status = Ok
-         and then Support.Text (Italian_Two_Thousand) = "duemila",
+         and then Support.Text (Italian_Two_Thousand) = "due" & Support.U (16#AD#) & "mila",
          "native Italian compound thousand");
       AUnit.Assertions.Assert
         (Dutch_Two_Thousand.Status = Ok
-         and then Support.Text (Dutch_Two_Thousand) = "tweeduizend",
+         and then Support.Text (Dutch_Two_Thousand) = "twee" & Support.U (16#AD#) & "duizend",
          "native Dutch compound thousand");
       AUnit.Assertions.Assert
         (Swedish_Cardinal.Status = Ok
          and then Support.Text (Swedish_Cardinal)
-           = "tv" & U_A_Ring & " tusen tre hundra fyrtiofem",
+           = "tv" & Support.U (16#E5#) & Support.U (16#AD#) & "tusen tre" & Support.U (16#AD#) & "hundra"
+             & Support.U (16#AD#) & "fyrtio" & Support.U (16#AD#) & "fem",
          "generated Swedish locale cardinal");
       AUnit.Assertions.Assert
         (Norwegian_Cardinal.Status = Ok
          and then Support.Text (Norwegian_Cardinal)
-           = "to tusen tre hundre f" & U_O_Slash & "rtifem",
+           = "to tusen tre hundre og f" & Support.U (16#F8#) & "rti" & Support.U (16#AD#) & "fem",
          "generated Norwegian locale cardinal");
       Check_Regional_Cardinal_Fallbacks;
       AUnit.Assertions.Assert
         (Finnish_Cardinal.Status = Ok
          and then Support.Text (Finnish_Cardinal)
-           = "kaksi tuhatta kolmesatanelj" & U_A_Umlaut
-             & "kymment" & U_A_Umlaut & "viisi",
+           = "kaksi" & Support.U (16#AD#) & "tuhatta" & Support.U (16#AD#) & "kolme" & Support.U (16#AD#)
+             & "sataa" & Support.U (16#AD#) & "nelj" & Support.U (16#E4#) & Support.U (16#AD#) & "kymment"
+             & Support.U (16#E4#) & Support.U (16#AD#) & "viisi",
          "generated Finnish locale cardinal");
       AUnit.Assertions.Assert
         (Turkish_Cardinal.Status = Ok
          and then Support.Text (Turkish_Cardinal)
-           = "iki bin " & U_U_Umlaut & U_C_Cedilla & " y"
-             & U_U_Umlaut & "z k" & U_I_Dotless & "rk be"
-             & U_S_Cedilla,
+           = "iki bin " & Support.U (16#FC#) & Support.U (16#E7#) & " y" & Support.U (16#FC#) & "z k"
+             & Support.U (16#131#) & "rk be" & Support.U (16#15F#),
          "generated Turkish locale cardinal");
       AUnit.Assertions.Assert
         (Polish_Cardinal.Status = Ok
          and then Support.Text (Polish_Cardinal)
-           = "dwa tysi" & U (16#105#) & "ce trzysta czterdzie"
-             & U (16#15B#) & "ci pi" & U (16#119#) & U (16#107#),
+           = "dwa tysi" & Support.U (16#105#) & "ce trzysta czterdzie" & Support.U (16#15B#) & "ci pi"
+             & Support.U (16#119#) & Support.U (16#107#),
          "generated Polish locale cardinal");
       AUnit.Assertions.Assert
         (Czech_Cardinal.Status = Ok
          and then Support.Text (Czech_Cardinal)
-           = "dva tis" & U (16#ED#) & "ce t" & U (16#159#)
-             & "i sta " & U (16#10D#) & "ty" & U (16#159#)
-             & "icet p" & U (16#11B#) & "t",
+           = "dv" & Support.U (16#11B#) & " tis" & Support.U (16#ED#) & "ce t" & Support.U (16#159#)
+             & "i sta " & Support.U (16#10D#) & "ty" & Support.U (16#159#) & "icet p" & Support.U (16#11B#)
+             & "t",
          "generated Czech locale cardinal");
       AUnit.Assertions.Assert
         (Russian_Cardinal.Status = Ok
@@ -260,23 +265,20 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (Japanese_Cardinal.Status = Ok
          and then Support.Text (Japanese_Cardinal)
-           = U (16#4E8C#) & U (16#5343#) & U (16#4E09#)
-             & U (16#767E#) & U (16#56DB#) & U (16#5341#)
-             & U (16#4E94#),
+           = Support.U (16#4E8C#) & Support.U (16#5343#) & Support.U (16#4E09#) & Support.U (16#767E#)
+             & Support.U (16#56DB#) & Support.U (16#5341#) & Support.U (16#4E94#),
          "generated Japanese locale cardinal");
       AUnit.Assertions.Assert
         (Korean_Cardinal.Status = Ok
          and then Support.Text (Korean_Cardinal)
-           = U (16#C774#) & U (16#CC9C#) & U (16#C0BC#)
-             & U (16#BC31#) & U (16#C0AC#) & U (16#C2ED#)
-             & U (16#C624#),
+           = Support.U (16#C774#) & Support.U (16#CC9C#) & Support.U (16#C0BC#) & Support.U (16#BC31#)
+             & Support.U (16#C0AC#) & Support.U (16#C2ED#) & Support.U (16#C624#),
          "generated Korean locale cardinal");
       AUnit.Assertions.Assert
         (Chinese_Cardinal.Status = Ok
          and then Support.Text (Chinese_Cardinal)
-           = U (16#4E8C#) & U (16#5343#) & U (16#4E09#)
-             & U (16#767E#) & U (16#56DB#) & U (16#5341#)
-             & U (16#4E94#),
+           = Support.U (16#4E8C#) & Support.U (16#5343#) & Support.U (16#4E09#) & Support.U (16#767E#)
+             & Support.U (16#56DB#) & Support.U (16#5341#) & Support.U (16#4E94#),
          "generated Chinese locale cardinal");
       AUnit.Assertions.Assert
         (Arabic_Cardinal.Status = Ok
@@ -304,7 +306,9 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (German_Thousands.Status = Ok
          and then Support.Text (German_Thousands)
-           = "eintausenddreihundertzweiundvierzig",
+           = "ein" & Support.U (16#AD#) & "tausend" & Support.U (16#AD#) & "drei" & Support.U (16#AD#)
+             & "hundert" & Support.U (16#AD#) & "zwei" & Support.U (16#AD#) & "und" & Support.U (16#AD#)
+             & "vierzig",
          "locale cardinal expands beyond 999");
       AUnit.Assertions.Assert
         (French_Billions.Status = Ok

@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+* **Number words and currency amounts outside English come from CLDR.**
+  - `Locale_Cardinal`, `Ordinal_Words` and `Decimal_Words` spell by CLDR's
+    rules. The hand tables matched ICU in only 60% of cases (Finnish
+    "kolmesataa", Swedish word breaks, Danish "tusind"). Ordinals keep
+    humanize's own words where CLDR has no rules (Czech).
+  - `Percent_Words` puts the words inside CLDR's percent unit ("yüzde ...")
+    instead of appending "percent".
+  - `Currency` formats by the locale's currency pattern and symbol ("1.234,50
+    €", "€1.234,50" in Turkish) for every code i18n knows, and keeps
+    "12.50 USD" in English.
+* **The parser reads CLDR's spelled-out numbers back** in the shipped
+  locales (cardinals and ordinals, soft hyphens included), through
+  `I18N.Spellout.Parse` in the CLDR vocabulary. For non-ASCII text the CLDR
+  reading comes before the hand vocabulary.
+
 * **Measurements, spelled-out numbers, counts and compact durations outside
   English come from CLDR.** These formatters ignored their context and wrote
   English. Outside English they now render through locale-neutral entries;
