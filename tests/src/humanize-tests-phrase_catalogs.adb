@@ -14,6 +14,9 @@ with Humanize.Datetimes;
 with Humanize.Lists;
 with Humanize.Operations;
 with Humanize.Resources;
+with Humanize.Bytes;
+with Humanize.Durations;
+with Humanize.Parsing.Localized;
 with Humanize.Parsing.Phrases;
 with Humanize.Phrases;
 with Humanize.Status;
@@ -571,6 +574,82 @@ package body Humanize.Tests.Phrase_Catalogs is
       end loop;
    end Test_Read_Phrases_Back;
 
+   --  Numbers, durations, relative times and byte sizes read back in the
+   --  locale that wrote them, by what its formatters write.
+   procedure Test_Localized_Quantities
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      package L renames Humanize.Parsing.Localized;
+      use type Humanize.Status.Status_Code;
+      use type Humanize.Durations.Duration_Seconds;
+      use type Humanize.Bytes.Byte_Count;
+      use type Ada.Calendar.Time;
+      Runtime : aliased Messages.Runtime.Instance;
+      Loaded  : Messages.Runtime.Load_Result;
+      Now     : constant Ada.Calendar.Time := Ada.Calendar.Time_Of (2026, 3, 10, 43_200.0);
+
+      function Ctx (Locale : String) return Humanize.Contexts.Context is
+        (Humanize.Contexts.Create (Runtime'Unchecked_Access, Locale));
+      function U (Text : Wide_Wide_String) return String is
+        (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode (Text));
+      Locales : constant array (Positive range <>) of Unbounded_String :=
+        [+"en", +"de", +"ru", +"pl", +"ar", +"ja", +"sw", +"fr", +"zh-Hant"];
+      type Second_List is array (Positive range <>) of Humanize.Durations.Duration_Seconds;
+      type Offset_List is array (Positive range <>) of Long_Long_Integer;
+      type Size_List is array (Positive range <>) of Humanize.Bytes.Byte_Count;
+      Spans   : constant Second_List := [1, 60, 7_200, 9_000, 3 * 86_400 + 7_200 + 300];
+      Offsets : constant Offset_List := [-3 * 86_400, -86_400, -600, 7_200, 0];
+      Sizes   : constant Size_List := [1, 1_536, 5_242_880];
+   begin
+      Humanize.Catalogs.Load_Defaults (Runtime, Loaded);
+      AUnit.Assertions.Assert
+        (L.Parse_Number (Ctx ("de"), "1.234,5").Value = 1_234.5, "German number");
+      AUnit.Assertions.Assert
+        (L.Parse_Number (Ctx ("ar"), U ("١٬٢٣٤٫٥")).Value = 1_234.5, "Arabic-Indic number");
+      AUnit.Assertions.Assert
+        (L.Parse_Number (Ctx ("de"), "12 Dinge").Status /= Humanize.Status.Ok, "not a number");
+      for Locale of Locales loop
+         declare
+            C : constant Humanize.Contexts.Context := Ctx (To_String (Locale));
+         begin
+            for Seconds of Spans loop
+               declare
+                  Text : constant String := Image (Humanize.Durations.Format_Components (C, Seconds, 3));
+                  Read : constant Humanize.Parsing.Duration_Parse_Result := L.Parse_Duration (C, Text);
+               begin
+                  AUnit.Assertions.Assert
+                    (Read.Status = Humanize.Status.Ok and then Read.Value = Seconds,
+                     To_String (Locale) & " duration [" & Text & "] read" & Read.Value'Image);
+               end;
+            end loop;
+            for Offset of Offsets loop
+               declare
+                  Text : constant String := Image (Humanize.Datetimes.Relative (C, Now + Duration (Offset), Now));
+                  Read : constant Humanize.Parsing.Duration_Parse_Result := L.Parse_Relative (C, Text);
+               begin
+                  AUnit.Assertions.Assert
+                    (Read.Status = Humanize.Status.Ok and then Long_Long_Integer (Read.Value) = Offset,
+                     To_String (Locale) & " relative [" & Text & "] read" & Read.Value'Image);
+               end;
+            end loop;
+            for Size of Sizes loop
+               declare
+                  Text : constant String := Image (Humanize.Bytes.Format (C, Size));
+                  Read : constant Humanize.Parsing.Byte_Parse_Result := L.Parse_Bytes (C, Text);
+               begin
+                  AUnit.Assertions.Assert
+                    (Read.Status = Humanize.Status.Ok and then Read.Value = Size,
+                     To_String (Locale) & " size [" & Text & "] read" & Read.Value'Image);
+               end;
+            end loop;
+         end;
+      end loop;
+      AUnit.Assertions.Assert
+        (not L.Parse_Relative (Ctx ("hi"), Image (Humanize.Datetimes.Relative (Ctx ("hi"), Now + 86_400.0, Now))).Exact,
+         "Hindi tomorrow, written like yesterday, is not an exact reading");
+   end Test_Localized_Quantities;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -587,6 +666,7 @@ package body Humanize.Tests.Phrase_Catalogs is
       Register_Routine (T, Test_Load_One_Locale'Access, "load one locale's phrases");
       Register_Routine (T, Test_Regional_Variants'Access, "regional variants");
       Register_Routine (T, Test_Read_Phrases_Back'Access, "read phrases back");
+      Register_Routine (T, Test_Localized_Quantities'Access, "localized quantities read back");
    end Register_Tests;
 
 end Humanize.Tests.Phrase_Catalogs;

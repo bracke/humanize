@@ -196,6 +196,17 @@ translation that leaves a number out (German "heute fällig") still reads,
 with that number 0 or 1. The catalog's `en` entries are the English column
 here, so English output reads back too.
 
+`Humanize.Parsing.Localized` reads the quantities back the same way:
+`Parse_Number` ("1.234,5", Arabic-Indic digits), `Parse_Duration` ("2
+Stunden, 30 Minuten", Swahili "dakika 5", Arabic "ساعتان"), `Parse_Relative`
+("vor 3 Tagen", "gestern") and `Parse_Bytes` ("1,5 KiB"). It learns a
+locale's forms by rendering sample values with `Durations.Format_Components`,
+`Datetimes.Relative` and `Bytes.Format` (cached per runtime and locale, about
+70 ms the first time), so it reads exactly what those write. A text the locale
+writes for two offsets (Hindi "कल", yesterday and tomorrow) reads as the past
+and is not `Exact`. The other English parsers in `Humanize.Parsing` stay
+English.
+
 ## Regional variants
 
 `fr-CA`, `de-CH` and `de-LI` (ss for ß) and `en-001` ("cancelled", which

@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+* **`Humanize.Parsing.Localized`** reads numbers, durations, relative times
+  and byte sizes back in the locale that wrote them, by what the localized
+  formatters write: round-trips in 36 locales (Arabic number-less duals,
+  Swahili unit-first order, native digits and separators included).
+  `Humanize.Parsing.Locale_Digits` now holds the digit normalization phrase
+  reading used.
+
 * **System status speaks the locale.** `Humanize.System_Status` gains
   context-taking overloads for the state labels of all six families, the
   name frames, the component/check/incident counts, uptime, latency,
