@@ -17,6 +17,7 @@ with Humanize.Resources;
 with Humanize.Parsing.Phrases;
 with Humanize.Phrases;
 with Humanize.Status;
+with Humanize.System_Status;
 with Humanize.Units;
 
 --  The English the formatters write in code must be what the catalog's en
@@ -181,6 +182,67 @@ package body Humanize.Tests.Phrase_Consistency is
       Check ("operation.stale_run", Humanize.Operations.Stale_Run_Label (En, "import", "3 days"));
    end Test_Formatter_Templates;
 
+   --  System status: every state of each family, the frames, counts and
+   --  labels against "system.*".
+   procedure Test_System_Status_Templates (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+      package S renames Humanize.System_Status;
+
+      function Key (Family, Image, Suffix : String) return String is
+         Lower : constant String := Ada.Characters.Handling.To_Lower (Image);
+      begin
+         if Lower'Length > Suffix'Length and then Lower (Lower'Last - Suffix'Length + 1 .. Lower'Last) = Suffix then
+            return Family & "." & Lower (Lower'First .. Lower'Last - Suffix'Length);
+         end if;
+         return Family & "." & Lower;
+      end Key;
+   begin
+      for State in S.Service_State loop
+         Check (Key ("system.service", State'Image, "_service"), S.Service_State_Label (En, State));
+         Check ("system.named", S.Service_Status_Label (En, "API", State));
+      end loop;
+      for State in S.Health_State loop
+         Check (Key ("system.health", State'Image, ""), S.Health_State_Label (En, State));
+         Check ("system.named", S.Health_Label (En, "API", State));
+      end loop;
+      for State in S.Readiness_State loop
+         Check (Key ("system.readiness", State'Image, ""), S.Readiness_State_Label (En, State));
+         Check ("system.named", S.Readiness_Label (En, "worker", State));
+      end loop;
+      for State in S.Component_State loop
+         Check (Key ("system.component", State'Image, "_component"), S.Component_State_Label (En, State));
+         Check ("system.named", S.Component_Status_Label (En, "cache", State));
+      end loop;
+      for State in S.Check_State loop
+         Check (Key ("system.check", State'Image, "_check"), S.Check_State_Label (En, State));
+         Check ("system.check_named", S.Check_Label (En, "disk", State));
+      end loop;
+      for State in S.Incident_State loop
+         Check (Key ("system.incident", State'Image, "_incident"), S.Incident_State_Label (En, State));
+         Check ("system.named", S.Incident_Label (En, "outage", State));
+      end loop;
+      for Class in S.HTTP_Status_Class loop
+         Check (Key ("system.http", Class'Image, "_status"), S.HTTP_Status_Class_Label (En, Class));
+      end loop;
+      for Count in 0 .. 2 loop
+         Check ("system.count.components", S.Component_Count_Label (En, Count));
+         Check ("system.count.checks", S.Check_Count_Label (En, Count));
+         Check ("system.count.incidents", S.Incident_Count_Label (En, Count));
+      end loop;
+      Check ("system.uptime", S.Uptime_Label (En, "99.9 %"));
+      Check ("system.latency", S.Latency_Label (En, "120 ms"));
+      Check ("system.maintenance_window", S.Maintenance_Window_Label (En, "Sat 02:00-04:00"));
+      Check ("system.last_checked", S.Last_Checked_Label (En, "2 minutes ago"));
+      Check ("system.exit.success", S.Process_Exit_Label (En, 0));
+      Check ("system.exit.failure", S.Process_Exit_Label (En, 1));
+      Check ("system.exit.usage_error", S.Process_Exit_Label (En, 2));
+      Check ("system.exit.not_executable", S.Process_Exit_Label (En, 126));
+      Check ("system.exit.not_found", S.Process_Exit_Label (En, 127));
+      Check ("system.exit.invalid_argument", S.Process_Exit_Label (En, 128));
+      Check ("system.exit.signal", S.Process_Exit_Label (En, 137));
+      Check ("system.exit.failure", S.Process_Exit_Label (En, 200));
+   end Test_System_Status_Templates;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -192,6 +254,7 @@ package body Humanize.Tests.Phrase_Consistency is
    begin
       Register_Routine (T, Test_Status_Templates'Access, "every English status label is its template");
       Register_Routine (T, Test_Formatter_Templates'Access, "English phrase formatters are their templates");
+      Register_Routine (T, Test_System_Status_Templates'Access, "English system status labels are their templates");
    end Register_Tests;
 
 end Humanize.Tests.Phrase_Consistency;

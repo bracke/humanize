@@ -111,7 +111,25 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"operation.succeeded", +"operation.partially_succeeded", +"operation.failed",
       +"operation.canceled", +"operation.skipped", +"operation.stale",
       +"operation.unknown_state", +"operation.last_success", +"operation.next_retry",
-      +"operation.stale_run", +"summary.skipped", +"summary.retried", +"summary.canceled"];
+      +"operation.stale_run", +"summary.skipped", +"summary.retried", +"summary.canceled",
+      +"system.service.operational", +"system.service.degraded", +"system.service.partial_outage",
+      +"system.service.major_outage", +"system.service.maintenance", +"system.service.unknown",
+      +"system.health.healthy", +"system.health.warning", +"system.health.critical",
+      +"system.health.unavailable", +"system.health.unknown_health", +"system.readiness.ready",
+      +"system.readiness.not_ready", +"system.readiness.starting", +"system.readiness.draining",
+      +"system.readiness.stopped", +"system.readiness.unknown_readiness", +"system.component.online",
+      +"system.component.offline", +"system.component.starting", +"system.component.stopping",
+      +"system.component.restarting", +"system.component.unknown", +"system.check.passing",
+      +"system.check.failing", +"system.check.warning", +"system.check.skipped", +"system.check.timed_out",
+      +"system.check.unknown", +"system.incident.investigating", +"system.incident.identified",
+      +"system.incident.monitoring", +"system.incident.resolved", +"system.incident.scheduled_maintenance",
+      +"system.named", +"system.check_named", +"system.count.components", +"system.count.checks",
+      +"system.count.incidents", +"system.uptime", +"system.latency", +"system.maintenance_window",
+      +"system.last_checked", +"system.http.informational", +"system.http.successful",
+      +"system.http.redirection", +"system.http.client_error", +"system.http.server_error",
+      +"system.exit.success", +"system.exit.failure", +"system.exit.usage_error",
+      +"system.exit.not_executable", +"system.exit.not_found", +"system.exit.invalid_argument",
+      +"system.exit.signal"];
 
    --  Every shipped locale besides English.
    Locales : constant array (Positive range <>) of Unbounded_String :=
@@ -124,7 +142,8 @@ package body Humanize.Tests.Phrase_Catalogs is
    Numbers : constant array (Positive range <>) of Unbounded_String :=
      [+"total", +"matching", +"visible", +"remaining", +"page", +"size", +"first", +"last", +"position",
       +"selected", +"showing", +"count", +"hidden", +"done", +"step", +"attempt", +"rate", +"days", +"hours",
-      +"every", +"hits", +"misses", +"changed", +"added", +"removed", +"available", +"unavailable"];
+      +"every", +"hits", +"misses", +"changed", +"added", +"removed", +"available", +"unavailable",
+      +"code"];
 
    procedure Test_Every_Locale_Renders_Every_Phrase
      (T : in out AUnit.Test_Cases.Test_Case'Class)
@@ -177,6 +196,7 @@ package body Humanize.Tests.Phrase_Catalogs is
             Messages.Arguments.Set (Args, "name", "import");
             Messages.Arguments.Set (Args, "state", "running");
             Messages.Arguments.Set (Args, "time", "2 h");
+            Messages.Arguments.Set (Args, "signal", "SIGKILL killed");
             Messages.Arguments.Set (Args, "available", Count);
             Messages.Arguments.Set (Args, "unavailable", Count);
             for Locale of Locales loop
@@ -387,7 +407,7 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"instrumental_other"];
    Text_Arguments : constant array (Positive range <>) of Unbounded_String :=
      [+"unit", +"field", +"before", +"after", +"current", +"baseline", +"quantity",
-      +"details", +"difference", +"measure", +"name", +"time"];
+      +"details", +"difference", +"measure", +"name", +"time", +"signal"];
 
    function Digits_Of (Value : Natural) return String is
      (Natural'Image (Value) (2 .. Natural'Image (Value)'Last));

@@ -9,5 +9,12 @@ begin
      & P ("billing.trialing", "período de prueba")
      & P ("health.incident", "incidente")
      & P ("payment.payment_expired", "pago vencido")
-     & P ("security.token_expired", "token vencido");
+     & P ("security.token_expired", "token vencido")
+     & P ("system.check.unknown", "estado de la verificación desconocido")
+     & P ("system.incident.monitoring", "monitoreando")
+     & P ("system.check_named", "verificación de {name}: {state}")
+     & P ("system.count.checks",
+          "{count, plural, =0 {ninguna verificación} one {{count} verificación} "
+          & "many {{count} de verificaciones} other {{count} verificaciones}}")
+     & P ("system.last_checked", "última verificación {time}");
 end Locale_Es_419;

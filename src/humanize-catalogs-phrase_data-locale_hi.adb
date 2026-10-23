@@ -415,5 +415,74 @@ begin
      & P ("operation.stale_run", "{name} – {time} से पुराना")
      & P ("summary.skipped", "{count} छोड़े गए")
      & P ("summary.retried", "{count} पुनः प्रयास किए गए")
-     & P ("summary.canceled", "{count} रद्द");
+     & P ("summary.canceled", "{count} रद्द")
+     & P ("system.service.operational", "चालू")
+     & P ("system.service.degraded", "प्रदर्शन में गिरावट")
+     & P ("system.service.partial_outage", "आंशिक आउटेज")
+     & P ("system.service.major_outage", "बड़ा आउटेज")
+     & P ("system.service.maintenance", "रखरखाव जारी")
+     & P ("system.service.unknown", "सेवा की स्थिति अज्ञात")
+     & P ("system.health.healthy", "स्वस्थ")
+     & P ("system.health.warning", "चेतावनी")
+     & P ("system.health.critical", "गंभीर")
+     & P ("system.health.unavailable", "अनुपलब्ध")
+     & P ("system.health.unknown_health", "स्वास्थ्य स्थिति अज्ञात")
+     & P ("system.readiness.ready", "तैयार")
+     & P ("system.readiness.not_ready", "तैयार नहीं")
+     & P ("system.readiness.starting", "शुरू हो रहा है")
+     & P ("system.readiness.draining", "ड्रेन हो रहा है")
+     & P ("system.readiness.stopped", "रुका हुआ")
+     & P ("system.readiness.unknown_readiness", "तैयारी की स्थिति अज्ञात")
+     & P ("system.component.online", "ऑनलाइन")
+     & P ("system.component.offline", "ऑफ़लाइन")
+     & P ("system.component.starting", "शुरू हो रहा है")
+     & P ("system.component.stopping", "रुक रहा है")
+     & P ("system.component.restarting", "पुनः आरंभ हो रहा है")
+     & P ("system.component.unknown", "घटक की स्थिति अज्ञात")
+     & P ("system.check.passing", "पास")
+     & P ("system.check.failing", "फ़ेल")
+     & P ("system.check.warning", "चेतावनी")
+     & P ("system.check.skipped", "छोड़ा गया")
+     & P ("system.check.timed_out", "समय समाप्त")
+     & P ("system.check.unknown", "जाँच की स्थिति अज्ञात")
+     & P ("system.incident.investigating", "जाँच जारी")
+     & P ("system.incident.identified", "कारण पहचाना गया")
+     & P ("system.incident.monitoring", "निगरानी जारी")
+     & P ("system.incident.resolved", "हल हो गया")
+     & P ("system.incident.scheduled_maintenance", "निर्धारित रखरखाव")
+     & P ("system.named", "{name}: {state}")
+     & P ("system.check_named", "{name} जाँच: {state}")
+     & P ("system.count.components",
+          "{count, plural, =0 {कोई घटक नहीं} one {{count} "
+          & "घटक} other {{count} घटक}}")
+     & P ("system.count.checks",
+          "{count, plural, =0 {कोई जाँच नहीं} one {{count} "
+          & "जाँच} other {{count} जाँचें}}")
+     & P ("system.count.incidents",
+          "{count, plural, =0 {कोई घटना नहीं} one {{count} "
+          & "घटना} other {{count} घटनाएँ}}")
+     & P ("system.uptime", "अपटाइम {measure}")
+     & P ("system.latency", "विलंबता {measure}")
+     & P ("system.maintenance_window", "रखरखाव अवधि {time}")
+     & P ("system.last_checked", "अंतिम जाँच {time}")
+     & P ("system.http.informational", "सूचनात्मक")
+     & P ("system.http.successful", "सफल")
+     & P ("system.http.redirection", "रीडायरेक्शन")
+     & P ("system.http.client_error", "क्लाइंट त्रुटि")
+     & P ("system.http.server_error", "सर्वर त्रुटि")
+     & P ("system.exit.success", "निकास कोड {code}: सफल")
+     & P ("system.exit.failure", "निकास कोड {code}: विफल")
+     & P ("system.exit.usage_error", "निकास कोड {code}: उपयोग त्रुटि")
+     & P ("system.exit.not_executable",
+          "निकास कोड {code}: कमांड "
+          & "निष्पादन योग्य नहीं")
+     & P ("system.exit.not_found",
+          "निकास कोड {code}: कमांड नहीं "
+          & "मिला")
+     & P ("system.exit.invalid_argument",
+          "निकास कोड {code}: अमान्य निकास "
+          & "तर्क")
+     & P ("system.exit.signal",
+          "निकास कोड {code}: {signal} द्वारा "
+          & "समाप्त");
 end Locale_Hi;

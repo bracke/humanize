@@ -448,5 +448,75 @@ begin
      & P ("operation.stale_run", "{name} – не оновлювалося {time}")
      & P ("summary.skipped", "пропущено: {count}")
      & P ("summary.retried", "повторено: {count}")
-     & P ("summary.canceled", "скасовано: {count}");
+     & P ("summary.canceled", "скасовано: {count}")
+     & P ("system.service.operational", "працює")
+     & P ("system.service.degraded", "знижена продуктивність")
+     & P ("system.service.partial_outage", "частковий збій")
+     & P ("system.service.major_outage", "серйозний збій")
+     & P ("system.service.maintenance", "на обслуговуванні")
+     & P ("system.service.unknown", "стан сервісу невідомий")
+     & P ("system.health.healthy", "у нормі")
+     & P ("system.health.warning", "попередження")
+     & P ("system.health.critical", "критичний стан")
+     & P ("system.health.unavailable", "недоступний")
+     & P ("system.health.unknown_health", "стан невідомий")
+     & P ("system.readiness.ready", "готовий")
+     & P ("system.readiness.not_ready", "не готовий")
+     & P ("system.readiness.starting", "запускається")
+     & P ("system.readiness.draining", "виведення з роботи")
+     & P ("system.readiness.stopped", "зупинений")
+     & P ("system.readiness.unknown_readiness", "готовність невідома")
+     & P ("system.component.online", "у мережі")
+     & P ("system.component.offline", "не в мережі")
+     & P ("system.component.starting", "запускається")
+     & P ("system.component.stopping", "зупиняється")
+     & P ("system.component.restarting", "перезапускається")
+     & P ("system.component.unknown", "стан компонента невідомий")
+     & P ("system.check.passing", "пройдено")
+     & P ("system.check.failing", "не пройдено")
+     & P ("system.check.warning", "попередження")
+     & P ("system.check.skipped", "пропущено")
+     & P ("system.check.timed_out", "час очікування вичерпано")
+     & P ("system.check.unknown", "стан перевірки невідомий")
+     & P ("system.incident.investigating", "розслідується")
+     & P ("system.incident.identified", "причину встановлено")
+     & P ("system.incident.monitoring", "спостереження")
+     & P ("system.incident.resolved", "усунено")
+     & P ("system.incident.scheduled_maintenance", "планове обслуговування")
+     & P ("system.named", "{name}: {state}")
+     & P ("system.check_named", "перевірка {name}: {state}")
+     & P ("system.count.components",
+          "{count, plural, =0 {немає компонентів} one {{count} "
+          & "компонент} few {{count} компоненти} many {{count} "
+          & "компонентів} other {{count} компонента}}")
+     & P ("system.count.checks",
+          "{count, plural, =0 {немає перевірок} one {{count} "
+          & "перевірка} few {{count} перевірки} many {{count} "
+          & "перевірок} other {{count} перевірки}}")
+     & P ("system.count.incidents",
+          "{count, plural, =0 {немає інцидентів} one {{count} "
+          & "інцидент} few {{count} інциденти} many {{count} "
+          & "інцидентів} other {{count} інциденту}}")
+     & P ("system.uptime", "час безвідмовної роботи: {measure}")
+     & P ("system.latency", "затримка: {measure}")
+     & P ("system.maintenance_window", "вікно обслуговування: {time}")
+     & P ("system.last_checked", "остання перевірка: {time}")
+     & P ("system.http.informational", "інформаційна відповідь")
+     & P ("system.http.successful", "успішна відповідь")
+     & P ("system.http.redirection", "перенаправлення")
+     & P ("system.http.client_error", "помилка клієнта")
+     & P ("system.http.server_error", "помилка сервера")
+     & P ("system.exit.success", "код виходу {code}: успіх")
+     & P ("system.exit.failure", "код виходу {code}: збій")
+     & P ("system.exit.usage_error", "код виходу {code}: помилка використання")
+     & P ("system.exit.not_executable",
+          "код виходу {code}: команда не є "
+          & "виконуваною")
+     & P ("system.exit.not_found", "код виходу {code}: команду не знайдено")
+     & P ("system.exit.invalid_argument",
+          "код виходу {code}: неприпустимий "
+          & "аргумент exit")
+     & P ("system.exit.signal",
+          "код виходу {code}: завершення за сигналом "
+          & "{signal}");
 end Locale_Uk;

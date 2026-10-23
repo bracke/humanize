@@ -156,6 +156,31 @@ locale through the overloads that take a context. A number comparison's noun
 (`number_comparison.case`, `noun.<case>`), and `count`/`noun` entries per
 language map plural categories to the registered noun forms.
 
+## System status
+
+| Key | Arguments | English |
+|---|---|---|
+| `system.service.<state>` | | operational, degraded performance, partial outage, major outage, under maintenance, unknown service status |
+| `system.health.<state>` | | healthy, warning, critical, unavailable, unknown health |
+| `system.readiness.<state>` | | ready, not ready, starting, draining, stopped, unknown readiness |
+| `system.component.<state>` | | online, offline, starting, stopping, restarting, unknown component status |
+| `system.check.<state>` | | passing, failing, warning, skipped, timed out, unknown check status |
+| `system.incident.<state>` | | investigating, identified, monitoring, resolved, scheduled maintenance |
+| `system.named` | name, state (a translated state label) | `{name} {state}` |
+| `system.check_named` | name, state (a translated `system.check.*` label) | `{name} check {state}` |
+| `system.count.components`, `.checks`, `.incidents` | count | `{count, plural, =0 {no components} one {{count} component} other {{count} components}}` |
+| `system.uptime`, `system.latency` | measure | `uptime {measure}`, `latency {measure}` |
+| `system.maintenance_window`, `system.last_checked` | time | `maintenance window {time}`, `last checked {time}` |
+| `system.http.<class>` | | informational, successful, redirection, client error, server error |
+| `system.exit.<reason>` | code | `exit {code} success` (failure, usage error, command not executable, command not found, invalid exit argument) |
+| `system.exit.signal` | code, signal (the English signal label) | `exit {code} terminated by {signal}` |
+
+`Humanize.System_Status` speaks a locale through the overloads that take a
+context. Errno, signal, SQLSTATE and HTTP reason texts stay the English of
+their standards; `Humanize.Domain_Details` stays English too -- it is the
+machine-readable metadata layer (log fields, `surface=` tags) its parsers
+read back.
+
 ## Review page
 
 The phrase review page (https://claude.ai/artifact/4gdexMdU8CmmxUaysWinzu) shows

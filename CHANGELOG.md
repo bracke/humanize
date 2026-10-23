@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+* **System status speaks the locale.** `Humanize.System_Status` gains
+  context-taking overloads for the state labels of all six families, the
+  name frames, the component/check/incident counts, uptime, latency,
+  maintenance window and last-checked labels, HTTP status classes and process
+  exit labels: 55 phrase keys, translated into every shipped locale.
+
 * **Locative and instrumental noun forms.** `With_Noun_Forms` takes
   `Locative_One/Other` and `Instrumental_One/Other`; Slovak and Slovenian
   "matches in all N files" use the locative ("zhoda pri všetkých 5

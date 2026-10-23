@@ -1,6 +1,9 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
 with Humanize.System_Status.Support;
 
 package body Humanize.System_Status is
+   use type Humanize.Status.Status_Code;
 
    function HTTP_Status_Class_Of
      (Code : HTTP_Status_Code)
@@ -522,5 +525,177 @@ package body Humanize.System_Status is
       Written   : out Natural;
       Status    : out Humanize.Status.Status_Code)
       renames Humanize.System_Status.Support.Last_Checked_Label_Into;
+
+   --  The localized forms (Context overloads).
+   package Localized is
+      function Key (Family, Image, Suffix : String) return String;
+      function State_Label
+        (Context : Humanize.Contexts.Context; Key : String; English : Humanize.Status.Text_Result)
+         return Humanize.Status.Text_Result;
+      function Named_Label
+        (Context : Humanize.Contexts.Context; Frame, Name : String; State : Humanize.Status.Text_Result;
+         English : Humanize.Status.Text_Result) return Humanize.Status.Text_Result;
+      function Count_Label
+        (Context : Humanize.Contexts.Context; Key : String; Count : Natural; English : Humanize.Status.Text_Result)
+         return Humanize.Status.Text_Result;
+      function Text_Label
+        (Context : Humanize.Contexts.Context; Key, Argument, Value : String; English : Humanize.Status.Text_Result)
+         return Humanize.Status.Text_Result;
+      function Exit_Label
+        (Context : Humanize.Contexts.Context; Code : Process_Exit_Code; English : Humanize.Status.Text_Result)
+         return Humanize.Status.Text_Result;
+   end Localized;
+
+   package body Localized is separate;
+
+   function Service_State_Label
+     (Context : Humanize.Contexts.Context;
+      State   : Service_State)
+      return Humanize.Status.Text_Result
+   is (Localized.State_Label
+         (Context, Localized.Key ("service", Service_State'Image (State), "_service"), Service_State_Label (State)));
+
+   function Health_State_Label
+     (Context : Humanize.Contexts.Context;
+      State   : Health_State)
+      return Humanize.Status.Text_Result
+   is (Localized.State_Label
+         (Context, Localized.Key ("health", Health_State'Image (State), ""), Health_State_Label (State)));
+
+   function Readiness_State_Label
+     (Context : Humanize.Contexts.Context;
+      State   : Readiness_State)
+      return Humanize.Status.Text_Result
+   is (Localized.State_Label
+         (Context, Localized.Key ("readiness", Readiness_State'Image (State), ""), Readiness_State_Label (State)));
+
+   function Component_State_Label
+     (Context : Humanize.Contexts.Context;
+      State   : Component_State)
+      return Humanize.Status.Text_Result
+   is (Localized.State_Label
+         (Context, Localized.Key ("component", Component_State'Image (State), "_component"),
+          Component_State_Label (State)));
+
+   function Check_State_Label
+     (Context : Humanize.Contexts.Context;
+      State   : Check_State)
+      return Humanize.Status.Text_Result
+   is (Localized.State_Label
+         (Context, Localized.Key ("check", Check_State'Image (State), "_check"), Check_State_Label (State)));
+
+   function Incident_State_Label
+     (Context : Humanize.Contexts.Context;
+      State   : Incident_State)
+      return Humanize.Status.Text_Result
+   is (Localized.State_Label
+         (Context, Localized.Key ("incident", Incident_State'Image (State), "_incident"),
+          Incident_State_Label (State)));
+
+   function Service_Status_Label
+     (Context : Humanize.Contexts.Context;
+      Name    : String;
+      State   : Service_State)
+      return Humanize.Status.Text_Result
+   is (Localized.Named_Label
+         (Context, "system.named", Name, Service_State_Label (Context, State), Service_Status_Label (Name, State)));
+
+   function Health_Label
+     (Context : Humanize.Contexts.Context;
+      Name    : String;
+      State   : Health_State)
+      return Humanize.Status.Text_Result
+   is (Localized.Named_Label
+         (Context, "system.named", Name, Health_State_Label (Context, State), Health_Label (Name, State)));
+
+   function Readiness_Label
+     (Context : Humanize.Contexts.Context;
+      Name    : String;
+      State   : Readiness_State)
+      return Humanize.Status.Text_Result
+   is (Localized.Named_Label
+         (Context, "system.named", Name, Readiness_State_Label (Context, State), Readiness_Label (Name, State)));
+
+   function Component_Status_Label
+     (Context : Humanize.Contexts.Context;
+      Name    : String;
+      State   : Component_State)
+      return Humanize.Status.Text_Result
+   is (Localized.Named_Label
+         (Context, "system.named", Name, Component_State_Label (Context, State), Component_Status_Label (Name, State)));
+
+   function Check_Label
+     (Context : Humanize.Contexts.Context;
+      Name    : String;
+      State   : Check_State)
+      return Humanize.Status.Text_Result
+   is (Localized.Named_Label
+         (Context, "system.check_named", Name, Check_State_Label (Context, State), Check_Label (Name, State)));
+
+   function Incident_Label
+     (Context : Humanize.Contexts.Context;
+      Name    : String;
+      State   : Incident_State)
+      return Humanize.Status.Text_Result
+   is (Localized.Named_Label
+         (Context, "system.named", Name, Incident_State_Label (Context, State), Incident_Label (Name, State)));
+
+   function Component_Count_Label
+     (Context : Humanize.Contexts.Context;
+      Count   : Natural)
+      return Humanize.Status.Text_Result
+   is (Localized.Count_Label (Context, "system.count.components", Count, Component_Count_Label (Count)));
+
+   function Check_Count_Label
+     (Context : Humanize.Contexts.Context;
+      Count   : Natural)
+      return Humanize.Status.Text_Result
+   is (Localized.Count_Label (Context, "system.count.checks", Count, Check_Count_Label (Count)));
+
+   function Incident_Count_Label
+     (Context : Humanize.Contexts.Context;
+      Count   : Natural)
+      return Humanize.Status.Text_Result
+   is (Localized.Count_Label (Context, "system.count.incidents", Count, Incident_Count_Label (Count)));
+
+   function Uptime_Label
+     (Context : Humanize.Contexts.Context;
+      Percent_Text : String)
+      return Humanize.Status.Text_Result
+   is (Localized.Text_Label (Context, "system.uptime", "measure", Percent_Text, Uptime_Label (Percent_Text)));
+
+   function Latency_Label
+     (Context : Humanize.Contexts.Context;
+      Latency_Text : String)
+      return Humanize.Status.Text_Result
+   is (Localized.Text_Label (Context, "system.latency", "measure", Latency_Text, Latency_Label (Latency_Text)));
+
+   function Maintenance_Window_Label
+     (Context : Humanize.Contexts.Context;
+      Window_Text : String)
+      return Humanize.Status.Text_Result
+   is (Localized.Text_Label
+         (Context, "system.maintenance_window", "time", Window_Text,
+          Maintenance_Window_Label (Window_Text)));
+
+   function Last_Checked_Label
+     (Context : Humanize.Contexts.Context;
+      Time_Text : String)
+      return Humanize.Status.Text_Result
+   is (Localized.Text_Label (Context, "system.last_checked", "time", Time_Text, Last_Checked_Label (Time_Text)));
+
+   function HTTP_Status_Class_Label
+     (Context : Humanize.Contexts.Context;
+      Class   : HTTP_Status_Class)
+      return Humanize.Status.Text_Result
+   is (Localized.State_Label
+         (Context, Localized.Key ("http", HTTP_Status_Class'Image (Class), "_status"),
+          HTTP_Status_Class_Label (Class)));
+
+   function Process_Exit_Label
+     (Context : Humanize.Contexts.Context;
+      Code    : Process_Exit_Code)
+      return Humanize.Status.Text_Result
+   is (Localized.Exit_Label (Context, Code, Process_Exit_Label (Code)));
 
 end Humanize.System_Status;

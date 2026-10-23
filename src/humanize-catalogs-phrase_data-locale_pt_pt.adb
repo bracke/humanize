@@ -101,5 +101,16 @@ begin
      & P ("database.database_replication_lagging", "replicação da base de dados atrasada")
      & P ("database.database_backup_running", "cópia de segurança da base de dados em curso")
      & P ("database.database_backup_failed", "falha na cópia de segurança da base de dados")
-     & P ("operation.retrying", "a tentar novamente");
+     & P ("operation.retrying", "a tentar novamente")
+     & P ("system.service.unknown", "estado do serviço desconhecido")
+     & P ("system.readiness.starting", "a iniciar")
+     & P ("system.readiness.draining", "a drenar")
+     & P ("system.component.starting", "a iniciar")
+     & P ("system.component.stopping", "a parar")
+     & P ("system.component.restarting", "a reiniciar")
+     & P ("system.component.unknown", "estado do componente desconhecido")
+     & P ("system.check.failing", "a falhar")
+     & P ("system.check.unknown", "estado da verificação desconhecido")
+     & P ("system.incident.investigating", "a investigar")
+     & P ("system.incident.monitoring", "a monitorizar");
 end Locale_Pt_Pt;

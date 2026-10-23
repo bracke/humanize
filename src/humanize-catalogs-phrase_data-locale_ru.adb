@@ -453,5 +453,75 @@ begin
      & P ("operation.stale_run", "{name} – не обновлялось {time}")
      & P ("summary.skipped", "пропущено: {count}")
      & P ("summary.retried", "повторено: {count}")
-     & P ("summary.canceled", "отменено: {count}");
+     & P ("summary.canceled", "отменено: {count}")
+     & P ("system.service.operational", "работает")
+     & P ("system.service.degraded", "снижена производительность")
+     & P ("system.service.partial_outage", "частичный сбой")
+     & P ("system.service.major_outage", "серьёзный сбой")
+     & P ("system.service.maintenance", "на обслуживании")
+     & P ("system.service.unknown", "статус сервиса неизвестен")
+     & P ("system.health.healthy", "в норме")
+     & P ("system.health.warning", "предупреждение")
+     & P ("system.health.critical", "критическое состояние")
+     & P ("system.health.unavailable", "недоступен")
+     & P ("system.health.unknown_health", "состояние неизвестно")
+     & P ("system.readiness.ready", "готов")
+     & P ("system.readiness.not_ready", "не готов")
+     & P ("system.readiness.starting", "запускается")
+     & P ("system.readiness.draining", "вывод из работы")
+     & P ("system.readiness.stopped", "остановлен")
+     & P ("system.readiness.unknown_readiness", "готовность неизвестна")
+     & P ("system.component.online", "в сети")
+     & P ("system.component.offline", "не в сети")
+     & P ("system.component.starting", "запускается")
+     & P ("system.component.stopping", "останавливается")
+     & P ("system.component.restarting", "перезапускается")
+     & P ("system.component.unknown", "статус компонента неизвестен")
+     & P ("system.check.passing", "пройдена")
+     & P ("system.check.failing", "не пройдена")
+     & P ("system.check.warning", "предупреждение")
+     & P ("system.check.skipped", "пропущена")
+     & P ("system.check.timed_out", "превышено время ожидания")
+     & P ("system.check.unknown", "статус проверки неизвестен")
+     & P ("system.incident.investigating", "расследуется")
+     & P ("system.incident.identified", "причина установлена")
+     & P ("system.incident.monitoring", "наблюдение")
+     & P ("system.incident.resolved", "устранено")
+     & P ("system.incident.scheduled_maintenance", "плановое обслуживание")
+     & P ("system.named", "{name}: {state}")
+     & P ("system.check_named", "проверка {name}: {state}")
+     & P ("system.count.components",
+          "{count, plural, =0 {нет компонентов} one {{count} "
+          & "компонент} few {{count} компонента} many {{count} "
+          & "компонентов} other {{count} компонента}}")
+     & P ("system.count.checks",
+          "{count, plural, =0 {нет проверок} one {{count} "
+          & "проверка} few {{count} проверки} many {{count} "
+          & "проверок} other {{count} проверки}}")
+     & P ("system.count.incidents",
+          "{count, plural, =0 {нет инцидентов} one {{count} "
+          & "инцидент} few {{count} инцидента} many {{count} "
+          & "инцидентов} other {{count} инцидента}}")
+     & P ("system.uptime", "время безотказной работы: {measure}")
+     & P ("system.latency", "задержка: {measure}")
+     & P ("system.maintenance_window", "окно обслуживания: {time}")
+     & P ("system.last_checked", "последняя проверка: {time}")
+     & P ("system.http.informational", "информационный ответ")
+     & P ("system.http.successful", "успешный ответ")
+     & P ("system.http.redirection", "перенаправление")
+     & P ("system.http.client_error", "ошибка клиента")
+     & P ("system.http.server_error", "ошибка сервера")
+     & P ("system.exit.success", "код выхода {code}: успех")
+     & P ("system.exit.failure", "код выхода {code}: сбой")
+     & P ("system.exit.usage_error", "код выхода {code}: ошибка использования")
+     & P ("system.exit.not_executable",
+          "код выхода {code}: команда не является "
+          & "исполняемой")
+     & P ("system.exit.not_found", "код выхода {code}: команда не найдена")
+     & P ("system.exit.invalid_argument",
+          "код выхода {code}: недопустимый аргумент "
+          & "exit")
+     & P ("system.exit.signal",
+          "код выхода {code}: завершение по сигналу "
+          & "{signal}");
 end Locale_Ru;
