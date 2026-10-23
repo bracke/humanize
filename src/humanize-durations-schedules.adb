@@ -2,8 +2,10 @@ with Ada.Strings.Unbounded;
 
 with Humanize.Bounded_Text;
 with Humanize.Durations.Schedule_Data;
+with Humanize.I18N_Rendering;
 with Humanize.Locales;
 with Humanize.Message_Keys;
+with Humanize.Selections;
 
 package body Humanize.Durations.Schedules is
 
@@ -34,7 +36,6 @@ package body Humanize.Durations.Schedules is
       Unit    : Recurrence_Unit)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Unit_Text : constant String :=
         (case Unit is
             when Every_Second => "second",
@@ -45,13 +46,18 @@ package body Humanize.Durations.Schedules is
             when Every_Month => "month",
             when Every_Quarter => "quarter",
             when Every_Year => "year");
-   begin
-      return
+      English : constant Humanize.Status.Text_Result :=
         (Status => Humanize.Status.Ok,
          Text => To_Unbounded_String
            ("every " & No_Space (Positive'Image (Every)) & " "
             & Unit_Text & (if Every = 1 then "" else "s")),
          Key => Humanize.Message_Keys.No_Message);
+   begin
+      return Humanize.I18N_Rendering.Phrase_Or
+        (Context,
+         Humanize.Selections.With_Arg
+           (Humanize.Selections.Phrase ("recurrence." & Unit_Text), "every", Long_Long_Integer (Every)),
+         English);
    end Recurrence;
 
    function Is_Norwegian (Locale : String) return Boolean

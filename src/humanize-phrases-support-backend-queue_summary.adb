@@ -9,13 +9,13 @@ function Queue_Summary
       Plural    : String := "items")
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Details : Unbounded_String;
 begin
       if Queued = 0 and then Running = 0
         and then Failed = 0 and then Completed = 0
       then
-         return Ok_Text ("queue empty");
+         return Humanize.I18N_Rendering.Phrase_Or
+           (Context, Sel.Phrase ("queue_summary.empty"), Ok_Text ("queue empty"));
       end if;
 
       if Queued > 0 then
@@ -34,5 +34,29 @@ begin
          Append_Segment (Details, Natural_Text (Completed) & " complete");
       end if;
 
-      return Ok_Text ("queue: " & To_String (Details));
+      declare
+         Parts   : Unbounded_String;
+         Missing : Boolean := False;
+
+         procedure Add (Name : String; Count : Natural; Singular, Plural : String := "") is
+            Text : constant String := Segment (Context, Name, Count, 0, Singular, Plural);
+         begin
+            if Count = 0 then
+               return;
+            elsif Text = "" then
+               Missing := True;
+            elsif Length (Parts) > 0 then
+               Append (Parts, "|");
+            end if;
+            Append (Parts, Text);
+         end Add;
+      begin
+         Add ("queued", Queued, Singular, Plural);
+         Add ("running", Running);
+         Add ("failed", Failed);
+         Add ("complete", Completed);
+         return Summary_Phrase
+           (Context, Sel.Phrase ("queue_summary"), To_String (Parts), Missing,
+            Ok_Text ("queue: " & To_String (Details)));
+      end;
 end Queue_Summary;

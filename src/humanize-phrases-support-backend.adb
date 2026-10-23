@@ -3,12 +3,19 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Humanize.Decimal_Images;
 with Humanize.Bounded_Text;
+with Humanize.I18N_Rendering;
+with Humanize.Selections;
 
 package body Humanize.Phrases.Support.Backend is
 
    use type Humanize.Bytes.Byte_Count;
    use Humanize.Locales;
    use type Humanize.Status.Status_Code;
+
+   --  A phrase template's arguments, numbers as ASCII digits.
+   package Sel renames Humanize.Selections;
+   function Num (S : Sel.Message_Selection; Name : String; Value : Integer) return Sel.Message_Selection is
+     (Sel.With_Arg (S, Name, Long_Long_Integer (Value)));
 
    function Ok_Text (Text : String) return Humanize.Status.Text_Result
       renames Humanize.Bounded_Text.Ok_Text;
@@ -540,6 +547,55 @@ package body Humanize.Phrases.Support.Backend is
       end if;
    end Completion_Segment;
 
+   --  A summary segment outside English: the phrase "summary.<Name>" on the
+   --  counts and the caller's nouns; "" where the locale has none.
+   function Segment
+     (Context  : Humanize.Contexts.Context;
+      Name     : String;
+      Count    : Natural;
+      Total    : Natural := 0;
+      Singular : String := "";
+      Plural   : String := "")
+      return String
+   is
+      Text : constant Humanize.Status.Text_Result :=
+        Humanize.I18N_Rendering.Render
+          (Context,
+           Sel.With_Arg
+             (Sel.With_Arg (Num (Num (Sel.Phrase ("summary." & Name), "count", Count), "total", Total),
+                            "one", Singular),
+              "other", Plural));
+   begin
+      return (if Text.Status = Humanize.Status.Ok then To_String (Text.Text) else "");
+   end Segment;
+
+   --  Segments (each "" or a rendered part) joined by the locale's unit list,
+   --  inside the named frame phrase; English where any part is missing.
+   function Summary_Phrase
+     (Context  : Humanize.Contexts.Context;
+      Frame    : Sel.Message_Selection;
+      Segments : String;
+      Missing  : Boolean;
+      English  : Humanize.Status.Text_Result)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      if Missing or else Language_Code (Humanize.Contexts.Locale (Context)) in "en" | "" then
+         return English;
+      end if;
+      declare
+         Joined : constant Humanize.Status.Text_Result :=
+           Humanize.I18N_Rendering.Render
+             (Context, Sel.With_Arg (Sel.Phrase ("summary.join"), "value", Segments));
+      begin
+         if Joined.Status /= Humanize.Status.Ok then
+            return English;
+         end if;
+         return Humanize.I18N_Rendering.Phrase_Or
+           (Context, Sel.With_Arg (Frame, "details", To_String (Joined.Text)), English);
+      end;
+   end Summary_Phrase;
+
    function Domain_Label
      (Domain : Summary_Domain)
       return Humanize.Status.Text_Result
@@ -567,7 +623,6 @@ package body Humanize.Phrases.Support.Backend is
       Plural    : String := "items")
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Details : Unbounded_String :=
         To_Unbounded_String
           (Completion_Segment (Completed, Total, Singular, Plural));
@@ -576,9 +631,22 @@ package body Humanize.Phrases.Support.Backend is
          Append_Segment (Details, Failure_Segment (Failed));
       end if;
 
-      return Ok_Text
-        (Domain_Text (Domain) & " " & Summary_State_Text (State) & ": "
-         & To_String (Details));
+      declare
+         Done : constant String :=
+           (if Total = 0 and then Completed = 0 then Segment (Context, "none", 0, 0, Singular, Plural)
+            elsif Total = 0 then Segment (Context, "completed", Completed, 0, Singular, Plural)
+            else Segment (Context, "completed_of", Completed, Total, Singular, Plural));
+         Fail : constant String := (if Failed > 0 then Segment (Context, "failed", Failed) else "");
+      begin
+         return Summary_Phrase
+           (Context,
+            Sel.With_Arg
+              (Sel.With_Arg (Sel.Phrase ("domain_summary"), "domain", Domain_Text (Domain)),
+               "state", Summary_State_Text (State)),
+            Done & (if Failed > 0 then "|" & Fail else ""),
+            Done = "" or else (Failed > 0 and then Fail = ""),
+            Ok_Text (Domain_Text (Domain) & " " & Summary_State_Text (State) & ": " & To_String (Details)));
+      end;
    end Domain_Summary;
 
    function Queue_Summary
@@ -596,28 +664,7 @@ package body Humanize.Phrases.Support.Backend is
      (Context : Humanize.Contexts.Context;
       Hits    : Natural;
       Misses  : Natural)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Total : constant Natural := Hits + Misses;
-      Rate  : Natural := 0;
-   begin
-      if Total = 0 then
-         return Ok_Text ("cache: no requests");
-      end if;
-
-      Rate :=
-        Natural
-          ((Long_Long_Integer (Hits) * 100
-            + Long_Long_Integer (Total) / 2)
-           / Long_Long_Integer (Total));
-
-      return Ok_Text
-        ("cache: " & Natural_Text (Hits) & " "
-         & Unit_Noun (Hits, "hit", "hits") & ", "
-         & Natural_Text (Misses) & " " & Unit_Noun (Misses, "miss", "misses")
-         & ", " & Natural_Text (Rate) & "% hit rate");
-   end Cache_Summary;
+      return Humanize.Status.Text_Result is separate;
 
    function Sync_Summary
      (Context   : Humanize.Contexts.Context;
@@ -663,6 +710,21 @@ package body Humanize.Phrases.Support.Backend is
         (Context, Export_Domain, Summary_Running, Completed, Total, Failed,
          Singular, Plural);
    end Export_Summary;
+
+   --  A comparison phrase on the two labels and the difference between them;
+   --  English where the locale has no translation.
+   function Compared
+     (Context                     : Humanize.Contexts.Context;
+      Name                        : String;
+      Current, Baseline, Quantity : String;
+      English                     : String)
+      return Humanize.Status.Text_Result
+   is (Humanize.I18N_Rendering.Phrase_Or
+         (Context,
+          Sel.With_Arg
+            (Sel.With_Arg (Sel.With_Arg (Sel.Phrase (Name), "current", Current), "baseline", Baseline),
+             "quantity", Quantity),
+          Ok_Text (English)));
 
    function Comparison_Unit_Noun
      (Value    : Long_Float;
@@ -1263,151 +1325,47 @@ package body Humanize.Phrases.Support.Backend is
    function Backup_Phrase
      (Context : Humanize.Contexts.Context;
       Status  : Backup_Status)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      case Status is
-         when Backup_Running =>
-            return Ok_Text ("backup running");
-         when Backup_Completed =>
-            return Ok_Text ("backup completed");
-         when Backup_Failed =>
-            return Ok_Text ("backup failed");
-         when Backup_Stale =>
-            return Ok_Text ("backup stale");
-      end case;
-   end Backup_Phrase;
+      return Humanize.Status.Text_Result is separate;
 
    function Incident_Phrase
      (Context : Humanize.Contexts.Context;
       Status  : Incident_Status)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      case Status is
-         when Incident_Investigating =>
-            return Ok_Text ("investigating incident");
-         when Incident_Identified =>
-            return Ok_Text ("incident identified");
-         when Incident_Mitigated =>
-            return Ok_Text ("incident mitigated");
-         when Incident_Resolved =>
-            return Ok_Text ("incident resolved");
-      end case;
-   end Incident_Phrase;
+      return Humanize.Status.Text_Result is separate;
 
    function Release_Phrase
      (Context : Humanize.Contexts.Context;
       Status  : Release_Status)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      case Status is
-         when Release_Drafting =>
-            return Ok_Text ("release drafting");
-         when Release_Ready =>
-            return Ok_Text ("release ready");
-         when Release_Published =>
-            return Ok_Text ("release published");
-         when Release_Rolled_Back =>
-            return Ok_Text ("release rolled back");
-      end case;
-   end Release_Phrase;
+      return Humanize.Status.Text_Result is separate;
 
    function Audit_Phrase
      (Context : Humanize.Contexts.Context;
       Status  : Audit_Status)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      case Status is
-         when Audit_Created => return Ok_Text ("audit entry created");
-         when Audit_Updated => return Ok_Text ("audit entry updated");
-         when Audit_Deleted => return Ok_Text ("audit entry deleted");
-         when Audit_Restored => return Ok_Text ("audit entry restored");
-      end case;
-   end Audit_Phrase;
+      return Humanize.Status.Text_Result is separate;
 
    function Feature_Flag_Phrase
      (Context : Humanize.Contexts.Context;
       Status  : Feature_Flag_Status)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      case Status is
-         when Flag_Enabled => return Ok_Text ("feature flag enabled");
-         when Flag_Disabled => return Ok_Text ("feature flag disabled");
-         when Flag_Rolling_Out => return Ok_Text ("feature flag rolling out");
-         when Flag_Rolled_Back => return Ok_Text ("feature flag rolled back");
-      end case;
-   end Feature_Flag_Phrase;
+      return Humanize.Status.Text_Result is separate;
 
    function Webhook_Phrase
      (Context : Humanize.Contexts.Context;
       Status  : Webhook_Status)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      case Status is
-         when Webhook_Pending => return Ok_Text ("webhook pending");
-         when Webhook_Delivered => return Ok_Text ("webhook delivered");
-         when Webhook_Failed => return Ok_Text ("webhook failed");
-         when Webhook_Retrying => return Ok_Text ("webhook retrying");
-      end case;
-   end Webhook_Phrase;
+      return Humanize.Status.Text_Result is separate;
 
    function API_Key_Phrase
      (Context : Humanize.Contexts.Context;
       Status  : API_Key_Status)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      case Status is
-         when API_Key_Active => return Ok_Text ("API key active");
-         when API_Key_Revoked => return Ok_Text ("API key revoked");
-         when API_Key_Expired => return Ok_Text ("API key expired");
-         when API_Key_Rotated => return Ok_Text ("API key rotated");
-      end case;
-   end API_Key_Phrase;
+      return Humanize.Status.Text_Result is separate;
 
    function Quota_Phrase
      (Context : Humanize.Contexts.Context;
       Status  : Quota_Status)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      case Status is
-         when Quota_Available => return Ok_Text ("quota available");
-         when Quota_Near_Limit => return Ok_Text ("quota near limit");
-         when Quota_Exceeded => return Ok_Text ("quota exceeded");
-         when Quota_Reset => return Ok_Text ("quota reset");
-      end case;
-   end Quota_Phrase;
+      return Humanize.Status.Text_Result is separate;
 
    function Invoice_Phrase
      (Context : Humanize.Contexts.Context;
       Status  : Invoice_Status)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      case Status is
-         when Invoice_Draft => return Ok_Text ("invoice draft");
-         when Invoice_Sent => return Ok_Text ("invoice sent");
-         when Invoice_Paid => return Ok_Text ("invoice paid");
-         when Invoice_Refunded => return Ok_Text ("invoice refunded");
-         when Invoice_Overdue => return Ok_Text ("invoice overdue");
-         when Refund_Failed => return Ok_Text ("refund failed");
-      end case;
-   end Invoice_Phrase;
+      return Humanize.Status.Text_Result is separate;
 
    function Database_Phrase
      (Context : Humanize.Contexts.Context;
@@ -1422,64 +1380,32 @@ package body Humanize.Phrases.Support.Backend is
       Removed  : Natural;
       Singular : String := "field";
       Plural   : String := "fields")
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Total : constant Natural := Changed + Added + Removed;
-   begin
-      return Ok_Text
-        (Natural_Text (Total) & " "
-         & (if Total = 1 then Singular else Plural) & ": "
-         & Natural_Text (Changed) & " changed, "
-         & Natural_Text (Added) & " added, "
-         & Natural_Text (Removed) & " removed");
-   end Field_Change_Summary;
+      return Humanize.Status.Text_Result is separate;
 
    function Field_Diff_Summary
      (Context : Humanize.Contexts.Context;
       Field   : String;
       Before  : String;
       After   : String)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text
-        (Field & " changed from " & Before & " to " & After);
-   end Field_Diff_Summary;
+      return Humanize.Status.Text_Result is separate;
 
    function Field_Added_Summary
      (Context : Humanize.Contexts.Context;
       Field   : String;
       Value   : String)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text (Field & " added as " & Value);
-   end Field_Added_Summary;
+      return Humanize.Status.Text_Result is separate;
 
    function Field_Removed_Summary
      (Context : Humanize.Contexts.Context;
       Field   : String;
       Value   : String)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text (Field & " removed (was " & Value & ")");
-   end Field_Removed_Summary;
+      return Humanize.Status.Text_Result is separate;
 
    function Field_Unchanged_Summary
      (Context : Humanize.Contexts.Context;
       Field   : String;
       Value   : String)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text (Field & " unchanged at " & Value);
-   end Field_Unchanged_Summary;
+      return Humanize.Status.Text_Result is separate;
 
    procedure Status_Phrase_Into
      (Context : Humanize.Contexts.Context;

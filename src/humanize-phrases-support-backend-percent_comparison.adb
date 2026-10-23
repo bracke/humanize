@@ -23,14 +23,16 @@ begin
       end if;
 
       if Difference = 0.0 then
-         return Ok_Text (Current_Label & " is equal to " & Baseline_Label);
+         return Compared
+           (Context, "percent_comparison.equal", Current_Label, Baseline_Label, "",
+            Current_Label & " is equal to " & Baseline_Label);
       elsif Difference > 0.0 then
-         return Ok_Text
-           (Current_Label & " is " & Result_Text (Quantity)
-            & " higher than " & Baseline_Label);
+         return Compared
+           (Context, "percent_comparison.higher", Current_Label, Baseline_Label, Result_Text (Quantity),
+            Current_Label & " is " & Result_Text (Quantity) & " higher than " & Baseline_Label);
       else
-         return Ok_Text
-           (Current_Label & " is " & Result_Text (Quantity)
-            & " lower than " & Baseline_Label);
+         return Compared
+           (Context, "percent_comparison.lower", Current_Label, Baseline_Label, Result_Text (Quantity),
+            Current_Label & " is " & Result_Text (Quantity) & " lower than " & Baseline_Label);
       end if;
 end Percent_Comparison;

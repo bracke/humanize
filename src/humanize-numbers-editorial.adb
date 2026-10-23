@@ -2,6 +2,8 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Humanize.Bounded_Text;
 with Humanize.Decimal_Images;
+with Humanize.I18N_Rendering;
+with Humanize.Selections;
 
 package body Humanize.Numbers.Editorial is
    function Natural_Text (Value : Natural) return String
@@ -223,11 +225,15 @@ package body Humanize.Numbers.Editorial is
       Include_Symbol : Boolean := True)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Number : constant String := Editorial_Decimal (Value, Number_Style);
    begin
-      return Ok_Text
-        (Number & (if Include_Symbol then "%" else " percent"));
+      return Humanize.I18N_Rendering.Phrase_Or
+        (Context,
+         Humanize.Selections.With_Arg
+           (Humanize.Selections.Phrase
+              (if Include_Symbol then "editorial_percent.symbol" else "editorial_percent.word"),
+            "value", Number),
+         Ok_Text (Number & (if Include_Symbol then "%" else " percent")));
    end Editorial_Percent;
 
    procedure Editorial_Percent_Into

@@ -753,6 +753,18 @@ package body Humanize.Units.Support is
       end if;
    end Format_Voltage;
 
+   --  Value in a CLDR unit, as the measure argument of the named phrase
+   --  outside English; English writes the value and English_Suffix.
+   function Measured_Phrase
+     (Context        : Humanize.Contexts.Context;
+      Name           : String;
+      Value          : Long_Float;
+      English_Suffix : String;
+      Unit           : String;
+      Options        : Humanize.Numbers.Number_Options)
+      return Humanize.Status.Text_Result
+      is separate;
+
    function Format_Resolution
      (Context : Humanize.Contexts.Context;
       Width   : Natural;
@@ -967,19 +979,7 @@ package body Humanize.Units.Support is
       Options               : Humanize.Numbers.Number_Options :=
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      if abs Operations_Per_Second >= 1_000_000.0 then
-         return Compound
-           (Operations_Per_Second / 1_000_000.0, "M ops/s", Options);
-      elsif abs Operations_Per_Second >= 1_000.0 then
-         return Compound
-           (Operations_Per_Second / 1_000.0, "k ops/s", Options);
-      else
-         return Compound (Operations_Per_Second, "ops/s", Options);
-      end if;
-   end Format_Database_Throughput;
+      is separate;
 
    function Format_CPU_Load
      (Context : Humanize.Contexts.Context;
@@ -988,9 +988,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Percent, "% CPU", Options);
+      return Measured_Phrase (Context, "cpu_load", Percent, "% CPU", "percent", Options);
    end Format_CPU_Load;
 
    function Format_Battery
@@ -1000,9 +999,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Percent, "% battery", Options);
+      return Measured_Phrase (Context, "battery", Percent, "% battery", "percent", Options);
    end Format_Battery;
 
    function Format_Screen_Size
@@ -1012,9 +1010,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Inches, "in screen", Options);
+      return Measured_Phrase (Context, "screen_size", Inches, "in screen", "inch", Options);
    end Format_Screen_Size;
 
    function Format_Typography_Size
@@ -1034,17 +1031,7 @@ package body Humanize.Units.Support is
       Options : Humanize.Numbers.Number_Options :=
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      if abs IOPS >= 1_000_000.0 then
-         return Compound (IOPS / 1_000_000.0, "M IOPS", Options);
-      elsif abs IOPS >= 1_000.0 then
-         return Compound (IOPS / 1_000.0, "k IOPS", Options);
-      else
-         return Compound (IOPS, "IOPS", Options);
-      end if;
-   end Format_IOPS;
+      is separate;
 
    function Format_Audio_Level
      (Context  : Humanize.Contexts.Context;
@@ -1087,9 +1074,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Hertz, "Hz refresh", Options);
+      return Measured_Phrase (Context, "refresh_rate", Hertz, "Hz refresh", "hertz", Options);
    end Format_Refresh_Rate;
 
    function Format_Luminance

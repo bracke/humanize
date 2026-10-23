@@ -85,6 +85,9 @@ package body Humanize.Catalogs.Core_Data is
      & " pixel_per_inch {{value, unit, pixel-per-inch/unit-width-short}}"
      & " dot_per_inch {{value, unit, dot-per-inch/unit-width-short}}"
      & " candela_per_square_meter {{value, unit, candela/unit-width-short/square-meter}}"
+     & " percent {{value, unit, percent/unit-width-short}}"
+     & " hertz {{value, unit, hertz/unit-width-short}}"
+     & " inch {{value, unit, inch/unit-width-short}}"
      & " other {}}" & LF
      --  An SI symbol CLDR has no unit for, after the localized number.
      & "und.humanize.unit.symbol = {value, number} {suffix}" & LF
@@ -109,6 +112,14 @@ package body Humanize.Catalogs.Core_Data is
      & "und.humanize.number.plain = {value, number}" & LF
      --  The generic phrase key; each phrase has its own key below it.
      & "und.humanize.phrase = {value}" & LF
+     --  A calendar difference's parts: CLDR's long units and unit list.
+     & "und.humanize.phrase.calendar_difference.part = {unit, select,"
+     & " year {{value, unit, year/unit-width-long}}"
+     & " month {{value, unit, month/unit-width-long}}"
+     & " day {{value, unit, day/unit-width-long}}"
+     & " other {}}" & LF
+     & "und.humanize.phrase.calendar_difference.join = {value, list, unit}" & LF
+     & "und.humanize.phrase.summary.join = {value, list, unit}" & LF
      --  An amount in a currency CLDR knows, by the locale's currency pattern
      --  and symbol (one branch per ISO code in i18n's currency data).
      & "und.humanize.number.currency = {suffix, select,"

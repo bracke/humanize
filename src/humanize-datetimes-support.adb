@@ -1333,54 +1333,7 @@ package body Humanize.Datetimes.Support is
       Options : Calendar_Difference_Options :=
         Default_Calendar_Difference_Options)
       return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      use Ada.Strings.Unbounded;
-      Raw   : Unbounded_String;
-      Count : Natural := 0;
-   begin
-      declare
-         Diff : constant Calendar_Difference_Result :=
-           Calendar_Difference (First, Last);
-      begin
-         if Diff.Direction = Same_Date then
-            if Options.Include_Zero then
-               return Ok_Text ("0 days");
-            else
-               return Ok_Text ("same day");
-            end if;
-         end if;
-
-         Append_Difference_Component
-           (Raw, Count, Diff.Years, "year", "years", Options);
-         Append_Difference_Component
-           (Raw, Count, Diff.Months, "month", "months", Options);
-         Append_Difference_Component
-           (Raw, Count, Diff.Days, "day", "days", Options);
-
-         declare
-            Phrase : constant String :=
-              (if Length (Raw) = 0 then "0 days"
-               else Join_Difference_Components (To_String (Raw)));
-         begin
-            if Options.Style = Calendar_Difference_Relative then
-               case Diff.Direction is
-                  when Same_Date =>
-                     return Ok_Text ("same day");
-                  when Future_Date =>
-                     return Ok_Text ("in " & Phrase);
-                  when Past_Date =>
-                     return Ok_Text (Phrase & " ago");
-               end case;
-            else
-               return Ok_Text (Phrase);
-            end if;
-         end;
-      end;
-   exception
-      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
-         return (Status => Humanize.Status.Invalid_Value, others => <>);
-   end Calendar_Difference_Label;
+      is separate;
 
    function Month_End (Item : Civil_Date_Time) return Civil_Date_Time is
      ((Year  => Item.Year,

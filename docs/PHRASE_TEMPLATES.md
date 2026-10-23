@@ -88,4 +88,83 @@ The English column is what the formatter writes in English, as a template.
 | `due.tomorrow` | days | `due tomorrow` |
 | `due.in` | days | `due in {days} days` |
 
+| `calendar_difference.same_day` | | `same day` |
+| `calendar_difference.zero` | | `0 days` |
+| `calendar_difference.future` | difference (CLDR units and list, rendered) | `in {difference}` |
+| `calendar_difference.past` | difference | `{difference} ago` |
+
 A calendar relation more than one year away is an ISO date in every locale.
+A calendar difference's parts come from CLDR in every locale
+(`calendar_difference.part`, `calendar_difference.join`); only the four keys
+above need a translation.
+
+## Measurements
+
+The measure argument is the value in CLDR's unit for the locale
+(`12,5 %`, `144 Hz`, `15,6 Zoll`), rendered.
+
+| Key | Arguments | English |
+|---|---|---|
+| `cpu_load` | measure | `{measure} CPU` |
+| `battery` | measure | `{measure} battery` |
+| `screen_size` | measure | `{measure} screen` |
+| `refresh_rate` | measure | `{measure} refresh` |
+| `editorial_percent.symbol` | value (decimal text) | `{value}%` |
+| `editorial_percent.word` | value | `{value} percent` |
+| `recurrence.<unit>`, unit second, minute, hour, day, week, month, quarter, year | every | `every {every} {every, plural, one {<unit>} other {<unit>s}}` |
+
+## Statuses
+
+Each key is `<domain>.<status>`, the status as the enumeration names it in
+lower case; the English is the phrase the formatter writes.
+
+| Domain | Statuses | English |
+|---|---|---|
+| `backup` | backup_running, backup_completed, backup_failed, backup_stale | `backup running`, ... |
+| `incident` | incident_investigating, incident_identified, incident_mitigated, incident_resolved | `investigating incident`, `incident identified`, ... |
+| `release` | release_drafting, release_ready, release_published, release_rolled_back | `release drafting`, ... |
+| `audit` | audit_created, audit_updated, audit_deleted, audit_restored | `audit entry created`, ... |
+| `feature_flag` | flag_enabled, flag_disabled, flag_rolling_out, flag_rolled_back | `feature flag enabled`, ... |
+| `webhook` | webhook_pending, webhook_delivered, webhook_failed, webhook_retrying | `webhook pending`, ... |
+| `api_key` | api_key_active, api_key_revoked, api_key_expired, api_key_rotated | `API key active`, ... |
+| `quota` | quota_available, quota_near_limit, quota_exceeded, quota_reset | `quota available`, ... |
+| `invoice` | invoice_draft, invoice_sent, invoice_paid, invoice_refunded, invoice_overdue, refund_failed | `invoice draft`, ..., `refund failed` |
+
+## Summaries and comparisons
+
+| Key | Arguments | English |
+|---|---|---|
+| `cache_summary.empty` | hits, misses, rate | `cache: no requests` |
+| `cache_summary` | hits, misses, rate | `cache: {hits} {hits, plural, one {hit} other {hits}}, {misses} {misses, plural, one {miss} other {misses}}, {rate}% hit rate` |
+| `field_change_summary` | total, changed, added, removed, one, other | `{total} {total, plural, one {{one}} other {{other}}}: {changed} changed, {added} added, {removed} removed` |
+| `field_diff` | field, before, after | `{field} changed from {before} to {after}` |
+| `field_added` | field, value | `{field} added as {value}` |
+| `field_removed` | field, value | `{field} removed (was {value})` |
+| `field_unchanged` | field, value | `{field} unchanged at {value}` |
+| `number_comparison.equal` | current, baseline, quantity | `{current} is equal to {baseline}` |
+| `number_comparison.higher` | current, baseline, quantity | `{current} is {quantity} higher than {baseline}` |
+| `number_comparison.lower` | current, baseline, quantity | `{current} is {quantity} lower than {baseline}` |
+| `percent_comparison.equal`, `.higher`, `.lower` | current, baseline, quantity (a rendered percentage) | as `number_comparison` |
+| `file_size_comparison.same` | current, baseline, quantity | `{current} is the same size as {baseline}` |
+| `file_size_comparison.larger` | current, baseline, quantity (a rendered size) | `{current} is {quantity} larger than {baseline}` |
+| `file_size_comparison.smaller` | current, baseline, quantity | `{current} is {quantity} smaller than {baseline}` |
+| `date_comparison.same` | current, baseline, quantity | `{current} is the same date as {baseline}` |
+| `date_comparison.after` | current, baseline, quantity (a rendered calendar difference) | `{current} is {quantity} after {baseline}` |
+| `date_comparison.before` | current, baseline, quantity | `{current} is {quantity} before {baseline}` |
+
+A queue or domain summary is segments joined by CLDR's unit list
+(`summary.join`), inside a frame. A summary with any untranslated segment stays
+English.
+
+| Key | Arguments | English |
+|---|---|---|
+| `queue_summary.empty` | | `queue empty` |
+| `queue_summary` | details | `queue: {details}` |
+| `domain_summary` | domain (queue, job, run, cache, sync, import, export), state (queued, running, waiting, paused, complete, failed, stale, skipped), details | `{domain} {state}: {details}` |
+| `summary.none` | count, total, one, other | `no {other}` |
+| `summary.completed` | count, total, one, other | `{count} {count, plural, one {{one}} other {{other}}} complete` |
+| `summary.completed_of` | count, total, one, other | `{count} of {total} {total, plural, one {{one}} other {{other}}} complete` |
+| `summary.failed` | count | `{count} failed` |
+| `summary.queued` | count, one, other | `{count} {count, plural, one {{one}} other {{other}}} queued` |
+| `summary.running` | count | `{count} running` |
+| `summary.complete` | count | `{count} complete` |

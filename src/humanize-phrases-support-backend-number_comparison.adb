@@ -11,7 +11,6 @@ function Number_Comparison
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Difference : constant Long_Float := Current - Baseline;
       Quantity   : constant String :=
         With_Optional_Unit
@@ -22,14 +21,16 @@ function Number_Comparison
            Difference, Unit_Singular, Unit_Plural);
 begin
       if Difference = 0.0 then
-         return Ok_Text (Current_Label & " is equal to " & Baseline_Label);
+         return Compared
+           (Context, "number_comparison.equal", Current_Label, Baseline_Label, "",
+            Current_Label & " is equal to " & Baseline_Label);
       elsif Difference > 0.0 then
-         return Ok_Text
-           (Current_Label & " is " & Quantity & " higher than "
-            & Baseline_Label);
+         return Compared
+           (Context, "number_comparison.higher", Current_Label, Baseline_Label, Quantity,
+            Current_Label & " is " & Quantity & " higher than " & Baseline_Label);
       else
-         return Ok_Text
-           (Current_Label & " is " & Quantity & " lower than "
-            & Baseline_Label);
+         return Compared
+           (Context, "number_comparison.lower", Current_Label, Baseline_Label, Quantity,
+            Current_Label & " is " & Quantity & " lower than " & Baseline_Label);
       end if;
 end Number_Comparison;

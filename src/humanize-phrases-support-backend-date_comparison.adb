@@ -29,8 +29,9 @@ begin
               + Reference.Second));
 
       if Value_Time = Ref_Time then
-         return Ok_Text
-           (Value_Label & " is the same date as " & Reference_Label);
+         return Compared
+           (Context, "date_comparison.same", Value_Label, Reference_Label, "",
+            Value_Label & " is the same date as " & Reference_Label);
       elsif Value_Time > Ref_Time then
          Difference :=
            Humanize.Datetimes.Calendar_Difference_Label
@@ -38,9 +39,9 @@ begin
          if Difference.Status /= Humanize.Status.Ok then
             return Difference;
          end if;
-         return Ok_Text
-           (Value_Label & " is " & Result_Text (Difference)
-            & " after " & Reference_Label);
+         return Compared
+           (Context, "date_comparison.after", Value_Label, Reference_Label, Result_Text (Difference),
+            Value_Label & " is " & Result_Text (Difference) & " after " & Reference_Label);
       else
          Difference :=
            Humanize.Datetimes.Calendar_Difference_Label
@@ -48,9 +49,9 @@ begin
          if Difference.Status /= Humanize.Status.Ok then
             return Difference;
          end if;
-         return Ok_Text
-           (Value_Label & " is " & Result_Text (Difference)
-            & " before " & Reference_Label);
+         return Compared
+           (Context, "date_comparison.before", Value_Label, Reference_Label, Result_Text (Difference),
+            Value_Label & " is " & Result_Text (Difference) & " before " & Reference_Label);
       end if;
 exception
       when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
