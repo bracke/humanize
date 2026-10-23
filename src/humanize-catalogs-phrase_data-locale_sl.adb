@@ -493,5 +493,54 @@ begin
      & P ("system.exit.not_executable", "izhodna koda {code}: ukaza ni mogoče izvesti")
      & P ("system.exit.not_found", "izhodna koda {code}: ukaza ni mogoče najti")
      & P ("system.exit.invalid_argument", "izhodna koda {code}: neveljaven argument ukaza exit")
-     & P ("system.exit.signal", "izhodna koda {code}: prekinjeno s signalom {signal}");
+     & P ("system.exit.signal", "izhodna koda {code}: prekinjeno s signalom {signal}")
+     & P ("validation.problem.required", "{field}: obvezno polje")
+     & P ("validation.problem.minimum", "{field}: vrednost je pod minimumom")
+     & P ("validation.problem.maximum", "{field}: vrednost je nad maksimumom")
+     & P ("validation.problem.range", "{field}: vrednost je zunaj obsega")
+     & P ("validation.problem.pattern", "{field}: vrednost se ne ujema z vzorcem")
+     & P ("validation.problem.choice", "{field}: vrednost mora biti ena od dovoljenih možnosti")
+     & P ("validation.problem.dependency", "{field}: je odvisno od drugega polja")
+     & P ("validation.problem.custom", "{field}: neveljavna vrednost")
+     & P ("validation.constraint.no_relation", "{field}: neveljavna vrednost, pričakovano: {value}")
+     & P ("validation.constraint.less_than", "{field}: vrednost mora biti manjša od {value}")
+     & P ("validation.constraint.less_or_equal", "{field}: vrednost je lahko največ {value}")
+     & P ("validation.constraint.greater_than", "{field}: vrednost mora biti večja od {value}")
+     & P ("validation.constraint.greater_or_equal", "{field}: vrednost mora biti vsaj {value}")
+     & P ("validation.constraint.equal_to", "{field}: vrednost mora biti enaka {value}")
+     & P ("validation.constraint.not_equal_to", "{field}: vrednost ne sme biti enaka {value}")
+     & P ("validation.constraint.before_field", "{field}: vrednost mora biti pred {value}")
+     & P ("validation.constraint.after_field", "{field}: vrednost mora biti po {value}")
+     & P ("validation.choices", "{field}: dovoljene vrednosti: {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, vneseno {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, ponoven poskus čez {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: iskanje DNS ni uspelo")
+     & P ("net_diagnostic.tcp", "{endpoint}: povezava TCP ni uspela")
+     & P ("net_diagnostic.tls", "{endpoint}: napaka potrdila TLS")
+     & P ("net_diagnostic.http", "{endpoint}: zahteva HTTP ni uspela")
+     & P ("net_diagnostic.proxy", "{endpoint}: napaka posredniškega strežnika")
+     & P ("net_diagnostic.timeout", "{endpoint}: časovna omejitev je potekla")
+     & P ("net_diagnostic.reset", "{endpoint}: povezava je bila prekinjena")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: napaka omrežja")
+     & P ("progress.state.not_started", "ni začeto")
+     & P ("progress.state.running", "poteka")
+     & P ("progress.state.stalled", "zastalo")
+     & P ("progress.state.retrying", "ponovni poskus")
+     & P ("progress.state.complete", "končano")
+     & P ("progress.state.failed", "ni uspelo")
+     & P ("progress.of", "{subject}: končano {done} od {total} ({percent} %), {state}")
+     & P ("progress.done", "{subject}: končano {done}, {state}")
+     & P ("collection.summary",
+          "{name}: {total} {total, plural, one {element} two {elementa} few "
+          & "{elementi} other {elementov}}, {unique} {unique, plural, one "
+          & "{edinstvena vrednost} two {edinstveni vrednosti} few {edinstvene "
+          & "vrednosti} other {edinstvenih vrednosti}}, {duplicates} {duplicates, "
+          & "plural, one {dvojnik} two {dvojnika} few {dvojniki} other "
+          & "{dvojnikov}}, {outliers} {outliers, plural, one {osamelec} two "
+          & "{osamelca} few {osamelci} other {osamelcev}}")
+     & P ("top_frequency",
+          "{name}: {value} ({count} {count, plural, one {pojavitev} two "
+          & "{pojavitvi} few {pojavitve} other {pojavitev}})");
 end Locale_Sl;

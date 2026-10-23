@@ -112,5 +112,9 @@ begin
      & P ("system.check.failing", "a falhar")
      & P ("system.check.unknown", "estado da verificação desconhecido")
      & P ("system.incident.investigating", "a investigar")
-     & P ("system.incident.monitoring", "a monitorizar");
+     & P ("system.incident.monitoring", "a monitorizar")
+     & P ("net_diagnostic.tcp", "{endpoint}: falha na ligação TCP")
+     & P ("net_diagnostic.http", "{endpoint}: falha no pedido HTTP")
+     & P ("net_diagnostic.reset", "{endpoint}: ligação reposta")
+     & P ("progress.state.retrying", "a tentar novamente");
 end Locale_Pt_Pt;

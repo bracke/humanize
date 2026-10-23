@@ -5,6 +5,8 @@ with Messages.Runtime;
 
 with Humanize.Catalogs;
 with Humanize.Contexts;
+with Humanize.Cross_Domain;
+with Humanize.Cross_Domain.Localized;
 with Humanize.Diagnostics;
 with Humanize.Status;
 with Humanize.System_Status;
@@ -44,4 +46,9 @@ begin
       Humanize.System_Status.Localized.Service_Status_Label
         (Humanize.Contexts.Create (Humanize_Demo_Runtime.Runtime'Access, "de"),
          "API", Humanize.System_Status.Degraded_Service));
+   Put_Result
+     ("network (de)",
+      Humanize.Cross_Domain.Localized.Network_Diagnostic_Label
+        (Humanize.Contexts.Create (Humanize_Demo_Runtime.Runtime'Access, "de"),
+         "api.example.com", Humanize.Cross_Domain.Timeout_Diagnostic, Retry_After => "30 s"));
 end System_Status_Demo;

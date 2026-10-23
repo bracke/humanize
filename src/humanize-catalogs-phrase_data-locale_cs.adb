@@ -531,5 +531,55 @@ begin
      & P ("system.exit.not_executable", "návratový kód {code}: příkaz nelze spustit")
      & P ("system.exit.not_found", "návratový kód {code}: příkaz nenalezen")
      & P ("system.exit.invalid_argument", "návratový kód {code}: neplatný argument příkazu exit")
-     & P ("system.exit.signal", "návratový kód {code}: ukončeno signálem {signal}");
+     & P ("system.exit.signal", "návratový kód {code}: ukončeno signálem {signal}")
+     & P ("validation.problem.required", "{field}: povinný údaj")
+     & P ("validation.problem.minimum", "{field}: hodnota je pod minimem")
+     & P ("validation.problem.maximum", "{field}: hodnota je nad maximem")
+     & P ("validation.problem.range", "{field}: hodnota je mimo rozsah")
+     & P ("validation.problem.pattern", "{field}: hodnota neodpovídá vzoru")
+     & P ("validation.problem.choice", "{field}: hodnota musí být jednou z povolených možností")
+     & P ("validation.problem.dependency", "{field}: závisí na jiném poli")
+     & P ("validation.problem.custom", "{field}: neplatná hodnota")
+     & P ("validation.constraint.no_relation", "{field}: neplatná hodnota, očekáváno: {value}")
+     & P ("validation.constraint.less_than", "{field}: hodnota musí být menší než {value}")
+     & P ("validation.constraint.less_or_equal", "{field}: hodnota smí být nejvýše {value}")
+     & P ("validation.constraint.greater_than", "{field}: hodnota musí být větší než {value}")
+     & P ("validation.constraint.greater_or_equal", "{field}: hodnota musí být alespoň {value}")
+     & P ("validation.constraint.equal_to", "{field}: hodnota se musí rovnat {value}")
+     & P ("validation.constraint.not_equal_to", "{field}: hodnota se nesmí rovnat {value}")
+     & P ("validation.constraint.before_field", "{field}: hodnota musí být dřívější než {value}")
+     & P ("validation.constraint.after_field", "{field}: hodnota musí být pozdější než {value}")
+     & P ("validation.choices", "{field}: povolené hodnoty: {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, zadáno {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, nový pokus za {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: vyhledání DNS selhalo")
+     & P ("net_diagnostic.tcp", "{endpoint}: připojení TCP selhalo")
+     & P ("net_diagnostic.tls", "{endpoint}: chyba certifikátu TLS")
+     & P ("net_diagnostic.http", "{endpoint}: požadavek HTTP selhal")
+     & P ("net_diagnostic.proxy", "{endpoint}: chyba proxy")
+     & P ("net_diagnostic.timeout", "{endpoint}: vypršel časový limit")
+     & P ("net_diagnostic.reset", "{endpoint}: spojení bylo resetováno")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: chyba sítě")
+     & P ("progress.state.not_started", "nezahájeno")
+     & P ("progress.state.running", "probíhá")
+     & P ("progress.state.stalled", "zaseknuto")
+     & P ("progress.state.retrying", "opakování")
+     & P ("progress.state.complete", "dokončeno")
+     & P ("progress.state.failed", "selhalo")
+     & P ("progress.of", "{subject}: dokončeno {done} z {total} ({percent} %), {state}")
+     & P ("progress.done", "{subject}: dokončeno {done}, {state}")
+     & P ("collection.summary",
+          "{name}: {total} {total, plural, one {položka} few {položky} many "
+          & "{položky} other {položek}}, {unique} {unique, plural, one "
+          & "{jedinečná hodnota} few {jedinečné hodnoty} many {jedinečné "
+          & "hodnoty} other {jedinečných hodnot}}, {duplicates} {duplicates, "
+          & "plural, one {duplikát} few {duplikáty} many {duplikátu} other "
+          & "{duplikátů}}, {outliers} {outliers, plural, one {odlehlá hodnota} "
+          & "few {odlehlé hodnoty} many {odlehlé hodnoty} other {odlehlých "
+          & "hodnot}}")
+     & P ("top_frequency",
+          "{name}: {value} ({count} {count, plural, one {výskyt} few {výskyty} "
+          & "many {výskytu} other {výskytů}})");
 end Locale_Cs;

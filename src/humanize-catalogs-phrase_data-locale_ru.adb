@@ -526,5 +526,81 @@ begin
           & "exit")
      & P ("system.exit.signal",
           "код выхода {code}: завершение по сигналу "
-          & "{signal}");
+          & "{signal}")
+     & P ("validation.problem.required", "{field}: обязательное поле")
+     & P ("validation.problem.minimum", "{field}: значение меньше минимального")
+     & P ("validation.problem.maximum", "{field}: значение больше максимального")
+     & P ("validation.problem.range",
+          "{field}: значение вне допустимого "
+          & "диапазона")
+     & P ("validation.problem.pattern", "{field}: не соответствует шаблону")
+     & P ("validation.problem.choice",
+          "{field}: значение должно быть одним из "
+          & "допустимых вариантов")
+     & P ("validation.problem.dependency", "{field}: зависит от другого поля")
+     & P ("validation.problem.custom", "{field}: недопустимое значение")
+     & P ("validation.constraint.no_relation",
+          "{field}: ожидается допустимое значение "
+          & "{value}")
+     & P ("validation.constraint.less_than",
+          "{field}: значение должно быть меньше, чем "
+          & "{value}")
+     & P ("validation.constraint.less_or_equal",
+          "{field}: значение должно быть не больше, "
+          & "чем {value}")
+     & P ("validation.constraint.greater_than",
+          "{field}: значение должно быть больше, чем "
+          & "{value}")
+     & P ("validation.constraint.greater_or_equal",
+          "{field}: значение должно быть не меньше, "
+          & "чем {value}")
+     & P ("validation.constraint.equal_to", "{field}: значение должно быть равно {value}")
+     & P ("validation.constraint.not_equal_to",
+          "{field}: значение не должно быть равно "
+          & "{value}")
+     & P ("validation.constraint.before_field",
+          "{field}: значение должно быть раньше, чем "
+          & "{value}")
+     & P ("validation.constraint.after_field",
+          "{field}: значение должно быть позже, чем "
+          & "{value}")
+     & P ("validation.choices", "{field}: допустимые значения: {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, получено: {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, повторная попытка через {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: не удалось выполнить DNS-запрос")
+     & P ("net_diagnostic.tcp",
+          "{endpoint}: не удалось установить "
+          & "TCP-соединение")
+     & P ("net_diagnostic.tls", "{endpoint}: ошибка TLS-сертификата")
+     & P ("net_diagnostic.http", "{endpoint}: ошибка HTTP-запроса")
+     & P ("net_diagnostic.proxy", "{endpoint}: ошибка прокси-сервера")
+     & P ("net_diagnostic.timeout", "{endpoint}: превышено время ожидания")
+     & P ("net_diagnostic.reset", "{endpoint}: соединение сброшено")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: неизвестная проблема сети")
+     & P ("progress.state.not_started", "не начато")
+     & P ("progress.state.running", "выполняется")
+     & P ("progress.state.stalled", "зависло")
+     & P ("progress.state.retrying", "повторная попытка")
+     & P ("progress.state.complete", "завершено")
+     & P ("progress.state.failed", "сбой")
+     & P ("progress.of",
+          "{subject}: выполнено {done} из {total} ({percent} %), "
+          & "{state}")
+     & P ("progress.done", "{subject}: выполнено {done}, {state}")
+     & P ("collection.summary",
+          "{name}: {total} {total, plural, one {элемент} few "
+          & "{элемента} many {элементов} other "
+          & "{элемента}}, {unique} {unique, plural, one "
+          & "{уникальное значение} few {уникальных "
+          & "значения} many {уникальных значений} other "
+          & "{уникального значения}}, {duplicates} {duplicates, "
+          & "plural, one {дубликат} few {дубликата} many "
+          & "{дубликатов} other {дубликата}}, {outliers} "
+          & "{outliers, plural, one {выброс} few {выброса} many "
+          & "{выбросов} other {выброса}}")
+     & P ("top_frequency",
+          "{name}: чаще всего {value} ({count} {count, plural, one "
+          & "{раз} few {раза} many {раз} other {раза}})");
 end Locale_Ru;

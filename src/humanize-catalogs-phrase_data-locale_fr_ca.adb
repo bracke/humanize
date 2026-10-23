@@ -14,5 +14,6 @@ begin
      & P ("ticket.ticket_waiting", "billet en attente")
      & P ("ticket.ticket_escalated", "billet transféré au palier supérieur")
      & P ("ticket.ticket_resolved", "billet résolu")
-     & P ("ticket.ticket_closed", "billet fermé");
+     & P ("ticket.ticket_closed", "billet fermé")
+     & P ("net_diagnostic.proxy", "{endpoint} : échec du serveur mandataire");
 end Locale_Fr_Ca;

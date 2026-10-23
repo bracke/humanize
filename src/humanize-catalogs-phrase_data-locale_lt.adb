@@ -483,5 +483,54 @@ begin
      & P ("system.exit.not_executable", "išėjimo kodas {code}: komanda nevykdoma")
      & P ("system.exit.not_found", "išėjimo kodas {code}: komanda nerasta")
      & P ("system.exit.invalid_argument", "išėjimo kodas {code}: netinkamas exit argumentas")
-     & P ("system.exit.signal", "išėjimo kodas {code}: nutraukta signalu {signal}");
+     & P ("system.exit.signal", "išėjimo kodas {code}: nutraukta signalu {signal}")
+     & P ("validation.problem.required", "{field}: privalomas laukas")
+     & P ("validation.problem.minimum", "{field}: reikšmė mažesnė už minimalią")
+     & P ("validation.problem.maximum", "{field}: reikšmė didesnė už maksimalią")
+     & P ("validation.problem.range", "{field}: reikšmė už leistino intervalo ribų")
+     & P ("validation.problem.pattern", "{field}: neatitinka šablono")
+     & P ("validation.problem.choice", "{field}: reikšmė turi būti viena iš leistinų parinkčių")
+     & P ("validation.problem.dependency", "{field}: priklauso nuo kito lauko")
+     & P ("validation.problem.custom", "{field}: netinkama reikšmė")
+     & P ("validation.constraint.no_relation", "{field}: reikšmė turi būti tinkama ({value})")
+     & P ("validation.constraint.less_than", "{field}: reikšmė turi būti mažesnė nei {value}")
+     & P ("validation.constraint.less_or_equal", "{field}: reikšmė turi būti ne didesnė nei {value}")
+     & P ("validation.constraint.greater_than", "{field}: reikšmė turi būti didesnė nei {value}")
+     & P ("validation.constraint.greater_or_equal", "{field}: reikšmė turi būti ne mažesnė nei {value}")
+     & P ("validation.constraint.equal_to", "{field}: reikšmė turi būti lygi {value}")
+     & P ("validation.constraint.not_equal_to", "{field}: reikšmė neturi būti lygi {value}")
+     & P ("validation.constraint.before_field", "{field}: reikšmė turi būti ankstesnė nei {value}")
+     & P ("validation.constraint.after_field", "{field}: reikšmė turi būti vėlesnė nei {value}")
+     & P ("validation.choices", "{field}: leistinos reikšmės: {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, gauta: {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, pakartotinis bandymas po {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: nepavyko DNS užklausa")
+     & P ("net_diagnostic.tcp", "{endpoint}: nepavyko užmegzti TCP ryšio")
+     & P ("net_diagnostic.tls", "{endpoint}: TLS sertifikato klaida")
+     & P ("net_diagnostic.http", "{endpoint}: HTTP užklausos klaida")
+     & P ("net_diagnostic.proxy", "{endpoint}: tarpinio serverio klaida")
+     & P ("net_diagnostic.timeout", "{endpoint}: baigėsi laukimo laikas")
+     & P ("net_diagnostic.reset", "{endpoint}: ryšys nutrauktas")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: nežinoma tinklo problema")
+     & P ("progress.state.not_started", "nepradėta")
+     & P ("progress.state.running", "vykdoma")
+     & P ("progress.state.stalled", "sustojo")
+     & P ("progress.state.retrying", "kartojama")
+     & P ("progress.state.complete", "baigta")
+     & P ("progress.state.failed", "nepavyko")
+     & P ("progress.of", "{subject}: atlikta {done} iš {total} ({percent} %), {state}")
+     & P ("progress.done", "{subject}: atlikta {done}, {state}")
+     & P ("collection.summary",
+          "{name}: {total} {total, plural, one {elementas} few {elementai} many "
+          & "{elemento} other {elementų}}, {unique} {unique, plural, one {unikali "
+          & "reikšmė} few {unikalios reikšmės} many {unikalios reikšmės} "
+          & "other {unikalių reikšmių}}, {duplicates} {duplicates, plural, one "
+          & "{dublikatas} few {dublikatai} many {dublikato} other {dublikatų}}, "
+          & "{outliers} {outliers, plural, one {išskirtis} few {išskirtys} many "
+          & "{išskirties} other {išskirčių}}")
+     & P ("top_frequency",
+          "{name}: dažniausiai {value} ({count} {count, plural, one {kartą} few "
+          & "{kartus} many {karto} other {kartų}})");
 end Locale_Lt;

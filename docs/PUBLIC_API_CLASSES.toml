@@ -4,8 +4,8 @@
 # unit_class rows classify every public package in the allowlist.
 
 [summary]
-total_units = 101
-primary_facades = 53
+total_units = 102
+primary_facades = 54
 specialized_child_facades = 42
 support_type_facades = 6
 
@@ -553,6 +553,12 @@ reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
 name = "Humanize.System_Status"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Cross_Domain.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"

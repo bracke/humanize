@@ -71,7 +71,7 @@ procedure Phrase_Review_Data is
         [+"total", +"matching", +"visible", +"remaining", +"page", +"size", +"first", +"last", +"position",
          +"selected", +"showing", +"count", +"hidden", +"done", +"step", +"attempt", +"rate", +"days",
          +"hours", +"every", +"hits", +"misses", +"changed", +"added", +"removed", +"available",
-         +"unavailable", +"code"];
+         +"unavailable", +"code", +"done", +"unique", +"duplicates", +"outliers"];
       Samples : constant array (Positive range <>) of Locale_Row :=
         [(+"one", +"file"), (+"other", +"files"), (+"zero", +"files(zero)"), (+"two", +"files(two)"),
          (+"few", +"files(few)"), (+"many", +"files(many)"), (+"genitive_one", +"file(gen)"),
@@ -84,7 +84,9 @@ procedure Phrase_Review_Data is
          (+"current", +"Today"), (+"baseline", +"Yesterday"), (+"quantity", +"5 MB"),
          (+"details", +"3 files queued, 1 failed"), (+"domain", +"sync"), (+"state", +"running"),
          (+"difference", +"2 years"), (+"measure", +"12.5 %"), (+"percent", +"50"), (+"name", +"Import"),
-         (+"signal", +"SIGKILL killed"),
+         (+"signal", +"SIGKILL killed"), (+"choices", +"S, M, L"), (+"actual", +"XL"),
+         (+"endpoint", +"api.example.com"), (+"subject", +"Import"), (+"text", +"[label]"),
+         (+"detail", +"expired"),
          (+"time", +"2 hours ago")];
    begin
       for Name of Numbers loop

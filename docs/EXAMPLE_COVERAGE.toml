@@ -611,3 +611,9 @@ area = "localized-parsing"
 unit = "Humanize.Parsing.Localized"
 example = "examples/parse_demo.adb"
 usecase = "read a German duration back into seconds"
+
+[[coverage]]
+area = "localized-cross-domain"
+unit = "Humanize.Cross_Domain.Localized"
+example = "examples/system_status_demo.adb"
+usecase = "render a network diagnostic in German"

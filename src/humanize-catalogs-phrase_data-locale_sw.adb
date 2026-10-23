@@ -417,5 +417,53 @@ begin
      & P ("system.exit.not_executable", "msimbo wa kutoka {code}: amri haitekelezeki")
      & P ("system.exit.not_found", "msimbo wa kutoka {code}: amri haipatikani")
      & P ("system.exit.invalid_argument", "msimbo wa kutoka {code}: hoja batili ya kutoka")
-     & P ("system.exit.signal", "msimbo wa kutoka {code}: imekomeshwa na {signal}");
+     & P ("system.exit.signal", "msimbo wa kutoka {code}: imekomeshwa na {signal}")
+     & P ("validation.problem.required", "{field}: inahitajika")
+     & P ("validation.problem.minimum", "{field}: iko chini ya kiwango cha chini")
+     & P ("validation.problem.maximum", "{field}: iko juu ya kiwango cha juu")
+     & P ("validation.problem.range", "{field}: iko nje ya masafa")
+     & P ("validation.problem.pattern", "{field}: hailingani na muundo")
+     & P ("validation.problem.choice", "{field}: lazima iwe mojawapo ya chaguo zinazoruhusiwa")
+     & P ("validation.problem.dependency", "{field}: inategemea sehemu nyingine")
+     & P ("validation.problem.custom", "{field}: si sahihi")
+     & P ("validation.constraint.no_relation", "{field}: lazima iwe {value} halali")
+     & P ("validation.constraint.less_than", "{field}: lazima iwe chini ya {value}")
+     & P ("validation.constraint.less_or_equal", "{field}: isizidi {value}")
+     & P ("validation.constraint.greater_than", "{field}: lazima iwe zaidi ya {value}")
+     & P ("validation.constraint.greater_or_equal", "{field}: lazima iwe angalau {value}")
+     & P ("validation.constraint.equal_to", "{field}: lazima iwe sawa na {value}")
+     & P ("validation.constraint.not_equal_to", "{field}: isiwe sawa na {value}")
+     & P ("validation.constraint.before_field", "{field}: lazima iwe kabla ya {value}")
+     & P ("validation.constraint.after_field", "{field}: lazima iwe baada ya {value}")
+     & P ("validation.choices", "{field}: thamani zinazoruhusiwa {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, thamani iliyoingizwa {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, jaribu tena baada ya {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: utafutaji wa DNS umeshindwa")
+     & P ("net_diagnostic.tcp", "{endpoint}: muunganisho wa TCP umeshindwa")
+     & P ("net_diagnostic.tls", "{endpoint}: cheti cha TLS kimeshindwa")
+     & P ("net_diagnostic.http", "{endpoint}: ombi la HTTP limeshindwa")
+     & P ("net_diagnostic.proxy", "{endpoint}: proksi imeshindwa")
+     & P ("net_diagnostic.timeout", "{endpoint}: muda umeisha")
+     & P ("net_diagnostic.reset", "{endpoint}: muunganisho umewekwa upya")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: tatizo la mtandao")
+     & P ("progress.state.not_started", "haijaanza")
+     & P ("progress.state.running", "inaendelea")
+     & P ("progress.state.stalled", "imekwama")
+     & P ("progress.state.retrying", "inajaribu tena")
+     & P ("progress.state.complete", "imekamilika")
+     & P ("progress.state.failed", "imeshindwa")
+     & P ("progress.of", "{subject}: {done} kati ya {total} zimekamilika ({percent}%), {state}")
+     & P ("progress.done",
+          "{subject}: {done, plural, one {{done} imekamilika} other {{done} "
+          & "zimekamilika}}, {state}")
+     & P ("collection.summary",
+          "{name}: {total, plural, one {kipengee {total}} other {vipengee "
+          & "{total}}}, {unique, plural, one {thamani ya kipekee {unique}} other "
+          & "{thamani za kipekee {unique}}}, {duplicates, plural, one {nakala "
+          & "rudufu {duplicates}} other {nakala rudufu {duplicates}}}, {outliers, "
+          & "plural, one {thamani isiyo ya kawaida {outliers}} other {thamani "
+          & "zisizo za kawaida {outliers}}}")
+     & P ("top_frequency", "{name}: {value} (mara {count})");
 end Locale_Sw;

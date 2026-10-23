@@ -443,6 +443,11 @@ spec = "src/humanize-system_status.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Cross_Domain.Localized"
+spec = "src/humanize-cross_domain-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.System_Status.Localized"
 spec = "src/humanize-system_status-localized.ads"
 area = "domain"

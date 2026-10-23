@@ -522,5 +522,74 @@ begin
           & "аргумент exit")
      & P ("system.exit.signal",
           "код виходу {code}: завершення за сигналом "
-          & "{signal}");
+          & "{signal}")
+     & P ("validation.problem.required", "{field}: обов’язкове поле")
+     & P ("validation.problem.minimum", "{field}: значення менше за мінімальне")
+     & P ("validation.problem.maximum", "{field}: значення більше за максимальне")
+     & P ("validation.problem.range",
+          "{field}: значення поза допустимим "
+          & "діапазоном")
+     & P ("validation.problem.pattern", "{field}: не відповідає шаблону")
+     & P ("validation.problem.choice",
+          "{field}: значення має бути одним із "
+          & "допустимих варіантів")
+     & P ("validation.problem.dependency", "{field}: залежить від іншого поля")
+     & P ("validation.problem.custom", "{field}: недійсне значення")
+     & P ("validation.constraint.no_relation",
+          "{field}: очікується допустиме значення "
+          & "{value}")
+     & P ("validation.constraint.less_than", "{field}: значення має бути менше, ніж {value}")
+     & P ("validation.constraint.less_or_equal",
+          "{field}: значення має бути не більше, ніж "
+          & "{value}")
+     & P ("validation.constraint.greater_than",
+          "{field}: значення має бути більше, ніж {value}")
+     & P ("validation.constraint.greater_or_equal",
+          "{field}: значення має бути не менше, ніж "
+          & "{value}")
+     & P ("validation.constraint.equal_to", "{field}: значення має дорівнювати {value}")
+     & P ("validation.constraint.not_equal_to",
+          "{field}: значення не має дорівнювати {value}")
+     & P ("validation.constraint.before_field",
+          "{field}: значення має бути раніше, ніж {value}")
+     & P ("validation.constraint.after_field",
+          "{field}: значення має бути пізніше, ніж "
+          & "{value}")
+     & P ("validation.choices", "{field}: допустимі значення: {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, отримано: {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, повторна спроба через {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: не вдалося виконати DNS-запит")
+     & P ("net_diagnostic.tcp",
+          "{endpoint}: не вдалося встановити "
+          & "TCP-з’єднання")
+     & P ("net_diagnostic.tls", "{endpoint}: помилка TLS-сертифіката")
+     & P ("net_diagnostic.http", "{endpoint}: помилка HTTP-запиту")
+     & P ("net_diagnostic.proxy", "{endpoint}: помилка проксі-сервера")
+     & P ("net_diagnostic.timeout", "{endpoint}: перевищено час очікування")
+     & P ("net_diagnostic.reset", "{endpoint}: з’єднання скинуто")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: невідома проблема мережі")
+     & P ("progress.state.not_started", "не розпочато")
+     & P ("progress.state.running", "виконується")
+     & P ("progress.state.stalled", "зависло")
+     & P ("progress.state.retrying", "повторна спроба")
+     & P ("progress.state.complete", "завершено")
+     & P ("progress.state.failed", "збій")
+     & P ("progress.of", "{subject}: виконано {done} з {total} ({percent} %), {state}")
+     & P ("progress.done", "{subject}: виконано {done}, {state}")
+     & P ("collection.summary",
+          "{name}: {total} {total, plural, one {елемент} few "
+          & "{елементи} many {елементів} other "
+          & "{елемента}}, {unique} {unique, plural, one {унікальне "
+          & "значення} few {унікальні значення} many "
+          & "{унікальних значень} other {унікального "
+          & "значення}}, {duplicates} {duplicates, plural, one "
+          & "{дублікат} few {дублікати} many "
+          & "{дублікатів} other {дубліката}}, {outliers} "
+          & "{outliers, plural, one {викид} few {викиди} many "
+          & "{викидів} other {викиду}}")
+     & P ("top_frequency",
+          "{name}: найчастіше {value} ({count} {count, plural, one "
+          & "{раз} few {рази} many {разів} other {разу}})");
 end Locale_Uk;

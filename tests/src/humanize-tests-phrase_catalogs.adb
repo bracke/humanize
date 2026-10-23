@@ -134,7 +134,20 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"system.http.redirection", +"system.http.client_error", +"system.http.server_error",
       +"system.exit.success", +"system.exit.failure", +"system.exit.usage_error",
       +"system.exit.not_executable", +"system.exit.not_found", +"system.exit.invalid_argument",
-      +"system.exit.signal"];
+      +"system.exit.signal",
+      +"validation.problem.required", +"validation.problem.minimum", +"validation.problem.maximum",
+      +"validation.problem.range", +"validation.problem.pattern", +"validation.problem.choice",
+      +"validation.problem.dependency", +"validation.problem.custom", +"validation.constraint.no_relation",
+      +"validation.constraint.less_than", +"validation.constraint.less_or_equal",
+      +"validation.constraint.greater_than", +"validation.constraint.greater_or_equal",
+      +"validation.constraint.equal_to", +"validation.constraint.not_equal_to",
+      +"validation.constraint.before_field", +"validation.constraint.after_field", +"validation.choices",
+      +"frame.detail", +"frame.got", +"frame.also", +"frame.retry", +"net_diagnostic.dns",
+      +"net_diagnostic.tcp", +"net_diagnostic.tls", +"net_diagnostic.http", +"net_diagnostic.proxy",
+      +"net_diagnostic.timeout", +"net_diagnostic.reset", +"net_diagnostic.unknown_network",
+      +"progress.state.not_started", +"progress.state.running", +"progress.state.stalled",
+      +"progress.state.retrying", +"progress.state.complete", +"progress.state.failed", +"progress.of",
+      +"progress.done", +"collection.summary", +"top_frequency"];
 
    --  Every shipped locale besides English.
    Locales : constant array (Positive range <>) of Unbounded_String :=
@@ -148,7 +161,7 @@ package body Humanize.Tests.Phrase_Catalogs is
      [+"total", +"matching", +"visible", +"remaining", +"page", +"size", +"first", +"last", +"position",
       +"selected", +"showing", +"count", +"hidden", +"done", +"step", +"attempt", +"rate", +"days", +"hours",
       +"every", +"hits", +"misses", +"changed", +"added", +"removed", +"available", +"unavailable",
-      +"code"];
+      +"code", +"done", +"unique", +"duplicates", +"outliers"];
 
    procedure Test_Every_Locale_Renders_Every_Phrase
      (T : in out AUnit.Test_Cases.Test_Case'Class)
@@ -203,6 +216,12 @@ package body Humanize.Tests.Phrase_Catalogs is
             Messages.Arguments.Set (Args, "state", "running");
             Messages.Arguments.Set (Args, "time", "2 h");
             Messages.Arguments.Set (Args, "signal", "SIGKILL killed");
+            Messages.Arguments.Set (Args, "choices", "S, M, L");
+            Messages.Arguments.Set (Args, "actual", "XL");
+            Messages.Arguments.Set (Args, "endpoint", "api.example.com");
+            Messages.Arguments.Set (Args, "subject", "import");
+            Messages.Arguments.Set (Args, "text", "label");
+            Messages.Arguments.Set (Args, "detail", "expired");
             Messages.Arguments.Set (Args, "available", Count);
             Messages.Arguments.Set (Args, "unavailable", Count);
             for Locale of Locales loop
@@ -413,7 +432,8 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"instrumental_other"];
    Text_Arguments : constant array (Positive range <>) of Unbounded_String :=
      [+"unit", +"field", +"before", +"after", +"current", +"baseline", +"quantity",
-      +"details", +"difference", +"measure", +"name", +"time", +"signal"];
+      +"details", +"difference", +"measure", +"name", +"time", +"signal", +"choices", +"actual", +"endpoint",
+      +"subject", +"text", +"detail"];
 
    function Digits_Of (Value : Natural) return String is
      (Natural'Image (Value) (2 .. Natural'Image (Value)'Last));

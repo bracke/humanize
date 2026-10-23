@@ -495,5 +495,55 @@ begin
      & P ("system.exit.not_executable", "kod wyjścia {code}: nie można wykonać polecenia")
      & P ("system.exit.not_found", "kod wyjścia {code}: nie znaleziono polecenia")
      & P ("system.exit.invalid_argument", "kod wyjścia {code}: nieprawidłowy argument polecenia exit")
-     & P ("system.exit.signal", "kod wyjścia {code}: zakończono sygnałem {signal}");
+     & P ("system.exit.signal", "kod wyjścia {code}: zakończono sygnałem {signal}")
+     & P ("validation.problem.required", "{field}: to pole jest wymagane")
+     & P ("validation.problem.minimum", "{field}: wartość poniżej minimum")
+     & P ("validation.problem.maximum", "{field}: wartość powyżej maksimum")
+     & P ("validation.problem.range", "{field}: wartość poza zakresem")
+     & P ("validation.problem.pattern", "{field}: wartość nie pasuje do wzorca")
+     & P ("validation.problem.choice", "{field}: wartość musi być jedną z dozwolonych opcji")
+     & P ("validation.problem.dependency", "{field}: zależy od innego pola")
+     & P ("validation.problem.custom", "{field}: nieprawidłowa wartość")
+     & P ("validation.constraint.no_relation", "{field}: nieprawidłowa wartość, oczekiwano: {value}")
+     & P ("validation.constraint.less_than", "{field}: wartość musi być mniejsza niż {value}")
+     & P ("validation.constraint.less_or_equal", "{field}: wartość może wynosić najwyżej {value}")
+     & P ("validation.constraint.greater_than", "{field}: wartość musi być większa niż {value}")
+     & P ("validation.constraint.greater_or_equal", "{field}: wartość musi wynosić co najmniej {value}")
+     & P ("validation.constraint.equal_to", "{field}: wartość musi być równa {value}")
+     & P ("validation.constraint.not_equal_to", "{field}: wartość nie może być równa {value}")
+     & P ("validation.constraint.before_field", "{field}: wartość musi być wcześniejsza niż {value}")
+     & P ("validation.constraint.after_field", "{field}: wartość musi być późniejsza niż {value}")
+     & P ("validation.choices", "{field}: dozwolone wartości: {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, podano {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, ponowna próba za {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: błąd wyszukiwania DNS")
+     & P ("net_diagnostic.tcp", "{endpoint}: nie udało się nawiązać połączenia TCP")
+     & P ("net_diagnostic.tls", "{endpoint}: błąd certyfikatu TLS")
+     & P ("net_diagnostic.http", "{endpoint}: żądanie HTTP nie powiodło się")
+     & P ("net_diagnostic.proxy", "{endpoint}: błąd serwera proxy")
+     & P ("net_diagnostic.timeout", "{endpoint}: przekroczono limit czasu")
+     & P ("net_diagnostic.reset", "{endpoint}: połączenie zostało zresetowane")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: błąd sieci")
+     & P ("progress.state.not_started", "nie rozpoczęto")
+     & P ("progress.state.running", "w toku")
+     & P ("progress.state.stalled", "zablokowane")
+     & P ("progress.state.retrying", "ponawianie")
+     & P ("progress.state.complete", "ukończone")
+     & P ("progress.state.failed", "nieudane")
+     & P ("progress.of", "{subject}: ukończono {done} z {total} ({percent}%), {state}")
+     & P ("progress.done", "{subject}: ukończono {done}, {state}")
+     & P ("collection.summary",
+          "{name}: {total} {total, plural, one {element} few {elementy} many "
+          & "{elementów} other {elementu}}, {unique} {unique, plural, one "
+          & "{unikalna wartość} few {unikalne wartości} many {unikalnych "
+          & "wartości} other {unikalnej wartości}}, {duplicates} {duplicates, "
+          & "plural, one {duplikat} few {duplikaty} many {duplikatów} other "
+          & "{duplikatu}}, {outliers} {outliers, plural, one {wartość odstająca} "
+          & "few {wartości odstające} many {wartości odstających} other "
+          & "{wartości odstającej}}")
+     & P ("top_frequency",
+          "{name}: {value} ({count} {count, plural, one {raz} few {razy} many "
+          & "{razy} other {raza}})");
 end Locale_Pl;

@@ -109,6 +109,7 @@ class map and coverage scorecards.
 - `Humanize.Events` - `src/humanize-events.ads`
 - `Humanize.Payments` - `src/humanize-payments.ads`
 - `Humanize.System_Status` - `src/humanize-system_status.ads`
+- `Humanize.Cross_Domain.Localized` - `src/humanize-cross_domain-localized.ads`
 - `Humanize.System_Status.Localized` - `src/humanize-system_status-localized.ads`
 - `Humanize.Operations` - `src/humanize-operations.ads`
 - `Humanize.Comparisons` - `src/humanize-comparisons.ads`

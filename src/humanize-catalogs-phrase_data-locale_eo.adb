@@ -426,5 +426,54 @@ begin
      & P ("system.exit.not_executable", "elira kodo {code}: komando ne plenumebla")
      & P ("system.exit.not_found", "elira kodo {code}: komando ne trovita")
      & P ("system.exit.invalid_argument", "elira kodo {code}: nevalida elira argumento")
-     & P ("system.exit.signal", "elira kodo {code}: ĉesigita de {signal}");
+     & P ("system.exit.signal", "elira kodo {code}: ĉesigita de {signal}")
+     & P ("validation.problem.required", "{field}: estas deviga")
+     & P ("validation.problem.minimum", "{field}: estas sub la minimumo")
+     & P ("validation.problem.maximum", "{field}: estas super la maksimumo")
+     & P ("validation.problem.range", "{field}: estas ekster la permesata intervalo")
+     & P ("validation.problem.pattern", "{field}: ne kongruas kun la ŝablono")
+     & P ("validation.problem.choice", "{field}: devas esti unu el la permesataj elektoj")
+     & P ("validation.problem.dependency", "{field}: dependas de alia kampo")
+     & P ("validation.problem.custom", "{field}: estas nevalida")
+     & P ("validation.constraint.no_relation", "{field}: devas esti valida {value}")
+     & P ("validation.constraint.less_than", "{field}: devas esti malpli ol {value}")
+     & P ("validation.constraint.less_or_equal", "{field}: devas esti maksimume {value}")
+     & P ("validation.constraint.greater_than", "{field}: devas esti pli ol {value}")
+     & P ("validation.constraint.greater_or_equal", "{field}: devas esti minimume {value}")
+     & P ("validation.constraint.equal_to", "{field}: devas egali {value}")
+     & P ("validation.constraint.not_equal_to", "{field}: ne devas egali {value}")
+     & P ("validation.constraint.before_field", "{field}: devas esti antaŭ {value}")
+     & P ("validation.constraint.after_field", "{field}: devas esti post {value}")
+     & P ("validation.choices", "{field}: permesataj valoroj: {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, ricevita: {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, reprovo post {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: DNS-serĉo malsukcesis")
+     & P ("net_diagnostic.tcp", "{endpoint}: TCP-konekto malsukcesis")
+     & P ("net_diagnostic.tls", "{endpoint}: TLS-atestilo malsukcesis")
+     & P ("net_diagnostic.http", "{endpoint}: HTTP-peto malsukcesis")
+     & P ("net_diagnostic.proxy", "{endpoint}: prokurilo malsukcesis")
+     & P ("net_diagnostic.timeout", "{endpoint}: tempolimo atingita")
+     & P ("net_diagnostic.reset", "{endpoint}: konekto rekomencigita")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: reta eraro")
+     & P ("progress.state.not_started", "ne komencita")
+     & P ("progress.state.running", "rulanta")
+     & P ("progress.state.stalled", "haltinta")
+     & P ("progress.state.retrying", "reprovanta")
+     & P ("progress.state.complete", "finita")
+     & P ("progress.state.failed", "malsukcesinta")
+     & P ("progress.of",
+          "{subject}: {done} el {total} {done, plural, one {finita} other "
+          & "{finitaj}} ({percent} %), {state}")
+     & P ("progress.done",
+          "{subject}: {done} {done, plural, one {finita} other {finitaj}}, "
+          & "{state}")
+     & P ("collection.summary",
+          "{name}: {total} {total, plural, one {ero} other {eroj}}, {unique} "
+          & "{unique, plural, one {unika valoro} other {unikaj valoroj}}, "
+          & "{duplicates} {duplicates, plural, one {duplikato} other {duplikatoj}}, "
+          & "{outliers} {outliers, plural, one {eksterordinara valoro} other "
+          & "{eksterordinaraj valoroj}}")
+     & P ("top_frequency", "{name}: {value} ({count} {count, plural, one {fojon} other {fojojn}})");
 end Locale_Eo;

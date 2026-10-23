@@ -475,5 +475,57 @@ begin
      & P ("system.exit.not_executable", "cod de ieșire {code}: comandă neexecutabilă")
      & P ("system.exit.not_found", "cod de ieșire {code}: comandă negăsită")
      & P ("system.exit.invalid_argument", "cod de ieșire {code}: argument de ieșire nevalid")
-     & P ("system.exit.signal", "cod de ieșire {code}: terminat de {signal}");
+     & P ("system.exit.signal", "cod de ieșire {code}: terminat de {signal}")
+     & P ("validation.problem.required", "{field}: câmp obligatoriu")
+     & P ("validation.problem.minimum", "{field}: valoare sub minim")
+     & P ("validation.problem.maximum", "{field}: valoare peste maxim")
+     & P ("validation.problem.range", "{field}: valoare în afara intervalului permis")
+     & P ("validation.problem.pattern", "{field}: nu corespunde formatului cerut")
+     & P ("validation.problem.choice", "{field}: trebuie să fie una dintre opțiunile permise")
+     & P ("validation.problem.dependency", "{field}: depinde de alt câmp")
+     & P ("validation.problem.custom", "{field}: valoare nevalidă")
+     & P ("validation.constraint.no_relation", "{field}: trebuie să fie o valoare {value} validă")
+     & P ("validation.constraint.less_than", "{field}: valoarea trebuie să fie mai mică decât {value}")
+     & P ("validation.constraint.less_or_equal", "{field}: valoarea trebuie să fie cel mult {value}")
+     & P ("validation.constraint.greater_than", "{field}: valoarea trebuie să fie mai mare decât {value}")
+     & P ("validation.constraint.greater_or_equal", "{field}: valoarea trebuie să fie cel puțin {value}")
+     & P ("validation.constraint.equal_to", "{field}: valoarea trebuie să fie egală cu {value}")
+     & P ("validation.constraint.not_equal_to", "{field}: valoarea trebuie să fie diferită de {value}")
+     & P ("validation.constraint.before_field", "{field}: valoarea trebuie să fie înainte de {value}")
+     & P ("validation.constraint.after_field", "{field}: valoarea trebuie să fie după {value}")
+     & P ("validation.choices", "{field}: valori permise: {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, valoare primită: {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, reîncercare peste {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: căutarea DNS a eșuat")
+     & P ("net_diagnostic.tcp", "{endpoint}: conexiunea TCP a eșuat")
+     & P ("net_diagnostic.tls", "{endpoint}: verificarea certificatului TLS a eșuat")
+     & P ("net_diagnostic.http", "{endpoint}: cererea HTTP a eșuat")
+     & P ("net_diagnostic.proxy", "{endpoint}: eroare de proxy")
+     & P ("net_diagnostic.timeout", "{endpoint}: timpul de așteptare a expirat")
+     & P ("net_diagnostic.reset", "{endpoint}: conexiunea a fost resetată")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: eroare de rețea")
+     & P ("progress.state.not_started", "nepornit")
+     & P ("progress.state.running", "în desfășurare")
+     & P ("progress.state.stalled", "blocat")
+     & P ("progress.state.retrying", "se reîncearcă")
+     & P ("progress.state.complete", "finalizat")
+     & P ("progress.state.failed", "eșuat")
+     & P ("progress.of",
+          "{subject}: {done} din {total} {done, plural, one {finalizat} other "
+          & "{finalizate}} ({percent} %), {state}")
+     & P ("progress.done",
+          "{subject}: {done} {done, plural, one {finalizat} other {finalizate}}, "
+          & "{state}")
+     & P ("collection.summary",
+          "{name}: {total} {total, plural, one {element} few {elemente} other {de "
+          & "elemente}}, {unique} {unique, plural, one {valoare unică} few {valori "
+          & "unice} other {de valori unice}}, {duplicates} {duplicates, plural, one "
+          & "{duplicat} few {duplicate} other {de duplicate}}, {outliers} "
+          & "{outliers, plural, one {valoare aberantă} few {valori aberante} other "
+          & "{de valori aberante}}")
+     & P ("top_frequency",
+          "{name}, cea mai frecventă valoare: {value} ({count, plural, =1 {o "
+          & "dată} one {{count} dată} few {{count} ori} other {{count} de ori}})");
 end Locale_Ro;

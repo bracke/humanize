@@ -481,5 +481,57 @@ begin
      & P ("system.exit.not_executable", "code de sortie {code} : commande non exécutable")
      & P ("system.exit.not_found", "code de sortie {code} : commande introuvable")
      & P ("system.exit.invalid_argument", "code de sortie {code} : argument de sortie non valide")
-     & P ("system.exit.signal", "code de sortie {code} : terminé par {signal}");
+     & P ("system.exit.signal", "code de sortie {code} : terminé par {signal}")
+     & P ("validation.problem.required", "{field} : est obligatoire")
+     & P ("validation.problem.minimum", "{field} : valeur inférieure au minimum")
+     & P ("validation.problem.maximum", "{field} : valeur supérieure au maximum")
+     & P ("validation.problem.range", "{field} : valeur hors de la plage autorisée")
+     & P ("validation.problem.pattern", "{field} : ne correspond pas au format attendu")
+     & P ("validation.problem.choice", "{field} : doit faire partie des choix autorisés")
+     & P ("validation.problem.dependency", "{field} : dépend d’un autre champ")
+     & P ("validation.problem.custom", "{field} : valeur non valide")
+     & P ("validation.constraint.no_relation", "{field} : doit être une valeur {value} valide")
+     & P ("validation.constraint.less_than", "{field} : la valeur doit être inférieure à {value}")
+     & P ("validation.constraint.less_or_equal", "{field} : la valeur ne doit pas dépasser {value}")
+     & P ("validation.constraint.greater_than", "{field} : la valeur doit être supérieure à {value}")
+     & P ("validation.constraint.greater_or_equal", "{field} : la valeur doit être d’au moins {value}")
+     & P ("validation.constraint.equal_to", "{field} : la valeur doit être égale à {value}")
+     & P ("validation.constraint.not_equal_to", "{field} : la valeur doit être différente de {value}")
+     & P ("validation.constraint.before_field", "{field} : la valeur doit être antérieure à {value}")
+     & P ("validation.constraint.after_field", "{field} : la valeur doit être postérieure à {value}")
+     & P ("validation.choices", "{field} : valeurs autorisées : {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, valeur reçue : {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, nouvelle tentative dans {time}")
+     & P ("net_diagnostic.dns", "{endpoint} : échec de la résolution DNS")
+     & P ("net_diagnostic.tcp", "{endpoint} : échec de la connexion TCP")
+     & P ("net_diagnostic.tls", "{endpoint} : échec de la vérification du certificat TLS")
+     & P ("net_diagnostic.http", "{endpoint} : échec de la requête HTTP")
+     & P ("net_diagnostic.proxy", "{endpoint} : échec du proxy")
+     & P ("net_diagnostic.timeout", "{endpoint} : délai d’attente dépassé")
+     & P ("net_diagnostic.reset", "{endpoint} : connexion réinitialisée")
+     & P ("net_diagnostic.unknown_network", "{endpoint} : erreur réseau")
+     & P ("progress.state.not_started", "non démarré")
+     & P ("progress.state.running", "en cours")
+     & P ("progress.state.stalled", "bloqué")
+     & P ("progress.state.retrying", "nouvelle tentative")
+     & P ("progress.state.complete", "terminé")
+     & P ("progress.state.failed", "échoué")
+     & P ("progress.of",
+          "{subject} : {done} sur {total} {done, plural, one {terminé} other "
+          & "{terminés}} ({percent} %), {state}")
+     & P ("progress.done",
+          "{subject} : {done} {done, plural, one {terminé} other {terminés}}, "
+          & "{state}")
+     & P ("collection.summary",
+          "{name} : {total} {total, plural, one {élément} many "
+          & "{d’éléments} other {éléments}}, {unique} {unique, plural, one "
+          & "{valeur unique} many {de valeurs uniques} other {valeurs uniques}}, "
+          & "{duplicates} {duplicates, plural, one {doublon} many {de doublons} "
+          & "other {doublons}}, {outliers} {outliers, plural, one {valeur "
+          & "aberrante} many {de valeurs aberrantes} other {valeurs aberrantes}}")
+     & P ("top_frequency",
+          "{name}, valeur la plus fréquente : {value} ({count} {count, plural, "
+          & "many {de fois} other {fois}})");
 end Locale_Fr;

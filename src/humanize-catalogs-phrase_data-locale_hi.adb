@@ -553,5 +553,57 @@ begin
           & "तर्क")
      & P ("system.exit.signal",
           "निकास कोड {code}: {signal} द्वारा "
-          & "समाप्त");
+          & "समाप्त")
+     & P ("validation.problem.required", "{field}: आवश्यक है")
+     & P ("validation.problem.minimum", "{field}: न्यूनतम से कम है")
+     & P ("validation.problem.maximum", "{field}: अधिकतम से अधिक है")
+     & P ("validation.problem.range", "{field}: सीमा से बाहर है")
+     & P ("validation.problem.pattern", "{field}: पैटर्न से मेल नहीं खाता")
+     & P ("validation.problem.choice",
+          "{field}: अनुमत विकल्पों में से "
+          & "एक होना चाहिए")
+     & P ("validation.problem.dependency",
+          "{field}: किसी अन्य फ़ील्ड पर "
+          & "निर्भर है")
+     & P ("validation.problem.custom", "{field}: अमान्य है")
+     & P ("validation.constraint.no_relation", "{field}: मान्य {value} होना चाहिए")
+     & P ("validation.constraint.less_than", "{field}: {value} से कम होना चाहिए")
+     & P ("validation.constraint.less_or_equal", "{field}: अधिकतम {value} होना चाहिए")
+     & P ("validation.constraint.greater_than", "{field}: {value} से अधिक होना चाहिए")
+     & P ("validation.constraint.greater_or_equal",
+          "{field}: कम से कम {value} होना चाहिए")
+     & P ("validation.constraint.equal_to", "{field}: {value} के बराबर होना चाहिए")
+     & P ("validation.constraint.not_equal_to",
+          "{field}: {value} के बराबर नहीं होना "
+          & "चाहिए")
+     & P ("validation.constraint.before_field", "{field}: {value} से पहले होना चाहिए")
+     & P ("validation.constraint.after_field", "{field}: {value} के बाद होना चाहिए")
+     & P ("validation.choices", "{field}: अनुमत मान {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, प्राप्त मान {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, {time} में फिर से प्रयास")
+     & P ("net_diagnostic.dns", "{endpoint}: DNS लुकअप विफल रहा")
+     & P ("net_diagnostic.tcp", "{endpoint}: TCP कनेक्शन विफल रहा")
+     & P ("net_diagnostic.tls", "{endpoint}: TLS प्रमाणपत्र विफल रहा")
+     & P ("net_diagnostic.http", "{endpoint}: HTTP अनुरोध विफल रहा")
+     & P ("net_diagnostic.proxy", "{endpoint}: प्रॉक्सी विफल रहा")
+     & P ("net_diagnostic.timeout", "{endpoint}: समय समाप्त हो गया")
+     & P ("net_diagnostic.reset", "{endpoint}: कनेक्शन रीसेट हो गया")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: नेटवर्क समस्या")
+     & P ("progress.state.not_started", "शुरू नहीं हुआ")
+     & P ("progress.state.running", "चल रहा है")
+     & P ("progress.state.stalled", "अटका हुआ")
+     & P ("progress.state.retrying", "फिर से प्रयास हो रहा है")
+     & P ("progress.state.complete", "पूर्ण")
+     & P ("progress.state.failed", "विफल")
+     & P ("progress.of",
+          "{subject}: {total} में से {done} पूर्ण "
+          & "({percent}%), {state}")
+     & P ("progress.done", "{subject}: {done} पूर्ण, {state}")
+     & P ("collection.summary",
+          "{name}: {total} आइटम, {unique} अद्वितीय "
+          & "मान, {duplicates} डुप्लिकेट, {outliers} "
+          & "आउटलायर")
+     & P ("top_frequency", "{name}: {value} ({count} बार)");
 end Locale_Hi;

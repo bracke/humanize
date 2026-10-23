@@ -464,5 +464,56 @@ begin
      & P ("system.exit.not_executable", "código de salida {code}: comando no ejecutable")
      & P ("system.exit.not_found", "código de salida {code}: comando no encontrado")
      & P ("system.exit.invalid_argument", "código de salida {code}: argumento de salida no válido")
-     & P ("system.exit.signal", "código de salida {code}: terminado por {signal}");
+     & P ("system.exit.signal", "código de salida {code}: terminado por {signal}")
+     & P ("validation.problem.required", "{field}: es obligatorio")
+     & P ("validation.problem.minimum", "{field}: está por debajo del mínimo")
+     & P ("validation.problem.maximum", "{field}: supera el máximo")
+     & P ("validation.problem.range", "{field}: está fuera del rango")
+     & P ("validation.problem.pattern", "{field}: no coincide con el patrón")
+     & P ("validation.problem.choice", "{field}: debe ser una de las opciones permitidas")
+     & P ("validation.problem.dependency", "{field}: depende de otro campo")
+     & P ("validation.problem.custom", "{field}: no es válido")
+     & P ("validation.constraint.no_relation", "{field}: debe ser válido ({value})")
+     & P ("validation.constraint.less_than", "{field}: debe ser menor que {value}")
+     & P ("validation.constraint.less_or_equal", "{field}: debe ser como máximo {value}")
+     & P ("validation.constraint.greater_than", "{field}: debe ser mayor que {value}")
+     & P ("validation.constraint.greater_or_equal", "{field}: debe ser como mínimo {value}")
+     & P ("validation.constraint.equal_to", "{field}: debe ser igual a {value}")
+     & P ("validation.constraint.not_equal_to", "{field}: no debe ser igual a {value}")
+     & P ("validation.constraint.before_field", "{field}: debe ser anterior a {value}")
+     & P ("validation.constraint.after_field", "{field}: debe ser posterior a {value}")
+     & P ("validation.choices", "{field}: valores permitidos: {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, valor recibido: {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, reintentar en {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: error en la búsqueda DNS")
+     & P ("net_diagnostic.tcp", "{endpoint}: error en la conexión TCP")
+     & P ("net_diagnostic.tls", "{endpoint}: error en el certificado TLS")
+     & P ("net_diagnostic.http", "{endpoint}: error en la solicitud HTTP")
+     & P ("net_diagnostic.proxy", "{endpoint}: error en el proxy")
+     & P ("net_diagnostic.timeout", "{endpoint}: tiempo de espera agotado")
+     & P ("net_diagnostic.reset", "{endpoint}: conexión restablecida")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: error de red")
+     & P ("progress.state.not_started", "sin iniciar")
+     & P ("progress.state.running", "en curso")
+     & P ("progress.state.stalled", "estancado")
+     & P ("progress.state.retrying", "reintentando")
+     & P ("progress.state.complete", "completado")
+     & P ("progress.state.failed", "fallido")
+     & P ("progress.of", "{subject}: {done} de {total} completados ({percent} %), {state}")
+     & P ("progress.done",
+          "{subject}: {done} {done, plural, one {completado} other "
+          & "{completados}}, {state}")
+     & P ("collection.summary",
+          "{name}: {total, plural, one {{total} elemento} many {{total} de "
+          & "elementos} other {{total} elementos}}, {unique, plural, one {{unique} "
+          & "valor único} many {{unique} de valores únicos} other {{unique} "
+          & "valores únicos}}, {duplicates, plural, one {{duplicates} duplicado} "
+          & "many {{duplicates} de duplicados} other {{duplicates} duplicados}}, "
+          & "{outliers, plural, one {{outliers} valor atípico} many {{outliers} de "
+          & "valores atípicos} other {{outliers} valores atípicos}}")
+     & P ("top_frequency",
+          "más frecuente en {name}: {value} ({count, plural, one {{count} vez} "
+          & "many {{count} de veces} other {{count} veces}})");
 end Locale_Es;

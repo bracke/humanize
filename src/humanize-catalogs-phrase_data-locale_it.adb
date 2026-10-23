@@ -465,5 +465,57 @@ begin
      & P ("system.exit.not_executable", "codice di uscita {code}: comando non eseguibile")
      & P ("system.exit.not_found", "codice di uscita {code}: comando non trovato")
      & P ("system.exit.invalid_argument", "codice di uscita {code}: argomento di uscita non valido")
-     & P ("system.exit.signal", "codice di uscita {code}: terminato da {signal}");
+     & P ("system.exit.signal", "codice di uscita {code}: terminato da {signal}")
+     & P ("validation.problem.required", "{field}: campo obbligatorio")
+     & P ("validation.problem.minimum", "{field}: valore inferiore al minimo")
+     & P ("validation.problem.maximum", "{field}: valore superiore al massimo")
+     & P ("validation.problem.range", "{field}: valore fuori dall’intervallo consentito")
+     & P ("validation.problem.pattern", "{field}: non corrisponde al formato richiesto")
+     & P ("validation.problem.choice", "{field}: deve essere una delle scelte consentite")
+     & P ("validation.problem.dependency", "{field}: dipende da un altro campo")
+     & P ("validation.problem.custom", "{field}: valore non valido")
+     & P ("validation.constraint.no_relation", "{field}: deve essere un valore {value} valido")
+     & P ("validation.constraint.less_than", "{field}: il valore deve essere minore di {value}")
+     & P ("validation.constraint.less_or_equal", "{field}: il valore deve essere al massimo {value}")
+     & P ("validation.constraint.greater_than", "{field}: il valore deve essere maggiore di {value}")
+     & P ("validation.constraint.greater_or_equal", "{field}: il valore deve essere almeno {value}")
+     & P ("validation.constraint.equal_to", "{field}: il valore deve essere uguale a {value}")
+     & P ("validation.constraint.not_equal_to", "{field}: il valore deve essere diverso da {value}")
+     & P ("validation.constraint.before_field", "{field}: il valore deve essere precedente a {value}")
+     & P ("validation.constraint.after_field", "{field}: il valore deve essere successivo a {value}")
+     & P ("validation.choices", "{field}: valori consentiti: {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, valore ricevuto: {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, nuovo tentativo tra {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: risoluzione DNS non riuscita")
+     & P ("net_diagnostic.tcp", "{endpoint}: connessione TCP non riuscita")
+     & P ("net_diagnostic.tls", "{endpoint}: verifica del certificato TLS non riuscita")
+     & P ("net_diagnostic.http", "{endpoint}: richiesta HTTP non riuscita")
+     & P ("net_diagnostic.proxy", "{endpoint}: errore del proxy")
+     & P ("net_diagnostic.timeout", "{endpoint}: tempo di attesa scaduto")
+     & P ("net_diagnostic.reset", "{endpoint}: connessione reimpostata")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: errore di rete")
+     & P ("progress.state.not_started", "non avviato")
+     & P ("progress.state.running", "in corso")
+     & P ("progress.state.stalled", "bloccato")
+     & P ("progress.state.retrying", "nuovo tentativo")
+     & P ("progress.state.complete", "completato")
+     & P ("progress.state.failed", "non riuscito")
+     & P ("progress.of",
+          "{subject}: {done} di {total} {done, plural, one {completato} other "
+          & "{completati}} ({percent}%), {state}")
+     & P ("progress.done",
+          "{subject}: {done} {done, plural, one {completato} other {completati}}, "
+          & "{state}")
+     & P ("collection.summary",
+          "{name}: {total} {total, plural, one {elemento} many {di elementi} "
+          & "other {elementi}}, {unique} {unique, plural, one {valore univoco} many "
+          & "{di valori univoci} other {valori univoci}}, {duplicates} {duplicates, "
+          & "plural, one {duplicato} many {di duplicati} other {duplicati}}, "
+          & "{outliers} {outliers, plural, one {valore anomalo} many {di valori "
+          & "anomali} other {valori anomali}}")
+     & P ("top_frequency",
+          "{name}, valore più frequente: {value} ({count} {count, plural, one "
+          & "{volta} many {di volte} other {volte}})");
 end Locale_It;

@@ -409,5 +409,51 @@ begin
      & P ("system.exit.not_executable", "exit {code} command not executable")
      & P ("system.exit.not_found", "exit {code} command not found")
      & P ("system.exit.invalid_argument", "exit {code} invalid exit argument")
-     & P ("system.exit.signal", "exit {code} terminated by {signal}");
+     & P ("system.exit.signal", "exit {code} terminated by {signal}")
+     & P ("validation.problem.required", "validation {field}: is required")
+     & P ("validation.problem.minimum", "validation {field}: is below minimum")
+     & P ("validation.problem.maximum", "validation {field}: is above maximum")
+     & P ("validation.problem.range", "validation {field}: is outside range")
+     & P ("validation.problem.pattern", "validation {field}: does not match pattern")
+     & P ("validation.problem.choice", "validation {field}: must be one of the allowed choices")
+     & P ("validation.problem.dependency", "validation {field}: depends on another field")
+     & P ("validation.problem.custom", "validation {field}: is invalid")
+     & P ("validation.constraint.no_relation", "validation {field}: must be valid {value}")
+     & P ("validation.constraint.less_than", "validation {field}: must be less than {value}")
+     & P ("validation.constraint.less_or_equal", "validation {field}: must be at most {value}")
+     & P ("validation.constraint.greater_than", "validation {field}: must be greater than {value}")
+     & P ("validation.constraint.greater_or_equal", "validation {field}: must be at least {value}")
+     & P ("validation.constraint.equal_to", "validation {field}: must equal {value}")
+     & P ("validation.constraint.not_equal_to", "validation {field}: must not equal {value}")
+     & P ("validation.constraint.before_field", "validation {field}: must be before {value}")
+     & P ("validation.constraint.after_field", "validation {field}: must be after {value}")
+     & P ("validation.choices", "validation {field}: allowed values {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}, got {actual}")
+     & P ("frame.also", "{text}, {detail}")
+     & P ("frame.retry", "{text}, retry in {time}")
+     & P ("net_diagnostic.dns", "network diagnostic {endpoint}: DNS lookup failed")
+     & P ("net_diagnostic.tcp", "network diagnostic {endpoint}: TCP connection failed")
+     & P ("net_diagnostic.tls", "network diagnostic {endpoint}: TLS certificate failed")
+     & P ("net_diagnostic.http", "network diagnostic {endpoint}: HTTP request failed")
+     & P ("net_diagnostic.proxy", "network diagnostic {endpoint}: proxy failed")
+     & P ("net_diagnostic.timeout", "network diagnostic {endpoint}: timed out")
+     & P ("net_diagnostic.reset", "network diagnostic {endpoint}: connection reset")
+     & P ("net_diagnostic.unknown_network", "network diagnostic {endpoint}: network diagnostic")
+     & P ("progress.state.not_started", "not started")
+     & P ("progress.state.running", "running")
+     & P ("progress.state.stalled", "stalled")
+     & P ("progress.state.retrying", "retrying")
+     & P ("progress.state.complete", "complete")
+     & P ("progress.state.failed", "failed")
+     & P ("progress.of", "progress {subject}: {done} of {total} complete ({percent}%), {state}")
+     & P ("progress.done", "progress {subject}: {done} complete, {state}")
+     & P ("collection.summary",
+          "collection {name}: {total} {total, plural, one {item} other {items}}, "
+          & "{unique} {unique, plural, one {unique value} other {unique values}}, "
+          & "{duplicates} {duplicates, plural, one {duplicate} other {duplicates}}, "
+          & "{outliers} {outliers, plural, one {outlier} other {outliers}}")
+     & P ("top_frequency",
+          "top {name}: {value} ({count} {count, plural, one {time} other "
+          & "{times}})");
 end Locale_En;

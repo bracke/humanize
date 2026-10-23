@@ -575,5 +575,63 @@ begin
      & P ("system.exit.not_executable", "رمز الخروج {code}: الأمر غير قابل للتنفيذ")
      & P ("system.exit.not_found", "رمز الخروج {code}: الأمر غير موجود")
      & P ("system.exit.invalid_argument", "رمز الخروج {code}: وسيطة خروج غير صالحة")
-     & P ("system.exit.signal", "رمز الخروج {code}: أُنهي بواسطة {signal}");
+     & P ("system.exit.signal", "رمز الخروج {code}: أُنهي بواسطة {signal}")
+     & P ("validation.problem.required", "{field}: مطلوب")
+     & P ("validation.problem.minimum", "{field}: أقل من الحد الأدنى")
+     & P ("validation.problem.maximum", "{field}: أكبر من الحد الأقصى")
+     & P ("validation.problem.range", "{field}: خارج النطاق")
+     & P ("validation.problem.pattern", "{field}: لا يطابق النمط")
+     & P ("validation.problem.choice",
+          "{field}: يجب أن يكون أحد الخيارات المسموح "
+          & "بها")
+     & P ("validation.problem.dependency", "{field}: يعتمد على حقل آخر")
+     & P ("validation.problem.custom", "{field}: غير صالح")
+     & P ("validation.constraint.no_relation", "{field}: يجب أن يكون {value} صالحًا")
+     & P ("validation.constraint.less_than", "{field}: يجب أن يكون أقل من {value}")
+     & P ("validation.constraint.less_or_equal", "{field}: يجب ألا يتجاوز {value}")
+     & P ("validation.constraint.greater_than", "{field}: يجب أن يكون أكبر من {value}")
+     & P ("validation.constraint.greater_or_equal", "{field}: يجب ألا يقل عن {value}")
+     & P ("validation.constraint.equal_to", "{field}: يجب أن يساوي {value}")
+     & P ("validation.constraint.not_equal_to", "{field}: يجب ألا يساوي {value}")
+     & P ("validation.constraint.before_field", "{field}: يجب أن يكون قبل {value}")
+     & P ("validation.constraint.after_field", "{field}: يجب أن يكون بعد {value}")
+     & P ("validation.choices", "{field}: القيم المسموح بها {choices}")
+     & P ("frame.detail", "{text} ({detail})")
+     & P ("frame.got", "{text}، القيمة المُدخلة {actual}")
+     & P ("frame.also", "{text}، {detail}")
+     & P ("frame.retry", "{text}، أعد المحاولة بعد {time}")
+     & P ("net_diagnostic.dns", "{endpoint}: فشل البحث في DNS")
+     & P ("net_diagnostic.tcp", "{endpoint}: فشل اتصال TCP")
+     & P ("net_diagnostic.tls", "{endpoint}: فشلت شهادة TLS")
+     & P ("net_diagnostic.http", "{endpoint}: فشل طلب HTTP")
+     & P ("net_diagnostic.proxy", "{endpoint}: فشل الوكيل")
+     & P ("net_diagnostic.timeout", "{endpoint}: انتهت المهلة")
+     & P ("net_diagnostic.reset", "{endpoint}: أُعيد تعيين الاتصال")
+     & P ("net_diagnostic.unknown_network", "{endpoint}: مشكلة في الشبكة")
+     & P ("progress.state.not_started", "لم يبدأ")
+     & P ("progress.state.running", "قيد التشغيل")
+     & P ("progress.state.stalled", "متعثر")
+     & P ("progress.state.retrying", "جارٍ إعادة المحاولة")
+     & P ("progress.state.complete", "مكتمل")
+     & P ("progress.state.failed", "فشل")
+     & P ("progress.of", "{subject}: اكتمل {done} من {total} ({percent}٪)، {state}")
+     & P ("progress.done", "{subject}: اكتمل {done}، {state}")
+     & P ("collection.summary",
+          "{name}: {total, plural, zero {{total} عنصر} one {عنصر "
+          & "واحد} two {عنصران} few {{total} عناصر} many {{total} "
+          & "عنصرًا} other {{total} عنصر}}، {unique, plural, zero "
+          & "{{unique} قيمة فريدة} one {قيمة فريدة واحدة} "
+          & "two {قيمتان فريدتان} few {{unique} قيم فريدة} "
+          & "many {{unique} قيمةً فريدةً} other {{unique} قيمة "
+          & "فريدة}}، {duplicates, plural, zero {{duplicates} تكرار} one "
+          & "{تكرار واحد} two {تكراران} few {{duplicates} "
+          & "تكرارات} many {{duplicates} تكرارًا} other {{duplicates} "
+          & "تكرار}}، {outliers, plural, zero {{outliers} قيمة شاذة} "
+          & "one {قيمة شاذة واحدة} two {قيمتان شاذتان} few "
+          & "{{outliers} قيم شاذة} many {{outliers} قيمةً شاذةً} "
+          & "other {{outliers} قيمة شاذة}}")
+     & P ("top_frequency",
+          "{name}: {value} ({count, plural, zero {{count} مرة} one {مرة "
+          & "واحدة} two {مرتان} few {{count} مرات} many {{count} "
+          & "مرةً} other {{count} مرة}})");
 end Locale_Ar;

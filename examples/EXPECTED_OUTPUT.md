@@ -220,6 +220,7 @@ service : API degraded performance
 diagnostic : 2 errors, 1 warning
 threshold : 3 normal, 1 warning, 1 critical
 service (de) : API: eingeschränkte Leistung
+network (de) : api.example.com: Zeitüberschreitung, neuer Versuch in 30 s
 ```
 
 For `./examples/bin/ui_labels_demo`:

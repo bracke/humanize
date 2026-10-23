@@ -187,6 +187,19 @@ their standards; `Humanize.Domain_Details` stays English too -- it is the
 machine-readable metadata layer (log fields, `surface=` tags) its parsers
 read back.
 
+## Cross-domain labels
+
+`Humanize.Cross_Domain.Localized` speaks a locale for the labels a user
+reads: `validation.problem.<kind>`, `validation.constraint.<relation>`
+(field, value), `validation.choices` (field, choices); `net_diagnostic.<kind>`
+(endpoint); `progress.of` / `progress.done` (subject, done, total, percent,
+state) with `progress.state.<state>`; `collection.summary` (name, total,
+unique, duplicates, outliers); `top_frequency` (name, value, count). Optional
+parts wrap a rendered message `{text}`: `frame.detail` "({detail})",
+`frame.got` ", got {actual}", `frame.also` ", {detail}", `frame.retry`
+", retry in {time}". The other `Cross_Domain` labels (diff trees, checksums,
+file metadata, terminal layouts) stay English, as their parsers read them.
+
 ## Review page
 
 The phrase review page (https://claude.ai/artifact/4gdexMdU8CmmxUaysWinzu) shows

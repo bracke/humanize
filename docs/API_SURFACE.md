@@ -138,6 +138,7 @@ Task/domain label packages:
 * `src/humanize-operations.ads`
 * `src/humanize-comparisons.ads`
 * `src/humanize-cross_domain.ads`
+* `src/humanize-cross_domain-localized.ads`
 * `src/humanize-moderation.ads`
 * `src/humanize-accounts.ads`
 * `src/humanize-deployments.ads`

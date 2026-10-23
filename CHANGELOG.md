@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+* **`Humanize.Cross_Domain.Localized`**: validation problems, constraints and
+  choices, network diagnostics, progress, collection statistics and the most
+  frequent value in every shipped locale (40 phrase keys, translated), with
+  bounded `_Into` forms.
+
 * `Parsing.Localized.Parse_Measure` reads the 14 `Humanize.Units` families
   back at any scale the formatter picks (affine units such as Fahrenheit
   fitted from two samples), and `Parse_Date` reads `Calendar_Date_Label`'s

@@ -18,6 +18,8 @@ with Humanize.Parsing.Phrases;
 with Humanize.Phrases;
 with Humanize.Status;
 with Humanize.System_Status.Localized;
+with Humanize.Cross_Domain;
+with Humanize.Cross_Domain.Localized;
 with Humanize.Units;
 
 --  The English the formatters write in code must be what the catalog's en
@@ -244,6 +246,37 @@ package body Humanize.Tests.Phrase_Consistency is
       Check ("system.exit.failure", SL.Process_Exit_Label (En, 200));
    end Test_System_Status_Templates;
 
+   --  Cross-domain labels: every kind, with and without their optional parts.
+   procedure Test_Cross_Domain_Templates (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
+      package C renames Humanize.Cross_Domain;
+      package CL renames Humanize.Cross_Domain.Localized;
+   begin
+      for Kind in C.Validation_Problem_Kind loop
+         Check ("validation.problem." & Ada.Characters.Handling.To_Lower (Kind'Image (1 .. Kind'Image'Length - 8)),
+                CL.Validation_Problem_Label (En, "email", Kind));
+      end loop;
+      for Relation in C.Validation_Relation loop
+         Check ("validation.constraint." & Ada.Characters.Handling.To_Lower (Relation'Image),
+                CL.Validation_Constraint_Label (En, "age", Relation, "18"));
+      end loop;
+      Check ("validation.choices", CL.Validation_Choice_Label (En, "size", "S, M, L"));
+      Check ("frame.got", CL.Validation_Choice_Label (En, "size", "S, M, L", "XL"));
+      Check ("frame.detail", CL.Validation_Problem_Label (En, "email", C.Required_Problem, "too short"));
+      Check ("net_diagnostic.dns", CL.Network_Diagnostic_Label (En, "api.example.com", C.DNS_Diagnostic));
+      Check ("frame.retry",
+             CL.Network_Diagnostic_Label (En, "api.example.com", C.Reset_Diagnostic, Retry_After => "30 s"));
+      Check ("frame.also", CL.Network_Diagnostic_Label (En, "api.example.com", C.TLS_Diagnostic, "expired"));
+      for State in C.Progress_State loop
+         Check ("progress.of", CL.Progress_Label (En, "import", 3, 10, State));
+      end loop;
+      Check ("progress.done", CL.Progress_Label (En, "import", 0, 0));
+      Check ("collection.summary", CL.Collection_Summary_Label (En, "tags", 10, 7, 3, 1));
+      Check ("collection.summary", CL.Collection_Summary_Label (En, "tags", 1, 1, 0, 0));
+      Check ("top_frequency", CL.Top_Frequency_Label (En, "tag", "red", 4));
+      Check ("top_frequency", CL.Top_Frequency_Label (En, "tag", "red", 1));
+   end Test_Cross_Domain_Templates;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -256,6 +289,7 @@ package body Humanize.Tests.Phrase_Consistency is
       Register_Routine (T, Test_Status_Templates'Access, "every English status label is its template");
       Register_Routine (T, Test_Formatter_Templates'Access, "English phrase formatters are their templates");
       Register_Routine (T, Test_System_Status_Templates'Access, "English system status labels are their templates");
+      Register_Routine (T, Test_Cross_Domain_Templates'Access, "English cross-domain labels are their templates");
    end Register_Tests;
 
 end Humanize.Tests.Phrase_Consistency;
