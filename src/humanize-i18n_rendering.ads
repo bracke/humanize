@@ -59,4 +59,31 @@ private package Humanize.I18N_Rendering is
       Plural    : String)
       return Humanize.Selections.Message_Selection;
 
+   --  The caller's noun for Count by the locale's plural rules -- Russian 21
+   --  takes the singular, Polish 5 the registered many form -- and by the
+   --  caller's English choice in English or where the locale's rules cannot
+   --  render.
+   function Noun
+     (Context  : Humanize.Contexts.Context;
+      Count    : Long_Float;
+      Singular : String;
+      Plural   : String;
+      English  : String)
+      return String;
+
+   --  A calendar difference's components -- at most Max_Components of Years,
+   --  Months and Days, zeros only with Include_Zero -- in CLDR's long units
+   --  and grammatical case Case_Name ("nominative" for none), joined by the
+   --  locale's unit list: German dative "2 Jahren und 3 Monaten". "" where a
+   --  part cannot render, or no component is left.
+   function Difference_Parts
+     (Context        : Humanize.Contexts.Context;
+      Years          : Natural;
+      Months         : Natural;
+      Days           : Natural;
+      Max_Components : Natural;
+      Include_Zero   : Boolean;
+      Case_Name      : String)
+      return String;
+
 end Humanize.I18N_Rendering;

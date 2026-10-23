@@ -137,8 +137,6 @@ begin
      & P ("file_size_comparison.larger", "{current} – {quantity} daugiau nei {baseline}")
      & P ("file_size_comparison.smaller", "{current} – {quantity} mažiau nei {baseline}")
      & P ("date_comparison.same", "{current} – ta pati data kaip {baseline}")
-     & P ("date_comparison.after", "{current} vėliau nei {baseline} (skirtumas: {quantity})")
-     & P ("date_comparison.before", "{current} anksčiau nei {baseline} (skirtumas: {quantity})")
      & P ("queue_summary", "eilė: {details}")
      & P ("domain_summary",
           "{domain, select, queue {eilė} job {užduotis} run {vykdymas} cache "
@@ -375,5 +373,9 @@ begin
      & P ("database.database_backup_running", "kuriama duomenų bazės atsarginė kopija")
      & P ("database.database_backup_failed", "nepavyko sukurti duomenų bazės atsarginės kopijos")
      & P ("calendar_difference.case.future", "genitive")
-     & P ("calendar_difference.case.past", "accusative");
+     & P ("calendar_difference.case.past", "accusative")
+     & P ("date_comparison.after", "{current} {quantity} vėliau nei {baseline}")
+     & P ("date_comparison.before", "{current} {quantity} anksčiau nei {baseline}")
+     & P ("date_comparison.case.after", "instrumental")
+     & P ("date_comparison.case.before", "instrumental");
 end Locale_Lt;

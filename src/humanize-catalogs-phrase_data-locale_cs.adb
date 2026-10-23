@@ -386,5 +386,7 @@ begin
      & P ("database.database_replicating", "replikace databáze")
      & P ("database.database_replication_lagging", "replikace databáze se zpožďuje")
      & P ("database.database_backup_running", "probíhá záloha databáze")
-     & P ("database.database_backup_failed", "záloha databáze selhala");
+     & P ("database.database_backup_failed", "záloha databáze selhala")
+     & P ("date_comparison.case.after", "accusative")
+     & P ("date_comparison.case.before", "accusative");
 end Locale_Cs;

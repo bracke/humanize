@@ -382,5 +382,7 @@ begin
      & P ("database.database_replicating", "replikácia databázy")
      & P ("database.database_replication_lagging", "replikácia databázy mešká")
      & P ("database.database_backup_running", "prebieha záloha databázy")
-     & P ("database.database_backup_failed", "záloha databázy zlyhala");
+     & P ("database.database_backup_failed", "záloha databázy zlyhala")
+     & P ("date_comparison.case.after", "accusative")
+     & P ("date_comparison.case.before", "accusative");
 end Locale_Sk;

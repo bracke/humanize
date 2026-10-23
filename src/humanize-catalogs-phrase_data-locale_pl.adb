@@ -371,5 +371,7 @@ begin
      & P ("database.database_replicating", "replikacja bazy danych")
      & P ("database.database_replication_lagging", "opóźnienie replikacji bazy danych")
      & P ("database.database_backup_running", "kopia zapasowa bazy danych w toku")
-     & P ("database.database_backup_failed", "kopia zapasowa bazy danych nieudana");
+     & P ("database.database_backup_failed", "kopia zapasowa bazy danych nieudana")
+     & P ("date_comparison.case.after", "accusative")
+     & P ("date_comparison.case.before", "accusative");
 end Locale_Pl;

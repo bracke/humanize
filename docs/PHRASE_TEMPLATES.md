@@ -110,7 +110,9 @@ A calendar difference's parts come from CLDR in every locale
 above need a translation. A locale whose frame governs a grammatical case
 names it in `calendar_difference.case.future` / `calendar_difference.case.past`
 (German "in"/"vor" take the dative: "in 2 Jahren"); the parts then come in
-CLDR's forms for that case. Without the key they are nominative.
+CLDR's forms for that case. Without the key they are nominative. The date
+comparisons take `date_comparison.case.after` / `.before` the same way (Polish
+"o 2 lata później" accusative, Lithuanian "2 metais vėliau" instrumental).
 
 ## Measurements
 

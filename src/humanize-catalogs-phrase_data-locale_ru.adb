@@ -154,8 +154,6 @@ begin
      & P ("file_size_comparison.larger", "{current} на {quantity} больше, чем {baseline}")
      & P ("file_size_comparison.smaller", "{current} на {quantity} меньше, чем {baseline}")
      & P ("date_comparison.same", "{current} — та же дата, что и {baseline}")
-     & P ("date_comparison.after", "{current} позже, чем {baseline} (разница: {quantity})")
-     & P ("date_comparison.before", "{current} раньше, чем {baseline} (разница: {quantity})")
      & P ("queue_summary", "очередь: {details}")
      & P ("domain_summary",
           "{domain, select, queue {очередь} job {задание} run "
@@ -402,5 +400,9 @@ begin
           "ошибка резервного копирования базы "
           & "данных")
      & P ("calendar_difference.case.future", "accusative")
-     & P ("calendar_difference.case.past", "accusative");
+     & P ("calendar_difference.case.past", "accusative")
+     & P ("date_comparison.after", "{current} на {quantity} позже, чем {baseline}")
+     & P ("date_comparison.before", "{current} на {quantity} раньше, чем {baseline}")
+     & P ("date_comparison.case.after", "accusative")
+     & P ("date_comparison.case.before", "accusative");
 end Locale_Ru;

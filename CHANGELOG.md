@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+* **Registered noun forms reach the plain counts too.** `Lists.Count` and
+  `Counted_Noun` outside English, and `Unit_Change`'s noun, take the locale's
+  plural category with the forms registered on the context (Polish "5
+  plików", "22 pliki"; Russian 21 the singular).
+* **Date comparisons in the governed case**: Polish "o 2 lata później",
+  Russian "на 2 года 3 месяца позже", Lithuanian "2 metais vėliau".
+
 * **Every status phrase family goes through the phrase catalog.** UI, file,
   validation, network, auth, billing, workflow, queue, CI, ticket, payment,
   database and the other domain statuses (162 labels) render through

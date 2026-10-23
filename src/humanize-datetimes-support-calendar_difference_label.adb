@@ -77,35 +77,6 @@ is
          return To_String (Named.Text);
       end Governed_Case;
       Case_Name : constant String := Governed_Case;
-      Parts : Unbounded_String;
-      Count : Natural := 0;
-
-      function Part (Value : Natural; Unit : String) return Boolean is
-      begin
-         if Count >= Natural (Options.Max_Components)
-           or else (Value = 0 and then not Options.Include_Zero)
-         then
-            return True;
-         end if;
-         declare
-            Text : constant Humanize.Status.Text_Result :=
-              Humanize.I18N_Rendering.Render
-                (Context,
-                 Num (Sel.With_Arg (Sel.With_Arg (Sel.Phrase ("calendar_difference.part"), "unit", Unit),
-                                    "case", Case_Name),
-                      "value", Value));
-         begin
-            if Text.Status /= Humanize.Status.Ok or else Length (Text.Text) = 0 then
-               return False;
-            end if;
-            if Count > 0 then
-               Append (Parts, "|");
-            end if;
-            Append (Parts, Text.Text);
-            Count := Count + 1;
-            return True;
-         end;
-      end Part;
 
       function Phrase (Name, Difference : String) return String is
          Text : constant Humanize.Status.Text_Result :=
@@ -118,17 +89,12 @@ is
       if Diff.Direction = Same_Date then
          return Phrase ((if Options.Include_Zero then "calendar_difference.zero" else "calendar_difference.same_day"),
                         "");
-      elsif not (Part (Diff.Years, "year") and then Part (Diff.Months, "month") and then Part (Diff.Days, "day")) then
-         return "";
-      elsif Count = 0 then
-         return Phrase ("calendar_difference.zero", "");
       end if;
       declare
-         Joined : constant Humanize.Status.Text_Result :=
-           Humanize.I18N_Rendering.Render
-             (Context, Sel.With_Arg (Sel.Phrase ("calendar_difference.join"), "value", To_String (Parts)));
          Difference : constant String :=
-           (if Joined.Status = Humanize.Status.Ok then To_String (Joined.Text) else "");
+           Humanize.I18N_Rendering.Difference_Parts
+             (Context, Diff.Years, Diff.Months, Diff.Days, Natural (Options.Max_Components),
+              Options.Include_Zero, Case_Name);
       begin
          if Difference = "" then
             return "";

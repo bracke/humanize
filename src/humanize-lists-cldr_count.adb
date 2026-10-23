@@ -15,16 +15,16 @@ begin
       return (Status => Humanize.Status.Missing_Message, others => <>);
    end if;
    declare
-      --  Singular for CLDR's "one", Plural (or Singular, as no English "s"
-      --  applies) otherwise: Russian 21 takes the singular.
+      --  The noun form for the count's CLDR category: Russian 21 takes the
+      --  singular, Polish 5 the registered many form.
       Result : constant Humanize.Status.Text_Result :=
         Humanize.I18N_Rendering.Render
           (Context,
-           Humanize.Selections.Count_Value_Suffix
-             (Humanize.Message_Keys.Lists_Count,
-              Humanize.Selections.Count_Value (Quantity),
-              Singular,
-              (if Plural'Length > 0 then Plural else Singular)));
+           Humanize.I18N_Rendering.With_Nouns
+             (Context,
+              Humanize.Selections.With_Arg
+                (Humanize.Selections.Phrase ("count"), "count", Long_Long_Integer (Quantity)),
+              Singular, Plural));
    begin
       if Result.Status /= Humanize.Status.Ok then
          return Result;

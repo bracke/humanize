@@ -155,10 +155,6 @@ begin
      & P ("file_size_comparison.larger", "{current} на {quantity} більше, ніж {baseline}")
      & P ("file_size_comparison.smaller", "{current} на {quantity} менше, ніж {baseline}")
      & P ("date_comparison.same", "{current} — та сама дата, що й {baseline}")
-     & P ("date_comparison.after",
-          "{current} пізніше, ніж {baseline} (різниця: "
-          & "{quantity})")
-     & P ("date_comparison.before", "{current} раніше, ніж {baseline} (різниця: {quantity})")
      & P ("queue_summary", "черга: {details}")
      & P ("domain_summary",
           "{domain, select, queue {черга} job {завдання} run "
@@ -400,5 +396,9 @@ begin
           "помилка резервного копіювання бази "
           & "даних")
      & P ("calendar_difference.case.future", "accusative")
-     & P ("calendar_difference.case.past", "accusative");
+     & P ("calendar_difference.case.past", "accusative")
+     & P ("date_comparison.after", "{current} на {quantity} пізніше, ніж {baseline}")
+     & P ("date_comparison.before", "{current} на {quantity} раніше, ніж {baseline}")
+     & P ("date_comparison.case.after", "accusative")
+     & P ("date_comparison.case.before", "accusative");
 end Locale_Uk;

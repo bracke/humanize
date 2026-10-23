@@ -14,6 +14,29 @@ function Date_Comparison
       Difference   : Humanize.Status.Text_Result;
       Value_Time   : Ada.Calendar.Time;
       Ref_Time     : Ada.Calendar.Time;
+
+      --  The difference in the case the locale's "after"/"before" frame
+      --  governs (date_comparison.case.<frame>), else Nominative as rendered.
+      function In_Case (Frame : String; First, Last : Humanize.Datetimes.Civil_Date_Time; Nominative : String)
+        return String
+      is
+         Named : constant Humanize.Status.Text_Result :=
+           Humanize.I18N_Rendering.Render (Context, Sel.Phrase ("date_comparison.case." & Frame));
+      begin
+         if Named.Status /= Humanize.Status.Ok or else Length (Named.Text) = 0 then
+            return Nominative;
+         end if;
+         declare
+            Diff  : constant Humanize.Datetimes.Calendar_Difference_Result :=
+              Humanize.Datetimes.Calendar_Difference (First, Last);
+            Parts : constant String :=
+              Humanize.I18N_Rendering.Difference_Parts
+                (Context, Diff.Years, Diff.Months, Diff.Days, Natural (Options.Max_Components),
+                 Options.Include_Zero, To_String (Named.Text));
+         begin
+            return (if Parts = "" then Nominative else Parts);
+         end;
+      end In_Case;
 begin
       Diff_Options.Style := Humanize.Datetimes.Calendar_Difference_Plain;
       Value_Time :=
@@ -40,7 +63,8 @@ begin
             return Difference;
          end if;
          return Compared
-           (Context, "date_comparison.after", Value_Label, Reference_Label, Result_Text (Difference),
+           (Context, "date_comparison.after", Value_Label, Reference_Label,
+            In_Case ("after", Reference, Value, Result_Text (Difference)),
             Value_Label & " is " & Result_Text (Difference) & " after " & Reference_Label);
       else
          Difference :=
@@ -50,7 +74,8 @@ begin
             return Difference;
          end if;
          return Compared
-           (Context, "date_comparison.before", Value_Label, Reference_Label, Result_Text (Difference),
+           (Context, "date_comparison.before", Value_Label, Reference_Label,
+            In_Case ("before", Value, Reference, Result_Text (Difference)),
             Value_Label & " is " & Result_Text (Difference) & " before " & Reference_Label);
       end if;
 exception

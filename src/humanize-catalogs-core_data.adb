@@ -151,6 +151,12 @@ package body Humanize.Catalogs.Core_Data is
      & " other {}}" & LF
      & "und.humanize.phrase.calendar_difference.join = {value, list, unit}" & LF
      & "und.humanize.phrase.summary.join = {value, list}" & LF
+     --  A count and the caller's noun, or the noun alone, in the locale's
+     --  plural category with the noun forms the caller registered.
+     & "und.humanize.phrase.count = {count, plural, zero {# {zero}} one {# {one}} two {# {two}}"
+     & " few {# {few}} many {# {many}} other {# {other}}}" & LF
+     & "und.humanize.phrase.noun = {count, plural, zero {{zero}} one {{one}} two {{two}}"
+     & " few {{few}} many {{many}} other {{other}}}" & LF
      --  "last week", "this month", "next year": CLDR's relative names.
      & "und.humanize.phrase.calendar_relation.week.past = {minus_one, relative, week}" & LF
      & "und.humanize.phrase.calendar_relation.week.current = {zero, relative, week}" & LF

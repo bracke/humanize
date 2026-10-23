@@ -777,13 +777,6 @@ package body Humanize.Numbers.Ranges is
          Options.Number_Style.Suppress_Trailing_Zero);
    end Change_Number_Text;
 
-   function Unit_Noun
-     (Value    : Long_Float;
-      Singular : String;
-      Plural   : String)
-      return String
-   is (Plural_Text ((if abs Value = 1.0 then 1 else 2), Singular, Plural));
-
    function Compose_Change
      (Context  : Humanize.Contexts.Context;
       Value    : Long_Float;
@@ -949,7 +942,9 @@ package body Humanize.Numbers.Ranges is
       else
          return Compose_Change
            (Context, Value, Quantity, Options,
-            Unit_Noun (Abs_Value, Singular, Plural));
+            Humanize.I18N_Rendering.Noun
+              (Context, Abs_Value, Singular, Plural,
+               English => Plural_Text ((if Abs_Value = 1.0 then 1 else 2), Singular, Plural)));
       end if;
    end Unit_Change;
 

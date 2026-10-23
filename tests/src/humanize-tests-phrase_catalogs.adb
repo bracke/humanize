@@ -212,6 +212,11 @@ package body Humanize.Tests.Phrase_Catalogs is
          AUnit.Assertions.Assert
            (Humanize.Contexts.Noun_Form (Plain, "pliki", "many") = "pliki",
             "unregistered form is the plural");
+         AUnit.Assertions.Assert
+           (Image (Humanize.Lists.Count (Forms, 5, "plik", "pliki")) = "5 plików"
+            and then Image (Humanize.Lists.Count (Forms, 22, "plik", "pliki")) = "22 pliki"
+            and then Image (Humanize.Lists.Count (Forms, 1, "plik", "pliki")) = "1 plik",
+            "count by Polish categories: [" & Image (Humanize.Lists.Count (Forms, 5, "plik", "pliki")) & "]");
       end;
    end Test_Registered_Noun_Forms;
 
@@ -236,6 +241,15 @@ package body Humanize.Tests.Phrase_Catalogs is
       begin
          AUnit.Assertions.Assert (Future = "in 2 Jahren", "German future: [" & Future & "]");
          AUnit.Assertions.Assert (Past = "vor 2 Jahren", "German past: [" & Past & "]");
+      end;
+      declare
+         Lt : constant Humanize.Contexts.Context := Humanize.Contexts.Create (Runtime'Unchecked_Access, "lt");
+         Compared : constant String := Image (Humanize.Phrases.Date_Comparison (Lt, Later, From, "X", "Y"));
+      begin
+         --  Lithuanian "2 metais vėliau": the instrumental its comparison governs.
+         AUnit.Assertions.Assert
+           (Ada.Strings.Unbounded.Index (To_Unbounded_String (Compared), "2 metais") > 0,
+            "Lithuanian comparison: [" & Compared & "]");
       end;
    end Test_Governed_Case;
 

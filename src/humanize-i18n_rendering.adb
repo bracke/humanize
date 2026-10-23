@@ -3,6 +3,7 @@ with Ada.Strings.Unbounded;
 
 with Humanize.Catalogs;
 with Humanize.Bounded_Text;
+with Humanize.Decimal_Images;
 
 with Messages.Arguments;
 with Messages.Result;
@@ -248,5 +249,85 @@ package body Humanize.I18N_Rendering is
             "few", Form ("few")),
          "many", Form ("many"));
    end With_Nouns;
+
+   function Noun
+     (Context  : Humanize.Contexts.Context;
+      Count    : Long_Float;
+      Singular : String;
+      Plural   : String;
+      English  : String)
+      return String
+   is
+   begin
+      if Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | "" then
+         return English;
+      end if;
+      declare
+         Rendered : constant Humanize.Status.Text_Result :=
+           Render
+             (Context,
+              With_Nouns
+                (Context,
+                 Humanize.Selections.With_Arg
+                   (Humanize.Selections.Phrase ("noun"), "count",
+                    Humanize.Decimal_Images.Decimal_Image (abs Count, 3)),
+                 Singular, Plural));
+      begin
+         return (if Rendered.Status = Humanize.Status.Ok and then Length (Rendered.Text) > 0
+                 then To_String (Rendered.Text) else English);
+      end;
+   end Noun;
+
+   function Difference_Parts
+     (Context        : Humanize.Contexts.Context;
+      Years          : Natural;
+      Months         : Natural;
+      Days           : Natural;
+      Max_Components : Natural;
+      Include_Zero   : Boolean;
+      Case_Name      : String)
+      return String
+   is
+      use Humanize.Selections;
+      Parts : Unbounded_String;
+      Count : Natural := 0;
+
+      function Part (Value : Natural; Unit : String) return Boolean is
+      begin
+         if Count >= Max_Components or else (Value = 0 and then not Include_Zero) then
+            return True;
+         end if;
+         declare
+            Text : constant Humanize.Status.Text_Result :=
+              Render
+                (Context,
+                 With_Arg
+                   (With_Arg (With_Arg (Phrase ("calendar_difference.part"), "unit", Unit), "case", Case_Name),
+                    "value", Long_Long_Integer (Value)));
+         begin
+            if Text.Status /= Humanize.Status.Ok or else Length (Text.Text) = 0 then
+               return False;
+            end if;
+            if Count > 0 then
+               Append (Parts, "|");
+            end if;
+            Append (Parts, Text.Text);
+            Count := Count + 1;
+            return True;
+         end;
+      end Part;
+   begin
+      if not (Part (Years, "year") and then Part (Months, "month") and then Part (Days, "day"))
+        or else Count = 0
+      then
+         return "";
+      end if;
+      declare
+         Joined : constant Humanize.Status.Text_Result :=
+           Render (Context, With_Arg (Phrase ("calendar_difference.join"), "value", To_String (Parts)));
+      begin
+         return (if Joined.Status = Humanize.Status.Ok then To_String (Joined.Text) else "");
+      end;
+   end Difference_Parts;
 
 end Humanize.I18N_Rendering;
