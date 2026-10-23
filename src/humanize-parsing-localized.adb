@@ -822,6 +822,12 @@ package body Humanize.Parsing.Localized is
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Date;
 
+   function Parse_Clock_Label
+     (Context   : Humanize.Contexts.Context;
+      Text      : String;
+      Reference : Humanize.Datetimes.Civil_Date_Time)
+      return Civil_Date_Parse_Result is separate;
+
    function Read_Number_Kind
      (Context : Humanize.Contexts.Context; Kind : Lexicon_Kind; Text : String; Code : String := "")
       return Float_Parse_Result

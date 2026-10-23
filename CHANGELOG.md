@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+* `Parsing.Localized.Parse_Clock_Label` reads `Calendar_Clock_Label` back
+  (a day word, weekday or date, and the time in the locale's hour cycle);
+  165 labels round-trip in 33 locales, Hindi "कल" read as the past and not
+  exact.
+
 * `Numbers.Percent` outside English is CLDR's percent pattern itself,
   precision included: Turkish "%12,5" as well as German "12,5 %".
 * errno and signal reasons use glibc's own translations wherever the

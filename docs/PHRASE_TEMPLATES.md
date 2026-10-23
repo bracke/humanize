@@ -227,7 +227,8 @@ Stunden, 30 Minuten", Swahili "dakika 5", Arabic "ساعتان"), `Parse_Relativ
 `Parse_Date` (`Calendar_Date_Label`'s ISO, short, medium and long styles, and
 `Natural_Day`'s "gestern"), `Parse_Percent` ("12,5 %"), `Parse_Compact`
 ("1,2 Mio.", "3 milliards"), `Parse_Ordinal` ("3.", "21st") and
-`Parse_Currency` ("1.234,50 €" with its code). It learns a
+`Parse_Currency` ("1.234,50 €" with its code), and `Parse_Clock_Label`
+(`Calendar_Clock_Label`'s "gestern 13:47", "Montag 1:47 PM"). It learns a
 locale's forms by rendering sample values with `Durations.Format_Components`,
 `Datetimes.Relative` and `Bytes.Format` (cached per runtime and locale, about
 70 ms the first time), so it reads exactly what those write. A text the locale

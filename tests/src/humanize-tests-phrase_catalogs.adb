@@ -817,6 +817,15 @@ package body Humanize.Tests.Phrase_Catalogs is
       end loop;
       AUnit.Assertions.Assert
         (L.Parse_Date (Ctx ("de"), "gestern", Today).Value.Day = 9, "German yesterday");
+      --  A clock label reads back as its day and time.
+      declare
+         use type Humanize.Datetimes.Civil_Date_Time;
+         Moment : constant DT.Civil_Date_Time := (2026, 3, 9, 13, 47, 0);
+         Label  : constant String := Image (DT.Calendar_Clock_Label (Ctx ("de"), Moment, Today));
+      begin
+         AUnit.Assertions.Assert
+           (L.Parse_Clock_Label (Ctx ("de"), Label, Today).Value = Moment, "German clock label [" & Label & "]");
+      end;
       --  Percentages, compact numbers, ordinals and amounts.
       begin
          AUnit.Assertions.Assert

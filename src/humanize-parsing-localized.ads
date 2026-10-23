@@ -116,4 +116,15 @@ package Humanize.Parsing.Localized is
    --  @param Code The ISO 4217 code it is in ("EUR").
    --  @return The amount.
 
+   function Parse_Clock_Label
+     (Context   : Humanize.Contexts.Context;
+      Text      : String;
+      Reference : Humanize.Datetimes.Civil_Date_Time)
+      return Civil_Date_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A label as Humanize.Datetimes.Calendar_Clock_Label writes it
+   --  in the locale ("heute 14:47", "Montag 2:47 PM", "09.10.2026 14:47").
+   --  @param Reference Today, as the label was written against.
+   --  @return The day and time; a weekday reads as the past one.
+
 end Humanize.Parsing.Localized;
