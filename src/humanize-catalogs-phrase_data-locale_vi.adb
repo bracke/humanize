@@ -435,5 +435,31 @@ begin
      & P ("collection.summary",
           "{name}: {total} mục, {unique} giá trị duy nhất, {duplicates} "
           & "mục trùng lặp, {outliers} giá trị ngoại lai")
-     & P ("top_frequency", "{name}: {value} ({count} lần)");
+     & P ("top_frequency", "{name}: {value} ({count} lần)")
+     & P ("calendar_date.fiscal_year", "NTC {year}")
+     & P ("calendar_date.fiscal_quarter", "Quý {part} NTC {year}")
+     & P ("calendar_date.fiscal_half", "{part, plural, =1 {Nửa đầu} other {Nửa cuối}} NTC {year}")
+     & P ("calendar_date.fiscal_year_end", "cuối NTC {year}")
+     & P ("calendar_date.semester", "Học kỳ {part} {year}")
+     & P ("calendar_date.half_year",
+          "{part, plural, =1 {6 tháng đầu năm {year}} other {6 tháng cuối "
+          & "năm {year}}}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {nửa đầu năm {year}} other {nửa cuối năm "
+          & "{year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {đầu {text}} mid {giữa {text}} other "
+          & "{cuối {text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {đầu {text}} mid {giữa {text}} other "
+          & "{cuối {text}}}")
+     & P ("calendar_range.weekend.last", "cuối tuần trước")
+     & P ("calendar_range.weekend.this", "cuối tuần này")
+     & P ("calendar_range.weekend.next", "cuối tuần sau")
+     & P ("calendar_range.weekend_of", "cuối tuần của {date}")
+     & P ("calendar_range.week.last", "tuần trước")
+     & P ("calendar_range.week.this", "tuần này")
+     & P ("calendar_range.week.next", "tuần sau")
+     & P ("calendar_range.week_of", "tuần của {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Vi;

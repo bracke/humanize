@@ -591,5 +591,29 @@ begin
           & "{викидів} other {викиду}}")
      & P ("top_frequency",
           "{name}: найчастіше {value} ({count} {count, plural, one "
-          & "{раз} few {рази} many {разів} other {разу}})");
+          & "{раз} few {рази} many {разів} other {разу}})")
+     & P ("calendar_date.fiscal_year", "ФР {year}")
+     & P ("calendar_date.fiscal_quarter", "ФР {year}, {part}-й кв.")
+     & P ("calendar_date.fiscal_half", "ФР {year}, {part}-е півр.")
+     & P ("calendar_date.fiscal_year_end", "кінець ФР {year}")
+     & P ("calendar_date.semester", "{part}-й сем. {year}")
+     & P ("calendar_date.half_year", "{part}-е півр. {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {перше півріччя {year} р.} other "
+          & "{друге півріччя {year} р.}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text} (початок)} mid {{text} "
+          & "(середина)} other {{text} (кінець)}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {{text} (початок)} mid {{text} "
+          & "(середина)} other {{text} (кінець)}}")
+     & P ("calendar_range.weekend.last", "минулі вихідні")
+     & P ("calendar_range.weekend.this", "ці вихідні")
+     & P ("calendar_range.weekend.next", "наступні вихідні")
+     & P ("calendar_range.weekend_of", "вихідні {date}")
+     & P ("calendar_range.week.last", "минулий тиждень")
+     & P ("calendar_range.week.this", "цей тиждень")
+     & P ("calendar_range.week.next", "наступний тиждень")
+     & P ("calendar_range.week_of", "тиждень з {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Uk;

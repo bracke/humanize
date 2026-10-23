@@ -527,5 +527,29 @@ begin
           & "{de valori aberante}}")
      & P ("top_frequency",
           "{name}, cea mai frecventă valoare: {value} ({count, plural, =1 {o "
-          & "dată} one {{count} dată} few {{count} ori} other {{count} de ori}})");
+          & "dată} one {{count} dată} few {{count} ori} other {{count} de ori}})")
+     & P ("calendar_date.fiscal_year", "AF {year}")
+     & P ("calendar_date.fiscal_quarter", "AF {year} T{part}")
+     & P ("calendar_date.fiscal_half", "AF {year} S{part}")
+     & P ("calendar_date.fiscal_year_end", "sfârșitul AF {year}")
+     & P ("calendar_date.semester", "S{part} {year}")
+     & P ("calendar_date.half_year", "S{part} {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {prima jumătate a anului {year}} other {a doua "
+          & "jumătate a anului {year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {începutul lunii {text}} mid {mijlocul lunii "
+          & "{text}} other {sfârșitul lunii {text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {începutul {text}} mid {mijlocul {text}} other "
+          & "{sfârșitul {text}}}")
+     & P ("calendar_range.weekend.last", "weekendul trecut")
+     & P ("calendar_range.weekend.this", "weekendul acesta")
+     & P ("calendar_range.weekend.next", "weekendul viitor")
+     & P ("calendar_range.weekend_of", "weekendul din {date}")
+     & P ("calendar_range.week.last", "săptămâna trecută")
+     & P ("calendar_range.week.this", "săptămâna aceasta")
+     & P ("calendar_range.week.next", "săptămâna viitoare")
+     & P ("calendar_range.week_of", "săptămâna din {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Ro;

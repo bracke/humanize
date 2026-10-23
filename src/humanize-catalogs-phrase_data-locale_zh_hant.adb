@@ -425,5 +425,29 @@ begin
      & P ("collection.summary",
           "{name}：共{total}項，唯一值{unique}個，重複項{duplicates}"
           & "個，離群值{outliers}個")
-     & P ("top_frequency", "{name}中最常見的值：{value}（{count}次）");
+     & P ("top_frequency", "{name}中最常見的值：{value}（{count}次）")
+     & P ("calendar_date.fiscal_year", "{year}會計年度")
+     & P ("calendar_date.fiscal_quarter", "{year}會計年度第{part}季")
+     & P ("calendar_date.fiscal_half",
+          "{part, plural, =1 {{year}會計年度上半年} other "
+          & "{{year}會計年度下半年}}")
+     & P ("calendar_date.fiscal_year_end", "{year}會計年度末")
+     & P ("calendar_date.semester",
+          "{part, plural, =1 {{year}年第一學期} other "
+          & "{{year}年第二學期}}")
+     & P ("calendar_date.half_year", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}")
+     & P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text}初} mid {{text}中旬} other "
+          & "{{text}底}}")
+     & P ("calendar_date.quarter_phase", "{phase, select, early {{text}初} mid {{text}中} other {{text}末}}")
+     & P ("calendar_range.weekend.last", "上週末")
+     & P ("calendar_range.weekend.this", "本週末")
+     & P ("calendar_range.weekend.next", "下週末")
+     & P ("calendar_range.weekend_of", "{date}所在的週末")
+     & P ("calendar_range.week.last", "上週")
+     & P ("calendar_range.week.this", "本週")
+     & P ("calendar_range.week.next", "下週")
+     & P ("calendar_range.week_of", "{date}所在的一週")
+     & P ("calendar_range.between", "{first}至{last}");
 end Locale_Zh_Hant;

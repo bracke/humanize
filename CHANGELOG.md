@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+* The rest of `Calendar_Date_Label`'s presets and `Calendar_Range_Label`
+  speak the locale outside English: fiscal years, quarters and halves,
+  semesters, early/mid/late phases ("Anfang Oktober 2026"), month-day and
+  compact badges (CLDR), "diese Woche", "Woche vom …" and date spans. 18
+  phrase keys, translated.
+
 * `Calendar_Date_Label`'s short, medium, long, weekday, month-year and
   quarter presets are CLDR's dates outside English ("09.10.26", "Freitag,
   9. Oktober 2026", "2026年10月"), where they were US order with mixed

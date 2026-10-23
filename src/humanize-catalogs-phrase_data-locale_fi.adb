@@ -466,5 +466,29 @@ begin
           & "{yksilöllistä arvoa}}, {duplicates} {duplicates, plural, one "
           & "{kaksoiskappale} other {kaksoiskappaletta}}, {outliers} {outliers, "
           & "plural, one {poikkeava arvo} other {poikkeavaa arvoa}}")
-     & P ("top_frequency", "{name}: {value} ({count} {count, plural, one {kerta} other {kertaa}})");
+     & P ("top_frequency", "{name}: {value} ({count} {count, plural, one {kerta} other {kertaa}})")
+     & P ("calendar_date.fiscal_year", "tilikausi {year}")
+     & P ("calendar_date.fiscal_quarter", "tilikausi {year} Q{part}")
+     & P ("calendar_date.fiscal_half", "tilikausi {year} H{part}")
+     & P ("calendar_date.fiscal_year_end", "tilikauden {year} loppu")
+     & P ("calendar_date.semester", "{part}. lukukausi {year}")
+     & P ("calendar_date.half_year", "H{part}/{year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {vuoden {year} alkupuolisko} other {vuoden {year} "
+          & "loppupuolisko}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text}, alku} mid {{text}, puoliväli} other "
+          & "{{text}, loppu}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {{text}, alku} mid {{text}, puoliväli} other "
+          & "{{text}, loppu}}")
+     & P ("calendar_range.weekend.last", "viime viikonloppu")
+     & P ("calendar_range.weekend.this", "tämä viikonloppu")
+     & P ("calendar_range.weekend.next", "ensi viikonloppu")
+     & P ("calendar_range.weekend_of", "viikonloppu {date}")
+     & P ("calendar_range.week.last", "viime viikko")
+     & P ("calendar_range.week.this", "tämä viikko")
+     & P ("calendar_range.week.next", "ensi viikko")
+     & P ("calendar_range.week_of", "viikko {date}")
+     & P ("calendar_range.between", "{first}–{last}");
 end Locale_Fi;

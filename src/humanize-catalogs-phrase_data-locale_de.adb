@@ -464,5 +464,29 @@ begin
           & "Werte}}, {duplicates} {duplicates, plural, one {Duplikat} other "
           & "{Duplikate}}, {outliers} {outliers, plural, one {Ausreißer} other "
           & "{Ausreißer}}")
-     & P ("top_frequency", "{name}: {value} ({count}-mal)");
+     & P ("top_frequency", "{name}: {value} ({count}-mal)")
+     & P ("calendar_date.fiscal_year", "GJ {year}")
+     & P ("calendar_date.fiscal_quarter", "GJ {year} Q{part}")
+     & P ("calendar_date.fiscal_half", "GJ {year} H{part}")
+     & P ("calendar_date.fiscal_year_end", "Ende GJ {year}")
+     & P ("calendar_date.semester", "{part}. Sem. {year}")
+     & P ("calendar_date.half_year", "{part}. Hj. {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {erstes Halbjahr {year}} other {zweites Halbjahr "
+          & "{year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {Anfang {text}} mid {Mitte {text}} other {Ende "
+          & "{text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {Anfang {text}} mid {Mitte {text}} other {Ende "
+          & "{text}}}")
+     & P ("calendar_range.weekend.last", "letztes Wochenende")
+     & P ("calendar_range.weekend.this", "dieses Wochenende")
+     & P ("calendar_range.weekend.next", "nächstes Wochenende")
+     & P ("calendar_range.weekend_of", "Wochenende vom {date}")
+     & P ("calendar_range.week.last", "letzte Woche")
+     & P ("calendar_range.week.this", "diese Woche")
+     & P ("calendar_range.week.next", "nächste Woche")
+     & P ("calendar_range.week_of", "Woche vom {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_De;

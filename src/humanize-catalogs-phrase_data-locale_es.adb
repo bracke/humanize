@@ -515,5 +515,29 @@ begin
           & "valores atípicos} other {{outliers} valores atípicos}}")
      & P ("top_frequency",
           "más frecuente en {name}: {value} ({count, plural, one {{count} vez} "
-          & "many {{count} de veces} other {{count} veces}})");
+          & "many {{count} de veces} other {{count} veces}})")
+     & P ("calendar_date.fiscal_year", "AF {year}")
+     & P ("calendar_date.fiscal_quarter", "AF {year} T{part}")
+     & P ("calendar_date.fiscal_half", "AF {year} S{part}")
+     & P ("calendar_date.fiscal_year_end", "fin del AF {year}")
+     & P ("calendar_date.semester", "S{part} {year}")
+     & P ("calendar_date.half_year", "S{part} {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {primer semestre de {year}} other {segundo semestre "
+          & "de {year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {principios de {text}} mid {mediados de {text}} "
+          & "other {finales de {text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {principios del {text}} mid {mediados del "
+          & "{text}} other {finales del {text}}}")
+     & P ("calendar_range.weekend.last", "el fin de semana pasado")
+     & P ("calendar_range.weekend.this", "este fin de semana")
+     & P ("calendar_range.weekend.next", "el próximo fin de semana")
+     & P ("calendar_range.weekend_of", "fin de semana del {date}")
+     & P ("calendar_range.week.last", "la semana pasada")
+     & P ("calendar_range.week.this", "esta semana")
+     & P ("calendar_range.week.next", "la próxima semana")
+     & P ("calendar_range.week_of", "semana del {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Es;

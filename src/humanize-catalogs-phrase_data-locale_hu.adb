@@ -438,5 +438,29 @@ begin
      & P ("collection.summary",
           "{name}: {total} elem, {unique} egyedi érték, {duplicates} "
           & "ismétlődés, {outliers} kiugró érték")
-     & P ("top_frequency", "{name}: {value} ({count} alkalommal)");
+     & P ("top_frequency", "{name}: {value} ({count} alkalommal)")
+     & P ("calendar_date.fiscal_year", "{year}. pénzügyi év")
+     & P ("calendar_date.fiscal_quarter", "{year}. pénzügyi év, {part}. negyedév")
+     & P ("calendar_date.fiscal_half", "{year}. pénzügyi év, {part}. félév")
+     & P ("calendar_date.fiscal_year_end", "{year}. pénzügyi év vége")
+     & P ("calendar_date.semester", "{year}, {part}. szemeszter")
+     & P ("calendar_date.half_year", "{year}. {part}. félév")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {{year} első féléve} other {{year} második "
+          & "féléve}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text} eleje} mid {{text} közepe} other "
+          & "{{text} vége}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {{text} eleje} mid {{text} közepe} other "
+          & "{{text} vége}}")
+     & P ("calendar_range.weekend.last", "múlt hétvége")
+     & P ("calendar_range.weekend.this", "ez a hétvége")
+     & P ("calendar_range.weekend.next", "jövő hétvége")
+     & P ("calendar_range.weekend_of", "{date} hétvégéje")
+     & P ("calendar_range.week.last", "múlt hét")
+     & P ("calendar_range.week.this", "ez a hét")
+     & P ("calendar_range.week.next", "jövő hét")
+     & P ("calendar_range.week_of", "{date} hete")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Hu;

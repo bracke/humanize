@@ -424,5 +424,29 @@ begin
      & P ("collection.summary",
           "{name}：共{total}项，唯一值{unique}个，重复项{duplicates}"
           & "个，离群值{outliers}个")
-     & P ("top_frequency", "{name}中最常见的值：{value}（{count}次）");
+     & P ("top_frequency", "{name}中最常见的值：{value}（{count}次）")
+     & P ("calendar_date.fiscal_year", "{year}财年")
+     & P ("calendar_date.fiscal_quarter", "{year}财年第{part}季度")
+     & P ("calendar_date.fiscal_half",
+          "{part, plural, =1 {{year}财年上半年} other "
+          & "{{year}财年下半年}}")
+     & P ("calendar_date.fiscal_year_end", "{year}财年末")
+     & P ("calendar_date.semester",
+          "{part, plural, =1 {{year}年第一学期} other "
+          & "{{year}年第二学期}}")
+     & P ("calendar_date.half_year", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}")
+     & P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text}初} mid {{text}中旬} other "
+          & "{{text}底}}")
+     & P ("calendar_date.quarter_phase", "{phase, select, early {{text}初} mid {{text}中} other {{text}末}}")
+     & P ("calendar_range.weekend.last", "上周末")
+     & P ("calendar_range.weekend.this", "本周末")
+     & P ("calendar_range.weekend.next", "下周末")
+     & P ("calendar_range.weekend_of", "{date}所在的周末")
+     & P ("calendar_range.week.last", "上周")
+     & P ("calendar_range.week.this", "本周")
+     & P ("calendar_range.week.next", "下周")
+     & P ("calendar_range.week_of", "{date}所在的一周")
+     & P ("calendar_range.between", "{first}至{last}");
 end Locale_Zh;

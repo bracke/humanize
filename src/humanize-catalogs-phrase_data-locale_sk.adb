@@ -596,5 +596,27 @@ begin
           & "hodnôt}}")
      & P ("top_frequency",
           "{name}: {value} ({count} {count, plural, one {výskyt} few {výskyty} "
-          & "many {výskytu} other {výskytov}})");
+          & "many {výskytu} other {výskytov}})")
+     & P ("calendar_date.fiscal_year", "FR {year}")
+     & P ("calendar_date.fiscal_quarter", "FR {year} Q{part}")
+     & P ("calendar_date.fiscal_half", "FR {year} {part}. polr.")
+     & P ("calendar_date.fiscal_year_end", "koniec FR {year}")
+     & P ("calendar_date.semester", "{part}. sem. {year}")
+     & P ("calendar_date.half_year", "{part}. polr. {year}")
+     & P ("calendar_date.half_year_phrase", "{part, plural, =1 {prvý polrok {year}} other {druhý polrok {year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text} (začiatok)} mid {{text} (polovica)} "
+          & "other {{text} (koniec)}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {{text} (začiatok)} mid {{text} (polovica)} "
+          & "other {{text} (koniec)}}")
+     & P ("calendar_range.weekend.last", "minulý víkend")
+     & P ("calendar_range.weekend.this", "tento víkend")
+     & P ("calendar_range.weekend.next", "budúci víkend")
+     & P ("calendar_range.weekend_of", "víkend {date}")
+     & P ("calendar_range.week.last", "minulý týždeň")
+     & P ("calendar_range.week.this", "tento týždeň")
+     & P ("calendar_range.week.next", "budúci týždeň")
+     & P ("calendar_range.week_of", "týždeň od {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Sk;

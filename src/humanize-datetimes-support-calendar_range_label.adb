@@ -24,6 +24,26 @@ is
    Q_Start       : Civil_Date_Time;
    Q_End         : Civil_Date_Time;
    Q_Year        : Natural;
+
+   --  Outside English, the labels as the locale writes them: a phrase
+   --  ("calendar_range.<Name>") around its own dates; English otherwise.
+   English_Locale : constant Boolean := CLDR_Labels.Is_English (Context);
+
+   function Either (Localized, English : String) return Humanize.Status.Text_Result is
+     (Ok_Text (if English_Locale or else Localized = "" then English else Localized));
+
+   function Named (Name, English : String) return Humanize.Status.Text_Result is
+     (Either ((if English_Locale then ""
+               else Localized_Phrase (Context, Humanize.Selections.Phrase ("calendar_range." & Name))), English));
+
+   function Dated (Name : String; Day : Civil_Date_Time; English : String) return Humanize.Status.Text_Result is
+     (Either ((if English_Locale then ""
+               else Localized_Phrase
+                      (Context,
+                       Humanize.Selections.With_Arg
+                         (Humanize.Selections.Phrase ("calendar_range." & Name), "date",
+                          Localized_Date (Context, Day, "medium")))),
+              English));
 begin
    if Options.Style = Calendar_Range_Time_Today
      or else (Options.Style = Calendar_Range_Auto
@@ -53,13 +73,13 @@ begin
          Offset : constant Integer := Day_Diff (Ref_Weekend, First_Date) / 7;
       begin
          if Offset = -1 then
-            return Ok_Text ("last weekend");
+            return Named ("weekend.last", "last weekend");
          elsif Offset = 0 then
-            return Ok_Text ("this weekend");
+            return Named ("weekend.this", "this weekend");
          elsif Offset = 1 then
-            return Ok_Text ("next weekend");
+            return Named ("weekend.next", "next weekend");
          else
-            return Ok_Text ("weekend of " & Calendar_Date_Preset_Label
+            return Dated ("weekend_of", First_Date, "weekend of " & Calendar_Date_Preset_Label
               (Context, First_Date,
                (Style => Calendar_Date_Medium,
                 Fiscal_Year_Start_Month => 1)));
@@ -76,13 +96,13 @@ begin
          Offset : constant Integer := Day_Diff (Ref_Week, First_Date) / 7;
       begin
          if Offset = -1 then
-            return Ok_Text ("last week");
+            return Named ("week.last", "last week");
          elsif Offset = 0 then
-            return Ok_Text ("this week");
+            return Named ("week.this", "this week");
          elsif Offset = 1 then
-            return Ok_Text ("next week");
+            return Named ("week.next", "next week");
          else
-            return Ok_Text ("week of " & Calendar_Date_Preset_Label
+            return Dated ("week_of", First_Date, "week of " & Calendar_Date_Preset_Label
               (Context, First_Date,
                (Style => Calendar_Date_Medium,
                 Fiscal_Year_Start_Month => 1)));
@@ -95,7 +115,8 @@ begin
               and then First_Date.Day = 1
               and then Same_Date (Last_Date, Month_End (First_Date)))
    then
-      return Ok_Text (Month_Label (Context, First_Date));
+      return Either ((if English_Locale then "" else Localized_Date (Context, First_Date, "month_year")),
+                     Month_Label (Context, First_Date));
    end if;
 
    if Options.Style = Calendar_Range_Quarter
@@ -107,8 +128,10 @@ begin
         and then Same_Date (First_Date, Q_Start)
         and then Same_Date (Last_Date, Q_End)
       then
-         return Ok_Text
-           (Quarter_Label (First_Date, Options.Fiscal_Year_Start_Month));
+         return Either
+           ((if English_Locale or else Options.Fiscal_Year_Start_Month /= 1 then ""
+             else Localized_Date (Context, First_Date, "quarter")),
+            Quarter_Label (First_Date, Options.Fiscal_Year_Start_Month));
       elsif Options.Style = Calendar_Range_Quarter then
          return Ok_Text
            (Quarter_Label (First_Date, Options.Fiscal_Year_Start_Month));
@@ -117,13 +140,27 @@ begin
 
    if Options.Style = Calendar_Range_Date_Times then
       return Date_Time_Range (Context, First, Last, Reference, Range_Opts);
-   else
-      return Ok_Text
-        (if Options.Use_Month_Names
-         then Polished_Date_Range (Context, First_Date, Last_Date, Options)
-         else Result_Text
-           (Date_Range (Context, First_Date, Last_Date, Range_Opts)));
+   elsif not English_Locale then
+      declare
+         Span : constant String :=
+           Localized_Phrase
+             (Context,
+              Humanize.Selections.With_Arg
+                (Humanize.Selections.With_Arg
+                   (Humanize.Selections.Phrase ("calendar_range.between"), "first",
+                    Localized_Date (Context, First_Date, "medium")),
+                 "last", Localized_Date (Context, Last_Date, "medium")));
+      begin
+         if Span /= "" then
+            return Ok_Text (Span);
+         end if;
+      end;
    end if;
+   return Ok_Text
+     (if Options.Use_Month_Names
+      then Polished_Date_Range (Context, First_Date, Last_Date, Options)
+      else Result_Text
+        (Date_Range (Context, First_Date, Last_Date, Range_Opts)));
 exception
    when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
       return (Status => Humanize.Status.Invalid_Value, others => <>);

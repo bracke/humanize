@@ -479,5 +479,29 @@ begin
           & "{duplicates} {duplicates, plural, one {dubblett} other {dubbletter}}, "
           & "{outliers} {outliers, plural, one {extremvärde} other "
           & "{extremvärden}}")
-     & P ("top_frequency", "{name}: {value} ({count} {count, plural, one {gång} other {gånger}})");
+     & P ("top_frequency", "{name}: {value} ({count} {count, plural, one {gång} other {gånger}})")
+     & P ("calendar_date.fiscal_year", "räkenskapsår {year}")
+     & P ("calendar_date.fiscal_quarter", "räkenskapsår {year} K{part}")
+     & P ("calendar_date.fiscal_half", "räkenskapsår {year} H{part}")
+     & P ("calendar_date.fiscal_year_end", "slutet av räkenskapsår {year}")
+     & P ("calendar_date.semester", "termin {part} {year}")
+     & P ("calendar_date.half_year", "halvår {part} {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {första halvåret {year}} other {andra halvåret "
+          & "{year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {början av {text}} mid {mitten av {text}} other "
+          & "{slutet av {text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {början av {text}} mid {mitten av {text}} other "
+          & "{slutet av {text}}}")
+     & P ("calendar_range.weekend.last", "förra helgen")
+     & P ("calendar_range.weekend.this", "i helgen")
+     & P ("calendar_range.weekend.next", "nästa helg")
+     & P ("calendar_range.weekend_of", "helgen {date}")
+     & P ("calendar_range.week.last", "förra veckan")
+     & P ("calendar_range.week.this", "den här veckan")
+     & P ("calendar_range.week.next", "nästa vecka")
+     & P ("calendar_range.week_of", "veckan från {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Sv;

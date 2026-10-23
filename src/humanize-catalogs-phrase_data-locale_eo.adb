@@ -475,5 +475,27 @@ begin
           & "{duplicates} {duplicates, plural, one {duplikato} other {duplikatoj}}, "
           & "{outliers} {outliers, plural, one {eksterordinara valoro} other "
           & "{eksterordinaraj valoroj}}")
-     & P ("top_frequency", "{name}: {value} ({count} {count, plural, one {fojon} other {fojojn}})");
+     & P ("top_frequency", "{name}: {value} ({count} {count, plural, one {fojon} other {fojojn}})")
+     & P ("calendar_date.fiscal_year", "financa jaro {year}")
+     & P ("calendar_date.fiscal_quarter", "financa jaro {year}, {part}-a kvaronjaro")
+     & P ("calendar_date.fiscal_half", "financa jaro {year}, {part}-a duonjaro")
+     & P ("calendar_date.fiscal_year_end", "fino de financa jaro {year}")
+     & P ("calendar_date.semester", "{part}-a semestro {year}")
+     & P ("calendar_date.half_year", "{part}-a duonjaro {year}")
+     & P ("calendar_date.half_year_phrase", "{part, plural, =1 {unua duono de {year}} other {dua duono de {year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {komence de {text}} mid {meze de {text}} other "
+          & "{fine de {text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {komence de {text}} mid {meze de {text}} other "
+          & "{fine de {text}}}")
+     & P ("calendar_range.weekend.last", "pasinta semajnfino")
+     & P ("calendar_range.weekend.this", "ĉi tiu semajnfino")
+     & P ("calendar_range.weekend.next", "venonta semajnfino")
+     & P ("calendar_range.weekend_of", "semajnfino de {date}")
+     & P ("calendar_range.week.last", "pasinta semajno")
+     & P ("calendar_range.week.this", "ĉi tiu semajno")
+     & P ("calendar_range.week.next", "venonta semajno")
+     & P ("calendar_range.week_of", "semajno de {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Eo;

@@ -147,7 +147,13 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"net_diagnostic.timeout", +"net_diagnostic.reset", +"net_diagnostic.unknown_network",
       +"progress.state.not_started", +"progress.state.running", +"progress.state.stalled",
       +"progress.state.retrying", +"progress.state.complete", +"progress.state.failed", +"progress.of",
-      +"progress.done", +"collection.summary", +"top_frequency"];
+      +"progress.done", +"collection.summary", +"top_frequency",
+      +"calendar_date.fiscal_year", +"calendar_date.fiscal_quarter", +"calendar_date.fiscal_half",
+      +"calendar_date.fiscal_year_end", +"calendar_date.semester", +"calendar_date.half_year",
+      +"calendar_date.half_year_phrase", +"calendar_date.month_phase", +"calendar_date.quarter_phase",
+      +"calendar_range.weekend.last", +"calendar_range.weekend.this", +"calendar_range.weekend.next",
+      +"calendar_range.weekend_of", +"calendar_range.week.last", +"calendar_range.week.this",
+      +"calendar_range.week.next", +"calendar_range.week_of", +"calendar_range.between"];
 
    --  Every shipped locale besides English.
    Locales : constant array (Positive range <>) of Unbounded_String :=
@@ -161,7 +167,7 @@ package body Humanize.Tests.Phrase_Catalogs is
      [+"total", +"matching", +"visible", +"remaining", +"page", +"size", +"first", +"last", +"position",
       +"selected", +"showing", +"count", +"hidden", +"done", +"step", +"attempt", +"rate", +"days", +"hours",
       +"every", +"hits", +"misses", +"changed", +"added", +"removed", +"available", +"unavailable",
-      +"code", +"done", +"unique", +"duplicates", +"outliers"];
+      +"code", +"done", +"unique", +"duplicates", +"outliers", +"part", +"year"];
 
    procedure Test_Every_Locale_Renders_Every_Phrase
      (T : in out AUnit.Test_Cases.Test_Case'Class)
@@ -222,6 +228,12 @@ package body Humanize.Tests.Phrase_Catalogs is
             Messages.Arguments.Set (Args, "subject", "import");
             Messages.Arguments.Set (Args, "text", "label");
             Messages.Arguments.Set (Args, "detail", "expired");
+            Messages.Arguments.Set (Args, "year", "2026");
+            Messages.Arguments.Set (Args, "part", Count);
+            Messages.Arguments.Set (Args, "phase", "mid");
+            Messages.Arguments.Set (Args, "date", "2026-10-09");
+            Messages.Arguments.Set (Args, "first", "2026-10-09");
+            Messages.Arguments.Set (Args, "last", "2026-10-15");
             Messages.Arguments.Set (Args, "available", Count);
             Messages.Arguments.Set (Args, "unavailable", Count);
             for Locale of Locales loop
@@ -433,7 +445,7 @@ package body Humanize.Tests.Phrase_Catalogs is
    Text_Arguments : constant array (Positive range <>) of Unbounded_String :=
      [+"unit", +"field", +"before", +"after", +"current", +"baseline", +"quantity",
       +"details", +"difference", +"measure", +"name", +"time", +"signal", +"choices", +"actual", +"endpoint",
-      +"subject", +"text", +"detail"];
+      +"subject", +"text", +"detail", +"date"];
 
    function Digits_Of (Value : Natural) return String is
      (Natural'Image (Value) (2 .. Natural'Image (Value)'Last));
@@ -581,6 +593,7 @@ package body Humanize.Tests.Phrase_Catalogs is
                Messages.Arguments.Set (Args, "severity", "warning");
                Messages.Arguments.Set (Args, "domain", "sync");
                Messages.Arguments.Set (Args, "state", "running");
+               Messages.Arguments.Set (Args, "phase", "mid");
                --  A gendered branch, where the locale has one, reads back too.
                Messages.Arguments.Set (Args, "gender", "feminine");
                declare
@@ -790,6 +803,16 @@ package body Humanize.Tests.Phrase_Catalogs is
            (Label ("ja", DT.Calendar_Date_Month_Year) = U ("2026年3月"), Label ("ja", DT.Calendar_Date_Month_Year));
          AUnit.Assertions.Assert
            (Label ("en", DT.Calendar_Date_Short) = "03/10/2026", "English keeps its own presets");
+         AUnit.Assertions.Assert
+           (Label ("de", DT.Calendar_Date_Month_Phase) = U ("Anfang März 2026"),
+            Label ("de", DT.Calendar_Date_Month_Phase));
+         AUnit.Assertions.Assert
+           (Label ("de", DT.Calendar_Date_Fiscal_Year) = "GJ 2026", Label ("de", DT.Calendar_Date_Fiscal_Year));
+         AUnit.Assertions.Assert
+           (Image (DT.Calendar_Range_Label
+                     (Ctx ("de"), (2026, 3, 9, 0, 0, 0), (2026, 3, 15, 0, 0, 0), Today,
+                      (Style => DT.Calendar_Range_Week, others => <>))) = "diese Woche",
+            "German this week");
       end;
    end Test_Localized_Measures_And_Dates;
 

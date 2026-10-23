@@ -465,5 +465,29 @@ begin
           & "{unique, plural, one {unieke waarde} other {unieke waarden}}, "
           & "{duplicates} {duplicates, plural, one {duplicaat} other {duplicaten}}, "
           & "{outliers} {outliers, plural, one {uitschieter} other {uitschieters}}")
-     & P ("top_frequency", "{name}: {value} ({count} keer)");
+     & P ("top_frequency", "{name}: {value} ({count} keer)")
+     & P ("calendar_date.fiscal_year", "boekjaar {year}")
+     & P ("calendar_date.fiscal_quarter", "boekjaar {year} K{part}")
+     & P ("calendar_date.fiscal_half", "boekjaar {year} H{part}")
+     & P ("calendar_date.fiscal_year_end", "einde boekjaar {year}")
+     & P ("calendar_date.semester", "{part}e semester {year}")
+     & P ("calendar_date.half_year", "H{part} {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {eerste helft van {year}} other {tweede helft van "
+          & "{year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {begin {text}} mid {medio {text}} other {eind "
+          & "{text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {begin {text}} mid {medio {text}} other {eind "
+          & "{text}}}")
+     & P ("calendar_range.weekend.last", "vorig weekend")
+     & P ("calendar_range.weekend.this", "dit weekend")
+     & P ("calendar_range.weekend.next", "volgend weekend")
+     & P ("calendar_range.weekend_of", "weekend van {date}")
+     & P ("calendar_range.week.last", "vorige week")
+     & P ("calendar_range.week.this", "deze week")
+     & P ("calendar_range.week.next", "volgende week")
+     & P ("calendar_range.week_of", "week van {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Nl;

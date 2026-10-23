@@ -21,5 +21,15 @@ begin
      & P ("net_diagnostic.timeout", "{endpoint}：連接逾時")
      & P ("net_diagnostic.reset", "{endpoint}：連接已重設")
      & P ("net_diagnostic.unknown_network", "{endpoint}：網絡錯誤")
-     & P ("progress.state.running", "運行中");
+     & P ("progress.state.running", "運行中")
+     & P ("calendar_date.fiscal_year", "{year}財政年度")
+     & P ("calendar_date.fiscal_quarter", "{year}財政年度第{part}季")
+     & P ("calendar_date.fiscal_half",
+          "{part, plural, =1 {{year}財政年度上半年} other "
+          & "{{year}財政年度下半年}}")
+     & P ("calendar_date.fiscal_year_end", "{year}財政年度末")
+     & P ("calendar_range.week.last", "上星期")
+     & P ("calendar_range.week.this", "本星期")
+     & P ("calendar_range.week.next", "下星期")
+     & P ("calendar_range.week_of", "{date}所在的星期");
 end Locale_Zh_Hant_Hk;

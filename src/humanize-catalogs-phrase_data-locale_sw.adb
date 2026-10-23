@@ -465,5 +465,29 @@ begin
           & "rudufu {duplicates}} other {nakala rudufu {duplicates}}}, {outliers, "
           & "plural, one {thamani isiyo ya kawaida {outliers}} other {thamani "
           & "zisizo za kawaida {outliers}}}")
-     & P ("top_frequency", "{name}: {value} (mara {count})");
+     & P ("top_frequency", "{name}: {value} (mara {count})")
+     & P ("calendar_date.fiscal_year", "MF {year}")
+     & P ("calendar_date.fiscal_quarter", "Robo ya {part} MF {year}")
+     & P ("calendar_date.fiscal_half", "{part, plural, =1 {Nusu ya kwanza} other {Nusu ya pili}} MF {year}")
+     & P ("calendar_date.fiscal_year_end", "mwisho wa MF {year}")
+     & P ("calendar_date.semester", "Muhula wa {part} {year}")
+     & P ("calendar_date.half_year", "{part, plural, =1 {Nusu ya kwanza} other {Nusu ya pili}} {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {nusu ya kwanza ya {year}} other {nusu ya pili ya "
+          & "{year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {mwanzoni mwa {text}} mid {katikati ya {text}} "
+          & "other {mwishoni mwa {text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {mwanzoni mwa {text}} mid {katikati ya {text}} "
+          & "other {mwishoni mwa {text}}}")
+     & P ("calendar_range.weekend.last", "wikendi iliyopita")
+     & P ("calendar_range.weekend.this", "wikendi hii")
+     & P ("calendar_range.weekend.next", "wikendi ijayo")
+     & P ("calendar_range.weekend_of", "wikendi ya {date}")
+     & P ("calendar_range.week.last", "wiki iliyopita")
+     & P ("calendar_range.week.this", "wiki hii")
+     & P ("calendar_range.week.next", "wiki ijayo")
+     & P ("calendar_range.week_of", "wiki ya {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Sw;

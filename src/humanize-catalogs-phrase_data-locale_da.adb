@@ -467,5 +467,29 @@ begin
           & "{duplicates} {duplicates, plural, one {dublet} other {dubletter}}, "
           & "{outliers} {outliers, plural, one {ekstremværdi} other "
           & "{ekstremværdier}}")
-     & P ("top_frequency", "{name}: {value} ({count} {count, plural, one {gang} other {gange}})");
+     & P ("top_frequency", "{name}: {value} ({count} {count, plural, one {gang} other {gange}})")
+     & P ("calendar_date.fiscal_year", "regnskabsår {year}")
+     & P ("calendar_date.fiscal_quarter", "{part}. kvt. regnskabsår {year}")
+     & P ("calendar_date.fiscal_half", "{part}. halvår regnskabsår {year}")
+     & P ("calendar_date.fiscal_year_end", "udgangen af regnskabsår {year}")
+     & P ("calendar_date.semester", "{part}. semester {year}")
+     & P ("calendar_date.half_year", "{part}. halvår {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {første halvdel af {year}} other {anden halvdel af "
+          & "{year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {begyndelsen af {text}} mid {midten af {text}} "
+          & "other {slutningen af {text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {begyndelsen af {text}} mid {midten af {text}} "
+          & "other {slutningen af {text}}}")
+     & P ("calendar_range.weekend.last", "sidste weekend")
+     & P ("calendar_range.weekend.this", "denne weekend")
+     & P ("calendar_range.weekend.next", "næste weekend")
+     & P ("calendar_range.weekend_of", "weekenden den {date}")
+     & P ("calendar_range.week.last", "sidste uge")
+     & P ("calendar_range.week.this", "denne uge")
+     & P ("calendar_range.week.next", "næste uge")
+     & P ("calendar_range.week_of", "ugen fra {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Da;

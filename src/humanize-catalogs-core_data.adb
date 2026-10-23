@@ -493,6 +493,10 @@ package body Humanize.Catalogs.Core_Data is
      & "und.humanize.phrase.calendar_date.weekday = {value, date, ::yMMMEd}" & LF
      & "und.humanize.phrase.calendar_date.month_year = {value, date, ::yMMM}" & LF
      & "und.humanize.phrase.calendar_date.quarter = {value, date, ::yQQQ}" & LF
+     & "und.humanize.phrase.calendar_date.month_year_long = {value, date, ::yMMMM}" & LF
+     & "und.humanize.phrase.calendar_date.month_day = {value, date, ::MMMMd}" & LF
+     & "und.humanize.phrase.calendar_date.compact_badge = {value, date, ::MMMd}" & LF
+     & "und.humanize.phrase.calendar_date.weekday_day = {value, date, ::Ed}" & LF
      & "und.humanize.datetime.weekday.previous = "
      & "{value, select,"
      & " mon {{minus_one, relative, mon}}"

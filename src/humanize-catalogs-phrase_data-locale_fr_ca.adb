@@ -15,5 +15,9 @@ begin
      & P ("ticket.ticket_escalated", "billet transféré au palier supérieur")
      & P ("ticket.ticket_resolved", "billet résolu")
      & P ("ticket.ticket_closed", "billet fermé")
-     & P ("net_diagnostic.proxy", "{endpoint} : échec du serveur mandataire");
+     & P ("net_diagnostic.proxy", "{endpoint} : échec du serveur mandataire")
+     & P ("calendar_range.weekend.last", "la fin de semaine dernière")
+     & P ("calendar_range.weekend.this", "cette fin de semaine")
+     & P ("calendar_range.weekend.next", "la fin de semaine prochaine")
+     & P ("calendar_range.weekend_of", "fin de semaine du {date}");
 end Locale_Fr_Ca;

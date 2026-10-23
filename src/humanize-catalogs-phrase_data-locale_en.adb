@@ -455,5 +455,29 @@ begin
           & "{outliers} {outliers, plural, one {outlier} other {outliers}}")
      & P ("top_frequency",
           "top {name}: {value} ({count} {count, plural, one {time} other "
-          & "{times}})");
+          & "{times}})")
+     & P ("calendar_date.fiscal_year", "FY{year}")
+     & P ("calendar_date.fiscal_quarter", "FY{year} Q{part}")
+     & P ("calendar_date.fiscal_half", "FY{year} H{part}")
+     & P ("calendar_date.fiscal_year_end", "end of FY{year}")
+     & P ("calendar_date.semester", "S{part} {year}")
+     & P ("calendar_date.half_year", "H{part} {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {first half of {year}} other {second half of "
+          & "{year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {early {text}} mid {mid-{text}} other {late "
+          & "{text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {early {text}} mid {mid {text}} other {late "
+          & "{text}}}")
+     & P ("calendar_range.weekend.last", "last weekend")
+     & P ("calendar_range.weekend.this", "this weekend")
+     & P ("calendar_range.weekend.next", "next weekend")
+     & P ("calendar_range.weekend_of", "weekend of {date}")
+     & P ("calendar_range.week.last", "last week")
+     & P ("calendar_range.week.this", "this week")
+     & P ("calendar_range.week.next", "next week")
+     & P ("calendar_range.week_of", "week of {date}")
+     & P ("calendar_range.between", "{first}-{last}");
 end Locale_En;

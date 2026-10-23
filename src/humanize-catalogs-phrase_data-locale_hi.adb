@@ -605,5 +605,38 @@ begin
           "{name}: {total} आइटम, {unique} अद्वितीय "
           & "मान, {duplicates} डुप्लिकेट, {outliers} "
           & "आउटलायर")
-     & P ("top_frequency", "{name}: {value} ({count} बार)");
+     & P ("top_frequency", "{name}: {value} ({count} बार)")
+     & P ("calendar_date.fiscal_year", "वित्त वर्ष {year}")
+     & P ("calendar_date.fiscal_quarter",
+          "वित्त वर्ष {year} की {part, plural, =1 "
+          & "{पहली} =2 {दूसरी} =3 {तीसरी} other "
+          & "{चौथी}} तिमाही")
+     & P ("calendar_date.fiscal_half",
+          "वित्त वर्ष {year} की {part, plural, =1 "
+          & "{पहली} other {दूसरी}} छमाही")
+     & P ("calendar_date.fiscal_year_end", "वित्त वर्ष {year} का अंत")
+     & P ("calendar_date.semester",
+          "{part, plural, =1 {पहला} other {दूसरा}} "
+          & "सेमेस्टर {year}")
+     & P ("calendar_date.half_year",
+          "{part, plural, =1 {पहली} other {दूसरी}} "
+          & "छमाही {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {{year} की पहली छमाही} other "
+          & "{{year} की दूसरी छमाही}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text} की शुरुआत} mid {{text} "
+          & "का मध्य} other {{text} का अंत}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {{text} की शुरुआत} mid {{text} "
+          & "का मध्य} other {{text} का अंत}}")
+     & P ("calendar_range.weekend.last", "पिछला सप्ताहांत")
+     & P ("calendar_range.weekend.this", "इस सप्ताहांत")
+     & P ("calendar_range.weekend.next", "अगला सप्ताहांत")
+     & P ("calendar_range.weekend_of", "{date} वाला सप्ताहांत")
+     & P ("calendar_range.week.last", "पिछला सप्ताह")
+     & P ("calendar_range.week.this", "इस सप्ताह")
+     & P ("calendar_range.week.next", "अगला सप्ताह")
+     & P ("calendar_range.week_of", "{date} वाला सप्ताह")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Hi;

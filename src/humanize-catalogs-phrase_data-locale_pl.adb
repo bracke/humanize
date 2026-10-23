@@ -545,5 +545,29 @@ begin
           & "{wartości odstającej}}")
      & P ("top_frequency",
           "{name}: {value} ({count} {count, plural, one {raz} few {razy} many "
-          & "{razy} other {raza}})");
+          & "{razy} other {raza}})")
+     & P ("calendar_date.fiscal_year", "RO {year}")
+     & P ("calendar_date.fiscal_quarter", "RO {year} {part}. kw.")
+     & P ("calendar_date.fiscal_half", "RO {year} {part}. półr.")
+     & P ("calendar_date.fiscal_year_end", "koniec RO {year}")
+     & P ("calendar_date.semester", "{part}. sem. {year}")
+     & P ("calendar_date.half_year", "{part}. półr. {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {pierwsza połowa {year} roku} other {druga połowa "
+          & "{year} roku}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text} (początek)} mid {{text} (połowa)} "
+          & "other {{text} (koniec)}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {początek {text}} mid {połowa {text}} other "
+          & "{koniec {text}}}")
+     & P ("calendar_range.weekend.last", "zeszły weekend")
+     & P ("calendar_range.weekend.this", "ten weekend")
+     & P ("calendar_range.weekend.next", "następny weekend")
+     & P ("calendar_range.weekend_of", "weekend {date}")
+     & P ("calendar_range.week.last", "zeszły tydzień")
+     & P ("calendar_range.week.this", "ten tydzień")
+     & P ("calendar_range.week.next", "następny tydzień")
+     & P ("calendar_range.week_of", "tydzień od {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Pl;

@@ -430,5 +430,29 @@ begin
      & P ("collection.summary",
           "{name}: 항목 {total}개, 고유 값 {unique}개, 중복 "
           & "{duplicates}개, 이상값 {outliers}개")
-     & P ("top_frequency", "{name} 최빈값: {value}({count}회)");
+     & P ("top_frequency", "{name} 최빈값: {value}({count}회)")
+     & P ("calendar_date.fiscal_year", "{year} 회계연도")
+     & P ("calendar_date.fiscal_quarter", "{year} 회계연도 {part}분기")
+     & P ("calendar_date.fiscal_half",
+          "{part, plural, =1 {{year} 회계연도 상반기} other {{year} "
+          & "회계연도 하반기}}")
+     & P ("calendar_date.fiscal_year_end", "{year} 회계연도 말")
+     & P ("calendar_date.semester", "{year}년 {part}학기")
+     & P ("calendar_date.half_year", "{part, plural, =1 {{year}년 상반기} other {{year}년 하반기}}")
+     & P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}년 상반기} other {{year}년 하반기}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text} 초} mid {{text} 중순} other {{text} "
+          & "말}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {{text} 초} mid {{text} 중반} other {{text} "
+          & "말}}")
+     & P ("calendar_range.weekend.last", "지난 주말")
+     & P ("calendar_range.weekend.this", "이번 주말")
+     & P ("calendar_range.weekend.next", "다음 주말")
+     & P ("calendar_range.weekend_of", "{date} 주말")
+     & P ("calendar_range.week.last", "지난주")
+     & P ("calendar_range.week.this", "이번 주")
+     & P ("calendar_range.week.next", "다음 주")
+     & P ("calendar_range.week_of", "{date} 주간")
+     & P ("calendar_range.between", "{first} ~ {last}");
 end Locale_Ko;

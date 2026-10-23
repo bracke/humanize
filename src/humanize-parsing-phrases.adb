@@ -18,6 +18,7 @@ package body Humanize.Parsing.Phrases is
      (if Argument = "severity" then "error,warning,info"
       elsif Argument = "domain" then "queue,job,run,cache,sync,import,export"
       elsif Argument = "state" then "queued,running,waiting,paused,complete,failed,stale,skipped"
+      elsif Argument = "phase" then "early,mid,late"
       elsif Argument = "gender" then "other,masculine,feminine,neuter,common,masculine_animate"
       else "");
 

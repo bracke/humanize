@@ -542,5 +542,29 @@ begin
           & "{osamelca} few {osamelci} other {osamelcev}}")
      & P ("top_frequency",
           "{name}: {value} ({count} {count, plural, one {pojavitev} two "
-          & "{pojavitvi} few {pojavitve} other {pojavitev}})");
+          & "{pojavitvi} few {pojavitve} other {pojavitev}})")
+     & P ("calendar_date.fiscal_year", "PL {year}")
+     & P ("calendar_date.fiscal_quarter", "PL {year} Q{part}")
+     & P ("calendar_date.fiscal_half", "PL {year} {part}. poll.")
+     & P ("calendar_date.fiscal_year_end", "konec PL {year}")
+     & P ("calendar_date.semester", "{part}. sem. {year}")
+     & P ("calendar_date.half_year", "{part}. poll. {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {prvo polletje {year}} other {drugo polletje "
+          & "{year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text} (začetek)} mid {{text} (sredina)} other "
+          & "{{text} (konec)}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {{text} (začetek)} mid {{text} (sredina)} other "
+          & "{{text} (konec)}}")
+     & P ("calendar_range.weekend.last", "prejšnji vikend")
+     & P ("calendar_range.weekend.this", "ta vikend")
+     & P ("calendar_range.weekend.next", "naslednji vikend")
+     & P ("calendar_range.weekend_of", "vikend {date}")
+     & P ("calendar_range.week.last", "prejšnji teden")
+     & P ("calendar_range.week.this", "ta teden")
+     & P ("calendar_range.week.next", "naslednji teden")
+     & P ("calendar_range.week_of", "teden od {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Sl;

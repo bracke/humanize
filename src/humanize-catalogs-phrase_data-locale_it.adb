@@ -517,5 +517,29 @@ begin
           & "anomali} other {valori anomali}}")
      & P ("top_frequency",
           "{name}, valore più frequente: {value} ({count} {count, plural, one "
-          & "{volta} many {di volte} other {volte}})");
+          & "{volta} many {di volte} other {volte}})")
+     & P ("calendar_date.fiscal_year", "AF {year}")
+     & P ("calendar_date.fiscal_quarter", "AF {year} T{part}")
+     & P ("calendar_date.fiscal_half", "AF {year} S{part}")
+     & P ("calendar_date.fiscal_year_end", "fine AF {year}")
+     & P ("calendar_date.semester", "S{part} {year}")
+     & P ("calendar_date.half_year", "S{part} {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {primo semestre {year}} other {secondo semestre "
+          & "{year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {inizio {text}} mid {metà {text}} other {fine "
+          & "{text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {inizio {text}} mid {metà {text}} other {fine "
+          & "{text}}}")
+     & P ("calendar_range.weekend.last", "lo scorso fine settimana")
+     & P ("calendar_range.weekend.this", "questo fine settimana")
+     & P ("calendar_range.weekend.next", "il prossimo fine settimana")
+     & P ("calendar_range.weekend_of", "fine settimana del {date}")
+     & P ("calendar_range.week.last", "la settimana scorsa")
+     & P ("calendar_range.week.this", "questa settimana")
+     & P ("calendar_range.week.next", "la settimana prossima")
+     & P ("calendar_range.week_of", "settimana del {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_It;

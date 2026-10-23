@@ -464,6 +464,24 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("progress.of|done,total||subject,percent,state"),
       new String'("progress.done|done||subject,state"),
       new String'("collection.summary|total,unique,duplicates,outliers||name"),
-      new String'("top_frequency|count||name,value")];
+      new String'("top_frequency|count||name,value"),
+      new String'("calendar_date.fiscal_year|year||"),
+      new String'("calendar_date.fiscal_quarter|year,part||"),
+      new String'("calendar_date.fiscal_half|year,part||"),
+      new String'("calendar_date.fiscal_year_end|year||"),
+      new String'("calendar_date.semester|year,part||"),
+      new String'("calendar_date.half_year|year,part||"),
+      new String'("calendar_date.half_year_phrase|year,part||"),
+      new String'("calendar_date.month_phase||phase|text"),
+      new String'("calendar_date.quarter_phase||phase|text"),
+      new String'("calendar_range.weekend.last|||"),
+      new String'("calendar_range.weekend.this|||"),
+      new String'("calendar_range.weekend.next|||"),
+      new String'("calendar_range.weekend_of|||date"),
+      new String'("calendar_range.week.last|||"),
+      new String'("calendar_range.week.this|||"),
+      new String'("calendar_range.week.next|||"),
+      new String'("calendar_range.week_of|||date"),
+      new String'("calendar_range.between|first,last||")];
 
 end Humanize.Parsing.Phrase_Keys;

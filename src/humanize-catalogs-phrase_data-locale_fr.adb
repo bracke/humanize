@@ -533,5 +533,29 @@ begin
           & "aberrante} many {de valeurs aberrantes} other {valeurs aberrantes}}")
      & P ("top_frequency",
           "{name}, valeur la plus fréquente : {value} ({count} {count, plural, "
-          & "many {de fois} other {fois}})");
+          & "many {de fois} other {fois}})")
+     & P ("calendar_date.fiscal_year", "EX {year}")
+     & P ("calendar_date.fiscal_quarter", "EX {year} T{part}")
+     & P ("calendar_date.fiscal_half", "EX {year} S{part}")
+     & P ("calendar_date.fiscal_year_end", "fin de l’EX {year}")
+     & P ("calendar_date.semester", "S{part} {year}")
+     & P ("calendar_date.half_year", "S{part} {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {premier semestre {year}} other {second semestre "
+          & "{year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {début {text}} mid {mi-{text}} other {fin "
+          & "{text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {début du {text}} mid {milieu du {text}} other "
+          & "{fin du {text}}}")
+     & P ("calendar_range.weekend.last", "le week-end dernier")
+     & P ("calendar_range.weekend.this", "ce week-end")
+     & P ("calendar_range.weekend.next", "le week-end prochain")
+     & P ("calendar_range.weekend_of", "week-end du {date}")
+     & P ("calendar_range.week.last", "la semaine dernière")
+     & P ("calendar_range.week.this", "cette semaine")
+     & P ("calendar_range.week.next", "la semaine prochaine")
+     & P ("calendar_range.week_of", "semaine du {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Fr;

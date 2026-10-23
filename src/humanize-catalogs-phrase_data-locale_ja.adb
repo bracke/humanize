@@ -430,5 +430,27 @@ begin
      & P ("collection.summary",
           "{name}：{total}項目、一意の値{unique}件、重複{duplicates}"
           & "件、外れ値{outliers}件")
-     & P ("top_frequency", "{name}の最頻値：{value}（{count}回）");
+     & P ("top_frequency", "{name}の最頻値：{value}（{count}回）")
+     & P ("calendar_date.fiscal_year", "{year}年度")
+     & P ("calendar_date.fiscal_quarter", "{year}年度第{part}四半期")
+     & P ("calendar_date.fiscal_half", "{part, plural, =1 {{year}年度上期} other {{year}年度下期}}")
+     & P ("calendar_date.fiscal_year_end", "{year}年度末")
+     & P ("calendar_date.semester", "{part, plural, =1 {{year}年前期} other {{year}年後期}}")
+     & P ("calendar_date.half_year", "{part, plural, =1 {{year}年上半期} other {{year}年下半期}}")
+     & P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}年前半} other {{year}年後半}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text}初旬} mid {{text}中旬} other "
+          & "{{text}下旬}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {{text}初め} mid {{text}半ば} other "
+          & "{{text}終わり}}")
+     & P ("calendar_range.weekend.last", "先週末")
+     & P ("calendar_range.weekend.this", "今週末")
+     & P ("calendar_range.weekend.next", "来週末")
+     & P ("calendar_range.weekend_of", "{date}の週末")
+     & P ("calendar_range.week.last", "先週")
+     & P ("calendar_range.week.this", "今週")
+     & P ("calendar_range.week.next", "来週")
+     & P ("calendar_range.week_of", "{date}の週")
+     & P ("calendar_range.between", "{first}～{last}");
 end Locale_Ja;

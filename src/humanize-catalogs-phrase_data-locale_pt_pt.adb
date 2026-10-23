@@ -116,5 +116,15 @@ begin
      & P ("net_diagnostic.tcp", "{endpoint}: falha na ligação TCP")
      & P ("net_diagnostic.http", "{endpoint}: falha no pedido HTTP")
      & P ("net_diagnostic.reset", "{endpoint}: ligação reposta")
-     & P ("progress.state.retrying", "a tentar novamente");
+     & P ("progress.state.retrying", "a tentar novamente")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {início de {text}} mid {meados de {text}} other "
+          & "{finais de {text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {início do {text}} mid {meados do {text}} other "
+          & "{finais do {text}}}")
+     & P ("calendar_range.weekend.last", "o fim de semana passado")
+     & P ("calendar_range.weekend.next", "o próximo fim de semana")
+     & P ("calendar_range.week.last", "a semana passada")
+     & P ("calendar_range.week.next", "a próxima semana");
 end Locale_Pt_Pt;

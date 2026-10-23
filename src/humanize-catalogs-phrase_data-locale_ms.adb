@@ -428,5 +428,29 @@ begin
      & P ("collection.summary",
           "{name}: {total} item, {unique} nilai unik, {duplicates} pendua, "
           & "{outliers} nilai terpencil")
-     & P ("top_frequency", "{name}: {value} ({count} kali)");
+     & P ("top_frequency", "{name}: {value} ({count} kali)")
+     & P ("calendar_date.fiscal_year", "TK {year}")
+     & P ("calendar_date.fiscal_quarter", "S{part} TK {year}")
+     & P ("calendar_date.fiscal_half", "{part, plural, =1 {Separuh pertama} other {Separuh kedua}} TK {year}")
+     & P ("calendar_date.fiscal_year_end", "akhir TK {year}")
+     & P ("calendar_date.semester", "Semester {part} {year}")
+     & P ("calendar_date.half_year", "{part, plural, =1 {Separuh pertama} other {Separuh kedua}} {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {separuh pertama {year}} other {separuh kedua "
+          & "{year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {awal {text}} mid {pertengahan {text}} other "
+          & "{akhir {text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {awal {text}} mid {pertengahan {text}} other "
+          & "{akhir {text}}}")
+     & P ("calendar_range.weekend.last", "hujung minggu lalu")
+     & P ("calendar_range.weekend.this", "hujung minggu ini")
+     & P ("calendar_range.weekend.next", "hujung minggu depan")
+     & P ("calendar_range.weekend_of", "hujung minggu {date}")
+     & P ("calendar_range.week.last", "minggu lalu")
+     & P ("calendar_range.week.this", "minggu ini")
+     & P ("calendar_range.week.next", "minggu depan")
+     & P ("calendar_range.week_of", "minggu {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Ms;

@@ -15,5 +15,11 @@ begin
      & P ("system.count.checks",
           "{count, plural, =0 {ninguna verificación} one {{count} verificación} "
           & "many {{count} de verificaciones} other {{count} verificaciones}}")
-     & P ("system.last_checked", "última verificación {time}");
+     & P ("system.last_checked", "última verificación {time}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {principios de {text}} mid {mediados de {text}} "
+          & "other {fines de {text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {principios del {text}} mid {mediados del "
+          & "{text}} other {fines del {text}}}");
 end Locale_Es_419;

@@ -629,6 +629,85 @@ package body Humanize.Datetimes.Support is
       end case;
    end Calendar_Date_Preset_Label;
 
+   --  The phrase Name ("calendar_date.medium") with Selection's arguments
+   --  rendered in Context's locale; "" where it has none.
+   function Localized_Phrase
+     (Context   : Humanize.Contexts.Context;
+      Selection : Humanize.Selections.Message_Selection)
+      return String
+   is
+      Rendered : constant Humanize.Status.Text_Result := Humanize.I18N_Rendering.Render (Context, Selection);
+   begin
+      return (if Rendered.Status = Humanize.Status.Ok then Ada.Strings.Unbounded.To_String (Rendered.Text) else "");
+   end Localized_Phrase;
+
+   --  Item in the CLDR date form or phrase Name ("medium", "month_year").
+   function Localized_Date (Context : Humanize.Contexts.Context; Item : Civil_Date_Time; Name : String)
+     return String is
+     (Localized_Phrase
+        (Context,
+         Humanize.Selections.With_Arg
+           (Humanize.Selections.Phrase ("calendar_date." & Name), "value", ISO_Date (Item))));
+
+   function Localized_Preset
+     (Context : Humanize.Contexts.Context;
+      Item    : Civil_Date_Time;
+      Options : Calendar_Date_Options)
+      return String
+   is
+      package Sel renames Humanize.Selections;
+      Fiscal_Offset : constant Natural :=
+        (Natural (Item.Month) + 12 - Natural (Options.Fiscal_Year_Start_Month)) mod 12;
+      Fiscal_Year : constant Natural :=
+        (if Options.Fiscal_Year_Start_Month = 1 then Natural (Item.Year)
+         else Natural (Item.Year) + (if Item.Month >= Options.Fiscal_Year_Start_Month then 1 else 0));
+      Calendar_Half : constant Natural := (Natural (Item.Month) - 1) / 6 + 1;
+
+      --  Phrase Name with a year (as written, no grouping) and a part number.
+      function Year_Part (Name : String; Year, Part : Natural) return String is
+        (Localized_Phrase
+           (Context,
+            Sel.With_Arg (Sel.With_Arg (Sel.Phrase ("calendar_date." & Name), "year", Natural_Text (Year)), "part",
+                          Natural_Text (Part))));
+
+      function Phased (Name, Phase, Text : String) return String is
+        (if Text = "" then ""
+         else Localized_Phrase
+                (Context,
+                 Sel.With_Arg (Sel.With_Arg (Sel.Phrase ("calendar_date." & Name), "phase", Phase), "text", Text)));
+   begin
+      case Options.Style is
+         when Calendar_Date_Short      => return Localized_Date (Context, Item, "short");
+         when Calendar_Date_Medium     => return Localized_Date (Context, Item, "medium");
+         when Calendar_Date_Long       => return Localized_Date (Context, Item, "long");
+         when Calendar_Date_Weekday    => return Localized_Date (Context, Item, "weekday");
+         when Calendar_Date_Month_Year => return Localized_Date (Context, Item, "month_year");
+         when Calendar_Date_Quarter    => return Localized_Date (Context, Item, "quarter");
+         when Calendar_Date_Month_Day_Ordinal => return Localized_Date (Context, Item, "month_day");
+         when Calendar_Date_Compact_Badge     => return Localized_Date (Context, Item, "compact_badge");
+         when Calendar_Date_Weekday_Ordinal   => return Localized_Date (Context, Item, "weekday_day");
+         when Calendar_Date_Fiscal_Quarter =>
+            return Year_Part ("fiscal_quarter", Fiscal_Year, Fiscal_Offset / 3 + 1);
+         when Calendar_Date_Fiscal_Year     => return Year_Part ("fiscal_year", Fiscal_Year, 1);
+         when Calendar_Date_Fiscal_Half =>
+            return Year_Part ("fiscal_half", Fiscal_Year, Fiscal_Offset / 6 + 1);
+         when Calendar_Date_Semester        => return Year_Part ("semester", Natural (Item.Year), Calendar_Half);
+         when Calendar_Date_Half_Year       => return Year_Part ("half_year", Natural (Item.Year), Calendar_Half);
+         when Calendar_Date_Half_Year_Phrase =>
+            return Year_Part ("half_year_phrase", Natural (Item.Year), Calendar_Half);
+         when Calendar_Date_Fiscal_Year_End => return Year_Part ("fiscal_year_end", Fiscal_Year, 1);
+         when Calendar_Date_Month_Phase =>
+            return Phased ("month_phase",
+                           Phase_Name (Natural (Item.Day), Natural (Civil_Month_Last_Day (Item.Year, Item.Month))),
+                           Localized_Date (Context, Item, "month_year_long"));
+         when Calendar_Date_Quarter_Phase =>
+            return Phased ("quarter_phase", Phase_Name (((Natural (Item.Month) - 1) mod 3) + 1, 3),
+                           Localized_Date (Context, Item, "quarter"));
+         when Calendar_Date_ISO | Calendar_Date_Year_Month =>
+            return "";
+      end case;
+   end Localized_Preset;
+
    function Time_Image_12 (Item : Civil_Date_Time) return String is
       Hour_12 : constant Natural :=
         (if Item.Hour = 0 then 12
@@ -1654,29 +1733,14 @@ package body Humanize.Datetimes.Support is
          return (Status => Humanize.Status.Invalid_Value, others => <>);
       end if;
 
-      --  Outside English, the presets CLDR has a form for are written as the
-      --  locale writes dates ("09.10.26", "9. Oktober 2026").
-      if not CLDR_Labels.Is_English (Context)
-        and then Options.Style in Calendar_Date_Short | Calendar_Date_Medium | Calendar_Date_Long
-                                | Calendar_Date_Weekday | Calendar_Date_Month_Year | Calendar_Date_Quarter
-      then
+      --  Outside English, the presets are written as the locale writes dates
+      --  ("09.10.26", "9. Oktober 2026", "Anfang Oktober 2026").
+      if not CLDR_Labels.Is_English (Context) then
          declare
-            Name : constant String :=
-              (case Options.Style is
-                  when Calendar_Date_Short      => "short",
-                  when Calendar_Date_Medium     => "medium",
-                  when Calendar_Date_Long       => "long",
-                  when Calendar_Date_Weekday    => "weekday",
-                  when Calendar_Date_Month_Year => "month_year",
-                  when others                   => "quarter");
-            Localized : constant Humanize.Status.Text_Result :=
-              Humanize.I18N_Rendering.Render
-                (Context,
-                 Humanize.Selections.With_Arg
-                   (Humanize.Selections.Phrase ("calendar_date." & Name), "value", ISO_Date (Value)));
+            Localized : constant String := Localized_Preset (Context, Value, Options);
          begin
-            if Localized.Status = Humanize.Status.Ok then
-               return Localized;
+            if Localized /= "" then
+               return Ok_Text (Localized);
             end if;
          end;
       end if;

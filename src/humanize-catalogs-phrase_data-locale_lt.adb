@@ -532,5 +532,29 @@ begin
           & "{išskirties} other {išskirčių}}")
      & P ("top_frequency",
           "{name}: dažniausiai {value} ({count} {count, plural, one {kartą} few "
-          & "{kartus} many {karto} other {kartų}})");
+          & "{kartus} many {karto} other {kartų}})")
+     & P ("calendar_date.fiscal_year", "{year} FM")
+     & P ("calendar_date.fiscal_quarter", "{year} FM {part} ketv.")
+     & P ("calendar_date.fiscal_half", "{year} FM {part} pusm.")
+     & P ("calendar_date.fiscal_year_end", "{year} FM pabaiga")
+     & P ("calendar_date.semester", "{year} m. {part} sem.")
+     & P ("calendar_date.half_year", "{year} m. {part} pusm.")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {{year} m. pirmasis pusmetis} other {{year} m. "
+          & "antrasis pusmetis}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text} (pradžia)} mid {{text} (vidurys)} other "
+          & "{{text} (pabaiga)}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {{text} pradžia} mid {{text} vidurys} other "
+          & "{{text} pabaiga}}")
+     & P ("calendar_range.weekend.last", "praėjęs savaitgalis")
+     & P ("calendar_range.weekend.this", "šis savaitgalis")
+     & P ("calendar_range.weekend.next", "kitas savaitgalis")
+     & P ("calendar_range.weekend_of", "{date} savaitgalis")
+     & P ("calendar_range.week.last", "praėjusi savaitė")
+     & P ("calendar_range.week.this", "ši savaitė")
+     & P ("calendar_range.week.next", "kita savaitė")
+     & P ("calendar_range.week_of", "{date} savaitė")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Lt;

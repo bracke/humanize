@@ -430,5 +430,29 @@ begin
      & P ("collection.summary",
           "{name}: {total} öğe, {unique} benzersiz değer, {duplicates} "
           & "yinelenen, {outliers} aykırı değer")
-     & P ("top_frequency", "{name}: {value} ({count} kez)");
+     & P ("top_frequency", "{name}: {value} ({count} kez)")
+     & P ("calendar_date.fiscal_year", "{year} mali yılı")
+     & P ("calendar_date.fiscal_quarter", "{year} mali yılı {part}. çeyrek")
+     & P ("calendar_date.fiscal_half", "{year} mali yılı {part}. yarı")
+     & P ("calendar_date.fiscal_year_end", "{year} mali yılı sonu")
+     & P ("calendar_date.semester", "{year} {part}. dönem")
+     & P ("calendar_date.half_year", "{year} {part}. yarıyıl")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {{year} yılının ilk yarısı} other {{year} "
+          & "yılının ikinci yarısı}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text} başı} mid {{text} ortası} other "
+          & "{{text} sonu}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {{text} başı} mid {{text} ortası} other "
+          & "{{text} sonu}}")
+     & P ("calendar_range.weekend.last", "geçen hafta sonu")
+     & P ("calendar_range.weekend.this", "bu hafta sonu")
+     & P ("calendar_range.weekend.next", "gelecek hafta sonu")
+     & P ("calendar_range.weekend_of", "{date} hafta sonu")
+     & P ("calendar_range.week.last", "geçen hafta")
+     & P ("calendar_range.week.this", "bu hafta")
+     & P ("calendar_range.week.next", "gelecek hafta")
+     & P ("calendar_range.week_of", "{date} haftası")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Tr;

@@ -633,5 +633,38 @@ begin
      & P ("top_frequency",
           "{name}: {value} ({count, plural, zero {{count} مرة} one {مرة "
           & "واحدة} two {مرتان} few {{count} مرات} many {{count} "
-          & "مرةً} other {{count} مرة}})");
+          & "مرةً} other {{count} مرة}})")
+     & P ("calendar_date.fiscal_year", "السنة المالية {year}")
+     & P ("calendar_date.fiscal_quarter",
+          "{part, plural, =1 {الربع الأول} =2 {الربع الثاني} "
+          & "=3 {الربع الثالث} other {الربع الرابع}} من "
+          & "السنة المالية {year}")
+     & P ("calendar_date.fiscal_half",
+          "{part, plural, =1 {النصف الأول} other {النصف "
+          & "الثاني}} من السنة المالية {year}")
+     & P ("calendar_date.fiscal_year_end", "نهاية السنة المالية {year}")
+     & P ("calendar_date.semester",
+          "{part, plural, =1 {الفصل الأول} other {الفصل "
+          & "الثاني}} {year}")
+     & P ("calendar_date.half_year",
+          "{part, plural, =1 {النصف الأول} other {النصف "
+          & "الثاني}} {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {النصف الأول من عام {year}} other "
+          & "{النصف الثاني من عام {year}}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {أوائل {text}} mid {منتصف {text}} "
+          & "other {أواخر {text}}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {بداية {text}} mid {منتصف {text}} "
+          & "other {نهاية {text}}}")
+     & P ("calendar_range.weekend.last", "عطلة نهاية الأسبوع الماضية")
+     & P ("calendar_range.weekend.this", "عطلة نهاية هذا الأسبوع")
+     & P ("calendar_range.weekend.next", "عطلة نهاية الأسبوع القادمة")
+     & P ("calendar_range.weekend_of", "عطلة نهاية أسبوع {date}")
+     & P ("calendar_range.week.last", "الأسبوع الماضي")
+     & P ("calendar_range.week.this", "هذا الأسبوع")
+     & P ("calendar_range.week.next", "الأسبوع القادم")
+     & P ("calendar_range.week_of", "أسبوع {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Ar;

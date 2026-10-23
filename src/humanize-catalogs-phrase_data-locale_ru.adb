@@ -602,5 +602,29 @@ begin
           & "{выбросов} other {выброса}}")
      & P ("top_frequency",
           "{name}: чаще всего {value} ({count} {count, plural, one "
-          & "{раз} few {раза} many {раз} other {раза}})");
+          & "{раз} few {раза} many {раз} other {раза}})")
+     & P ("calendar_date.fiscal_year", "ФГ {year}")
+     & P ("calendar_date.fiscal_quarter", "ФГ {year}, {part}-й кв.")
+     & P ("calendar_date.fiscal_half", "ФГ {year}, {part}-е полуг.")
+     & P ("calendar_date.fiscal_year_end", "конец ФГ {year}")
+     & P ("calendar_date.semester", "{part}-й сем. {year}")
+     & P ("calendar_date.half_year", "{part}-е полуг. {year}")
+     & P ("calendar_date.half_year_phrase",
+          "{part, plural, =1 {первое полугодие {year} г.} other "
+          & "{второе полугодие {year} г.}}")
+     & P ("calendar_date.month_phase",
+          "{phase, select, early {{text} (начало)} mid {{text} "
+          & "(середина)} other {{text} (конец)}}")
+     & P ("calendar_date.quarter_phase",
+          "{phase, select, early {{text} (начало)} mid {{text} "
+          & "(середина)} other {{text} (конец)}}")
+     & P ("calendar_range.weekend.last", "прошлые выходные")
+     & P ("calendar_range.weekend.this", "эти выходные")
+     & P ("calendar_range.weekend.next", "следующие выходные")
+     & P ("calendar_range.weekend_of", "выходные {date}")
+     & P ("calendar_range.week.last", "прошлая неделя")
+     & P ("calendar_range.week.this", "эта неделя")
+     & P ("calendar_range.week.next", "следующая неделя")
+     & P ("calendar_range.week_of", "неделя с {date}")
+     & P ("calendar_range.between", "{first} – {last}");
 end Locale_Ru;
