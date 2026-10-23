@@ -219,6 +219,7 @@ http : HTTP 503 service unavailable
 service : API degraded performance
 diagnostic : 2 errors, 1 warning
 threshold : 3 normal, 1 warning, 1 critical
+service (de) : API: eingeschränkte Leistung
 ```
 
 For `./examples/bin/ui_labels_demo`:

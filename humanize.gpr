@@ -59,6 +59,7 @@ project Humanize is
       "Humanize.Numbers.Spellout",
       "Humanize.Numbers.Statistics",
       "Humanize.Operations",
+      "Humanize.System_Status.Localized",
       "Humanize.Parsing",
       "Humanize.Parsing.Colors",
       "Humanize.Parsing.Date_Times",

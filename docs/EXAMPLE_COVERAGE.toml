@@ -599,3 +599,15 @@ area = "public-surface"
 unit = "Humanize.Phrases.Summaries"
 example = "examples/public_surface_demo.adb"
 usecase = "render summary phrase helpers through reusable public phrase calls"
+
+[[coverage]]
+area = "localized-system-status"
+unit = "Humanize.System_Status.Localized"
+example = "examples/system_status_demo.adb"
+usecase = "render a service status label in German"
+
+[[coverage]]
+area = "localized-parsing"
+unit = "Humanize.Parsing.Localized"
+example = "examples/parse_demo.adb"
+usecase = "read a German duration back into seconds"

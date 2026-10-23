@@ -263,6 +263,11 @@ spec = "src/humanize-parsing-domain_labels.ads"
 area = "parsing"
 
 [[unit]]
+name = "Humanize.Parsing.Localized"
+spec = "src/humanize-parsing-localized.ads"
+area = "parsing"
+
+[[unit]]
 name = "Humanize.Parsing.Phrases"
 spec = "src/humanize-parsing-phrases.ads"
 area = "parsing"
@@ -435,6 +440,11 @@ area = "domain"
 [[unit]]
 name = "Humanize.System_Status"
 spec = "src/humanize-system_status.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.System_Status.Localized"
+spec = "src/humanize-system_status-localized.ads"
 area = "domain"
 
 [[unit]]

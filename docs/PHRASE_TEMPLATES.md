@@ -175,8 +175,8 @@ language map plural categories to the registered noun forms.
 | `system.exit.<reason>` | code | `exit {code} success` (failure, usage error, command not executable, command not found, invalid exit argument) |
 | `system.exit.signal` | code, signal (the English signal label) | `exit {code} terminated by {signal}` |
 
-`Humanize.System_Status` speaks a locale through the overloads that take a
-context. Errno, signal, SQLSTATE and HTTP reason texts stay the English of
+`Humanize.System_Status.Localized` speaks a locale: the same functions as
+`Humanize.System_Status`, taking a context. Errno, signal, SQLSTATE and HTTP reason texts stay the English of
 their standards; `Humanize.Domain_Details` stays English too -- it is the
 machine-readable metadata layer (log fields, `surface=` tags) its parsers
 read back.

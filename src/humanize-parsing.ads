@@ -19,6 +19,8 @@ package Humanize.Parsing is
    --  * Humanize.Parsing.Date_Times: date/time parser facade.
    --  * Humanize.Parsing.Domain_Labels: domain-label parser facade.
    --  * Humanize.Parsing.Phrases: phrases read back in any shipped locale.
+   --  * Humanize.Parsing.Localized: numbers, durations, relative times and
+   --    byte sizes read back in any shipped locale.
    --  * Humanize.Parsing.Durations: duration parser facade.
    --  * Humanize.Parsing.Numbers: number parser facade.
    --  * Humanize.Parsing.Strings: string/text parser facade.

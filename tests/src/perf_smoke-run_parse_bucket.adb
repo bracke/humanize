@@ -4,6 +4,7 @@ with Humanize.Parsing;
 with Humanize.Parsing.Date_Times;
 with Humanize.Parsing.Domain_Labels;
 with Humanize.Parsing.Durations;
+with Humanize.Parsing.Localized;
 with Humanize.Parsing.Phrases;
 with Humanize.Tests.Support;
 with Humanize.Parsing.Numbers;
@@ -47,6 +48,8 @@ separate (Perf_Smoke)
               Humanize.Parsing.Units.Parse_Unit ("5 km");
             Parsed_Phrase : constant Humanize.Parsing.Phrases.Phrase_Parse_Result :=
               Humanize.Parsing.Phrases.Parse (Humanize.Tests.Support.En, "page_count", "page 3 of 5");
+            Parsed_Localized : constant Humanize.Parsing.Duration_Parse_Result :=
+              Humanize.Parsing.Localized.Parse_Duration (Humanize.Tests.Support.En, "2 hours, 30 minutes");
          begin
             Check_Status (Parsed_Bytes.Status, "bytes parse");
             Check_Status (Parsed_Duration.Status, "duration parse");
@@ -59,6 +62,7 @@ separate (Perf_Smoke)
             Check_Status (Parsed_String.Status, "string child parse");
             Check_Status (Parsed_Unit.Status, "unit child parse");
             Check_Status (Parsed_Phrase.Status, "phrase parse");
+            Check_Status (Parsed_Localized.Status, "localized duration parse");
             Total :=
               Total
               + Parsed_Bytes.Consumed

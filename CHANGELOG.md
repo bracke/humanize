@@ -16,8 +16,8 @@
   `Humanize.Parsing.Locale_Digits` now holds the digit normalization phrase
   reading used.
 
-* **System status speaks the locale.** `Humanize.System_Status` gains
-  context-taking overloads for the state labels of all six families, the
+* **System status speaks the locale.** `Humanize.System_Status.Localized`
+  has context-taking forms of the state labels of all six families, the
   name frames, the component/check/incident counts, uptime, latency,
   maintenance window and last-checked labels, HTTP status classes and process
   exit labels: 55 phrase keys, translated into every shipped locale.

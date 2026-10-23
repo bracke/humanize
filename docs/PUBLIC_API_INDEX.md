@@ -67,6 +67,7 @@ class map and coverage scorecards.
 - `Humanize.Parsing.Colors` - `src/humanize-parsing-colors.ads`
 - `Humanize.Parsing.Date_Times` - `src/humanize-parsing-date_times.ads`
 - `Humanize.Parsing.Domain_Labels` - `src/humanize-parsing-domain_labels.ads`
+- `Humanize.Parsing.Localized` - `src/humanize-parsing-localized.ads`
 - `Humanize.Parsing.Phrases` - `src/humanize-parsing-phrases.ads`
 - `Humanize.Parsing.Durations` - `src/humanize-parsing-durations.ads`
 - `Humanize.Parsing.Numbers` - `src/humanize-parsing-numbers.ads`
@@ -108,6 +109,7 @@ class map and coverage scorecards.
 - `Humanize.Events` - `src/humanize-events.ads`
 - `Humanize.Payments` - `src/humanize-payments.ads`
 - `Humanize.System_Status` - `src/humanize-system_status.ads`
+- `Humanize.System_Status.Localized` - `src/humanize-system_status-localized.ads`
 - `Humanize.Operations` - `src/humanize-operations.ads`
 - `Humanize.Comparisons` - `src/humanize-comparisons.ads`
 - `Humanize.Cross_Domain` - `src/humanize-cross_domain.ads`

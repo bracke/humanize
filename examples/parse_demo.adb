@@ -5,6 +5,7 @@ with Messages.Runtime;
 with Humanize.Catalogs;
 with Humanize.Contexts;
 with Humanize.Parsing;
+with Humanize.Parsing.Localized;
 with Humanize.Parsing.Phrases;
 with Humanize.Status;
 with Humanize_Demo_Runtime;
@@ -37,6 +38,17 @@ begin
       if Page.Status = Humanize.Status.Ok then
          Put_Line ("page:" & Long_Long_Integer'Image (Humanize.Parsing.Phrases.Number (Page, "page"))
                    & " of" & Long_Long_Integer'Image (Humanize.Parsing.Phrases.Number (Page, "total")));
+      end if;
+   end;
+
+   --  A duration read back as German writes it.
+   declare
+      Span : constant Humanize.Parsing.Duration_Parse_Result :=
+        Humanize.Parsing.Localized.Parse_Duration
+          (Humanize.Contexts.Create (Humanize_Demo_Runtime.Runtime'Access, "de"), "2 Stunden, 30 Minuten");
+   begin
+      if Span.Status = Humanize.Status.Ok then
+         Put_Line ("seconds:" & Span.Value'Image);
       end if;
    end;
 end Parse_Demo;

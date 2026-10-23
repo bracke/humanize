@@ -41,7 +41,7 @@ usecase = "duration, datetime, byte, number, unit, color, string, list, frequenc
 
 [[area]]
 name = "parsing"
-units = 10
+units = 11
 docs = 1
 tests = 1
 examples = 1
@@ -63,7 +63,7 @@ usecase = "deterministic reusable phrase keys, severities, statuses, summaries, 
 
 [[area]]
 name = "domain"
-units = 35
+units = 36
 docs = 1
 tests = 1
 examples = 1
