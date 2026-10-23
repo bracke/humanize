@@ -2,8 +2,8 @@ with Humanize.Contexts;
 
 --  System status labels in a context's locale, through the phrase catalog
 --  (docs/PHRASE_TEMPLATES.md, "System status"); each is the parent's function
---  of the same name in English. Errno, signal, SQLSTATE and HTTP reason
---  texts stay the English of their standards.
+--  of the same name in English. Mnemonics and codes (ENOENT, SIGKILL,
+--  HTTP 503) stay as their standards write them; their reasons are localized.
 package Humanize.System_Status.Localized is
 
    function Service_State_Label
@@ -186,6 +186,68 @@ package Humanize.System_Status.Localized is
    --  @param Code Process exit status.
    --  @return The exit status as a localized label; a signal's name stays
    --  the English of its standard.
+
+   function HTTP_Status_Reason
+     (Context : Humanize.Contexts.Context;
+      Code    : HTTP_Status_Code)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Code HTTP status code.
+   --  @return The status's reason phrase, localized ("Dienst nicht verfügbar").
+
+   function HTTP_Status_Label
+     (Context      : Humanize.Contexts.Context;
+      Code         : HTTP_Status_Code;
+      Include_Code : Boolean := True)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Code HTTP status code.
+   --  @param Include_Code Prefix "HTTP <code>".
+   --  @return The status with its localized reason.
+
+   function Errno_Label
+     (Context      : Humanize.Contexts.Context;
+      Code         : Errno_Code;
+      Include_Code : Boolean := True)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Code POSIX errno value.
+   --  @param Include_Code Prefix the mnemonic ("ENOENT").
+   --  @return The error with its localized reason.
+
+   function Signal_Label
+     (Context        : Humanize.Contexts.Context;
+      Number         : Signal_Number;
+      Include_Number : Boolean := True)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Number POSIX signal number.
+   --  @param Include_Number Say "signal <number>" first.
+   --  @return The signal's mnemonic and localized reason.
+
+   function SQLSTATE_Class_Label
+     (Context      : Humanize.Contexts.Context;
+      Class        : SQLSTATE_Class;
+      Include_Code : Boolean := True)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Class Two-character SQLSTATE class.
+   --  @param Include_Code Prefix "SQLSTATE <class>".
+   --  @return The class with its localized reason.
+
+   procedure HTTP_Status_Label_Into
+     (Context      : Humanize.Contexts.Context;
+      Code         : HTTP_Status_Code;
+      Target       : in out String;
+      Written      : out Natural;
+      Status       : out Humanize.Status.Status_Code;
+      Include_Code : Boolean := True);
+   --  @param Context Formatting context.
+   --  @param Code HTTP status code.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+   --  @param Include_Code Prefix "HTTP <code>".
 
    --  Bounded forms: each writes its function's text into Target.
 

@@ -263,6 +263,8 @@ package body Humanize.Tests.Numbers is
                      "French grouped ordinal");
    end Test_Count_Grouping;
 
+   NBSP : constant String := [Character'Val (16#C2#), Character'Val (16#A0#)];
+
    procedure Check_Percent
      (Context  : Humanize.Contexts.Context;
       Value    : Long_Float;
@@ -282,8 +284,9 @@ package body Humanize.Tests.Numbers is
    begin
       Check_Percent (Support.En, 50.0, "50%", "en whole percent");
       Check_Percent (Support.En, 12.5, "12.5%", "en fractional percent");
-      Check_Percent (Support.De, 12.5, "12,5%", "de comma decimal percent");
-      Check_Percent (Support.Fr, 50.0, "50 %", "fr spaces the percent sign");
+      --  CLDR's sign and spacing, as ICU writes them (a no-break space).
+      Check_Percent (Support.De, 12.5, "12,5" & NBSP & "%", "de comma decimal percent");
+      Check_Percent (Support.Fr, 50.0, "50" & NBSP & "%", "fr spaces the percent sign");
    end Test_Percent;
 
    procedure Test_Editorial_Numbers

@@ -1,452 +1,587 @@
 separate (Humanize.Catalogs.Phrase_Data)
-function Locale_Zh return Wide_Wide_String is
-   function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("zh", Name, Template));
+procedure Locale_Zh (Target : in out Catalog_Text) is
+   --  One statement an entry: the catalog grows on the heap, not in one
+   --  expression on the stack.
+   procedure P (Name, Template : Wide_Wide_String) is
+   begin
+      Add (Target, "zh", Name, Template);
+   end P;
 begin
-   return
-     P ("all_count", "全部{total}个{other}")
-     & P ("filtered_count.none", "没有匹配的{other}")
-     & P ("filtered_count.all", "全部{total}个{other}均匹配")
-     & P ("filtered_count.some", "{total}个{other}中有{matching}个匹配")
-     & P ("more_count", "已显示{visible}个，另有{remaining}个")
-     & P ("others_count", "{first}及其他{remaining}个")
-     & P ("page_count", "第{page}页，共{total}页")
-     & P ("page_size", "每页{size}个{other}")
-     & P ("pagination_range", "第{first}–{last}个，共{total}个{other}")
-     & P ("position_count", "{position}/{total}")
-     & P ("selection_count", "已选择{selected}个，共{total}个{other}")
-     & P ("showing_count", "显示{showing}个，共{total}个{other}")
-     & P ("validation_count",
-          "{count, plural, =0 {没有{severity, select, error {错误} warning "
-          & "{警告} other {提示}}} other {{count}个{severity, select, error "
-          & "{错误} warning {警告} other {提示}}}}")
-     & P ("collection.empty", "没有{other}")
-     & P ("collection.none_shown", "未显示任何{other}")
-     & P ("collection.showing_hidden", "显示{visible}个，共{total}个{other}，{hidden}个已隐藏")
-     & P ("collection.showing", "显示{visible}个，共{total}个{other}")
-     & P ("collection.shown_hidden", "已显示{visible}个{other}，{hidden}个已隐藏")
-     & P ("collection.shown", "已显示{visible}个{other}")
-     & P ("collection.visible_out_of", "{total}个{other}中{visible}个可见")
-     & P ("complete_count", "已完成{done}/{total}")
-     & P ("percent_complete", "已完成{percent}%")
-     & P ("step_count", "第{step}步，共{total}步")
-     & P ("attempt_count", "第{attempt}次尝试，共{total}次")
-     & P ("throughput_remaining", "剩余{remaining}个{other}，速度{rate}个{unit}/秒")
-     & P ("accessible_progress", "已完成{done}/{total}，百分之{percent}")
-     & P ("business_days", "{days}个工作日")
-     & P ("working_hours", "{hours}个工时")
-     & P ("due.overdue", "已逾期{days}天")
-     & P ("due.today", "今天到期")
-     & P ("due.tomorrow", "明天到期")
-     & P ("due.in", "{days}天后到期")
-     & P ("calendar_difference.future", "{difference}后")
-     & P ("calendar_difference.past", "{difference}前")
-     & P ("cpu_load", "CPU占用率{measure}")
-     & P ("battery", "电量{measure}")
-     & P ("screen_size", "屏幕{measure}")
-     & P ("refresh_rate", "刷新率{measure}")
-     & P ("editorial_percent.symbol", "{value}%")
-     & P ("editorial_percent.word", "百分之{value}")
-     & P ("recurrence.second", "{every, plural, =1 {每秒} other {每{every}秒}}")
-     & P ("recurrence.minute", "{every, plural, =1 {每分钟} other {每{every}分钟}}")
-     & P ("recurrence.hour", "{every, plural, =1 {每小时} other {每{every}小时}}")
-     & P ("recurrence.day", "{every, plural, =1 {每天} other {每{every}天}}")
-     & P ("recurrence.week", "{every, plural, =1 {每周} other {每{every}周}}")
-     & P ("recurrence.month", "{every, plural, =1 {每月} other {每{every}个月}}")
-     & P ("recurrence.quarter", "{every, plural, =1 {每季度} other {每{every}个季度}}")
-     & P ("recurrence.year", "{every, plural, =1 {每年} other {每{every}年}}")
-     & P ("cache_summary.empty", "缓存：无请求")
-     & P ("cache_summary", "缓存：命中{hits}次，未命中{misses}次，命中率{rate}%")
-     & P ("field_change_summary",
-          "{total}个{other}：{changed}个已更改，{added}个已添加，{rem"
-          & "oved}个已删除")
-     & P ("field_diff", "{field}已从{before}更改为{after}")
-     & P ("field_added", "已添加{field}：{value}")
-     & P ("field_removed", "已删除{field}（原为{value}）")
-     & P ("field_unchanged", "{field}未更改，仍为{value}")
-     & P ("number_comparison.equal", "{current}等于{baseline}")
-     & P ("number_comparison.higher", "{current}比{baseline}高{quantity}")
-     & P ("number_comparison.lower", "{current}比{baseline}低{quantity}")
-     & P ("percent_comparison.equal", "{current}等于{baseline}")
-     & P ("percent_comparison.higher", "{current}比{baseline}高{quantity}")
-     & P ("percent_comparison.lower", "{current}比{baseline}低{quantity}")
-     & P ("file_size_comparison.same", "{current}与{baseline}大小相同")
-     & P ("file_size_comparison.larger", "{current}比{baseline}大{quantity}")
-     & P ("file_size_comparison.smaller", "{current}比{baseline}小{quantity}")
-     & P ("date_comparison.same", "{current}与{baseline}是同一天")
-     & P ("date_comparison.after", "{current}比{baseline}晚{quantity}")
-     & P ("date_comparison.before", "{current}比{baseline}早{quantity}")
-     & P ("queue_summary", "队列：{details}")
-     & P ("domain_summary",
-          "{domain, select, queue {队列} job {作业} run {运行} cache "
-          & "{缓存} sync {同步} import {导入} export {导出} other "
-          & "{{domain}}}{state, select, queued {已排队} running {运行中} "
-          & "waiting {等待中} paused {已暂停} complete {已完成} failed "
-          & "{失败} stale {已过时} skipped {已跳过} other "
-          & "{{state}}}：{details}")
-     & P ("summary.none", "没有{other}")
-     & P ("summary.completed", "已完成{count}个{other}")
-     & P ("summary.completed_of", "{total}个{other}中已完成{count}个")
-     & P ("summary.failed", "{count}个失败")
-     & P ("summary.queued", "{count}个{other}已排队")
-     & P ("summary.running", "{count}个运行中")
-     & P ("summary.complete", "{count}个已完成")
-     & P ("backup.backup_running", "备份进行中")
-     & P ("backup.backup_completed", "备份已完成")
-     & P ("backup.backup_failed", "备份失败")
-     & P ("backup.backup_stale", "备份已过时")
-     & P ("incident.incident_investigating", "正在调查事件")
-     & P ("incident.incident_identified", "事件已确认")
-     & P ("incident.incident_mitigated", "事件已缓解")
-     & P ("incident.incident_resolved", "事件已解决")
-     & P ("release.release_drafting", "版本准备中")
-     & P ("release.release_ready", "版本已就绪")
-     & P ("release.release_published", "版本已发布")
-     & P ("release.release_rolled_back", "版本已回滚")
-     & P ("audit.audit_created", "审计条目已创建")
-     & P ("audit.audit_updated", "审计条目已更新")
-     & P ("audit.audit_deleted", "审计条目已删除")
-     & P ("audit.audit_restored", "审计条目已恢复")
-     & P ("flag.flag_enabled", "功能开关已启用")
-     & P ("flag.flag_disabled", "功能开关已禁用")
-     & P ("flag.flag_rolling_out", "功能开关灰度发布中")
-     & P ("flag.flag_rolled_back", "功能开关已回滚")
-     & P ("webhook.webhook_pending", "Webhook待处理")
-     & P ("webhook.webhook_delivered", "Webhook已送达")
-     & P ("webhook.webhook_failed", "Webhook失败")
-     & P ("webhook.webhook_retrying", "Webhook重试中")
-     & P ("api_key.api_key_active", "API密钥有效")
-     & P ("api_key.api_key_revoked", "API密钥已撤销")
-     & P ("api_key.api_key_expired", "API密钥已过期")
-     & P ("api_key.api_key_rotated", "API密钥已轮换")
-     & P ("quota.quota_available", "配额可用")
-     & P ("quota.quota_near_limit", "配额即将用尽")
-     & P ("quota.quota_exceeded", "配额已超出")
-     & P ("quota.quota_reset", "配额已重置")
-     & P ("invoice.invoice_draft", "发票草稿")
-     & P ("invoice.invoice_sent", "发票已发送")
-     & P ("invoice.invoice_paid", "发票已支付")
-     & P ("invoice.invoice_refunded", "发票已退款")
-     & P ("invoice.invoice_overdue", "发票已逾期")
-     & P ("invoice.refund_failed", "退款失败")
-     & P ("page_navigation.only", "仅此一页")
-     & P ("page_navigation.first", "第一页，可前往下一页")
-     & P ("page_navigation.last", "最后一页，可返回上一页")
-     & P ("page_navigation.middle", "可前往上一页和下一页")
-     & P ("end_of_week", "本周结束")
-     & P ("end_of_month", "月末")
-     & P ("end_of_quarter", "季度末")
-     & P ("time_of_day.night", "夜间")
-     & P ("time_of_day.morning", "上午")
-     & P ("time_of_day.afternoon", "下午")
-     & P ("time_of_day.evening", "晚上")
-     & P ("calendar_difference.same_day", "同一天")
-     & P ("calendar_difference.zero", "0天")
-     & P ("queue_summary.empty", "队列为空")
-     & P ("access.allowed", "已允许")
-     & P ("access.denied", "已拒绝")
-     & P ("access.owner", "所有者")
-     & P ("access.admin", "管理员")
-     & P ("access.viewer", "查看者")
-     & P ("access.editor", "编辑者")
-     & P ("auth.signed_in", "已登录")
-     & P ("auth.signed_out", "已退出登录")
-     & P ("auth.session_expired", "会话已过期")
-     & P ("auth.locked", "已锁定")
-     & P ("auth.two_factor_required", "需要双重验证")
-     & P ("billing.trialing", "试用中")
-     & P ("billing.payment_due", "待付款")
-     & P ("billing.payment_failed", "付款失败")
-     & P ("billing.paid", "已付款")
-     & P ("billing.past_due", "已逾期")
-     & P ("billing.canceled", "已取消")
-     & P ("ci.pipeline_pending", "流水线待处理")
-     & P ("ci.pipeline_running", "流水线运行中")
-     & P ("ci.pipeline_passed", "流水线已通过")
-     & P ("ci.pipeline_failed", "流水线失败")
-     & P ("ci.review_required", "需要审核")
-     & P ("ci.deploy_blocked", "部署受阻")
-     & P ("collaboration.active_now", "当前在线")
-     & P ("collaboration.away", "离开")
-     & P ("collaboration.do_not_disturb", "请勿打扰")
-     & P ("collaboration.typing", "正在输入")
-     & P ("collaboration.viewing", "正在查看")
-     & P ("collaboration.editing", "正在编辑")
-     & P ("deployment.deploying", "部署中")
-     & P ("deployment.deployed", "已部署")
-     & P ("deployment.rolling_back", "回滚中")
-     & P ("deployment.rolled_back", "已回滚")
-     & P ("deployment.build_failed", "构建失败")
-     & P ("deployment.checks_passed", "检查已通过")
-     & P ("empty.no_items", "无项目")
-     & P ("empty.no_results", "无结果")
-     & P ("empty.no_messages", "无消息")
-     & P ("empty.no_selection", "未选择")
-     & P ("empty.nothing_to_show", "无可显示内容")
-     & P ("file.uploading", "上传中")
-     & P ("file.downloading", "下载中")
-     & P ("file.copying", "复制中")
-     & P ("file.moving", "移动中")
-     & P ("file.deleting", "删除中")
-     & P ("file.deleted", "已删除")
-     & P ("file.restoring", "恢复中")
-     & P ("file.synced", "已同步")
-     & P ("form.valid_input", "输入有效")
-     & P ("form.invalid_input", "输入无效")
-     & P ("form.dirty", "已更改")
-     & P ("form.pristine", "未更改")
-     & P ("form.submitted", "已提交")
-     & P ("form.submission_failed", "提交失败")
-     & P ("health.healthy", "正常")
-     & P ("health.degraded", "性能下降")
-     & P ("health.unhealthy", "异常")
-     & P ("health.incident", "故障")
-     & P ("health.maintenance", "维护中")
-     & P ("health.recovering", "恢复中")
-     & P ("issue.open", "待解决")
-     & P ("issue.closed", "已关闭")
-     & P ("issue.reopened", "已重新打开")
-     & P ("issue.assigned", "已分配")
-     & P ("issue.unassigned", "未分配")
-     & P ("issue.merged", "已合并")
-     & P ("network.offline", "离线")
-     & P ("network.online", "在线")
-     & P ("network.connecting", "正在连接")
-     & P ("network.syncing", "同步中")
-     & P ("network.sync_failed", "同步失败")
-     & P ("network.permission_denied", "权限被拒绝")
-     & P ("network.read_only", "只读")
-     & P ("notification.unread", "未读")
-     & P ("notification.read", "已读")
-     & P ("notification.muted", "已静音")
-     & P ("notification.snoozed", "已暂停提醒")
-     & P ("notification.sent", "已发送")
-     & P ("notification.delivered", "已送达")
-     & P ("payment.payment_authorized", "付款已授权")
-     & P ("payment.payment_captured", "付款已收取")
-     & P ("payment.payment_refunded", "已退款")
-     & P ("payment.payment_disputed", "付款有争议")
-     & P ("payment.payment_requires_action", "付款需要处理")
-     & P ("payment.payment_expired", "付款已过期")
-     & P ("ui.empty", "空")
-     & P ("ui.loading", "加载中")
-     & P ("ui.saving", "保存中")
-     & P ("ui.saved", "已保存")
-     & P ("ui.unsaved", "未保存")
-     & P ("ui.retrying", "重试中")
-     & P ("ui.paused", "已暂停")
-     & P ("ui.complete", "已完成")
-     & P ("ui.failed", "失败")
-     & P ("ui.due_soon", "即将到期")
-     & P ("ui.overdue", "已逾期")
-     & P ("ui.last_seen", "最后在线")
-     & P ("ui.updated_just_now", "刚刚更新")
-     & P ("queue.queued", "已排队")
-     & P ("queue.running", "运行中")
-     & P ("queue.waiting", "等待中")
-     & P ("queue.blocked", "已阻塞")
-     & P ("queue.canceled_job", "作业已取消")
-     & P ("queue.completed_job", "作业已完成")
-     & P ("search.filtering", "正在筛选")
-     & P ("search.filtered", "已筛选")
-     & P ("search.no_matches", "无匹配项")
-     & P ("search.search_ready", "搜索就绪")
-     & P ("search.search_failed", "搜索失败")
-     & P ("search.query_too_short", "查询过短")
-     & P ("security.secure", "安全")
-     & P ("security.insecure", "不安全")
-     & P ("security.vulnerable", "存在漏洞")
-     & P ("security.encrypted", "已加密")
-     & P ("security.unencrypted", "未加密")
-     & P ("security.token_expired", "令牌已过期")
-     & P ("sync.sync_idle", "同步空闲")
-     & P ("sync.syncing_now", "正在同步")
-     & P ("sync.sync_queued", "同步已排队")
-     & P ("sync.sync_conflict", "同步冲突")
-     & P ("sync.sync_complete", "同步完成")
-     & P ("sync.sync_error", "同步错误")
-     & P ("task.todo", "待办")
-     & P ("task.in_progress", "进行中")
-     & P ("task.done", "已完成")
-     & P ("task.skipped", "已跳过")
-     & P ("task.blocked_task", "受阻")
-     & P ("task.waiting_on", "等待中")
-     & P ("ticket.ticket_new", "新工单")
-     & P ("ticket.ticket_open", "工单待处理")
-     & P ("ticket.ticket_waiting", "工单等待中")
-     & P ("ticket.ticket_escalated", "工单已升级")
-     & P ("ticket.ticket_resolved", "工单已解决")
-     & P ("ticket.ticket_closed", "工单已关闭")
-     & P ("transfer.importing", "导入中")
-     & P ("transfer.imported", "已导入")
-     & P ("transfer.import_failed", "导入失败")
-     & P ("transfer.exporting", "导出中")
-     & P ("transfer.exported", "已导出")
-     & P ("transfer.export_failed", "导出失败")
-     & P ("validation.required", "必填")
-     & P ("validation.optional", "可选")
-     & P ("validation.invalid", "无效")
-     & P ("validation.too_short", "过短")
-     & P ("validation.too_long", "过长")
-     & P ("validation.out_of_range", "超出范围")
-     & P ("validation.already_exists", "已存在")
-     & P ("workflow.draft", "草稿")
-     & P ("workflow.in_review", "审核中")
-     & P ("workflow.approved", "已批准")
-     & P ("workflow.rejected", "已拒绝")
-     & P ("workflow.published", "已发布")
-     & P ("workflow.archived", "已归档")
-     & P ("database.database_online", "数据库在线")
-     & P ("database.database_offline", "数据库离线")
-     & P ("database.database_degraded", "数据库性能下降")
-     & P ("database.database_migrating", "数据库迁移中")
-     & P ("database.database_migration_failed", "数据库迁移失败")
-     & P ("database.database_replicating", "数据库复制中")
-     & P ("database.database_replication_lagging", "数据库复制延迟")
-     & P ("database.database_backup_running", "数据库备份中")
-     & P ("database.database_backup_failed", "数据库备份失败")
-     & P ("times_noun",
-          "{count, plural, =0 {从未{other}} =1 {{other}一次} =2 "
-          & "{{other}两次} other {{other}{count}次}}")
-     & P ("availability.all", "{total}个{other}中{available}个可用")
-     & P ("availability.none", "没有可用的{other}")
-     & P ("availability.partial", "{total}个{other}中{available}个可用，{unavailable}个不可用")
-     & P ("operation_progress", "{name}（{state}）：{details}")
-     & P ("operation.queued", "已排队")
-     & P ("operation.running", "运行中")
-     & P ("operation.blocked", "已阻塞")
-     & P ("operation.retrying", "正在重试")
-     & P ("operation.succeeded", "成功")
-     & P ("operation.partially_succeeded", "部分成功")
-     & P ("operation.failed", "失败")
-     & P ("operation.canceled", "已取消")
-     & P ("operation.skipped", "已跳过")
-     & P ("operation.stale", "已过时")
-     & P ("operation.unknown_state", "未知")
-     & P ("operation.last_success", "{name}上次成功：{time}")
-     & P ("operation.next_retry", "{name}下次重试：{time}")
-     & P ("operation.stale_run", "{name}已有{time}未更新")
-     & P ("summary.skipped", "{count}个已跳过")
-     & P ("summary.retried", "{count}个已重试")
-     & P ("summary.canceled", "{count}个已取消")
-     & P ("system.service.operational", "运行正常")
-     & P ("system.service.degraded", "性能下降")
-     & P ("system.service.partial_outage", "部分中断")
-     & P ("system.service.major_outage", "严重中断")
-     & P ("system.service.maintenance", "维护中")
-     & P ("system.service.unknown", "服务状态未知")
-     & P ("system.health.healthy", "健康")
-     & P ("system.health.warning", "警告")
-     & P ("system.health.critical", "严重")
-     & P ("system.health.unavailable", "不可用")
-     & P ("system.health.unknown_health", "健康状况未知")
-     & P ("system.readiness.ready", "就绪")
-     & P ("system.readiness.not_ready", "未就绪")
-     & P ("system.readiness.starting", "启动中")
-     & P ("system.readiness.draining", "排空中")
-     & P ("system.readiness.stopped", "已停止")
-     & P ("system.readiness.unknown_readiness", "就绪状态未知")
-     & P ("system.component.online", "在线")
-     & P ("system.component.offline", "离线")
-     & P ("system.component.starting", "启动中")
-     & P ("system.component.stopping", "停止中")
-     & P ("system.component.restarting", "重启中")
-     & P ("system.component.unknown", "组件状态未知")
-     & P ("system.check.passing", "通过")
-     & P ("system.check.failing", "未通过")
-     & P ("system.check.warning", "警告")
-     & P ("system.check.skipped", "已跳过")
-     & P ("system.check.timed_out", "已超时")
-     & P ("system.check.unknown", "检查状态未知")
-     & P ("system.incident.investigating", "调查中")
-     & P ("system.incident.identified", "已确定原因")
-     & P ("system.incident.monitoring", "监控中")
-     & P ("system.incident.resolved", "已解决")
-     & P ("system.incident.scheduled_maintenance", "计划维护")
-     & P ("system.named", "{name}：{state}")
-     & P ("system.check_named", "{name}检查：{state}")
-     & P ("system.count.components", "{count, plural, =0 {无组件} other {{count}个组件}}")
-     & P ("system.count.checks", "{count, plural, =0 {无检查} other {{count}项检查}}")
-     & P ("system.count.incidents", "{count, plural, =0 {无事件} other {{count}起事件}}")
-     & P ("system.uptime", "正常运行时间 {measure}")
-     & P ("system.latency", "延迟 {measure}")
-     & P ("system.maintenance_window", "维护时段 {time}")
-     & P ("system.last_checked", "上次检查 {time}")
-     & P ("system.http.informational", "信息响应")
-     & P ("system.http.successful", "成功响应")
-     & P ("system.http.redirection", "重定向")
-     & P ("system.http.client_error", "客户端错误")
-     & P ("system.http.server_error", "服务器错误")
-     & P ("system.exit.success", "退出码 {code}：成功")
-     & P ("system.exit.failure", "退出码 {code}：失败")
-     & P ("system.exit.usage_error", "退出码 {code}：用法错误")
-     & P ("system.exit.not_executable", "退出码 {code}：命令无法执行")
-     & P ("system.exit.not_found", "退出码 {code}：找不到命令")
-     & P ("system.exit.invalid_argument", "退出码 {code}：无效的退出参数")
-     & P ("system.exit.signal", "退出码 {code}：被{signal}终止")
-     & P ("validation.problem.required", "{field}：为必填项")
-     & P ("validation.problem.minimum", "{field}：低于最小值")
-     & P ("validation.problem.maximum", "{field}：超过最大值")
-     & P ("validation.problem.range", "{field}：超出范围")
-     & P ("validation.problem.pattern", "{field}：格式不正确")
-     & P ("validation.problem.choice", "{field}：必须是允许的选项之一")
-     & P ("validation.problem.dependency", "{field}：依赖于另一个字段")
-     & P ("validation.problem.custom", "{field}：无效")
-     & P ("validation.constraint.no_relation", "{field}：必须是有效的{value}")
-     & P ("validation.constraint.less_than", "{field}：必须小于{value}")
-     & P ("validation.constraint.less_or_equal", "{field}：不得大于{value}")
-     & P ("validation.constraint.greater_than", "{field}：必须大于{value}")
-     & P ("validation.constraint.greater_or_equal", "{field}：不得小于{value}")
-     & P ("validation.constraint.equal_to", "{field}：必须等于{value}")
-     & P ("validation.constraint.not_equal_to", "{field}：不得等于{value}")
-     & P ("validation.constraint.before_field", "{field}：必须早于{value}")
-     & P ("validation.constraint.after_field", "{field}：必须晚于{value}")
-     & P ("validation.choices", "{field}：允许的值为{choices}")
-     & P ("frame.detail", "{text}（{detail}）")
-     & P ("frame.got", "{text}，输入值为{actual}")
-     & P ("frame.also", "{text}，{detail}")
-     & P ("frame.retry", "{text}，{time}后重试")
-     & P ("net_diagnostic.dns", "{endpoint}：DNS查询失败")
-     & P ("net_diagnostic.tcp", "{endpoint}：TCP连接失败")
-     & P ("net_diagnostic.tls", "{endpoint}：TLS证书验证失败")
-     & P ("net_diagnostic.http", "{endpoint}：HTTP请求失败")
-     & P ("net_diagnostic.proxy", "{endpoint}：代理连接失败")
-     & P ("net_diagnostic.timeout", "{endpoint}：连接超时")
-     & P ("net_diagnostic.reset", "{endpoint}：连接被重置")
-     & P ("net_diagnostic.unknown_network", "{endpoint}：网络错误")
-     & P ("progress.state.not_started", "未开始")
-     & P ("progress.state.running", "运行中")
-     & P ("progress.state.stalled", "停滞")
-     & P ("progress.state.retrying", "正在重试")
-     & P ("progress.state.complete", "已完成")
-     & P ("progress.state.failed", "失败")
-     & P ("progress.of", "{subject}：已完成{done}/{total}（{percent}%），{state}")
-     & P ("progress.done", "{subject}：已完成{done}个，{state}")
-     & P ("collection.summary",
-          "{name}：共{total}项，唯一值{unique}个，重复项{duplicates}"
-          & "个，离群值{outliers}个")
-     & P ("top_frequency", "{name}中最常见的值：{value}（{count}次）")
-     & P ("calendar_date.fiscal_year", "{year}财年")
-     & P ("calendar_date.fiscal_quarter", "{year}财年第{part}季度")
-     & P ("calendar_date.fiscal_half",
-          "{part, plural, =1 {{year}财年上半年} other "
-          & "{{year}财年下半年}}")
-     & P ("calendar_date.fiscal_year_end", "{year}财年末")
-     & P ("calendar_date.semester",
-          "{part, plural, =1 {{year}年第一学期} other "
-          & "{{year}年第二学期}}")
-     & P ("calendar_date.half_year", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}")
-     & P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}")
-     & P ("calendar_date.month_phase",
-          "{phase, select, early {{text}初} mid {{text}中旬} other "
-          & "{{text}底}}")
-     & P ("calendar_date.quarter_phase", "{phase, select, early {{text}初} mid {{text}中} other {{text}末}}")
-     & P ("calendar_range.weekend.last", "上周末")
-     & P ("calendar_range.weekend.this", "本周末")
-     & P ("calendar_range.weekend.next", "下周末")
-     & P ("calendar_range.weekend_of", "{date}所在的周末")
-     & P ("calendar_range.week.last", "上周")
-     & P ("calendar_range.week.this", "本周")
-     & P ("calendar_range.week.next", "下周")
-     & P ("calendar_range.week_of", "{date}所在的一周")
-     & P ("calendar_range.between", "{first}至{last}");
+   P ("all_count", "全部{total}个{other}");
+   P ("filtered_count.none", "没有匹配的{other}");
+   P ("filtered_count.all", "全部{total}个{other}均匹配");
+   P ("filtered_count.some", "{total}个{other}中有{matching}个匹配");
+   P ("more_count", "已显示{visible}个，另有{remaining}个");
+   P ("others_count", "{first}及其他{remaining}个");
+   P ("page_count", "第{page}页，共{total}页");
+   P ("page_size", "每页{size}个{other}");
+   P ("pagination_range", "第{first}–{last}个，共{total}个{other}");
+   P ("position_count", "{position}/{total}");
+   P ("selection_count", "已选择{selected}个，共{total}个{other}");
+   P ("showing_count", "显示{showing}个，共{total}个{other}");
+   P ("validation_count",
+      "{count, plural, =0 {没有{severity, select, error {错误} warning "
+      & "{警告} other {提示}}} other {{count}个{severity, select, error "
+      & "{错误} warning {警告} other {提示}}}}");
+   P ("collection.empty", "没有{other}");
+   P ("collection.none_shown", "未显示任何{other}");
+   P ("collection.showing_hidden", "显示{visible}个，共{total}个{other}，{hidden}个已隐藏");
+   P ("collection.showing", "显示{visible}个，共{total}个{other}");
+   P ("collection.shown_hidden", "已显示{visible}个{other}，{hidden}个已隐藏");
+   P ("collection.shown", "已显示{visible}个{other}");
+   P ("collection.visible_out_of", "{total}个{other}中{visible}个可见");
+   P ("complete_count", "已完成{done}/{total}");
+   P ("percent_complete", "已完成{percent}%");
+   P ("step_count", "第{step}步，共{total}步");
+   P ("attempt_count", "第{attempt}次尝试，共{total}次");
+   P ("throughput_remaining", "剩余{remaining}个{other}，速度{rate}个{unit}/秒");
+   P ("accessible_progress", "已完成{done}/{total}，百分之{percent}");
+   P ("business_days", "{days}个工作日");
+   P ("working_hours", "{hours}个工时");
+   P ("due.overdue", "已逾期{days}天");
+   P ("due.today", "今天到期");
+   P ("due.tomorrow", "明天到期");
+   P ("due.in", "{days}天后到期");
+   P ("calendar_difference.future", "{difference}后");
+   P ("calendar_difference.past", "{difference}前");
+   P ("cpu_load", "CPU占用率{measure}");
+   P ("battery", "电量{measure}");
+   P ("screen_size", "屏幕{measure}");
+   P ("refresh_rate", "刷新率{measure}");
+   P ("editorial_percent.symbol", "{value}%");
+   P ("editorial_percent.word", "百分之{value}");
+   P ("recurrence.second", "{every, plural, =1 {每秒} other {每{every}秒}}");
+   P ("recurrence.minute", "{every, plural, =1 {每分钟} other {每{every}分钟}}");
+   P ("recurrence.hour", "{every, plural, =1 {每小时} other {每{every}小时}}");
+   P ("recurrence.day", "{every, plural, =1 {每天} other {每{every}天}}");
+   P ("recurrence.week", "{every, plural, =1 {每周} other {每{every}周}}");
+   P ("recurrence.month", "{every, plural, =1 {每月} other {每{every}个月}}");
+   P ("recurrence.quarter", "{every, plural, =1 {每季度} other {每{every}个季度}}");
+   P ("recurrence.year", "{every, plural, =1 {每年} other {每{every}年}}");
+   P ("cache_summary.empty", "缓存：无请求");
+   P ("cache_summary", "缓存：命中{hits}次，未命中{misses}次，命中率{rate}%");
+   P ("field_change_summary",
+      "{total}个{other}：{changed}个已更改，{added}个已添加，{rem"
+      & "oved}个已删除");
+   P ("field_diff", "{field}已从{before}更改为{after}");
+   P ("field_added", "已添加{field}：{value}");
+   P ("field_removed", "已删除{field}（原为{value}）");
+   P ("field_unchanged", "{field}未更改，仍为{value}");
+   P ("number_comparison.equal", "{current}等于{baseline}");
+   P ("number_comparison.higher", "{current}比{baseline}高{quantity}");
+   P ("number_comparison.lower", "{current}比{baseline}低{quantity}");
+   P ("percent_comparison.equal", "{current}等于{baseline}");
+   P ("percent_comparison.higher", "{current}比{baseline}高{quantity}");
+   P ("percent_comparison.lower", "{current}比{baseline}低{quantity}");
+   P ("file_size_comparison.same", "{current}与{baseline}大小相同");
+   P ("file_size_comparison.larger", "{current}比{baseline}大{quantity}");
+   P ("file_size_comparison.smaller", "{current}比{baseline}小{quantity}");
+   P ("date_comparison.same", "{current}与{baseline}是同一天");
+   P ("date_comparison.after", "{current}比{baseline}晚{quantity}");
+   P ("date_comparison.before", "{current}比{baseline}早{quantity}");
+   P ("queue_summary", "队列：{details}");
+   P ("domain_summary",
+      "{domain, select, queue {队列} job {作业} run {运行} cache "
+      & "{缓存} sync {同步} import {导入} export {导出} other "
+      & "{{domain}}}{state, select, queued {已排队} running {运行中} "
+      & "waiting {等待中} paused {已暂停} complete {已完成} failed "
+      & "{失败} stale {已过时} skipped {已跳过} other "
+      & "{{state}}}：{details}");
+   P ("summary.none", "没有{other}");
+   P ("summary.completed", "已完成{count}个{other}");
+   P ("summary.completed_of", "{total}个{other}中已完成{count}个");
+   P ("summary.failed", "{count}个失败");
+   P ("summary.queued", "{count}个{other}已排队");
+   P ("summary.running", "{count}个运行中");
+   P ("summary.complete", "{count}个已完成");
+   P ("backup.backup_running", "备份进行中");
+   P ("backup.backup_completed", "备份已完成");
+   P ("backup.backup_failed", "备份失败");
+   P ("backup.backup_stale", "备份已过时");
+   P ("incident.incident_investigating", "正在调查事件");
+   P ("incident.incident_identified", "事件已确认");
+   P ("incident.incident_mitigated", "事件已缓解");
+   P ("incident.incident_resolved", "事件已解决");
+   P ("release.release_drafting", "版本准备中");
+   P ("release.release_ready", "版本已就绪");
+   P ("release.release_published", "版本已发布");
+   P ("release.release_rolled_back", "版本已回滚");
+   P ("audit.audit_created", "审计条目已创建");
+   P ("audit.audit_updated", "审计条目已更新");
+   P ("audit.audit_deleted", "审计条目已删除");
+   P ("audit.audit_restored", "审计条目已恢复");
+   P ("flag.flag_enabled", "功能开关已启用");
+   P ("flag.flag_disabled", "功能开关已禁用");
+   P ("flag.flag_rolling_out", "功能开关灰度发布中");
+   P ("flag.flag_rolled_back", "功能开关已回滚");
+   P ("webhook.webhook_pending", "Webhook待处理");
+   P ("webhook.webhook_delivered", "Webhook已送达");
+   P ("webhook.webhook_failed", "Webhook失败");
+   P ("webhook.webhook_retrying", "Webhook重试中");
+   P ("api_key.api_key_active", "API密钥有效");
+   P ("api_key.api_key_revoked", "API密钥已撤销");
+   P ("api_key.api_key_expired", "API密钥已过期");
+   P ("api_key.api_key_rotated", "API密钥已轮换");
+   P ("quota.quota_available", "配额可用");
+   P ("quota.quota_near_limit", "配额即将用尽");
+   P ("quota.quota_exceeded", "配额已超出");
+   P ("quota.quota_reset", "配额已重置");
+   P ("invoice.invoice_draft", "发票草稿");
+   P ("invoice.invoice_sent", "发票已发送");
+   P ("invoice.invoice_paid", "发票已支付");
+   P ("invoice.invoice_refunded", "发票已退款");
+   P ("invoice.invoice_overdue", "发票已逾期");
+   P ("invoice.refund_failed", "退款失败");
+   P ("page_navigation.only", "仅此一页");
+   P ("page_navigation.first", "第一页，可前往下一页");
+   P ("page_navigation.last", "最后一页，可返回上一页");
+   P ("page_navigation.middle", "可前往上一页和下一页");
+   P ("end_of_week", "本周结束");
+   P ("end_of_month", "月末");
+   P ("end_of_quarter", "季度末");
+   P ("time_of_day.night", "夜间");
+   P ("time_of_day.morning", "上午");
+   P ("time_of_day.afternoon", "下午");
+   P ("time_of_day.evening", "晚上");
+   P ("calendar_difference.same_day", "同一天");
+   P ("calendar_difference.zero", "0天");
+   P ("queue_summary.empty", "队列为空");
+   P ("access.allowed", "已允许");
+   P ("access.denied", "已拒绝");
+   P ("access.owner", "所有者");
+   P ("access.admin", "管理员");
+   P ("access.viewer", "查看者");
+   P ("access.editor", "编辑者");
+   P ("auth.signed_in", "已登录");
+   P ("auth.signed_out", "已退出登录");
+   P ("auth.session_expired", "会话已过期");
+   P ("auth.locked", "已锁定");
+   P ("auth.two_factor_required", "需要双重验证");
+   P ("billing.trialing", "试用中");
+   P ("billing.payment_due", "待付款");
+   P ("billing.payment_failed", "付款失败");
+   P ("billing.paid", "已付款");
+   P ("billing.past_due", "已逾期");
+   P ("billing.canceled", "已取消");
+   P ("ci.pipeline_pending", "流水线待处理");
+   P ("ci.pipeline_running", "流水线运行中");
+   P ("ci.pipeline_passed", "流水线已通过");
+   P ("ci.pipeline_failed", "流水线失败");
+   P ("ci.review_required", "需要审核");
+   P ("ci.deploy_blocked", "部署受阻");
+   P ("collaboration.active_now", "当前在线");
+   P ("collaboration.away", "离开");
+   P ("collaboration.do_not_disturb", "请勿打扰");
+   P ("collaboration.typing", "正在输入");
+   P ("collaboration.viewing", "正在查看");
+   P ("collaboration.editing", "正在编辑");
+   P ("deployment.deploying", "部署中");
+   P ("deployment.deployed", "已部署");
+   P ("deployment.rolling_back", "回滚中");
+   P ("deployment.rolled_back", "已回滚");
+   P ("deployment.build_failed", "构建失败");
+   P ("deployment.checks_passed", "检查已通过");
+   P ("empty.no_items", "无项目");
+   P ("empty.no_results", "无结果");
+   P ("empty.no_messages", "无消息");
+   P ("empty.no_selection", "未选择");
+   P ("empty.nothing_to_show", "无可显示内容");
+   P ("file.uploading", "上传中");
+   P ("file.downloading", "下载中");
+   P ("file.copying", "复制中");
+   P ("file.moving", "移动中");
+   P ("file.deleting", "删除中");
+   P ("file.deleted", "已删除");
+   P ("file.restoring", "恢复中");
+   P ("file.synced", "已同步");
+   P ("form.valid_input", "输入有效");
+   P ("form.invalid_input", "输入无效");
+   P ("form.dirty", "已更改");
+   P ("form.pristine", "未更改");
+   P ("form.submitted", "已提交");
+   P ("form.submission_failed", "提交失败");
+   P ("health.healthy", "正常");
+   P ("health.degraded", "性能下降");
+   P ("health.unhealthy", "异常");
+   P ("health.incident", "故障");
+   P ("health.maintenance", "维护中");
+   P ("health.recovering", "恢复中");
+   P ("issue.open", "待解决");
+   P ("issue.closed", "已关闭");
+   P ("issue.reopened", "已重新打开");
+   P ("issue.assigned", "已分配");
+   P ("issue.unassigned", "未分配");
+   P ("issue.merged", "已合并");
+   P ("network.offline", "离线");
+   P ("network.online", "在线");
+   P ("network.connecting", "正在连接");
+   P ("network.syncing", "同步中");
+   P ("network.sync_failed", "同步失败");
+   P ("network.permission_denied", "权限被拒绝");
+   P ("network.read_only", "只读");
+   P ("notification.unread", "未读");
+   P ("notification.read", "已读");
+   P ("notification.muted", "已静音");
+   P ("notification.snoozed", "已暂停提醒");
+   P ("notification.sent", "已发送");
+   P ("notification.delivered", "已送达");
+   P ("payment.payment_authorized", "付款已授权");
+   P ("payment.payment_captured", "付款已收取");
+   P ("payment.payment_refunded", "已退款");
+   P ("payment.payment_disputed", "付款有争议");
+   P ("payment.payment_requires_action", "付款需要处理");
+   P ("payment.payment_expired", "付款已过期");
+   P ("ui.empty", "空");
+   P ("ui.loading", "加载中");
+   P ("ui.saving", "保存中");
+   P ("ui.saved", "已保存");
+   P ("ui.unsaved", "未保存");
+   P ("ui.retrying", "重试中");
+   P ("ui.paused", "已暂停");
+   P ("ui.complete", "已完成");
+   P ("ui.failed", "失败");
+   P ("ui.due_soon", "即将到期");
+   P ("ui.overdue", "已逾期");
+   P ("ui.last_seen", "最后在线");
+   P ("ui.updated_just_now", "刚刚更新");
+   P ("queue.queued", "已排队");
+   P ("queue.running", "运行中");
+   P ("queue.waiting", "等待中");
+   P ("queue.blocked", "已阻塞");
+   P ("queue.canceled_job", "作业已取消");
+   P ("queue.completed_job", "作业已完成");
+   P ("search.filtering", "正在筛选");
+   P ("search.filtered", "已筛选");
+   P ("search.no_matches", "无匹配项");
+   P ("search.search_ready", "搜索就绪");
+   P ("search.search_failed", "搜索失败");
+   P ("search.query_too_short", "查询过短");
+   P ("security.secure", "安全");
+   P ("security.insecure", "不安全");
+   P ("security.vulnerable", "存在漏洞");
+   P ("security.encrypted", "已加密");
+   P ("security.unencrypted", "未加密");
+   P ("security.token_expired", "令牌已过期");
+   P ("sync.sync_idle", "同步空闲");
+   P ("sync.syncing_now", "正在同步");
+   P ("sync.sync_queued", "同步已排队");
+   P ("sync.sync_conflict", "同步冲突");
+   P ("sync.sync_complete", "同步完成");
+   P ("sync.sync_error", "同步错误");
+   P ("task.todo", "待办");
+   P ("task.in_progress", "进行中");
+   P ("task.done", "已完成");
+   P ("task.skipped", "已跳过");
+   P ("task.blocked_task", "受阻");
+   P ("task.waiting_on", "等待中");
+   P ("ticket.ticket_new", "新工单");
+   P ("ticket.ticket_open", "工单待处理");
+   P ("ticket.ticket_waiting", "工单等待中");
+   P ("ticket.ticket_escalated", "工单已升级");
+   P ("ticket.ticket_resolved", "工单已解决");
+   P ("ticket.ticket_closed", "工单已关闭");
+   P ("transfer.importing", "导入中");
+   P ("transfer.imported", "已导入");
+   P ("transfer.import_failed", "导入失败");
+   P ("transfer.exporting", "导出中");
+   P ("transfer.exported", "已导出");
+   P ("transfer.export_failed", "导出失败");
+   P ("validation.required", "必填");
+   P ("validation.optional", "可选");
+   P ("validation.invalid", "无效");
+   P ("validation.too_short", "过短");
+   P ("validation.too_long", "过长");
+   P ("validation.out_of_range", "超出范围");
+   P ("validation.already_exists", "已存在");
+   P ("workflow.draft", "草稿");
+   P ("workflow.in_review", "审核中");
+   P ("workflow.approved", "已批准");
+   P ("workflow.rejected", "已拒绝");
+   P ("workflow.published", "已发布");
+   P ("workflow.archived", "已归档");
+   P ("database.database_online", "数据库在线");
+   P ("database.database_offline", "数据库离线");
+   P ("database.database_degraded", "数据库性能下降");
+   P ("database.database_migrating", "数据库迁移中");
+   P ("database.database_migration_failed", "数据库迁移失败");
+   P ("database.database_replicating", "数据库复制中");
+   P ("database.database_replication_lagging", "数据库复制延迟");
+   P ("database.database_backup_running", "数据库备份中");
+   P ("database.database_backup_failed", "数据库备份失败");
+   P ("times_noun",
+      "{count, plural, =0 {从未{other}} =1 {{other}一次} =2 "
+      & "{{other}两次} other {{other}{count}次}}");
+   P ("availability.all", "{total}个{other}中{available}个可用");
+   P ("availability.none", "没有可用的{other}");
+   P ("availability.partial", "{total}个{other}中{available}个可用，{unavailable}个不可用");
+   P ("operation_progress", "{name}（{state}）：{details}");
+   P ("operation.queued", "已排队");
+   P ("operation.running", "运行中");
+   P ("operation.blocked", "已阻塞");
+   P ("operation.retrying", "正在重试");
+   P ("operation.succeeded", "成功");
+   P ("operation.partially_succeeded", "部分成功");
+   P ("operation.failed", "失败");
+   P ("operation.canceled", "已取消");
+   P ("operation.skipped", "已跳过");
+   P ("operation.stale", "已过时");
+   P ("operation.unknown_state", "未知");
+   P ("operation.last_success", "{name}上次成功：{time}");
+   P ("operation.next_retry", "{name}下次重试：{time}");
+   P ("operation.stale_run", "{name}已有{time}未更新");
+   P ("summary.skipped", "{count}个已跳过");
+   P ("summary.retried", "{count}个已重试");
+   P ("summary.canceled", "{count}个已取消");
+   P ("system.service.operational", "运行正常");
+   P ("system.service.degraded", "性能下降");
+   P ("system.service.partial_outage", "部分中断");
+   P ("system.service.major_outage", "严重中断");
+   P ("system.service.maintenance", "维护中");
+   P ("system.service.unknown", "服务状态未知");
+   P ("system.health.healthy", "健康");
+   P ("system.health.warning", "警告");
+   P ("system.health.critical", "严重");
+   P ("system.health.unavailable", "不可用");
+   P ("system.health.unknown_health", "健康状况未知");
+   P ("system.readiness.ready", "就绪");
+   P ("system.readiness.not_ready", "未就绪");
+   P ("system.readiness.starting", "启动中");
+   P ("system.readiness.draining", "排空中");
+   P ("system.readiness.stopped", "已停止");
+   P ("system.readiness.unknown_readiness", "就绪状态未知");
+   P ("system.component.online", "在线");
+   P ("system.component.offline", "离线");
+   P ("system.component.starting", "启动中");
+   P ("system.component.stopping", "停止中");
+   P ("system.component.restarting", "重启中");
+   P ("system.component.unknown", "组件状态未知");
+   P ("system.check.passing", "通过");
+   P ("system.check.failing", "未通过");
+   P ("system.check.warning", "警告");
+   P ("system.check.skipped", "已跳过");
+   P ("system.check.timed_out", "已超时");
+   P ("system.check.unknown", "检查状态未知");
+   P ("system.incident.investigating", "调查中");
+   P ("system.incident.identified", "已确定原因");
+   P ("system.incident.monitoring", "监控中");
+   P ("system.incident.resolved", "已解决");
+   P ("system.incident.scheduled_maintenance", "计划维护");
+   P ("system.named", "{name}：{state}");
+   P ("system.check_named", "{name}检查：{state}");
+   P ("system.count.components", "{count, plural, =0 {无组件} other {{count}个组件}}");
+   P ("system.count.checks", "{count, plural, =0 {无检查} other {{count}项检查}}");
+   P ("system.count.incidents", "{count, plural, =0 {无事件} other {{count}起事件}}");
+   P ("system.uptime", "正常运行时间 {measure}");
+   P ("system.latency", "延迟 {measure}");
+   P ("system.maintenance_window", "维护时段 {time}");
+   P ("system.last_checked", "上次检查 {time}");
+   P ("system.http.informational", "信息响应");
+   P ("system.http.successful", "成功响应");
+   P ("system.http.redirection", "重定向");
+   P ("system.http.client_error", "客户端错误");
+   P ("system.http.server_error", "服务器错误");
+   P ("system.exit.success", "退出码 {code}：成功");
+   P ("system.exit.failure", "退出码 {code}：失败");
+   P ("system.exit.usage_error", "退出码 {code}：用法错误");
+   P ("system.exit.not_executable", "退出码 {code}：命令无法执行");
+   P ("system.exit.not_found", "退出码 {code}：找不到命令");
+   P ("system.exit.invalid_argument", "退出码 {code}：无效的退出参数");
+   P ("system.exit.signal", "退出码 {code}：被{signal}终止");
+   P ("validation.problem.required", "{field}：为必填项");
+   P ("validation.problem.minimum", "{field}：低于最小值");
+   P ("validation.problem.maximum", "{field}：超过最大值");
+   P ("validation.problem.range", "{field}：超出范围");
+   P ("validation.problem.pattern", "{field}：格式不正确");
+   P ("validation.problem.choice", "{field}：必须是允许的选项之一");
+   P ("validation.problem.dependency", "{field}：依赖于另一个字段");
+   P ("validation.problem.custom", "{field}：无效");
+   P ("validation.constraint.no_relation", "{field}：必须是有效的{value}");
+   P ("validation.constraint.less_than", "{field}：必须小于{value}");
+   P ("validation.constraint.less_or_equal", "{field}：不得大于{value}");
+   P ("validation.constraint.greater_than", "{field}：必须大于{value}");
+   P ("validation.constraint.greater_or_equal", "{field}：不得小于{value}");
+   P ("validation.constraint.equal_to", "{field}：必须等于{value}");
+   P ("validation.constraint.not_equal_to", "{field}：不得等于{value}");
+   P ("validation.constraint.before_field", "{field}：必须早于{value}");
+   P ("validation.constraint.after_field", "{field}：必须晚于{value}");
+   P ("validation.choices", "{field}：允许的值为{choices}");
+   P ("frame.detail", "{text}（{detail}）");
+   P ("frame.got", "{text}，输入值为{actual}");
+   P ("frame.also", "{text}，{detail}");
+   P ("frame.retry", "{text}，{time}后重试");
+   P ("net_diagnostic.dns", "{endpoint}：DNS查询失败");
+   P ("net_diagnostic.tcp", "{endpoint}：TCP连接失败");
+   P ("net_diagnostic.tls", "{endpoint}：TLS证书验证失败");
+   P ("net_diagnostic.http", "{endpoint}：HTTP请求失败");
+   P ("net_diagnostic.proxy", "{endpoint}：代理连接失败");
+   P ("net_diagnostic.timeout", "{endpoint}：连接超时");
+   P ("net_diagnostic.reset", "{endpoint}：连接被重置");
+   P ("net_diagnostic.unknown_network", "{endpoint}：网络错误");
+   P ("progress.state.not_started", "未开始");
+   P ("progress.state.running", "运行中");
+   P ("progress.state.stalled", "停滞");
+   P ("progress.state.retrying", "正在重试");
+   P ("progress.state.complete", "已完成");
+   P ("progress.state.failed", "失败");
+   P ("progress.of", "{subject}：已完成{done}/{total}（{percent}%），{state}");
+   P ("progress.done", "{subject}：已完成{done}个，{state}");
+   P ("collection.summary",
+      "{name}：共{total}项，唯一值{unique}个，重复项{duplicates}"
+      & "个，离群值{outliers}个");
+   P ("top_frequency", "{name}中最常见的值：{value}（{count}次）");
+   P ("calendar_date.fiscal_year", "{year}财年");
+   P ("calendar_date.fiscal_quarter", "{year}财年第{part}季度");
+   P ("calendar_date.fiscal_half",
+      "{part, plural, =1 {{year}财年上半年} other "
+      & "{{year}财年下半年}}");
+   P ("calendar_date.fiscal_year_end", "{year}财年末");
+   P ("calendar_date.semester",
+      "{part, plural, =1 {{year}年第一学期} other "
+      & "{{year}年第二学期}}");
+   P ("calendar_date.half_year", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}");
+   P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}");
+   P ("calendar_date.month_phase",
+      "{phase, select, early {{text}初} mid {{text}中旬} other "
+      & "{{text}底}}");
+   P ("calendar_date.quarter_phase", "{phase, select, early {{text}初} mid {{text}中} other {{text}末}}");
+   P ("calendar_range.weekend.last", "上周末");
+   P ("calendar_range.weekend.this", "本周末");
+   P ("calendar_range.weekend.next", "下周末");
+   P ("calendar_range.weekend_of", "{date}所在的周末");
+   P ("calendar_range.week.last", "上周");
+   P ("calendar_range.week.this", "本周");
+   P ("calendar_range.week.next", "下周");
+   P ("calendar_range.week_of", "{date}所在的一周");
+   P ("calendar_range.between", "{first}至{last}");
+   P ("http.reason.100", "继续");
+   P ("http.reason.101", "切换协议");
+   P ("http.reason.102", "处理中");
+   P ("http.reason.103", "早期提示");
+   P ("http.reason.200", "成功");
+   P ("http.reason.201", "已创建");
+   P ("http.reason.202", "已接受");
+   P ("http.reason.203", "非权威信息");
+   P ("http.reason.204", "无内容");
+   P ("http.reason.205", "重置内容");
+   P ("http.reason.206", "部分内容");
+   P ("http.reason.207", "多状态");
+   P ("http.reason.208", "已报告");
+   P ("http.reason.226", "已使用 IM");
+   P ("http.reason.300", "多种选择");
+   P ("http.reason.301", "永久移动");
+   P ("http.reason.302", "已找到");
+   P ("http.reason.303", "查看其他位置");
+   P ("http.reason.304", "未修改");
+   P ("http.reason.305", "使用代理");
+   P ("http.reason.307", "临时重定向");
+   P ("http.reason.308", "永久重定向");
+   P ("http.reason.400", "错误请求");
+   P ("http.reason.401", "未授权");
+   P ("http.reason.402", "需要付款");
+   P ("http.reason.403", "禁止访问");
+   P ("http.reason.404", "未找到");
+   P ("http.reason.405", "方法不允许");
+   P ("http.reason.406", "不可接受");
+   P ("http.reason.407", "需要代理身份验证");
+   P ("http.reason.408", "请求超时");
+   P ("http.reason.409", "冲突");
+   P ("http.reason.410", "已不存在");
+   P ("http.reason.411", "需要长度");
+   P ("http.reason.412", "前提条件失败");
+   P ("http.reason.413", "内容过大");
+   P ("http.reason.414", "URI 过长");
+   P ("http.reason.415", "不支持的媒体类型");
+   P ("http.reason.416", "范围无法满足");
+   P ("http.reason.417", "预期失败");
+   P ("http.reason.418", "我是茶壶");
+   P ("http.reason.421", "错误定向的请求");
+   P ("http.reason.422", "无法处理的内容");
+   P ("http.reason.423", "已锁定");
+   P ("http.reason.424", "依赖失败");
+   P ("http.reason.425", "为时过早");
+   P ("http.reason.426", "需要升级");
+   P ("http.reason.428", "需要前提条件");
+   P ("http.reason.429", "请求过多");
+   P ("http.reason.431", "请求头字段过大");
+   P ("http.reason.451", "因法律原因不可用");
+   P ("http.reason.500", "服务器内部错误");
+   P ("http.reason.501", "未实现");
+   P ("http.reason.502", "错误网关");
+   P ("http.reason.503", "服务不可用");
+   P ("http.reason.504", "网关超时");
+   P ("http.reason.505", "不支持的 HTTP 版本");
+   P ("http.reason.506", "变体也在协商");
+   P ("http.reason.507", "存储空间不足");
+   P ("http.reason.508", "检测到循环");
+   P ("http.reason.510", "未扩展");
+   P ("http.reason.511", "需要网络身份验证");
+   P ("errno.reason.0", "成功");
+   P ("errno.reason.1", "不允许的操作");
+   P ("errno.reason.2", "没有那个文件或目录");
+   P ("errno.reason.3", "没有那个进程");
+   P ("errno.reason.4", "被中断的系统调用");
+   P ("errno.reason.5", "输入/输出错误");
+   P ("errno.reason.6", "没有那个设备或地址");
+   P ("errno.reason.9", "错误的文件描述符");
+   P ("errno.reason.11", "资源暂时不可用");
+   P ("errno.reason.12", "内存不足");
+   P ("errno.reason.13", "权限不够");
+   P ("errno.reason.17", "文件已存在");
+   P ("errno.reason.20", "不是目录");
+   P ("errno.reason.21", "是一个目录");
+   P ("errno.reason.22", "无效的参数");
+   P ("errno.reason.24", "打开的文件过多");
+   P ("errno.reason.28", "设备上没有空间");
+   P ("errno.reason.32", "断开的管道");
+   P ("errno.reason.98", "地址已在使用");
+   P ("errno.reason.110", "连接超时");
+   P ("errno.reason.111", "拒绝连接");
+   P ("signal.reason.1", "挂断");
+   P ("signal.reason.2", "中断");
+   P ("signal.reason.3", "退出");
+   P ("signal.reason.4", "非法指令");
+   P ("signal.reason.5", "跟踪陷阱");
+   P ("signal.reason.6", "中止");
+   P ("signal.reason.7", "总线错误");
+   P ("signal.reason.8", "浮点数例外");
+   P ("signal.reason.9", "已杀死");
+   P ("signal.reason.10", "用户定义信号 1");
+   P ("signal.reason.11", "段错误");
+   P ("signal.reason.12", "用户定义信号 2");
+   P ("signal.reason.13", "断开的管道");
+   P ("signal.reason.14", "闹钟");
+   P ("signal.reason.15", "终止请求");
+   P ("signal.reason.17", "子进程状态已改变");
+   P ("signal.reason.18", "继续");
+   P ("signal.reason.19", "已停止");
+   P ("signal.reason.20", "终端停止");
+   P ("signal.reason.28", "窗口大小已改变");
+   P ("sqlstate.reason.00", "成功完成");
+   P ("sqlstate.reason.01", "警告");
+   P ("sqlstate.reason.02", "无数据");
+   P ("sqlstate.reason.08", "连接异常");
+   P ("sqlstate.reason.0a", "不支持的功能");
+   P ("sqlstate.reason.22", "数据异常");
+   P ("sqlstate.reason.23", "违反完整性约束");
+   P ("sqlstate.reason.24", "无效的游标状态");
+   P ("sqlstate.reason.25", "无效的事务状态");
+   P ("sqlstate.reason.28", "无效的授权说明");
+   P ("sqlstate.reason.2d", "无效的事务终止");
+   P ("sqlstate.reason.3d", "无效的目录名");
+   P ("sqlstate.reason.3f", "无效的模式名");
+   P ("sqlstate.reason.40", "事务回滚");
+   P ("sqlstate.reason.42", "语法错误或违反访问规则");
+   P ("sqlstate.reason.53", "资源不足");
+   P ("sqlstate.reason.54", "超出程序限制");
+   P ("sqlstate.reason.55", "对象未处于必需状态");
+   P ("sqlstate.reason.57", "操作员干预");
+   P ("sqlstate.reason.58", "系统错误");
+   P ("sqlstate.reason.hv", "外部数据包装器错误");
+   P ("sqlstate.reason.p0", "PL/pgSQL 错误");
+   P ("sqlstate.reason.xx", "内部错误");
+   P ("system.signal_numbered", "信号 {number} {name} {reason}");
+   P ("http.reason.unknown", "未知状态");
+   P ("errno.reason.unknown", "未知错误");
+   P ("signal.reason.unknown", "未知信号");
+   P ("sqlstate.reason.unknown", "未知 SQLSTATE 类别");
 end Locale_Zh;

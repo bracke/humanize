@@ -12,6 +12,7 @@ with Humanize.Lists;
 with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Parsing;
+with Humanize.Parsing.Localized;
 with Humanize.Phrases;
 with Humanize.Rates;
 with Humanize.Status;

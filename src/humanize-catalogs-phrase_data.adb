@@ -1,185 +1,206 @@
-with Ada.Characters.Wide_Wide_Latin_1;
+with Ada.Strings.Unbounded;
 with Ada.Strings.UTF_Encoding.Wide_Wide_Strings;
 
 package body Humanize.Catalogs.Phrase_Data is
 
-   --  One catalog line: Locale's translation of the phrase Name.
-   function Entry_Line (Locale, Name, Template : Wide_Wide_String) return Wide_Wide_String is
-     (Locale & ".humanize.phrase." & Name & " = " & Template & Ada.Characters.Wide_Wide_Latin_1.LF);
+   subtype Catalog_Text is Ada.Strings.Unbounded.Unbounded_String;
+
+   --  Append one catalog line to Target: Locale's translation of the phrase
+   --  Name, UTF-8 encoded.
+   procedure Add (Target : in out Catalog_Text; Locale : String; Name, Template : Wide_Wide_String) is
+   begin
+      Ada.Strings.Unbounded.Append
+        (Target,
+         Locale & ".humanize.phrase." & Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode (Name) & " = "
+         & Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode (Template) & ASCII.LF);
+   end Add;
 
    --  English, as the formatters write it: for reading phrases back
    --  (Humanize.Parsing.Phrases); the formatters keep their own English.
-   function Locale_En return Wide_Wide_String is separate;
-   function Locale_Da return Wide_Wide_String is separate;
-   function Locale_De return Wide_Wide_String is separate;
-   function Locale_Fr return Wide_Wide_String is separate;
-   function Locale_Es return Wide_Wide_String is separate;
-   function Locale_It return Wide_Wide_String is separate;
-   function Locale_Pt return Wide_Wide_String is separate;
-   function Locale_Nl return Wide_Wide_String is separate;
-   function Locale_Sv return Wide_Wide_String is separate;
-   function Locale_No return Wide_Wide_String is separate;
-   function Locale_Nb return Wide_Wide_String is separate;
-   function Locale_Fi return Wide_Wide_String is separate;
-   function Locale_Pl return Wide_Wide_String is separate;
-   function Locale_Cs return Wide_Wide_String is separate;
-   function Locale_Tr return Wide_Wide_String is separate;
-   function Locale_Ru return Wide_Wide_String is separate;
-   function Locale_Uk return Wide_Wide_String is separate;
-   function Locale_Ja return Wide_Wide_String is separate;
-   function Locale_Ko return Wide_Wide_String is separate;
-   function Locale_Zh return Wide_Wide_String is separate;
-   function Locale_Ar return Wide_Wide_String is separate;
-   function Locale_Hi return Wide_Wide_String is separate;
-   function Locale_Ro return Wide_Wide_String is separate;
-   function Locale_Lt return Wide_Wide_String is separate;
-   function Locale_Sl return Wide_Wide_String is separate;
-   function Locale_Id return Wide_Wide_String is separate;
-   function Locale_Ms return Wide_Wide_String is separate;
-   function Locale_Eo return Wide_Wide_String is separate;
-   function Locale_Vi return Wide_Wide_String is separate;
-   function Locale_Sw return Wide_Wide_String is separate;
-   function Locale_Af return Wide_Wide_String is separate;
-   function Locale_Hu return Wide_Wide_String is separate;
-   function Locale_Sk return Wide_Wide_String is separate;
+   procedure Locale_En (Target : in out Catalog_Text) is separate;
+   procedure Locale_Da (Target : in out Catalog_Text) is separate;
+   procedure Locale_De (Target : in out Catalog_Text) is separate;
+   procedure Locale_Fr (Target : in out Catalog_Text) is separate;
+   procedure Locale_Es (Target : in out Catalog_Text) is separate;
+   procedure Locale_It (Target : in out Catalog_Text) is separate;
+   procedure Locale_Pt (Target : in out Catalog_Text) is separate;
+   procedure Locale_Nl (Target : in out Catalog_Text) is separate;
+   procedure Locale_Sv (Target : in out Catalog_Text) is separate;
+   procedure Locale_No (Target : in out Catalog_Text) is separate;
+   procedure Locale_Nb (Target : in out Catalog_Text) is separate;
+   procedure Locale_Fi (Target : in out Catalog_Text) is separate;
+   procedure Locale_Pl (Target : in out Catalog_Text) is separate;
+   procedure Locale_Cs (Target : in out Catalog_Text) is separate;
+   procedure Locale_Tr (Target : in out Catalog_Text) is separate;
+   procedure Locale_Ru (Target : in out Catalog_Text) is separate;
+   procedure Locale_Uk (Target : in out Catalog_Text) is separate;
+   procedure Locale_Ja (Target : in out Catalog_Text) is separate;
+   procedure Locale_Ko (Target : in out Catalog_Text) is separate;
+   procedure Locale_Zh (Target : in out Catalog_Text) is separate;
+   procedure Locale_Ar (Target : in out Catalog_Text) is separate;
+   procedure Locale_Hi (Target : in out Catalog_Text) is separate;
+   procedure Locale_Ro (Target : in out Catalog_Text) is separate;
+   procedure Locale_Lt (Target : in out Catalog_Text) is separate;
+   procedure Locale_Sl (Target : in out Catalog_Text) is separate;
+   procedure Locale_Id (Target : in out Catalog_Text) is separate;
+   procedure Locale_Ms (Target : in out Catalog_Text) is separate;
+   procedure Locale_Eo (Target : in out Catalog_Text) is separate;
+   procedure Locale_Vi (Target : in out Catalog_Text) is separate;
+   procedure Locale_Sw (Target : in out Catalog_Text) is separate;
+   procedure Locale_Af (Target : in out Catalog_Text) is separate;
+   procedure Locale_Hu (Target : in out Catalog_Text) is separate;
+   procedure Locale_Sk (Target : in out Catalog_Text) is separate;
    --  Regional variants: Traditional Chinese whole, European Portuguese and
    --  Latin-American Spanish where they differ from pt and es.
-   function Locale_Zh_Hant return Wide_Wide_String is separate;
-   function Locale_Pt_Pt return Wide_Wide_String is separate;
-   function Locale_Es_419 return Wide_Wide_String is separate;
+   procedure Locale_Zh_Hant (Target : in out Catalog_Text) is separate;
+   procedure Locale_Pt_Pt (Target : in out Catalog_Text) is separate;
+   procedure Locale_Es_419 (Target : in out Catalog_Text) is separate;
    --  Canadian French and Swiss and Liechtenstein German (ss for ß), where
    --  they differ.
-   function Locale_Fr_Ca return Wide_Wide_String is separate;
-   function Locale_De_Ch return Wide_Wide_String is separate;
-   function Locale_De_Li return Wide_Wide_String is separate;
+   procedure Locale_Fr_Ca (Target : in out Catalog_Text) is separate;
+   procedure Locale_De_Ch (Target : in out Catalog_Text) is separate;
+   procedure Locale_De_Li (Target : in out Catalog_Text) is separate;
    --  International English (en-001), which en-GB, en-AU, en-IN and the
    --  other Commonwealth variants fall back to.
-   function Locale_En_001 return Wide_Wide_String is separate;
+   procedure Locale_En_001 (Target : in out Catalog_Text) is separate;
    --  Canadian English (cancelled, like en-001, though CLDR's parent is en),
    --  Swiss and Belgian French, Hong Kong Traditional Chinese.
-   function Locale_En_Ca return Wide_Wide_String is separate;
-   function Locale_Fr_Ch return Wide_Wide_String is separate;
-   function Locale_Fr_Be return Wide_Wide_String is separate;
-   function Locale_Zh_Hant_Hk return Wide_Wide_String is separate;
+   procedure Locale_En_Ca (Target : in out Catalog_Text) is separate;
+   procedure Locale_Fr_Ch (Target : in out Catalog_Text) is separate;
+   procedure Locale_Fr_Be (Target : in out Catalog_Text) is separate;
+   procedure Locale_Zh_Hant_Hk (Target : in out Catalog_Text) is separate;
 
    function Default_Catalog return String is
-     (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode
-        (Locale_En
-           & Locale_Da
-           & Locale_De
-           & Locale_Fr
-           & Locale_Es
-           & Locale_It
-           & Locale_Pt
-           & Locale_Nl
-           & Locale_Sv
-           & Locale_No
-           & Locale_Nb
-           & Locale_Fi
-           & Locale_Pl
-           & Locale_Cs
-           & Locale_Tr
-           & Locale_Ru
-           & Locale_Uk
-           & Locale_Ja
-           & Locale_Ko
-           & Locale_Zh
-           & Locale_Ar
-           & Locale_Hi
-           & Locale_Ro
-           & Locale_Lt
-           & Locale_Sl
-           & Locale_Id
-           & Locale_Ms
-           & Locale_Eo
-           & Locale_Vi
-           & Locale_Sw
-           & Locale_Af
-           & Locale_Hu
-           & Locale_Sk
-           & Locale_Zh_Hant
-           & Locale_Pt_Pt
-           & Locale_Es_419
-           & Locale_Fr_Ca
-           & Locale_De_Ch
-           & Locale_De_Li
-           & Locale_En_001
-           & Locale_En_Ca
-           & Locale_Fr_Ch
-           & Locale_Fr_Be
-           & Locale_Zh_Hant_Hk));
+      Target : Catalog_Text;
+   begin
+      Locale_En (Target);
+      Locale_Da (Target);
+      Locale_De (Target);
+      Locale_Fr (Target);
+      Locale_Es (Target);
+      Locale_It (Target);
+      Locale_Pt (Target);
+      Locale_Nl (Target);
+      Locale_Sv (Target);
+      Locale_No (Target);
+      Locale_Nb (Target);
+      Locale_Fi (Target);
+      Locale_Pl (Target);
+      Locale_Cs (Target);
+      Locale_Tr (Target);
+      Locale_Ru (Target);
+      Locale_Uk (Target);
+      Locale_Ja (Target);
+      Locale_Ko (Target);
+      Locale_Zh (Target);
+      Locale_Ar (Target);
+      Locale_Hi (Target);
+      Locale_Ro (Target);
+      Locale_Lt (Target);
+      Locale_Sl (Target);
+      Locale_Id (Target);
+      Locale_Ms (Target);
+      Locale_Eo (Target);
+      Locale_Vi (Target);
+      Locale_Sw (Target);
+      Locale_Af (Target);
+      Locale_Hu (Target);
+      Locale_Sk (Target);
+      Locale_Zh_Hant (Target);
+      Locale_Pt_Pt (Target);
+      Locale_Es_419 (Target);
+      Locale_Fr_Ca (Target);
+      Locale_De_Ch (Target);
+      Locale_De_Li (Target);
+      Locale_En_001 (Target);
+      Locale_En_Ca (Target);
+      Locale_Fr_Ch (Target);
+      Locale_Fr_Be (Target);
+      Locale_Zh_Hant_Hk (Target);
+      return Ada.Strings.Unbounded.To_String (Target);
+   end Default_Catalog;
 
    function Catalog_For (Language : String) return String is
-      function Encode (Text : Wide_Wide_String) return String is
-        (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode (Text));
+      Target : Catalog_Text;
    begin
       if Language in "en" | "" then
-         return Encode (Locale_En & Locale_En_001 & Locale_En_Ca);
+         Locale_En (Target);
+         Locale_En_001 (Target);
+         Locale_En_Ca (Target);
       elsif Language = "da" then
-         return Encode (Locale_Da);
+         Locale_Da (Target);
       elsif Language = "de" then
-         return Encode (Locale_De & Locale_De_Ch & Locale_De_Li);
+         Locale_De (Target);
+         Locale_De_Ch (Target);
+         Locale_De_Li (Target);
       elsif Language = "fr" then
-         return Encode (Locale_Fr & Locale_Fr_Ca & Locale_Fr_Ch & Locale_Fr_Be);
+         Locale_Fr (Target);
+         Locale_Fr_Ca (Target);
+         Locale_Fr_Ch (Target);
+         Locale_Fr_Be (Target);
       elsif Language = "es" then
-         return Encode (Locale_Es & Locale_Es_419);
+         Locale_Es (Target);
+         Locale_Es_419 (Target);
       elsif Language = "it" then
-         return Encode (Locale_It);
+         Locale_It (Target);
       elsif Language = "pt" then
-         return Encode (Locale_Pt & Locale_Pt_Pt);
+         Locale_Pt (Target);
+         Locale_Pt_Pt (Target);
       elsif Language = "nl" then
-         return Encode (Locale_Nl);
+         Locale_Nl (Target);
       elsif Language = "sv" then
-         return Encode (Locale_Sv);
+         Locale_Sv (Target);
       elsif Language in "no" | "nb" then
-         return Encode (Locale_No & Locale_Nb);
+         Locale_No (Target);
+         Locale_Nb (Target);
       elsif Language = "fi" then
-         return Encode (Locale_Fi);
+         Locale_Fi (Target);
       elsif Language = "pl" then
-         return Encode (Locale_Pl);
+         Locale_Pl (Target);
       elsif Language = "cs" then
-         return Encode (Locale_Cs);
+         Locale_Cs (Target);
       elsif Language = "tr" then
-         return Encode (Locale_Tr);
+         Locale_Tr (Target);
       elsif Language = "ru" then
-         return Encode (Locale_Ru);
+         Locale_Ru (Target);
       elsif Language = "uk" then
-         return Encode (Locale_Uk);
+         Locale_Uk (Target);
       elsif Language = "ja" then
-         return Encode (Locale_Ja);
+         Locale_Ja (Target);
       elsif Language = "ko" then
-         return Encode (Locale_Ko);
+         Locale_Ko (Target);
       elsif Language = "zh" then
-         return Encode (Locale_Zh & Locale_Zh_Hant & Locale_Zh_Hant_Hk);
+         Locale_Zh (Target);
+         Locale_Zh_Hant (Target);
+         Locale_Zh_Hant_Hk (Target);
       elsif Language = "ar" then
-         return Encode (Locale_Ar);
+         Locale_Ar (Target);
       elsif Language = "hi" then
-         return Encode (Locale_Hi);
+         Locale_Hi (Target);
       elsif Language = "ro" then
-         return Encode (Locale_Ro);
+         Locale_Ro (Target);
       elsif Language = "lt" then
-         return Encode (Locale_Lt);
+         Locale_Lt (Target);
       elsif Language = "sl" then
-         return Encode (Locale_Sl);
+         Locale_Sl (Target);
       elsif Language = "id" then
-         return Encode (Locale_Id);
+         Locale_Id (Target);
       elsif Language = "ms" then
-         return Encode (Locale_Ms);
+         Locale_Ms (Target);
       elsif Language = "eo" then
-         return Encode (Locale_Eo);
+         Locale_Eo (Target);
       elsif Language = "vi" then
-         return Encode (Locale_Vi);
+         Locale_Vi (Target);
       elsif Language = "sw" then
-         return Encode (Locale_Sw);
+         Locale_Sw (Target);
       elsif Language = "af" then
-         return Encode (Locale_Af);
+         Locale_Af (Target);
       elsif Language = "hu" then
-         return Encode (Locale_Hu);
+         Locale_Hu (Target);
       elsif Language = "sk" then
-         return Encode (Locale_Sk);
-      else
-         return "";
+         Locale_Sk (Target);
       end if;
+      return Ada.Strings.Unbounded.To_String (Target);
    end Catalog_For;
 
 end Humanize.Catalogs.Phrase_Data;

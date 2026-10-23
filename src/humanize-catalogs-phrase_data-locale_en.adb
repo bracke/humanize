@@ -1,483 +1,618 @@
 separate (Humanize.Catalogs.Phrase_Data)
-function Locale_En return Wide_Wide_String is
-   function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("en", Name, Template));
+procedure Locale_En (Target : in out Catalog_Text) is
+   --  One statement an entry: the catalog grows on the heap, not in one
+   --  expression on the stack.
+   procedure P (Name, Template : Wide_Wide_String) is
+   begin
+      Add (Target, "en", Name, Template);
+   end P;
 begin
-   return
-     P ("all_count", "all {total} {total, plural, one {{one}} other {{other}}}")
-     & P ("filtered_count.none", "no {other} match")
-     & P ("filtered_count.all", "all {total} {total, plural, one {{one}} other {{other}}} match")
-     & P ("filtered_count.some",
-          "{matching} of {total} {total, plural, one {{one}} other {{other}}} "
-          & "match")
-     & P ("more_count", "{visible} shown, +{remaining} more")
-     & P ("others_count",
-          "{first} and {remaining, plural, one {1 other} other {{remaining} "
-          & "others}}")
-     & P ("page_count", "page {page} of {total}")
-     & P ("page_size", "{size} {size, plural, one {{one}} other {{other}}} per page")
-     & P ("pagination_range", "{first}-{last} of {total} {total, plural, one {{one}} other {{other}}}")
-     & P ("position_count", "{position} of {total}")
-     & P ("selection_count",
-          "{selected} of {total} {total, plural, one {{one}} other {{other}}} "
-          & "selected")
-     & P ("showing_count",
-          "showing {showing} of {total} {total, plural, one {{one}} other "
-          & "{{other}}}")
-     & P ("validation_count",
-          "{count, plural, =0 {no {severity, select, error {errors} warning "
-          & "{warnings} other {notices}}} one {1 {severity, select, error {error} "
-          & "warning {warning} other {notice}}} other {{count} {severity, select, "
-          & "error {errors} warning {warnings} other {notices}}}}")
-     & P ("collection.empty", "no {other}")
-     & P ("collection.none_shown", "no {total, plural, one {{one}} other {{other}}} shown")
-     & P ("collection.showing_hidden",
-          "showing {visible} of {total} {total, plural, one {{one}} other "
-          & "{{other}}}, {hidden} hidden")
-     & P ("collection.showing",
-          "showing {visible} of {total} {total, plural, one {{one}} other "
-          & "{{other}}}")
-     & P ("collection.shown_hidden",
-          "{visible} {visible, plural, one {{one}} other {{other}}} shown, "
-          & "{hidden} hidden")
-     & P ("collection.shown", "{visible} {visible, plural, one {{one}} other {{other}}} shown")
-     & P ("collection.visible_out_of",
-          "{visible} {visible, plural, one {{one}} other {{other}}} visible out "
-          & "of {total} {total, plural, one {{one}} other {{other}}}")
-     & P ("complete_count", "{done} of {total} complete")
-     & P ("percent_complete", "{percent}% complete")
-     & P ("step_count", "step {step} of {total}")
-     & P ("attempt_count", "attempt {attempt} of {total}")
-     & P ("throughput_remaining",
-          "{remaining} {remaining, plural, one {{one}} other {{other}}} remaining "
-          & "at {rate} {unit}/s")
-     & P ("accessible_progress", "{done} of {total} complete, {percent} percent")
-     & P ("business_days", "{days} business {days, plural, one {day} other {days}}")
-     & P ("working_hours", "{hours} working {hours, plural, one {hour} other {hours}}")
-     & P ("due.overdue", "overdue by {days} {days, plural, one {day} other {days}}")
-     & P ("due.today", "due today")
-     & P ("due.tomorrow", "due tomorrow")
-     & P ("due.in", "due in {days} days")
-     & P ("calendar_difference.future", "in {difference}")
-     & P ("calendar_difference.past", "{difference} ago")
-     & P ("cpu_load", "{measure} CPU")
-     & P ("battery", "{measure} battery")
-     & P ("screen_size", "{measure} screen")
-     & P ("refresh_rate", "{measure} refresh")
-     & P ("editorial_percent.symbol", "{value}%")
-     & P ("editorial_percent.word", "{value} percent")
-     & P ("recurrence.second", "every {every} {every, plural, one {second} other {seconds}}")
-     & P ("recurrence.minute", "every {every} {every, plural, one {minute} other {minutes}}")
-     & P ("recurrence.hour", "every {every} {every, plural, one {hour} other {hours}}")
-     & P ("recurrence.day", "every {every} {every, plural, one {day} other {days}}")
-     & P ("recurrence.week", "every {every} {every, plural, one {week} other {weeks}}")
-     & P ("recurrence.month", "every {every} {every, plural, one {month} other {months}}")
-     & P ("recurrence.quarter", "every {every} {every, plural, one {quarter} other {quarters}}")
-     & P ("recurrence.year", "every {every} {every, plural, one {year} other {years}}")
-     & P ("cache_summary.empty", "cache: no requests")
-     & P ("cache_summary",
-          "cache: {hits} {hits, plural, one {hit} other {hits}}, {misses} "
-          & "{misses, plural, one {miss} other {misses}}, {rate}% hit rate")
-     & P ("field_change_summary",
-          "{total} {total, plural, one {{one}} other {{other}}}: {changed} "
-          & "changed, {added} added, {removed} removed")
-     & P ("field_diff", "{field} changed from {before} to {after}")
-     & P ("field_added", "{field} added as {value}")
-     & P ("field_removed", "{field} removed (was {value})")
-     & P ("field_unchanged", "{field} unchanged at {value}")
-     & P ("number_comparison.equal", "{current} is equal to {baseline}")
-     & P ("number_comparison.higher", "{current} is {quantity} higher than {baseline}")
-     & P ("number_comparison.lower", "{current} is {quantity} lower than {baseline}")
-     & P ("percent_comparison.equal", "{current} is equal to {baseline}")
-     & P ("percent_comparison.higher", "{current} is {quantity} higher than {baseline}")
-     & P ("percent_comparison.lower", "{current} is {quantity} lower than {baseline}")
-     & P ("file_size_comparison.same", "{current} is the same size as {baseline}")
-     & P ("file_size_comparison.larger", "{current} is {quantity} larger than {baseline}")
-     & P ("file_size_comparison.smaller", "{current} is {quantity} smaller than {baseline}")
-     & P ("date_comparison.same", "{current} is the same date as {baseline}")
-     & P ("date_comparison.after", "{current} is {quantity} after {baseline}")
-     & P ("date_comparison.before", "{current} is {quantity} before {baseline}")
-     & P ("queue_summary", "queue: {details}")
-     & P ("domain_summary", "{domain} {state}: {details}")
-     & P ("summary.none", "no {other}")
-     & P ("summary.completed", "{count} {count, plural, one {{one}} other {{other}}} complete")
-     & P ("summary.completed_of",
-          "{count} of {total} {total, plural, one {{one}} other {{other}}} "
-          & "complete")
-     & P ("summary.failed", "{count} failed")
-     & P ("summary.queued", "{count} {count, plural, one {{one}} other {{other}}} queued")
-     & P ("summary.running", "{count} running")
-     & P ("summary.complete", "{count} complete")
-     & P ("backup.backup_running", "backup running")
-     & P ("backup.backup_completed", "backup completed")
-     & P ("backup.backup_failed", "backup failed")
-     & P ("backup.backup_stale", "backup stale")
-     & P ("incident.incident_investigating", "investigating incident")
-     & P ("incident.incident_identified", "incident identified")
-     & P ("incident.incident_mitigated", "incident mitigated")
-     & P ("incident.incident_resolved", "incident resolved")
-     & P ("release.release_drafting", "release drafting")
-     & P ("release.release_ready", "release ready")
-     & P ("release.release_published", "release published")
-     & P ("release.release_rolled_back", "release rolled back")
-     & P ("audit.audit_created", "audit entry created")
-     & P ("audit.audit_updated", "audit entry updated")
-     & P ("audit.audit_deleted", "audit entry deleted")
-     & P ("audit.audit_restored", "audit entry restored")
-     & P ("flag.flag_enabled", "feature flag enabled")
-     & P ("flag.flag_disabled", "feature flag disabled")
-     & P ("flag.flag_rolling_out", "feature flag rolling out")
-     & P ("flag.flag_rolled_back", "feature flag rolled back")
-     & P ("webhook.webhook_pending", "webhook pending")
-     & P ("webhook.webhook_delivered", "webhook delivered")
-     & P ("webhook.webhook_failed", "webhook failed")
-     & P ("webhook.webhook_retrying", "webhook retrying")
-     & P ("api_key.api_key_active", "API key active")
-     & P ("api_key.api_key_revoked", "API key revoked")
-     & P ("api_key.api_key_expired", "API key expired")
-     & P ("api_key.api_key_rotated", "API key rotated")
-     & P ("quota.quota_available", "quota available")
-     & P ("quota.quota_near_limit", "quota near limit")
-     & P ("quota.quota_exceeded", "quota exceeded")
-     & P ("quota.quota_reset", "quota reset")
-     & P ("invoice.invoice_draft", "invoice draft")
-     & P ("invoice.invoice_sent", "invoice sent")
-     & P ("invoice.invoice_paid", "invoice paid")
-     & P ("invoice.invoice_refunded", "invoice refunded")
-     & P ("invoice.invoice_overdue", "invoice overdue")
-     & P ("invoice.refund_failed", "refund failed")
-     & P ("page_navigation.only", "only page")
-     & P ("page_navigation.first", "first page, next available")
-     & P ("page_navigation.last", "last page, previous available")
-     & P ("page_navigation.middle", "previous and next available")
-     & P ("end_of_week", "end of week")
-     & P ("end_of_month", "end of month")
-     & P ("end_of_quarter", "end of quarter")
-     & P ("time_of_day.night", "night")
-     & P ("time_of_day.morning", "morning")
-     & P ("time_of_day.afternoon", "afternoon")
-     & P ("time_of_day.evening", "evening")
-     & P ("calendar_difference.same_day", "same day")
-     & P ("calendar_difference.zero", "0 days")
-     & P ("queue_summary.empty", "queue empty")
-     & P ("access.allowed", "allowed")
-     & P ("access.denied", "denied")
-     & P ("access.owner", "owner")
-     & P ("access.admin", "admin")
-     & P ("access.viewer", "viewer")
-     & P ("access.editor", "editor")
-     & P ("auth.signed_in", "signed in")
-     & P ("auth.signed_out", "signed out")
-     & P ("auth.session_expired", "session expired")
-     & P ("auth.locked", "locked")
-     & P ("auth.two_factor_required", "two-factor required")
-     & P ("billing.trialing", "trialing")
-     & P ("billing.payment_due", "payment due")
-     & P ("billing.payment_failed", "payment failed")
-     & P ("billing.paid", "paid")
-     & P ("billing.past_due", "past due")
-     & P ("billing.canceled", "canceled")
-     & P ("ci.pipeline_pending", "pipeline pending")
-     & P ("ci.pipeline_running", "pipeline running")
-     & P ("ci.pipeline_passed", "pipeline passed")
-     & P ("ci.pipeline_failed", "pipeline failed")
-     & P ("ci.review_required", "review required")
-     & P ("ci.deploy_blocked", "deploy blocked")
-     & P ("collaboration.active_now", "active now")
-     & P ("collaboration.away", "away")
-     & P ("collaboration.do_not_disturb", "do not disturb")
-     & P ("collaboration.typing", "typing")
-     & P ("collaboration.viewing", "viewing")
-     & P ("collaboration.editing", "editing")
-     & P ("deployment.deploying", "deploying")
-     & P ("deployment.deployed", "deployed")
-     & P ("deployment.rolling_back", "rolling back")
-     & P ("deployment.rolled_back", "rolled back")
-     & P ("deployment.build_failed", "build failed")
-     & P ("deployment.checks_passed", "checks passed")
-     & P ("empty.no_items", "no items")
-     & P ("empty.no_results", "no results")
-     & P ("empty.no_messages", "no messages")
-     & P ("empty.no_selection", "no selection")
-     & P ("empty.nothing_to_show", "nothing to show")
-     & P ("file.uploading", "uploading")
-     & P ("file.downloading", "downloading")
-     & P ("file.copying", "copying")
-     & P ("file.moving", "moving")
-     & P ("file.deleting", "deleting")
-     & P ("file.deleted", "deleted")
-     & P ("file.restoring", "restoring")
-     & P ("file.synced", "synced")
-     & P ("form.valid_input", "valid input")
-     & P ("form.invalid_input", "invalid input")
-     & P ("form.dirty", "changed")
-     & P ("form.pristine", "unchanged")
-     & P ("form.submitted", "submitted")
-     & P ("form.submission_failed", "submission failed")
-     & P ("health.healthy", "healthy")
-     & P ("health.degraded", "degraded")
-     & P ("health.unhealthy", "unhealthy")
-     & P ("health.incident", "incident")
-     & P ("health.maintenance", "maintenance")
-     & P ("health.recovering", "recovering")
-     & P ("issue.open", "open")
-     & P ("issue.closed", "closed")
-     & P ("issue.reopened", "reopened")
-     & P ("issue.assigned", "assigned")
-     & P ("issue.unassigned", "unassigned")
-     & P ("issue.merged", "merged")
-     & P ("network.offline", "offline")
-     & P ("network.online", "online")
-     & P ("network.connecting", "connecting")
-     & P ("network.syncing", "syncing")
-     & P ("network.sync_failed", "sync failed")
-     & P ("network.permission_denied", "permission denied")
-     & P ("network.read_only", "read only")
-     & P ("notification.unread", "unread")
-     & P ("notification.read", "read")
-     & P ("notification.muted", "muted")
-     & P ("notification.snoozed", "snoozed")
-     & P ("notification.sent", "sent")
-     & P ("notification.delivered", "delivered")
-     & P ("payment.payment_authorized", "payment authorized")
-     & P ("payment.payment_captured", "payment captured")
-     & P ("payment.payment_refunded", "payment refunded")
-     & P ("payment.payment_disputed", "payment disputed")
-     & P ("payment.payment_requires_action", "payment requires action")
-     & P ("payment.payment_expired", "payment expired")
-     & P ("ui.empty", "empty")
-     & P ("ui.loading", "loading")
-     & P ("ui.saving", "saving")
-     & P ("ui.saved", "saved")
-     & P ("ui.unsaved", "unsaved")
-     & P ("ui.retrying", "retrying")
-     & P ("ui.paused", "paused")
-     & P ("ui.complete", "complete")
-     & P ("ui.failed", "failed")
-     & P ("ui.due_soon", "due soon")
-     & P ("ui.overdue", "overdue")
-     & P ("ui.last_seen", "last seen")
-     & P ("ui.updated_just_now", "updated just now")
-     & P ("queue.queued", "queued")
-     & P ("queue.running", "running")
-     & P ("queue.waiting", "waiting")
-     & P ("queue.blocked", "blocked")
-     & P ("queue.canceled_job", "job canceled")
-     & P ("queue.completed_job", "job completed")
-     & P ("search.filtering", "filtering")
-     & P ("search.filtered", "filtered")
-     & P ("search.no_matches", "no matches")
-     & P ("search.search_ready", "search ready")
-     & P ("search.search_failed", "search failed")
-     & P ("search.query_too_short", "query too short")
-     & P ("security.secure", "secure")
-     & P ("security.insecure", "insecure")
-     & P ("security.vulnerable", "vulnerable")
-     & P ("security.encrypted", "encrypted")
-     & P ("security.unencrypted", "unencrypted")
-     & P ("security.token_expired", "token expired")
-     & P ("sync.sync_idle", "sync idle")
-     & P ("sync.syncing_now", "syncing now")
-     & P ("sync.sync_queued", "sync queued")
-     & P ("sync.sync_conflict", "sync conflict")
-     & P ("sync.sync_complete", "sync complete")
-     & P ("sync.sync_error", "sync error")
-     & P ("task.todo", "to do")
-     & P ("task.in_progress", "in progress")
-     & P ("task.done", "done")
-     & P ("task.skipped", "skipped")
-     & P ("task.blocked_task", "blocked")
-     & P ("task.waiting_on", "waiting on")
-     & P ("ticket.ticket_new", "ticket new")
-     & P ("ticket.ticket_open", "ticket open")
-     & P ("ticket.ticket_waiting", "ticket waiting")
-     & P ("ticket.ticket_escalated", "ticket escalated")
-     & P ("ticket.ticket_resolved", "ticket resolved")
-     & P ("ticket.ticket_closed", "ticket closed")
-     & P ("transfer.importing", "importing")
-     & P ("transfer.imported", "imported")
-     & P ("transfer.import_failed", "import failed")
-     & P ("transfer.exporting", "exporting")
-     & P ("transfer.exported", "exported")
-     & P ("transfer.export_failed", "export failed")
-     & P ("validation.required", "required")
-     & P ("validation.optional", "optional")
-     & P ("validation.invalid", "invalid")
-     & P ("validation.too_short", "too short")
-     & P ("validation.too_long", "too long")
-     & P ("validation.out_of_range", "out of range")
-     & P ("validation.already_exists", "already exists")
-     & P ("workflow.draft", "draft")
-     & P ("workflow.in_review", "in review")
-     & P ("workflow.approved", "approved")
-     & P ("workflow.rejected", "rejected")
-     & P ("workflow.published", "published")
-     & P ("workflow.archived", "archived")
-     & P ("database.database_online", "database online")
-     & P ("database.database_offline", "database offline")
-     & P ("database.database_degraded", "database degraded")
-     & P ("database.database_migrating", "database migrating")
-     & P ("database.database_migration_failed", "database migration failed")
-     & P ("database.database_replicating", "database replicating")
-     & P ("database.database_replication_lagging", "database replication lagging")
-     & P ("database.database_backup_running", "database backup running")
-     & P ("database.database_backup_failed", "database backup failed")
-     & P ("times_noun",
-          "{count, plural, =0 {never {other}} =1 {once {one}} =2 {twice {other}} "
-          & "other {{count} {other}}}")
-     & P ("availability.all",
-          "{available} of {total} {total, plural, one {{one}} other {{other}}} "
-          & "available")
-     & P ("availability.none", "no {total, plural, one {{one}} other {{other}}} available")
-     & P ("availability.partial",
-          "{available} of {total} {total, plural, one {{one}} other {{other}}} "
-          & "available, {unavailable} unavailable")
-     & P ("operation_progress", "{name} {state}: {details}")
-     & P ("operation.queued", "queued")
-     & P ("operation.running", "running")
-     & P ("operation.blocked", "blocked")
-     & P ("operation.retrying", "retrying")
-     & P ("operation.succeeded", "succeeded")
-     & P ("operation.partially_succeeded", "partially succeeded")
-     & P ("operation.failed", "failed")
-     & P ("operation.canceled", "canceled")
-     & P ("operation.skipped", "skipped")
-     & P ("operation.stale", "stale")
-     & P ("operation.unknown_state", "unknown")
-     & P ("operation.last_success", "{name} last succeeded {time}")
-     & P ("operation.next_retry", "{name} next retry {time}")
-     & P ("operation.stale_run", "{name} stale for {time}")
-     & P ("summary.skipped", "{count} skipped")
-     & P ("summary.retried", "{count} retried")
-     & P ("summary.canceled", "{count} canceled")
-     & P ("system.service.operational", "operational")
-     & P ("system.service.degraded", "degraded performance")
-     & P ("system.service.partial_outage", "partial outage")
-     & P ("system.service.major_outage", "major outage")
-     & P ("system.service.maintenance", "under maintenance")
-     & P ("system.service.unknown", "unknown service status")
-     & P ("system.health.healthy", "healthy")
-     & P ("system.health.warning", "warning")
-     & P ("system.health.critical", "critical")
-     & P ("system.health.unavailable", "unavailable")
-     & P ("system.health.unknown_health", "unknown health")
-     & P ("system.readiness.ready", "ready")
-     & P ("system.readiness.not_ready", "not ready")
-     & P ("system.readiness.starting", "starting")
-     & P ("system.readiness.draining", "draining")
-     & P ("system.readiness.stopped", "stopped")
-     & P ("system.readiness.unknown_readiness", "unknown readiness")
-     & P ("system.component.online", "online")
-     & P ("system.component.offline", "offline")
-     & P ("system.component.starting", "starting")
-     & P ("system.component.stopping", "stopping")
-     & P ("system.component.restarting", "restarting")
-     & P ("system.component.unknown", "unknown component status")
-     & P ("system.check.passing", "passing")
-     & P ("system.check.failing", "failing")
-     & P ("system.check.warning", "warning")
-     & P ("system.check.skipped", "skipped")
-     & P ("system.check.timed_out", "timed out")
-     & P ("system.check.unknown", "unknown check status")
-     & P ("system.incident.investigating", "investigating")
-     & P ("system.incident.identified", "identified")
-     & P ("system.incident.monitoring", "monitoring")
-     & P ("system.incident.resolved", "resolved")
-     & P ("system.incident.scheduled_maintenance", "scheduled maintenance")
-     & P ("system.named", "{name} {state}")
-     & P ("system.check_named", "{name} check {state}")
-     & P ("system.count.components",
-          "{count, plural, =0 {no components} one {{count} component} other "
-          & "{{count} components}}")
-     & P ("system.count.checks",
-          "{count, plural, =0 {no checks} one {{count} check} other {{count} "
-          & "checks}}")
-     & P ("system.count.incidents",
-          "{count, plural, =0 {no incidents} one {{count} incident} other "
-          & "{{count} incidents}}")
-     & P ("system.uptime", "uptime {measure}")
-     & P ("system.latency", "latency {measure}")
-     & P ("system.maintenance_window", "maintenance window {time}")
-     & P ("system.last_checked", "last checked {time}")
-     & P ("system.http.informational", "informational")
-     & P ("system.http.successful", "successful")
-     & P ("system.http.redirection", "redirection")
-     & P ("system.http.client_error", "client error")
-     & P ("system.http.server_error", "server error")
-     & P ("system.exit.success", "exit {code} success")
-     & P ("system.exit.failure", "exit {code} failure")
-     & P ("system.exit.usage_error", "exit {code} usage error")
-     & P ("system.exit.not_executable", "exit {code} command not executable")
-     & P ("system.exit.not_found", "exit {code} command not found")
-     & P ("system.exit.invalid_argument", "exit {code} invalid exit argument")
-     & P ("system.exit.signal", "exit {code} terminated by {signal}")
-     & P ("validation.problem.required", "validation {field}: is required")
-     & P ("validation.problem.minimum", "validation {field}: is below minimum")
-     & P ("validation.problem.maximum", "validation {field}: is above maximum")
-     & P ("validation.problem.range", "validation {field}: is outside range")
-     & P ("validation.problem.pattern", "validation {field}: does not match pattern")
-     & P ("validation.problem.choice", "validation {field}: must be one of the allowed choices")
-     & P ("validation.problem.dependency", "validation {field}: depends on another field")
-     & P ("validation.problem.custom", "validation {field}: is invalid")
-     & P ("validation.constraint.no_relation", "validation {field}: must be valid {value}")
-     & P ("validation.constraint.less_than", "validation {field}: must be less than {value}")
-     & P ("validation.constraint.less_or_equal", "validation {field}: must be at most {value}")
-     & P ("validation.constraint.greater_than", "validation {field}: must be greater than {value}")
-     & P ("validation.constraint.greater_or_equal", "validation {field}: must be at least {value}")
-     & P ("validation.constraint.equal_to", "validation {field}: must equal {value}")
-     & P ("validation.constraint.not_equal_to", "validation {field}: must not equal {value}")
-     & P ("validation.constraint.before_field", "validation {field}: must be before {value}")
-     & P ("validation.constraint.after_field", "validation {field}: must be after {value}")
-     & P ("validation.choices", "validation {field}: allowed values {choices}")
-     & P ("frame.detail", "{text} ({detail})")
-     & P ("frame.got", "{text}, got {actual}")
-     & P ("frame.also", "{text}, {detail}")
-     & P ("frame.retry", "{text}, retry in {time}")
-     & P ("net_diagnostic.dns", "network diagnostic {endpoint}: DNS lookup failed")
-     & P ("net_diagnostic.tcp", "network diagnostic {endpoint}: TCP connection failed")
-     & P ("net_diagnostic.tls", "network diagnostic {endpoint}: TLS certificate failed")
-     & P ("net_diagnostic.http", "network diagnostic {endpoint}: HTTP request failed")
-     & P ("net_diagnostic.proxy", "network diagnostic {endpoint}: proxy failed")
-     & P ("net_diagnostic.timeout", "network diagnostic {endpoint}: timed out")
-     & P ("net_diagnostic.reset", "network diagnostic {endpoint}: connection reset")
-     & P ("net_diagnostic.unknown_network", "network diagnostic {endpoint}: network diagnostic")
-     & P ("progress.state.not_started", "not started")
-     & P ("progress.state.running", "running")
-     & P ("progress.state.stalled", "stalled")
-     & P ("progress.state.retrying", "retrying")
-     & P ("progress.state.complete", "complete")
-     & P ("progress.state.failed", "failed")
-     & P ("progress.of", "progress {subject}: {done} of {total} complete ({percent}%), {state}")
-     & P ("progress.done", "progress {subject}: {done} complete, {state}")
-     & P ("collection.summary",
-          "collection {name}: {total} {total, plural, one {item} other {items}}, "
-          & "{unique} {unique, plural, one {unique value} other {unique values}}, "
-          & "{duplicates} {duplicates, plural, one {duplicate} other {duplicates}}, "
-          & "{outliers} {outliers, plural, one {outlier} other {outliers}}")
-     & P ("top_frequency",
-          "top {name}: {value} ({count} {count, plural, one {time} other "
-          & "{times}})")
-     & P ("calendar_date.fiscal_year", "FY{year}")
-     & P ("calendar_date.fiscal_quarter", "FY{year} Q{part}")
-     & P ("calendar_date.fiscal_half", "FY{year} H{part}")
-     & P ("calendar_date.fiscal_year_end", "end of FY{year}")
-     & P ("calendar_date.semester", "S{part} {year}")
-     & P ("calendar_date.half_year", "H{part} {year}")
-     & P ("calendar_date.half_year_phrase",
-          "{part, plural, =1 {first half of {year}} other {second half of "
-          & "{year}}}")
-     & P ("calendar_date.month_phase",
-          "{phase, select, early {early {text}} mid {mid-{text}} other {late "
-          & "{text}}}")
-     & P ("calendar_date.quarter_phase",
-          "{phase, select, early {early {text}} mid {mid {text}} other {late "
-          & "{text}}}")
-     & P ("calendar_range.weekend.last", "last weekend")
-     & P ("calendar_range.weekend.this", "this weekend")
-     & P ("calendar_range.weekend.next", "next weekend")
-     & P ("calendar_range.weekend_of", "weekend of {date}")
-     & P ("calendar_range.week.last", "last week")
-     & P ("calendar_range.week.this", "this week")
-     & P ("calendar_range.week.next", "next week")
-     & P ("calendar_range.week_of", "week of {date}")
-     & P ("calendar_range.between", "{first}-{last}");
+   P ("all_count", "all {total} {total, plural, one {{one}} other {{other}}}");
+   P ("filtered_count.none", "no {other} match");
+   P ("filtered_count.all", "all {total} {total, plural, one {{one}} other {{other}}} match");
+   P ("filtered_count.some",
+      "{matching} of {total} {total, plural, one {{one}} other {{other}}} "
+      & "match");
+   P ("more_count", "{visible} shown, +{remaining} more");
+   P ("others_count",
+      "{first} and {remaining, plural, one {1 other} other {{remaining} "
+      & "others}}");
+   P ("page_count", "page {page} of {total}");
+   P ("page_size", "{size} {size, plural, one {{one}} other {{other}}} per page");
+   P ("pagination_range", "{first}-{last} of {total} {total, plural, one {{one}} other {{other}}}");
+   P ("position_count", "{position} of {total}");
+   P ("selection_count",
+      "{selected} of {total} {total, plural, one {{one}} other {{other}}} "
+      & "selected");
+   P ("showing_count",
+      "showing {showing} of {total} {total, plural, one {{one}} other "
+      & "{{other}}}");
+   P ("validation_count",
+      "{count, plural, =0 {no {severity, select, error {errors} warning "
+      & "{warnings} other {notices}}} one {1 {severity, select, error {error} "
+      & "warning {warning} other {notice}}} other {{count} {severity, select, "
+      & "error {errors} warning {warnings} other {notices}}}}");
+   P ("collection.empty", "no {other}");
+   P ("collection.none_shown", "no {total, plural, one {{one}} other {{other}}} shown");
+   P ("collection.showing_hidden",
+      "showing {visible} of {total} {total, plural, one {{one}} other "
+      & "{{other}}}, {hidden} hidden");
+   P ("collection.showing",
+      "showing {visible} of {total} {total, plural, one {{one}} other "
+      & "{{other}}}");
+   P ("collection.shown_hidden",
+      "{visible} {visible, plural, one {{one}} other {{other}}} shown, "
+      & "{hidden} hidden");
+   P ("collection.shown", "{visible} {visible, plural, one {{one}} other {{other}}} shown");
+   P ("collection.visible_out_of",
+      "{visible} {visible, plural, one {{one}} other {{other}}} visible out "
+      & "of {total} {total, plural, one {{one}} other {{other}}}");
+   P ("complete_count", "{done} of {total} complete");
+   P ("percent_complete", "{percent}% complete");
+   P ("step_count", "step {step} of {total}");
+   P ("attempt_count", "attempt {attempt} of {total}");
+   P ("throughput_remaining",
+      "{remaining} {remaining, plural, one {{one}} other {{other}}} remaining "
+      & "at {rate} {unit}/s");
+   P ("accessible_progress", "{done} of {total} complete, {percent} percent");
+   P ("business_days", "{days} business {days, plural, one {day} other {days}}");
+   P ("working_hours", "{hours} working {hours, plural, one {hour} other {hours}}");
+   P ("due.overdue", "overdue by {days} {days, plural, one {day} other {days}}");
+   P ("due.today", "due today");
+   P ("due.tomorrow", "due tomorrow");
+   P ("due.in", "due in {days} days");
+   P ("calendar_difference.future", "in {difference}");
+   P ("calendar_difference.past", "{difference} ago");
+   P ("cpu_load", "{measure} CPU");
+   P ("battery", "{measure} battery");
+   P ("screen_size", "{measure} screen");
+   P ("refresh_rate", "{measure} refresh");
+   P ("editorial_percent.symbol", "{value}%");
+   P ("editorial_percent.word", "{value} percent");
+   P ("recurrence.second", "every {every} {every, plural, one {second} other {seconds}}");
+   P ("recurrence.minute", "every {every} {every, plural, one {minute} other {minutes}}");
+   P ("recurrence.hour", "every {every} {every, plural, one {hour} other {hours}}");
+   P ("recurrence.day", "every {every} {every, plural, one {day} other {days}}");
+   P ("recurrence.week", "every {every} {every, plural, one {week} other {weeks}}");
+   P ("recurrence.month", "every {every} {every, plural, one {month} other {months}}");
+   P ("recurrence.quarter", "every {every} {every, plural, one {quarter} other {quarters}}");
+   P ("recurrence.year", "every {every} {every, plural, one {year} other {years}}");
+   P ("cache_summary.empty", "cache: no requests");
+   P ("cache_summary",
+      "cache: {hits} {hits, plural, one {hit} other {hits}}, {misses} "
+      & "{misses, plural, one {miss} other {misses}}, {rate}% hit rate");
+   P ("field_change_summary",
+      "{total} {total, plural, one {{one}} other {{other}}}: {changed} "
+      & "changed, {added} added, {removed} removed");
+   P ("field_diff", "{field} changed from {before} to {after}");
+   P ("field_added", "{field} added as {value}");
+   P ("field_removed", "{field} removed (was {value})");
+   P ("field_unchanged", "{field} unchanged at {value}");
+   P ("number_comparison.equal", "{current} is equal to {baseline}");
+   P ("number_comparison.higher", "{current} is {quantity} higher than {baseline}");
+   P ("number_comparison.lower", "{current} is {quantity} lower than {baseline}");
+   P ("percent_comparison.equal", "{current} is equal to {baseline}");
+   P ("percent_comparison.higher", "{current} is {quantity} higher than {baseline}");
+   P ("percent_comparison.lower", "{current} is {quantity} lower than {baseline}");
+   P ("file_size_comparison.same", "{current} is the same size as {baseline}");
+   P ("file_size_comparison.larger", "{current} is {quantity} larger than {baseline}");
+   P ("file_size_comparison.smaller", "{current} is {quantity} smaller than {baseline}");
+   P ("date_comparison.same", "{current} is the same date as {baseline}");
+   P ("date_comparison.after", "{current} is {quantity} after {baseline}");
+   P ("date_comparison.before", "{current} is {quantity} before {baseline}");
+   P ("queue_summary", "queue: {details}");
+   P ("domain_summary", "{domain} {state}: {details}");
+   P ("summary.none", "no {other}");
+   P ("summary.completed", "{count} {count, plural, one {{one}} other {{other}}} complete");
+   P ("summary.completed_of",
+      "{count} of {total} {total, plural, one {{one}} other {{other}}} "
+      & "complete");
+   P ("summary.failed", "{count} failed");
+   P ("summary.queued", "{count} {count, plural, one {{one}} other {{other}}} queued");
+   P ("summary.running", "{count} running");
+   P ("summary.complete", "{count} complete");
+   P ("backup.backup_running", "backup running");
+   P ("backup.backup_completed", "backup completed");
+   P ("backup.backup_failed", "backup failed");
+   P ("backup.backup_stale", "backup stale");
+   P ("incident.incident_investigating", "investigating incident");
+   P ("incident.incident_identified", "incident identified");
+   P ("incident.incident_mitigated", "incident mitigated");
+   P ("incident.incident_resolved", "incident resolved");
+   P ("release.release_drafting", "release drafting");
+   P ("release.release_ready", "release ready");
+   P ("release.release_published", "release published");
+   P ("release.release_rolled_back", "release rolled back");
+   P ("audit.audit_created", "audit entry created");
+   P ("audit.audit_updated", "audit entry updated");
+   P ("audit.audit_deleted", "audit entry deleted");
+   P ("audit.audit_restored", "audit entry restored");
+   P ("flag.flag_enabled", "feature flag enabled");
+   P ("flag.flag_disabled", "feature flag disabled");
+   P ("flag.flag_rolling_out", "feature flag rolling out");
+   P ("flag.flag_rolled_back", "feature flag rolled back");
+   P ("webhook.webhook_pending", "webhook pending");
+   P ("webhook.webhook_delivered", "webhook delivered");
+   P ("webhook.webhook_failed", "webhook failed");
+   P ("webhook.webhook_retrying", "webhook retrying");
+   P ("api_key.api_key_active", "API key active");
+   P ("api_key.api_key_revoked", "API key revoked");
+   P ("api_key.api_key_expired", "API key expired");
+   P ("api_key.api_key_rotated", "API key rotated");
+   P ("quota.quota_available", "quota available");
+   P ("quota.quota_near_limit", "quota near limit");
+   P ("quota.quota_exceeded", "quota exceeded");
+   P ("quota.quota_reset", "quota reset");
+   P ("invoice.invoice_draft", "invoice draft");
+   P ("invoice.invoice_sent", "invoice sent");
+   P ("invoice.invoice_paid", "invoice paid");
+   P ("invoice.invoice_refunded", "invoice refunded");
+   P ("invoice.invoice_overdue", "invoice overdue");
+   P ("invoice.refund_failed", "refund failed");
+   P ("page_navigation.only", "only page");
+   P ("page_navigation.first", "first page, next available");
+   P ("page_navigation.last", "last page, previous available");
+   P ("page_navigation.middle", "previous and next available");
+   P ("end_of_week", "end of week");
+   P ("end_of_month", "end of month");
+   P ("end_of_quarter", "end of quarter");
+   P ("time_of_day.night", "night");
+   P ("time_of_day.morning", "morning");
+   P ("time_of_day.afternoon", "afternoon");
+   P ("time_of_day.evening", "evening");
+   P ("calendar_difference.same_day", "same day");
+   P ("calendar_difference.zero", "0 days");
+   P ("queue_summary.empty", "queue empty");
+   P ("access.allowed", "allowed");
+   P ("access.denied", "denied");
+   P ("access.owner", "owner");
+   P ("access.admin", "admin");
+   P ("access.viewer", "viewer");
+   P ("access.editor", "editor");
+   P ("auth.signed_in", "signed in");
+   P ("auth.signed_out", "signed out");
+   P ("auth.session_expired", "session expired");
+   P ("auth.locked", "locked");
+   P ("auth.two_factor_required", "two-factor required");
+   P ("billing.trialing", "trialing");
+   P ("billing.payment_due", "payment due");
+   P ("billing.payment_failed", "payment failed");
+   P ("billing.paid", "paid");
+   P ("billing.past_due", "past due");
+   P ("billing.canceled", "canceled");
+   P ("ci.pipeline_pending", "pipeline pending");
+   P ("ci.pipeline_running", "pipeline running");
+   P ("ci.pipeline_passed", "pipeline passed");
+   P ("ci.pipeline_failed", "pipeline failed");
+   P ("ci.review_required", "review required");
+   P ("ci.deploy_blocked", "deploy blocked");
+   P ("collaboration.active_now", "active now");
+   P ("collaboration.away", "away");
+   P ("collaboration.do_not_disturb", "do not disturb");
+   P ("collaboration.typing", "typing");
+   P ("collaboration.viewing", "viewing");
+   P ("collaboration.editing", "editing");
+   P ("deployment.deploying", "deploying");
+   P ("deployment.deployed", "deployed");
+   P ("deployment.rolling_back", "rolling back");
+   P ("deployment.rolled_back", "rolled back");
+   P ("deployment.build_failed", "build failed");
+   P ("deployment.checks_passed", "checks passed");
+   P ("empty.no_items", "no items");
+   P ("empty.no_results", "no results");
+   P ("empty.no_messages", "no messages");
+   P ("empty.no_selection", "no selection");
+   P ("empty.nothing_to_show", "nothing to show");
+   P ("file.uploading", "uploading");
+   P ("file.downloading", "downloading");
+   P ("file.copying", "copying");
+   P ("file.moving", "moving");
+   P ("file.deleting", "deleting");
+   P ("file.deleted", "deleted");
+   P ("file.restoring", "restoring");
+   P ("file.synced", "synced");
+   P ("form.valid_input", "valid input");
+   P ("form.invalid_input", "invalid input");
+   P ("form.dirty", "changed");
+   P ("form.pristine", "unchanged");
+   P ("form.submitted", "submitted");
+   P ("form.submission_failed", "submission failed");
+   P ("health.healthy", "healthy");
+   P ("health.degraded", "degraded");
+   P ("health.unhealthy", "unhealthy");
+   P ("health.incident", "incident");
+   P ("health.maintenance", "maintenance");
+   P ("health.recovering", "recovering");
+   P ("issue.open", "open");
+   P ("issue.closed", "closed");
+   P ("issue.reopened", "reopened");
+   P ("issue.assigned", "assigned");
+   P ("issue.unassigned", "unassigned");
+   P ("issue.merged", "merged");
+   P ("network.offline", "offline");
+   P ("network.online", "online");
+   P ("network.connecting", "connecting");
+   P ("network.syncing", "syncing");
+   P ("network.sync_failed", "sync failed");
+   P ("network.permission_denied", "permission denied");
+   P ("network.read_only", "read only");
+   P ("notification.unread", "unread");
+   P ("notification.read", "read");
+   P ("notification.muted", "muted");
+   P ("notification.snoozed", "snoozed");
+   P ("notification.sent", "sent");
+   P ("notification.delivered", "delivered");
+   P ("payment.payment_authorized", "payment authorized");
+   P ("payment.payment_captured", "payment captured");
+   P ("payment.payment_refunded", "payment refunded");
+   P ("payment.payment_disputed", "payment disputed");
+   P ("payment.payment_requires_action", "payment requires action");
+   P ("payment.payment_expired", "payment expired");
+   P ("ui.empty", "empty");
+   P ("ui.loading", "loading");
+   P ("ui.saving", "saving");
+   P ("ui.saved", "saved");
+   P ("ui.unsaved", "unsaved");
+   P ("ui.retrying", "retrying");
+   P ("ui.paused", "paused");
+   P ("ui.complete", "complete");
+   P ("ui.failed", "failed");
+   P ("ui.due_soon", "due soon");
+   P ("ui.overdue", "overdue");
+   P ("ui.last_seen", "last seen");
+   P ("ui.updated_just_now", "updated just now");
+   P ("queue.queued", "queued");
+   P ("queue.running", "running");
+   P ("queue.waiting", "waiting");
+   P ("queue.blocked", "blocked");
+   P ("queue.canceled_job", "job canceled");
+   P ("queue.completed_job", "job completed");
+   P ("search.filtering", "filtering");
+   P ("search.filtered", "filtered");
+   P ("search.no_matches", "no matches");
+   P ("search.search_ready", "search ready");
+   P ("search.search_failed", "search failed");
+   P ("search.query_too_short", "query too short");
+   P ("security.secure", "secure");
+   P ("security.insecure", "insecure");
+   P ("security.vulnerable", "vulnerable");
+   P ("security.encrypted", "encrypted");
+   P ("security.unencrypted", "unencrypted");
+   P ("security.token_expired", "token expired");
+   P ("sync.sync_idle", "sync idle");
+   P ("sync.syncing_now", "syncing now");
+   P ("sync.sync_queued", "sync queued");
+   P ("sync.sync_conflict", "sync conflict");
+   P ("sync.sync_complete", "sync complete");
+   P ("sync.sync_error", "sync error");
+   P ("task.todo", "to do");
+   P ("task.in_progress", "in progress");
+   P ("task.done", "done");
+   P ("task.skipped", "skipped");
+   P ("task.blocked_task", "blocked");
+   P ("task.waiting_on", "waiting on");
+   P ("ticket.ticket_new", "ticket new");
+   P ("ticket.ticket_open", "ticket open");
+   P ("ticket.ticket_waiting", "ticket waiting");
+   P ("ticket.ticket_escalated", "ticket escalated");
+   P ("ticket.ticket_resolved", "ticket resolved");
+   P ("ticket.ticket_closed", "ticket closed");
+   P ("transfer.importing", "importing");
+   P ("transfer.imported", "imported");
+   P ("transfer.import_failed", "import failed");
+   P ("transfer.exporting", "exporting");
+   P ("transfer.exported", "exported");
+   P ("transfer.export_failed", "export failed");
+   P ("validation.required", "required");
+   P ("validation.optional", "optional");
+   P ("validation.invalid", "invalid");
+   P ("validation.too_short", "too short");
+   P ("validation.too_long", "too long");
+   P ("validation.out_of_range", "out of range");
+   P ("validation.already_exists", "already exists");
+   P ("workflow.draft", "draft");
+   P ("workflow.in_review", "in review");
+   P ("workflow.approved", "approved");
+   P ("workflow.rejected", "rejected");
+   P ("workflow.published", "published");
+   P ("workflow.archived", "archived");
+   P ("database.database_online", "database online");
+   P ("database.database_offline", "database offline");
+   P ("database.database_degraded", "database degraded");
+   P ("database.database_migrating", "database migrating");
+   P ("database.database_migration_failed", "database migration failed");
+   P ("database.database_replicating", "database replicating");
+   P ("database.database_replication_lagging", "database replication lagging");
+   P ("database.database_backup_running", "database backup running");
+   P ("database.database_backup_failed", "database backup failed");
+   P ("times_noun",
+      "{count, plural, =0 {never {other}} =1 {once {one}} =2 {twice {other}} "
+      & "other {{count} {other}}}");
+   P ("availability.all",
+      "{available} of {total} {total, plural, one {{one}} other {{other}}} "
+      & "available");
+   P ("availability.none", "no {total, plural, one {{one}} other {{other}}} available");
+   P ("availability.partial",
+      "{available} of {total} {total, plural, one {{one}} other {{other}}} "
+      & "available, {unavailable} unavailable");
+   P ("operation_progress", "{name} {state}: {details}");
+   P ("operation.queued", "queued");
+   P ("operation.running", "running");
+   P ("operation.blocked", "blocked");
+   P ("operation.retrying", "retrying");
+   P ("operation.succeeded", "succeeded");
+   P ("operation.partially_succeeded", "partially succeeded");
+   P ("operation.failed", "failed");
+   P ("operation.canceled", "canceled");
+   P ("operation.skipped", "skipped");
+   P ("operation.stale", "stale");
+   P ("operation.unknown_state", "unknown");
+   P ("operation.last_success", "{name} last succeeded {time}");
+   P ("operation.next_retry", "{name} next retry {time}");
+   P ("operation.stale_run", "{name} stale for {time}");
+   P ("summary.skipped", "{count} skipped");
+   P ("summary.retried", "{count} retried");
+   P ("summary.canceled", "{count} canceled");
+   P ("system.service.operational", "operational");
+   P ("system.service.degraded", "degraded performance");
+   P ("system.service.partial_outage", "partial outage");
+   P ("system.service.major_outage", "major outage");
+   P ("system.service.maintenance", "under maintenance");
+   P ("system.service.unknown", "unknown service status");
+   P ("system.health.healthy", "healthy");
+   P ("system.health.warning", "warning");
+   P ("system.health.critical", "critical");
+   P ("system.health.unavailable", "unavailable");
+   P ("system.health.unknown_health", "unknown health");
+   P ("system.readiness.ready", "ready");
+   P ("system.readiness.not_ready", "not ready");
+   P ("system.readiness.starting", "starting");
+   P ("system.readiness.draining", "draining");
+   P ("system.readiness.stopped", "stopped");
+   P ("system.readiness.unknown_readiness", "unknown readiness");
+   P ("system.component.online", "online");
+   P ("system.component.offline", "offline");
+   P ("system.component.starting", "starting");
+   P ("system.component.stopping", "stopping");
+   P ("system.component.restarting", "restarting");
+   P ("system.component.unknown", "unknown component status");
+   P ("system.check.passing", "passing");
+   P ("system.check.failing", "failing");
+   P ("system.check.warning", "warning");
+   P ("system.check.skipped", "skipped");
+   P ("system.check.timed_out", "timed out");
+   P ("system.check.unknown", "unknown check status");
+   P ("system.incident.investigating", "investigating");
+   P ("system.incident.identified", "identified");
+   P ("system.incident.monitoring", "monitoring");
+   P ("system.incident.resolved", "resolved");
+   P ("system.incident.scheduled_maintenance", "scheduled maintenance");
+   P ("system.named", "{name} {state}");
+   P ("system.check_named", "{name} check {state}");
+   P ("system.count.components",
+      "{count, plural, =0 {no components} one {{count} component} other "
+      & "{{count} components}}");
+   P ("system.count.checks",
+      "{count, plural, =0 {no checks} one {{count} check} other {{count} "
+      & "checks}}");
+   P ("system.count.incidents",
+      "{count, plural, =0 {no incidents} one {{count} incident} other "
+      & "{{count} incidents}}");
+   P ("system.uptime", "uptime {measure}");
+   P ("system.latency", "latency {measure}");
+   P ("system.maintenance_window", "maintenance window {time}");
+   P ("system.last_checked", "last checked {time}");
+   P ("system.http.informational", "informational");
+   P ("system.http.successful", "successful");
+   P ("system.http.redirection", "redirection");
+   P ("system.http.client_error", "client error");
+   P ("system.http.server_error", "server error");
+   P ("system.exit.success", "exit {code} success");
+   P ("system.exit.failure", "exit {code} failure");
+   P ("system.exit.usage_error", "exit {code} usage error");
+   P ("system.exit.not_executable", "exit {code} command not executable");
+   P ("system.exit.not_found", "exit {code} command not found");
+   P ("system.exit.invalid_argument", "exit {code} invalid exit argument");
+   P ("system.exit.signal", "exit {code} terminated by {signal}");
+   P ("validation.problem.required", "validation {field}: is required");
+   P ("validation.problem.minimum", "validation {field}: is below minimum");
+   P ("validation.problem.maximum", "validation {field}: is above maximum");
+   P ("validation.problem.range", "validation {field}: is outside range");
+   P ("validation.problem.pattern", "validation {field}: does not match pattern");
+   P ("validation.problem.choice", "validation {field}: must be one of the allowed choices");
+   P ("validation.problem.dependency", "validation {field}: depends on another field");
+   P ("validation.problem.custom", "validation {field}: is invalid");
+   P ("validation.constraint.no_relation", "validation {field}: must be valid {value}");
+   P ("validation.constraint.less_than", "validation {field}: must be less than {value}");
+   P ("validation.constraint.less_or_equal", "validation {field}: must be at most {value}");
+   P ("validation.constraint.greater_than", "validation {field}: must be greater than {value}");
+   P ("validation.constraint.greater_or_equal", "validation {field}: must be at least {value}");
+   P ("validation.constraint.equal_to", "validation {field}: must equal {value}");
+   P ("validation.constraint.not_equal_to", "validation {field}: must not equal {value}");
+   P ("validation.constraint.before_field", "validation {field}: must be before {value}");
+   P ("validation.constraint.after_field", "validation {field}: must be after {value}");
+   P ("validation.choices", "validation {field}: allowed values {choices}");
+   P ("frame.detail", "{text} ({detail})");
+   P ("frame.got", "{text}, got {actual}");
+   P ("frame.also", "{text}, {detail}");
+   P ("frame.retry", "{text}, retry in {time}");
+   P ("net_diagnostic.dns", "network diagnostic {endpoint}: DNS lookup failed");
+   P ("net_diagnostic.tcp", "network diagnostic {endpoint}: TCP connection failed");
+   P ("net_diagnostic.tls", "network diagnostic {endpoint}: TLS certificate failed");
+   P ("net_diagnostic.http", "network diagnostic {endpoint}: HTTP request failed");
+   P ("net_diagnostic.proxy", "network diagnostic {endpoint}: proxy failed");
+   P ("net_diagnostic.timeout", "network diagnostic {endpoint}: timed out");
+   P ("net_diagnostic.reset", "network diagnostic {endpoint}: connection reset");
+   P ("net_diagnostic.unknown_network", "network diagnostic {endpoint}: network diagnostic");
+   P ("progress.state.not_started", "not started");
+   P ("progress.state.running", "running");
+   P ("progress.state.stalled", "stalled");
+   P ("progress.state.retrying", "retrying");
+   P ("progress.state.complete", "complete");
+   P ("progress.state.failed", "failed");
+   P ("progress.of", "progress {subject}: {done} of {total} complete ({percent}%), {state}");
+   P ("progress.done", "progress {subject}: {done} complete, {state}");
+   P ("collection.summary",
+      "collection {name}: {total} {total, plural, one {item} other {items}}, "
+      & "{unique} {unique, plural, one {unique value} other {unique values}}, "
+      & "{duplicates} {duplicates, plural, one {duplicate} other {duplicates}}, "
+      & "{outliers} {outliers, plural, one {outlier} other {outliers}}");
+   P ("top_frequency",
+      "top {name}: {value} ({count} {count, plural, one {time} other "
+      & "{times}})");
+   P ("calendar_date.fiscal_year", "FY{year}");
+   P ("calendar_date.fiscal_quarter", "FY{year} Q{part}");
+   P ("calendar_date.fiscal_half", "FY{year} H{part}");
+   P ("calendar_date.fiscal_year_end", "end of FY{year}");
+   P ("calendar_date.semester", "S{part} {year}");
+   P ("calendar_date.half_year", "H{part} {year}");
+   P ("calendar_date.half_year_phrase",
+      "{part, plural, =1 {first half of {year}} other {second half of "
+      & "{year}}}");
+   P ("calendar_date.month_phase",
+      "{phase, select, early {early {text}} mid {mid-{text}} other {late "
+      & "{text}}}");
+   P ("calendar_date.quarter_phase",
+      "{phase, select, early {early {text}} mid {mid {text}} other {late "
+      & "{text}}}");
+   P ("calendar_range.weekend.last", "last weekend");
+   P ("calendar_range.weekend.this", "this weekend");
+   P ("calendar_range.weekend.next", "next weekend");
+   P ("calendar_range.weekend_of", "weekend of {date}");
+   P ("calendar_range.week.last", "last week");
+   P ("calendar_range.week.this", "this week");
+   P ("calendar_range.week.next", "next week");
+   P ("calendar_range.week_of", "week of {date}");
+   P ("calendar_range.between", "{first}-{last}");
+   P ("http.reason.100", "continue");
+   P ("http.reason.101", "switching protocols");
+   P ("http.reason.102", "processing");
+   P ("http.reason.103", "early hints");
+   P ("http.reason.200", "ok");
+   P ("http.reason.201", "created");
+   P ("http.reason.202", "accepted");
+   P ("http.reason.203", "non-authoritative information");
+   P ("http.reason.204", "no content");
+   P ("http.reason.205", "reset content");
+   P ("http.reason.206", "partial content");
+   P ("http.reason.207", "multi-status");
+   P ("http.reason.208", "already reported");
+   P ("http.reason.226", "im used");
+   P ("http.reason.300", "multiple choices");
+   P ("http.reason.301", "moved permanently");
+   P ("http.reason.302", "found");
+   P ("http.reason.303", "see other");
+   P ("http.reason.304", "not modified");
+   P ("http.reason.305", "use proxy");
+   P ("http.reason.307", "temporary redirect");
+   P ("http.reason.308", "permanent redirect");
+   P ("http.reason.400", "bad request");
+   P ("http.reason.401", "unauthorized");
+   P ("http.reason.402", "payment required");
+   P ("http.reason.403", "forbidden");
+   P ("http.reason.404", "not found");
+   P ("http.reason.405", "method not allowed");
+   P ("http.reason.406", "not acceptable");
+   P ("http.reason.407", "proxy authentication required");
+   P ("http.reason.408", "request timeout");
+   P ("http.reason.409", "conflict");
+   P ("http.reason.410", "gone");
+   P ("http.reason.411", "length required");
+   P ("http.reason.412", "precondition failed");
+   P ("http.reason.413", "content too large");
+   P ("http.reason.414", "uri too long");
+   P ("http.reason.415", "unsupported media type");
+   P ("http.reason.416", "range not satisfiable");
+   P ("http.reason.417", "expectation failed");
+   P ("http.reason.418", "i’m a teapot");
+   P ("http.reason.421", "misdirected request");
+   P ("http.reason.422", "unprocessable content");
+   P ("http.reason.423", "locked");
+   P ("http.reason.424", "failed dependency");
+   P ("http.reason.425", "too early");
+   P ("http.reason.426", "upgrade required");
+   P ("http.reason.428", "precondition required");
+   P ("http.reason.429", "too many requests");
+   P ("http.reason.431", "request header fields too large");
+   P ("http.reason.451", "unavailable for legal reasons");
+   P ("http.reason.500", "internal server error");
+   P ("http.reason.501", "not implemented");
+   P ("http.reason.502", "bad gateway");
+   P ("http.reason.503", "service unavailable");
+   P ("http.reason.504", "gateway timeout");
+   P ("http.reason.505", "http version not supported");
+   P ("http.reason.506", "variant also negotiates");
+   P ("http.reason.507", "insufficient storage");
+   P ("http.reason.508", "loop detected");
+   P ("http.reason.510", "not extended");
+   P ("http.reason.511", "network authentication required");
+   P ("errno.reason.0", "success");
+   P ("errno.reason.1", "operation not permitted");
+   P ("errno.reason.2", "no such file or directory");
+   P ("errno.reason.3", "no such process");
+   P ("errno.reason.4", "interrupted system call");
+   P ("errno.reason.5", "input/output error");
+   P ("errno.reason.6", "no such device or address");
+   P ("errno.reason.9", "bad file descriptor");
+   P ("errno.reason.11", "resource temporarily unavailable");
+   P ("errno.reason.12", "not enough memory");
+   P ("errno.reason.13", "permission denied");
+   P ("errno.reason.17", "file exists");
+   P ("errno.reason.20", "not a directory");
+   P ("errno.reason.21", "is a directory");
+   P ("errno.reason.22", "invalid argument");
+   P ("errno.reason.24", "too many open files");
+   P ("errno.reason.28", "no space left on device");
+   P ("errno.reason.32", "broken pipe");
+   P ("errno.reason.98", "address already in use");
+   P ("errno.reason.110", "connection timed out");
+   P ("errno.reason.111", "connection refused");
+   P ("signal.reason.1", "hangup");
+   P ("signal.reason.2", "interrupt");
+   P ("signal.reason.3", "quit");
+   P ("signal.reason.4", "illegal instruction");
+   P ("signal.reason.5", "trace trap");
+   P ("signal.reason.6", "abort");
+   P ("signal.reason.7", "bus error");
+   P ("signal.reason.8", "floating-point exception");
+   P ("signal.reason.9", "killed");
+   P ("signal.reason.10", "user signal 1");
+   P ("signal.reason.11", "segmentation fault");
+   P ("signal.reason.12", "user signal 2");
+   P ("signal.reason.13", "broken pipe");
+   P ("signal.reason.14", "alarm");
+   P ("signal.reason.15", "termination request");
+   P ("signal.reason.17", "child status changed");
+   P ("signal.reason.18", "continue");
+   P ("signal.reason.19", "stopped");
+   P ("signal.reason.20", "terminal stop");
+   P ("signal.reason.28", "window size changed");
+   P ("sqlstate.reason.00", "successful completion");
+   P ("sqlstate.reason.01", "warning");
+   P ("sqlstate.reason.02", "no data");
+   P ("sqlstate.reason.08", "connection exception");
+   P ("sqlstate.reason.0a", "feature not supported");
+   P ("sqlstate.reason.22", "data exception");
+   P ("sqlstate.reason.23", "integrity constraint violation");
+   P ("sqlstate.reason.24", "invalid cursor state");
+   P ("sqlstate.reason.25", "invalid transaction state");
+   P ("sqlstate.reason.28", "invalid authorization specification");
+   P ("sqlstate.reason.2d", "invalid transaction termination");
+   P ("sqlstate.reason.3d", "invalid catalog name");
+   P ("sqlstate.reason.3f", "invalid schema name");
+   P ("sqlstate.reason.40", "transaction rollback");
+   P ("sqlstate.reason.42", "syntax error or access rule violation");
+   P ("sqlstate.reason.53", "insufficient resources");
+   P ("sqlstate.reason.54", "program limit exceeded");
+   P ("sqlstate.reason.55", "object not in prerequisite state");
+   P ("sqlstate.reason.57", "operator intervention");
+   P ("sqlstate.reason.58", "system error");
+   P ("sqlstate.reason.hv", "foreign data wrapper error");
+   P ("sqlstate.reason.p0", "PL/pgSQL error");
+   P ("sqlstate.reason.xx", "internal error");
+   P ("system.signal_numbered", "signal {number} {name} {reason}");
+   P ("http.reason.unknown", "unknown status");
+   P ("errno.reason.unknown", "unknown error");
+   P ("signal.reason.unknown", "unknown signal");
+   P ("sqlstate.reason.unknown", "unknown SQLSTATE class");
 end Locale_En;

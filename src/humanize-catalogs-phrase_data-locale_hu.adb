@@ -1,466 +1,601 @@
 separate (Humanize.Catalogs.Phrase_Data)
-function Locale_Hu return Wide_Wide_String is
-   function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("hu", Name, Template));
+procedure Locale_Hu (Target : in out Catalog_Text) is
+   --  One statement an entry: the catalog grows on the heap, not in one
+   --  expression on the stack.
+   procedure P (Name, Template : Wide_Wide_String) is
+   begin
+      Add (Target, "hu", Name, Template);
+   end P;
 begin
-   return
-     P ("all_count", "összesen {total} {one}")
-     & P ("filtered_count.none", "nincs egyező {one}")
-     & P ("filtered_count.all", "minden {one} egyezik ({total})")
-     & P ("filtered_count.some", "{total} {one} közül {matching} egyezik")
-     & P ("more_count", "{visible} látható, +{remaining} további")
-     & P ("others_count", "{first} és további {remaining}")
-     & P ("page_count", "{page}/{total}. oldal")
-     & P ("page_size", "{size} {one} oldalanként")
-     & P ("pagination_range", "{total} {one} közül {first}–{last}")
-     & P ("position_count", "{position}/{total}")
-     & P ("selection_count", "{total} {one} közül {selected} kijelölve")
-     & P ("showing_count", "{total} {one} közül {showing} látható")
-     & P ("validation_count",
-          "{count, plural, =0 {nincs {severity, select, error {hiba} warning "
-          & "{figyelmeztetés} other {megjegyzés}}} one {{count} {severity, "
-          & "select, error {hiba} warning {figyelmeztetés} other {megjegyzés}}} "
-          & "other {{count} {severity, select, error {hiba} warning "
-          & "{figyelmeztetés} other {megjegyzés}}}}")
-     & P ("collection.empty", "nincs {one}")
-     & P ("collection.none_shown", "egy {one} sem látható")
-     & P ("collection.showing_hidden", "{total} {one} közül {visible} látható, {hidden} rejtett")
-     & P ("collection.showing", "{total} {one} közül {visible} látható")
-     & P ("collection.shown_hidden", "{visible} {one} látható, {hidden} rejtett")
-     & P ("collection.shown", "{visible} {one} látható")
-     & P ("collection.visible_out_of", "{total} {one} közül {visible} látható")
-     & P ("complete_count", "{total} közül {done} kész")
-     & P ("percent_complete", "{percent}% kész")
-     & P ("step_count", "{step}/{total}. lépés")
-     & P ("attempt_count", "{attempt}/{total}. próbálkozás")
-     & P ("throughput_remaining", "még {remaining} {one}, {rate} {unit}/s sebességgel")
-     & P ("accessible_progress", "{total} közül {done} kész, {percent} százalék")
-     & P ("business_days", "{days} munkanap")
-     & P ("working_hours", "{hours} munkaóra")
-     & P ("due.overdue", "{days} napja lejárt")
-     & P ("due.today", "ma esedékes")
-     & P ("due.tomorrow", "holnap esedékes")
-     & P ("due.in", "{days} nap múlva esedékes")
-     & P ("calendar_difference.future", "{difference} múlva")
-     & P ("calendar_difference.past", "{difference} ezelőtt")
-     & P ("cpu_load", "CPU-terhelés: {measure}")
-     & P ("battery", "akkumulátor: {measure}")
-     & P ("screen_size", "képernyő: {measure}")
-     & P ("refresh_rate", "frissítési gyakoriság: {measure}")
-     & P ("editorial_percent.symbol", "{value}%")
-     & P ("editorial_percent.word", "{value} százalék")
-     & P ("recurrence.second",
-          "{every, plural, one {másodpercenként} other {{every} "
-          & "másodpercenként}}")
-     & P ("recurrence.minute", "{every, plural, one {percenként} other {{every} percenként}}")
-     & P ("recurrence.hour", "{every, plural, one {óránként} other {{every} óránként}}")
-     & P ("recurrence.day", "{every, plural, one {naponta} other {{every} naponta}}")
-     & P ("recurrence.week", "{every, plural, one {hetente} other {{every} hetente}}")
-     & P ("recurrence.month", "{every, plural, one {havonta} other {{every} havonta}}")
-     & P ("recurrence.quarter", "{every, plural, one {negyedévente} other {{every} negyedévente}}")
-     & P ("recurrence.year", "{every, plural, one {évente} other {{every} évente}}")
-     & P ("cache_summary.empty", "gyorsítótár: nincs kérés")
-     & P ("cache_summary",
-          "gyorsítótár: {hits} találat, {misses} tévesztés, {rate}% "
-          & "találati arány")
-     & P ("field_change_summary",
-          "{total} {one}: {changed} módosítva, {added} hozzáadva, {removed} "
-          & "eltávolítva")
-     & P ("field_diff", "{field} módosítva: {before} helyett {after}")
-     & P ("field_added", "{field} hozzáadva, értéke: {value}")
-     & P ("field_removed", "{field} eltávolítva (korábbi érték: {value})")
-     & P ("field_unchanged", "{field} változatlan: {value}")
-     & P ("number_comparison.equal", "{current} ugyanannyi, mint {baseline}")
-     & P ("number_comparison.higher", "{current} nagyobb, mint {baseline} (különbség: {quantity})")
-     & P ("number_comparison.lower", "{current} kisebb, mint {baseline} (különbség: {quantity})")
-     & P ("percent_comparison.equal", "{current} ugyanannyi, mint {baseline}")
-     & P ("percent_comparison.higher", "{current} nagyobb, mint {baseline} (különbség: {quantity})")
-     & P ("percent_comparison.lower", "{current} kisebb, mint {baseline} (különbség: {quantity})")
-     & P ("file_size_comparison.same", "{current} ugyanakkora, mint {baseline}")
-     & P ("file_size_comparison.larger", "{current} nagyobb, mint {baseline} (különbség: {quantity})")
-     & P ("file_size_comparison.smaller", "{current} kisebb, mint {baseline} (különbség: {quantity})")
-     & P ("date_comparison.same", "{current} ugyanaz a dátum, mint {baseline}")
-     & P ("date_comparison.after", "{current} későbbi, mint {baseline} (különbség: {quantity})")
-     & P ("date_comparison.before", "{current} korábbi, mint {baseline} (különbség: {quantity})")
-     & P ("queue_summary", "várólista: {details}")
-     & P ("domain_summary",
-          "{domain, select, queue {várólista} job {feladat} run {futtatás} "
-          & "cache {gyorsítótár} sync {szinkronizálás} import {importálás} "
-          & "export {exportálás} other {{domain}}} – {state, select, queued "
-          & "{sorban áll} running {fut} waiting {várakozik} paused "
-          & "{szüneteltetve} complete {kész} failed {sikertelen} stale {elavult} "
-          & "skipped {kihagyva} other {{state}}}: {details}")
-     & P ("summary.none", "nincs {one}")
-     & P ("summary.completed", "{count} {one} kész")
-     & P ("summary.completed_of", "{total} {one} közül {count} kész")
-     & P ("summary.failed", "{count} sikertelen")
-     & P ("summary.queued", "{count} {one} sorban áll")
-     & P ("summary.running", "{count} fut")
-     & P ("summary.complete", "{count} kész")
-     & P ("backup.backup_running", "biztonsági mentés folyamatban")
-     & P ("backup.backup_completed", "biztonsági mentés kész")
-     & P ("backup.backup_failed", "biztonsági mentés sikertelen")
-     & P ("backup.backup_stale", "biztonsági mentés elavult")
-     & P ("incident.incident_investigating", "incidens kivizsgálása folyamatban")
-     & P ("incident.incident_identified", "incidens azonosítva")
-     & P ("incident.incident_mitigated", "incidens hatása enyhítve")
-     & P ("incident.incident_resolved", "incidens megoldva")
-     & P ("release.release_drafting", "kiadás előkészítése folyamatban")
-     & P ("release.release_ready", "kiadás kész")
-     & P ("release.release_published", "kiadás közzétéve")
-     & P ("release.release_rolled_back", "kiadás visszavonva")
-     & P ("audit.audit_created", "auditbejegyzés létrehozva")
-     & P ("audit.audit_updated", "auditbejegyzés frissítve")
-     & P ("audit.audit_deleted", "auditbejegyzés törölve")
-     & P ("audit.audit_restored", "auditbejegyzés visszaállítva")
-     & P ("flag.flag_enabled", "funkciókapcsoló bekapcsolva")
-     & P ("flag.flag_disabled", "funkciókapcsoló kikapcsolva")
-     & P ("flag.flag_rolling_out", "funkciókapcsoló bevezetése folyamatban")
-     & P ("flag.flag_rolled_back", "funkciókapcsoló visszavonva")
-     & P ("webhook.webhook_pending", "webhook függőben")
-     & P ("webhook.webhook_delivered", "webhook kézbesítve")
-     & P ("webhook.webhook_failed", "webhook sikertelen")
-     & P ("webhook.webhook_retrying", "webhook újrapróbálása folyamatban")
-     & P ("api_key.api_key_active", "API-kulcs aktív")
-     & P ("api_key.api_key_revoked", "API-kulcs visszavonva")
-     & P ("api_key.api_key_expired", "API-kulcs lejárt")
-     & P ("api_key.api_key_rotated", "API-kulcs lecserélve")
-     & P ("quota.quota_available", "kvóta elérhető")
-     & P ("quota.quota_near_limit", "kvóta majdnem kimerült")
-     & P ("quota.quota_exceeded", "kvóta túllépve")
-     & P ("quota.quota_reset", "kvóta visszaállítva")
-     & P ("invoice.invoice_draft", "számlatervezet")
-     & P ("invoice.invoice_sent", "számla elküldve")
-     & P ("invoice.invoice_paid", "számla kifizetve")
-     & P ("invoice.invoice_refunded", "számla visszatérítve")
-     & P ("invoice.invoice_overdue", "számla lejárt")
-     & P ("invoice.refund_failed", "visszatérítés sikertelen")
-     & P ("page_navigation.only", "egyetlen oldal")
-     & P ("page_navigation.first", "első oldal, következő elérhető")
-     & P ("page_navigation.last", "utolsó oldal, előző elérhető")
-     & P ("page_navigation.middle", "előző és következő elérhető")
-     & P ("end_of_week", "hét vége")
-     & P ("end_of_month", "hónap vége")
-     & P ("end_of_quarter", "negyedév vége")
-     & P ("time_of_day.night", "éjszaka")
-     & P ("time_of_day.morning", "reggel")
-     & P ("time_of_day.afternoon", "délután")
-     & P ("time_of_day.evening", "este")
-     & P ("calendar_difference.same_day", "ugyanazon a napon")
-     & P ("calendar_difference.zero", "0 nap")
-     & P ("queue_summary.empty", "várólista üres")
-     & P ("access.allowed", "engedélyezve")
-     & P ("access.denied", "megtagadva")
-     & P ("access.owner", "tulajdonos")
-     & P ("access.admin", "adminisztrátor")
-     & P ("access.viewer", "megtekintő")
-     & P ("access.editor", "szerkesztő")
-     & P ("auth.signed_in", "bejelentkezve")
-     & P ("auth.signed_out", "kijelentkezve")
-     & P ("auth.session_expired", "a munkamenet lejárt")
-     & P ("auth.locked", "zárolva")
-     & P ("auth.two_factor_required", "kétlépcsős azonosítás szükséges")
-     & P ("billing.trialing", "próbaidőszak")
-     & P ("billing.payment_due", "fizetés esedékes")
-     & P ("billing.payment_failed", "sikertelen fizetés")
-     & P ("billing.paid", "kifizetve")
-     & P ("billing.past_due", "késedelmes")
-     & P ("billing.canceled", "lemondva")
-     & P ("ci.pipeline_pending", "pipeline függőben")
-     & P ("ci.pipeline_running", "pipeline fut")
-     & P ("ci.pipeline_passed", "pipeline sikeres")
-     & P ("ci.pipeline_failed", "pipeline sikertelen")
-     & P ("ci.review_required", "felülvizsgálat szükséges")
-     & P ("ci.deploy_blocked", "telepítés blokkolva")
-     & P ("collaboration.active_now", "most aktív")
-     & P ("collaboration.away", "távol")
-     & P ("collaboration.do_not_disturb", "ne zavarjanak")
-     & P ("collaboration.typing", "gépel")
-     & P ("collaboration.viewing", "megtekinti")
-     & P ("collaboration.editing", "szerkeszti")
-     & P ("deployment.deploying", "telepítés folyamatban")
-     & P ("deployment.deployed", "telepítve")
-     & P ("deployment.rolling_back", "visszaállítás folyamatban")
-     & P ("deployment.rolled_back", "visszaállítva")
-     & P ("deployment.build_failed", "sikertelen fordítás")
-     & P ("deployment.checks_passed", "ellenőrzések sikeresek")
-     & P ("empty.no_items", "nincsenek elemek")
-     & P ("empty.no_results", "nincs találat")
-     & P ("empty.no_messages", "nincsenek üzenetek")
-     & P ("empty.no_selection", "nincs kijelölés")
-     & P ("empty.nothing_to_show", "nincs megjeleníthető tartalom")
-     & P ("file.uploading", "feltöltés")
-     & P ("file.downloading", "letöltés")
-     & P ("file.copying", "másolás")
-     & P ("file.moving", "áthelyezés")
-     & P ("file.deleting", "törlés")
-     & P ("file.deleted", "törölve")
-     & P ("file.restoring", "visszaállítás")
-     & P ("file.synced", "szinkronizálva")
-     & P ("form.valid_input", "érvényes bevitel")
-     & P ("form.invalid_input", "érvénytelen bevitel")
-     & P ("form.dirty", "módosítva")
-     & P ("form.pristine", "változatlan")
-     & P ("form.submitted", "elküldve")
-     & P ("form.submission_failed", "sikertelen küldés")
-     & P ("health.healthy", "megfelelő")
-     & P ("health.degraded", "korlátozott")
-     & P ("health.unhealthy", "nem megfelelő")
-     & P ("health.incident", "incidens")
-     & P ("health.maintenance", "karbantartás")
-     & P ("health.recovering", "helyreállítás")
-     & P ("issue.open", "nyitott")
-     & P ("issue.closed", "lezárva")
-     & P ("issue.reopened", "újranyitva")
-     & P ("issue.assigned", "hozzárendelve")
-     & P ("issue.unassigned", "nincs hozzárendelve")
-     & P ("issue.merged", "egyesítve")
-     & P ("network.offline", "offline")
-     & P ("network.online", "online")
-     & P ("network.connecting", "csatlakozás")
-     & P ("network.syncing", "szinkronizálás")
-     & P ("network.sync_failed", "sikertelen szinkronizálás")
-     & P ("network.permission_denied", "hozzáférés megtagadva")
-     & P ("network.read_only", "csak olvasható")
-     & P ("notification.unread", "olvasatlan")
-     & P ("notification.read", "olvasott")
-     & P ("notification.muted", "némítva")
-     & P ("notification.snoozed", "elhalasztva")
-     & P ("notification.sent", "elküldve")
-     & P ("notification.delivered", "kézbesítve")
-     & P ("payment.payment_authorized", "fizetés engedélyezve")
-     & P ("payment.payment_captured", "fizetés terhelve")
-     & P ("payment.payment_refunded", "fizetés visszatérítve")
-     & P ("payment.payment_disputed", "fizetés vitatott")
-     & P ("payment.payment_requires_action", "a fizetés műveletet igényel")
-     & P ("payment.payment_expired", "a fizetés lejárt")
-     & P ("ui.empty", "üres")
-     & P ("ui.loading", "betöltés")
-     & P ("ui.saving", "mentés")
-     & P ("ui.saved", "mentve")
-     & P ("ui.unsaved", "nincs mentve")
-     & P ("ui.retrying", "újrapróbálkozás")
-     & P ("ui.paused", "szüneteltetve")
-     & P ("ui.complete", "kész")
-     & P ("ui.failed", "sikertelen")
-     & P ("ui.due_soon", "hamarosan esedékes")
-     & P ("ui.overdue", "lejárt")
-     & P ("ui.last_seen", "utoljára látva")
-     & P ("ui.updated_just_now", "épp most frissítve")
-     & P ("queue.queued", "sorban áll")
-     & P ("queue.running", "fut")
-     & P ("queue.waiting", "várakozik")
-     & P ("queue.blocked", "blokkolva")
-     & P ("queue.canceled_job", "feladat megszakítva")
-     & P ("queue.completed_job", "feladat befejezve")
-     & P ("search.filtering", "szűrés")
-     & P ("search.filtered", "szűrve")
-     & P ("search.no_matches", "nincs találat")
-     & P ("search.search_ready", "keresés kész")
-     & P ("search.search_failed", "sikertelen keresés")
-     & P ("search.query_too_short", "túl rövid keresőkifejezés")
-     & P ("security.secure", "biztonságos")
-     & P ("security.insecure", "nem biztonságos")
-     & P ("security.vulnerable", "sebezhető")
-     & P ("security.encrypted", "titkosítva")
-     & P ("security.unencrypted", "titkosítatlan")
-     & P ("security.token_expired", "a token lejárt")
-     & P ("sync.sync_idle", "szinkronizálás tétlen")
-     & P ("sync.syncing_now", "szinkronizálás folyamatban")
-     & P ("sync.sync_queued", "szinkronizálás sorban áll")
-     & P ("sync.sync_conflict", "szinkronizálási ütközés")
-     & P ("sync.sync_complete", "szinkronizálás kész")
-     & P ("sync.sync_error", "szinkronizálási hiba")
-     & P ("task.todo", "teendő")
-     & P ("task.in_progress", "folyamatban")
-     & P ("task.done", "kész")
-     & P ("task.skipped", "kihagyva")
-     & P ("task.blocked_task", "blokkolva")
-     & P ("task.waiting_on", "várakozik")
-     & P ("ticket.ticket_new", "új jegy")
-     & P ("ticket.ticket_open", "nyitott jegy")
-     & P ("ticket.ticket_waiting", "várakozó jegy")
-     & P ("ticket.ticket_escalated", "eszkalált jegy")
-     & P ("ticket.ticket_resolved", "megoldott jegy")
-     & P ("ticket.ticket_closed", "lezárt jegy")
-     & P ("transfer.importing", "importálás")
-     & P ("transfer.imported", "importálva")
-     & P ("transfer.import_failed", "sikertelen importálás")
-     & P ("transfer.exporting", "exportálás")
-     & P ("transfer.exported", "exportálva")
-     & P ("transfer.export_failed", "sikertelen exportálás")
-     & P ("validation.required", "kötelező")
-     & P ("validation.optional", "nem kötelező")
-     & P ("validation.invalid", "érvénytelen")
-     & P ("validation.too_short", "túl rövid")
-     & P ("validation.too_long", "túl hosszú")
-     & P ("validation.out_of_range", "tartományon kívül")
-     & P ("validation.already_exists", "már létezik")
-     & P ("workflow.draft", "piszkozat")
-     & P ("workflow.in_review", "ellenőrzés alatt")
-     & P ("workflow.approved", "jóváhagyva")
-     & P ("workflow.rejected", "elutasítva")
-     & P ("workflow.published", "közzétéve")
-     & P ("workflow.archived", "archiválva")
-     & P ("database.database_online", "adatbázis online")
-     & P ("database.database_offline", "adatbázis offline")
-     & P ("database.database_degraded", "adatbázis korlátozottan működik")
-     & P ("database.database_migrating", "adatbázis-migráció folyamatban")
-     & P ("database.database_migration_failed", "sikertelen adatbázis-migráció")
-     & P ("database.database_replicating", "adatbázis-replikáció folyamatban")
-     & P ("database.database_replication_lagging", "adatbázis-replikáció késik")
-     & P ("database.database_backup_running", "adatbázis-mentés folyamatban")
-     & P ("database.database_backup_failed", "sikertelen adatbázis-mentés")
-     & P ("times_noun",
-          "{count, plural, =0 {{one}: soha} =1 {{one}: egyszer} =2 {{one}: "
-          & "kétszer} other {{one}: {count} alkalommal}}")
-     & P ("availability.all", "{total} {one} közül {available} elérhető")
-     & P ("availability.none", "nincs elérhető {one}")
-     & P ("availability.partial",
-          "{total} {one} közül {available} elérhető, {unavailable} nem "
-          & "elérhető")
-     & P ("operation_progress", "{name} – {state}: {details}")
-     & P ("operation.queued", "sorban áll")
-     & P ("operation.running", "fut")
-     & P ("operation.blocked", "blokkolva")
-     & P ("operation.retrying", "újrapróbálkozás")
-     & P ("operation.succeeded", "sikeres")
-     & P ("operation.partially_succeeded", "részben sikeres")
-     & P ("operation.failed", "sikertelen")
-     & P ("operation.canceled", "megszakítva")
-     & P ("operation.skipped", "kihagyva")
-     & P ("operation.stale", "elavult")
-     & P ("operation.unknown_state", "ismeretlen")
-     & P ("operation.last_success", "{name} utolsó sikeres futása: {time}")
-     & P ("operation.next_retry", "{name} következő próbálkozás: {time}")
-     & P ("operation.stale_run", "{name} {time} óta elavult")
-     & P ("summary.skipped", "{count} kihagyva")
-     & P ("summary.retried", "{count} újrapróbálva")
-     & P ("summary.canceled", "{count} megszakítva")
-     & P ("system.service.operational", "működik")
-     & P ("system.service.degraded", "csökkent teljesítmény")
-     & P ("system.service.partial_outage", "részleges leállás")
-     & P ("system.service.major_outage", "jelentős leállás")
-     & P ("system.service.maintenance", "karbantartás alatt")
-     & P ("system.service.unknown", "ismeretlen szolgáltatásállapot")
-     & P ("system.health.healthy", "rendben")
-     & P ("system.health.warning", "figyelmeztetés")
-     & P ("system.health.critical", "kritikus")
-     & P ("system.health.unavailable", "nem érhető el")
-     & P ("system.health.unknown_health", "ismeretlen állapot")
-     & P ("system.readiness.ready", "kész")
-     & P ("system.readiness.not_ready", "nem kész")
-     & P ("system.readiness.starting", "indul")
-     & P ("system.readiness.draining", "kiürítés")
-     & P ("system.readiness.stopped", "leállítva")
-     & P ("system.readiness.unknown_readiness", "ismeretlen készenlét")
-     & P ("system.component.online", "online")
-     & P ("system.component.offline", "offline")
-     & P ("system.component.starting", "indul")
-     & P ("system.component.stopping", "leáll")
-     & P ("system.component.restarting", "újraindul")
-     & P ("system.component.unknown", "ismeretlen komponensállapot")
-     & P ("system.check.passing", "sikeres")
-     & P ("system.check.failing", "sikertelen")
-     & P ("system.check.warning", "figyelmeztetés")
-     & P ("system.check.skipped", "kihagyva")
-     & P ("system.check.timed_out", "időtúllépés")
-     & P ("system.check.unknown", "ismeretlen ellenőrzési állapot")
-     & P ("system.incident.investigating", "vizsgálat alatt")
-     & P ("system.incident.identified", "ok azonosítva")
-     & P ("system.incident.monitoring", "megfigyelés alatt")
-     & P ("system.incident.resolved", "megoldva")
-     & P ("system.incident.scheduled_maintenance", "ütemezett karbantartás")
-     & P ("system.named", "{name}: {state}")
-     & P ("system.check_named", "{name} ellenőrzés: {state}")
-     & P ("system.count.components",
-          "{count, plural, =0 {nincs komponens} one {{count} komponens} other "
-          & "{{count} komponens}}")
-     & P ("system.count.checks",
-          "{count, plural, =0 {nincs ellenőrzés} one {{count} ellenőrzés} "
-          & "other {{count} ellenőrzés}}")
-     & P ("system.count.incidents",
-          "{count, plural, =0 {nincs incidens} one {{count} incidens} other "
-          & "{{count} incidens}}")
-     & P ("system.uptime", "rendelkezésre állás: {measure}")
-     & P ("system.latency", "késleltetés: {measure}")
-     & P ("system.maintenance_window", "karbantartási időablak: {time}")
-     & P ("system.last_checked", "utolsó ellenőrzés: {time}")
-     & P ("system.http.informational", "tájékoztató válasz")
-     & P ("system.http.successful", "sikeres válasz")
-     & P ("system.http.redirection", "átirányítás")
-     & P ("system.http.client_error", "ügyfélhiba")
-     & P ("system.http.server_error", "kiszolgálóhiba")
-     & P ("system.exit.success", "kilépési kód {code}: siker")
-     & P ("system.exit.failure", "kilépési kód {code}: hiba")
-     & P ("system.exit.usage_error", "kilépési kód {code}: használati hiba")
-     & P ("system.exit.not_executable", "kilépési kód {code}: a parancs nem futtatható")
-     & P ("system.exit.not_found", "kilépési kód {code}: a parancs nem található")
-     & P ("system.exit.invalid_argument", "kilépési kód {code}: érvénytelen exit argumentum")
-     & P ("system.exit.signal", "kilépési kód {code}: leállítva jelzéssel: {signal}")
-     & P ("validation.problem.required", "{field}: kötelező")
-     & P ("validation.problem.minimum", "{field}: kisebb a minimumnál")
-     & P ("validation.problem.maximum", "{field}: nagyobb a maximumnál")
-     & P ("validation.problem.range", "{field}: az engedélyezett tartományon kívül esik")
-     & P ("validation.problem.pattern", "{field}: nem felel meg a mintának")
-     & P ("validation.problem.choice", "{field}: az engedélyezett lehetőségek egyikének kell lennie")
-     & P ("validation.problem.dependency", "{field}: egy másik mezőtől függ")
-     & P ("validation.problem.custom", "{field}: érvénytelen")
-     & P ("validation.constraint.no_relation", "{field}: érvényes {value} szükséges")
-     & P ("validation.constraint.less_than", "{field}: kisebbnek kell lennie, mint {value}")
-     & P ("validation.constraint.less_or_equal", "{field}: legfeljebb {value} lehet")
-     & P ("validation.constraint.greater_than", "{field}: nagyobbnak kell lennie, mint {value}")
-     & P ("validation.constraint.greater_or_equal", "{field}: legalább {value} kell legyen")
-     & P ("validation.constraint.equal_to", "{field}: meg kell egyeznie ezzel: {value}")
-     & P ("validation.constraint.not_equal_to", "{field}: nem egyezhet meg ezzel: {value}")
-     & P ("validation.constraint.before_field", "{field}: korábbinak kell lennie, mint {value}")
-     & P ("validation.constraint.after_field", "{field}: későbbinek kell lennie, mint {value}")
-     & P ("validation.choices", "{field}: engedélyezett értékek: {choices}")
-     & P ("frame.detail", "{text} ({detail})")
-     & P ("frame.got", "{text}, kapott érték: {actual}")
-     & P ("frame.also", "{text}, {detail}")
-     & P ("frame.retry", "{text}, újrapróbálás {time} múlva")
-     & P ("net_diagnostic.dns", "{endpoint}: sikertelen DNS-feloldás")
-     & P ("net_diagnostic.tcp", "{endpoint}: sikertelen TCP-kapcsolat")
-     & P ("net_diagnostic.tls", "{endpoint}: TLS-tanúsítványhiba")
-     & P ("net_diagnostic.http", "{endpoint}: sikertelen HTTP-kérés")
-     & P ("net_diagnostic.proxy", "{endpoint}: proxyhiba")
-     & P ("net_diagnostic.timeout", "{endpoint}: időtúllépés")
-     & P ("net_diagnostic.reset", "{endpoint}: a kapcsolat megszakadt")
-     & P ("net_diagnostic.unknown_network", "{endpoint}: hálózati hiba")
-     & P ("progress.state.not_started", "nem indult el")
-     & P ("progress.state.running", "fut")
-     & P ("progress.state.stalled", "elakadt")
-     & P ("progress.state.retrying", "újrapróbálkozás")
-     & P ("progress.state.complete", "kész")
-     & P ("progress.state.failed", "sikertelen")
-     & P ("progress.of", "{subject}: {done}/{total} kész ({percent}%), {state}")
-     & P ("progress.done", "{subject}: {done} kész, {state}")
-     & P ("collection.summary",
-          "{name}: {total} elem, {unique} egyedi érték, {duplicates} "
-          & "ismétlődés, {outliers} kiugró érték")
-     & P ("top_frequency", "{name}: {value} ({count} alkalommal)")
-     & P ("calendar_date.fiscal_year", "{year}. pénzügyi év")
-     & P ("calendar_date.fiscal_quarter", "{year}. pénzügyi év, {part}. negyedév")
-     & P ("calendar_date.fiscal_half", "{year}. pénzügyi év, {part}. félév")
-     & P ("calendar_date.fiscal_year_end", "{year}. pénzügyi év vége")
-     & P ("calendar_date.semester", "{year}, {part}. szemeszter")
-     & P ("calendar_date.half_year", "{year}. {part}. félév")
-     & P ("calendar_date.half_year_phrase",
-          "{part, plural, =1 {{year} első féléve} other {{year} második "
-          & "féléve}}")
-     & P ("calendar_date.month_phase",
-          "{phase, select, early {{text} eleje} mid {{text} közepe} other "
-          & "{{text} vége}}")
-     & P ("calendar_date.quarter_phase",
-          "{phase, select, early {{text} eleje} mid {{text} közepe} other "
-          & "{{text} vége}}")
-     & P ("calendar_range.weekend.last", "múlt hétvége")
-     & P ("calendar_range.weekend.this", "ez a hétvége")
-     & P ("calendar_range.weekend.next", "jövő hétvége")
-     & P ("calendar_range.weekend_of", "{date} hétvégéje")
-     & P ("calendar_range.week.last", "múlt hét")
-     & P ("calendar_range.week.this", "ez a hét")
-     & P ("calendar_range.week.next", "jövő hét")
-     & P ("calendar_range.week_of", "{date} hete")
-     & P ("calendar_range.between", "{first} – {last}");
+   P ("all_count", "összesen {total} {one}");
+   P ("filtered_count.none", "nincs egyező {one}");
+   P ("filtered_count.all", "minden {one} egyezik ({total})");
+   P ("filtered_count.some", "{total} {one} közül {matching} egyezik");
+   P ("more_count", "{visible} látható, +{remaining} további");
+   P ("others_count", "{first} és további {remaining}");
+   P ("page_count", "{page}/{total}. oldal");
+   P ("page_size", "{size} {one} oldalanként");
+   P ("pagination_range", "{total} {one} közül {first}–{last}");
+   P ("position_count", "{position}/{total}");
+   P ("selection_count", "{total} {one} közül {selected} kijelölve");
+   P ("showing_count", "{total} {one} közül {showing} látható");
+   P ("validation_count",
+      "{count, plural, =0 {nincs {severity, select, error {hiba} warning "
+      & "{figyelmeztetés} other {megjegyzés}}} one {{count} {severity, "
+      & "select, error {hiba} warning {figyelmeztetés} other {megjegyzés}}} "
+      & "other {{count} {severity, select, error {hiba} warning "
+      & "{figyelmeztetés} other {megjegyzés}}}}");
+   P ("collection.empty", "nincs {one}");
+   P ("collection.none_shown", "egy {one} sem látható");
+   P ("collection.showing_hidden", "{total} {one} közül {visible} látható, {hidden} rejtett");
+   P ("collection.showing", "{total} {one} közül {visible} látható");
+   P ("collection.shown_hidden", "{visible} {one} látható, {hidden} rejtett");
+   P ("collection.shown", "{visible} {one} látható");
+   P ("collection.visible_out_of", "{total} {one} közül {visible} látható");
+   P ("complete_count", "{total} közül {done} kész");
+   P ("percent_complete", "{percent}% kész");
+   P ("step_count", "{step}/{total}. lépés");
+   P ("attempt_count", "{attempt}/{total}. próbálkozás");
+   P ("throughput_remaining", "még {remaining} {one}, {rate} {unit}/s sebességgel");
+   P ("accessible_progress", "{total} közül {done} kész, {percent} százalék");
+   P ("business_days", "{days} munkanap");
+   P ("working_hours", "{hours} munkaóra");
+   P ("due.overdue", "{days} napja lejárt");
+   P ("due.today", "ma esedékes");
+   P ("due.tomorrow", "holnap esedékes");
+   P ("due.in", "{days} nap múlva esedékes");
+   P ("calendar_difference.future", "{difference} múlva");
+   P ("calendar_difference.past", "{difference} ezelőtt");
+   P ("cpu_load", "CPU-terhelés: {measure}");
+   P ("battery", "akkumulátor: {measure}");
+   P ("screen_size", "képernyő: {measure}");
+   P ("refresh_rate", "frissítési gyakoriság: {measure}");
+   P ("editorial_percent.symbol", "{value}%");
+   P ("editorial_percent.word", "{value} százalék");
+   P ("recurrence.second",
+      "{every, plural, one {másodpercenként} other {{every} "
+      & "másodpercenként}}");
+   P ("recurrence.minute", "{every, plural, one {percenként} other {{every} percenként}}");
+   P ("recurrence.hour", "{every, plural, one {óránként} other {{every} óránként}}");
+   P ("recurrence.day", "{every, plural, one {naponta} other {{every} naponta}}");
+   P ("recurrence.week", "{every, plural, one {hetente} other {{every} hetente}}");
+   P ("recurrence.month", "{every, plural, one {havonta} other {{every} havonta}}");
+   P ("recurrence.quarter", "{every, plural, one {negyedévente} other {{every} negyedévente}}");
+   P ("recurrence.year", "{every, plural, one {évente} other {{every} évente}}");
+   P ("cache_summary.empty", "gyorsítótár: nincs kérés");
+   P ("cache_summary",
+      "gyorsítótár: {hits} találat, {misses} tévesztés, {rate}% "
+      & "találati arány");
+   P ("field_change_summary",
+      "{total} {one}: {changed} módosítva, {added} hozzáadva, {removed} "
+      & "eltávolítva");
+   P ("field_diff", "{field} módosítva: {before} helyett {after}");
+   P ("field_added", "{field} hozzáadva, értéke: {value}");
+   P ("field_removed", "{field} eltávolítva (korábbi érték: {value})");
+   P ("field_unchanged", "{field} változatlan: {value}");
+   P ("number_comparison.equal", "{current} ugyanannyi, mint {baseline}");
+   P ("number_comparison.higher", "{current} nagyobb, mint {baseline} (különbség: {quantity})");
+   P ("number_comparison.lower", "{current} kisebb, mint {baseline} (különbség: {quantity})");
+   P ("percent_comparison.equal", "{current} ugyanannyi, mint {baseline}");
+   P ("percent_comparison.higher", "{current} nagyobb, mint {baseline} (különbség: {quantity})");
+   P ("percent_comparison.lower", "{current} kisebb, mint {baseline} (különbség: {quantity})");
+   P ("file_size_comparison.same", "{current} ugyanakkora, mint {baseline}");
+   P ("file_size_comparison.larger", "{current} nagyobb, mint {baseline} (különbség: {quantity})");
+   P ("file_size_comparison.smaller", "{current} kisebb, mint {baseline} (különbség: {quantity})");
+   P ("date_comparison.same", "{current} ugyanaz a dátum, mint {baseline}");
+   P ("date_comparison.after", "{current} későbbi, mint {baseline} (különbség: {quantity})");
+   P ("date_comparison.before", "{current} korábbi, mint {baseline} (különbség: {quantity})");
+   P ("queue_summary", "várólista: {details}");
+   P ("domain_summary",
+      "{domain, select, queue {várólista} job {feladat} run {futtatás} "
+      & "cache {gyorsítótár} sync {szinkronizálás} import {importálás} "
+      & "export {exportálás} other {{domain}}} – {state, select, queued "
+      & "{sorban áll} running {fut} waiting {várakozik} paused "
+      & "{szüneteltetve} complete {kész} failed {sikertelen} stale {elavult} "
+      & "skipped {kihagyva} other {{state}}}: {details}");
+   P ("summary.none", "nincs {one}");
+   P ("summary.completed", "{count} {one} kész");
+   P ("summary.completed_of", "{total} {one} közül {count} kész");
+   P ("summary.failed", "{count} sikertelen");
+   P ("summary.queued", "{count} {one} sorban áll");
+   P ("summary.running", "{count} fut");
+   P ("summary.complete", "{count} kész");
+   P ("backup.backup_running", "biztonsági mentés folyamatban");
+   P ("backup.backup_completed", "biztonsági mentés kész");
+   P ("backup.backup_failed", "biztonsági mentés sikertelen");
+   P ("backup.backup_stale", "biztonsági mentés elavult");
+   P ("incident.incident_investigating", "incidens kivizsgálása folyamatban");
+   P ("incident.incident_identified", "incidens azonosítva");
+   P ("incident.incident_mitigated", "incidens hatása enyhítve");
+   P ("incident.incident_resolved", "incidens megoldva");
+   P ("release.release_drafting", "kiadás előkészítése folyamatban");
+   P ("release.release_ready", "kiadás kész");
+   P ("release.release_published", "kiadás közzétéve");
+   P ("release.release_rolled_back", "kiadás visszavonva");
+   P ("audit.audit_created", "auditbejegyzés létrehozva");
+   P ("audit.audit_updated", "auditbejegyzés frissítve");
+   P ("audit.audit_deleted", "auditbejegyzés törölve");
+   P ("audit.audit_restored", "auditbejegyzés visszaállítva");
+   P ("flag.flag_enabled", "funkciókapcsoló bekapcsolva");
+   P ("flag.flag_disabled", "funkciókapcsoló kikapcsolva");
+   P ("flag.flag_rolling_out", "funkciókapcsoló bevezetése folyamatban");
+   P ("flag.flag_rolled_back", "funkciókapcsoló visszavonva");
+   P ("webhook.webhook_pending", "webhook függőben");
+   P ("webhook.webhook_delivered", "webhook kézbesítve");
+   P ("webhook.webhook_failed", "webhook sikertelen");
+   P ("webhook.webhook_retrying", "webhook újrapróbálása folyamatban");
+   P ("api_key.api_key_active", "API-kulcs aktív");
+   P ("api_key.api_key_revoked", "API-kulcs visszavonva");
+   P ("api_key.api_key_expired", "API-kulcs lejárt");
+   P ("api_key.api_key_rotated", "API-kulcs lecserélve");
+   P ("quota.quota_available", "kvóta elérhető");
+   P ("quota.quota_near_limit", "kvóta majdnem kimerült");
+   P ("quota.quota_exceeded", "kvóta túllépve");
+   P ("quota.quota_reset", "kvóta visszaállítva");
+   P ("invoice.invoice_draft", "számlatervezet");
+   P ("invoice.invoice_sent", "számla elküldve");
+   P ("invoice.invoice_paid", "számla kifizetve");
+   P ("invoice.invoice_refunded", "számla visszatérítve");
+   P ("invoice.invoice_overdue", "számla lejárt");
+   P ("invoice.refund_failed", "visszatérítés sikertelen");
+   P ("page_navigation.only", "egyetlen oldal");
+   P ("page_navigation.first", "első oldal, következő elérhető");
+   P ("page_navigation.last", "utolsó oldal, előző elérhető");
+   P ("page_navigation.middle", "előző és következő elérhető");
+   P ("end_of_week", "hét vége");
+   P ("end_of_month", "hónap vége");
+   P ("end_of_quarter", "negyedév vége");
+   P ("time_of_day.night", "éjszaka");
+   P ("time_of_day.morning", "reggel");
+   P ("time_of_day.afternoon", "délután");
+   P ("time_of_day.evening", "este");
+   P ("calendar_difference.same_day", "ugyanazon a napon");
+   P ("calendar_difference.zero", "0 nap");
+   P ("queue_summary.empty", "várólista üres");
+   P ("access.allowed", "engedélyezve");
+   P ("access.denied", "megtagadva");
+   P ("access.owner", "tulajdonos");
+   P ("access.admin", "adminisztrátor");
+   P ("access.viewer", "megtekintő");
+   P ("access.editor", "szerkesztő");
+   P ("auth.signed_in", "bejelentkezve");
+   P ("auth.signed_out", "kijelentkezve");
+   P ("auth.session_expired", "a munkamenet lejárt");
+   P ("auth.locked", "zárolva");
+   P ("auth.two_factor_required", "kétlépcsős azonosítás szükséges");
+   P ("billing.trialing", "próbaidőszak");
+   P ("billing.payment_due", "fizetés esedékes");
+   P ("billing.payment_failed", "sikertelen fizetés");
+   P ("billing.paid", "kifizetve");
+   P ("billing.past_due", "késedelmes");
+   P ("billing.canceled", "lemondva");
+   P ("ci.pipeline_pending", "pipeline függőben");
+   P ("ci.pipeline_running", "pipeline fut");
+   P ("ci.pipeline_passed", "pipeline sikeres");
+   P ("ci.pipeline_failed", "pipeline sikertelen");
+   P ("ci.review_required", "felülvizsgálat szükséges");
+   P ("ci.deploy_blocked", "telepítés blokkolva");
+   P ("collaboration.active_now", "most aktív");
+   P ("collaboration.away", "távol");
+   P ("collaboration.do_not_disturb", "ne zavarjanak");
+   P ("collaboration.typing", "gépel");
+   P ("collaboration.viewing", "megtekinti");
+   P ("collaboration.editing", "szerkeszti");
+   P ("deployment.deploying", "telepítés folyamatban");
+   P ("deployment.deployed", "telepítve");
+   P ("deployment.rolling_back", "visszaállítás folyamatban");
+   P ("deployment.rolled_back", "visszaállítva");
+   P ("deployment.build_failed", "sikertelen fordítás");
+   P ("deployment.checks_passed", "ellenőrzések sikeresek");
+   P ("empty.no_items", "nincsenek elemek");
+   P ("empty.no_results", "nincs találat");
+   P ("empty.no_messages", "nincsenek üzenetek");
+   P ("empty.no_selection", "nincs kijelölés");
+   P ("empty.nothing_to_show", "nincs megjeleníthető tartalom");
+   P ("file.uploading", "feltöltés");
+   P ("file.downloading", "letöltés");
+   P ("file.copying", "másolás");
+   P ("file.moving", "áthelyezés");
+   P ("file.deleting", "törlés");
+   P ("file.deleted", "törölve");
+   P ("file.restoring", "visszaállítás");
+   P ("file.synced", "szinkronizálva");
+   P ("form.valid_input", "érvényes bevitel");
+   P ("form.invalid_input", "érvénytelen bevitel");
+   P ("form.dirty", "módosítva");
+   P ("form.pristine", "változatlan");
+   P ("form.submitted", "elküldve");
+   P ("form.submission_failed", "sikertelen küldés");
+   P ("health.healthy", "megfelelő");
+   P ("health.degraded", "korlátozott");
+   P ("health.unhealthy", "nem megfelelő");
+   P ("health.incident", "incidens");
+   P ("health.maintenance", "karbantartás");
+   P ("health.recovering", "helyreállítás");
+   P ("issue.open", "nyitott");
+   P ("issue.closed", "lezárva");
+   P ("issue.reopened", "újranyitva");
+   P ("issue.assigned", "hozzárendelve");
+   P ("issue.unassigned", "nincs hozzárendelve");
+   P ("issue.merged", "egyesítve");
+   P ("network.offline", "offline");
+   P ("network.online", "online");
+   P ("network.connecting", "csatlakozás");
+   P ("network.syncing", "szinkronizálás");
+   P ("network.sync_failed", "sikertelen szinkronizálás");
+   P ("network.permission_denied", "hozzáférés megtagadva");
+   P ("network.read_only", "csak olvasható");
+   P ("notification.unread", "olvasatlan");
+   P ("notification.read", "olvasott");
+   P ("notification.muted", "némítva");
+   P ("notification.snoozed", "elhalasztva");
+   P ("notification.sent", "elküldve");
+   P ("notification.delivered", "kézbesítve");
+   P ("payment.payment_authorized", "fizetés engedélyezve");
+   P ("payment.payment_captured", "fizetés terhelve");
+   P ("payment.payment_refunded", "fizetés visszatérítve");
+   P ("payment.payment_disputed", "fizetés vitatott");
+   P ("payment.payment_requires_action", "a fizetés műveletet igényel");
+   P ("payment.payment_expired", "a fizetés lejárt");
+   P ("ui.empty", "üres");
+   P ("ui.loading", "betöltés");
+   P ("ui.saving", "mentés");
+   P ("ui.saved", "mentve");
+   P ("ui.unsaved", "nincs mentve");
+   P ("ui.retrying", "újrapróbálkozás");
+   P ("ui.paused", "szüneteltetve");
+   P ("ui.complete", "kész");
+   P ("ui.failed", "sikertelen");
+   P ("ui.due_soon", "hamarosan esedékes");
+   P ("ui.overdue", "lejárt");
+   P ("ui.last_seen", "utoljára látva");
+   P ("ui.updated_just_now", "épp most frissítve");
+   P ("queue.queued", "sorban áll");
+   P ("queue.running", "fut");
+   P ("queue.waiting", "várakozik");
+   P ("queue.blocked", "blokkolva");
+   P ("queue.canceled_job", "feladat megszakítva");
+   P ("queue.completed_job", "feladat befejezve");
+   P ("search.filtering", "szűrés");
+   P ("search.filtered", "szűrve");
+   P ("search.no_matches", "nincs találat");
+   P ("search.search_ready", "keresés kész");
+   P ("search.search_failed", "sikertelen keresés");
+   P ("search.query_too_short", "túl rövid keresőkifejezés");
+   P ("security.secure", "biztonságos");
+   P ("security.insecure", "nem biztonságos");
+   P ("security.vulnerable", "sebezhető");
+   P ("security.encrypted", "titkosítva");
+   P ("security.unencrypted", "titkosítatlan");
+   P ("security.token_expired", "a token lejárt");
+   P ("sync.sync_idle", "szinkronizálás tétlen");
+   P ("sync.syncing_now", "szinkronizálás folyamatban");
+   P ("sync.sync_queued", "szinkronizálás sorban áll");
+   P ("sync.sync_conflict", "szinkronizálási ütközés");
+   P ("sync.sync_complete", "szinkronizálás kész");
+   P ("sync.sync_error", "szinkronizálási hiba");
+   P ("task.todo", "teendő");
+   P ("task.in_progress", "folyamatban");
+   P ("task.done", "kész");
+   P ("task.skipped", "kihagyva");
+   P ("task.blocked_task", "blokkolva");
+   P ("task.waiting_on", "várakozik");
+   P ("ticket.ticket_new", "új jegy");
+   P ("ticket.ticket_open", "nyitott jegy");
+   P ("ticket.ticket_waiting", "várakozó jegy");
+   P ("ticket.ticket_escalated", "eszkalált jegy");
+   P ("ticket.ticket_resolved", "megoldott jegy");
+   P ("ticket.ticket_closed", "lezárt jegy");
+   P ("transfer.importing", "importálás");
+   P ("transfer.imported", "importálva");
+   P ("transfer.import_failed", "sikertelen importálás");
+   P ("transfer.exporting", "exportálás");
+   P ("transfer.exported", "exportálva");
+   P ("transfer.export_failed", "sikertelen exportálás");
+   P ("validation.required", "kötelező");
+   P ("validation.optional", "nem kötelező");
+   P ("validation.invalid", "érvénytelen");
+   P ("validation.too_short", "túl rövid");
+   P ("validation.too_long", "túl hosszú");
+   P ("validation.out_of_range", "tartományon kívül");
+   P ("validation.already_exists", "már létezik");
+   P ("workflow.draft", "piszkozat");
+   P ("workflow.in_review", "ellenőrzés alatt");
+   P ("workflow.approved", "jóváhagyva");
+   P ("workflow.rejected", "elutasítva");
+   P ("workflow.published", "közzétéve");
+   P ("workflow.archived", "archiválva");
+   P ("database.database_online", "adatbázis online");
+   P ("database.database_offline", "adatbázis offline");
+   P ("database.database_degraded", "adatbázis korlátozottan működik");
+   P ("database.database_migrating", "adatbázis-migráció folyamatban");
+   P ("database.database_migration_failed", "sikertelen adatbázis-migráció");
+   P ("database.database_replicating", "adatbázis-replikáció folyamatban");
+   P ("database.database_replication_lagging", "adatbázis-replikáció késik");
+   P ("database.database_backup_running", "adatbázis-mentés folyamatban");
+   P ("database.database_backup_failed", "sikertelen adatbázis-mentés");
+   P ("times_noun",
+      "{count, plural, =0 {{one}: soha} =1 {{one}: egyszer} =2 {{one}: "
+      & "kétszer} other {{one}: {count} alkalommal}}");
+   P ("availability.all", "{total} {one} közül {available} elérhető");
+   P ("availability.none", "nincs elérhető {one}");
+   P ("availability.partial",
+      "{total} {one} közül {available} elérhető, {unavailable} nem "
+      & "elérhető");
+   P ("operation_progress", "{name} – {state}: {details}");
+   P ("operation.queued", "sorban áll");
+   P ("operation.running", "fut");
+   P ("operation.blocked", "blokkolva");
+   P ("operation.retrying", "újrapróbálkozás");
+   P ("operation.succeeded", "sikeres");
+   P ("operation.partially_succeeded", "részben sikeres");
+   P ("operation.failed", "sikertelen");
+   P ("operation.canceled", "megszakítva");
+   P ("operation.skipped", "kihagyva");
+   P ("operation.stale", "elavult");
+   P ("operation.unknown_state", "ismeretlen");
+   P ("operation.last_success", "{name} utolsó sikeres futása: {time}");
+   P ("operation.next_retry", "{name} következő próbálkozás: {time}");
+   P ("operation.stale_run", "{name} {time} óta elavult");
+   P ("summary.skipped", "{count} kihagyva");
+   P ("summary.retried", "{count} újrapróbálva");
+   P ("summary.canceled", "{count} megszakítva");
+   P ("system.service.operational", "működik");
+   P ("system.service.degraded", "csökkent teljesítmény");
+   P ("system.service.partial_outage", "részleges leállás");
+   P ("system.service.major_outage", "jelentős leállás");
+   P ("system.service.maintenance", "karbantartás alatt");
+   P ("system.service.unknown", "ismeretlen szolgáltatásállapot");
+   P ("system.health.healthy", "rendben");
+   P ("system.health.warning", "figyelmeztetés");
+   P ("system.health.critical", "kritikus");
+   P ("system.health.unavailable", "nem érhető el");
+   P ("system.health.unknown_health", "ismeretlen állapot");
+   P ("system.readiness.ready", "kész");
+   P ("system.readiness.not_ready", "nem kész");
+   P ("system.readiness.starting", "indul");
+   P ("system.readiness.draining", "kiürítés");
+   P ("system.readiness.stopped", "leállítva");
+   P ("system.readiness.unknown_readiness", "ismeretlen készenlét");
+   P ("system.component.online", "online");
+   P ("system.component.offline", "offline");
+   P ("system.component.starting", "indul");
+   P ("system.component.stopping", "leáll");
+   P ("system.component.restarting", "újraindul");
+   P ("system.component.unknown", "ismeretlen komponensállapot");
+   P ("system.check.passing", "sikeres");
+   P ("system.check.failing", "sikertelen");
+   P ("system.check.warning", "figyelmeztetés");
+   P ("system.check.skipped", "kihagyva");
+   P ("system.check.timed_out", "időtúllépés");
+   P ("system.check.unknown", "ismeretlen ellenőrzési állapot");
+   P ("system.incident.investigating", "vizsgálat alatt");
+   P ("system.incident.identified", "ok azonosítva");
+   P ("system.incident.monitoring", "megfigyelés alatt");
+   P ("system.incident.resolved", "megoldva");
+   P ("system.incident.scheduled_maintenance", "ütemezett karbantartás");
+   P ("system.named", "{name}: {state}");
+   P ("system.check_named", "{name} ellenőrzés: {state}");
+   P ("system.count.components",
+      "{count, plural, =0 {nincs komponens} one {{count} komponens} other "
+      & "{{count} komponens}}");
+   P ("system.count.checks",
+      "{count, plural, =0 {nincs ellenőrzés} one {{count} ellenőrzés} "
+      & "other {{count} ellenőrzés}}");
+   P ("system.count.incidents",
+      "{count, plural, =0 {nincs incidens} one {{count} incidens} other "
+      & "{{count} incidens}}");
+   P ("system.uptime", "rendelkezésre állás: {measure}");
+   P ("system.latency", "késleltetés: {measure}");
+   P ("system.maintenance_window", "karbantartási időablak: {time}");
+   P ("system.last_checked", "utolsó ellenőrzés: {time}");
+   P ("system.http.informational", "tájékoztató válasz");
+   P ("system.http.successful", "sikeres válasz");
+   P ("system.http.redirection", "átirányítás");
+   P ("system.http.client_error", "ügyfélhiba");
+   P ("system.http.server_error", "kiszolgálóhiba");
+   P ("system.exit.success", "kilépési kód {code}: siker");
+   P ("system.exit.failure", "kilépési kód {code}: hiba");
+   P ("system.exit.usage_error", "kilépési kód {code}: használati hiba");
+   P ("system.exit.not_executable", "kilépési kód {code}: a parancs nem futtatható");
+   P ("system.exit.not_found", "kilépési kód {code}: a parancs nem található");
+   P ("system.exit.invalid_argument", "kilépési kód {code}: érvénytelen exit argumentum");
+   P ("system.exit.signal", "kilépési kód {code}: leállítva jelzéssel: {signal}");
+   P ("validation.problem.required", "{field}: kötelező");
+   P ("validation.problem.minimum", "{field}: kisebb a minimumnál");
+   P ("validation.problem.maximum", "{field}: nagyobb a maximumnál");
+   P ("validation.problem.range", "{field}: az engedélyezett tartományon kívül esik");
+   P ("validation.problem.pattern", "{field}: nem felel meg a mintának");
+   P ("validation.problem.choice", "{field}: az engedélyezett lehetőségek egyikének kell lennie");
+   P ("validation.problem.dependency", "{field}: egy másik mezőtől függ");
+   P ("validation.problem.custom", "{field}: érvénytelen");
+   P ("validation.constraint.no_relation", "{field}: érvényes {value} szükséges");
+   P ("validation.constraint.less_than", "{field}: kisebbnek kell lennie, mint {value}");
+   P ("validation.constraint.less_or_equal", "{field}: legfeljebb {value} lehet");
+   P ("validation.constraint.greater_than", "{field}: nagyobbnak kell lennie, mint {value}");
+   P ("validation.constraint.greater_or_equal", "{field}: legalább {value} kell legyen");
+   P ("validation.constraint.equal_to", "{field}: meg kell egyeznie ezzel: {value}");
+   P ("validation.constraint.not_equal_to", "{field}: nem egyezhet meg ezzel: {value}");
+   P ("validation.constraint.before_field", "{field}: korábbinak kell lennie, mint {value}");
+   P ("validation.constraint.after_field", "{field}: későbbinek kell lennie, mint {value}");
+   P ("validation.choices", "{field}: engedélyezett értékek: {choices}");
+   P ("frame.detail", "{text} ({detail})");
+   P ("frame.got", "{text}, kapott érték: {actual}");
+   P ("frame.also", "{text}, {detail}");
+   P ("frame.retry", "{text}, újrapróbálás {time} múlva");
+   P ("net_diagnostic.dns", "{endpoint}: sikertelen DNS-feloldás");
+   P ("net_diagnostic.tcp", "{endpoint}: sikertelen TCP-kapcsolat");
+   P ("net_diagnostic.tls", "{endpoint}: TLS-tanúsítványhiba");
+   P ("net_diagnostic.http", "{endpoint}: sikertelen HTTP-kérés");
+   P ("net_diagnostic.proxy", "{endpoint}: proxyhiba");
+   P ("net_diagnostic.timeout", "{endpoint}: időtúllépés");
+   P ("net_diagnostic.reset", "{endpoint}: a kapcsolat megszakadt");
+   P ("net_diagnostic.unknown_network", "{endpoint}: hálózati hiba");
+   P ("progress.state.not_started", "nem indult el");
+   P ("progress.state.running", "fut");
+   P ("progress.state.stalled", "elakadt");
+   P ("progress.state.retrying", "újrapróbálkozás");
+   P ("progress.state.complete", "kész");
+   P ("progress.state.failed", "sikertelen");
+   P ("progress.of", "{subject}: {done}/{total} kész ({percent}%), {state}");
+   P ("progress.done", "{subject}: {done} kész, {state}");
+   P ("collection.summary",
+      "{name}: {total} elem, {unique} egyedi érték, {duplicates} "
+      & "ismétlődés, {outliers} kiugró érték");
+   P ("top_frequency", "{name}: {value} ({count} alkalommal)");
+   P ("calendar_date.fiscal_year", "{year}. pénzügyi év");
+   P ("calendar_date.fiscal_quarter", "{year}. pénzügyi év, {part}. negyedév");
+   P ("calendar_date.fiscal_half", "{year}. pénzügyi év, {part}. félév");
+   P ("calendar_date.fiscal_year_end", "{year}. pénzügyi év vége");
+   P ("calendar_date.semester", "{year}, {part}. szemeszter");
+   P ("calendar_date.half_year", "{year}. {part}. félév");
+   P ("calendar_date.half_year_phrase",
+      "{part, plural, =1 {{year} első féléve} other {{year} második "
+      & "féléve}}");
+   P ("calendar_date.month_phase",
+      "{phase, select, early {{text} eleje} mid {{text} közepe} other "
+      & "{{text} vége}}");
+   P ("calendar_date.quarter_phase",
+      "{phase, select, early {{text} eleje} mid {{text} közepe} other "
+      & "{{text} vége}}");
+   P ("calendar_range.weekend.last", "múlt hétvége");
+   P ("calendar_range.weekend.this", "ez a hétvége");
+   P ("calendar_range.weekend.next", "jövő hétvége");
+   P ("calendar_range.weekend_of", "{date} hétvégéje");
+   P ("calendar_range.week.last", "múlt hét");
+   P ("calendar_range.week.this", "ez a hét");
+   P ("calendar_range.week.next", "jövő hét");
+   P ("calendar_range.week_of", "{date} hete");
+   P ("calendar_range.between", "{first} – {last}");
+   P ("http.reason.100", "folytatás");
+   P ("http.reason.101", "protokollváltás");
+   P ("http.reason.102", "feldolgozás");
+   P ("http.reason.103", "korai tippek");
+   P ("http.reason.200", "OK");
+   P ("http.reason.201", "létrehozva");
+   P ("http.reason.202", "elfogadva");
+   P ("http.reason.203", "nem hiteles információ");
+   P ("http.reason.204", "nincs tartalom");
+   P ("http.reason.205", "tartalom visszaállítása");
+   P ("http.reason.206", "részleges tartalom");
+   P ("http.reason.207", "többszörös állapot");
+   P ("http.reason.208", "már jelentve");
+   P ("http.reason.226", "IM használva");
+   P ("http.reason.300", "több lehetőség");
+   P ("http.reason.301", "véglegesen áthelyezve");
+   P ("http.reason.302", "megtalálva");
+   P ("http.reason.303", "lásd máshol");
+   P ("http.reason.304", "nem módosult");
+   P ("http.reason.305", "proxy használata");
+   P ("http.reason.307", "ideiglenes átirányítás");
+   P ("http.reason.308", "végleges átirányítás");
+   P ("http.reason.400", "hibás kérés");
+   P ("http.reason.401", "nincs hitelesítve");
+   P ("http.reason.402", "fizetés szükséges");
+   P ("http.reason.403", "tiltott");
+   P ("http.reason.404", "nem található");
+   P ("http.reason.405", "nem engedélyezett metódus");
+   P ("http.reason.406", "nem elfogadható");
+   P ("http.reason.407", "proxyhitelesítés szükséges");
+   P ("http.reason.408", "a kérés időtúllépése");
+   P ("http.reason.409", "ütközés");
+   P ("http.reason.410", "megszűnt");
+   P ("http.reason.411", "hossz megadása szükséges");
+   P ("http.reason.412", "nem teljesült előfeltétel");
+   P ("http.reason.413", "túl nagy tartalom");
+   P ("http.reason.414", "túl hosszú URI");
+   P ("http.reason.415", "nem támogatott médiatípus");
+   P ("http.reason.416", "a tartomány nem teljesíthető");
+   P ("http.reason.417", "nem teljesült elvárás");
+   P ("http.reason.418", "teáskanna vagyok");
+   P ("http.reason.421", "rosszul irányított kérés");
+   P ("http.reason.422", "feldolgozhatatlan tartalom");
+   P ("http.reason.423", "zárolva");
+   P ("http.reason.424", "sikertelen függőség");
+   P ("http.reason.425", "túl korai");
+   P ("http.reason.426", "frissítés szükséges");
+   P ("http.reason.428", "előfeltétel szükséges");
+   P ("http.reason.429", "túl sok kérés");
+   P ("http.reason.431", "túl nagy kérésfejléc-mezők");
+   P ("http.reason.451", "jogi okokból nem elérhető");
+   P ("http.reason.500", "belső szerverhiba");
+   P ("http.reason.501", "nincs megvalósítva");
+   P ("http.reason.502", "hibás átjáró");
+   P ("http.reason.503", "a szolgáltatás nem érhető el");
+   P ("http.reason.504", "átjáró időtúllépése");
+   P ("http.reason.505", "nem támogatott HTTP-verzió");
+   P ("http.reason.506", "a változat is egyeztet");
+   P ("http.reason.507", "nincs elég tárhely");
+   P ("http.reason.508", "hurok észlelve");
+   P ("http.reason.510", "nincs kiterjesztve");
+   P ("http.reason.511", "hálózati hitelesítés szükséges");
+   P ("errno.reason.0", "siker");
+   P ("errno.reason.1", "a művelet nem engedélyezett");
+   P ("errno.reason.2", "nincs ilyen fájl vagy könyvtár");
+   P ("errno.reason.3", "nincs ilyen folyamat");
+   P ("errno.reason.4", "megszakított rendszerhívás");
+   P ("errno.reason.5", "bemeneti/kimeneti hiba");
+   P ("errno.reason.6", "nincs ilyen eszköz vagy cím");
+   P ("errno.reason.9", "hibás fájlleíró");
+   P ("errno.reason.11", "az erőforrás átmenetileg nem érhető el");
+   P ("errno.reason.12", "nincs elég memória");
+   P ("errno.reason.13", "engedély megtagadva");
+   P ("errno.reason.17", "a fájl létezik");
+   P ("errno.reason.20", "nem könyvtár");
+   P ("errno.reason.21", "ez egy könyvtár");
+   P ("errno.reason.22", "érvénytelen argumentum");
+   P ("errno.reason.24", "túl sok megnyitott fájl");
+   P ("errno.reason.28", "nincs több hely az eszközön");
+   P ("errno.reason.32", "megszakadt csővezeték");
+   P ("errno.reason.98", "a cím már használatban van");
+   P ("errno.reason.110", "a kapcsolat túllépte az időkorlátot");
+   P ("errno.reason.111", "a kapcsolat elutasítva");
+   P ("signal.reason.1", "vonalbontás");
+   P ("signal.reason.2", "megszakítás");
+   P ("signal.reason.3", "kilépés");
+   P ("signal.reason.4", "érvénytelen utasítás");
+   P ("signal.reason.5", "nyomkövetési csapda");
+   P ("signal.reason.6", "megszakítva");
+   P ("signal.reason.7", "buszhiba");
+   P ("signal.reason.8", "lebegőpontos kivétel");
+   P ("signal.reason.9", "kilőve");
+   P ("signal.reason.10", "1. felhasználói szignál");
+   P ("signal.reason.11", "szegmentálási hiba");
+   P ("signal.reason.12", "2. felhasználói szignál");
+   P ("signal.reason.13", "megszakadt csővezeték");
+   P ("signal.reason.14", "ébresztő");
+   P ("signal.reason.15", "leállítási kérés");
+   P ("signal.reason.17", "a gyermekfolyamat állapota megváltozott");
+   P ("signal.reason.18", "folytatás");
+   P ("signal.reason.19", "megállítva");
+   P ("signal.reason.20", "terminál általi megállítás");
+   P ("signal.reason.28", "megváltozott az ablakméret");
+   P ("sqlstate.reason.00", "sikeres befejezés");
+   P ("sqlstate.reason.01", "figyelmeztetés");
+   P ("sqlstate.reason.02", "nincs adat");
+   P ("sqlstate.reason.08", "kapcsolati kivétel");
+   P ("sqlstate.reason.0a", "nem támogatott funkció");
+   P ("sqlstate.reason.22", "adatkivétel");
+   P ("sqlstate.reason.23", "integritási megkötés megsértése");
+   P ("sqlstate.reason.24", "érvénytelen kurzorállapot");
+   P ("sqlstate.reason.25", "érvénytelen tranzakcióállapot");
+   P ("sqlstate.reason.28", "érvénytelen jogosultság-megadás");
+   P ("sqlstate.reason.2d", "érvénytelen tranzakció-befejezés");
+   P ("sqlstate.reason.3d", "érvénytelen katalógusnév");
+   P ("sqlstate.reason.3f", "érvénytelen sémanév");
+   P ("sqlstate.reason.40", "tranzakció visszagörgetése");
+   P ("sqlstate.reason.42", "szintaktikai hiba vagy hozzáférési szabály megsértése");
+   P ("sqlstate.reason.53", "nincs elég erőforrás");
+   P ("sqlstate.reason.54", "programkorlát túllépve");
+   P ("sqlstate.reason.55", "az objektum nincs az előfeltételként szükséges állapotban");
+   P ("sqlstate.reason.57", "operátori beavatkozás");
+   P ("sqlstate.reason.58", "rendszerhiba");
+   P ("sqlstate.reason.hv", "külső adatburkoló hibája");
+   P ("sqlstate.reason.p0", "PL/pgSQL-hiba");
+   P ("sqlstate.reason.xx", "belső hiba");
+   P ("system.signal_numbered", "szignál {number} {name} {reason}");
+   P ("http.reason.unknown", "ismeretlen állapot");
+   P ("errno.reason.unknown", "ismeretlen hiba");
+   P ("signal.reason.unknown", "ismeretlen szignál");
+   P ("sqlstate.reason.unknown", "ismeretlen SQLSTATE-osztály");
 end Locale_Hu;

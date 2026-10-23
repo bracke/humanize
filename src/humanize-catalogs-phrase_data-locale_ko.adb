@@ -1,458 +1,593 @@
 separate (Humanize.Catalogs.Phrase_Data)
-function Locale_Ko return Wide_Wide_String is
-   function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("ko", Name, Template));
+procedure Locale_Ko (Target : in out Catalog_Text) is
+   --  One statement an entry: the catalog grows on the heap, not in one
+   --  expression on the stack.
+   procedure P (Name, Template : Wide_Wide_String) is
+   begin
+      Add (Target, "ko", Name, Template);
+   end P;
 begin
-   return
-     P ("all_count", "전체 {other} {total}개")
-     & P ("filtered_count.none", "일치하는 {other} 없음")
-     & P ("filtered_count.all", "{other} {total}개 모두 일치")
-     & P ("filtered_count.some", "{other} {total}개 중 {matching}개 일치")
-     & P ("more_count", "{visible}개 표시, +{remaining}개 더")
-     & P ("others_count", "{first} 외 {remaining}개")
-     & P ("page_count", "{page}/{total}페이지")
-     & P ("page_size", "페이지당 {other} {size}개")
-     & P ("pagination_range", "{other} {total}개 중 {first}-{last}")
-     & P ("position_count", "{position}/{total}")
-     & P ("selection_count", "{other} {total}개 중 {selected}개 선택됨")
-     & P ("showing_count", "{other} {total}개 중 {showing}개 표시")
-     & P ("validation_count",
-          "{count, plural, =0 {{severity, select, error {오류} warning {경고} "
-          & "other {알림}} 없음} other {{severity, select, error {오류} "
-          & "warning {경고} other {알림}} {count}개}}")
-     & P ("collection.empty", "{other} 없음")
-     & P ("collection.none_shown", "표시된 {other} 없음")
-     & P ("collection.showing_hidden", "{other} {total}개 중 {visible}개 표시, {hidden}개 숨김")
-     & P ("collection.showing", "{other} {total}개 중 {visible}개 표시")
-     & P ("collection.shown_hidden", "{other} {visible}개 표시, {hidden}개 숨김")
-     & P ("collection.shown", "{other} {visible}개 표시")
-     & P ("collection.visible_out_of", "{other} {total}개 중 {visible}개 표시 중")
-     & P ("complete_count", "{total}개 중 {done}개 완료")
-     & P ("percent_complete", "{percent}% 완료")
-     & P ("step_count", "단계 {step}/{total}")
-     & P ("attempt_count", "시도 {attempt}/{total}")
-     & P ("throughput_remaining", "{other} {remaining}개 남음 ({rate} {unit}/초)")
-     & P ("accessible_progress", "{total}개 중 {done}개 완료, {percent}퍼센트")
-     & P ("business_days", "영업일 {days}일")
-     & P ("working_hours", "근무 {hours}시간")
-     & P ("due.overdue", "기한 {days}일 초과")
-     & P ("due.today", "오늘 마감")
-     & P ("due.tomorrow", "내일 마감")
-     & P ("due.in", "{days}일 후 마감")
-     & P ("calendar_difference.future", "{difference} 후")
-     & P ("calendar_difference.past", "{difference} 전")
-     & P ("cpu_load", "CPU {measure}")
-     & P ("battery", "배터리 {measure}")
-     & P ("screen_size", "화면 {measure}")
-     & P ("refresh_rate", "주사율 {measure}")
-     & P ("editorial_percent.symbol", "{value}%")
-     & P ("editorial_percent.word", "{value}퍼센트")
-     & P ("recurrence.second", "{every, plural, =1 {매초} other {{every}초마다}}")
-     & P ("recurrence.minute", "{every, plural, =1 {매분} other {{every}분마다}}")
-     & P ("recurrence.hour", "{every, plural, =1 {매시간} other {{every}시간마다}}")
-     & P ("recurrence.day", "{every, plural, =1 {매일} other {{every}일마다}}")
-     & P ("recurrence.week", "{every, plural, =1 {매주} other {{every}주마다}}")
-     & P ("recurrence.month", "{every, plural, =1 {매월} other {{every}개월마다}}")
-     & P ("recurrence.quarter", "{every, plural, =1 {분기마다} other {{every}분기마다}}")
-     & P ("recurrence.year", "{every, plural, =1 {매년} other {{every}년마다}}")
-     & P ("cache_summary.empty", "캐시: 요청 없음")
-     & P ("cache_summary", "캐시: 적중 {hits}회, 누락 {misses}회, 적중률 {rate}%")
-     & P ("field_change_summary",
-          "{other} {total}개: {changed}개 변경, {added}개 추가, "
-          & "{removed}개 제거")
-     & P ("field_diff", "{field} 변경: {before} → {after}")
-     & P ("field_added", "{field} 추가: {value}")
-     & P ("field_removed", "{field} 제거 (이전 값: {value})")
-     & P ("field_unchanged", "{field} 변경 없음: {value}")
-     & P ("number_comparison.equal", "{current}: {baseline}과(와) 같음")
-     & P ("number_comparison.higher", "{current}: {baseline}보다 {quantity} 높음")
-     & P ("number_comparison.lower", "{current}: {baseline}보다 {quantity} 낮음")
-     & P ("percent_comparison.equal", "{current}: {baseline}과(와) 같음")
-     & P ("percent_comparison.higher", "{current}: {baseline}보다 {quantity} 높음")
-     & P ("percent_comparison.lower", "{current}: {baseline}보다 {quantity} 낮음")
-     & P ("file_size_comparison.same", "{current}: {baseline}과(와) 크기 같음")
-     & P ("file_size_comparison.larger", "{current}: {baseline}보다 {quantity} 큼")
-     & P ("file_size_comparison.smaller", "{current}: {baseline}보다 {quantity} 작음")
-     & P ("date_comparison.same", "{current}: {baseline}과(와) 같은 날짜")
-     & P ("date_comparison.after", "{current}: {baseline}보다 {quantity} 후")
-     & P ("date_comparison.before", "{current}: {baseline}보다 {quantity} 전")
-     & P ("queue_summary", "대기열: {details}")
-     & P ("domain_summary",
-          "{domain, select, queue {대기열} job {작업} run {실행} cache "
-          & "{캐시} sync {동기화} import {가져오기} export {내보내기} "
-          & "other {{domain}}} {state, select, queued {대기열에 추가됨} "
-          & "running {실행 중} waiting {대기 중} paused {일시 중지됨} "
-          & "complete {완료} failed {실패} stale {오래됨} skipped "
-          & "{건너뜀} other {{state}}}: {details}")
-     & P ("summary.none", "{other} 없음")
-     & P ("summary.completed", "{other} {count}개 완료")
-     & P ("summary.completed_of", "{other} {total}개 중 {count}개 완료")
-     & P ("summary.failed", "{count}개 실패")
-     & P ("summary.queued", "{other} {count}개 대기 중")
-     & P ("summary.running", "{count}개 실행 중")
-     & P ("summary.complete", "{count}개 완료")
-     & P ("backup.backup_running", "백업 실행 중")
-     & P ("backup.backup_completed", "백업 완료")
-     & P ("backup.backup_failed", "백업 실패")
-     & P ("backup.backup_stale", "백업 오래됨")
-     & P ("incident.incident_investigating", "인시던트 조사 중")
-     & P ("incident.incident_identified", "인시던트 원인 파악됨")
-     & P ("incident.incident_mitigated", "인시던트 완화됨")
-     & P ("incident.incident_resolved", "인시던트 해결됨")
-     & P ("release.release_drafting", "릴리스 준비 중")
-     & P ("release.release_ready", "릴리스 준비 완료")
-     & P ("release.release_published", "릴리스 게시됨")
-     & P ("release.release_rolled_back", "릴리스 롤백됨")
-     & P ("audit.audit_created", "감사 항목 생성됨")
-     & P ("audit.audit_updated", "감사 항목 업데이트됨")
-     & P ("audit.audit_deleted", "감사 항목 삭제됨")
-     & P ("audit.audit_restored", "감사 항목 복원됨")
-     & P ("flag.flag_enabled", "기능 플래그 활성화됨")
-     & P ("flag.flag_disabled", "기능 플래그 비활성화됨")
-     & P ("flag.flag_rolling_out", "기능 플래그 단계적 배포 중")
-     & P ("flag.flag_rolled_back", "기능 플래그 롤백됨")
-     & P ("webhook.webhook_pending", "웹훅 대기 중")
-     & P ("webhook.webhook_delivered", "웹훅 전송됨")
-     & P ("webhook.webhook_failed", "웹훅 실패")
-     & P ("webhook.webhook_retrying", "웹훅 재시도 중")
-     & P ("api_key.api_key_active", "API 키 활성")
-     & P ("api_key.api_key_revoked", "API 키 취소됨")
-     & P ("api_key.api_key_expired", "API 키 만료됨")
-     & P ("api_key.api_key_rotated", "API 키 교체됨")
-     & P ("quota.quota_available", "할당량 사용 가능")
-     & P ("quota.quota_near_limit", "할당량 한도 임박")
-     & P ("quota.quota_exceeded", "할당량 초과")
-     & P ("quota.quota_reset", "할당량 재설정됨")
-     & P ("invoice.invoice_draft", "청구서 초안")
-     & P ("invoice.invoice_sent", "청구서 발송됨")
-     & P ("invoice.invoice_paid", "청구서 결제됨")
-     & P ("invoice.invoice_refunded", "청구서 환불됨")
-     & P ("invoice.invoice_overdue", "청구서 연체")
-     & P ("invoice.refund_failed", "환불 실패")
-     & P ("page_navigation.only", "단일 페이지")
-     & P ("page_navigation.first", "첫 페이지, 다음 페이지 있음")
-     & P ("page_navigation.last", "마지막 페이지, 이전 페이지 있음")
-     & P ("page_navigation.middle", "이전 및 다음 페이지 있음")
-     & P ("end_of_week", "주 마지막 날")
-     & P ("end_of_month", "월말")
-     & P ("end_of_quarter", "분기 말")
-     & P ("time_of_day.night", "밤")
-     & P ("time_of_day.morning", "아침")
-     & P ("time_of_day.afternoon", "오후")
-     & P ("time_of_day.evening", "저녁")
-     & P ("calendar_difference.same_day", "같은 날")
-     & P ("calendar_difference.zero", "0일")
-     & P ("queue_summary.empty", "대기열 비어 있음")
-     & P ("access.allowed", "허용됨")
-     & P ("access.denied", "거부됨")
-     & P ("access.owner", "소유자")
-     & P ("access.admin", "관리자")
-     & P ("access.viewer", "뷰어")
-     & P ("access.editor", "편집자")
-     & P ("auth.signed_in", "로그인됨")
-     & P ("auth.signed_out", "로그아웃됨")
-     & P ("auth.session_expired", "세션 만료됨")
-     & P ("auth.locked", "잠김")
-     & P ("auth.two_factor_required", "2단계 인증 필요")
-     & P ("billing.trialing", "평가판 사용 중")
-     & P ("billing.payment_due", "결제 예정")
-     & P ("billing.payment_failed", "결제 실패")
-     & P ("billing.paid", "결제 완료")
-     & P ("billing.past_due", "연체")
-     & P ("billing.canceled", "취소됨")
-     & P ("ci.pipeline_pending", "파이프라인 대기 중")
-     & P ("ci.pipeline_running", "파이프라인 실행 중")
-     & P ("ci.pipeline_passed", "파이프라인 통과")
-     & P ("ci.pipeline_failed", "파이프라인 실패")
-     & P ("ci.review_required", "검토 필요")
-     & P ("ci.deploy_blocked", "배포 차단됨")
-     & P ("collaboration.active_now", "현재 활동 중")
-     & P ("collaboration.away", "자리 비움")
-     & P ("collaboration.do_not_disturb", "방해 금지")
-     & P ("collaboration.typing", "입력 중")
-     & P ("collaboration.viewing", "보는 중")
-     & P ("collaboration.editing", "편집 중")
-     & P ("deployment.deploying", "배포 중")
-     & P ("deployment.deployed", "배포됨")
-     & P ("deployment.rolling_back", "롤백 중")
-     & P ("deployment.rolled_back", "롤백됨")
-     & P ("deployment.build_failed", "빌드 실패")
-     & P ("deployment.checks_passed", "검사 통과")
-     & P ("empty.no_items", "항목 없음")
-     & P ("empty.no_results", "결과 없음")
-     & P ("empty.no_messages", "메시지 없음")
-     & P ("empty.no_selection", "선택 항목 없음")
-     & P ("empty.nothing_to_show", "표시할 항목 없음")
-     & P ("file.uploading", "업로드 중")
-     & P ("file.downloading", "다운로드 중")
-     & P ("file.copying", "복사 중")
-     & P ("file.moving", "이동 중")
-     & P ("file.deleting", "삭제 중")
-     & P ("file.deleted", "삭제됨")
-     & P ("file.restoring", "복원 중")
-     & P ("file.synced", "동기화됨")
-     & P ("form.valid_input", "유효한 입력")
-     & P ("form.invalid_input", "잘못된 입력")
-     & P ("form.dirty", "변경됨")
-     & P ("form.pristine", "변경 없음")
-     & P ("form.submitted", "제출됨")
-     & P ("form.submission_failed", "제출 실패")
-     & P ("health.healthy", "정상")
-     & P ("health.degraded", "성능 저하")
-     & P ("health.unhealthy", "비정상")
-     & P ("health.incident", "장애 발생")
-     & P ("health.maintenance", "유지 관리 중")
-     & P ("health.recovering", "복구 중")
-     & P ("issue.open", "열림")
-     & P ("issue.closed", "닫힘")
-     & P ("issue.reopened", "다시 열림")
-     & P ("issue.assigned", "할당됨")
-     & P ("issue.unassigned", "할당되지 않음")
-     & P ("issue.merged", "병합됨")
-     & P ("network.offline", "오프라인")
-     & P ("network.online", "온라인")
-     & P ("network.connecting", "연결 중")
-     & P ("network.syncing", "동기화 중")
-     & P ("network.sync_failed", "동기화 실패")
-     & P ("network.permission_denied", "권한 거부됨")
-     & P ("network.read_only", "읽기 전용")
-     & P ("notification.unread", "읽지 않음")
-     & P ("notification.read", "읽음")
-     & P ("notification.muted", "음소거됨")
-     & P ("notification.snoozed", "다시 알림 설정됨")
-     & P ("notification.sent", "보냄")
-     & P ("notification.delivered", "전달됨")
-     & P ("payment.payment_authorized", "결제 승인됨")
-     & P ("payment.payment_captured", "결제 확정됨")
-     & P ("payment.payment_refunded", "환불됨")
-     & P ("payment.payment_disputed", "결제 이의 제기됨")
-     & P ("payment.payment_requires_action", "결제 조치 필요")
-     & P ("payment.payment_expired", "결제 만료됨")
-     & P ("ui.empty", "비어 있음")
-     & P ("ui.loading", "로드 중")
-     & P ("ui.saving", "저장 중")
-     & P ("ui.saved", "저장됨")
-     & P ("ui.unsaved", "저장 안 됨")
-     & P ("ui.retrying", "재시도 중")
-     & P ("ui.paused", "일시 중지됨")
-     & P ("ui.complete", "완료")
-     & P ("ui.failed", "실패")
-     & P ("ui.due_soon", "곧 마감")
-     & P ("ui.overdue", "기한 지남")
-     & P ("ui.last_seen", "마지막 접속")
-     & P ("ui.updated_just_now", "방금 업데이트됨")
-     & P ("queue.queued", "대기열에 추가됨")
-     & P ("queue.running", "실행 중")
-     & P ("queue.waiting", "대기 중")
-     & P ("queue.blocked", "차단됨")
-     & P ("queue.canceled_job", "작업 취소됨")
-     & P ("queue.completed_job", "작업 완료됨")
-     & P ("search.filtering", "필터링 중")
-     & P ("search.filtered", "필터링됨")
-     & P ("search.no_matches", "일치 항목 없음")
-     & P ("search.search_ready", "검색 준비됨")
-     & P ("search.search_failed", "검색 실패")
-     & P ("search.query_too_short", "검색어가 너무 짧음")
-     & P ("security.secure", "안전함")
-     & P ("security.insecure", "안전하지 않음")
-     & P ("security.vulnerable", "취약함")
-     & P ("security.encrypted", "암호화됨")
-     & P ("security.unencrypted", "암호화되지 않음")
-     & P ("security.token_expired", "토큰 만료됨")
-     & P ("sync.sync_idle", "동기화 유휴")
-     & P ("sync.syncing_now", "지금 동기화 중")
-     & P ("sync.sync_queued", "동기화 대기 중")
-     & P ("sync.sync_conflict", "동기화 충돌")
-     & P ("sync.sync_complete", "동기화 완료")
-     & P ("sync.sync_error", "동기화 오류")
-     & P ("task.todo", "할 일")
-     & P ("task.in_progress", "진행 중")
-     & P ("task.done", "완료")
-     & P ("task.skipped", "건너뜀")
-     & P ("task.blocked_task", "차단됨")
-     & P ("task.waiting_on", "대기 중")
-     & P ("ticket.ticket_new", "새 티켓")
-     & P ("ticket.ticket_open", "열린 티켓")
-     & P ("ticket.ticket_waiting", "티켓 대기 중")
-     & P ("ticket.ticket_escalated", "티켓 에스컬레이션됨")
-     & P ("ticket.ticket_resolved", "티켓 해결됨")
-     & P ("ticket.ticket_closed", "티켓 닫힘")
-     & P ("transfer.importing", "가져오는 중")
-     & P ("transfer.imported", "가져옴")
-     & P ("transfer.import_failed", "가져오기 실패")
-     & P ("transfer.exporting", "내보내는 중")
-     & P ("transfer.exported", "내보냄")
-     & P ("transfer.export_failed", "내보내기 실패")
-     & P ("validation.required", "필수")
-     & P ("validation.optional", "선택 사항")
-     & P ("validation.invalid", "유효하지 않음")
-     & P ("validation.too_short", "너무 짧음")
-     & P ("validation.too_long", "너무 김")
-     & P ("validation.out_of_range", "범위를 벗어남")
-     & P ("validation.already_exists", "이미 있음")
-     & P ("workflow.draft", "초안")
-     & P ("workflow.in_review", "검토 중")
-     & P ("workflow.approved", "승인됨")
-     & P ("workflow.rejected", "거부됨")
-     & P ("workflow.published", "게시됨")
-     & P ("workflow.archived", "보관됨")
-     & P ("database.database_online", "데이터베이스 온라인")
-     & P ("database.database_offline", "데이터베이스 오프라인")
-     & P ("database.database_degraded", "데이터베이스 성능 저하")
-     & P ("database.database_migrating", "데이터베이스 마이그레이션 중")
-     & P ("database.database_migration_failed", "데이터베이스 마이그레이션 실패")
-     & P ("database.database_replicating", "데이터베이스 복제 중")
-     & P ("database.database_replication_lagging", "데이터베이스 복제 지연")
-     & P ("database.database_backup_running", "데이터베이스 백업 중")
-     & P ("database.database_backup_failed", "데이터베이스 백업 실패")
-     & P ("times_noun",
-          "{count, plural, =0 {{other} 한 번도 없음} =1 {{other} 한 번} =2 "
-          & "{{other} 두 번} other {{other} {count}회}}")
-     & P ("availability.all", "{other} {total}개 중 {available}개 사용 가능")
-     & P ("availability.none", "사용 가능한 {other} 없음")
-     & P ("availability.partial",
-          "{other} {total}개 중 {available}개 사용 가능, {unavailable}개 "
-          & "사용 불가")
-     & P ("operation_progress", "{name} – {state}: {details}")
-     & P ("operation.queued", "대기 중")
-     & P ("operation.running", "실행 중")
-     & P ("operation.blocked", "차단됨")
-     & P ("operation.retrying", "재시도 중")
-     & P ("operation.succeeded", "성공")
-     & P ("operation.partially_succeeded", "부분 성공")
-     & P ("operation.failed", "실패")
-     & P ("operation.canceled", "취소됨")
-     & P ("operation.skipped", "건너뜀")
-     & P ("operation.stale", "오래됨")
-     & P ("operation.unknown_state", "알 수 없음")
-     & P ("operation.last_success", "{name} 마지막 성공: {time}")
-     & P ("operation.next_retry", "{name} 다음 재시도: {time}")
-     & P ("operation.stale_run", "{name} {time} 동안 갱신 없음")
-     & P ("summary.skipped", "{count}개 건너뜀")
-     & P ("summary.retried", "{count}개 재시도됨")
-     & P ("summary.canceled", "{count}개 취소됨")
-     & P ("system.service.operational", "정상 운영")
-     & P ("system.service.degraded", "성능 저하")
-     & P ("system.service.partial_outage", "부분 장애")
-     & P ("system.service.major_outage", "대규모 장애")
-     & P ("system.service.maintenance", "점검 중")
-     & P ("system.service.unknown", "서비스 상태 알 수 없음")
-     & P ("system.health.healthy", "정상")
-     & P ("system.health.warning", "경고")
-     & P ("system.health.critical", "심각")
-     & P ("system.health.unavailable", "사용 불가")
-     & P ("system.health.unknown_health", "상태 알 수 없음")
-     & P ("system.readiness.ready", "준비됨")
-     & P ("system.readiness.not_ready", "준비 안 됨")
-     & P ("system.readiness.starting", "시작 중")
-     & P ("system.readiness.draining", "드레이닝 중")
-     & P ("system.readiness.stopped", "중지됨")
-     & P ("system.readiness.unknown_readiness", "준비 상태 알 수 없음")
-     & P ("system.component.online", "온라인")
-     & P ("system.component.offline", "오프라인")
-     & P ("system.component.starting", "시작 중")
-     & P ("system.component.stopping", "중지 중")
-     & P ("system.component.restarting", "다시 시작 중")
-     & P ("system.component.unknown", "구성 요소 상태 알 수 없음")
-     & P ("system.check.passing", "통과")
-     & P ("system.check.failing", "실패")
-     & P ("system.check.warning", "경고")
-     & P ("system.check.skipped", "건너뜀")
-     & P ("system.check.timed_out", "시간 초과")
-     & P ("system.check.unknown", "검사 상태 알 수 없음")
-     & P ("system.incident.investigating", "조사 중")
-     & P ("system.incident.identified", "원인 파악됨")
-     & P ("system.incident.monitoring", "모니터링 중")
-     & P ("system.incident.resolved", "해결됨")
-     & P ("system.incident.scheduled_maintenance", "예정된 점검")
-     & P ("system.named", "{name}: {state}")
-     & P ("system.check_named", "{name} 검사: {state}")
-     & P ("system.count.components",
-          "{count, plural, =0 {구성 요소 없음} other {구성 요소 "
-          & "{count}개}}")
-     & P ("system.count.checks", "{count, plural, =0 {검사 없음} other {검사 {count}개}}")
-     & P ("system.count.incidents",
-          "{count, plural, =0 {인시던트 없음} other {인시던트 "
-          & "{count}건}}")
-     & P ("system.uptime", "가동률 {measure}")
-     & P ("system.latency", "지연 시간 {measure}")
-     & P ("system.maintenance_window", "점검 시간 {time}")
-     & P ("system.last_checked", "마지막 확인 {time}")
-     & P ("system.http.informational", "정보 응답")
-     & P ("system.http.successful", "성공 응답")
-     & P ("system.http.redirection", "리다이렉션")
-     & P ("system.http.client_error", "클라이언트 오류")
-     & P ("system.http.server_error", "서버 오류")
-     & P ("system.exit.success", "종료 코드 {code}: 성공")
-     & P ("system.exit.failure", "종료 코드 {code}: 실패")
-     & P ("system.exit.usage_error", "종료 코드 {code}: 사용법 오류")
-     & P ("system.exit.not_executable", "종료 코드 {code}: 명령을 실행할 수 없음")
-     & P ("system.exit.not_found", "종료 코드 {code}: 명령을 찾을 수 없음")
-     & P ("system.exit.invalid_argument", "종료 코드 {code}: 잘못된 종료 인수")
-     & P ("system.exit.signal", "종료 코드 {code}: {signal}(으)로 종료됨")
-     & P ("validation.problem.required", "{field}: 필수 항목입니다")
-     & P ("validation.problem.minimum", "{field}: 최솟값보다 작습니다")
-     & P ("validation.problem.maximum", "{field}: 최댓값보다 큽니다")
-     & P ("validation.problem.range", "{field}: 범위를 벗어났습니다")
-     & P ("validation.problem.pattern", "{field}: 형식이 올바르지 않습니다")
-     & P ("validation.problem.choice", "{field}: 허용된 선택 항목 중 하나여야 합니다")
-     & P ("validation.problem.dependency", "{field}: 다른 필드에 따라 달라집니다")
-     & P ("validation.problem.custom", "{field}: 유효하지 않습니다")
-     & P ("validation.constraint.no_relation", "{field}: 유효한 {value} 값이어야 합니다")
-     & P ("validation.constraint.less_than", "{field}: {value}보다 작아야 합니다")
-     & P ("validation.constraint.less_or_equal", "{field}: {value} 이하여야 합니다")
-     & P ("validation.constraint.greater_than", "{field}: {value}보다 커야 합니다")
-     & P ("validation.constraint.greater_or_equal", "{field}: {value} 이상이어야 합니다")
-     & P ("validation.constraint.equal_to", "{field}: {value}와(과) 같아야 합니다")
-     & P ("validation.constraint.not_equal_to", "{field}: {value}와(과) 달라야 합니다")
-     & P ("validation.constraint.before_field", "{field}: {value} 이전이어야 합니다")
-     & P ("validation.constraint.after_field", "{field}: {value} 이후여야 합니다")
-     & P ("validation.choices", "{field}: 허용되는 값: {choices}")
-     & P ("frame.detail", "{text} ({detail})")
-     & P ("frame.got", "{text}, 입력값: {actual}")
-     & P ("frame.also", "{text}, {detail}")
-     & P ("frame.retry", "{text}, {time} 후 다시 시도")
-     & P ("net_diagnostic.dns", "{endpoint}: DNS 조회 실패")
-     & P ("net_diagnostic.tcp", "{endpoint}: TCP 연결 실패")
-     & P ("net_diagnostic.tls", "{endpoint}: TLS 인증서 검증 실패")
-     & P ("net_diagnostic.http", "{endpoint}: HTTP 요청 실패")
-     & P ("net_diagnostic.proxy", "{endpoint}: 프록시 연결 실패")
-     & P ("net_diagnostic.timeout", "{endpoint}: 시간 초과")
-     & P ("net_diagnostic.reset", "{endpoint}: 연결이 재설정됨")
-     & P ("net_diagnostic.unknown_network", "{endpoint}: 네트워크 오류")
-     & P ("progress.state.not_started", "시작 안 됨")
-     & P ("progress.state.running", "실행 중")
-     & P ("progress.state.stalled", "멈춤")
-     & P ("progress.state.retrying", "재시도 중")
-     & P ("progress.state.complete", "완료")
-     & P ("progress.state.failed", "실패")
-     & P ("progress.of", "{subject}: {total}개 중 {done}개 완료({percent}%), {state}")
-     & P ("progress.done", "{subject}: {done}개 완료, {state}")
-     & P ("collection.summary",
-          "{name}: 항목 {total}개, 고유 값 {unique}개, 중복 "
-          & "{duplicates}개, 이상값 {outliers}개")
-     & P ("top_frequency", "{name} 최빈값: {value}({count}회)")
-     & P ("calendar_date.fiscal_year", "{year} 회계연도")
-     & P ("calendar_date.fiscal_quarter", "{year} 회계연도 {part}분기")
-     & P ("calendar_date.fiscal_half",
-          "{part, plural, =1 {{year} 회계연도 상반기} other {{year} "
-          & "회계연도 하반기}}")
-     & P ("calendar_date.fiscal_year_end", "{year} 회계연도 말")
-     & P ("calendar_date.semester", "{year}년 {part}학기")
-     & P ("calendar_date.half_year", "{part, plural, =1 {{year}년 상반기} other {{year}년 하반기}}")
-     & P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}년 상반기} other {{year}년 하반기}}")
-     & P ("calendar_date.month_phase",
-          "{phase, select, early {{text} 초} mid {{text} 중순} other {{text} "
-          & "말}}")
-     & P ("calendar_date.quarter_phase",
-          "{phase, select, early {{text} 초} mid {{text} 중반} other {{text} "
-          & "말}}")
-     & P ("calendar_range.weekend.last", "지난 주말")
-     & P ("calendar_range.weekend.this", "이번 주말")
-     & P ("calendar_range.weekend.next", "다음 주말")
-     & P ("calendar_range.weekend_of", "{date} 주말")
-     & P ("calendar_range.week.last", "지난주")
-     & P ("calendar_range.week.this", "이번 주")
-     & P ("calendar_range.week.next", "다음 주")
-     & P ("calendar_range.week_of", "{date} 주간")
-     & P ("calendar_range.between", "{first} ~ {last}");
+   P ("all_count", "전체 {other} {total}개");
+   P ("filtered_count.none", "일치하는 {other} 없음");
+   P ("filtered_count.all", "{other} {total}개 모두 일치");
+   P ("filtered_count.some", "{other} {total}개 중 {matching}개 일치");
+   P ("more_count", "{visible}개 표시, +{remaining}개 더");
+   P ("others_count", "{first} 외 {remaining}개");
+   P ("page_count", "{page}/{total}페이지");
+   P ("page_size", "페이지당 {other} {size}개");
+   P ("pagination_range", "{other} {total}개 중 {first}-{last}");
+   P ("position_count", "{position}/{total}");
+   P ("selection_count", "{other} {total}개 중 {selected}개 선택됨");
+   P ("showing_count", "{other} {total}개 중 {showing}개 표시");
+   P ("validation_count",
+      "{count, plural, =0 {{severity, select, error {오류} warning {경고} "
+      & "other {알림}} 없음} other {{severity, select, error {오류} "
+      & "warning {경고} other {알림}} {count}개}}");
+   P ("collection.empty", "{other} 없음");
+   P ("collection.none_shown", "표시된 {other} 없음");
+   P ("collection.showing_hidden", "{other} {total}개 중 {visible}개 표시, {hidden}개 숨김");
+   P ("collection.showing", "{other} {total}개 중 {visible}개 표시");
+   P ("collection.shown_hidden", "{other} {visible}개 표시, {hidden}개 숨김");
+   P ("collection.shown", "{other} {visible}개 표시");
+   P ("collection.visible_out_of", "{other} {total}개 중 {visible}개 표시 중");
+   P ("complete_count", "{total}개 중 {done}개 완료");
+   P ("percent_complete", "{percent}% 완료");
+   P ("step_count", "단계 {step}/{total}");
+   P ("attempt_count", "시도 {attempt}/{total}");
+   P ("throughput_remaining", "{other} {remaining}개 남음 ({rate} {unit}/초)");
+   P ("accessible_progress", "{total}개 중 {done}개 완료, {percent}퍼센트");
+   P ("business_days", "영업일 {days}일");
+   P ("working_hours", "근무 {hours}시간");
+   P ("due.overdue", "기한 {days}일 초과");
+   P ("due.today", "오늘 마감");
+   P ("due.tomorrow", "내일 마감");
+   P ("due.in", "{days}일 후 마감");
+   P ("calendar_difference.future", "{difference} 후");
+   P ("calendar_difference.past", "{difference} 전");
+   P ("cpu_load", "CPU {measure}");
+   P ("battery", "배터리 {measure}");
+   P ("screen_size", "화면 {measure}");
+   P ("refresh_rate", "주사율 {measure}");
+   P ("editorial_percent.symbol", "{value}%");
+   P ("editorial_percent.word", "{value}퍼센트");
+   P ("recurrence.second", "{every, plural, =1 {매초} other {{every}초마다}}");
+   P ("recurrence.minute", "{every, plural, =1 {매분} other {{every}분마다}}");
+   P ("recurrence.hour", "{every, plural, =1 {매시간} other {{every}시간마다}}");
+   P ("recurrence.day", "{every, plural, =1 {매일} other {{every}일마다}}");
+   P ("recurrence.week", "{every, plural, =1 {매주} other {{every}주마다}}");
+   P ("recurrence.month", "{every, plural, =1 {매월} other {{every}개월마다}}");
+   P ("recurrence.quarter", "{every, plural, =1 {분기마다} other {{every}분기마다}}");
+   P ("recurrence.year", "{every, plural, =1 {매년} other {{every}년마다}}");
+   P ("cache_summary.empty", "캐시: 요청 없음");
+   P ("cache_summary", "캐시: 적중 {hits}회, 누락 {misses}회, 적중률 {rate}%");
+   P ("field_change_summary",
+      "{other} {total}개: {changed}개 변경, {added}개 추가, "
+      & "{removed}개 제거");
+   P ("field_diff", "{field} 변경: {before} → {after}");
+   P ("field_added", "{field} 추가: {value}");
+   P ("field_removed", "{field} 제거 (이전 값: {value})");
+   P ("field_unchanged", "{field} 변경 없음: {value}");
+   P ("number_comparison.equal", "{current}: {baseline}과(와) 같음");
+   P ("number_comparison.higher", "{current}: {baseline}보다 {quantity} 높음");
+   P ("number_comparison.lower", "{current}: {baseline}보다 {quantity} 낮음");
+   P ("percent_comparison.equal", "{current}: {baseline}과(와) 같음");
+   P ("percent_comparison.higher", "{current}: {baseline}보다 {quantity} 높음");
+   P ("percent_comparison.lower", "{current}: {baseline}보다 {quantity} 낮음");
+   P ("file_size_comparison.same", "{current}: {baseline}과(와) 크기 같음");
+   P ("file_size_comparison.larger", "{current}: {baseline}보다 {quantity} 큼");
+   P ("file_size_comparison.smaller", "{current}: {baseline}보다 {quantity} 작음");
+   P ("date_comparison.same", "{current}: {baseline}과(와) 같은 날짜");
+   P ("date_comparison.after", "{current}: {baseline}보다 {quantity} 후");
+   P ("date_comparison.before", "{current}: {baseline}보다 {quantity} 전");
+   P ("queue_summary", "대기열: {details}");
+   P ("domain_summary",
+      "{domain, select, queue {대기열} job {작업} run {실행} cache "
+      & "{캐시} sync {동기화} import {가져오기} export {내보내기} "
+      & "other {{domain}}} {state, select, queued {대기열에 추가됨} "
+      & "running {실행 중} waiting {대기 중} paused {일시 중지됨} "
+      & "complete {완료} failed {실패} stale {오래됨} skipped "
+      & "{건너뜀} other {{state}}}: {details}");
+   P ("summary.none", "{other} 없음");
+   P ("summary.completed", "{other} {count}개 완료");
+   P ("summary.completed_of", "{other} {total}개 중 {count}개 완료");
+   P ("summary.failed", "{count}개 실패");
+   P ("summary.queued", "{other} {count}개 대기 중");
+   P ("summary.running", "{count}개 실행 중");
+   P ("summary.complete", "{count}개 완료");
+   P ("backup.backup_running", "백업 실행 중");
+   P ("backup.backup_completed", "백업 완료");
+   P ("backup.backup_failed", "백업 실패");
+   P ("backup.backup_stale", "백업 오래됨");
+   P ("incident.incident_investigating", "인시던트 조사 중");
+   P ("incident.incident_identified", "인시던트 원인 파악됨");
+   P ("incident.incident_mitigated", "인시던트 완화됨");
+   P ("incident.incident_resolved", "인시던트 해결됨");
+   P ("release.release_drafting", "릴리스 준비 중");
+   P ("release.release_ready", "릴리스 준비 완료");
+   P ("release.release_published", "릴리스 게시됨");
+   P ("release.release_rolled_back", "릴리스 롤백됨");
+   P ("audit.audit_created", "감사 항목 생성됨");
+   P ("audit.audit_updated", "감사 항목 업데이트됨");
+   P ("audit.audit_deleted", "감사 항목 삭제됨");
+   P ("audit.audit_restored", "감사 항목 복원됨");
+   P ("flag.flag_enabled", "기능 플래그 활성화됨");
+   P ("flag.flag_disabled", "기능 플래그 비활성화됨");
+   P ("flag.flag_rolling_out", "기능 플래그 단계적 배포 중");
+   P ("flag.flag_rolled_back", "기능 플래그 롤백됨");
+   P ("webhook.webhook_pending", "웹훅 대기 중");
+   P ("webhook.webhook_delivered", "웹훅 전송됨");
+   P ("webhook.webhook_failed", "웹훅 실패");
+   P ("webhook.webhook_retrying", "웹훅 재시도 중");
+   P ("api_key.api_key_active", "API 키 활성");
+   P ("api_key.api_key_revoked", "API 키 취소됨");
+   P ("api_key.api_key_expired", "API 키 만료됨");
+   P ("api_key.api_key_rotated", "API 키 교체됨");
+   P ("quota.quota_available", "할당량 사용 가능");
+   P ("quota.quota_near_limit", "할당량 한도 임박");
+   P ("quota.quota_exceeded", "할당량 초과");
+   P ("quota.quota_reset", "할당량 재설정됨");
+   P ("invoice.invoice_draft", "청구서 초안");
+   P ("invoice.invoice_sent", "청구서 발송됨");
+   P ("invoice.invoice_paid", "청구서 결제됨");
+   P ("invoice.invoice_refunded", "청구서 환불됨");
+   P ("invoice.invoice_overdue", "청구서 연체");
+   P ("invoice.refund_failed", "환불 실패");
+   P ("page_navigation.only", "단일 페이지");
+   P ("page_navigation.first", "첫 페이지, 다음 페이지 있음");
+   P ("page_navigation.last", "마지막 페이지, 이전 페이지 있음");
+   P ("page_navigation.middle", "이전 및 다음 페이지 있음");
+   P ("end_of_week", "주 마지막 날");
+   P ("end_of_month", "월말");
+   P ("end_of_quarter", "분기 말");
+   P ("time_of_day.night", "밤");
+   P ("time_of_day.morning", "아침");
+   P ("time_of_day.afternoon", "오후");
+   P ("time_of_day.evening", "저녁");
+   P ("calendar_difference.same_day", "같은 날");
+   P ("calendar_difference.zero", "0일");
+   P ("queue_summary.empty", "대기열 비어 있음");
+   P ("access.allowed", "허용됨");
+   P ("access.denied", "거부됨");
+   P ("access.owner", "소유자");
+   P ("access.admin", "관리자");
+   P ("access.viewer", "뷰어");
+   P ("access.editor", "편집자");
+   P ("auth.signed_in", "로그인됨");
+   P ("auth.signed_out", "로그아웃됨");
+   P ("auth.session_expired", "세션 만료됨");
+   P ("auth.locked", "잠김");
+   P ("auth.two_factor_required", "2단계 인증 필요");
+   P ("billing.trialing", "평가판 사용 중");
+   P ("billing.payment_due", "결제 예정");
+   P ("billing.payment_failed", "결제 실패");
+   P ("billing.paid", "결제 완료");
+   P ("billing.past_due", "연체");
+   P ("billing.canceled", "취소됨");
+   P ("ci.pipeline_pending", "파이프라인 대기 중");
+   P ("ci.pipeline_running", "파이프라인 실행 중");
+   P ("ci.pipeline_passed", "파이프라인 통과");
+   P ("ci.pipeline_failed", "파이프라인 실패");
+   P ("ci.review_required", "검토 필요");
+   P ("ci.deploy_blocked", "배포 차단됨");
+   P ("collaboration.active_now", "현재 활동 중");
+   P ("collaboration.away", "자리 비움");
+   P ("collaboration.do_not_disturb", "방해 금지");
+   P ("collaboration.typing", "입력 중");
+   P ("collaboration.viewing", "보는 중");
+   P ("collaboration.editing", "편집 중");
+   P ("deployment.deploying", "배포 중");
+   P ("deployment.deployed", "배포됨");
+   P ("deployment.rolling_back", "롤백 중");
+   P ("deployment.rolled_back", "롤백됨");
+   P ("deployment.build_failed", "빌드 실패");
+   P ("deployment.checks_passed", "검사 통과");
+   P ("empty.no_items", "항목 없음");
+   P ("empty.no_results", "결과 없음");
+   P ("empty.no_messages", "메시지 없음");
+   P ("empty.no_selection", "선택 항목 없음");
+   P ("empty.nothing_to_show", "표시할 항목 없음");
+   P ("file.uploading", "업로드 중");
+   P ("file.downloading", "다운로드 중");
+   P ("file.copying", "복사 중");
+   P ("file.moving", "이동 중");
+   P ("file.deleting", "삭제 중");
+   P ("file.deleted", "삭제됨");
+   P ("file.restoring", "복원 중");
+   P ("file.synced", "동기화됨");
+   P ("form.valid_input", "유효한 입력");
+   P ("form.invalid_input", "잘못된 입력");
+   P ("form.dirty", "변경됨");
+   P ("form.pristine", "변경 없음");
+   P ("form.submitted", "제출됨");
+   P ("form.submission_failed", "제출 실패");
+   P ("health.healthy", "정상");
+   P ("health.degraded", "성능 저하");
+   P ("health.unhealthy", "비정상");
+   P ("health.incident", "장애 발생");
+   P ("health.maintenance", "유지 관리 중");
+   P ("health.recovering", "복구 중");
+   P ("issue.open", "열림");
+   P ("issue.closed", "닫힘");
+   P ("issue.reopened", "다시 열림");
+   P ("issue.assigned", "할당됨");
+   P ("issue.unassigned", "할당되지 않음");
+   P ("issue.merged", "병합됨");
+   P ("network.offline", "오프라인");
+   P ("network.online", "온라인");
+   P ("network.connecting", "연결 중");
+   P ("network.syncing", "동기화 중");
+   P ("network.sync_failed", "동기화 실패");
+   P ("network.permission_denied", "권한 거부됨");
+   P ("network.read_only", "읽기 전용");
+   P ("notification.unread", "읽지 않음");
+   P ("notification.read", "읽음");
+   P ("notification.muted", "음소거됨");
+   P ("notification.snoozed", "다시 알림 설정됨");
+   P ("notification.sent", "보냄");
+   P ("notification.delivered", "전달됨");
+   P ("payment.payment_authorized", "결제 승인됨");
+   P ("payment.payment_captured", "결제 확정됨");
+   P ("payment.payment_refunded", "환불됨");
+   P ("payment.payment_disputed", "결제 이의 제기됨");
+   P ("payment.payment_requires_action", "결제 조치 필요");
+   P ("payment.payment_expired", "결제 만료됨");
+   P ("ui.empty", "비어 있음");
+   P ("ui.loading", "로드 중");
+   P ("ui.saving", "저장 중");
+   P ("ui.saved", "저장됨");
+   P ("ui.unsaved", "저장 안 됨");
+   P ("ui.retrying", "재시도 중");
+   P ("ui.paused", "일시 중지됨");
+   P ("ui.complete", "완료");
+   P ("ui.failed", "실패");
+   P ("ui.due_soon", "곧 마감");
+   P ("ui.overdue", "기한 지남");
+   P ("ui.last_seen", "마지막 접속");
+   P ("ui.updated_just_now", "방금 업데이트됨");
+   P ("queue.queued", "대기열에 추가됨");
+   P ("queue.running", "실행 중");
+   P ("queue.waiting", "대기 중");
+   P ("queue.blocked", "차단됨");
+   P ("queue.canceled_job", "작업 취소됨");
+   P ("queue.completed_job", "작업 완료됨");
+   P ("search.filtering", "필터링 중");
+   P ("search.filtered", "필터링됨");
+   P ("search.no_matches", "일치 항목 없음");
+   P ("search.search_ready", "검색 준비됨");
+   P ("search.search_failed", "검색 실패");
+   P ("search.query_too_short", "검색어가 너무 짧음");
+   P ("security.secure", "안전함");
+   P ("security.insecure", "안전하지 않음");
+   P ("security.vulnerable", "취약함");
+   P ("security.encrypted", "암호화됨");
+   P ("security.unencrypted", "암호화되지 않음");
+   P ("security.token_expired", "토큰 만료됨");
+   P ("sync.sync_idle", "동기화 유휴");
+   P ("sync.syncing_now", "지금 동기화 중");
+   P ("sync.sync_queued", "동기화 대기 중");
+   P ("sync.sync_conflict", "동기화 충돌");
+   P ("sync.sync_complete", "동기화 완료");
+   P ("sync.sync_error", "동기화 오류");
+   P ("task.todo", "할 일");
+   P ("task.in_progress", "진행 중");
+   P ("task.done", "완료");
+   P ("task.skipped", "건너뜀");
+   P ("task.blocked_task", "차단됨");
+   P ("task.waiting_on", "대기 중");
+   P ("ticket.ticket_new", "새 티켓");
+   P ("ticket.ticket_open", "열린 티켓");
+   P ("ticket.ticket_waiting", "티켓 대기 중");
+   P ("ticket.ticket_escalated", "티켓 에스컬레이션됨");
+   P ("ticket.ticket_resolved", "티켓 해결됨");
+   P ("ticket.ticket_closed", "티켓 닫힘");
+   P ("transfer.importing", "가져오는 중");
+   P ("transfer.imported", "가져옴");
+   P ("transfer.import_failed", "가져오기 실패");
+   P ("transfer.exporting", "내보내는 중");
+   P ("transfer.exported", "내보냄");
+   P ("transfer.export_failed", "내보내기 실패");
+   P ("validation.required", "필수");
+   P ("validation.optional", "선택 사항");
+   P ("validation.invalid", "유효하지 않음");
+   P ("validation.too_short", "너무 짧음");
+   P ("validation.too_long", "너무 김");
+   P ("validation.out_of_range", "범위를 벗어남");
+   P ("validation.already_exists", "이미 있음");
+   P ("workflow.draft", "초안");
+   P ("workflow.in_review", "검토 중");
+   P ("workflow.approved", "승인됨");
+   P ("workflow.rejected", "거부됨");
+   P ("workflow.published", "게시됨");
+   P ("workflow.archived", "보관됨");
+   P ("database.database_online", "데이터베이스 온라인");
+   P ("database.database_offline", "데이터베이스 오프라인");
+   P ("database.database_degraded", "데이터베이스 성능 저하");
+   P ("database.database_migrating", "데이터베이스 마이그레이션 중");
+   P ("database.database_migration_failed", "데이터베이스 마이그레이션 실패");
+   P ("database.database_replicating", "데이터베이스 복제 중");
+   P ("database.database_replication_lagging", "데이터베이스 복제 지연");
+   P ("database.database_backup_running", "데이터베이스 백업 중");
+   P ("database.database_backup_failed", "데이터베이스 백업 실패");
+   P ("times_noun",
+      "{count, plural, =0 {{other} 한 번도 없음} =1 {{other} 한 번} =2 "
+      & "{{other} 두 번} other {{other} {count}회}}");
+   P ("availability.all", "{other} {total}개 중 {available}개 사용 가능");
+   P ("availability.none", "사용 가능한 {other} 없음");
+   P ("availability.partial",
+      "{other} {total}개 중 {available}개 사용 가능, {unavailable}개 "
+      & "사용 불가");
+   P ("operation_progress", "{name} – {state}: {details}");
+   P ("operation.queued", "대기 중");
+   P ("operation.running", "실행 중");
+   P ("operation.blocked", "차단됨");
+   P ("operation.retrying", "재시도 중");
+   P ("operation.succeeded", "성공");
+   P ("operation.partially_succeeded", "부분 성공");
+   P ("operation.failed", "실패");
+   P ("operation.canceled", "취소됨");
+   P ("operation.skipped", "건너뜀");
+   P ("operation.stale", "오래됨");
+   P ("operation.unknown_state", "알 수 없음");
+   P ("operation.last_success", "{name} 마지막 성공: {time}");
+   P ("operation.next_retry", "{name} 다음 재시도: {time}");
+   P ("operation.stale_run", "{name} {time} 동안 갱신 없음");
+   P ("summary.skipped", "{count}개 건너뜀");
+   P ("summary.retried", "{count}개 재시도됨");
+   P ("summary.canceled", "{count}개 취소됨");
+   P ("system.service.operational", "정상 운영");
+   P ("system.service.degraded", "성능 저하");
+   P ("system.service.partial_outage", "부분 장애");
+   P ("system.service.major_outage", "대규모 장애");
+   P ("system.service.maintenance", "점검 중");
+   P ("system.service.unknown", "서비스 상태 알 수 없음");
+   P ("system.health.healthy", "정상");
+   P ("system.health.warning", "경고");
+   P ("system.health.critical", "심각");
+   P ("system.health.unavailable", "사용 불가");
+   P ("system.health.unknown_health", "상태 알 수 없음");
+   P ("system.readiness.ready", "준비됨");
+   P ("system.readiness.not_ready", "준비 안 됨");
+   P ("system.readiness.starting", "시작 중");
+   P ("system.readiness.draining", "드레이닝 중");
+   P ("system.readiness.stopped", "중지됨");
+   P ("system.readiness.unknown_readiness", "준비 상태 알 수 없음");
+   P ("system.component.online", "온라인");
+   P ("system.component.offline", "오프라인");
+   P ("system.component.starting", "시작 중");
+   P ("system.component.stopping", "중지 중");
+   P ("system.component.restarting", "다시 시작 중");
+   P ("system.component.unknown", "구성 요소 상태 알 수 없음");
+   P ("system.check.passing", "통과");
+   P ("system.check.failing", "실패");
+   P ("system.check.warning", "경고");
+   P ("system.check.skipped", "건너뜀");
+   P ("system.check.timed_out", "시간 초과");
+   P ("system.check.unknown", "검사 상태 알 수 없음");
+   P ("system.incident.investigating", "조사 중");
+   P ("system.incident.identified", "원인 파악됨");
+   P ("system.incident.monitoring", "모니터링 중");
+   P ("system.incident.resolved", "해결됨");
+   P ("system.incident.scheduled_maintenance", "예정된 점검");
+   P ("system.named", "{name}: {state}");
+   P ("system.check_named", "{name} 검사: {state}");
+   P ("system.count.components",
+      "{count, plural, =0 {구성 요소 없음} other {구성 요소 "
+      & "{count}개}}");
+   P ("system.count.checks", "{count, plural, =0 {검사 없음} other {검사 {count}개}}");
+   P ("system.count.incidents",
+      "{count, plural, =0 {인시던트 없음} other {인시던트 "
+      & "{count}건}}");
+   P ("system.uptime", "가동률 {measure}");
+   P ("system.latency", "지연 시간 {measure}");
+   P ("system.maintenance_window", "점검 시간 {time}");
+   P ("system.last_checked", "마지막 확인 {time}");
+   P ("system.http.informational", "정보 응답");
+   P ("system.http.successful", "성공 응답");
+   P ("system.http.redirection", "리다이렉션");
+   P ("system.http.client_error", "클라이언트 오류");
+   P ("system.http.server_error", "서버 오류");
+   P ("system.exit.success", "종료 코드 {code}: 성공");
+   P ("system.exit.failure", "종료 코드 {code}: 실패");
+   P ("system.exit.usage_error", "종료 코드 {code}: 사용법 오류");
+   P ("system.exit.not_executable", "종료 코드 {code}: 명령을 실행할 수 없음");
+   P ("system.exit.not_found", "종료 코드 {code}: 명령을 찾을 수 없음");
+   P ("system.exit.invalid_argument", "종료 코드 {code}: 잘못된 종료 인수");
+   P ("system.exit.signal", "종료 코드 {code}: {signal}(으)로 종료됨");
+   P ("validation.problem.required", "{field}: 필수 항목입니다");
+   P ("validation.problem.minimum", "{field}: 최솟값보다 작습니다");
+   P ("validation.problem.maximum", "{field}: 최댓값보다 큽니다");
+   P ("validation.problem.range", "{field}: 범위를 벗어났습니다");
+   P ("validation.problem.pattern", "{field}: 형식이 올바르지 않습니다");
+   P ("validation.problem.choice", "{field}: 허용된 선택 항목 중 하나여야 합니다");
+   P ("validation.problem.dependency", "{field}: 다른 필드에 따라 달라집니다");
+   P ("validation.problem.custom", "{field}: 유효하지 않습니다");
+   P ("validation.constraint.no_relation", "{field}: 유효한 {value} 값이어야 합니다");
+   P ("validation.constraint.less_than", "{field}: {value}보다 작아야 합니다");
+   P ("validation.constraint.less_or_equal", "{field}: {value} 이하여야 합니다");
+   P ("validation.constraint.greater_than", "{field}: {value}보다 커야 합니다");
+   P ("validation.constraint.greater_or_equal", "{field}: {value} 이상이어야 합니다");
+   P ("validation.constraint.equal_to", "{field}: {value}와(과) 같아야 합니다");
+   P ("validation.constraint.not_equal_to", "{field}: {value}와(과) 달라야 합니다");
+   P ("validation.constraint.before_field", "{field}: {value} 이전이어야 합니다");
+   P ("validation.constraint.after_field", "{field}: {value} 이후여야 합니다");
+   P ("validation.choices", "{field}: 허용되는 값: {choices}");
+   P ("frame.detail", "{text} ({detail})");
+   P ("frame.got", "{text}, 입력값: {actual}");
+   P ("frame.also", "{text}, {detail}");
+   P ("frame.retry", "{text}, {time} 후 다시 시도");
+   P ("net_diagnostic.dns", "{endpoint}: DNS 조회 실패");
+   P ("net_diagnostic.tcp", "{endpoint}: TCP 연결 실패");
+   P ("net_diagnostic.tls", "{endpoint}: TLS 인증서 검증 실패");
+   P ("net_diagnostic.http", "{endpoint}: HTTP 요청 실패");
+   P ("net_diagnostic.proxy", "{endpoint}: 프록시 연결 실패");
+   P ("net_diagnostic.timeout", "{endpoint}: 시간 초과");
+   P ("net_diagnostic.reset", "{endpoint}: 연결이 재설정됨");
+   P ("net_diagnostic.unknown_network", "{endpoint}: 네트워크 오류");
+   P ("progress.state.not_started", "시작 안 됨");
+   P ("progress.state.running", "실행 중");
+   P ("progress.state.stalled", "멈춤");
+   P ("progress.state.retrying", "재시도 중");
+   P ("progress.state.complete", "완료");
+   P ("progress.state.failed", "실패");
+   P ("progress.of", "{subject}: {total}개 중 {done}개 완료({percent}%), {state}");
+   P ("progress.done", "{subject}: {done}개 완료, {state}");
+   P ("collection.summary",
+      "{name}: 항목 {total}개, 고유 값 {unique}개, 중복 "
+      & "{duplicates}개, 이상값 {outliers}개");
+   P ("top_frequency", "{name} 최빈값: {value}({count}회)");
+   P ("calendar_date.fiscal_year", "{year} 회계연도");
+   P ("calendar_date.fiscal_quarter", "{year} 회계연도 {part}분기");
+   P ("calendar_date.fiscal_half",
+      "{part, plural, =1 {{year} 회계연도 상반기} other {{year} "
+      & "회계연도 하반기}}");
+   P ("calendar_date.fiscal_year_end", "{year} 회계연도 말");
+   P ("calendar_date.semester", "{year}년 {part}학기");
+   P ("calendar_date.half_year", "{part, plural, =1 {{year}년 상반기} other {{year}년 하반기}}");
+   P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}년 상반기} other {{year}년 하반기}}");
+   P ("calendar_date.month_phase",
+      "{phase, select, early {{text} 초} mid {{text} 중순} other {{text} "
+      & "말}}");
+   P ("calendar_date.quarter_phase",
+      "{phase, select, early {{text} 초} mid {{text} 중반} other {{text} "
+      & "말}}");
+   P ("calendar_range.weekend.last", "지난 주말");
+   P ("calendar_range.weekend.this", "이번 주말");
+   P ("calendar_range.weekend.next", "다음 주말");
+   P ("calendar_range.weekend_of", "{date} 주말");
+   P ("calendar_range.week.last", "지난주");
+   P ("calendar_range.week.this", "이번 주");
+   P ("calendar_range.week.next", "다음 주");
+   P ("calendar_range.week_of", "{date} 주간");
+   P ("calendar_range.between", "{first} ~ {last}");
+   P ("http.reason.100", "계속");
+   P ("http.reason.101", "프로토콜 전환");
+   P ("http.reason.102", "처리 중");
+   P ("http.reason.103", "조기 힌트");
+   P ("http.reason.200", "성공");
+   P ("http.reason.201", "생성됨");
+   P ("http.reason.202", "수락됨");
+   P ("http.reason.203", "신뢰할 수 없는 정보");
+   P ("http.reason.204", "콘텐츠 없음");
+   P ("http.reason.205", "콘텐츠 재설정");
+   P ("http.reason.206", "부분 콘텐츠");
+   P ("http.reason.207", "다중 상태");
+   P ("http.reason.208", "이미 보고됨");
+   P ("http.reason.226", "IM 사용됨");
+   P ("http.reason.300", "다중 선택");
+   P ("http.reason.301", "영구 이동");
+   P ("http.reason.302", "발견됨");
+   P ("http.reason.303", "다른 위치 보기");
+   P ("http.reason.304", "수정되지 않음");
+   P ("http.reason.305", "프록시 사용");
+   P ("http.reason.307", "임시 리디렉션");
+   P ("http.reason.308", "영구 리디렉션");
+   P ("http.reason.400", "잘못된 요청");
+   P ("http.reason.401", "인증되지 않음");
+   P ("http.reason.402", "결제 필요");
+   P ("http.reason.403", "금지됨");
+   P ("http.reason.404", "찾을 수 없음");
+   P ("http.reason.405", "허용되지 않는 메서드");
+   P ("http.reason.406", "수용할 수 없음");
+   P ("http.reason.407", "프록시 인증 필요");
+   P ("http.reason.408", "요청 시간 초과");
+   P ("http.reason.409", "충돌");
+   P ("http.reason.410", "사라짐");
+   P ("http.reason.411", "길이 필요");
+   P ("http.reason.412", "전제 조건 실패");
+   P ("http.reason.413", "콘텐츠가 너무 큼");
+   P ("http.reason.414", "URI가 너무 김");
+   P ("http.reason.415", "지원되지 않는 미디어 유형");
+   P ("http.reason.416", "범위를 충족할 수 없음");
+   P ("http.reason.417", "기대 실패");
+   P ("http.reason.418", "나는 찻주전자");
+   P ("http.reason.421", "잘못 전달된 요청");
+   P ("http.reason.422", "처리할 수 없는 콘텐츠");
+   P ("http.reason.423", "잠김");
+   P ("http.reason.424", "의존성 실패");
+   P ("http.reason.425", "너무 이름");
+   P ("http.reason.426", "업그레이드 필요");
+   P ("http.reason.428", "전제 조건 필요");
+   P ("http.reason.429", "너무 많은 요청");
+   P ("http.reason.431", "요청 헤더 필드가 너무 큼");
+   P ("http.reason.451", "법적 사유로 이용 불가");
+   P ("http.reason.500", "내부 서버 오류");
+   P ("http.reason.501", "구현되지 않음");
+   P ("http.reason.502", "잘못된 게이트웨이");
+   P ("http.reason.503", "서비스 이용 불가");
+   P ("http.reason.504", "게이트웨이 시간 초과");
+   P ("http.reason.505", "지원되지 않는 HTTP 버전");
+   P ("http.reason.506", "변형도 협상함");
+   P ("http.reason.507", "저장 공간 부족");
+   P ("http.reason.508", "루프 감지됨");
+   P ("http.reason.510", "확장되지 않음");
+   P ("http.reason.511", "네트워크 인증 필요");
+   P ("errno.reason.0", "성공");
+   P ("errno.reason.1", "작업이 허용되지 않음");
+   P ("errno.reason.2", "해당 파일 또는 디렉터리 없음");
+   P ("errno.reason.3", "해당 프로세스 없음");
+   P ("errno.reason.4", "시스템 호출이 중단됨");
+   P ("errno.reason.5", "입력/출력 오류");
+   P ("errno.reason.6", "해당 장치 또는 주소 없음");
+   P ("errno.reason.9", "잘못된 파일 디스크립터");
+   P ("errno.reason.11", "리소스를 일시적으로 사용할 수 없음");
+   P ("errno.reason.12", "메모리 부족");
+   P ("errno.reason.13", "권한 거부됨");
+   P ("errno.reason.17", "파일이 있음");
+   P ("errno.reason.20", "디렉터리가 아님");
+   P ("errno.reason.21", "디렉터리임");
+   P ("errno.reason.22", "잘못된 인수");
+   P ("errno.reason.24", "열린 파일이 너무 많음");
+   P ("errno.reason.28", "장치에 남은 공간 없음");
+   P ("errno.reason.32", "파이프가 깨짐");
+   P ("errno.reason.98", "주소가 이미 사용 중");
+   P ("errno.reason.110", "연결 시간 초과");
+   P ("errno.reason.111", "연결이 거부됨");
+   P ("signal.reason.1", "행업");
+   P ("signal.reason.2", "인터럽트");
+   P ("signal.reason.3", "종료");
+   P ("signal.reason.4", "잘못된 명령어");
+   P ("signal.reason.5", "추적 트랩");
+   P ("signal.reason.6", "중단");
+   P ("signal.reason.7", "버스 오류");
+   P ("signal.reason.8", "부동 소수점 예외");
+   P ("signal.reason.9", "강제 종료됨");
+   P ("signal.reason.10", "사용자 정의 시그널 1");
+   P ("signal.reason.11", "세그멘테이션 오류");
+   P ("signal.reason.12", "사용자 정의 시그널 2");
+   P ("signal.reason.13", "파이프가 깨짐");
+   P ("signal.reason.14", "알람");
+   P ("signal.reason.15", "종료 요청");
+   P ("signal.reason.17", "자식 프로세스 상태 변경됨");
+   P ("signal.reason.18", "계속");
+   P ("signal.reason.19", "정지됨");
+   P ("signal.reason.20", "터미널 정지");
+   P ("signal.reason.28", "창 크기 변경됨");
+   P ("sqlstate.reason.00", "성공적 완료");
+   P ("sqlstate.reason.01", "경고");
+   P ("sqlstate.reason.02", "데이터 없음");
+   P ("sqlstate.reason.08", "연결 예외");
+   P ("sqlstate.reason.0a", "지원되지 않는 기능");
+   P ("sqlstate.reason.22", "데이터 예외");
+   P ("sqlstate.reason.23", "무결성 제약 조건 위반");
+   P ("sqlstate.reason.24", "잘못된 커서 상태");
+   P ("sqlstate.reason.25", "잘못된 트랜잭션 상태");
+   P ("sqlstate.reason.28", "잘못된 권한 부여 지정");
+   P ("sqlstate.reason.2d", "잘못된 트랜잭션 종료");
+   P ("sqlstate.reason.3d", "잘못된 카탈로그 이름");
+   P ("sqlstate.reason.3f", "잘못된 스키마 이름");
+   P ("sqlstate.reason.40", "트랜잭션 롤백");
+   P ("sqlstate.reason.42", "구문 오류 또는 접근 규칙 위반");
+   P ("sqlstate.reason.53", "자원 부족");
+   P ("sqlstate.reason.54", "프로그램 한도 초과");
+   P ("sqlstate.reason.55", "객체가 필요한 상태가 아님");
+   P ("sqlstate.reason.57", "운영자 개입");
+   P ("sqlstate.reason.58", "시스템 오류");
+   P ("sqlstate.reason.hv", "외부 데이터 래퍼 오류");
+   P ("sqlstate.reason.p0", "PL/pgSQL 오류");
+   P ("sqlstate.reason.xx", "내부 오류");
+   P ("system.signal_numbered", "시그널 {number} {name} {reason}");
+   P ("http.reason.unknown", "알 수 없는 상태");
+   P ("errno.reason.unknown", "알 수 없는 오류");
+   P ("signal.reason.unknown", "알 수 없는 시그널");
+   P ("sqlstate.reason.unknown", "알 수 없는 SQLSTATE 클래스");
 end Locale_Ko;

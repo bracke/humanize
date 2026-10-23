@@ -962,9 +962,31 @@ package body Humanize.Parsing.Implementation.Scalar_Text_Helpers is
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
       end if;
 
-      if not Numeric_Value (Item (Item'First .. Item'Last - 1), Amount) then
-         return (Status => Humanize.Status.Invalid_Argument, others => <>);
-      end if;
+      declare
+         --  The number before the sign, without the no-break or narrow
+         --  no-break space CLDR locales write there ("12 %").
+         Last : Natural := Item'Last - 1;
+      begin
+         loop
+            if Last - 1 >= Item'First
+              and then Item (Last - 1 .. Last) = [Character'Val (16#C2#), Character'Val (16#A0#)]
+            then
+               Last := Last - 2;
+            elsif Last - 2 >= Item'First
+              and then Item (Last - 2 .. Last)
+                = [Character'Val (16#E2#), Character'Val (16#80#), Character'Val (16#AF#)]
+            then
+               Last := Last - 3;
+            elsif Last >= Item'First and then Item (Last) = ' ' then
+               Last := Last - 1;
+            else
+               exit;
+            end if;
+         end loop;
+         if not Numeric_Value (Item (Item'First .. Last), Amount) then
+            return (Status => Humanize.Status.Invalid_Argument, others => <>);
+         end if;
+      end;
 
       return
         (Status   => Humanize.Status.Ok,

@@ -308,7 +308,8 @@ separate (Humanize.Tests.Numbers)
          "percent change");
       AUnit.Assertions.Assert
         (German_Percent_Change.Status = Ok
-         and then Support.Text (German_Percent_Change) = "plus 12,5%",
+         and then Support.Text (German_Percent_Change)
+           = "plus 12,5" & [Character'Val (16#C2#), Character'Val (16#A0#)] & "%",
          "percent change uses localized percent rendering");
       AUnit.Assertions.Assert
         (Percent_Delta_Text.Status = Ok

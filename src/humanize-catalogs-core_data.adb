@@ -109,6 +109,11 @@ package body Humanize.Catalogs.Core_Data is
      --  Ordinal words, a percentage in words and a plain number, by CLDR.
      & "und.humanize.number.ordinal_words = {value, number, ::ordinal-words}" & LF
      & "und.humanize.number.percent_unit = {value, unit, percent/unit-width-full-name}" & LF
+     --  A percentage outside English: the number as the locale writes it,
+     --  between the sign and spacing CLDR's percent pattern gives 50 %
+     --  ("12,5 %"); this entry is the fallback.
+     & "und.humanize.number.percent = {value, number}%" & LF
+     & "und.humanize.phrase.number.percent_sign = {value, number, ::percent}" & LF
      & "und.humanize.number.plain = {value, number}" & LF
      --  The generic phrase key; each phrase has its own key below it.
      & "und.humanize.phrase = {value}" & LF
@@ -600,7 +605,6 @@ package body Humanize.Catalogs.Core_Data is
      & "{count, plural, one {{value, number} kilogram} other {{value, number} kilogram}}" & LF
      & "da.humanize.unit.liter = "
      & "{count, plural, one {{value, number} liter} other {{value, number} liter}}" & LF
-     & "da.humanize.number.percent = {value, number}%" & LF
      & "da.humanize.unit.centimeter = "
      & "{count, plural, one {{value, number} centimeter} other {{value, number} centimeter}}" & LF
      & "da.humanize.unit.millimeter = "
@@ -644,7 +648,6 @@ package body Humanize.Catalogs.Core_Data is
      & "{count, plural, one {{value, number} Kilogramm} other {{value, number} Kilogramm}}" & LF
      & "de.humanize.unit.liter = "
      & "{count, plural, one {{value, number} Liter} other {{value, number} Liter}}" & LF
-     & "de.humanize.number.percent = {value, number}%" & LF
      & "de.humanize.unit.centimeter = "
      & "{count, plural, one {{value, number} Zentimeter} other {{value, number} Zentimeter}}" & LF
      & "de.humanize.unit.millimeter = "
@@ -692,7 +695,6 @@ package body Humanize.Catalogs.Core_Data is
      & "other {{value, number} kilogrammes}}" & LF
      & "fr.humanize.unit.liter = "
      & "{count, plural, one {{value, number} litre} other {{value, number} litres}}" & LF
-     & "fr.humanize.number.percent = {value, number} %" & LF
      & "fr.humanize.unit.centimeter = "
      & "{count, plural, one {{value, number} centim" & EGRAVE & "tre} "
      & "other {{value, number} centim" & EGRAVE & "tres}}" & LF
@@ -743,7 +745,6 @@ package body Humanize.Catalogs.Core_Data is
      & "{count, plural, one {{value, number} kilogramo} other {{value, number} kilogramos}}" & LF
      & "es.humanize.unit.liter = "
      & "{count, plural, one {{value, number} litro} other {{value, number} litros}}" & LF
-     & "es.humanize.number.percent = {value, number}%" & LF
      & "es.humanize.unit.centimeter = "
      & "{count, plural, one {{value, number} cent" & IACUTE & "metro} "
      & "other {{value, number} cent" & IACUTE & "metros}}" & LF
@@ -791,7 +792,6 @@ package body Humanize.Catalogs.Core_Data is
      & "other {{value, number} chilogrammi}}" & LF
      & "it.humanize.unit.liter = "
      & "{count, plural, one {{value, number} litro} other {{value, number} litri}}" & LF
-     & "it.humanize.number.percent = {value, number}%" & LF
      & "it.humanize.unit.centimeter = "
      & "{count, plural, one {{value, number} centimetro} other {{value, number} centimetri}}" & LF
      & "it.humanize.unit.millimeter = "
@@ -830,7 +830,6 @@ package body Humanize.Catalogs.Core_Data is
      & "pt.humanize.number.compact.long.trillion = "
      & "{count, plural, one {{value, number} bili" & ATILDE
      & "o} other {{value, number} bili" & OTILDE & "es}}" & LF
-     & "pt.humanize.number.percent = " & "{value, number}%" & LF
      & "pt.humanize.unit.meter = "
      & "{count, plural, one {{value, number} metro} "
      & "other {{value, number} metros}}" & LF

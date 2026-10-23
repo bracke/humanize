@@ -90,4 +90,30 @@ package Humanize.Parsing.Localized is
    --  @param Reference Today, for day words.
    --  @return The date; a two-digit year is read in the 2000s.
 
+   function Parse_Percent (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A percentage as Humanize.Numbers.Percent writes it ("12,5 %").
+   --  @return The percentage (12.5).
+
+   function Parse_Compact (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A number as Humanize.Numbers.Compact writes it, short or
+   --  long ("1,2 Mio.", "3 milliards").
+   --  @return The number, as precise as the text (not Exact when rounded).
+
+   function Parse_Ordinal (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text An ordinal as Humanize.Numbers.Ordinal writes it ("3.", "3rd", "3e").
+   --  @return The number.
+
+   function Parse_Currency
+     (Context : Humanize.Contexts.Context;
+      Text    : String;
+      Code    : String)
+      return Float_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text An amount as Humanize.Numbers.Currency writes it ("1.234,50 €").
+   --  @param Code The ISO 4217 code it is in ("EUR").
+   --  @return The amount.
+
 end Humanize.Parsing.Localized;

@@ -1,10 +1,14 @@
 separate (Humanize.Catalogs.Phrase_Data)
-function Locale_En_Ca return Wide_Wide_String is
-   function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("en-CA", Name, Template));
+procedure Locale_En_Ca (Target : in out Catalog_Text) is
+   --  One statement an entry: the catalog grows on the heap, not in one
+   --  expression on the stack.
+   procedure P (Name, Template : Wide_Wide_String) is
+   begin
+      Add (Target, "en-CA", Name, Template);
+   end P;
 begin
-   return
-     P ("billing.canceled", "cancelled")
-     & P ("queue.canceled_job", "job cancelled")
-     & P ("operation.canceled", "cancelled")
-     & P ("summary.canceled", "{count} cancelled");
+   P ("billing.canceled", "cancelled");
+   P ("queue.canceled_job", "job cancelled");
+   P ("operation.canceled", "cancelled");
+   P ("summary.canceled", "{count} cancelled");
 end Locale_En_Ca;

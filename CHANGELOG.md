@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+* HTTP, errno, signal and SQLSTATE reasons are localized
+  (`System_Status.Localized.HTTP_Status_Label`, `Errno_Label`,
+  `Signal_Label`, `SQLSTATE_Class_Label`; 131 phrase keys, translated).
+* `Numbers.Percent` writes the locale's percent sign and spacing outside
+  English ("12,5 %" with a no-break space in German, "١٢٫٥٪"), where
+  German, Danish and Spanish had "12,5%" and other locales English's form.
+  The English percent reader accepts a no-break space before the sign.
+* The phrase catalogs are built one entry at a time on the heap: each
+  locale's catalog was one `Wide_Wide_String` expression on the stack, and
+  at 556 keys in 44 locales loading them overflowed an 8 MiB stack.
+
+* `Parsing.Localized` reads percentages, compact numbers (short and long),
+  ordinals and currency amounts back in any shipped locale; round-trips in
+  34 locales.
+
 * The rest of `Calendar_Date_Label`'s presets and `Calendar_Range_Label`
   speak the locale outside English: fiscal years, quarters and halves,
   semesters, early/mid/late phases ("Anfang Oktober 2026"), month-day and

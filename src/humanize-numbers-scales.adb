@@ -1,6 +1,8 @@
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Humanize.Bounded_Text;
+with Humanize.Contexts;
 with Humanize.Decimal_Images;
 with Humanize.I18N_Rendering;
 with Humanize.Locales;
@@ -466,11 +468,41 @@ package body Humanize.Numbers.Scales is
       Options : Number_Options := Default_Number_Options)
       return Humanize.Status.Text_Result
    is
+      English : constant Humanize.Status.Text_Result :=
+        Humanize.I18N_Rendering.Render (Context, Humanize.Number_Classification.Percent (Value, Options));
    begin
-      return Humanize.I18N_Rendering.Render
-               (Context,
-         Humanize.Number_Classification.Percent
-                  (Value, Options));
+      if Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | "" then
+         return English;
+      end if;
+      --  The locale's sign and spacing, from how it writes 50 % ("50 %",
+      --  "%50", "٥٠٪"), around the number as it writes decimals.
+      declare
+         function Rendered (Selection : Humanize.Selections.Message_Selection) return String is
+            Result : constant Humanize.Status.Text_Result := Humanize.I18N_Rendering.Render (Context, Selection);
+         begin
+            return (if Result.Status = Humanize.Status.Ok then To_String (Result.Text) else "");
+         end Rendered;
+         Sample : constant String :=
+           Rendered (Humanize.Selections.With_Arg (Humanize.Selections.Phrase ("number.percent_sign"), "value", "0.5"));
+         Fifty  : constant String :=
+           Rendered (Humanize.Selections.Text_Value (Humanize.Message_Keys.Number_Plain, "50"));
+         Number : constant String :=
+           Rendered (Humanize.Selections.Text_Value
+                       (Humanize.Message_Keys.Number_Plain,
+                        Humanize.Decimal_Images.Decimal_Image
+                          (Value, Options.Maximum_Fraction_Digits, Options.Suppress_Trailing_Zero)));
+         At_Index : constant Natural :=
+           (if Fifty = "" then 0 else Ada.Strings.Fixed.Index (Sample, Fifty));
+      begin
+         if At_Index = 0 or else Number = "" then
+            return English;
+         end if;
+         return
+           (Status => Humanize.Status.Ok,
+            Text   => To_Unbounded_String
+              (Sample (Sample'First .. At_Index - 1) & Number & Sample (At_Index + Fifty'Length .. Sample'Last)),
+            Key    => English.Key);
+      end;
    end Percent;
 
    function Accessible_Number

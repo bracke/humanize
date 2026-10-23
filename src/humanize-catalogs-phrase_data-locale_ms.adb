@@ -1,456 +1,591 @@
 separate (Humanize.Catalogs.Phrase_Data)
-function Locale_Ms return Wide_Wide_String is
-   function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("ms", Name, Template));
+procedure Locale_Ms (Target : in out Catalog_Text) is
+   --  One statement an entry: the catalog grows on the heap, not in one
+   --  expression on the stack.
+   procedure P (Name, Template : Wide_Wide_String) is
+   begin
+      Add (Target, "ms", Name, Template);
+   end P;
 begin
-   return
-     P ("all_count", "semua {total} {other}")
-     & P ("filtered_count.none", "tiada {other} yang sepadan")
-     & P ("filtered_count.all", "semua {total} {other} sepadan")
-     & P ("filtered_count.some", "{matching} daripada {total} {other} sepadan")
-     & P ("more_count", "{visible} dipaparkan, +{remaining} lagi")
-     & P ("others_count", "{first} dan {remaining} yang lain")
-     & P ("page_count", "halaman {page} daripada {total}")
-     & P ("page_size", "{size} {other} setiap halaman")
-     & P ("pagination_range", "{first}–{last} daripada {total} {other}")
-     & P ("position_count", "{position} daripada {total}")
-     & P ("selection_count", "{selected} daripada {total} {other} dipilih")
-     & P ("showing_count", "memaparkan {showing} daripada {total} {other}")
-     & P ("validation_count",
-          "{count, plural, =0 {tiada {severity, select, error {ralat} warning "
-          & "{amaran} other {makluman}}} other {{count} {severity, select, error "
-          & "{ralat} warning {amaran} other {makluman}}}}")
-     & P ("collection.empty", "tiada {other}")
-     & P ("collection.none_shown", "tiada {other} dipaparkan")
-     & P ("collection.showing_hidden", "memaparkan {visible} daripada {total} {other}, {hidden} disembunyikan")
-     & P ("collection.showing", "memaparkan {visible} daripada {total} {other}")
-     & P ("collection.shown_hidden", "{visible} {other} dipaparkan, {hidden} disembunyikan")
-     & P ("collection.shown", "{visible} {other} dipaparkan")
-     & P ("collection.visible_out_of", "{visible} daripada {total} {other} kelihatan")
-     & P ("complete_count", "{done} daripada {total} selesai")
-     & P ("percent_complete", "{percent}% selesai")
-     & P ("step_count", "langkah {step} daripada {total}")
-     & P ("attempt_count", "cubaan {attempt} daripada {total}")
-     & P ("throughput_remaining", "{remaining} {other} lagi pada kadar {rate} {unit}/s")
-     & P ("accessible_progress", "{done} daripada {total} selesai, {percent} peratus")
-     & P ("business_days", "{days} hari bekerja")
-     & P ("working_hours", "{hours} jam bekerja")
-     & P ("due.overdue", "lewat {days} hari")
-     & P ("due.today", "tarikh akhir hari ini")
-     & P ("due.tomorrow", "tarikh akhir esok")
-     & P ("due.in", "tarikh akhir dalam {days} hari")
-     & P ("calendar_difference.future", "dalam {difference}")
-     & P ("calendar_difference.past", "{difference} yang lalu")
-     & P ("calendar_difference.same_day", "hari yang sama")
-     & P ("calendar_difference.zero", "0 hari")
-     & P ("cpu_load", "beban CPU {measure}")
-     & P ("battery", "bateri {measure}")
-     & P ("screen_size", "skrin {measure}")
-     & P ("refresh_rate", "kadar segar semula {measure}")
-     & P ("editorial_percent.symbol", "{value}%")
-     & P ("editorial_percent.word", "{value} peratus")
-     & P ("recurrence.second", "{every, plural, =1 {setiap saat} other {setiap {every} saat}}")
-     & P ("recurrence.minute", "{every, plural, =1 {setiap minit} other {setiap {every} minit}}")
-     & P ("recurrence.hour", "{every, plural, =1 {setiap jam} other {setiap {every} jam}}")
-     & P ("recurrence.day", "{every, plural, =1 {setiap hari} other {setiap {every} hari}}")
-     & P ("recurrence.week", "{every, plural, =1 {setiap minggu} other {setiap {every} minggu}}")
-     & P ("recurrence.month", "{every, plural, =1 {setiap bulan} other {setiap {every} bulan}}")
-     & P ("recurrence.quarter",
-          "{every, plural, =1 {setiap suku tahun} other {setiap {every} suku "
-          & "tahun}}")
-     & P ("recurrence.year", "{every, plural, =1 {setiap tahun} other {setiap {every} tahun}}")
-     & P ("cache_summary.empty", "cache: tiada permintaan")
-     & P ("cache_summary", "cache: {hits} hit, {misses} terlepas, kadar hit {rate}%")
-     & P ("field_change_summary",
-          "{total} {other}: {changed} diubah, {added} ditambah, {removed} dialih "
-          & "keluar")
-     & P ("field_diff", "{field} diubah daripada {before} kepada {after}")
-     & P ("field_added", "{field} ditambah sebagai {value}")
-     & P ("field_removed", "{field} dialih keluar (sebelum ini {value})")
-     & P ("field_unchanged", "{field} kekal pada {value}")
-     & P ("number_comparison.equal", "{current} sama dengan {baseline}")
-     & P ("number_comparison.higher", "{current} {quantity} lebih tinggi daripada {baseline}")
-     & P ("number_comparison.lower", "{current} {quantity} lebih rendah daripada {baseline}")
-     & P ("percent_comparison.equal", "{current} sama dengan {baseline}")
-     & P ("percent_comparison.higher", "{current} {quantity} lebih tinggi daripada {baseline}")
-     & P ("percent_comparison.lower", "{current} {quantity} lebih rendah daripada {baseline}")
-     & P ("file_size_comparison.same", "saiz {current} sama dengan {baseline}")
-     & P ("file_size_comparison.larger", "{current} {quantity} lebih besar daripada {baseline}")
-     & P ("file_size_comparison.smaller", "{current} {quantity} lebih kecil daripada {baseline}")
-     & P ("date_comparison.same", "{current} ialah tarikh yang sama dengan {baseline}")
-     & P ("date_comparison.after", "{current} {quantity} selepas {baseline}")
-     & P ("date_comparison.before", "{current} {quantity} sebelum {baseline}")
-     & P ("queue_summary", "baris gilir: {details}")
-     & P ("queue_summary.empty", "baris gilir kosong")
-     & P ("domain_summary",
-          "{domain, select, queue {baris gilir} job {kerja} run {larian} cache "
-          & "{cache} sync {penyegerakan} import {import} export {eksport} other "
-          & "{{domain}}} {state, select, queued {dalam baris gilir} running "
-          & "{berjalan} waiting {menunggu} paused {dijeda} complete {selesai} "
-          & "failed {gagal} stale {lapuk} skipped {dilangkau} other {{state}}}: "
-          & "{details}")
-     & P ("summary.none", "tiada {other}")
-     & P ("summary.completed", "{count} {other} selesai")
-     & P ("summary.completed_of", "{count} daripada {total} {other} selesai")
-     & P ("summary.failed", "{count} gagal")
-     & P ("summary.queued", "{count} {other} dalam baris gilir")
-     & P ("summary.running", "{count} berjalan")
-     & P ("summary.complete", "{count} selesai")
-     & P ("backup.backup_running", "sandaran sedang berjalan")
-     & P ("backup.backup_completed", "sandaran selesai")
-     & P ("backup.backup_failed", "sandaran gagal")
-     & P ("backup.backup_stale", "sandaran lapuk")
-     & P ("incident.incident_investigating", "insiden sedang disiasat")
-     & P ("incident.incident_identified", "insiden dikenal pasti")
-     & P ("incident.incident_mitigated", "insiden dikawal")
-     & P ("incident.incident_resolved", "insiden diselesaikan")
-     & P ("release.release_drafting", "keluaran sedang disediakan")
-     & P ("release.release_ready", "keluaran sedia")
-     & P ("release.release_published", "keluaran diterbitkan")
-     & P ("release.release_rolled_back", "keluaran dikembalikan")
-     & P ("audit.audit_created", "entri audit dicipta")
-     & P ("audit.audit_updated", "entri audit dikemas kini")
-     & P ("audit.audit_deleted", "entri audit dipadam")
-     & P ("audit.audit_restored", "entri audit dipulihkan")
-     & P ("flag.flag_enabled", "bendera ciri didayakan")
-     & P ("flag.flag_disabled", "bendera ciri dilumpuhkan")
-     & P ("flag.flag_rolling_out", "bendera ciri sedang dilancarkan")
-     & P ("flag.flag_rolled_back", "bendera ciri dikembalikan")
-     & P ("webhook.webhook_pending", "webhook belum selesai")
-     & P ("webhook.webhook_delivered", "webhook dihantar")
-     & P ("webhook.webhook_failed", "webhook gagal")
-     & P ("webhook.webhook_retrying", "webhook sedang dicuba semula")
-     & P ("api_key.api_key_active", "kunci API aktif")
-     & P ("api_key.api_key_revoked", "kunci API dibatalkan")
-     & P ("api_key.api_key_expired", "kunci API tamat tempoh")
-     & P ("api_key.api_key_rotated", "kunci API diputar")
-     & P ("quota.quota_available", "kuota tersedia")
-     & P ("quota.quota_near_limit", "kuota hampir mencapai had")
-     & P ("quota.quota_exceeded", "kuota melebihi had")
-     & P ("quota.quota_reset", "kuota ditetapkan semula")
-     & P ("invoice.invoice_draft", "draf invois")
-     & P ("invoice.invoice_sent", "invois dihantar")
-     & P ("invoice.invoice_paid", "invois dibayar")
-     & P ("invoice.invoice_refunded", "invois dibayar balik")
-     & P ("invoice.invoice_overdue", "invois tertunggak")
-     & P ("invoice.refund_failed", "bayaran balik gagal")
-     & P ("page_navigation.only", "satu-satunya halaman")
-     & P ("page_navigation.first", "halaman pertama, seterusnya tersedia")
-     & P ("page_navigation.last", "halaman terakhir, sebelumnya tersedia")
-     & P ("page_navigation.middle", "sebelumnya dan seterusnya tersedia")
-     & P ("end_of_week", "akhir minggu")
-     & P ("end_of_month", "akhir bulan")
-     & P ("end_of_quarter", "akhir suku tahun")
-     & P ("time_of_day.night", "malam")
-     & P ("time_of_day.morning", "pagi")
-     & P ("time_of_day.afternoon", "tengah hari")
-     & P ("time_of_day.evening", "petang")
-     & P ("access.allowed", "dibenarkan")
-     & P ("access.denied", "ditolak")
-     & P ("access.owner", "pemilik")
-     & P ("access.admin", "pentadbir")
-     & P ("access.viewer", "pemapar")
-     & P ("access.editor", "penyunting")
-     & P ("auth.signed_in", "telah log masuk")
-     & P ("auth.signed_out", "telah log keluar")
-     & P ("auth.session_expired", "sesi tamat tempoh")
-     & P ("auth.locked", "dikunci")
-     & P ("auth.two_factor_required", "pengesahan dua faktor diperlukan")
-     & P ("billing.trialing", "dalam percubaan")
-     & P ("billing.payment_due", "bayaran perlu dijelaskan")
-     & P ("billing.payment_failed", "bayaran gagal")
-     & P ("billing.paid", "dibayar")
-     & P ("billing.past_due", "tertunggak")
-     & P ("billing.canceled", "dibatalkan")
-     & P ("ci.pipeline_pending", "saluran paip belum selesai")
-     & P ("ci.pipeline_running", "saluran paip berjalan")
-     & P ("ci.pipeline_passed", "saluran paip lulus")
-     & P ("ci.pipeline_failed", "saluran paip gagal")
-     & P ("ci.review_required", "semakan diperlukan")
-     & P ("ci.deploy_blocked", "atur letak disekat")
-     & P ("collaboration.active_now", "aktif sekarang")
-     & P ("collaboration.away", "tiada di tempat")
-     & P ("collaboration.do_not_disturb", "jangan ganggu")
-     & P ("collaboration.typing", "sedang menaip")
-     & P ("collaboration.viewing", "sedang melihat")
-     & P ("collaboration.editing", "sedang menyunting")
-     & P ("deployment.deploying", "sedang diatur letak")
-     & P ("deployment.deployed", "telah diatur letak")
-     & P ("deployment.rolling_back", "sedang digulung balik")
-     & P ("deployment.rolled_back", "telah digulung balik")
-     & P ("deployment.build_failed", "binaan gagal")
-     & P ("deployment.checks_passed", "semakan lulus")
-     & P ("empty.no_items", "tiada item")
-     & P ("empty.no_results", "tiada hasil")
-     & P ("empty.no_messages", "tiada mesej")
-     & P ("empty.no_selection", "tiada pilihan")
-     & P ("empty.nothing_to_show", "tiada apa-apa untuk dipaparkan")
-     & P ("file.uploading", "memuat naik")
-     & P ("file.downloading", "memuat turun")
-     & P ("file.copying", "menyalin")
-     & P ("file.moving", "mengalihkan")
-     & P ("file.deleting", "memadam")
-     & P ("file.deleted", "dipadam")
-     & P ("file.restoring", "memulihkan")
-     & P ("file.synced", "disegerakkan")
-     & P ("form.valid_input", "input sah")
-     & P ("form.invalid_input", "input tidak sah")
-     & P ("form.dirty", "diubah")
-     & P ("form.pristine", "tidak diubah")
-     & P ("form.submitted", "diserahkan")
-     & P ("form.submission_failed", "penyerahan gagal")
-     & P ("health.healthy", "sihat")
-     & P ("health.degraded", "merosot")
-     & P ("health.unhealthy", "tidak sihat")
-     & P ("health.incident", "insiden")
-     & P ("health.maintenance", "penyelenggaraan")
-     & P ("health.recovering", "sedang pulih")
-     & P ("issue.open", "terbuka")
-     & P ("issue.closed", "ditutup")
-     & P ("issue.reopened", "dibuka semula")
-     & P ("issue.assigned", "ditugaskan")
-     & P ("issue.unassigned", "belum ditugaskan")
-     & P ("issue.merged", "digabungkan")
-     & P ("network.offline", "luar talian")
-     & P ("network.online", "dalam talian")
-     & P ("network.connecting", "menyambung")
-     & P ("network.syncing", "menyegerakkan")
-     & P ("network.sync_failed", "penyegerakan gagal")
-     & P ("network.permission_denied", "kebenaran ditolak")
-     & P ("network.read_only", "baca sahaja")
-     & P ("notification.unread", "belum dibaca")
-     & P ("notification.read", "telah dibaca")
-     & P ("notification.muted", "diredamkan")
-     & P ("notification.snoozed", "ditunda")
-     & P ("notification.sent", "dihantar")
-     & P ("notification.delivered", "diterima")
-     & P ("payment.payment_authorized", "bayaran dibenarkan")
-     & P ("payment.payment_captured", "bayaran dikutip")
-     & P ("payment.payment_refunded", "bayaran dikembalikan")
-     & P ("payment.payment_disputed", "bayaran dipertikaikan")
-     & P ("payment.payment_requires_action", "bayaran memerlukan tindakan")
-     & P ("payment.payment_expired", "bayaran tamat tempoh")
-     & P ("ui.empty", "kosong")
-     & P ("ui.loading", "memuatkan")
-     & P ("ui.saving", "menyimpan")
-     & P ("ui.saved", "disimpan")
-     & P ("ui.unsaved", "belum disimpan")
-     & P ("ui.retrying", "mencuba semula")
-     & P ("ui.paused", "dijeda")
-     & P ("ui.complete", "selesai")
-     & P ("ui.failed", "gagal")
-     & P ("ui.due_soon", "tarikh akhir hampir tiba")
-     & P ("ui.overdue", "lewat")
-     & P ("ui.last_seen", "kali terakhir dilihat")
-     & P ("ui.updated_just_now", "baru dikemas kini")
-     & P ("queue.queued", "dalam baris gilir")
-     & P ("queue.running", "berjalan")
-     & P ("queue.waiting", "menunggu")
-     & P ("queue.blocked", "disekat")
-     & P ("queue.canceled_job", "kerja dibatalkan")
-     & P ("queue.completed_job", "kerja selesai")
-     & P ("search.filtering", "menapis")
-     & P ("search.filtered", "ditapis")
-     & P ("search.no_matches", "tiada padanan")
-     & P ("search.search_ready", "carian sedia")
-     & P ("search.search_failed", "carian gagal")
-     & P ("search.query_too_short", "pertanyaan terlalu pendek")
-     & P ("security.secure", "selamat")
-     & P ("security.insecure", "tidak selamat")
-     & P ("security.vulnerable", "terdedah")
-     & P ("security.encrypted", "disulitkan")
-     & P ("security.unencrypted", "tidak disulitkan")
-     & P ("security.token_expired", "token tamat tempoh")
-     & P ("sync.sync_idle", "penyegerakan melahu")
-     & P ("sync.syncing_now", "sedang menyegerakkan")
-     & P ("sync.sync_queued", "penyegerakan dalam baris gilir")
-     & P ("sync.sync_conflict", "konflik penyegerakan")
-     & P ("sync.sync_complete", "penyegerakan selesai")
-     & P ("sync.sync_error", "ralat penyegerakan")
-     & P ("task.todo", "untuk dibuat")
-     & P ("task.in_progress", "sedang berjalan")
-     & P ("task.done", "selesai")
-     & P ("task.skipped", "dilangkau")
-     & P ("task.blocked_task", "disekat")
-     & P ("task.waiting_on", "menunggu")
-     & P ("ticket.ticket_new", "tiket baharu")
-     & P ("ticket.ticket_open", "tiket terbuka")
-     & P ("ticket.ticket_waiting", "tiket menunggu")
-     & P ("ticket.ticket_escalated", "tiket dieskalasi")
-     & P ("ticket.ticket_resolved", "tiket diselesaikan")
-     & P ("ticket.ticket_closed", "tiket ditutup")
-     & P ("transfer.importing", "mengimport")
-     & P ("transfer.imported", "diimport")
-     & P ("transfer.import_failed", "import gagal")
-     & P ("transfer.exporting", "mengeksport")
-     & P ("transfer.exported", "dieksport")
-     & P ("transfer.export_failed", "eksport gagal")
-     & P ("validation.required", "wajib")
-     & P ("validation.optional", "pilihan")
-     & P ("validation.invalid", "tidak sah")
-     & P ("validation.too_short", "terlalu pendek")
-     & P ("validation.too_long", "terlalu panjang")
-     & P ("validation.out_of_range", "di luar julat")
-     & P ("validation.already_exists", "sudah wujud")
-     & P ("workflow.draft", "draf")
-     & P ("workflow.in_review", "dalam semakan")
-     & P ("workflow.approved", "diluluskan")
-     & P ("workflow.rejected", "ditolak")
-     & P ("workflow.published", "diterbitkan")
-     & P ("workflow.archived", "diarkibkan")
-     & P ("database.database_online", "pangkalan data dalam talian")
-     & P ("database.database_offline", "pangkalan data luar talian")
-     & P ("database.database_degraded", "pangkalan data merosot")
-     & P ("database.database_migrating", "pangkalan data sedang dipindahkan")
-     & P ("database.database_migration_failed", "pemindahan pangkalan data gagal")
-     & P ("database.database_replicating", "pangkalan data sedang direplikasi")
-     & P ("database.database_replication_lagging", "replikasi pangkalan data ketinggalan")
-     & P ("database.database_backup_running", "sandaran pangkalan data berjalan")
-     & P ("database.database_backup_failed", "sandaran pangkalan data gagal")
-     & P ("times_noun",
-          "{count, plural, =0 {{other}: tidak pernah} =1 {{other}: sekali} =2 "
-          & "{{other}: dua kali} other {{other}: {count} kali}}")
-     & P ("availability.all", "{available} daripada {total} {other} tersedia")
-     & P ("availability.none", "tiada {other} tersedia")
-     & P ("availability.partial",
-          "{available} daripada {total} {other} tersedia, {unavailable} tidak "
-          & "tersedia")
-     & P ("operation_progress", "{name} – {state}: {details}")
-     & P ("operation.queued", "dalam baris gilir")
-     & P ("operation.running", "berjalan")
-     & P ("operation.blocked", "disekat")
-     & P ("operation.retrying", "mencuba semula")
-     & P ("operation.succeeded", "berjaya")
-     & P ("operation.partially_succeeded", "berjaya sebahagiannya")
-     & P ("operation.failed", "gagal")
-     & P ("operation.canceled", "dibatalkan")
-     & P ("operation.skipped", "dilangkau")
-     & P ("operation.stale", "lapuk")
-     & P ("operation.unknown_state", "tidak diketahui")
-     & P ("operation.last_success", "{name} kali terakhir berjaya {time}")
-     & P ("operation.next_retry", "{name} cubaan semula seterusnya {time}")
-     & P ("operation.stale_run", "{name} lapuk selama {time}")
-     & P ("summary.skipped", "{count} dilangkau")
-     & P ("summary.retried", "{count} dicuba semula")
-     & P ("summary.canceled", "{count} dibatalkan")
-     & P ("system.service.operational", "beroperasi")
-     & P ("system.service.degraded", "prestasi merosot")
-     & P ("system.service.partial_outage", "gangguan separa")
-     & P ("system.service.major_outage", "gangguan besar")
-     & P ("system.service.maintenance", "dalam penyelenggaraan")
-     & P ("system.service.unknown", "status perkhidmatan tidak diketahui")
-     & P ("system.health.healthy", "sihat")
-     & P ("system.health.warning", "amaran")
-     & P ("system.health.critical", "kritikal")
-     & P ("system.health.unavailable", "tidak tersedia")
-     & P ("system.health.unknown_health", "status kesihatan tidak diketahui")
-     & P ("system.readiness.ready", "sedia")
-     & P ("system.readiness.not_ready", "belum sedia")
-     & P ("system.readiness.starting", "sedang dimulakan")
-     & P ("system.readiness.draining", "sedang dikosongkan")
-     & P ("system.readiness.stopped", "dihentikan")
-     & P ("system.readiness.unknown_readiness", "status kesediaan tidak diketahui")
-     & P ("system.component.online", "dalam talian")
-     & P ("system.component.offline", "luar talian")
-     & P ("system.component.starting", "sedang dimulakan")
-     & P ("system.component.stopping", "sedang dihentikan")
-     & P ("system.component.restarting", "sedang dimulakan semula")
-     & P ("system.component.unknown", "status komponen tidak diketahui")
-     & P ("system.check.passing", "lulus")
-     & P ("system.check.failing", "gagal")
-     & P ("system.check.warning", "amaran")
-     & P ("system.check.skipped", "dilangkau")
-     & P ("system.check.timed_out", "tamat masa")
-     & P ("system.check.unknown", "status semakan tidak diketahui")
-     & P ("system.incident.investigating", "sedang disiasat")
-     & P ("system.incident.identified", "dikenal pasti")
-     & P ("system.incident.monitoring", "sedang dipantau")
-     & P ("system.incident.resolved", "diselesaikan")
-     & P ("system.incident.scheduled_maintenance", "penyelenggaraan berjadual")
-     & P ("system.named", "{name}: {state}")
-     & P ("system.check_named", "semakan {name}: {state}")
-     & P ("system.count.components", "{count, plural, =0 {tiada komponen} other {{count} komponen}}")
-     & P ("system.count.checks", "{count, plural, =0 {tiada semakan} other {{count} semakan}}")
-     & P ("system.count.incidents", "{count, plural, =0 {tiada insiden} other {{count} insiden}}")
-     & P ("system.uptime", "masa aktif {measure}")
-     & P ("system.latency", "kependaman {measure}")
-     & P ("system.maintenance_window", "tempoh penyelenggaraan {time}")
-     & P ("system.last_checked", "kali terakhir disemak {time}")
-     & P ("system.http.informational", "maklumat")
-     & P ("system.http.successful", "berjaya")
-     & P ("system.http.redirection", "ubah hala")
-     & P ("system.http.client_error", "ralat klien")
-     & P ("system.http.server_error", "ralat pelayan")
-     & P ("system.exit.success", "kod keluar {code}: berjaya")
-     & P ("system.exit.failure", "kod keluar {code}: gagal")
-     & P ("system.exit.usage_error", "kod keluar {code}: ralat penggunaan")
-     & P ("system.exit.not_executable", "kod keluar {code}: arahan tidak boleh dilaksanakan")
-     & P ("system.exit.not_found", "kod keluar {code}: arahan tidak ditemui")
-     & P ("system.exit.invalid_argument", "kod keluar {code}: argumen keluar tidak sah")
-     & P ("system.exit.signal", "kod keluar {code}: ditamatkan oleh {signal}")
-     & P ("validation.problem.required", "{field}: wajib diisi")
-     & P ("validation.problem.minimum", "{field}: di bawah nilai minimum")
-     & P ("validation.problem.maximum", "{field}: melebihi nilai maksimum")
-     & P ("validation.problem.range", "{field}: di luar julat")
-     & P ("validation.problem.pattern", "{field}: tidak sepadan dengan corak")
-     & P ("validation.problem.choice", "{field}: mestilah salah satu pilihan yang dibenarkan")
-     & P ("validation.problem.dependency", "{field}: bergantung pada medan lain")
-     & P ("validation.problem.custom", "{field}: tidak sah")
-     & P ("validation.constraint.no_relation", "{field}: mestilah {value} yang sah")
-     & P ("validation.constraint.less_than", "{field}: mestilah kurang daripada {value}")
-     & P ("validation.constraint.less_or_equal", "{field}: mestilah tidak melebihi {value}")
-     & P ("validation.constraint.greater_than", "{field}: mestilah lebih daripada {value}")
-     & P ("validation.constraint.greater_or_equal", "{field}: mestilah sekurang-kurangnya {value}")
-     & P ("validation.constraint.equal_to", "{field}: mestilah sama dengan {value}")
-     & P ("validation.constraint.not_equal_to", "{field}: tidak boleh sama dengan {value}")
-     & P ("validation.constraint.before_field", "{field}: mestilah sebelum {value}")
-     & P ("validation.constraint.after_field", "{field}: mestilah selepas {value}")
-     & P ("validation.choices", "{field}: nilai yang dibenarkan {choices}")
-     & P ("frame.detail", "{text} ({detail})")
-     & P ("frame.got", "{text}, nilai yang dimasukkan {actual}")
-     & P ("frame.also", "{text}, {detail}")
-     & P ("frame.retry", "{text}, cuba lagi dalam {time}")
-     & P ("net_diagnostic.dns", "{endpoint}: carian DNS gagal")
-     & P ("net_diagnostic.tcp", "{endpoint}: sambungan TCP gagal")
-     & P ("net_diagnostic.tls", "{endpoint}: sijil TLS gagal")
-     & P ("net_diagnostic.http", "{endpoint}: permintaan HTTP gagal")
-     & P ("net_diagnostic.proxy", "{endpoint}: proksi gagal")
-     & P ("net_diagnostic.timeout", "{endpoint}: tamat masa")
-     & P ("net_diagnostic.reset", "{endpoint}: sambungan ditetapkan semula")
-     & P ("net_diagnostic.unknown_network", "{endpoint}: masalah rangkaian")
-     & P ("progress.state.not_started", "belum dimulakan")
-     & P ("progress.state.running", "sedang berjalan")
-     & P ("progress.state.stalled", "tersekat")
-     & P ("progress.state.retrying", "mencuba semula")
-     & P ("progress.state.complete", "selesai")
-     & P ("progress.state.failed", "gagal")
-     & P ("progress.of", "{subject}: {done} daripada {total} selesai ({percent}%), {state}")
-     & P ("progress.done", "{subject}: {done} selesai, {state}")
-     & P ("collection.summary",
-          "{name}: {total} item, {unique} nilai unik, {duplicates} pendua, "
-          & "{outliers} nilai terpencil")
-     & P ("top_frequency", "{name}: {value} ({count} kali)")
-     & P ("calendar_date.fiscal_year", "TK {year}")
-     & P ("calendar_date.fiscal_quarter", "S{part} TK {year}")
-     & P ("calendar_date.fiscal_half", "{part, plural, =1 {Separuh pertama} other {Separuh kedua}} TK {year}")
-     & P ("calendar_date.fiscal_year_end", "akhir TK {year}")
-     & P ("calendar_date.semester", "Semester {part} {year}")
-     & P ("calendar_date.half_year", "{part, plural, =1 {Separuh pertama} other {Separuh kedua}} {year}")
-     & P ("calendar_date.half_year_phrase",
-          "{part, plural, =1 {separuh pertama {year}} other {separuh kedua "
-          & "{year}}}")
-     & P ("calendar_date.month_phase",
-          "{phase, select, early {awal {text}} mid {pertengahan {text}} other "
-          & "{akhir {text}}}")
-     & P ("calendar_date.quarter_phase",
-          "{phase, select, early {awal {text}} mid {pertengahan {text}} other "
-          & "{akhir {text}}}")
-     & P ("calendar_range.weekend.last", "hujung minggu lalu")
-     & P ("calendar_range.weekend.this", "hujung minggu ini")
-     & P ("calendar_range.weekend.next", "hujung minggu depan")
-     & P ("calendar_range.weekend_of", "hujung minggu {date}")
-     & P ("calendar_range.week.last", "minggu lalu")
-     & P ("calendar_range.week.this", "minggu ini")
-     & P ("calendar_range.week.next", "minggu depan")
-     & P ("calendar_range.week_of", "minggu {date}")
-     & P ("calendar_range.between", "{first} – {last}");
+   P ("all_count", "semua {total} {other}");
+   P ("filtered_count.none", "tiada {other} yang sepadan");
+   P ("filtered_count.all", "semua {total} {other} sepadan");
+   P ("filtered_count.some", "{matching} daripada {total} {other} sepadan");
+   P ("more_count", "{visible} dipaparkan, +{remaining} lagi");
+   P ("others_count", "{first} dan {remaining} yang lain");
+   P ("page_count", "halaman {page} daripada {total}");
+   P ("page_size", "{size} {other} setiap halaman");
+   P ("pagination_range", "{first}–{last} daripada {total} {other}");
+   P ("position_count", "{position} daripada {total}");
+   P ("selection_count", "{selected} daripada {total} {other} dipilih");
+   P ("showing_count", "memaparkan {showing} daripada {total} {other}");
+   P ("validation_count",
+      "{count, plural, =0 {tiada {severity, select, error {ralat} warning "
+      & "{amaran} other {makluman}}} other {{count} {severity, select, error "
+      & "{ralat} warning {amaran} other {makluman}}}}");
+   P ("collection.empty", "tiada {other}");
+   P ("collection.none_shown", "tiada {other} dipaparkan");
+   P ("collection.showing_hidden", "memaparkan {visible} daripada {total} {other}, {hidden} disembunyikan");
+   P ("collection.showing", "memaparkan {visible} daripada {total} {other}");
+   P ("collection.shown_hidden", "{visible} {other} dipaparkan, {hidden} disembunyikan");
+   P ("collection.shown", "{visible} {other} dipaparkan");
+   P ("collection.visible_out_of", "{visible} daripada {total} {other} kelihatan");
+   P ("complete_count", "{done} daripada {total} selesai");
+   P ("percent_complete", "{percent}% selesai");
+   P ("step_count", "langkah {step} daripada {total}");
+   P ("attempt_count", "cubaan {attempt} daripada {total}");
+   P ("throughput_remaining", "{remaining} {other} lagi pada kadar {rate} {unit}/s");
+   P ("accessible_progress", "{done} daripada {total} selesai, {percent} peratus");
+   P ("business_days", "{days} hari bekerja");
+   P ("working_hours", "{hours} jam bekerja");
+   P ("due.overdue", "lewat {days} hari");
+   P ("due.today", "tarikh akhir hari ini");
+   P ("due.tomorrow", "tarikh akhir esok");
+   P ("due.in", "tarikh akhir dalam {days} hari");
+   P ("calendar_difference.future", "dalam {difference}");
+   P ("calendar_difference.past", "{difference} yang lalu");
+   P ("calendar_difference.same_day", "hari yang sama");
+   P ("calendar_difference.zero", "0 hari");
+   P ("cpu_load", "beban CPU {measure}");
+   P ("battery", "bateri {measure}");
+   P ("screen_size", "skrin {measure}");
+   P ("refresh_rate", "kadar segar semula {measure}");
+   P ("editorial_percent.symbol", "{value}%");
+   P ("editorial_percent.word", "{value} peratus");
+   P ("recurrence.second", "{every, plural, =1 {setiap saat} other {setiap {every} saat}}");
+   P ("recurrence.minute", "{every, plural, =1 {setiap minit} other {setiap {every} minit}}");
+   P ("recurrence.hour", "{every, plural, =1 {setiap jam} other {setiap {every} jam}}");
+   P ("recurrence.day", "{every, plural, =1 {setiap hari} other {setiap {every} hari}}");
+   P ("recurrence.week", "{every, plural, =1 {setiap minggu} other {setiap {every} minggu}}");
+   P ("recurrence.month", "{every, plural, =1 {setiap bulan} other {setiap {every} bulan}}");
+   P ("recurrence.quarter",
+      "{every, plural, =1 {setiap suku tahun} other {setiap {every} suku "
+      & "tahun}}");
+   P ("recurrence.year", "{every, plural, =1 {setiap tahun} other {setiap {every} tahun}}");
+   P ("cache_summary.empty", "cache: tiada permintaan");
+   P ("cache_summary", "cache: {hits} hit, {misses} terlepas, kadar hit {rate}%");
+   P ("field_change_summary",
+      "{total} {other}: {changed} diubah, {added} ditambah, {removed} dialih "
+      & "keluar");
+   P ("field_diff", "{field} diubah daripada {before} kepada {after}");
+   P ("field_added", "{field} ditambah sebagai {value}");
+   P ("field_removed", "{field} dialih keluar (sebelum ini {value})");
+   P ("field_unchanged", "{field} kekal pada {value}");
+   P ("number_comparison.equal", "{current} sama dengan {baseline}");
+   P ("number_comparison.higher", "{current} {quantity} lebih tinggi daripada {baseline}");
+   P ("number_comparison.lower", "{current} {quantity} lebih rendah daripada {baseline}");
+   P ("percent_comparison.equal", "{current} sama dengan {baseline}");
+   P ("percent_comparison.higher", "{current} {quantity} lebih tinggi daripada {baseline}");
+   P ("percent_comparison.lower", "{current} {quantity} lebih rendah daripada {baseline}");
+   P ("file_size_comparison.same", "saiz {current} sama dengan {baseline}");
+   P ("file_size_comparison.larger", "{current} {quantity} lebih besar daripada {baseline}");
+   P ("file_size_comparison.smaller", "{current} {quantity} lebih kecil daripada {baseline}");
+   P ("date_comparison.same", "{current} ialah tarikh yang sama dengan {baseline}");
+   P ("date_comparison.after", "{current} {quantity} selepas {baseline}");
+   P ("date_comparison.before", "{current} {quantity} sebelum {baseline}");
+   P ("queue_summary", "baris gilir: {details}");
+   P ("queue_summary.empty", "baris gilir kosong");
+   P ("domain_summary",
+      "{domain, select, queue {baris gilir} job {kerja} run {larian} cache "
+      & "{cache} sync {penyegerakan} import {import} export {eksport} other "
+      & "{{domain}}} {state, select, queued {dalam baris gilir} running "
+      & "{berjalan} waiting {menunggu} paused {dijeda} complete {selesai} "
+      & "failed {gagal} stale {lapuk} skipped {dilangkau} other {{state}}}: "
+      & "{details}");
+   P ("summary.none", "tiada {other}");
+   P ("summary.completed", "{count} {other} selesai");
+   P ("summary.completed_of", "{count} daripada {total} {other} selesai");
+   P ("summary.failed", "{count} gagal");
+   P ("summary.queued", "{count} {other} dalam baris gilir");
+   P ("summary.running", "{count} berjalan");
+   P ("summary.complete", "{count} selesai");
+   P ("backup.backup_running", "sandaran sedang berjalan");
+   P ("backup.backup_completed", "sandaran selesai");
+   P ("backup.backup_failed", "sandaran gagal");
+   P ("backup.backup_stale", "sandaran lapuk");
+   P ("incident.incident_investigating", "insiden sedang disiasat");
+   P ("incident.incident_identified", "insiden dikenal pasti");
+   P ("incident.incident_mitigated", "insiden dikawal");
+   P ("incident.incident_resolved", "insiden diselesaikan");
+   P ("release.release_drafting", "keluaran sedang disediakan");
+   P ("release.release_ready", "keluaran sedia");
+   P ("release.release_published", "keluaran diterbitkan");
+   P ("release.release_rolled_back", "keluaran dikembalikan");
+   P ("audit.audit_created", "entri audit dicipta");
+   P ("audit.audit_updated", "entri audit dikemas kini");
+   P ("audit.audit_deleted", "entri audit dipadam");
+   P ("audit.audit_restored", "entri audit dipulihkan");
+   P ("flag.flag_enabled", "bendera ciri didayakan");
+   P ("flag.flag_disabled", "bendera ciri dilumpuhkan");
+   P ("flag.flag_rolling_out", "bendera ciri sedang dilancarkan");
+   P ("flag.flag_rolled_back", "bendera ciri dikembalikan");
+   P ("webhook.webhook_pending", "webhook belum selesai");
+   P ("webhook.webhook_delivered", "webhook dihantar");
+   P ("webhook.webhook_failed", "webhook gagal");
+   P ("webhook.webhook_retrying", "webhook sedang dicuba semula");
+   P ("api_key.api_key_active", "kunci API aktif");
+   P ("api_key.api_key_revoked", "kunci API dibatalkan");
+   P ("api_key.api_key_expired", "kunci API tamat tempoh");
+   P ("api_key.api_key_rotated", "kunci API diputar");
+   P ("quota.quota_available", "kuota tersedia");
+   P ("quota.quota_near_limit", "kuota hampir mencapai had");
+   P ("quota.quota_exceeded", "kuota melebihi had");
+   P ("quota.quota_reset", "kuota ditetapkan semula");
+   P ("invoice.invoice_draft", "draf invois");
+   P ("invoice.invoice_sent", "invois dihantar");
+   P ("invoice.invoice_paid", "invois dibayar");
+   P ("invoice.invoice_refunded", "invois dibayar balik");
+   P ("invoice.invoice_overdue", "invois tertunggak");
+   P ("invoice.refund_failed", "bayaran balik gagal");
+   P ("page_navigation.only", "satu-satunya halaman");
+   P ("page_navigation.first", "halaman pertama, seterusnya tersedia");
+   P ("page_navigation.last", "halaman terakhir, sebelumnya tersedia");
+   P ("page_navigation.middle", "sebelumnya dan seterusnya tersedia");
+   P ("end_of_week", "akhir minggu");
+   P ("end_of_month", "akhir bulan");
+   P ("end_of_quarter", "akhir suku tahun");
+   P ("time_of_day.night", "malam");
+   P ("time_of_day.morning", "pagi");
+   P ("time_of_day.afternoon", "tengah hari");
+   P ("time_of_day.evening", "petang");
+   P ("access.allowed", "dibenarkan");
+   P ("access.denied", "ditolak");
+   P ("access.owner", "pemilik");
+   P ("access.admin", "pentadbir");
+   P ("access.viewer", "pemapar");
+   P ("access.editor", "penyunting");
+   P ("auth.signed_in", "telah log masuk");
+   P ("auth.signed_out", "telah log keluar");
+   P ("auth.session_expired", "sesi tamat tempoh");
+   P ("auth.locked", "dikunci");
+   P ("auth.two_factor_required", "pengesahan dua faktor diperlukan");
+   P ("billing.trialing", "dalam percubaan");
+   P ("billing.payment_due", "bayaran perlu dijelaskan");
+   P ("billing.payment_failed", "bayaran gagal");
+   P ("billing.paid", "dibayar");
+   P ("billing.past_due", "tertunggak");
+   P ("billing.canceled", "dibatalkan");
+   P ("ci.pipeline_pending", "saluran paip belum selesai");
+   P ("ci.pipeline_running", "saluran paip berjalan");
+   P ("ci.pipeline_passed", "saluran paip lulus");
+   P ("ci.pipeline_failed", "saluran paip gagal");
+   P ("ci.review_required", "semakan diperlukan");
+   P ("ci.deploy_blocked", "atur letak disekat");
+   P ("collaboration.active_now", "aktif sekarang");
+   P ("collaboration.away", "tiada di tempat");
+   P ("collaboration.do_not_disturb", "jangan ganggu");
+   P ("collaboration.typing", "sedang menaip");
+   P ("collaboration.viewing", "sedang melihat");
+   P ("collaboration.editing", "sedang menyunting");
+   P ("deployment.deploying", "sedang diatur letak");
+   P ("deployment.deployed", "telah diatur letak");
+   P ("deployment.rolling_back", "sedang digulung balik");
+   P ("deployment.rolled_back", "telah digulung balik");
+   P ("deployment.build_failed", "binaan gagal");
+   P ("deployment.checks_passed", "semakan lulus");
+   P ("empty.no_items", "tiada item");
+   P ("empty.no_results", "tiada hasil");
+   P ("empty.no_messages", "tiada mesej");
+   P ("empty.no_selection", "tiada pilihan");
+   P ("empty.nothing_to_show", "tiada apa-apa untuk dipaparkan");
+   P ("file.uploading", "memuat naik");
+   P ("file.downloading", "memuat turun");
+   P ("file.copying", "menyalin");
+   P ("file.moving", "mengalihkan");
+   P ("file.deleting", "memadam");
+   P ("file.deleted", "dipadam");
+   P ("file.restoring", "memulihkan");
+   P ("file.synced", "disegerakkan");
+   P ("form.valid_input", "input sah");
+   P ("form.invalid_input", "input tidak sah");
+   P ("form.dirty", "diubah");
+   P ("form.pristine", "tidak diubah");
+   P ("form.submitted", "diserahkan");
+   P ("form.submission_failed", "penyerahan gagal");
+   P ("health.healthy", "sihat");
+   P ("health.degraded", "merosot");
+   P ("health.unhealthy", "tidak sihat");
+   P ("health.incident", "insiden");
+   P ("health.maintenance", "penyelenggaraan");
+   P ("health.recovering", "sedang pulih");
+   P ("issue.open", "terbuka");
+   P ("issue.closed", "ditutup");
+   P ("issue.reopened", "dibuka semula");
+   P ("issue.assigned", "ditugaskan");
+   P ("issue.unassigned", "belum ditugaskan");
+   P ("issue.merged", "digabungkan");
+   P ("network.offline", "luar talian");
+   P ("network.online", "dalam talian");
+   P ("network.connecting", "menyambung");
+   P ("network.syncing", "menyegerakkan");
+   P ("network.sync_failed", "penyegerakan gagal");
+   P ("network.permission_denied", "kebenaran ditolak");
+   P ("network.read_only", "baca sahaja");
+   P ("notification.unread", "belum dibaca");
+   P ("notification.read", "telah dibaca");
+   P ("notification.muted", "diredamkan");
+   P ("notification.snoozed", "ditunda");
+   P ("notification.sent", "dihantar");
+   P ("notification.delivered", "diterima");
+   P ("payment.payment_authorized", "bayaran dibenarkan");
+   P ("payment.payment_captured", "bayaran dikutip");
+   P ("payment.payment_refunded", "bayaran dikembalikan");
+   P ("payment.payment_disputed", "bayaran dipertikaikan");
+   P ("payment.payment_requires_action", "bayaran memerlukan tindakan");
+   P ("payment.payment_expired", "bayaran tamat tempoh");
+   P ("ui.empty", "kosong");
+   P ("ui.loading", "memuatkan");
+   P ("ui.saving", "menyimpan");
+   P ("ui.saved", "disimpan");
+   P ("ui.unsaved", "belum disimpan");
+   P ("ui.retrying", "mencuba semula");
+   P ("ui.paused", "dijeda");
+   P ("ui.complete", "selesai");
+   P ("ui.failed", "gagal");
+   P ("ui.due_soon", "tarikh akhir hampir tiba");
+   P ("ui.overdue", "lewat");
+   P ("ui.last_seen", "kali terakhir dilihat");
+   P ("ui.updated_just_now", "baru dikemas kini");
+   P ("queue.queued", "dalam baris gilir");
+   P ("queue.running", "berjalan");
+   P ("queue.waiting", "menunggu");
+   P ("queue.blocked", "disekat");
+   P ("queue.canceled_job", "kerja dibatalkan");
+   P ("queue.completed_job", "kerja selesai");
+   P ("search.filtering", "menapis");
+   P ("search.filtered", "ditapis");
+   P ("search.no_matches", "tiada padanan");
+   P ("search.search_ready", "carian sedia");
+   P ("search.search_failed", "carian gagal");
+   P ("search.query_too_short", "pertanyaan terlalu pendek");
+   P ("security.secure", "selamat");
+   P ("security.insecure", "tidak selamat");
+   P ("security.vulnerable", "terdedah");
+   P ("security.encrypted", "disulitkan");
+   P ("security.unencrypted", "tidak disulitkan");
+   P ("security.token_expired", "token tamat tempoh");
+   P ("sync.sync_idle", "penyegerakan melahu");
+   P ("sync.syncing_now", "sedang menyegerakkan");
+   P ("sync.sync_queued", "penyegerakan dalam baris gilir");
+   P ("sync.sync_conflict", "konflik penyegerakan");
+   P ("sync.sync_complete", "penyegerakan selesai");
+   P ("sync.sync_error", "ralat penyegerakan");
+   P ("task.todo", "untuk dibuat");
+   P ("task.in_progress", "sedang berjalan");
+   P ("task.done", "selesai");
+   P ("task.skipped", "dilangkau");
+   P ("task.blocked_task", "disekat");
+   P ("task.waiting_on", "menunggu");
+   P ("ticket.ticket_new", "tiket baharu");
+   P ("ticket.ticket_open", "tiket terbuka");
+   P ("ticket.ticket_waiting", "tiket menunggu");
+   P ("ticket.ticket_escalated", "tiket dieskalasi");
+   P ("ticket.ticket_resolved", "tiket diselesaikan");
+   P ("ticket.ticket_closed", "tiket ditutup");
+   P ("transfer.importing", "mengimport");
+   P ("transfer.imported", "diimport");
+   P ("transfer.import_failed", "import gagal");
+   P ("transfer.exporting", "mengeksport");
+   P ("transfer.exported", "dieksport");
+   P ("transfer.export_failed", "eksport gagal");
+   P ("validation.required", "wajib");
+   P ("validation.optional", "pilihan");
+   P ("validation.invalid", "tidak sah");
+   P ("validation.too_short", "terlalu pendek");
+   P ("validation.too_long", "terlalu panjang");
+   P ("validation.out_of_range", "di luar julat");
+   P ("validation.already_exists", "sudah wujud");
+   P ("workflow.draft", "draf");
+   P ("workflow.in_review", "dalam semakan");
+   P ("workflow.approved", "diluluskan");
+   P ("workflow.rejected", "ditolak");
+   P ("workflow.published", "diterbitkan");
+   P ("workflow.archived", "diarkibkan");
+   P ("database.database_online", "pangkalan data dalam talian");
+   P ("database.database_offline", "pangkalan data luar talian");
+   P ("database.database_degraded", "pangkalan data merosot");
+   P ("database.database_migrating", "pangkalan data sedang dipindahkan");
+   P ("database.database_migration_failed", "pemindahan pangkalan data gagal");
+   P ("database.database_replicating", "pangkalan data sedang direplikasi");
+   P ("database.database_replication_lagging", "replikasi pangkalan data ketinggalan");
+   P ("database.database_backup_running", "sandaran pangkalan data berjalan");
+   P ("database.database_backup_failed", "sandaran pangkalan data gagal");
+   P ("times_noun",
+      "{count, plural, =0 {{other}: tidak pernah} =1 {{other}: sekali} =2 "
+      & "{{other}: dua kali} other {{other}: {count} kali}}");
+   P ("availability.all", "{available} daripada {total} {other} tersedia");
+   P ("availability.none", "tiada {other} tersedia");
+   P ("availability.partial",
+      "{available} daripada {total} {other} tersedia, {unavailable} tidak "
+      & "tersedia");
+   P ("operation_progress", "{name} – {state}: {details}");
+   P ("operation.queued", "dalam baris gilir");
+   P ("operation.running", "berjalan");
+   P ("operation.blocked", "disekat");
+   P ("operation.retrying", "mencuba semula");
+   P ("operation.succeeded", "berjaya");
+   P ("operation.partially_succeeded", "berjaya sebahagiannya");
+   P ("operation.failed", "gagal");
+   P ("operation.canceled", "dibatalkan");
+   P ("operation.skipped", "dilangkau");
+   P ("operation.stale", "lapuk");
+   P ("operation.unknown_state", "tidak diketahui");
+   P ("operation.last_success", "{name} kali terakhir berjaya {time}");
+   P ("operation.next_retry", "{name} cubaan semula seterusnya {time}");
+   P ("operation.stale_run", "{name} lapuk selama {time}");
+   P ("summary.skipped", "{count} dilangkau");
+   P ("summary.retried", "{count} dicuba semula");
+   P ("summary.canceled", "{count} dibatalkan");
+   P ("system.service.operational", "beroperasi");
+   P ("system.service.degraded", "prestasi merosot");
+   P ("system.service.partial_outage", "gangguan separa");
+   P ("system.service.major_outage", "gangguan besar");
+   P ("system.service.maintenance", "dalam penyelenggaraan");
+   P ("system.service.unknown", "status perkhidmatan tidak diketahui");
+   P ("system.health.healthy", "sihat");
+   P ("system.health.warning", "amaran");
+   P ("system.health.critical", "kritikal");
+   P ("system.health.unavailable", "tidak tersedia");
+   P ("system.health.unknown_health", "status kesihatan tidak diketahui");
+   P ("system.readiness.ready", "sedia");
+   P ("system.readiness.not_ready", "belum sedia");
+   P ("system.readiness.starting", "sedang dimulakan");
+   P ("system.readiness.draining", "sedang dikosongkan");
+   P ("system.readiness.stopped", "dihentikan");
+   P ("system.readiness.unknown_readiness", "status kesediaan tidak diketahui");
+   P ("system.component.online", "dalam talian");
+   P ("system.component.offline", "luar talian");
+   P ("system.component.starting", "sedang dimulakan");
+   P ("system.component.stopping", "sedang dihentikan");
+   P ("system.component.restarting", "sedang dimulakan semula");
+   P ("system.component.unknown", "status komponen tidak diketahui");
+   P ("system.check.passing", "lulus");
+   P ("system.check.failing", "gagal");
+   P ("system.check.warning", "amaran");
+   P ("system.check.skipped", "dilangkau");
+   P ("system.check.timed_out", "tamat masa");
+   P ("system.check.unknown", "status semakan tidak diketahui");
+   P ("system.incident.investigating", "sedang disiasat");
+   P ("system.incident.identified", "dikenal pasti");
+   P ("system.incident.monitoring", "sedang dipantau");
+   P ("system.incident.resolved", "diselesaikan");
+   P ("system.incident.scheduled_maintenance", "penyelenggaraan berjadual");
+   P ("system.named", "{name}: {state}");
+   P ("system.check_named", "semakan {name}: {state}");
+   P ("system.count.components", "{count, plural, =0 {tiada komponen} other {{count} komponen}}");
+   P ("system.count.checks", "{count, plural, =0 {tiada semakan} other {{count} semakan}}");
+   P ("system.count.incidents", "{count, plural, =0 {tiada insiden} other {{count} insiden}}");
+   P ("system.uptime", "masa aktif {measure}");
+   P ("system.latency", "kependaman {measure}");
+   P ("system.maintenance_window", "tempoh penyelenggaraan {time}");
+   P ("system.last_checked", "kali terakhir disemak {time}");
+   P ("system.http.informational", "maklumat");
+   P ("system.http.successful", "berjaya");
+   P ("system.http.redirection", "ubah hala");
+   P ("system.http.client_error", "ralat klien");
+   P ("system.http.server_error", "ralat pelayan");
+   P ("system.exit.success", "kod keluar {code}: berjaya");
+   P ("system.exit.failure", "kod keluar {code}: gagal");
+   P ("system.exit.usage_error", "kod keluar {code}: ralat penggunaan");
+   P ("system.exit.not_executable", "kod keluar {code}: arahan tidak boleh dilaksanakan");
+   P ("system.exit.not_found", "kod keluar {code}: arahan tidak ditemui");
+   P ("system.exit.invalid_argument", "kod keluar {code}: argumen keluar tidak sah");
+   P ("system.exit.signal", "kod keluar {code}: ditamatkan oleh {signal}");
+   P ("validation.problem.required", "{field}: wajib diisi");
+   P ("validation.problem.minimum", "{field}: di bawah nilai minimum");
+   P ("validation.problem.maximum", "{field}: melebihi nilai maksimum");
+   P ("validation.problem.range", "{field}: di luar julat");
+   P ("validation.problem.pattern", "{field}: tidak sepadan dengan corak");
+   P ("validation.problem.choice", "{field}: mestilah salah satu pilihan yang dibenarkan");
+   P ("validation.problem.dependency", "{field}: bergantung pada medan lain");
+   P ("validation.problem.custom", "{field}: tidak sah");
+   P ("validation.constraint.no_relation", "{field}: mestilah {value} yang sah");
+   P ("validation.constraint.less_than", "{field}: mestilah kurang daripada {value}");
+   P ("validation.constraint.less_or_equal", "{field}: mestilah tidak melebihi {value}");
+   P ("validation.constraint.greater_than", "{field}: mestilah lebih daripada {value}");
+   P ("validation.constraint.greater_or_equal", "{field}: mestilah sekurang-kurangnya {value}");
+   P ("validation.constraint.equal_to", "{field}: mestilah sama dengan {value}");
+   P ("validation.constraint.not_equal_to", "{field}: tidak boleh sama dengan {value}");
+   P ("validation.constraint.before_field", "{field}: mestilah sebelum {value}");
+   P ("validation.constraint.after_field", "{field}: mestilah selepas {value}");
+   P ("validation.choices", "{field}: nilai yang dibenarkan {choices}");
+   P ("frame.detail", "{text} ({detail})");
+   P ("frame.got", "{text}, nilai yang dimasukkan {actual}");
+   P ("frame.also", "{text}, {detail}");
+   P ("frame.retry", "{text}, cuba lagi dalam {time}");
+   P ("net_diagnostic.dns", "{endpoint}: carian DNS gagal");
+   P ("net_diagnostic.tcp", "{endpoint}: sambungan TCP gagal");
+   P ("net_diagnostic.tls", "{endpoint}: sijil TLS gagal");
+   P ("net_diagnostic.http", "{endpoint}: permintaan HTTP gagal");
+   P ("net_diagnostic.proxy", "{endpoint}: proksi gagal");
+   P ("net_diagnostic.timeout", "{endpoint}: tamat masa");
+   P ("net_diagnostic.reset", "{endpoint}: sambungan ditetapkan semula");
+   P ("net_diagnostic.unknown_network", "{endpoint}: masalah rangkaian");
+   P ("progress.state.not_started", "belum dimulakan");
+   P ("progress.state.running", "sedang berjalan");
+   P ("progress.state.stalled", "tersekat");
+   P ("progress.state.retrying", "mencuba semula");
+   P ("progress.state.complete", "selesai");
+   P ("progress.state.failed", "gagal");
+   P ("progress.of", "{subject}: {done} daripada {total} selesai ({percent}%), {state}");
+   P ("progress.done", "{subject}: {done} selesai, {state}");
+   P ("collection.summary",
+      "{name}: {total} item, {unique} nilai unik, {duplicates} pendua, "
+      & "{outliers} nilai terpencil");
+   P ("top_frequency", "{name}: {value} ({count} kali)");
+   P ("calendar_date.fiscal_year", "TK {year}");
+   P ("calendar_date.fiscal_quarter", "S{part} TK {year}");
+   P ("calendar_date.fiscal_half", "{part, plural, =1 {Separuh pertama} other {Separuh kedua}} TK {year}");
+   P ("calendar_date.fiscal_year_end", "akhir TK {year}");
+   P ("calendar_date.semester", "Semester {part} {year}");
+   P ("calendar_date.half_year", "{part, plural, =1 {Separuh pertama} other {Separuh kedua}} {year}");
+   P ("calendar_date.half_year_phrase",
+      "{part, plural, =1 {separuh pertama {year}} other {separuh kedua "
+      & "{year}}}");
+   P ("calendar_date.month_phase",
+      "{phase, select, early {awal {text}} mid {pertengahan {text}} other "
+      & "{akhir {text}}}");
+   P ("calendar_date.quarter_phase",
+      "{phase, select, early {awal {text}} mid {pertengahan {text}} other "
+      & "{akhir {text}}}");
+   P ("calendar_range.weekend.last", "hujung minggu lalu");
+   P ("calendar_range.weekend.this", "hujung minggu ini");
+   P ("calendar_range.weekend.next", "hujung minggu depan");
+   P ("calendar_range.weekend_of", "hujung minggu {date}");
+   P ("calendar_range.week.last", "minggu lalu");
+   P ("calendar_range.week.this", "minggu ini");
+   P ("calendar_range.week.next", "minggu depan");
+   P ("calendar_range.week_of", "minggu {date}");
+   P ("calendar_range.between", "{first} – {last}");
+   P ("http.reason.100", "teruskan");
+   P ("http.reason.101", "menukar protokol");
+   P ("http.reason.102", "sedang diproses");
+   P ("http.reason.103", "petunjuk awal");
+   P ("http.reason.200", "OK");
+   P ("http.reason.201", "dicipta");
+   P ("http.reason.202", "diterima");
+   P ("http.reason.203", "maklumat tidak berwibawa");
+   P ("http.reason.204", "tiada kandungan");
+   P ("http.reason.205", "tetapkan semula kandungan");
+   P ("http.reason.206", "kandungan separa");
+   P ("http.reason.207", "berbilang status");
+   P ("http.reason.208", "sudah dilaporkan");
+   P ("http.reason.226", "IM digunakan");
+   P ("http.reason.300", "pelbagai pilihan");
+   P ("http.reason.301", "dipindahkan secara kekal");
+   P ("http.reason.302", "dijumpai");
+   P ("http.reason.303", "lihat yang lain");
+   P ("http.reason.304", "tidak diubah suai");
+   P ("http.reason.305", "guna proksi");
+   P ("http.reason.307", "ubah hala sementara");
+   P ("http.reason.308", "ubah hala kekal");
+   P ("http.reason.400", "permintaan tidak sah");
+   P ("http.reason.401", "tidak dibenarkan");
+   P ("http.reason.402", "bayaran diperlukan");
+   P ("http.reason.403", "dilarang");
+   P ("http.reason.404", "tidak dijumpai");
+   P ("http.reason.405", "kaedah tidak dibenarkan");
+   P ("http.reason.406", "tidak boleh diterima");
+   P ("http.reason.407", "pengesahan proksi diperlukan");
+   P ("http.reason.408", "permintaan tamat masa");
+   P ("http.reason.409", "konflik");
+   P ("http.reason.410", "sudah tiada");
+   P ("http.reason.411", "panjang diperlukan");
+   P ("http.reason.412", "prasyarat gagal");
+   P ("http.reason.413", "kandungan terlalu besar");
+   P ("http.reason.414", "URI terlalu panjang");
+   P ("http.reason.415", "jenis media tidak disokong");
+   P ("http.reason.416", "julat tidak dapat dipenuhi");
+   P ("http.reason.417", "jangkaan gagal");
+   P ("http.reason.418", "saya sebuah teko teh");
+   P ("http.reason.421", "permintaan salah hala");
+   P ("http.reason.422", "kandungan tidak dapat diproses");
+   P ("http.reason.423", "dikunci");
+   P ("http.reason.424", "kebergantungan gagal");
+   P ("http.reason.425", "terlalu awal");
+   P ("http.reason.426", "naik taraf diperlukan");
+   P ("http.reason.428", "prasyarat diperlukan");
+   P ("http.reason.429", "terlalu banyak permintaan");
+   P ("http.reason.431", "medan pengepala permintaan terlalu besar");
+   P ("http.reason.451", "tidak tersedia atas sebab undang-undang");
+   P ("http.reason.500", "ralat pelayan dalaman");
+   P ("http.reason.501", "tidak dilaksanakan");
+   P ("http.reason.502", "get laluan tidak sah");
+   P ("http.reason.503", "perkhidmatan tidak tersedia");
+   P ("http.reason.504", "get laluan tamat masa");
+   P ("http.reason.505", "versi HTTP tidak disokong");
+   P ("http.reason.506", "varian juga berunding");
+   P ("http.reason.507", "storan tidak mencukupi");
+   P ("http.reason.508", "gelung dikesan");
+   P ("http.reason.510", "tidak dilanjutkan");
+   P ("http.reason.511", "pengesahan rangkaian diperlukan");
+   P ("errno.reason.0", "berjaya");
+   P ("errno.reason.1", "operasi tidak dibenarkan");
+   P ("errno.reason.2", "tiada fail atau direktori sedemikian");
+   P ("errno.reason.3", "tiada proses sedemikian");
+   P ("errno.reason.4", "panggilan sistem disampuk");
+   P ("errno.reason.5", "ralat input/output");
+   P ("errno.reason.6", "tiada peranti atau alamat sedemikian");
+   P ("errno.reason.9", "deskriptor fail tidak sah");
+   P ("errno.reason.11", "sumber tidak tersedia buat sementara waktu");
+   P ("errno.reason.12", "memori tidak mencukupi");
+   P ("errno.reason.13", "kebenaran ditolak");
+   P ("errno.reason.17", "fail wujud");
+   P ("errno.reason.20", "bukan direktori");
+   P ("errno.reason.21", "ialah direktori");
+   P ("errno.reason.22", "argumen tidak sah");
+   P ("errno.reason.24", "terlalu banyak fail terbuka");
+   P ("errno.reason.28", "tiada ruang tinggal pada peranti");
+   P ("errno.reason.32", "paip patah");
+   P ("errno.reason.98", "alamat sudah digunakan");
+   P ("errno.reason.110", "sambungan tamat masa");
+   P ("errno.reason.111", "sambungan ditolak");
+   P ("signal.reason.1", "putus talian");
+   P ("signal.reason.2", "sampukan");
+   P ("signal.reason.3", "keluar");
+   P ("signal.reason.4", "arahan tidak sah");
+   P ("signal.reason.5", "perangkap surih");
+   P ("signal.reason.6", "henti paksa");
+   P ("signal.reason.7", "ralat bas");
+   P ("signal.reason.8", "pengecualian titik apungan");
+   P ("signal.reason.9", "dibunuh");
+   P ("signal.reason.10", "isyarat pengguna 1");
+   P ("signal.reason.11", "ralat segmentasi");
+   P ("signal.reason.12", "isyarat pengguna 2");
+   P ("signal.reason.13", "paip patah");
+   P ("signal.reason.14", "penggera");
+   P ("signal.reason.15", "permintaan penamatan");
+   P ("signal.reason.17", "status anak berubah");
+   P ("signal.reason.18", "teruskan");
+   P ("signal.reason.19", "dihentikan");
+   P ("signal.reason.20", "dihentikan dari terminal");
+   P ("signal.reason.28", "saiz tetingkap berubah");
+   P ("sqlstate.reason.00", "berjaya diselesaikan");
+   P ("sqlstate.reason.01", "amaran");
+   P ("sqlstate.reason.02", "tiada data");
+   P ("sqlstate.reason.08", "pengecualian sambungan");
+   P ("sqlstate.reason.0a", "ciri tidak disokong");
+   P ("sqlstate.reason.22", "pengecualian data");
+   P ("sqlstate.reason.23", "pelanggaran kekangan integriti");
+   P ("sqlstate.reason.24", "keadaan kursor tidak sah");
+   P ("sqlstate.reason.25", "keadaan transaksi tidak sah");
+   P ("sqlstate.reason.28", "spesifikasi kebenaran tidak sah");
+   P ("sqlstate.reason.2d", "penamatan transaksi tidak sah");
+   P ("sqlstate.reason.3d", "nama katalog tidak sah");
+   P ("sqlstate.reason.3f", "nama skema tidak sah");
+   P ("sqlstate.reason.40", "gulung balik transaksi");
+   P ("sqlstate.reason.42", "ralat sintaks atau pelanggaran peraturan akses");
+   P ("sqlstate.reason.53", "sumber tidak mencukupi");
+   P ("sqlstate.reason.54", "had program dilampaui");
+   P ("sqlstate.reason.55", "objek tidak dalam keadaan prasyarat");
+   P ("sqlstate.reason.57", "campur tangan pengendali");
+   P ("sqlstate.reason.58", "ralat sistem");
+   P ("sqlstate.reason.hv", "ralat pembalut data asing");
+   P ("sqlstate.reason.p0", "ralat PL/pgSQL");
+   P ("sqlstate.reason.xx", "ralat dalaman");
+   P ("system.signal_numbered", "isyarat {number} {name} {reason}");
+   P ("http.reason.unknown", "status tidak diketahui");
+   P ("errno.reason.unknown", "ralat tidak diketahui");
+   P ("signal.reason.unknown", "isyarat tidak diketahui");
+   P ("sqlstate.reason.unknown", "kelas SQLSTATE tidak diketahui");
 end Locale_Ms;

@@ -33,12 +33,13 @@ separate (Humanize.Tests.Parsing)
            Humanize.Numbers.Percent
              (Humanize.Tests.Support.Locale (Locale), 12.0);
          Text : constant String := Humanize.Tests.Support.Text (Rendered);
-         Parsed : constant Humanize.Parsing.Number_Parse_Result :=
-           Humanize.Parsing.Parse_Percent (Text);
+         --  Read in the locale that wrote it (native digits, "١٢٪").
+         Parsed : constant Humanize.Parsing.Float_Parse_Result :=
+           Humanize.Parsing.Localized.Parse_Percent (Humanize.Tests.Support.Locale (Locale), Text);
       begin
          AUnit.Assertions.Assert
            (Parsed.Status = Humanize.Status.Ok
-            and then Parsed.Value = 12,
+            and then Parsed.Value = 12.0,
             Locale & " localized percent round trip: " & Text);
       end Check_Percent;
 

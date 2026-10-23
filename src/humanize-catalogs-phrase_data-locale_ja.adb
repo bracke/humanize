@@ -1,456 +1,591 @@
 separate (Humanize.Catalogs.Phrase_Data)
-function Locale_Ja return Wide_Wide_String is
-   function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("ja", Name, Template));
+procedure Locale_Ja (Target : in out Catalog_Text) is
+   --  One statement an entry: the catalog grows on the heap, not in one
+   --  expression on the stack.
+   procedure P (Name, Template : Wide_Wide_String) is
+   begin
+      Add (Target, "ja", Name, Template);
+   end P;
 begin
-   return
-     P ("all_count", "全{total}件の{other}")
-     & P ("filtered_count.none", "一致する{other}はありません")
-     & P ("filtered_count.all", "全{total}件の{other}が一致")
-     & P ("filtered_count.some", "{total}件中{matching}件の{other}が一致")
-     & P ("more_count", "{visible}件を表示、ほか{remaining}件")
-     & P ("others_count", "{first}、ほか{remaining}件")
-     & P ("page_count", "{page}/{total}ページ")
-     & P ("page_size", "1ページあたり{other}{size}件")
-     & P ("pagination_range", "全{total}件の{other}のうち{first}〜{last}件目")
-     & P ("position_count", "{position}/{total}")
-     & P ("selection_count", "{total}件中{selected}件の{other}を選択")
-     & P ("showing_count", "{total}件中{showing}件の{other}を表示")
-     & P ("validation_count",
-          "{count, plural, =0 {{severity, select, error {エラー} warning "
-          & "{警告} other {通知}}なし} other {{severity, select, error "
-          & "{エラー} warning {警告} other {通知}}{count}件}}")
-     & P ("collection.empty", "{other}はありません")
-     & P ("collection.none_shown", "表示中の{other}はありません")
-     & P ("collection.showing_hidden", "{total}件中{visible}件の{other}を表示、{hidden}件を非表示")
-     & P ("collection.showing", "{total}件中{visible}件の{other}を表示")
-     & P ("collection.shown_hidden", "{other}{visible}件を表示、{hidden}件を非表示")
-     & P ("collection.shown", "{other}{visible}件を表示")
-     & P ("collection.visible_out_of", "{total}件中{visible}件の{other}が表示中")
-     & P ("complete_count", "{total}件中{done}件完了")
-     & P ("percent_complete", "{percent}%完了")
-     & P ("step_count", "ステップ {step}/{total}")
-     & P ("attempt_count", "試行 {attempt}/{total}")
-     & P ("throughput_remaining", "残り{remaining} {other}（{rate} {unit}/秒）")
-     & P ("accessible_progress", "{total}件中{done}件完了、{percent}パーセント")
-     & P ("business_days", "{days}営業日")
-     & P ("working_hours", "稼働{hours}時間")
-     & P ("due.overdue", "期限を{days}日超過")
-     & P ("due.today", "本日期限")
-     & P ("due.tomorrow", "明日期限")
-     & P ("due.in", "{days}日後に期限")
-     & P ("calendar_difference.future", "{difference}後")
-     & P ("calendar_difference.past", "{difference}前")
-     & P ("cpu_load", "CPU使用率 {measure}")
-     & P ("battery", "バッテリー {measure}")
-     & P ("screen_size", "画面 {measure}")
-     & P ("refresh_rate", "リフレッシュレート {measure}")
-     & P ("editorial_percent.symbol", "{value}%")
-     & P ("editorial_percent.word", "{value}パーセント")
-     & P ("recurrence.second", "{every, plural, =1 {毎秒} other {{every}秒ごと}}")
-     & P ("recurrence.minute", "{every, plural, =1 {毎分} other {{every}分ごと}}")
-     & P ("recurrence.hour", "{every, plural, =1 {毎時} other {{every}時間ごと}}")
-     & P ("recurrence.day", "{every, plural, =1 {毎日} other {{every}日ごと}}")
-     & P ("recurrence.week", "{every, plural, =1 {毎週} other {{every}週間ごと}}")
-     & P ("recurrence.month", "{every, plural, =1 {毎月} other {{every}か月ごと}}")
-     & P ("recurrence.quarter", "{every, plural, =1 {四半期ごと} other {{every}四半期ごと}}")
-     & P ("recurrence.year", "{every, plural, =1 {毎年} other {{every}年ごと}}")
-     & P ("cache_summary.empty", "キャッシュ：リクエストなし")
-     & P ("cache_summary", "キャッシュ：ヒット{hits}件、ミス{misses}件、ヒット率{rate}%")
-     & P ("field_change_summary", "{other}{total}件：変更{changed}件、追加{added}件、削除{removed}件")
-     & P ("field_diff", "{field}を{before}から{after}に変更")
-     & P ("field_added", "{field}を{value}として追加")
-     & P ("field_removed", "{field}を削除（以前の値：{value}）")
-     & P ("field_unchanged", "{field}は{value}のまま変更なし")
-     & P ("number_comparison.equal", "{current}は{baseline}と同じ")
-     & P ("number_comparison.higher", "{current}は{baseline}より{quantity}高い")
-     & P ("number_comparison.lower", "{current}は{baseline}より{quantity}低い")
-     & P ("percent_comparison.equal", "{current}は{baseline}と同じ")
-     & P ("percent_comparison.higher", "{current}は{baseline}より{quantity}高い")
-     & P ("percent_comparison.lower", "{current}は{baseline}より{quantity}低い")
-     & P ("file_size_comparison.same", "{current}は{baseline}と同じサイズ")
-     & P ("file_size_comparison.larger", "{current}は{baseline}より{quantity}大きい")
-     & P ("file_size_comparison.smaller", "{current}は{baseline}より{quantity}小さい")
-     & P ("date_comparison.same", "{current}は{baseline}と同じ日付")
-     & P ("date_comparison.after", "{current}は{baseline}の{quantity}後")
-     & P ("date_comparison.before", "{current}は{baseline}の{quantity}前")
-     & P ("queue_summary", "キュー：{details}")
-     & P ("domain_summary",
-          "{domain, select, queue {キュー} job {ジョブ} run {実行} cache "
-          & "{キャッシュ} sync {同期} import {インポート} export "
-          & "{エクスポート} other {{domain}}} {state, select, queued "
-          & "{登録済み} running {実行中} waiting {待機中} paused "
-          & "{一時停止中} complete {完了} failed {失敗} stale "
-          & "{期限切れ} skipped {スキップ} other {{state}}}：{details}")
-     & P ("summary.none", "{other}なし")
-     & P ("summary.completed", "{other}{count}件完了")
-     & P ("summary.completed_of", "{total}件中{count}件の{other}が完了")
-     & P ("summary.failed", "{count}件失敗")
-     & P ("summary.queued", "{other}{count}件が待機中")
-     & P ("summary.running", "{count}件実行中")
-     & P ("summary.complete", "{count}件完了")
-     & P ("backup.backup_running", "バックアップ実行中")
-     & P ("backup.backup_completed", "バックアップ完了")
-     & P ("backup.backup_failed", "バックアップ失敗")
-     & P ("backup.backup_stale", "バックアップが古い")
-     & P ("incident.incident_investigating", "インシデント調査中")
-     & P ("incident.incident_identified", "インシデント特定済み")
-     & P ("incident.incident_mitigated", "インシデント緩和済み")
-     & P ("incident.incident_resolved", "インシデント解決済み")
-     & P ("release.release_drafting", "リリース準備中")
-     & P ("release.release_ready", "リリース準備完了")
-     & P ("release.release_published", "リリース公開済み")
-     & P ("release.release_rolled_back", "リリースロールバック済み")
-     & P ("audit.audit_created", "監査エントリ作成済み")
-     & P ("audit.audit_updated", "監査エントリ更新済み")
-     & P ("audit.audit_deleted", "監査エントリ削除済み")
-     & P ("audit.audit_restored", "監査エントリ復元済み")
-     & P ("flag.flag_enabled", "機能フラグ有効")
-     & P ("flag.flag_disabled", "機能フラグ無効")
-     & P ("flag.flag_rolling_out", "機能フラグ段階的展開中")
-     & P ("flag.flag_rolled_back", "機能フラグロールバック済み")
-     & P ("webhook.webhook_pending", "Webhook保留中")
-     & P ("webhook.webhook_delivered", "Webhook配信済み")
-     & P ("webhook.webhook_failed", "Webhook失敗")
-     & P ("webhook.webhook_retrying", "Webhook再試行中")
-     & P ("api_key.api_key_active", "APIキー有効")
-     & P ("api_key.api_key_revoked", "APIキー取り消し済み")
-     & P ("api_key.api_key_expired", "APIキー期限切れ")
-     & P ("api_key.api_key_rotated", "APIキーローテーション済み")
-     & P ("quota.quota_available", "クォータ利用可能")
-     & P ("quota.quota_near_limit", "クォータ上限間近")
-     & P ("quota.quota_exceeded", "クォータ超過")
-     & P ("quota.quota_reset", "クォータリセット済み")
-     & P ("invoice.invoice_draft", "請求書下書き")
-     & P ("invoice.invoice_sent", "請求書送付済み")
-     & P ("invoice.invoice_paid", "請求書支払い済み")
-     & P ("invoice.invoice_refunded", "請求書返金済み")
-     & P ("invoice.invoice_overdue", "請求書支払期限超過")
-     & P ("invoice.refund_failed", "返金失敗")
-     & P ("page_navigation.only", "このページのみ")
-     & P ("page_navigation.first", "最初のページ、次のページあり")
-     & P ("page_navigation.last", "最後のページ、前のページあり")
-     & P ("page_navigation.middle", "前後のページあり")
-     & P ("end_of_week", "週の終わり")
-     & P ("end_of_month", "月末")
-     & P ("end_of_quarter", "四半期末")
-     & P ("time_of_day.night", "夜")
-     & P ("time_of_day.morning", "朝")
-     & P ("time_of_day.afternoon", "午後")
-     & P ("time_of_day.evening", "夕方")
-     & P ("calendar_difference.same_day", "同日")
-     & P ("calendar_difference.zero", "0日")
-     & P ("queue_summary.empty", "キューは空")
-     & P ("access.allowed", "許可")
-     & P ("access.denied", "拒否")
-     & P ("access.owner", "オーナー")
-     & P ("access.admin", "管理者")
-     & P ("access.viewer", "閲覧者")
-     & P ("access.editor", "編集者")
-     & P ("auth.signed_in", "サインイン済み")
-     & P ("auth.signed_out", "サインアウト済み")
-     & P ("auth.session_expired", "セッション期限切れ")
-     & P ("auth.locked", "ロック中")
-     & P ("auth.two_factor_required", "2 段階認証が必要")
-     & P ("billing.trialing", "試用中")
-     & P ("billing.payment_due", "支払い待ち")
-     & P ("billing.payment_failed", "支払い失敗")
-     & P ("billing.paid", "支払い済み")
-     & P ("billing.past_due", "支払期限超過")
-     & P ("billing.canceled", "キャンセル済み")
-     & P ("ci.pipeline_pending", "パイプライン保留中")
-     & P ("ci.pipeline_running", "パイプライン実行中")
-     & P ("ci.pipeline_passed", "パイプライン成功")
-     & P ("ci.pipeline_failed", "パイプライン失敗")
-     & P ("ci.review_required", "レビューが必要")
-     & P ("ci.deploy_blocked", "デプロイがブロック中")
-     & P ("collaboration.active_now", "オンライン")
-     & P ("collaboration.away", "離席中")
-     & P ("collaboration.do_not_disturb", "応答不可")
-     & P ("collaboration.typing", "入力中")
-     & P ("collaboration.viewing", "閲覧中")
-     & P ("collaboration.editing", "編集中")
-     & P ("deployment.deploying", "デプロイ中")
-     & P ("deployment.deployed", "デプロイ済み")
-     & P ("deployment.rolling_back", "ロールバック中")
-     & P ("deployment.rolled_back", "ロールバック済み")
-     & P ("deployment.build_failed", "ビルド失敗")
-     & P ("deployment.checks_passed", "チェック合格")
-     & P ("empty.no_items", "項目なし")
-     & P ("empty.no_results", "結果なし")
-     & P ("empty.no_messages", "メッセージなし")
-     & P ("empty.no_selection", "選択なし")
-     & P ("empty.nothing_to_show", "表示する項目なし")
-     & P ("file.uploading", "アップロード中")
-     & P ("file.downloading", "ダウンロード中")
-     & P ("file.copying", "コピー中")
-     & P ("file.moving", "移動中")
-     & P ("file.deleting", "削除中")
-     & P ("file.deleted", "削除済み")
-     & P ("file.restoring", "復元中")
-     & P ("file.synced", "同期済み")
-     & P ("form.valid_input", "有効な入力")
-     & P ("form.invalid_input", "無効な入力")
-     & P ("form.dirty", "変更あり")
-     & P ("form.pristine", "変更なし")
-     & P ("form.submitted", "送信済み")
-     & P ("form.submission_failed", "送信失敗")
-     & P ("health.healthy", "正常")
-     & P ("health.degraded", "性能低下")
-     & P ("health.unhealthy", "異常")
-     & P ("health.incident", "障害発生")
-     & P ("health.maintenance", "メンテナンス中")
-     & P ("health.recovering", "復旧中")
-     & P ("issue.open", "オープン")
-     & P ("issue.closed", "クローズ")
-     & P ("issue.reopened", "再オープン")
-     & P ("issue.assigned", "割り当て済み")
-     & P ("issue.unassigned", "未割り当て")
-     & P ("issue.merged", "マージ済み")
-     & P ("network.offline", "オフライン")
-     & P ("network.online", "オンライン")
-     & P ("network.connecting", "接続中")
-     & P ("network.syncing", "同期中")
-     & P ("network.sync_failed", "同期失敗")
-     & P ("network.permission_denied", "アクセス拒否")
-     & P ("network.read_only", "読み取り専用")
-     & P ("notification.unread", "未読")
-     & P ("notification.read", "既読")
-     & P ("notification.muted", "ミュート中")
-     & P ("notification.snoozed", "スヌーズ中")
-     & P ("notification.sent", "送信済み")
-     & P ("notification.delivered", "配信済み")
-     & P ("payment.payment_authorized", "支払い承認済み")
-     & P ("payment.payment_captured", "支払い確定済み")
-     & P ("payment.payment_refunded", "返金済み")
-     & P ("payment.payment_disputed", "支払い異議申し立て中")
-     & P ("payment.payment_requires_action", "支払いに対応が必要")
-     & P ("payment.payment_expired", "支払い期限切れ")
-     & P ("ui.empty", "空")
-     & P ("ui.loading", "読み込み中")
-     & P ("ui.saving", "保存中")
-     & P ("ui.saved", "保存済み")
-     & P ("ui.unsaved", "未保存")
-     & P ("ui.retrying", "再試行中")
-     & P ("ui.paused", "一時停止中")
-     & P ("ui.complete", "完了")
-     & P ("ui.failed", "失敗")
-     & P ("ui.due_soon", "期限間近")
-     & P ("ui.overdue", "期限超過")
-     & P ("ui.last_seen", "最終アクセス")
-     & P ("ui.updated_just_now", "たった今更新")
-     & P ("queue.queued", "キュー待ち")
-     & P ("queue.running", "実行中")
-     & P ("queue.waiting", "待機中")
-     & P ("queue.blocked", "ブロック中")
-     & P ("queue.canceled_job", "ジョブ キャンセル済み")
-     & P ("queue.completed_job", "ジョブ完了")
-     & P ("search.filtering", "フィルター中")
-     & P ("search.filtered", "フィルター適用済み")
-     & P ("search.no_matches", "一致なし")
-     & P ("search.search_ready", "検索準備完了")
-     & P ("search.search_failed", "検索失敗")
-     & P ("search.query_too_short", "検索語が短すぎます")
-     & P ("security.secure", "安全")
-     & P ("security.insecure", "安全でない")
-     & P ("security.vulnerable", "脆弱性あり")
-     & P ("security.encrypted", "暗号化済み")
-     & P ("security.unencrypted", "未暗号化")
-     & P ("security.token_expired", "トークン期限切れ")
-     & P ("sync.sync_idle", "同期待機中")
-     & P ("sync.syncing_now", "現在同期中")
-     & P ("sync.sync_queued", "同期待ち")
-     & P ("sync.sync_conflict", "同期の競合")
-     & P ("sync.sync_complete", "同期完了")
-     & P ("sync.sync_error", "同期エラー")
-     & P ("task.todo", "未着手")
-     & P ("task.in_progress", "進行中")
-     & P ("task.done", "完了")
-     & P ("task.skipped", "スキップ済み")
-     & P ("task.blocked_task", "ブロック中")
-     & P ("task.waiting_on", "待機中")
-     & P ("ticket.ticket_new", "新規チケット")
-     & P ("ticket.ticket_open", "オープン チケット")
-     & P ("ticket.ticket_waiting", "チケット保留中")
-     & P ("ticket.ticket_escalated", "チケット エスカレーション済み")
-     & P ("ticket.ticket_resolved", "チケット解決済み")
-     & P ("ticket.ticket_closed", "チケット クローズ済み")
-     & P ("transfer.importing", "インポート中")
-     & P ("transfer.imported", "インポート済み")
-     & P ("transfer.import_failed", "インポート失敗")
-     & P ("transfer.exporting", "エクスポート中")
-     & P ("transfer.exported", "エクスポート済み")
-     & P ("transfer.export_failed", "エクスポート失敗")
-     & P ("validation.required", "必須")
-     & P ("validation.optional", "任意")
-     & P ("validation.invalid", "無効")
-     & P ("validation.too_short", "短すぎます")
-     & P ("validation.too_long", "長すぎます")
-     & P ("validation.out_of_range", "範囲外")
-     & P ("validation.already_exists", "既に存在します")
-     & P ("workflow.draft", "下書き")
-     & P ("workflow.in_review", "レビュー中")
-     & P ("workflow.approved", "承認済み")
-     & P ("workflow.rejected", "却下")
-     & P ("workflow.published", "公開済み")
-     & P ("workflow.archived", "アーカイブ済み")
-     & P ("database.database_online", "データベース オンライン")
-     & P ("database.database_offline", "データベース オフライン")
-     & P ("database.database_degraded", "データベース性能低下")
-     & P ("database.database_migrating", "データベース移行中")
-     & P ("database.database_migration_failed", "データベース移行失敗")
-     & P ("database.database_replicating", "データベース レプリケーション中")
-     & P ("database.database_replication_lagging", "データベース レプリケーション遅延")
-     & P ("database.database_backup_running", "データベース バックアップ中")
-     & P ("database.database_backup_failed", "データベース バックアップ失敗")
-     & P ("times_noun",
-          "{count, plural, =0 {{other}は一度もなし} =1 {{other}1回} other "
-          & "{{other}{count}回}}")
-     & P ("availability.all", "{total}件中{available}件の{other}が利用可能")
-     & P ("availability.none", "利用可能な{other}はありません")
-     & P ("availability.partial",
-          "{total}件中{available}件の{other}が利用可能、{unavailable}"
-          & "件が利用不可")
-     & P ("operation_progress", "{name}（{state}）：{details}")
-     & P ("operation.queued", "待機中")
-     & P ("operation.running", "実行中")
-     & P ("operation.blocked", "ブロック中")
-     & P ("operation.retrying", "再試行中")
-     & P ("operation.succeeded", "成功")
-     & P ("operation.partially_succeeded", "一部成功")
-     & P ("operation.failed", "失敗")
-     & P ("operation.canceled", "キャンセル済み")
-     & P ("operation.skipped", "スキップ済み")
-     & P ("operation.stale", "古い")
-     & P ("operation.unknown_state", "不明")
-     & P ("operation.last_success", "{name}の最終成功：{time}")
-     & P ("operation.next_retry", "{name}の次回再試行：{time}")
-     & P ("operation.stale_run", "{name}の停滞期間：{time}")
-     & P ("summary.skipped", "{count}件スキップ")
-     & P ("summary.retried", "{count}件再試行")
-     & P ("summary.canceled", "{count}件キャンセル")
-     & P ("system.service.operational", "稼働中")
-     & P ("system.service.degraded", "パフォーマンス低下")
-     & P ("system.service.partial_outage", "一部停止")
-     & P ("system.service.major_outage", "大規模障害")
-     & P ("system.service.maintenance", "メンテナンス中")
-     & P ("system.service.unknown", "サービス状態不明")
-     & P ("system.health.healthy", "正常")
-     & P ("system.health.warning", "警告")
-     & P ("system.health.critical", "重大")
-     & P ("system.health.unavailable", "利用不可")
-     & P ("system.health.unknown_health", "ヘルス状態不明")
-     & P ("system.readiness.ready", "準備完了")
-     & P ("system.readiness.not_ready", "準備未完了")
-     & P ("system.readiness.starting", "起動中")
-     & P ("system.readiness.draining", "ドレイン中")
-     & P ("system.readiness.stopped", "停止")
-     & P ("system.readiness.unknown_readiness", "準備状態不明")
-     & P ("system.component.online", "オンライン")
-     & P ("system.component.offline", "オフライン")
-     & P ("system.component.starting", "起動中")
-     & P ("system.component.stopping", "停止中")
-     & P ("system.component.restarting", "再起動中")
-     & P ("system.component.unknown", "コンポーネント状態不明")
-     & P ("system.check.passing", "合格")
-     & P ("system.check.failing", "不合格")
-     & P ("system.check.warning", "警告")
-     & P ("system.check.skipped", "スキップ")
-     & P ("system.check.timed_out", "タイムアウト")
-     & P ("system.check.unknown", "チェック状態不明")
-     & P ("system.incident.investigating", "調査中")
-     & P ("system.incident.identified", "原因特定")
-     & P ("system.incident.monitoring", "監視中")
-     & P ("system.incident.resolved", "解決済み")
-     & P ("system.incident.scheduled_maintenance", "定期メンテナンス")
-     & P ("system.named", "{name}：{state}")
-     & P ("system.check_named", "{name}チェック：{state}")
-     & P ("system.count.components",
-          "{count, plural, =0 {コンポーネントなし} other "
-          & "{{count}個のコンポーネント}}")
-     & P ("system.count.checks",
-          "{count, plural, =0 {チェックなし} other "
-          & "{{count}件のチェック}}")
-     & P ("system.count.incidents",
-          "{count, plural, =0 {インシデントなし} other "
-          & "{{count}件のインシデント}}")
-     & P ("system.uptime", "稼働率 {measure}")
-     & P ("system.latency", "レイテンシ {measure}")
-     & P ("system.maintenance_window", "メンテナンス時間帯 {time}")
-     & P ("system.last_checked", "最終確認 {time}")
-     & P ("system.http.informational", "情報レスポンス")
-     & P ("system.http.successful", "成功レスポンス")
-     & P ("system.http.redirection", "リダイレクション")
-     & P ("system.http.client_error", "クライアントエラー")
-     & P ("system.http.server_error", "サーバーエラー")
-     & P ("system.exit.success", "終了コード {code}：成功")
-     & P ("system.exit.failure", "終了コード {code}：失敗")
-     & P ("system.exit.usage_error", "終了コード {code}：使用法エラー")
-     & P ("system.exit.not_executable", "終了コード {code}：コマンドを実行できません")
-     & P ("system.exit.not_found", "終了コード {code}：コマンドが見つかりません")
-     & P ("system.exit.invalid_argument", "終了コード {code}：無効な終了引数")
-     & P ("system.exit.signal", "終了コード {code}：{signal}により終了")
-     & P ("validation.problem.required", "{field}：必須です")
-     & P ("validation.problem.minimum", "{field}：最小値を下回っています")
-     & P ("validation.problem.maximum", "{field}：最大値を超えています")
-     & P ("validation.problem.range", "{field}：範囲外です")
-     & P ("validation.problem.pattern", "{field}：形式が正しくありません")
-     & P ("validation.problem.choice", "{field}：許可された選択肢のいずれかを指定してください")
-     & P ("validation.problem.dependency", "{field}：別の項目に依存しています")
-     & P ("validation.problem.custom", "{field}：無効です")
-     & P ("validation.constraint.no_relation", "{field}：有効な{value}である必要があります")
-     & P ("validation.constraint.less_than", "{field}：{value}未満である必要があります")
-     & P ("validation.constraint.less_or_equal", "{field}：{value}以下である必要があります")
-     & P ("validation.constraint.greater_than", "{field}：{value}より大きい必要があります")
-     & P ("validation.constraint.greater_or_equal", "{field}：{value}以上である必要があります")
-     & P ("validation.constraint.equal_to", "{field}：{value}と等しい必要があります")
-     & P ("validation.constraint.not_equal_to", "{field}：{value}以外である必要があります")
-     & P ("validation.constraint.before_field", "{field}：{value}より前である必要があります")
-     & P ("validation.constraint.after_field", "{field}：{value}より後である必要があります")
-     & P ("validation.choices", "{field}：使用できる値は{choices}です")
-     & P ("frame.detail", "{text}（{detail}）")
-     & P ("frame.got", "{text}、入力値：{actual}")
-     & P ("frame.also", "{text}、{detail}")
-     & P ("frame.retry", "{text}、{time}後に再試行します")
-     & P ("net_diagnostic.dns", "{endpoint}：DNSルックアップに失敗しました")
-     & P ("net_diagnostic.tcp", "{endpoint}：TCP接続に失敗しました")
-     & P ("net_diagnostic.tls", "{endpoint}：TLS証明書の検証に失敗しました")
-     & P ("net_diagnostic.http", "{endpoint}：HTTPリクエストに失敗しました")
-     & P ("net_diagnostic.proxy", "{endpoint}：プロキシ接続に失敗しました")
-     & P ("net_diagnostic.timeout", "{endpoint}：タイムアウトしました")
-     & P ("net_diagnostic.reset", "{endpoint}：接続がリセットされました")
-     & P ("net_diagnostic.unknown_network", "{endpoint}：ネットワークエラー")
-     & P ("progress.state.not_started", "未開始")
-     & P ("progress.state.running", "実行中")
-     & P ("progress.state.stalled", "停滞中")
-     & P ("progress.state.retrying", "再試行中")
-     & P ("progress.state.complete", "完了")
-     & P ("progress.state.failed", "失敗")
-     & P ("progress.of", "{subject}：{total}件中{done}件完了（{percent}%）、{state}")
-     & P ("progress.done", "{subject}：{done}件完了、{state}")
-     & P ("collection.summary",
-          "{name}：{total}項目、一意の値{unique}件、重複{duplicates}"
-          & "件、外れ値{outliers}件")
-     & P ("top_frequency", "{name}の最頻値：{value}（{count}回）")
-     & P ("calendar_date.fiscal_year", "{year}年度")
-     & P ("calendar_date.fiscal_quarter", "{year}年度第{part}四半期")
-     & P ("calendar_date.fiscal_half", "{part, plural, =1 {{year}年度上期} other {{year}年度下期}}")
-     & P ("calendar_date.fiscal_year_end", "{year}年度末")
-     & P ("calendar_date.semester", "{part, plural, =1 {{year}年前期} other {{year}年後期}}")
-     & P ("calendar_date.half_year", "{part, plural, =1 {{year}年上半期} other {{year}年下半期}}")
-     & P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}年前半} other {{year}年後半}}")
-     & P ("calendar_date.month_phase",
-          "{phase, select, early {{text}初旬} mid {{text}中旬} other "
-          & "{{text}下旬}}")
-     & P ("calendar_date.quarter_phase",
-          "{phase, select, early {{text}初め} mid {{text}半ば} other "
-          & "{{text}終わり}}")
-     & P ("calendar_range.weekend.last", "先週末")
-     & P ("calendar_range.weekend.this", "今週末")
-     & P ("calendar_range.weekend.next", "来週末")
-     & P ("calendar_range.weekend_of", "{date}の週末")
-     & P ("calendar_range.week.last", "先週")
-     & P ("calendar_range.week.this", "今週")
-     & P ("calendar_range.week.next", "来週")
-     & P ("calendar_range.week_of", "{date}の週")
-     & P ("calendar_range.between", "{first}～{last}");
+   P ("all_count", "全{total}件の{other}");
+   P ("filtered_count.none", "一致する{other}はありません");
+   P ("filtered_count.all", "全{total}件の{other}が一致");
+   P ("filtered_count.some", "{total}件中{matching}件の{other}が一致");
+   P ("more_count", "{visible}件を表示、ほか{remaining}件");
+   P ("others_count", "{first}、ほか{remaining}件");
+   P ("page_count", "{page}/{total}ページ");
+   P ("page_size", "1ページあたり{other}{size}件");
+   P ("pagination_range", "全{total}件の{other}のうち{first}〜{last}件目");
+   P ("position_count", "{position}/{total}");
+   P ("selection_count", "{total}件中{selected}件の{other}を選択");
+   P ("showing_count", "{total}件中{showing}件の{other}を表示");
+   P ("validation_count",
+      "{count, plural, =0 {{severity, select, error {エラー} warning "
+      & "{警告} other {通知}}なし} other {{severity, select, error "
+      & "{エラー} warning {警告} other {通知}}{count}件}}");
+   P ("collection.empty", "{other}はありません");
+   P ("collection.none_shown", "表示中の{other}はありません");
+   P ("collection.showing_hidden", "{total}件中{visible}件の{other}を表示、{hidden}件を非表示");
+   P ("collection.showing", "{total}件中{visible}件の{other}を表示");
+   P ("collection.shown_hidden", "{other}{visible}件を表示、{hidden}件を非表示");
+   P ("collection.shown", "{other}{visible}件を表示");
+   P ("collection.visible_out_of", "{total}件中{visible}件の{other}が表示中");
+   P ("complete_count", "{total}件中{done}件完了");
+   P ("percent_complete", "{percent}%完了");
+   P ("step_count", "ステップ {step}/{total}");
+   P ("attempt_count", "試行 {attempt}/{total}");
+   P ("throughput_remaining", "残り{remaining} {other}（{rate} {unit}/秒）");
+   P ("accessible_progress", "{total}件中{done}件完了、{percent}パーセント");
+   P ("business_days", "{days}営業日");
+   P ("working_hours", "稼働{hours}時間");
+   P ("due.overdue", "期限を{days}日超過");
+   P ("due.today", "本日期限");
+   P ("due.tomorrow", "明日期限");
+   P ("due.in", "{days}日後に期限");
+   P ("calendar_difference.future", "{difference}後");
+   P ("calendar_difference.past", "{difference}前");
+   P ("cpu_load", "CPU使用率 {measure}");
+   P ("battery", "バッテリー {measure}");
+   P ("screen_size", "画面 {measure}");
+   P ("refresh_rate", "リフレッシュレート {measure}");
+   P ("editorial_percent.symbol", "{value}%");
+   P ("editorial_percent.word", "{value}パーセント");
+   P ("recurrence.second", "{every, plural, =1 {毎秒} other {{every}秒ごと}}");
+   P ("recurrence.minute", "{every, plural, =1 {毎分} other {{every}分ごと}}");
+   P ("recurrence.hour", "{every, plural, =1 {毎時} other {{every}時間ごと}}");
+   P ("recurrence.day", "{every, plural, =1 {毎日} other {{every}日ごと}}");
+   P ("recurrence.week", "{every, plural, =1 {毎週} other {{every}週間ごと}}");
+   P ("recurrence.month", "{every, plural, =1 {毎月} other {{every}か月ごと}}");
+   P ("recurrence.quarter", "{every, plural, =1 {四半期ごと} other {{every}四半期ごと}}");
+   P ("recurrence.year", "{every, plural, =1 {毎年} other {{every}年ごと}}");
+   P ("cache_summary.empty", "キャッシュ：リクエストなし");
+   P ("cache_summary", "キャッシュ：ヒット{hits}件、ミス{misses}件、ヒット率{rate}%");
+   P ("field_change_summary", "{other}{total}件：変更{changed}件、追加{added}件、削除{removed}件");
+   P ("field_diff", "{field}を{before}から{after}に変更");
+   P ("field_added", "{field}を{value}として追加");
+   P ("field_removed", "{field}を削除（以前の値：{value}）");
+   P ("field_unchanged", "{field}は{value}のまま変更なし");
+   P ("number_comparison.equal", "{current}は{baseline}と同じ");
+   P ("number_comparison.higher", "{current}は{baseline}より{quantity}高い");
+   P ("number_comparison.lower", "{current}は{baseline}より{quantity}低い");
+   P ("percent_comparison.equal", "{current}は{baseline}と同じ");
+   P ("percent_comparison.higher", "{current}は{baseline}より{quantity}高い");
+   P ("percent_comparison.lower", "{current}は{baseline}より{quantity}低い");
+   P ("file_size_comparison.same", "{current}は{baseline}と同じサイズ");
+   P ("file_size_comparison.larger", "{current}は{baseline}より{quantity}大きい");
+   P ("file_size_comparison.smaller", "{current}は{baseline}より{quantity}小さい");
+   P ("date_comparison.same", "{current}は{baseline}と同じ日付");
+   P ("date_comparison.after", "{current}は{baseline}の{quantity}後");
+   P ("date_comparison.before", "{current}は{baseline}の{quantity}前");
+   P ("queue_summary", "キュー：{details}");
+   P ("domain_summary",
+      "{domain, select, queue {キュー} job {ジョブ} run {実行} cache "
+      & "{キャッシュ} sync {同期} import {インポート} export "
+      & "{エクスポート} other {{domain}}} {state, select, queued "
+      & "{登録済み} running {実行中} waiting {待機中} paused "
+      & "{一時停止中} complete {完了} failed {失敗} stale "
+      & "{期限切れ} skipped {スキップ} other {{state}}}：{details}");
+   P ("summary.none", "{other}なし");
+   P ("summary.completed", "{other}{count}件完了");
+   P ("summary.completed_of", "{total}件中{count}件の{other}が完了");
+   P ("summary.failed", "{count}件失敗");
+   P ("summary.queued", "{other}{count}件が待機中");
+   P ("summary.running", "{count}件実行中");
+   P ("summary.complete", "{count}件完了");
+   P ("backup.backup_running", "バックアップ実行中");
+   P ("backup.backup_completed", "バックアップ完了");
+   P ("backup.backup_failed", "バックアップ失敗");
+   P ("backup.backup_stale", "バックアップが古い");
+   P ("incident.incident_investigating", "インシデント調査中");
+   P ("incident.incident_identified", "インシデント特定済み");
+   P ("incident.incident_mitigated", "インシデント緩和済み");
+   P ("incident.incident_resolved", "インシデント解決済み");
+   P ("release.release_drafting", "リリース準備中");
+   P ("release.release_ready", "リリース準備完了");
+   P ("release.release_published", "リリース公開済み");
+   P ("release.release_rolled_back", "リリースロールバック済み");
+   P ("audit.audit_created", "監査エントリ作成済み");
+   P ("audit.audit_updated", "監査エントリ更新済み");
+   P ("audit.audit_deleted", "監査エントリ削除済み");
+   P ("audit.audit_restored", "監査エントリ復元済み");
+   P ("flag.flag_enabled", "機能フラグ有効");
+   P ("flag.flag_disabled", "機能フラグ無効");
+   P ("flag.flag_rolling_out", "機能フラグ段階的展開中");
+   P ("flag.flag_rolled_back", "機能フラグロールバック済み");
+   P ("webhook.webhook_pending", "Webhook保留中");
+   P ("webhook.webhook_delivered", "Webhook配信済み");
+   P ("webhook.webhook_failed", "Webhook失敗");
+   P ("webhook.webhook_retrying", "Webhook再試行中");
+   P ("api_key.api_key_active", "APIキー有効");
+   P ("api_key.api_key_revoked", "APIキー取り消し済み");
+   P ("api_key.api_key_expired", "APIキー期限切れ");
+   P ("api_key.api_key_rotated", "APIキーローテーション済み");
+   P ("quota.quota_available", "クォータ利用可能");
+   P ("quota.quota_near_limit", "クォータ上限間近");
+   P ("quota.quota_exceeded", "クォータ超過");
+   P ("quota.quota_reset", "クォータリセット済み");
+   P ("invoice.invoice_draft", "請求書下書き");
+   P ("invoice.invoice_sent", "請求書送付済み");
+   P ("invoice.invoice_paid", "請求書支払い済み");
+   P ("invoice.invoice_refunded", "請求書返金済み");
+   P ("invoice.invoice_overdue", "請求書支払期限超過");
+   P ("invoice.refund_failed", "返金失敗");
+   P ("page_navigation.only", "このページのみ");
+   P ("page_navigation.first", "最初のページ、次のページあり");
+   P ("page_navigation.last", "最後のページ、前のページあり");
+   P ("page_navigation.middle", "前後のページあり");
+   P ("end_of_week", "週の終わり");
+   P ("end_of_month", "月末");
+   P ("end_of_quarter", "四半期末");
+   P ("time_of_day.night", "夜");
+   P ("time_of_day.morning", "朝");
+   P ("time_of_day.afternoon", "午後");
+   P ("time_of_day.evening", "夕方");
+   P ("calendar_difference.same_day", "同日");
+   P ("calendar_difference.zero", "0日");
+   P ("queue_summary.empty", "キューは空");
+   P ("access.allowed", "許可");
+   P ("access.denied", "拒否");
+   P ("access.owner", "オーナー");
+   P ("access.admin", "管理者");
+   P ("access.viewer", "閲覧者");
+   P ("access.editor", "編集者");
+   P ("auth.signed_in", "サインイン済み");
+   P ("auth.signed_out", "サインアウト済み");
+   P ("auth.session_expired", "セッション期限切れ");
+   P ("auth.locked", "ロック中");
+   P ("auth.two_factor_required", "2 段階認証が必要");
+   P ("billing.trialing", "試用中");
+   P ("billing.payment_due", "支払い待ち");
+   P ("billing.payment_failed", "支払い失敗");
+   P ("billing.paid", "支払い済み");
+   P ("billing.past_due", "支払期限超過");
+   P ("billing.canceled", "キャンセル済み");
+   P ("ci.pipeline_pending", "パイプライン保留中");
+   P ("ci.pipeline_running", "パイプライン実行中");
+   P ("ci.pipeline_passed", "パイプライン成功");
+   P ("ci.pipeline_failed", "パイプライン失敗");
+   P ("ci.review_required", "レビューが必要");
+   P ("ci.deploy_blocked", "デプロイがブロック中");
+   P ("collaboration.active_now", "オンライン");
+   P ("collaboration.away", "離席中");
+   P ("collaboration.do_not_disturb", "応答不可");
+   P ("collaboration.typing", "入力中");
+   P ("collaboration.viewing", "閲覧中");
+   P ("collaboration.editing", "編集中");
+   P ("deployment.deploying", "デプロイ中");
+   P ("deployment.deployed", "デプロイ済み");
+   P ("deployment.rolling_back", "ロールバック中");
+   P ("deployment.rolled_back", "ロールバック済み");
+   P ("deployment.build_failed", "ビルド失敗");
+   P ("deployment.checks_passed", "チェック合格");
+   P ("empty.no_items", "項目なし");
+   P ("empty.no_results", "結果なし");
+   P ("empty.no_messages", "メッセージなし");
+   P ("empty.no_selection", "選択なし");
+   P ("empty.nothing_to_show", "表示する項目なし");
+   P ("file.uploading", "アップロード中");
+   P ("file.downloading", "ダウンロード中");
+   P ("file.copying", "コピー中");
+   P ("file.moving", "移動中");
+   P ("file.deleting", "削除中");
+   P ("file.deleted", "削除済み");
+   P ("file.restoring", "復元中");
+   P ("file.synced", "同期済み");
+   P ("form.valid_input", "有効な入力");
+   P ("form.invalid_input", "無効な入力");
+   P ("form.dirty", "変更あり");
+   P ("form.pristine", "変更なし");
+   P ("form.submitted", "送信済み");
+   P ("form.submission_failed", "送信失敗");
+   P ("health.healthy", "正常");
+   P ("health.degraded", "性能低下");
+   P ("health.unhealthy", "異常");
+   P ("health.incident", "障害発生");
+   P ("health.maintenance", "メンテナンス中");
+   P ("health.recovering", "復旧中");
+   P ("issue.open", "オープン");
+   P ("issue.closed", "クローズ");
+   P ("issue.reopened", "再オープン");
+   P ("issue.assigned", "割り当て済み");
+   P ("issue.unassigned", "未割り当て");
+   P ("issue.merged", "マージ済み");
+   P ("network.offline", "オフライン");
+   P ("network.online", "オンライン");
+   P ("network.connecting", "接続中");
+   P ("network.syncing", "同期中");
+   P ("network.sync_failed", "同期失敗");
+   P ("network.permission_denied", "アクセス拒否");
+   P ("network.read_only", "読み取り専用");
+   P ("notification.unread", "未読");
+   P ("notification.read", "既読");
+   P ("notification.muted", "ミュート中");
+   P ("notification.snoozed", "スヌーズ中");
+   P ("notification.sent", "送信済み");
+   P ("notification.delivered", "配信済み");
+   P ("payment.payment_authorized", "支払い承認済み");
+   P ("payment.payment_captured", "支払い確定済み");
+   P ("payment.payment_refunded", "返金済み");
+   P ("payment.payment_disputed", "支払い異議申し立て中");
+   P ("payment.payment_requires_action", "支払いに対応が必要");
+   P ("payment.payment_expired", "支払い期限切れ");
+   P ("ui.empty", "空");
+   P ("ui.loading", "読み込み中");
+   P ("ui.saving", "保存中");
+   P ("ui.saved", "保存済み");
+   P ("ui.unsaved", "未保存");
+   P ("ui.retrying", "再試行中");
+   P ("ui.paused", "一時停止中");
+   P ("ui.complete", "完了");
+   P ("ui.failed", "失敗");
+   P ("ui.due_soon", "期限間近");
+   P ("ui.overdue", "期限超過");
+   P ("ui.last_seen", "最終アクセス");
+   P ("ui.updated_just_now", "たった今更新");
+   P ("queue.queued", "キュー待ち");
+   P ("queue.running", "実行中");
+   P ("queue.waiting", "待機中");
+   P ("queue.blocked", "ブロック中");
+   P ("queue.canceled_job", "ジョブ キャンセル済み");
+   P ("queue.completed_job", "ジョブ完了");
+   P ("search.filtering", "フィルター中");
+   P ("search.filtered", "フィルター適用済み");
+   P ("search.no_matches", "一致なし");
+   P ("search.search_ready", "検索準備完了");
+   P ("search.search_failed", "検索失敗");
+   P ("search.query_too_short", "検索語が短すぎます");
+   P ("security.secure", "安全");
+   P ("security.insecure", "安全でない");
+   P ("security.vulnerable", "脆弱性あり");
+   P ("security.encrypted", "暗号化済み");
+   P ("security.unencrypted", "未暗号化");
+   P ("security.token_expired", "トークン期限切れ");
+   P ("sync.sync_idle", "同期待機中");
+   P ("sync.syncing_now", "現在同期中");
+   P ("sync.sync_queued", "同期待ち");
+   P ("sync.sync_conflict", "同期の競合");
+   P ("sync.sync_complete", "同期完了");
+   P ("sync.sync_error", "同期エラー");
+   P ("task.todo", "未着手");
+   P ("task.in_progress", "進行中");
+   P ("task.done", "完了");
+   P ("task.skipped", "スキップ済み");
+   P ("task.blocked_task", "ブロック中");
+   P ("task.waiting_on", "待機中");
+   P ("ticket.ticket_new", "新規チケット");
+   P ("ticket.ticket_open", "オープン チケット");
+   P ("ticket.ticket_waiting", "チケット保留中");
+   P ("ticket.ticket_escalated", "チケット エスカレーション済み");
+   P ("ticket.ticket_resolved", "チケット解決済み");
+   P ("ticket.ticket_closed", "チケット クローズ済み");
+   P ("transfer.importing", "インポート中");
+   P ("transfer.imported", "インポート済み");
+   P ("transfer.import_failed", "インポート失敗");
+   P ("transfer.exporting", "エクスポート中");
+   P ("transfer.exported", "エクスポート済み");
+   P ("transfer.export_failed", "エクスポート失敗");
+   P ("validation.required", "必須");
+   P ("validation.optional", "任意");
+   P ("validation.invalid", "無効");
+   P ("validation.too_short", "短すぎます");
+   P ("validation.too_long", "長すぎます");
+   P ("validation.out_of_range", "範囲外");
+   P ("validation.already_exists", "既に存在します");
+   P ("workflow.draft", "下書き");
+   P ("workflow.in_review", "レビュー中");
+   P ("workflow.approved", "承認済み");
+   P ("workflow.rejected", "却下");
+   P ("workflow.published", "公開済み");
+   P ("workflow.archived", "アーカイブ済み");
+   P ("database.database_online", "データベース オンライン");
+   P ("database.database_offline", "データベース オフライン");
+   P ("database.database_degraded", "データベース性能低下");
+   P ("database.database_migrating", "データベース移行中");
+   P ("database.database_migration_failed", "データベース移行失敗");
+   P ("database.database_replicating", "データベース レプリケーション中");
+   P ("database.database_replication_lagging", "データベース レプリケーション遅延");
+   P ("database.database_backup_running", "データベース バックアップ中");
+   P ("database.database_backup_failed", "データベース バックアップ失敗");
+   P ("times_noun",
+      "{count, plural, =0 {{other}は一度もなし} =1 {{other}1回} other "
+      & "{{other}{count}回}}");
+   P ("availability.all", "{total}件中{available}件の{other}が利用可能");
+   P ("availability.none", "利用可能な{other}はありません");
+   P ("availability.partial",
+      "{total}件中{available}件の{other}が利用可能、{unavailable}"
+      & "件が利用不可");
+   P ("operation_progress", "{name}（{state}）：{details}");
+   P ("operation.queued", "待機中");
+   P ("operation.running", "実行中");
+   P ("operation.blocked", "ブロック中");
+   P ("operation.retrying", "再試行中");
+   P ("operation.succeeded", "成功");
+   P ("operation.partially_succeeded", "一部成功");
+   P ("operation.failed", "失敗");
+   P ("operation.canceled", "キャンセル済み");
+   P ("operation.skipped", "スキップ済み");
+   P ("operation.stale", "古い");
+   P ("operation.unknown_state", "不明");
+   P ("operation.last_success", "{name}の最終成功：{time}");
+   P ("operation.next_retry", "{name}の次回再試行：{time}");
+   P ("operation.stale_run", "{name}の停滞期間：{time}");
+   P ("summary.skipped", "{count}件スキップ");
+   P ("summary.retried", "{count}件再試行");
+   P ("summary.canceled", "{count}件キャンセル");
+   P ("system.service.operational", "稼働中");
+   P ("system.service.degraded", "パフォーマンス低下");
+   P ("system.service.partial_outage", "一部停止");
+   P ("system.service.major_outage", "大規模障害");
+   P ("system.service.maintenance", "メンテナンス中");
+   P ("system.service.unknown", "サービス状態不明");
+   P ("system.health.healthy", "正常");
+   P ("system.health.warning", "警告");
+   P ("system.health.critical", "重大");
+   P ("system.health.unavailable", "利用不可");
+   P ("system.health.unknown_health", "ヘルス状態不明");
+   P ("system.readiness.ready", "準備完了");
+   P ("system.readiness.not_ready", "準備未完了");
+   P ("system.readiness.starting", "起動中");
+   P ("system.readiness.draining", "ドレイン中");
+   P ("system.readiness.stopped", "停止");
+   P ("system.readiness.unknown_readiness", "準備状態不明");
+   P ("system.component.online", "オンライン");
+   P ("system.component.offline", "オフライン");
+   P ("system.component.starting", "起動中");
+   P ("system.component.stopping", "停止中");
+   P ("system.component.restarting", "再起動中");
+   P ("system.component.unknown", "コンポーネント状態不明");
+   P ("system.check.passing", "合格");
+   P ("system.check.failing", "不合格");
+   P ("system.check.warning", "警告");
+   P ("system.check.skipped", "スキップ");
+   P ("system.check.timed_out", "タイムアウト");
+   P ("system.check.unknown", "チェック状態不明");
+   P ("system.incident.investigating", "調査中");
+   P ("system.incident.identified", "原因特定");
+   P ("system.incident.monitoring", "監視中");
+   P ("system.incident.resolved", "解決済み");
+   P ("system.incident.scheduled_maintenance", "定期メンテナンス");
+   P ("system.named", "{name}：{state}");
+   P ("system.check_named", "{name}チェック：{state}");
+   P ("system.count.components",
+      "{count, plural, =0 {コンポーネントなし} other "
+      & "{{count}個のコンポーネント}}");
+   P ("system.count.checks",
+      "{count, plural, =0 {チェックなし} other "
+      & "{{count}件のチェック}}");
+   P ("system.count.incidents",
+      "{count, plural, =0 {インシデントなし} other "
+      & "{{count}件のインシデント}}");
+   P ("system.uptime", "稼働率 {measure}");
+   P ("system.latency", "レイテンシ {measure}");
+   P ("system.maintenance_window", "メンテナンス時間帯 {time}");
+   P ("system.last_checked", "最終確認 {time}");
+   P ("system.http.informational", "情報レスポンス");
+   P ("system.http.successful", "成功レスポンス");
+   P ("system.http.redirection", "リダイレクション");
+   P ("system.http.client_error", "クライアントエラー");
+   P ("system.http.server_error", "サーバーエラー");
+   P ("system.exit.success", "終了コード {code}：成功");
+   P ("system.exit.failure", "終了コード {code}：失敗");
+   P ("system.exit.usage_error", "終了コード {code}：使用法エラー");
+   P ("system.exit.not_executable", "終了コード {code}：コマンドを実行できません");
+   P ("system.exit.not_found", "終了コード {code}：コマンドが見つかりません");
+   P ("system.exit.invalid_argument", "終了コード {code}：無効な終了引数");
+   P ("system.exit.signal", "終了コード {code}：{signal}により終了");
+   P ("validation.problem.required", "{field}：必須です");
+   P ("validation.problem.minimum", "{field}：最小値を下回っています");
+   P ("validation.problem.maximum", "{field}：最大値を超えています");
+   P ("validation.problem.range", "{field}：範囲外です");
+   P ("validation.problem.pattern", "{field}：形式が正しくありません");
+   P ("validation.problem.choice", "{field}：許可された選択肢のいずれかを指定してください");
+   P ("validation.problem.dependency", "{field}：別の項目に依存しています");
+   P ("validation.problem.custom", "{field}：無効です");
+   P ("validation.constraint.no_relation", "{field}：有効な{value}である必要があります");
+   P ("validation.constraint.less_than", "{field}：{value}未満である必要があります");
+   P ("validation.constraint.less_or_equal", "{field}：{value}以下である必要があります");
+   P ("validation.constraint.greater_than", "{field}：{value}より大きい必要があります");
+   P ("validation.constraint.greater_or_equal", "{field}：{value}以上である必要があります");
+   P ("validation.constraint.equal_to", "{field}：{value}と等しい必要があります");
+   P ("validation.constraint.not_equal_to", "{field}：{value}以外である必要があります");
+   P ("validation.constraint.before_field", "{field}：{value}より前である必要があります");
+   P ("validation.constraint.after_field", "{field}：{value}より後である必要があります");
+   P ("validation.choices", "{field}：使用できる値は{choices}です");
+   P ("frame.detail", "{text}（{detail}）");
+   P ("frame.got", "{text}、入力値：{actual}");
+   P ("frame.also", "{text}、{detail}");
+   P ("frame.retry", "{text}、{time}後に再試行します");
+   P ("net_diagnostic.dns", "{endpoint}：DNSルックアップに失敗しました");
+   P ("net_diagnostic.tcp", "{endpoint}：TCP接続に失敗しました");
+   P ("net_diagnostic.tls", "{endpoint}：TLS証明書の検証に失敗しました");
+   P ("net_diagnostic.http", "{endpoint}：HTTPリクエストに失敗しました");
+   P ("net_diagnostic.proxy", "{endpoint}：プロキシ接続に失敗しました");
+   P ("net_diagnostic.timeout", "{endpoint}：タイムアウトしました");
+   P ("net_diagnostic.reset", "{endpoint}：接続がリセットされました");
+   P ("net_diagnostic.unknown_network", "{endpoint}：ネットワークエラー");
+   P ("progress.state.not_started", "未開始");
+   P ("progress.state.running", "実行中");
+   P ("progress.state.stalled", "停滞中");
+   P ("progress.state.retrying", "再試行中");
+   P ("progress.state.complete", "完了");
+   P ("progress.state.failed", "失敗");
+   P ("progress.of", "{subject}：{total}件中{done}件完了（{percent}%）、{state}");
+   P ("progress.done", "{subject}：{done}件完了、{state}");
+   P ("collection.summary",
+      "{name}：{total}項目、一意の値{unique}件、重複{duplicates}"
+      & "件、外れ値{outliers}件");
+   P ("top_frequency", "{name}の最頻値：{value}（{count}回）");
+   P ("calendar_date.fiscal_year", "{year}年度");
+   P ("calendar_date.fiscal_quarter", "{year}年度第{part}四半期");
+   P ("calendar_date.fiscal_half", "{part, plural, =1 {{year}年度上期} other {{year}年度下期}}");
+   P ("calendar_date.fiscal_year_end", "{year}年度末");
+   P ("calendar_date.semester", "{part, plural, =1 {{year}年前期} other {{year}年後期}}");
+   P ("calendar_date.half_year", "{part, plural, =1 {{year}年上半期} other {{year}年下半期}}");
+   P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}年前半} other {{year}年後半}}");
+   P ("calendar_date.month_phase",
+      "{phase, select, early {{text}初旬} mid {{text}中旬} other "
+      & "{{text}下旬}}");
+   P ("calendar_date.quarter_phase",
+      "{phase, select, early {{text}初め} mid {{text}半ば} other "
+      & "{{text}終わり}}");
+   P ("calendar_range.weekend.last", "先週末");
+   P ("calendar_range.weekend.this", "今週末");
+   P ("calendar_range.weekend.next", "来週末");
+   P ("calendar_range.weekend_of", "{date}の週末");
+   P ("calendar_range.week.last", "先週");
+   P ("calendar_range.week.this", "今週");
+   P ("calendar_range.week.next", "来週");
+   P ("calendar_range.week_of", "{date}の週");
+   P ("calendar_range.between", "{first}～{last}");
+   P ("http.reason.100", "継続");
+   P ("http.reason.101", "プロトコル切り替え");
+   P ("http.reason.102", "処理中");
+   P ("http.reason.103", "早期ヒント");
+   P ("http.reason.200", "成功");
+   P ("http.reason.201", "作成済み");
+   P ("http.reason.202", "受理済み");
+   P ("http.reason.203", "信頼できない情報");
+   P ("http.reason.204", "コンテンツなし");
+   P ("http.reason.205", "コンテンツのリセット");
+   P ("http.reason.206", "部分的なコンテンツ");
+   P ("http.reason.207", "マルチステータス");
+   P ("http.reason.208", "報告済み");
+   P ("http.reason.226", "IM 使用");
+   P ("http.reason.300", "複数の選択肢");
+   P ("http.reason.301", "恒久的に移動");
+   P ("http.reason.302", "発見");
+   P ("http.reason.303", "他を参照");
+   P ("http.reason.304", "未更新");
+   P ("http.reason.305", "プロキシを使用");
+   P ("http.reason.307", "一時的なリダイレクト");
+   P ("http.reason.308", "恒久的なリダイレクト");
+   P ("http.reason.400", "不正なリクエスト");
+   P ("http.reason.401", "認証が必要");
+   P ("http.reason.402", "支払いが必要");
+   P ("http.reason.403", "禁止");
+   P ("http.reason.404", "見つかりません");
+   P ("http.reason.405", "許可されていないメソッド");
+   P ("http.reason.406", "受理できません");
+   P ("http.reason.407", "プロキシ認証が必要");
+   P ("http.reason.408", "リクエストタイムアウト");
+   P ("http.reason.409", "競合");
+   P ("http.reason.410", "消滅");
+   P ("http.reason.411", "長さが必要");
+   P ("http.reason.412", "前提条件の失敗");
+   P ("http.reason.413", "コンテンツが大きすぎます");
+   P ("http.reason.414", "URI が長すぎます");
+   P ("http.reason.415", "サポートされていないメディアタイプ");
+   P ("http.reason.416", "範囲が満たせません");
+   P ("http.reason.417", "期待の失敗");
+   P ("http.reason.418", "私はティーポット");
+   P ("http.reason.421", "誤ったリクエスト先");
+   P ("http.reason.422", "処理できないコンテンツ");
+   P ("http.reason.423", "ロック中");
+   P ("http.reason.424", "依存関係の失敗");
+   P ("http.reason.425", "早すぎます");
+   P ("http.reason.426", "アップグレードが必要");
+   P ("http.reason.428", "前提条件が必要");
+   P ("http.reason.429", "リクエストが多すぎます");
+   P ("http.reason.431", "リクエストヘッダーフィールドが大きすぎます");
+   P ("http.reason.451", "法的理由により利用不可");
+   P ("http.reason.500", "サーバー内部エラー");
+   P ("http.reason.501", "未実装");
+   P ("http.reason.502", "不正なゲートウェイ");
+   P ("http.reason.503", "サービス利用不可");
+   P ("http.reason.504", "ゲートウェイタイムアウト");
+   P ("http.reason.505", "HTTP バージョン未対応");
+   P ("http.reason.506", "バリアントもネゴシエート");
+   P ("http.reason.507", "容量不足");
+   P ("http.reason.508", "ループを検出");
+   P ("http.reason.510", "拡張なし");
+   P ("http.reason.511", "ネットワーク認証が必要");
+   P ("errno.reason.0", "成功");
+   P ("errno.reason.1", "許可されていない操作");
+   P ("errno.reason.2", "そのようなファイルやディレクトリはありません");
+   P ("errno.reason.3", "そのようなプロセスはありません");
+   P ("errno.reason.4", "システムコールが中断されました");
+   P ("errno.reason.5", "入力/出力エラー");
+   P ("errno.reason.6", "そのようなデバイスやアドレスはありません");
+   P ("errno.reason.9", "不正なファイル記述子");
+   P ("errno.reason.11", "リソースが一時的に利用できません");
+   P ("errno.reason.12", "メモリ不足");
+   P ("errno.reason.13", "許可がありません");
+   P ("errno.reason.17", "ファイルが存在します");
+   P ("errno.reason.20", "ディレクトリではありません");
+   P ("errno.reason.21", "ディレクトリです");
+   P ("errno.reason.22", "無効な引数");
+   P ("errno.reason.24", "開いているファイルが多すぎます");
+   P ("errno.reason.28", "デバイスに空き領域がありません");
+   P ("errno.reason.32", "パイプが切断されました");
+   P ("errno.reason.98", "アドレスは既に使用中です");
+   P ("errno.reason.110", "接続がタイムアウトしました");
+   P ("errno.reason.111", "接続を拒否されました");
+   P ("signal.reason.1", "ハングアップ");
+   P ("signal.reason.2", "割り込み");
+   P ("signal.reason.3", "終了");
+   P ("signal.reason.4", "不正な命令");
+   P ("signal.reason.5", "トレース/ブレークポイントトラップ");
+   P ("signal.reason.6", "中止");
+   P ("signal.reason.7", "バスエラー");
+   P ("signal.reason.8", "浮動小数点例外");
+   P ("signal.reason.9", "強制終了");
+   P ("signal.reason.10", "ユーザー定義シグナル 1");
+   P ("signal.reason.11", "セグメンテーション違反");
+   P ("signal.reason.12", "ユーザー定義シグナル 2");
+   P ("signal.reason.13", "パイプが切断されました");
+   P ("signal.reason.14", "アラーム");
+   P ("signal.reason.15", "終了要求");
+   P ("signal.reason.17", "子プロセスの状態変化");
+   P ("signal.reason.18", "継続");
+   P ("signal.reason.19", "停止");
+   P ("signal.reason.20", "端末からの停止");
+   P ("signal.reason.28", "ウィンドウサイズ変更");
+   P ("sqlstate.reason.00", "正常終了");
+   P ("sqlstate.reason.01", "警告");
+   P ("sqlstate.reason.02", "データなし");
+   P ("sqlstate.reason.08", "接続例外");
+   P ("sqlstate.reason.0a", "機能はサポートされていません");
+   P ("sqlstate.reason.22", "データ例外");
+   P ("sqlstate.reason.23", "整合性制約違反");
+   P ("sqlstate.reason.24", "無効なカーソル状態");
+   P ("sqlstate.reason.25", "無効なトランザクション状態");
+   P ("sqlstate.reason.28", "無効な認可指定");
+   P ("sqlstate.reason.2d", "無効なトランザクション終了");
+   P ("sqlstate.reason.3d", "無効なカタログ名");
+   P ("sqlstate.reason.3f", "無効なスキーマ名");
+   P ("sqlstate.reason.40", "トランザクションロールバック");
+   P ("sqlstate.reason.42", "構文エラーまたはアクセス規則違反");
+   P ("sqlstate.reason.53", "リソース不足");
+   P ("sqlstate.reason.54", "プログラム制限超過");
+   P ("sqlstate.reason.55", "オブジェクトが必要な状態にありません");
+   P ("sqlstate.reason.57", "オペレーターによる介入");
+   P ("sqlstate.reason.58", "システムエラー");
+   P ("sqlstate.reason.hv", "外部データラッパーエラー");
+   P ("sqlstate.reason.p0", "PL/pgSQL エラー");
+   P ("sqlstate.reason.xx", "内部エラー");
+   P ("system.signal_numbered", "シグナル {number} {name} {reason}");
+   P ("http.reason.unknown", "不明なステータス");
+   P ("errno.reason.unknown", "不明なエラー");
+   P ("signal.reason.unknown", "不明なシグナル");
+   P ("sqlstate.reason.unknown", "不明な SQLSTATE クラス");
 end Locale_Ja;

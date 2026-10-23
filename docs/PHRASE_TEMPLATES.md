@@ -182,7 +182,11 @@ language map plural categories to the registered noun forms.
 | `system.exit.signal` | code, signal (the English signal label) | `exit {code} terminated by {signal}` |
 
 `Humanize.System_Status.Localized` speaks a locale: the same functions as
-`Humanize.System_Status`, taking a context. Errno, signal, SQLSTATE and HTTP reason texts stay the English of
+`Humanize.System_Status`, taking a context. Reasons are localized too:
+`http.reason.<code>`, `errno.reason.<n>`, `signal.reason.<n>`,
+`sqlstate.reason.<class>` (each with `.unknown`), and
+`system.signal_numbered` ("signal {number} {name} {reason}"); codes and
+mnemonics (HTTP 503, ENOENT, SIGKILL) stay as their standards write them. Errno, signal, SQLSTATE and HTTP reason texts stay the English of
 their standards; `Humanize.Domain_Details` stays English too -- it is the
 machine-readable metadata layer (log fields, `surface=` tags) its parsers
 read back.
@@ -221,7 +225,9 @@ Stunden, 30 Minuten", Swahili "dakika 5", Arabic "ساعتان"), `Parse_Relativ
 ("vor 3 Tagen", "gestern"), `Parse_Bytes` ("1,5 KiB"), `Parse_Measure` (the
 `Humanize.Units` families at any scale: "1,5 km", "68 °F" read as 20 °C) and
 `Parse_Date` (`Calendar_Date_Label`'s ISO, short, medium and long styles, and
-`Natural_Day`'s "gestern"). It learns a
+`Natural_Day`'s "gestern"), `Parse_Percent` ("12,5 %"), `Parse_Compact`
+("1,2 Mio.", "3 milliards"), `Parse_Ordinal` ("3.", "21st") and
+`Parse_Currency` ("1.234,50 €" with its code). It learns a
 locale's forms by rendering sample values with `Durations.Format_Components`,
 `Datetimes.Relative` and `Bytes.Format` (cached per runtime and locale, about
 70 ms the first time), so it reads exactly what those write. A text the locale

@@ -51,7 +51,9 @@ package body Humanize.Parsing.Localized is
       Joins : Text_Vectors.Vector;
    end record;
 
-   type Lexicon_Kind is (Durations_Kind, Relative_Kind, Bytes_Kind, Measure_Kind, Dates_Kind);
+   type Lexicon_Kind is
+     (Durations_Kind, Relative_Kind, Bytes_Kind, Measure_Kind, Dates_Kind, Percent_Kind, Compact_Kind, Ordinal_Kind,
+      Currency_Kind);
 
    package Lexicon_Maps is new Ada.Containers.Indefinite_Hashed_Maps
      (Key_Type => String, Element_Type => Lexicon, Hash => Ada.Strings.Hash, Equivalent_Keys => "=");
@@ -500,14 +502,19 @@ package body Humanize.Parsing.Localized is
    function Learn_Measures (Context : Humanize.Contexts.Context; Family : Measure_Family) return Lexicon;
    function Learn_Dates (Context : Humanize.Contexts.Context) return Lexicon;
 
+   --  Percentages, compact numbers, ordinals and amounts in currency Code.
+   function Learn_Numbers (Context : Humanize.Contexts.Context; Kind : Lexicon_Kind; Code : String) return Lexicon
+     is separate;
+
    function Learned
      (Context : Humanize.Contexts.Context;
       Kind    : Lexicon_Kind;
-      Family  : Measure_Family := Measure_Family'First)
+      Family  : Measure_Family := Measure_Family'First;
+      Code    : String := "")
       return Lexicon
    is
       Key   : constant String :=
-        Lexicon_Kind'Image (Kind) & "|" & Measure_Family'Image (Family) & "|"
+        Lexicon_Kind'Image (Kind) & "|" & Measure_Family'Image (Family) & "|" & Code & "|"
         & Humanize.Contexts.Locale (Context) & "|"
         & System.Address_Image (Humanize.Contexts.Runtime (Context).all'Address)
         & "|" & Natural'Image (Humanize.Catalog_Loads.Count);
@@ -522,7 +529,9 @@ package body Humanize.Parsing.Localized is
                when Relative_Kind  => Learn_Relative (Context),
                when Bytes_Kind     => Learn_Bytes (Context),
                when Measure_Kind   => Learn_Measures (Context, Family),
-               when Dates_Kind     => Learn_Dates (Context));
+               when Dates_Kind     => Learn_Dates (Context),
+               when Percent_Kind | Compact_Kind | Ordinal_Kind | Currency_Kind =>
+                 Learn_Numbers (Context, Kind, Code));
          Cache.Store (Key, Item);
       end if;
       return Item;
@@ -812,5 +821,33 @@ package body Humanize.Parsing.Localized is
       when Constraint_Error | Ada.Calendar.Time_Error =>
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Date;
+
+   function Read_Number_Kind
+     (Context : Humanize.Contexts.Context; Kind : Lexicon_Kind; Text : String; Code : String := "")
+      return Float_Parse_Result
+   is
+      Value     : Long_Float;
+      Ambiguous : Boolean;
+   begin
+      if Read_Whole (Learned (Context, Kind, Code => Code).Forms, Trimmed (Plain (Context, Text)), Value, Ambiguous)
+      then
+         return (Status => Humanize.Status.Ok, Value => Value, Exact => not Ambiguous, Consumed => Text'Length,
+                 others => <>);
+      end if;
+      return (Status => Humanize.Status.Invalid_Argument, others => <>);
+   end Read_Number_Kind;
+
+   function Parse_Percent (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result is
+     (Read_Number_Kind (Context, Percent_Kind, Text));
+
+   function Parse_Compact (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result is
+     (Read_Number_Kind (Context, Compact_Kind, Text));
+
+   function Parse_Ordinal (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result is
+     (Read_Number_Kind (Context, Ordinal_Kind, Text));
+
+   function Parse_Currency
+     (Context : Humanize.Contexts.Context; Text : String; Code : String) return Float_Parse_Result is
+     (Read_Number_Kind (Context, Currency_Kind, Text, Code));
 
 end Humanize.Parsing.Localized;

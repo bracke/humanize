@@ -1,465 +1,600 @@
 separate (Humanize.Catalogs.Phrase_Data)
-function Locale_Vi return Wide_Wide_String is
-   function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("vi", Name, Template));
+procedure Locale_Vi (Target : in out Catalog_Text) is
+   --  One statement an entry: the catalog grows on the heap, not in one
+   --  expression on the stack.
+   procedure P (Name, Template : Wide_Wide_String) is
+   begin
+      Add (Target, "vi", Name, Template);
+   end P;
 begin
-   return
-     P ("all_count", "tất cả {total} {other}")
-     & P ("filtered_count.none", "không có {other} nào khớp")
-     & P ("filtered_count.all", "tất cả {total} {other} đều khớp")
-     & P ("filtered_count.some", "{matching}/{total} {other} khớp")
-     & P ("more_count", "hiển thị {visible}, +{remaining} mục nữa")
-     & P ("others_count", "{first} và {remaining} mục khác")
-     & P ("page_count", "trang {page}/{total}")
-     & P ("page_size", "{size} {other} mỗi trang")
-     & P ("pagination_range", "{first}–{last} trong số {total} {other}")
-     & P ("position_count", "{position}/{total}")
-     & P ("selection_count", "đã chọn {selected}/{total} {other}")
-     & P ("showing_count", "đang hiển thị {showing}/{total} {other}")
-     & P ("validation_count",
-          "{count, plural, =0 {không có {severity, select, error {lỗi} "
-          & "warning {cảnh báo} other {thông báo}} nào} other {{count} "
-          & "{severity, select, error {lỗi} warning {cảnh báo} other {thông "
-          & "báo}}}}")
-     & P ("collection.empty", "không có {other}")
-     & P ("collection.none_shown", "không hiển thị {other} nào")
-     & P ("collection.showing_hidden", "đang hiển thị {visible}/{total} {other}, {hidden} bị ẩn")
-     & P ("collection.showing", "đang hiển thị {visible}/{total} {other}")
-     & P ("collection.shown_hidden", "đã hiển thị {visible} {other}, {hidden} bị ẩn")
-     & P ("collection.shown", "đã hiển thị {visible} {other}")
-     & P ("collection.visible_out_of", "{visible} trong số {total} {other} đang hiển thị")
-     & P ("complete_count", "đã hoàn tất {done}/{total}")
-     & P ("percent_complete", "đã hoàn tất {percent}%")
-     & P ("step_count", "bước {step}/{total}")
-     & P ("attempt_count", "lần thử {attempt}/{total}")
-     & P ("throughput_remaining", "còn {remaining} {other}, tốc độ {rate} {unit}/giây")
-     & P ("accessible_progress", "đã hoàn tất {done}/{total}, {percent} phần trăm")
-     & P ("business_days", "{days} ngày làm việc")
-     & P ("working_hours", "{hours} giờ làm việc")
-     & P ("due.overdue", "quá hạn {days} ngày")
-     & P ("due.today", "đến hạn hôm nay")
-     & P ("due.tomorrow", "đến hạn ngày mai")
-     & P ("due.in", "đến hạn sau {days} ngày")
-     & P ("calendar_difference.future", "{difference} nữa")
-     & P ("calendar_difference.past", "{difference} trước")
-     & P ("cpu_load", "CPU {measure}")
-     & P ("battery", "pin {measure}")
-     & P ("screen_size", "màn hình {measure}")
-     & P ("refresh_rate", "tần số quét {measure}")
-     & P ("editorial_percent.symbol", "{value}%")
-     & P ("editorial_percent.word", "{value} phần trăm")
-     & P ("recurrence.second", "{every, plural, =1 {mỗi giây} other {mỗi {every} giây}}")
-     & P ("recurrence.minute", "{every, plural, =1 {mỗi phút} other {mỗi {every} phút}}")
-     & P ("recurrence.hour", "{every, plural, =1 {mỗi giờ} other {mỗi {every} giờ}}")
-     & P ("recurrence.day", "{every, plural, =1 {mỗi ngày} other {mỗi {every} ngày}}")
-     & P ("recurrence.week", "{every, plural, =1 {mỗi tuần} other {mỗi {every} tuần}}")
-     & P ("recurrence.month", "{every, plural, =1 {mỗi tháng} other {mỗi {every} tháng}}")
-     & P ("recurrence.quarter", "{every, plural, =1 {mỗi quý} other {mỗi {every} quý}}")
-     & P ("recurrence.year", "{every, plural, =1 {mỗi năm} other {mỗi {every} năm}}")
-     & P ("cache_summary.empty", "bộ nhớ đệm: không có yêu cầu")
-     & P ("cache_summary",
-          "bộ nhớ đệm: {hits} lần trúng, {misses} lần trượt, tỷ "
-          & "lệ trúng {rate}%")
-     & P ("field_change_summary",
-          "{total} {other}: {changed} đã thay đổi, {added} đã thêm, "
-          & "{removed} đã xóa")
-     & P ("field_diff", "{field} đã đổi từ {before} thành {after}")
-     & P ("field_added", "đã thêm {field} với giá trị {value}")
-     & P ("field_removed", "đã xóa {field} (trước đó là {value})")
-     & P ("field_unchanged", "{field} không đổi, vẫn là {value}")
-     & P ("number_comparison.equal", "{current} bằng {baseline}")
-     & P ("number_comparison.higher", "{current} cao hơn {baseline} {quantity}")
-     & P ("number_comparison.lower", "{current} thấp hơn {baseline} {quantity}")
-     & P ("percent_comparison.equal", "{current} bằng {baseline}")
-     & P ("percent_comparison.higher", "{current} cao hơn {baseline} {quantity}")
-     & P ("percent_comparison.lower", "{current} thấp hơn {baseline} {quantity}")
-     & P ("file_size_comparison.same", "{current} có cùng kích thước với {baseline}")
-     & P ("file_size_comparison.larger", "{current} lớn hơn {baseline} {quantity}")
-     & P ("file_size_comparison.smaller", "{current} nhỏ hơn {baseline} {quantity}")
-     & P ("date_comparison.same", "{current} cùng ngày với {baseline}")
-     & P ("date_comparison.after", "{current} sau {baseline} {quantity}")
-     & P ("date_comparison.before", "{current} trước {baseline} {quantity}")
-     & P ("queue_summary", "hàng đợi: {details}")
-     & P ("domain_summary",
-          "{domain, select, queue {hàng đợi} job {tác vụ} run {lượt "
-          & "chạy} cache {bộ nhớ đệm} sync {đồng bộ} import {nhập} "
-          & "export {xuất} other {{domain}}} {state, select, queued {đã xếp "
-          & "hàng} running {đang chạy} waiting {đang chờ} paused {đã tạm "
-          & "dừng} complete {đã hoàn tất} failed {thất bại} stale {đã "
-          & "cũ} skipped {đã bỏ qua} other {{state}}}: {details}")
-     & P ("summary.none", "không có {other}")
-     & P ("summary.completed", "{count} {other} đã hoàn tất")
-     & P ("summary.completed_of", "{count}/{total} {other} đã hoàn tất")
-     & P ("summary.failed", "{count} thất bại")
-     & P ("summary.queued", "{count} {other} đang xếp hàng")
-     & P ("summary.running", "{count} đang chạy")
-     & P ("summary.complete", "{count} đã hoàn tất")
-     & P ("backup.backup_running", "đang sao lưu")
-     & P ("backup.backup_completed", "sao lưu hoàn tất")
-     & P ("backup.backup_failed", "sao lưu thất bại")
-     & P ("backup.backup_stale", "bản sao lưu đã cũ")
-     & P ("incident.incident_investigating", "đang điều tra sự cố")
-     & P ("incident.incident_identified", "đã xác định sự cố")
-     & P ("incident.incident_mitigated", "đã giảm thiểu sự cố")
-     & P ("incident.incident_resolved", "đã khắc phục sự cố")
-     & P ("release.release_drafting", "đang soạn bản phát hành")
-     & P ("release.release_ready", "bản phát hành sẵn sàng")
-     & P ("release.release_published", "bản phát hành đã xuất bản")
-     & P ("release.release_rolled_back", "bản phát hành đã hoàn tác")
-     & P ("audit.audit_created", "đã tạo mục nhật ký kiểm tra")
-     & P ("audit.audit_updated", "đã cập nhật mục nhật ký kiểm tra")
-     & P ("audit.audit_deleted", "đã xóa mục nhật ký kiểm tra")
-     & P ("audit.audit_restored", "đã khôi phục mục nhật ký kiểm tra")
-     & P ("flag.flag_enabled", "đã bật cờ tính năng")
-     & P ("flag.flag_disabled", "đã tắt cờ tính năng")
-     & P ("flag.flag_rolling_out", "đang triển khai dần cờ tính năng")
-     & P ("flag.flag_rolled_back", "đã hoàn tác cờ tính năng")
-     & P ("webhook.webhook_pending", "webhook đang chờ")
-     & P ("webhook.webhook_delivered", "webhook đã gửi")
-     & P ("webhook.webhook_failed", "webhook thất bại")
-     & P ("webhook.webhook_retrying", "đang thử lại webhook")
-     & P ("api_key.api_key_active", "khóa API đang hoạt động")
-     & P ("api_key.api_key_revoked", "khóa API đã bị thu hồi")
-     & P ("api_key.api_key_expired", "khóa API đã hết hạn")
-     & P ("api_key.api_key_rotated", "khóa API đã được xoay vòng")
-     & P ("quota.quota_available", "hạn mức khả dụng")
-     & P ("quota.quota_near_limit", "hạn mức sắp đạt giới hạn")
-     & P ("quota.quota_exceeded", "đã vượt hạn mức")
-     & P ("quota.quota_reset", "hạn mức đã được đặt lại")
-     & P ("invoice.invoice_draft", "bản nháp hóa đơn")
-     & P ("invoice.invoice_sent", "hóa đơn đã gửi")
-     & P ("invoice.invoice_paid", "hóa đơn đã thanh toán")
-     & P ("invoice.invoice_refunded", "hóa đơn đã hoàn tiền")
-     & P ("invoice.invoice_overdue", "hóa đơn quá hạn")
-     & P ("invoice.refund_failed", "hoàn tiền thất bại")
-     & P ("page_navigation.only", "trang duy nhất")
-     & P ("page_navigation.first", "trang đầu, có trang sau")
-     & P ("page_navigation.last", "trang cuối, có trang trước")
-     & P ("page_navigation.middle", "có trang trước và trang sau")
-     & P ("end_of_week", "cuối tuần")
-     & P ("end_of_month", "cuối tháng")
-     & P ("end_of_quarter", "cuối quý")
-     & P ("time_of_day.night", "đêm")
-     & P ("time_of_day.morning", "sáng")
-     & P ("time_of_day.afternoon", "chiều")
-     & P ("time_of_day.evening", "tối")
-     & P ("calendar_difference.same_day", "cùng ngày")
-     & P ("calendar_difference.zero", "0 ngày")
-     & P ("queue_summary.empty", "hàng đợi trống")
-     & P ("access.allowed", "được phép")
-     & P ("access.denied", "bị từ chối")
-     & P ("access.owner", "chủ sở hữu")
-     & P ("access.admin", "quản trị viên")
-     & P ("access.viewer", "người xem")
-     & P ("access.editor", "người chỉnh sửa")
-     & P ("auth.signed_in", "đã đăng nhập")
-     & P ("auth.signed_out", "đã đăng xuất")
-     & P ("auth.session_expired", "phiên đã hết hạn")
-     & P ("auth.locked", "đã khóa")
-     & P ("auth.two_factor_required", "cần xác thực hai yếu tố")
-     & P ("billing.trialing", "đang dùng thử")
-     & P ("billing.payment_due", "đến hạn thanh toán")
-     & P ("billing.payment_failed", "thanh toán thất bại")
-     & P ("billing.paid", "đã thanh toán")
-     & P ("billing.past_due", "quá hạn thanh toán")
-     & P ("billing.canceled", "đã hủy")
-     & P ("ci.pipeline_pending", "pipeline đang chờ")
-     & P ("ci.pipeline_running", "pipeline đang chạy")
-     & P ("ci.pipeline_passed", "pipeline đã thành công")
-     & P ("ci.pipeline_failed", "pipeline thất bại")
-     & P ("ci.review_required", "cần xem xét")
-     & P ("ci.deploy_blocked", "triển khai bị chặn")
-     & P ("collaboration.active_now", "đang hoạt động")
-     & P ("collaboration.away", "vắng mặt")
-     & P ("collaboration.do_not_disturb", "không làm phiền")
-     & P ("collaboration.typing", "đang nhập")
-     & P ("collaboration.viewing", "đang xem")
-     & P ("collaboration.editing", "đang chỉnh sửa")
-     & P ("deployment.deploying", "đang triển khai")
-     & P ("deployment.deployed", "đã triển khai")
-     & P ("deployment.rolling_back", "đang hoàn tác")
-     & P ("deployment.rolled_back", "đã hoàn tác")
-     & P ("deployment.build_failed", "bản dựng thất bại")
-     & P ("deployment.checks_passed", "kiểm tra đạt")
-     & P ("empty.no_items", "không có mục nào")
-     & P ("empty.no_results", "không có kết quả")
-     & P ("empty.no_messages", "không có tin nhắn")
-     & P ("empty.no_selection", "chưa chọn mục nào")
-     & P ("empty.nothing_to_show", "không có gì để hiển thị")
-     & P ("file.uploading", "đang tải lên")
-     & P ("file.downloading", "đang tải xuống")
-     & P ("file.copying", "đang sao chép")
-     & P ("file.moving", "đang di chuyển")
-     & P ("file.deleting", "đang xóa")
-     & P ("file.deleted", "đã xóa")
-     & P ("file.restoring", "đang khôi phục")
-     & P ("file.synced", "đã đồng bộ")
-     & P ("form.valid_input", "dữ liệu hợp lệ")
-     & P ("form.invalid_input", "dữ liệu không hợp lệ")
-     & P ("form.dirty", "đã thay đổi")
-     & P ("form.pristine", "chưa thay đổi")
-     & P ("form.submitted", "đã gửi")
-     & P ("form.submission_failed", "gửi thất bại")
-     & P ("health.healthy", "ổn định")
-     & P ("health.degraded", "suy giảm")
-     & P ("health.unhealthy", "không ổn định")
-     & P ("health.incident", "sự cố")
-     & P ("health.maintenance", "đang bảo trì")
-     & P ("health.recovering", "đang phục hồi")
-     & P ("issue.open", "đang mở")
-     & P ("issue.closed", "đã đóng")
-     & P ("issue.reopened", "đã mở lại")
-     & P ("issue.assigned", "đã giao")
-     & P ("issue.unassigned", "chưa giao")
-     & P ("issue.merged", "đã hợp nhất")
-     & P ("network.offline", "ngoại tuyến")
-     & P ("network.online", "trực tuyến")
-     & P ("network.connecting", "đang kết nối")
-     & P ("network.syncing", "đang đồng bộ")
-     & P ("network.sync_failed", "đồng bộ thất bại")
-     & P ("network.permission_denied", "bị từ chối quyền")
-     & P ("network.read_only", "chỉ đọc")
-     & P ("notification.unread", "chưa đọc")
-     & P ("notification.read", "đã đọc")
-     & P ("notification.muted", "đã tắt tiếng")
-     & P ("notification.snoozed", "đã tạm hoãn")
-     & P ("notification.sent", "đã gửi")
-     & P ("notification.delivered", "đã chuyển đến")
-     & P ("payment.payment_authorized", "thanh toán đã được ủy quyền")
-     & P ("payment.payment_captured", "thanh toán đã được thu")
-     & P ("payment.payment_refunded", "đã hoàn tiền")
-     & P ("payment.payment_disputed", "thanh toán bị khiếu nại")
-     & P ("payment.payment_requires_action", "thanh toán cần thao tác")
-     & P ("payment.payment_expired", "thanh toán đã hết hạn")
-     & P ("ui.empty", "trống")
-     & P ("ui.loading", "đang tải")
-     & P ("ui.saving", "đang lưu")
-     & P ("ui.saved", "đã lưu")
-     & P ("ui.unsaved", "chưa lưu")
-     & P ("ui.retrying", "đang thử lại")
-     & P ("ui.paused", "đã tạm dừng")
-     & P ("ui.complete", "hoàn tất")
-     & P ("ui.failed", "thất bại")
-     & P ("ui.due_soon", "sắp đến hạn")
-     & P ("ui.overdue", "quá hạn")
-     & P ("ui.last_seen", "truy cập lần cuối")
-     & P ("ui.updated_just_now", "vừa cập nhật")
-     & P ("queue.queued", "đã xếp hàng")
-     & P ("queue.running", "đang chạy")
-     & P ("queue.waiting", "đang chờ")
-     & P ("queue.blocked", "bị chặn")
-     & P ("queue.canceled_job", "đã hủy tác vụ")
-     & P ("queue.completed_job", "đã hoàn tất tác vụ")
-     & P ("search.filtering", "đang lọc")
-     & P ("search.filtered", "đã lọc")
-     & P ("search.no_matches", "không có kết quả khớp")
-     & P ("search.search_ready", "sẵn sàng tìm kiếm")
-     & P ("search.search_failed", "tìm kiếm thất bại")
-     & P ("search.query_too_short", "truy vấn quá ngắn")
-     & P ("security.secure", "an toàn")
-     & P ("security.insecure", "không an toàn")
-     & P ("security.vulnerable", "có lỗ hổng")
-     & P ("security.encrypted", "đã mã hóa")
-     & P ("security.unencrypted", "chưa mã hóa")
-     & P ("security.token_expired", "token đã hết hạn")
-     & P ("sync.sync_idle", "đồng bộ đang rảnh")
-     & P ("sync.syncing_now", "đang đồng bộ ngay")
-     & P ("sync.sync_queued", "đồng bộ đang xếp hàng")
-     & P ("sync.sync_conflict", "xung đột đồng bộ")
-     & P ("sync.sync_complete", "đồng bộ hoàn tất")
-     & P ("sync.sync_error", "lỗi đồng bộ")
-     & P ("task.todo", "cần làm")
-     & P ("task.in_progress", "đang thực hiện")
-     & P ("task.done", "xong")
-     & P ("task.skipped", "đã bỏ qua")
-     & P ("task.blocked_task", "bị chặn")
-     & P ("task.waiting_on", "đang chờ")
-     & P ("ticket.ticket_new", "phiếu mới")
-     & P ("ticket.ticket_open", "phiếu đang mở")
-     & P ("ticket.ticket_waiting", "phiếu đang chờ")
-     & P ("ticket.ticket_escalated", "phiếu đã chuyển cấp")
-     & P ("ticket.ticket_resolved", "phiếu đã giải quyết")
-     & P ("ticket.ticket_closed", "phiếu đã đóng")
-     & P ("transfer.importing", "đang nhập")
-     & P ("transfer.imported", "đã nhập")
-     & P ("transfer.import_failed", "nhập thất bại")
-     & P ("transfer.exporting", "đang xuất")
-     & P ("transfer.exported", "đã xuất")
-     & P ("transfer.export_failed", "xuất thất bại")
-     & P ("validation.required", "bắt buộc")
-     & P ("validation.optional", "tùy chọn")
-     & P ("validation.invalid", "không hợp lệ")
-     & P ("validation.too_short", "quá ngắn")
-     & P ("validation.too_long", "quá dài")
-     & P ("validation.out_of_range", "ngoài phạm vi")
-     & P ("validation.already_exists", "đã tồn tại")
-     & P ("workflow.draft", "bản nháp")
-     & P ("workflow.in_review", "đang xem xét")
-     & P ("workflow.approved", "đã duyệt")
-     & P ("workflow.rejected", "bị từ chối")
-     & P ("workflow.published", "đã xuất bản")
-     & P ("workflow.archived", "đã lưu trữ")
-     & P ("database.database_online", "cơ sở dữ liệu trực tuyến")
-     & P ("database.database_offline", "cơ sở dữ liệu ngoại tuyến")
-     & P ("database.database_degraded", "cơ sở dữ liệu suy giảm")
-     & P ("database.database_migrating", "cơ sở dữ liệu đang di chuyển")
-     & P ("database.database_migration_failed", "di chuyển cơ sở dữ liệu thất bại")
-     & P ("database.database_replicating", "cơ sở dữ liệu đang sao chép")
-     & P ("database.database_replication_lagging", "sao chép cơ sở dữ liệu bị trễ")
-     & P ("database.database_backup_running", "đang sao lưu cơ sở dữ liệu")
-     & P ("database.database_backup_failed", "sao lưu cơ sở dữ liệu thất bại")
-     & P ("times_noun",
-          "{count, plural, =0 {chưa từng {other}} =1 {{other} một lần} =2 "
-          & "{{other} hai lần} other {{other} {count} lần}}")
-     & P ("availability.all", "{available}/{total} {other} khả dụng")
-     & P ("availability.none", "không có {other} nào khả dụng")
-     & P ("availability.partial",
-          "{available}/{total} {other} khả dụng, {unavailable} không khả "
-          & "dụng")
-     & P ("operation_progress", "{name} – {state}: {details}")
-     & P ("operation.queued", "đang chờ")
-     & P ("operation.running", "đang chạy")
-     & P ("operation.blocked", "bị chặn")
-     & P ("operation.retrying", "đang thử lại")
-     & P ("operation.succeeded", "thành công")
-     & P ("operation.partially_succeeded", "thành công một phần")
-     & P ("operation.failed", "thất bại")
-     & P ("operation.canceled", "đã hủy")
-     & P ("operation.skipped", "đã bỏ qua")
-     & P ("operation.stale", "lỗi thời")
-     & P ("operation.unknown_state", "không xác định")
-     & P ("operation.last_success", "{name} thành công lần cuối {time}")
-     & P ("operation.next_retry", "{name} thử lại lần tới {time}")
-     & P ("operation.stale_run", "{name} đã lỗi thời {time}")
-     & P ("summary.skipped", "{count} bị bỏ qua")
-     & P ("summary.retried", "{count} đã thử lại")
-     & P ("summary.canceled", "{count} đã hủy")
-     & P ("system.service.operational", "đang hoạt động")
-     & P ("system.service.degraded", "hiệu suất giảm")
-     & P ("system.service.partial_outage", "gián đoạn một phần")
-     & P ("system.service.major_outage", "gián đoạn lớn")
-     & P ("system.service.maintenance", "đang bảo trì")
-     & P ("system.service.unknown", "không rõ trạng thái dịch vụ")
-     & P ("system.health.healthy", "ổn định")
-     & P ("system.health.warning", "cảnh báo")
-     & P ("system.health.critical", "nghiêm trọng")
-     & P ("system.health.unavailable", "không khả dụng")
-     & P ("system.health.unknown_health", "không rõ tình trạng")
-     & P ("system.readiness.ready", "sẵn sàng")
-     & P ("system.readiness.not_ready", "chưa sẵn sàng")
-     & P ("system.readiness.starting", "đang khởi động")
-     & P ("system.readiness.draining", "đang rút tải")
-     & P ("system.readiness.stopped", "đã dừng")
-     & P ("system.readiness.unknown_readiness", "không rõ trạng thái sẵn sàng")
-     & P ("system.component.online", "trực tuyến")
-     & P ("system.component.offline", "ngoại tuyến")
-     & P ("system.component.starting", "đang khởi động")
-     & P ("system.component.stopping", "đang dừng")
-     & P ("system.component.restarting", "đang khởi động lại")
-     & P ("system.component.unknown", "không rõ trạng thái thành phần")
-     & P ("system.check.passing", "đạt")
-     & P ("system.check.failing", "không đạt")
-     & P ("system.check.warning", "cảnh báo")
-     & P ("system.check.skipped", "đã bỏ qua")
-     & P ("system.check.timed_out", "hết thời gian chờ")
-     & P ("system.check.unknown", "không rõ trạng thái kiểm tra")
-     & P ("system.incident.investigating", "đang điều tra")
-     & P ("system.incident.identified", "đã xác định nguyên nhân")
-     & P ("system.incident.monitoring", "đang theo dõi")
-     & P ("system.incident.resolved", "đã khắc phục")
-     & P ("system.incident.scheduled_maintenance", "bảo trì theo lịch")
-     & P ("system.named", "{name}: {state}")
-     & P ("system.check_named", "kiểm tra {name}: {state}")
-     & P ("system.count.components",
-          "{count, plural, =0 {không có thành phần nào} other {{count} "
-          & "thành phần}}")
-     & P ("system.count.checks",
-          "{count, plural, =0 {không có kiểm tra nào} other {{count} kiểm "
-          & "tra}}")
-     & P ("system.count.incidents",
-          "{count, plural, =0 {không có sự cố nào} other {{count} sự "
-          & "cố}}")
-     & P ("system.uptime", "thời gian hoạt động {measure}")
-     & P ("system.latency", "độ trễ {measure}")
-     & P ("system.maintenance_window", "khung giờ bảo trì {time}")
-     & P ("system.last_checked", "kiểm tra lần cuối {time}")
-     & P ("system.http.informational", "thông tin")
-     & P ("system.http.successful", "thành công")
-     & P ("system.http.redirection", "chuyển hướng")
-     & P ("system.http.client_error", "lỗi máy khách")
-     & P ("system.http.server_error", "lỗi máy chủ")
-     & P ("system.exit.success", "mã thoát {code}: thành công")
-     & P ("system.exit.failure", "mã thoát {code}: thất bại")
-     & P ("system.exit.usage_error", "mã thoát {code}: lỗi sử dụng")
-     & P ("system.exit.not_executable", "mã thoát {code}: không thể thực thi lệnh")
-     & P ("system.exit.not_found", "mã thoát {code}: không tìm thấy lệnh")
-     & P ("system.exit.invalid_argument", "mã thoát {code}: đối số thoát không hợp lệ")
-     & P ("system.exit.signal", "mã thoát {code}: bị kết thúc bởi {signal}")
-     & P ("validation.problem.required", "{field}: bắt buộc")
-     & P ("validation.problem.minimum", "{field}: nhỏ hơn giá trị tối thiểu")
-     & P ("validation.problem.maximum", "{field}: lớn hơn giá trị tối đa")
-     & P ("validation.problem.range", "{field}: nằm ngoài phạm vi")
-     & P ("validation.problem.pattern", "{field}: không khớp với mẫu")
-     & P ("validation.problem.choice", "{field}: phải là một trong các lựa chọn được phép")
-     & P ("validation.problem.dependency", "{field}: phụ thuộc vào trường khác")
-     & P ("validation.problem.custom", "{field}: không hợp lệ")
-     & P ("validation.constraint.no_relation", "{field}: phải là {value} hợp lệ")
-     & P ("validation.constraint.less_than", "{field}: phải nhỏ hơn {value}")
-     & P ("validation.constraint.less_or_equal", "{field}: không được vượt quá {value}")
-     & P ("validation.constraint.greater_than", "{field}: phải lớn hơn {value}")
-     & P ("validation.constraint.greater_or_equal", "{field}: phải ít nhất là {value}")
-     & P ("validation.constraint.equal_to", "{field}: phải bằng {value}")
-     & P ("validation.constraint.not_equal_to", "{field}: không được bằng {value}")
-     & P ("validation.constraint.before_field", "{field}: phải trước {value}")
-     & P ("validation.constraint.after_field", "{field}: phải sau {value}")
-     & P ("validation.choices", "{field}: giá trị được phép là {choices}")
-     & P ("frame.detail", "{text} ({detail})")
-     & P ("frame.got", "{text}, giá trị đã nhập {actual}")
-     & P ("frame.also", "{text}, {detail}")
-     & P ("frame.retry", "{text}, thử lại sau {time}")
-     & P ("net_diagnostic.dns", "{endpoint}: tra cứu DNS thất bại")
-     & P ("net_diagnostic.tcp", "{endpoint}: kết nối TCP thất bại")
-     & P ("net_diagnostic.tls", "{endpoint}: lỗi chứng chỉ TLS")
-     & P ("net_diagnostic.http", "{endpoint}: yêu cầu HTTP thất bại")
-     & P ("net_diagnostic.proxy", "{endpoint}: lỗi proxy")
-     & P ("net_diagnostic.timeout", "{endpoint}: hết thời gian chờ")
-     & P ("net_diagnostic.reset", "{endpoint}: kết nối bị đặt lại")
-     & P ("net_diagnostic.unknown_network", "{endpoint}: sự cố mạng")
-     & P ("progress.state.not_started", "chưa bắt đầu")
-     & P ("progress.state.running", "đang chạy")
-     & P ("progress.state.stalled", "bị đình trệ")
-     & P ("progress.state.retrying", "đang thử lại")
-     & P ("progress.state.complete", "hoàn tất")
-     & P ("progress.state.failed", "thất bại")
-     & P ("progress.of", "{subject}: đã hoàn tất {done}/{total} ({percent}%), {state}")
-     & P ("progress.done", "{subject}: đã hoàn tất {done}, {state}")
-     & P ("collection.summary",
-          "{name}: {total} mục, {unique} giá trị duy nhất, {duplicates} "
-          & "mục trùng lặp, {outliers} giá trị ngoại lai")
-     & P ("top_frequency", "{name}: {value} ({count} lần)")
-     & P ("calendar_date.fiscal_year", "NTC {year}")
-     & P ("calendar_date.fiscal_quarter", "Quý {part} NTC {year}")
-     & P ("calendar_date.fiscal_half", "{part, plural, =1 {Nửa đầu} other {Nửa cuối}} NTC {year}")
-     & P ("calendar_date.fiscal_year_end", "cuối NTC {year}")
-     & P ("calendar_date.semester", "Học kỳ {part} {year}")
-     & P ("calendar_date.half_year",
-          "{part, plural, =1 {6 tháng đầu năm {year}} other {6 tháng cuối "
-          & "năm {year}}}")
-     & P ("calendar_date.half_year_phrase",
-          "{part, plural, =1 {nửa đầu năm {year}} other {nửa cuối năm "
-          & "{year}}}")
-     & P ("calendar_date.month_phase",
-          "{phase, select, early {đầu {text}} mid {giữa {text}} other "
-          & "{cuối {text}}}")
-     & P ("calendar_date.quarter_phase",
-          "{phase, select, early {đầu {text}} mid {giữa {text}} other "
-          & "{cuối {text}}}")
-     & P ("calendar_range.weekend.last", "cuối tuần trước")
-     & P ("calendar_range.weekend.this", "cuối tuần này")
-     & P ("calendar_range.weekend.next", "cuối tuần sau")
-     & P ("calendar_range.weekend_of", "cuối tuần của {date}")
-     & P ("calendar_range.week.last", "tuần trước")
-     & P ("calendar_range.week.this", "tuần này")
-     & P ("calendar_range.week.next", "tuần sau")
-     & P ("calendar_range.week_of", "tuần của {date}")
-     & P ("calendar_range.between", "{first} – {last}");
+   P ("all_count", "tất cả {total} {other}");
+   P ("filtered_count.none", "không có {other} nào khớp");
+   P ("filtered_count.all", "tất cả {total} {other} đều khớp");
+   P ("filtered_count.some", "{matching}/{total} {other} khớp");
+   P ("more_count", "hiển thị {visible}, +{remaining} mục nữa");
+   P ("others_count", "{first} và {remaining} mục khác");
+   P ("page_count", "trang {page}/{total}");
+   P ("page_size", "{size} {other} mỗi trang");
+   P ("pagination_range", "{first}–{last} trong số {total} {other}");
+   P ("position_count", "{position}/{total}");
+   P ("selection_count", "đã chọn {selected}/{total} {other}");
+   P ("showing_count", "đang hiển thị {showing}/{total} {other}");
+   P ("validation_count",
+      "{count, plural, =0 {không có {severity, select, error {lỗi} "
+      & "warning {cảnh báo} other {thông báo}} nào} other {{count} "
+      & "{severity, select, error {lỗi} warning {cảnh báo} other {thông "
+      & "báo}}}}");
+   P ("collection.empty", "không có {other}");
+   P ("collection.none_shown", "không hiển thị {other} nào");
+   P ("collection.showing_hidden", "đang hiển thị {visible}/{total} {other}, {hidden} bị ẩn");
+   P ("collection.showing", "đang hiển thị {visible}/{total} {other}");
+   P ("collection.shown_hidden", "đã hiển thị {visible} {other}, {hidden} bị ẩn");
+   P ("collection.shown", "đã hiển thị {visible} {other}");
+   P ("collection.visible_out_of", "{visible} trong số {total} {other} đang hiển thị");
+   P ("complete_count", "đã hoàn tất {done}/{total}");
+   P ("percent_complete", "đã hoàn tất {percent}%");
+   P ("step_count", "bước {step}/{total}");
+   P ("attempt_count", "lần thử {attempt}/{total}");
+   P ("throughput_remaining", "còn {remaining} {other}, tốc độ {rate} {unit}/giây");
+   P ("accessible_progress", "đã hoàn tất {done}/{total}, {percent} phần trăm");
+   P ("business_days", "{days} ngày làm việc");
+   P ("working_hours", "{hours} giờ làm việc");
+   P ("due.overdue", "quá hạn {days} ngày");
+   P ("due.today", "đến hạn hôm nay");
+   P ("due.tomorrow", "đến hạn ngày mai");
+   P ("due.in", "đến hạn sau {days} ngày");
+   P ("calendar_difference.future", "{difference} nữa");
+   P ("calendar_difference.past", "{difference} trước");
+   P ("cpu_load", "CPU {measure}");
+   P ("battery", "pin {measure}");
+   P ("screen_size", "màn hình {measure}");
+   P ("refresh_rate", "tần số quét {measure}");
+   P ("editorial_percent.symbol", "{value}%");
+   P ("editorial_percent.word", "{value} phần trăm");
+   P ("recurrence.second", "{every, plural, =1 {mỗi giây} other {mỗi {every} giây}}");
+   P ("recurrence.minute", "{every, plural, =1 {mỗi phút} other {mỗi {every} phút}}");
+   P ("recurrence.hour", "{every, plural, =1 {mỗi giờ} other {mỗi {every} giờ}}");
+   P ("recurrence.day", "{every, plural, =1 {mỗi ngày} other {mỗi {every} ngày}}");
+   P ("recurrence.week", "{every, plural, =1 {mỗi tuần} other {mỗi {every} tuần}}");
+   P ("recurrence.month", "{every, plural, =1 {mỗi tháng} other {mỗi {every} tháng}}");
+   P ("recurrence.quarter", "{every, plural, =1 {mỗi quý} other {mỗi {every} quý}}");
+   P ("recurrence.year", "{every, plural, =1 {mỗi năm} other {mỗi {every} năm}}");
+   P ("cache_summary.empty", "bộ nhớ đệm: không có yêu cầu");
+   P ("cache_summary",
+      "bộ nhớ đệm: {hits} lần trúng, {misses} lần trượt, tỷ "
+      & "lệ trúng {rate}%");
+   P ("field_change_summary",
+      "{total} {other}: {changed} đã thay đổi, {added} đã thêm, "
+      & "{removed} đã xóa");
+   P ("field_diff", "{field} đã đổi từ {before} thành {after}");
+   P ("field_added", "đã thêm {field} với giá trị {value}");
+   P ("field_removed", "đã xóa {field} (trước đó là {value})");
+   P ("field_unchanged", "{field} không đổi, vẫn là {value}");
+   P ("number_comparison.equal", "{current} bằng {baseline}");
+   P ("number_comparison.higher", "{current} cao hơn {baseline} {quantity}");
+   P ("number_comparison.lower", "{current} thấp hơn {baseline} {quantity}");
+   P ("percent_comparison.equal", "{current} bằng {baseline}");
+   P ("percent_comparison.higher", "{current} cao hơn {baseline} {quantity}");
+   P ("percent_comparison.lower", "{current} thấp hơn {baseline} {quantity}");
+   P ("file_size_comparison.same", "{current} có cùng kích thước với {baseline}");
+   P ("file_size_comparison.larger", "{current} lớn hơn {baseline} {quantity}");
+   P ("file_size_comparison.smaller", "{current} nhỏ hơn {baseline} {quantity}");
+   P ("date_comparison.same", "{current} cùng ngày với {baseline}");
+   P ("date_comparison.after", "{current} sau {baseline} {quantity}");
+   P ("date_comparison.before", "{current} trước {baseline} {quantity}");
+   P ("queue_summary", "hàng đợi: {details}");
+   P ("domain_summary",
+      "{domain, select, queue {hàng đợi} job {tác vụ} run {lượt "
+      & "chạy} cache {bộ nhớ đệm} sync {đồng bộ} import {nhập} "
+      & "export {xuất} other {{domain}}} {state, select, queued {đã xếp "
+      & "hàng} running {đang chạy} waiting {đang chờ} paused {đã tạm "
+      & "dừng} complete {đã hoàn tất} failed {thất bại} stale {đã "
+      & "cũ} skipped {đã bỏ qua} other {{state}}}: {details}");
+   P ("summary.none", "không có {other}");
+   P ("summary.completed", "{count} {other} đã hoàn tất");
+   P ("summary.completed_of", "{count}/{total} {other} đã hoàn tất");
+   P ("summary.failed", "{count} thất bại");
+   P ("summary.queued", "{count} {other} đang xếp hàng");
+   P ("summary.running", "{count} đang chạy");
+   P ("summary.complete", "{count} đã hoàn tất");
+   P ("backup.backup_running", "đang sao lưu");
+   P ("backup.backup_completed", "sao lưu hoàn tất");
+   P ("backup.backup_failed", "sao lưu thất bại");
+   P ("backup.backup_stale", "bản sao lưu đã cũ");
+   P ("incident.incident_investigating", "đang điều tra sự cố");
+   P ("incident.incident_identified", "đã xác định sự cố");
+   P ("incident.incident_mitigated", "đã giảm thiểu sự cố");
+   P ("incident.incident_resolved", "đã khắc phục sự cố");
+   P ("release.release_drafting", "đang soạn bản phát hành");
+   P ("release.release_ready", "bản phát hành sẵn sàng");
+   P ("release.release_published", "bản phát hành đã xuất bản");
+   P ("release.release_rolled_back", "bản phát hành đã hoàn tác");
+   P ("audit.audit_created", "đã tạo mục nhật ký kiểm tra");
+   P ("audit.audit_updated", "đã cập nhật mục nhật ký kiểm tra");
+   P ("audit.audit_deleted", "đã xóa mục nhật ký kiểm tra");
+   P ("audit.audit_restored", "đã khôi phục mục nhật ký kiểm tra");
+   P ("flag.flag_enabled", "đã bật cờ tính năng");
+   P ("flag.flag_disabled", "đã tắt cờ tính năng");
+   P ("flag.flag_rolling_out", "đang triển khai dần cờ tính năng");
+   P ("flag.flag_rolled_back", "đã hoàn tác cờ tính năng");
+   P ("webhook.webhook_pending", "webhook đang chờ");
+   P ("webhook.webhook_delivered", "webhook đã gửi");
+   P ("webhook.webhook_failed", "webhook thất bại");
+   P ("webhook.webhook_retrying", "đang thử lại webhook");
+   P ("api_key.api_key_active", "khóa API đang hoạt động");
+   P ("api_key.api_key_revoked", "khóa API đã bị thu hồi");
+   P ("api_key.api_key_expired", "khóa API đã hết hạn");
+   P ("api_key.api_key_rotated", "khóa API đã được xoay vòng");
+   P ("quota.quota_available", "hạn mức khả dụng");
+   P ("quota.quota_near_limit", "hạn mức sắp đạt giới hạn");
+   P ("quota.quota_exceeded", "đã vượt hạn mức");
+   P ("quota.quota_reset", "hạn mức đã được đặt lại");
+   P ("invoice.invoice_draft", "bản nháp hóa đơn");
+   P ("invoice.invoice_sent", "hóa đơn đã gửi");
+   P ("invoice.invoice_paid", "hóa đơn đã thanh toán");
+   P ("invoice.invoice_refunded", "hóa đơn đã hoàn tiền");
+   P ("invoice.invoice_overdue", "hóa đơn quá hạn");
+   P ("invoice.refund_failed", "hoàn tiền thất bại");
+   P ("page_navigation.only", "trang duy nhất");
+   P ("page_navigation.first", "trang đầu, có trang sau");
+   P ("page_navigation.last", "trang cuối, có trang trước");
+   P ("page_navigation.middle", "có trang trước và trang sau");
+   P ("end_of_week", "cuối tuần");
+   P ("end_of_month", "cuối tháng");
+   P ("end_of_quarter", "cuối quý");
+   P ("time_of_day.night", "đêm");
+   P ("time_of_day.morning", "sáng");
+   P ("time_of_day.afternoon", "chiều");
+   P ("time_of_day.evening", "tối");
+   P ("calendar_difference.same_day", "cùng ngày");
+   P ("calendar_difference.zero", "0 ngày");
+   P ("queue_summary.empty", "hàng đợi trống");
+   P ("access.allowed", "được phép");
+   P ("access.denied", "bị từ chối");
+   P ("access.owner", "chủ sở hữu");
+   P ("access.admin", "quản trị viên");
+   P ("access.viewer", "người xem");
+   P ("access.editor", "người chỉnh sửa");
+   P ("auth.signed_in", "đã đăng nhập");
+   P ("auth.signed_out", "đã đăng xuất");
+   P ("auth.session_expired", "phiên đã hết hạn");
+   P ("auth.locked", "đã khóa");
+   P ("auth.two_factor_required", "cần xác thực hai yếu tố");
+   P ("billing.trialing", "đang dùng thử");
+   P ("billing.payment_due", "đến hạn thanh toán");
+   P ("billing.payment_failed", "thanh toán thất bại");
+   P ("billing.paid", "đã thanh toán");
+   P ("billing.past_due", "quá hạn thanh toán");
+   P ("billing.canceled", "đã hủy");
+   P ("ci.pipeline_pending", "pipeline đang chờ");
+   P ("ci.pipeline_running", "pipeline đang chạy");
+   P ("ci.pipeline_passed", "pipeline đã thành công");
+   P ("ci.pipeline_failed", "pipeline thất bại");
+   P ("ci.review_required", "cần xem xét");
+   P ("ci.deploy_blocked", "triển khai bị chặn");
+   P ("collaboration.active_now", "đang hoạt động");
+   P ("collaboration.away", "vắng mặt");
+   P ("collaboration.do_not_disturb", "không làm phiền");
+   P ("collaboration.typing", "đang nhập");
+   P ("collaboration.viewing", "đang xem");
+   P ("collaboration.editing", "đang chỉnh sửa");
+   P ("deployment.deploying", "đang triển khai");
+   P ("deployment.deployed", "đã triển khai");
+   P ("deployment.rolling_back", "đang hoàn tác");
+   P ("deployment.rolled_back", "đã hoàn tác");
+   P ("deployment.build_failed", "bản dựng thất bại");
+   P ("deployment.checks_passed", "kiểm tra đạt");
+   P ("empty.no_items", "không có mục nào");
+   P ("empty.no_results", "không có kết quả");
+   P ("empty.no_messages", "không có tin nhắn");
+   P ("empty.no_selection", "chưa chọn mục nào");
+   P ("empty.nothing_to_show", "không có gì để hiển thị");
+   P ("file.uploading", "đang tải lên");
+   P ("file.downloading", "đang tải xuống");
+   P ("file.copying", "đang sao chép");
+   P ("file.moving", "đang di chuyển");
+   P ("file.deleting", "đang xóa");
+   P ("file.deleted", "đã xóa");
+   P ("file.restoring", "đang khôi phục");
+   P ("file.synced", "đã đồng bộ");
+   P ("form.valid_input", "dữ liệu hợp lệ");
+   P ("form.invalid_input", "dữ liệu không hợp lệ");
+   P ("form.dirty", "đã thay đổi");
+   P ("form.pristine", "chưa thay đổi");
+   P ("form.submitted", "đã gửi");
+   P ("form.submission_failed", "gửi thất bại");
+   P ("health.healthy", "ổn định");
+   P ("health.degraded", "suy giảm");
+   P ("health.unhealthy", "không ổn định");
+   P ("health.incident", "sự cố");
+   P ("health.maintenance", "đang bảo trì");
+   P ("health.recovering", "đang phục hồi");
+   P ("issue.open", "đang mở");
+   P ("issue.closed", "đã đóng");
+   P ("issue.reopened", "đã mở lại");
+   P ("issue.assigned", "đã giao");
+   P ("issue.unassigned", "chưa giao");
+   P ("issue.merged", "đã hợp nhất");
+   P ("network.offline", "ngoại tuyến");
+   P ("network.online", "trực tuyến");
+   P ("network.connecting", "đang kết nối");
+   P ("network.syncing", "đang đồng bộ");
+   P ("network.sync_failed", "đồng bộ thất bại");
+   P ("network.permission_denied", "bị từ chối quyền");
+   P ("network.read_only", "chỉ đọc");
+   P ("notification.unread", "chưa đọc");
+   P ("notification.read", "đã đọc");
+   P ("notification.muted", "đã tắt tiếng");
+   P ("notification.snoozed", "đã tạm hoãn");
+   P ("notification.sent", "đã gửi");
+   P ("notification.delivered", "đã chuyển đến");
+   P ("payment.payment_authorized", "thanh toán đã được ủy quyền");
+   P ("payment.payment_captured", "thanh toán đã được thu");
+   P ("payment.payment_refunded", "đã hoàn tiền");
+   P ("payment.payment_disputed", "thanh toán bị khiếu nại");
+   P ("payment.payment_requires_action", "thanh toán cần thao tác");
+   P ("payment.payment_expired", "thanh toán đã hết hạn");
+   P ("ui.empty", "trống");
+   P ("ui.loading", "đang tải");
+   P ("ui.saving", "đang lưu");
+   P ("ui.saved", "đã lưu");
+   P ("ui.unsaved", "chưa lưu");
+   P ("ui.retrying", "đang thử lại");
+   P ("ui.paused", "đã tạm dừng");
+   P ("ui.complete", "hoàn tất");
+   P ("ui.failed", "thất bại");
+   P ("ui.due_soon", "sắp đến hạn");
+   P ("ui.overdue", "quá hạn");
+   P ("ui.last_seen", "truy cập lần cuối");
+   P ("ui.updated_just_now", "vừa cập nhật");
+   P ("queue.queued", "đã xếp hàng");
+   P ("queue.running", "đang chạy");
+   P ("queue.waiting", "đang chờ");
+   P ("queue.blocked", "bị chặn");
+   P ("queue.canceled_job", "đã hủy tác vụ");
+   P ("queue.completed_job", "đã hoàn tất tác vụ");
+   P ("search.filtering", "đang lọc");
+   P ("search.filtered", "đã lọc");
+   P ("search.no_matches", "không có kết quả khớp");
+   P ("search.search_ready", "sẵn sàng tìm kiếm");
+   P ("search.search_failed", "tìm kiếm thất bại");
+   P ("search.query_too_short", "truy vấn quá ngắn");
+   P ("security.secure", "an toàn");
+   P ("security.insecure", "không an toàn");
+   P ("security.vulnerable", "có lỗ hổng");
+   P ("security.encrypted", "đã mã hóa");
+   P ("security.unencrypted", "chưa mã hóa");
+   P ("security.token_expired", "token đã hết hạn");
+   P ("sync.sync_idle", "đồng bộ đang rảnh");
+   P ("sync.syncing_now", "đang đồng bộ ngay");
+   P ("sync.sync_queued", "đồng bộ đang xếp hàng");
+   P ("sync.sync_conflict", "xung đột đồng bộ");
+   P ("sync.sync_complete", "đồng bộ hoàn tất");
+   P ("sync.sync_error", "lỗi đồng bộ");
+   P ("task.todo", "cần làm");
+   P ("task.in_progress", "đang thực hiện");
+   P ("task.done", "xong");
+   P ("task.skipped", "đã bỏ qua");
+   P ("task.blocked_task", "bị chặn");
+   P ("task.waiting_on", "đang chờ");
+   P ("ticket.ticket_new", "phiếu mới");
+   P ("ticket.ticket_open", "phiếu đang mở");
+   P ("ticket.ticket_waiting", "phiếu đang chờ");
+   P ("ticket.ticket_escalated", "phiếu đã chuyển cấp");
+   P ("ticket.ticket_resolved", "phiếu đã giải quyết");
+   P ("ticket.ticket_closed", "phiếu đã đóng");
+   P ("transfer.importing", "đang nhập");
+   P ("transfer.imported", "đã nhập");
+   P ("transfer.import_failed", "nhập thất bại");
+   P ("transfer.exporting", "đang xuất");
+   P ("transfer.exported", "đã xuất");
+   P ("transfer.export_failed", "xuất thất bại");
+   P ("validation.required", "bắt buộc");
+   P ("validation.optional", "tùy chọn");
+   P ("validation.invalid", "không hợp lệ");
+   P ("validation.too_short", "quá ngắn");
+   P ("validation.too_long", "quá dài");
+   P ("validation.out_of_range", "ngoài phạm vi");
+   P ("validation.already_exists", "đã tồn tại");
+   P ("workflow.draft", "bản nháp");
+   P ("workflow.in_review", "đang xem xét");
+   P ("workflow.approved", "đã duyệt");
+   P ("workflow.rejected", "bị từ chối");
+   P ("workflow.published", "đã xuất bản");
+   P ("workflow.archived", "đã lưu trữ");
+   P ("database.database_online", "cơ sở dữ liệu trực tuyến");
+   P ("database.database_offline", "cơ sở dữ liệu ngoại tuyến");
+   P ("database.database_degraded", "cơ sở dữ liệu suy giảm");
+   P ("database.database_migrating", "cơ sở dữ liệu đang di chuyển");
+   P ("database.database_migration_failed", "di chuyển cơ sở dữ liệu thất bại");
+   P ("database.database_replicating", "cơ sở dữ liệu đang sao chép");
+   P ("database.database_replication_lagging", "sao chép cơ sở dữ liệu bị trễ");
+   P ("database.database_backup_running", "đang sao lưu cơ sở dữ liệu");
+   P ("database.database_backup_failed", "sao lưu cơ sở dữ liệu thất bại");
+   P ("times_noun",
+      "{count, plural, =0 {chưa từng {other}} =1 {{other} một lần} =2 "
+      & "{{other} hai lần} other {{other} {count} lần}}");
+   P ("availability.all", "{available}/{total} {other} khả dụng");
+   P ("availability.none", "không có {other} nào khả dụng");
+   P ("availability.partial",
+      "{available}/{total} {other} khả dụng, {unavailable} không khả "
+      & "dụng");
+   P ("operation_progress", "{name} – {state}: {details}");
+   P ("operation.queued", "đang chờ");
+   P ("operation.running", "đang chạy");
+   P ("operation.blocked", "bị chặn");
+   P ("operation.retrying", "đang thử lại");
+   P ("operation.succeeded", "thành công");
+   P ("operation.partially_succeeded", "thành công một phần");
+   P ("operation.failed", "thất bại");
+   P ("operation.canceled", "đã hủy");
+   P ("operation.skipped", "đã bỏ qua");
+   P ("operation.stale", "lỗi thời");
+   P ("operation.unknown_state", "không xác định");
+   P ("operation.last_success", "{name} thành công lần cuối {time}");
+   P ("operation.next_retry", "{name} thử lại lần tới {time}");
+   P ("operation.stale_run", "{name} đã lỗi thời {time}");
+   P ("summary.skipped", "{count} bị bỏ qua");
+   P ("summary.retried", "{count} đã thử lại");
+   P ("summary.canceled", "{count} đã hủy");
+   P ("system.service.operational", "đang hoạt động");
+   P ("system.service.degraded", "hiệu suất giảm");
+   P ("system.service.partial_outage", "gián đoạn một phần");
+   P ("system.service.major_outage", "gián đoạn lớn");
+   P ("system.service.maintenance", "đang bảo trì");
+   P ("system.service.unknown", "không rõ trạng thái dịch vụ");
+   P ("system.health.healthy", "ổn định");
+   P ("system.health.warning", "cảnh báo");
+   P ("system.health.critical", "nghiêm trọng");
+   P ("system.health.unavailable", "không khả dụng");
+   P ("system.health.unknown_health", "không rõ tình trạng");
+   P ("system.readiness.ready", "sẵn sàng");
+   P ("system.readiness.not_ready", "chưa sẵn sàng");
+   P ("system.readiness.starting", "đang khởi động");
+   P ("system.readiness.draining", "đang rút tải");
+   P ("system.readiness.stopped", "đã dừng");
+   P ("system.readiness.unknown_readiness", "không rõ trạng thái sẵn sàng");
+   P ("system.component.online", "trực tuyến");
+   P ("system.component.offline", "ngoại tuyến");
+   P ("system.component.starting", "đang khởi động");
+   P ("system.component.stopping", "đang dừng");
+   P ("system.component.restarting", "đang khởi động lại");
+   P ("system.component.unknown", "không rõ trạng thái thành phần");
+   P ("system.check.passing", "đạt");
+   P ("system.check.failing", "không đạt");
+   P ("system.check.warning", "cảnh báo");
+   P ("system.check.skipped", "đã bỏ qua");
+   P ("system.check.timed_out", "hết thời gian chờ");
+   P ("system.check.unknown", "không rõ trạng thái kiểm tra");
+   P ("system.incident.investigating", "đang điều tra");
+   P ("system.incident.identified", "đã xác định nguyên nhân");
+   P ("system.incident.monitoring", "đang theo dõi");
+   P ("system.incident.resolved", "đã khắc phục");
+   P ("system.incident.scheduled_maintenance", "bảo trì theo lịch");
+   P ("system.named", "{name}: {state}");
+   P ("system.check_named", "kiểm tra {name}: {state}");
+   P ("system.count.components",
+      "{count, plural, =0 {không có thành phần nào} other {{count} "
+      & "thành phần}}");
+   P ("system.count.checks",
+      "{count, plural, =0 {không có kiểm tra nào} other {{count} kiểm "
+      & "tra}}");
+   P ("system.count.incidents",
+      "{count, plural, =0 {không có sự cố nào} other {{count} sự "
+      & "cố}}");
+   P ("system.uptime", "thời gian hoạt động {measure}");
+   P ("system.latency", "độ trễ {measure}");
+   P ("system.maintenance_window", "khung giờ bảo trì {time}");
+   P ("system.last_checked", "kiểm tra lần cuối {time}");
+   P ("system.http.informational", "thông tin");
+   P ("system.http.successful", "thành công");
+   P ("system.http.redirection", "chuyển hướng");
+   P ("system.http.client_error", "lỗi máy khách");
+   P ("system.http.server_error", "lỗi máy chủ");
+   P ("system.exit.success", "mã thoát {code}: thành công");
+   P ("system.exit.failure", "mã thoát {code}: thất bại");
+   P ("system.exit.usage_error", "mã thoát {code}: lỗi sử dụng");
+   P ("system.exit.not_executable", "mã thoát {code}: không thể thực thi lệnh");
+   P ("system.exit.not_found", "mã thoát {code}: không tìm thấy lệnh");
+   P ("system.exit.invalid_argument", "mã thoát {code}: đối số thoát không hợp lệ");
+   P ("system.exit.signal", "mã thoát {code}: bị kết thúc bởi {signal}");
+   P ("validation.problem.required", "{field}: bắt buộc");
+   P ("validation.problem.minimum", "{field}: nhỏ hơn giá trị tối thiểu");
+   P ("validation.problem.maximum", "{field}: lớn hơn giá trị tối đa");
+   P ("validation.problem.range", "{field}: nằm ngoài phạm vi");
+   P ("validation.problem.pattern", "{field}: không khớp với mẫu");
+   P ("validation.problem.choice", "{field}: phải là một trong các lựa chọn được phép");
+   P ("validation.problem.dependency", "{field}: phụ thuộc vào trường khác");
+   P ("validation.problem.custom", "{field}: không hợp lệ");
+   P ("validation.constraint.no_relation", "{field}: phải là {value} hợp lệ");
+   P ("validation.constraint.less_than", "{field}: phải nhỏ hơn {value}");
+   P ("validation.constraint.less_or_equal", "{field}: không được vượt quá {value}");
+   P ("validation.constraint.greater_than", "{field}: phải lớn hơn {value}");
+   P ("validation.constraint.greater_or_equal", "{field}: phải ít nhất là {value}");
+   P ("validation.constraint.equal_to", "{field}: phải bằng {value}");
+   P ("validation.constraint.not_equal_to", "{field}: không được bằng {value}");
+   P ("validation.constraint.before_field", "{field}: phải trước {value}");
+   P ("validation.constraint.after_field", "{field}: phải sau {value}");
+   P ("validation.choices", "{field}: giá trị được phép là {choices}");
+   P ("frame.detail", "{text} ({detail})");
+   P ("frame.got", "{text}, giá trị đã nhập {actual}");
+   P ("frame.also", "{text}, {detail}");
+   P ("frame.retry", "{text}, thử lại sau {time}");
+   P ("net_diagnostic.dns", "{endpoint}: tra cứu DNS thất bại");
+   P ("net_diagnostic.tcp", "{endpoint}: kết nối TCP thất bại");
+   P ("net_diagnostic.tls", "{endpoint}: lỗi chứng chỉ TLS");
+   P ("net_diagnostic.http", "{endpoint}: yêu cầu HTTP thất bại");
+   P ("net_diagnostic.proxy", "{endpoint}: lỗi proxy");
+   P ("net_diagnostic.timeout", "{endpoint}: hết thời gian chờ");
+   P ("net_diagnostic.reset", "{endpoint}: kết nối bị đặt lại");
+   P ("net_diagnostic.unknown_network", "{endpoint}: sự cố mạng");
+   P ("progress.state.not_started", "chưa bắt đầu");
+   P ("progress.state.running", "đang chạy");
+   P ("progress.state.stalled", "bị đình trệ");
+   P ("progress.state.retrying", "đang thử lại");
+   P ("progress.state.complete", "hoàn tất");
+   P ("progress.state.failed", "thất bại");
+   P ("progress.of", "{subject}: đã hoàn tất {done}/{total} ({percent}%), {state}");
+   P ("progress.done", "{subject}: đã hoàn tất {done}, {state}");
+   P ("collection.summary",
+      "{name}: {total} mục, {unique} giá trị duy nhất, {duplicates} "
+      & "mục trùng lặp, {outliers} giá trị ngoại lai");
+   P ("top_frequency", "{name}: {value} ({count} lần)");
+   P ("calendar_date.fiscal_year", "NTC {year}");
+   P ("calendar_date.fiscal_quarter", "Quý {part} NTC {year}");
+   P ("calendar_date.fiscal_half", "{part, plural, =1 {Nửa đầu} other {Nửa cuối}} NTC {year}");
+   P ("calendar_date.fiscal_year_end", "cuối NTC {year}");
+   P ("calendar_date.semester", "Học kỳ {part} {year}");
+   P ("calendar_date.half_year",
+      "{part, plural, =1 {6 tháng đầu năm {year}} other {6 tháng cuối "
+      & "năm {year}}}");
+   P ("calendar_date.half_year_phrase",
+      "{part, plural, =1 {nửa đầu năm {year}} other {nửa cuối năm "
+      & "{year}}}");
+   P ("calendar_date.month_phase",
+      "{phase, select, early {đầu {text}} mid {giữa {text}} other "
+      & "{cuối {text}}}");
+   P ("calendar_date.quarter_phase",
+      "{phase, select, early {đầu {text}} mid {giữa {text}} other "
+      & "{cuối {text}}}");
+   P ("calendar_range.weekend.last", "cuối tuần trước");
+   P ("calendar_range.weekend.this", "cuối tuần này");
+   P ("calendar_range.weekend.next", "cuối tuần sau");
+   P ("calendar_range.weekend_of", "cuối tuần của {date}");
+   P ("calendar_range.week.last", "tuần trước");
+   P ("calendar_range.week.this", "tuần này");
+   P ("calendar_range.week.next", "tuần sau");
+   P ("calendar_range.week_of", "tuần của {date}");
+   P ("calendar_range.between", "{first} – {last}");
+   P ("http.reason.100", "tiếp tục");
+   P ("http.reason.101", "chuyển đổi giao thức");
+   P ("http.reason.102", "đang xử lý");
+   P ("http.reason.103", "gợi ý sớm");
+   P ("http.reason.200", "OK");
+   P ("http.reason.201", "đã tạo");
+   P ("http.reason.202", "đã chấp nhận");
+   P ("http.reason.203", "thông tin không có thẩm quyền");
+   P ("http.reason.204", "không có nội dung");
+   P ("http.reason.205", "đặt lại nội dung");
+   P ("http.reason.206", "nội dung một phần");
+   P ("http.reason.207", "đa trạng thái");
+   P ("http.reason.208", "đã báo cáo");
+   P ("http.reason.226", "IM đã dùng");
+   P ("http.reason.300", "nhiều lựa chọn");
+   P ("http.reason.301", "đã chuyển vĩnh viễn");
+   P ("http.reason.302", "đã tìm thấy");
+   P ("http.reason.303", "xem tài nguyên khác");
+   P ("http.reason.304", "không thay đổi");
+   P ("http.reason.305", "dùng proxy");
+   P ("http.reason.307", "chuyển hướng tạm thời");
+   P ("http.reason.308", "chuyển hướng vĩnh viễn");
+   P ("http.reason.400", "yêu cầu không hợp lệ");
+   P ("http.reason.401", "chưa được xác thực");
+   P ("http.reason.402", "yêu cầu thanh toán");
+   P ("http.reason.403", "bị cấm");
+   P ("http.reason.404", "không tìm thấy");
+   P ("http.reason.405", "phương thức không được phép");
+   P ("http.reason.406", "không chấp nhận được");
+   P ("http.reason.407", "yêu cầu xác thực proxy");
+   P ("http.reason.408", "hết thời gian chờ yêu cầu");
+   P ("http.reason.409", "xung đột");
+   P ("http.reason.410", "không còn tồn tại");
+   P ("http.reason.411", "yêu cầu độ dài");
+   P ("http.reason.412", "điều kiện tiên quyết thất bại");
+   P ("http.reason.413", "nội dung quá lớn");
+   P ("http.reason.414", "URI quá dài");
+   P ("http.reason.415", "kiểu phương tiện không được hỗ trợ");
+   P ("http.reason.416", "phạm vi không thể đáp ứng");
+   P ("http.reason.417", "kỳ vọng thất bại");
+   P ("http.reason.418", "tôi là ấm trà");
+   P ("http.reason.421", "yêu cầu sai hướng");
+   P ("http.reason.422", "nội dung không thể xử lý");
+   P ("http.reason.423", "bị khóa");
+   P ("http.reason.424", "phụ thuộc thất bại");
+   P ("http.reason.425", "quá sớm");
+   P ("http.reason.426", "yêu cầu nâng cấp");
+   P ("http.reason.428", "yêu cầu điều kiện tiên quyết");
+   P ("http.reason.429", "quá nhiều yêu cầu");
+   P ("http.reason.431", "trường tiêu đề yêu cầu quá lớn");
+   P ("http.reason.451", "không khả dụng vì lý do pháp lý");
+   P ("http.reason.500", "lỗi máy chủ nội bộ");
+   P ("http.reason.501", "chưa được triển khai");
+   P ("http.reason.502", "cổng không hợp lệ");
+   P ("http.reason.503", "dịch vụ không khả dụng");
+   P ("http.reason.504", "hết thời gian chờ cổng");
+   P ("http.reason.505", "phiên bản HTTP không được hỗ trợ");
+   P ("http.reason.506", "biến thể cũng thương lượng");
+   P ("http.reason.507", "không đủ dung lượng lưu trữ");
+   P ("http.reason.508", "phát hiện vòng lặp");
+   P ("http.reason.510", "không được mở rộng");
+   P ("http.reason.511", "yêu cầu xác thực mạng");
+   P ("errno.reason.0", "thành công");
+   P ("errno.reason.1", "thao tác không được phép");
+   P ("errno.reason.2", "không có tập tin hoặc thư mục như vậy");
+   P ("errno.reason.3", "không có tiến trình như vậy");
+   P ("errno.reason.4", "cuộc gọi hệ thống bị ngắt");
+   P ("errno.reason.5", "lỗi vào/ra");
+   P ("errno.reason.6", "không có thiết bị hoặc địa chỉ như vậy");
+   P ("errno.reason.9", "bộ mô tả tập tin sai");
+   P ("errno.reason.11", "tài nguyên tạm thời không sẵn có");
+   P ("errno.reason.12", "không đủ bộ nhớ");
+   P ("errno.reason.13", "quyền bị từ chối");
+   P ("errno.reason.17", "tập tin đã có");
+   P ("errno.reason.20", "không phải là thư mục");
+   P ("errno.reason.21", "là một thư mục");
+   P ("errno.reason.22", "đối số không hợp lệ");
+   P ("errno.reason.24", "quá nhiều tập tin đang mở");
+   P ("errno.reason.28", "không còn chỗ trống trên thiết bị");
+   P ("errno.reason.32", "ống dẫn bị hỏng");
+   P ("errno.reason.98", "địa chỉ đang được dùng");
+   P ("errno.reason.110", "hết thời gian chờ kết nối");
+   P ("errno.reason.111", "kết nối bị từ chối");
+   P ("signal.reason.1", "ngắt kết nối");
+   P ("signal.reason.2", "ngắt");
+   P ("signal.reason.3", "thoát");
+   P ("signal.reason.4", "lệnh không hợp lệ");
+   P ("signal.reason.5", "bẫy vết");
+   P ("signal.reason.6", "hủy bỏ");
+   P ("signal.reason.7", "lỗi bus");
+   P ("signal.reason.8", "ngoại lệ dấu chấm động");
+   P ("signal.reason.9", "bị giết");
+   P ("signal.reason.10", "tín hiệu người dùng 1");
+   P ("signal.reason.11", "lỗi phân đoạn");
+   P ("signal.reason.12", "tín hiệu người dùng 2");
+   P ("signal.reason.13", "ống dẫn bị hỏng");
+   P ("signal.reason.14", "báo thức");
+   P ("signal.reason.15", "yêu cầu chấm dứt");
+   P ("signal.reason.17", "trạng thái tiến trình con đã thay đổi");
+   P ("signal.reason.18", "tiếp tục");
+   P ("signal.reason.19", "bị dừng");
+   P ("signal.reason.20", "dừng từ thiết bị cuối");
+   P ("signal.reason.28", "kích thước cửa sổ đã thay đổi");
+   P ("sqlstate.reason.00", "hoàn tất thành công");
+   P ("sqlstate.reason.01", "cảnh báo");
+   P ("sqlstate.reason.02", "không có dữ liệu");
+   P ("sqlstate.reason.08", "ngoại lệ kết nối");
+   P ("sqlstate.reason.0a", "tính năng không được hỗ trợ");
+   P ("sqlstate.reason.22", "ngoại lệ dữ liệu");
+   P ("sqlstate.reason.23", "vi phạm ràng buộc toàn vẹn");
+   P ("sqlstate.reason.24", "trạng thái con trỏ không hợp lệ");
+   P ("sqlstate.reason.25", "trạng thái giao dịch không hợp lệ");
+   P ("sqlstate.reason.28", "đặc tả ủy quyền không hợp lệ");
+   P ("sqlstate.reason.2d", "kết thúc giao dịch không hợp lệ");
+   P ("sqlstate.reason.3d", "tên danh mục không hợp lệ");
+   P ("sqlstate.reason.3f", "tên lược đồ không hợp lệ");
+   P ("sqlstate.reason.40", "hoàn tác giao dịch");
+   P ("sqlstate.reason.42", "lỗi cú pháp hoặc vi phạm quy tắc truy cập");
+   P ("sqlstate.reason.53", "không đủ tài nguyên");
+   P ("sqlstate.reason.54", "vượt quá giới hạn chương trình");
+   P ("sqlstate.reason.55", "đối tượng không ở trạng thái tiên quyết");
+   P ("sqlstate.reason.57", "can thiệp của người vận hành");
+   P ("sqlstate.reason.58", "lỗi hệ thống");
+   P ("sqlstate.reason.hv", "lỗi trình bao dữ liệu ngoại");
+   P ("sqlstate.reason.p0", "lỗi PL/pgSQL");
+   P ("sqlstate.reason.xx", "lỗi nội bộ");
+   P ("system.signal_numbered", "tín hiệu {number} {name} {reason}");
+   P ("http.reason.unknown", "trạng thái không xác định");
+   P ("errno.reason.unknown", "lỗi không xác định");
+   P ("signal.reason.unknown", "tín hiệu không xác định");
+   P ("sqlstate.reason.unknown", "lớp SQLSTATE không xác định");
 end Locale_Vi;

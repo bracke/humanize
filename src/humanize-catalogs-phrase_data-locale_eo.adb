@@ -1,501 +1,636 @@
 separate (Humanize.Catalogs.Phrase_Data)
-function Locale_Eo return Wide_Wide_String is
-   function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("eo", Name, Template));
+procedure Locale_Eo (Target : in out Catalog_Text) is
+   --  One statement an entry: the catalog grows on the heap, not in one
+   --  expression on the stack.
+   procedure P (Name, Template : Wide_Wide_String) is
+   begin
+      Add (Target, "eo", Name, Template);
+   end P;
 begin
-   return
-     P ("all_count", "ĉiuj {total} {total, plural, one {{one}} other {{other}}}")
-     & P ("filtered_count.none", "neniuj kongruaj {other}")
-     & P ("filtered_count.all", "ĉiuj {total} {total, plural, one {{one}} other {{other}}} kongruas")
-     & P ("filtered_count.some",
-          "{matching} el {total} {total, plural, one {{one}} other {{other}}} "
-          & "kongruas")
-     & P ("more_count", "montriĝas {visible}, +{remaining} pliaj")
-     & P ("others_count",
-          "{first} kaj {remaining, plural, one {1 alia} other {{remaining} "
-          & "aliaj}}")
-     & P ("page_count", "paĝo {page} el {total}")
-     & P ("page_size", "{size} {size, plural, one {{one}} other {{other}}} po paĝo")
-     & P ("pagination_range",
-          "{first}–{last} el {total} {total, plural, one {{one}} other "
-          & "{{other}}}")
-     & P ("position_count", "{position} el {total}")
-     & P ("selection_count",
-          "{selected} el {total} {total, plural, one {{one}} other {{other}}} "
-          & "{selected, plural, one {elektita} other {elektitaj}}")
-     & P ("showing_count",
-          "montriĝas {showing} el {total} {total, plural, one {{one}} other "
-          & "{{other}}}")
-     & P ("validation_count",
-          "{count, plural, =0 {neniuj {severity, select, error {eraroj} warning "
-          & "{avertoj} other {sciigoj}}} one {1 {severity, select, error {eraro} "
-          & "warning {averto} other {sciigo}}} other {{count} {severity, select, "
-          & "error {eraroj} warning {avertoj} other {sciigoj}}}}")
-     & P ("collection.empty", "neniuj {other}")
-     & P ("collection.none_shown", "neniuj {other} montriĝas")
-     & P ("collection.showing_hidden",
-          "montriĝas {visible} el {total} {total, plural, one {{one}} other "
-          & "{{other}}}, {hidden} {hidden, plural, one {kaŝita} other {kaŝitaj}}")
-     & P ("collection.showing",
-          "montriĝas {visible} el {total} {total, plural, one {{one}} other "
-          & "{{other}}}")
-     & P ("collection.shown_hidden",
-          "{visible} {visible, plural, one {{one}} other {{other}}} montriĝas, "
-          & "{hidden} {hidden, plural, one {kaŝita} other {kaŝitaj}}")
-     & P ("collection.shown", "{visible} {visible, plural, one {{one}} other {{other}}} montriĝas")
-     & P ("collection.visible_out_of",
-          "{visible} el {total} {total, plural, one {{one}} other {{other}}} "
-          & "videblas")
-     & P ("complete_count", "{done} el {total} pretas")
-     & P ("percent_complete", "{percent} % finita")
-     & P ("step_count", "paŝo {step} el {total}")
-     & P ("attempt_count", "provo {attempt} el {total}")
-     & P ("throughput_remaining",
-          "restas {remaining} {remaining, plural, one {{one}} other {{other}}} je "
-          & "{rate} {unit}/s")
-     & P ("accessible_progress", "{done} el {total} pretas, {percent} procentoj")
-     & P ("business_days", "{days} {days, plural, one {labortago} other {labortagoj}}")
-     & P ("working_hours", "{hours} {hours, plural, one {laborhoro} other {laborhoroj}}")
-     & P ("due.overdue", "malfruas je {days} {days, plural, one {tago} other {tagoj}}")
-     & P ("due.today", "limdato hodiaŭ")
-     & P ("due.tomorrow", "limdato morgaŭ")
-     & P ("due.in", "limdato post {days} {days, plural, one {tago} other {tagoj}}")
-     & P ("calendar_difference.future", "post {difference}")
-     & P ("calendar_difference.past", "antaŭ {difference}")
-     & P ("calendar_difference.same_day", "la sama tago")
-     & P ("calendar_difference.zero", "0 tagoj")
-     & P ("cpu_load", "CPU-ŝarĝo {measure}")
-     & P ("battery", "baterio {measure}")
-     & P ("screen_size", "ekrano {measure}")
-     & P ("refresh_rate", "refreŝiga frekvenco {measure}")
-     & P ("editorial_percent.symbol", "{value} %")
-     & P ("editorial_percent.word", "{value} procentoj")
-     & P ("recurrence.second", "{every, plural, one {ĉiun sekundon} other {ĉiujn {every} sekundojn}}")
-     & P ("recurrence.minute", "{every, plural, one {ĉiun minuton} other {ĉiujn {every} minutojn}}")
-     & P ("recurrence.hour", "{every, plural, one {ĉiun horon} other {ĉiujn {every} horojn}}")
-     & P ("recurrence.day", "{every, plural, one {ĉiun tagon} other {ĉiujn {every} tagojn}}")
-     & P ("recurrence.week", "{every, plural, one {ĉiun semajnon} other {ĉiujn {every} semajnojn}}")
-     & P ("recurrence.month", "{every, plural, one {ĉiun monaton} other {ĉiujn {every} monatojn}}")
-     & P ("recurrence.quarter",
-          "{every, plural, one {ĉiun jarkvaronon} other {ĉiujn {every} "
-          & "jarkvaronojn}}")
-     & P ("recurrence.year", "{every, plural, one {ĉiun jaron} other {ĉiujn {every} jarojn}}")
-     & P ("cache_summary.empty", "kaŝmemoro: neniuj petoj")
-     & P ("cache_summary",
-          "kaŝmemoro: {hits} {hits, plural, one {trafo} other {trafoj}}, "
-          & "{misses} {misses, plural, one {maltrafo} other {maltrafoj}}, "
-          & "trafoproporcio {rate} %")
-     & P ("field_change_summary",
-          "{total} {total, plural, one {{one}} other {{other}}}: ŝanĝitaj "
-          & "{changed}, aldonitaj {added}, forigitaj {removed}")
-     & P ("field_diff", "{field} ŝanĝiĝis de {before} al {after}")
-     & P ("field_added", "{field} aldoniĝis kun valoro {value}")
-     & P ("field_removed", "{field} foriĝis (estis {value})")
-     & P ("field_unchanged", "{field} restas senŝanĝe {value}")
-     & P ("number_comparison.equal", "{current} egalas al {baseline}")
-     & P ("number_comparison.higher", "{current} estas je {quantity} pli granda ol {baseline}")
-     & P ("number_comparison.lower", "{current} estas je {quantity} pli malgranda ol {baseline}")
-     & P ("percent_comparison.equal", "{current} egalas al {baseline}")
-     & P ("percent_comparison.higher", "{current} estas je {quantity} pli alta ol {baseline}")
-     & P ("percent_comparison.lower", "{current} estas je {quantity} pli malalta ol {baseline}")
-     & P ("file_size_comparison.same", "{current} estas same granda kiel {baseline}")
-     & P ("file_size_comparison.larger", "{current} estas je {quantity} pli granda ol {baseline}")
-     & P ("file_size_comparison.smaller", "{current} estas je {quantity} pli malgranda ol {baseline}")
-     & P ("date_comparison.same", "{current} estas la sama dato kiel {baseline}")
-     & P ("date_comparison.after", "{current} estas je {quantity} post {baseline}")
-     & P ("date_comparison.before", "{current} estas je {quantity} antaŭ {baseline}")
-     & P ("queue_summary", "vico: {details}")
-     & P ("queue_summary.empty", "vico malplena")
-     & P ("domain_summary",
-          "{domain, select, queue {vico} job {tasko} run {rulo} cache "
-          & "{kaŝmemoro} sync {sinkronigo} import {importo} export {eksporto} "
-          & "other {{domain}}} {state, select, queued {envicigita} running {rulas} "
-          & "waiting {atendas} paused {paŭzigita} complete {finita} failed "
-          & "{malsukcesis} stale {malaktuala} skipped {preterlasita} other "
-          & "{{state}}}: {details}")
-     & P ("summary.none", "neniuj {other}")
-     & P ("summary.completed",
-          "{count} {count, plural, one {{one}} other {{other}}} {count, plural, "
-          & "one {finita} other {finitaj}}")
-     & P ("summary.completed_of",
-          "{count} el {total} {total, plural, one {{one}} other {{other}}} "
-          & "{count, plural, one {finita} other {finitaj}}")
-     & P ("summary.failed", "{count} malsukcesis")
-     & P ("summary.queued",
-          "{count} {count, plural, one {{one}} other {{other}}} {count, plural, "
-          & "one {envicigita} other {envicigitaj}}")
-     & P ("summary.running", "{count} rulas")
-     & P ("summary.complete", "{count} pretas")
-     & P ("backup.backup_running", "savkopiado rulas")
-     & P ("backup.backup_completed", "savkopio finita")
-     & P ("backup.backup_failed", "savkopio malsukcesis")
-     & P ("backup.backup_stale", "savkopio malaktuala")
-     & P ("incident.incident_investigating", "incidento esplorata")
-     & P ("incident.incident_identified", "incidento identigita")
-     & P ("incident.incident_mitigated", "incidento mildigita")
-     & P ("incident.incident_resolved", "incidento solvita")
-     & P ("release.release_drafting", "eldono preparata")
-     & P ("release.release_ready", "eldono preta")
-     & P ("release.release_published", "eldono publikigita")
-     & P ("release.release_rolled_back", "eldono malfarita")
-     & P ("audit.audit_created", "revizia registraĵo kreita")
-     & P ("audit.audit_updated", "revizia registraĵo ĝisdatigita")
-     & P ("audit.audit_deleted", "revizia registraĵo forigita")
-     & P ("audit.audit_restored", "revizia registraĵo restarigita")
-     & P ("flag.flag_enabled", "funkcia flago ŝaltita")
-     & P ("flag.flag_disabled", "funkcia flago malŝaltita")
-     & P ("flag.flag_rolling_out", "funkcia flago disvastiĝas")
-     & P ("flag.flag_rolled_back", "funkcia flago malfarita")
-     & P ("webhook.webhook_pending", "retkroĉilo atendas")
-     & P ("webhook.webhook_delivered", "retkroĉilo liverita")
-     & P ("webhook.webhook_failed", "retkroĉilo malsukcesis")
-     & P ("webhook.webhook_retrying", "retkroĉilo reprovata")
-     & P ("api_key.api_key_active", "API-ŝlosilo aktiva")
-     & P ("api_key.api_key_revoked", "API-ŝlosilo revokita")
-     & P ("api_key.api_key_expired", "API-ŝlosilo eksvalidiĝis")
-     & P ("api_key.api_key_rotated", "API-ŝlosilo anstataŭigita")
-     & P ("quota.quota_available", "kvoto disponebla")
-     & P ("quota.quota_near_limit", "kvoto preskaŭ atingita")
-     & P ("quota.quota_exceeded", "kvoto superita")
-     & P ("quota.quota_reset", "kvoto restarigita")
-     & P ("invoice.invoice_draft", "fakturmalneto")
-     & P ("invoice.invoice_sent", "fakturo sendita")
-     & P ("invoice.invoice_paid", "fakturo pagita")
-     & P ("invoice.invoice_refunded", "fakturo repagita")
-     & P ("invoice.invoice_overdue", "fakturo malfruas")
-     & P ("invoice.refund_failed", "repago malsukcesis")
-     & P ("page_navigation.only", "sola paĝo")
-     & P ("page_navigation.first", "unua paĝo, sekva disponebla")
-     & P ("page_navigation.last", "lasta paĝo, antaŭa disponebla")
-     & P ("page_navigation.middle", "antaŭa kaj sekva disponeblaj")
-     & P ("end_of_week", "fino de la semajno")
-     & P ("end_of_month", "fino de la monato")
-     & P ("end_of_quarter", "fino de la jarkvarono")
-     & P ("time_of_day.night", "nokto")
-     & P ("time_of_day.morning", "mateno")
-     & P ("time_of_day.afternoon", "posttagmezo")
-     & P ("time_of_day.evening", "vespero")
-     & P ("access.allowed", "permesita")
-     & P ("access.denied", "rifuzita")
-     & P ("access.owner", "posedanto")
-     & P ("access.admin", "administranto")
-     & P ("access.viewer", "spektanto")
-     & P ("access.editor", "redaktanto")
-     & P ("auth.signed_in", "ensalutinta")
-     & P ("auth.signed_out", "elsalutinta")
-     & P ("auth.session_expired", "seanco eksvalidiĝis")
-     & P ("auth.locked", "ŝlosita")
-     & P ("auth.two_factor_required", "dufaktora aŭtentigo bezonata")
-     & P ("billing.trialing", "provperiodo")
-     & P ("billing.payment_due", "pago pagenda")
-     & P ("billing.payment_failed", "pago malsukcesis")
-     & P ("billing.paid", "pagita")
-     & P ("billing.past_due", "posttempa")
-     & P ("billing.canceled", "nuligita")
-     & P ("ci.pipeline_pending", "dukto atendanta")
-     & P ("ci.pipeline_running", "dukto rulanta")
-     & P ("ci.pipeline_passed", "dukto sukcesis")
-     & P ("ci.pipeline_failed", "dukto malsukcesis")
-     & P ("ci.review_required", "revizio bezonata")
-     & P ("ci.deploy_blocked", "deplojo blokita")
-     & P ("collaboration.active_now", "aktiva nun")
-     & P ("collaboration.away", "for")
-     & P ("collaboration.do_not_disturb", "ne ĝenu")
-     & P ("collaboration.typing", "tajpas")
-     & P ("collaboration.viewing", "rigardas")
-     & P ("collaboration.editing", "redaktas")
-     & P ("deployment.deploying", "deplojata")
-     & P ("deployment.deployed", "deplojita")
-     & P ("deployment.rolling_back", "malfarata")
-     & P ("deployment.rolled_back", "malfarita")
-     & P ("deployment.build_failed", "konstruo malsukcesis")
-     & P ("deployment.checks_passed", "kontroloj sukcesis")
-     & P ("empty.no_items", "neniuj eroj")
-     & P ("empty.no_results", "neniuj rezultoj")
-     & P ("empty.no_messages", "neniuj mesaĝoj")
-     & P ("empty.no_selection", "nenio elektita")
-     & P ("empty.nothing_to_show", "nenio montrebla")
-     & P ("file.uploading", "alŝutata")
-     & P ("file.downloading", "elŝutata")
-     & P ("file.copying", "kopiata")
-     & P ("file.moving", "movata")
-     & P ("file.deleting", "forigata")
-     & P ("file.deleted", "forigita")
-     & P ("file.restoring", "restarigata")
-     & P ("file.synced", "sinkronigita")
-     & P ("form.valid_input", "valida enigo")
-     & P ("form.invalid_input", "nevalida enigo")
-     & P ("form.dirty", "ŝanĝita")
-     & P ("form.pristine", "neŝanĝita")
-     & P ("form.submitted", "sendita")
-     & P ("form.submission_failed", "sendo malsukcesis")
-     & P ("health.healthy", "sana")
-     & P ("health.degraded", "degradita")
-     & P ("health.unhealthy", "malsana")
-     & P ("health.incident", "incidento")
-     & P ("health.maintenance", "prizorgado")
-     & P ("health.recovering", "resaniĝanta")
-     & P ("issue.open", "malfermita")
-     & P ("issue.closed", "fermita")
-     & P ("issue.reopened", "remalfermita")
-     & P ("issue.assigned", "asignita")
-     & P ("issue.unassigned", "neasignita")
-     & P ("issue.merged", "kunfandita")
-     & P ("network.offline", "eksterreta")
-     & P ("network.online", "enreta")
-     & P ("network.connecting", "konektiĝanta")
-     & P ("network.syncing", "sinkroniganta")
-     & P ("network.sync_failed", "sinkronigo malsukcesis")
-     & P ("network.permission_denied", "permeso rifuzita")
-     & P ("network.read_only", "nurlega")
-     & P ("notification.unread", "nelegita")
-     & P ("notification.read", "legita")
-     & P ("notification.muted", "silentigita")
-     & P ("notification.snoozed", "prokrastita")
-     & P ("notification.sent", "sendita")
-     & P ("notification.delivered", "liverita")
-     & P ("payment.payment_authorized", "pago rajtigita")
-     & P ("payment.payment_captured", "pago enkasigita")
-     & P ("payment.payment_refunded", "pago repagita")
-     & P ("payment.payment_disputed", "pago kontestata")
-     & P ("payment.payment_requires_action", "pago postulas agon")
-     & P ("payment.payment_expired", "pago eksvalidiĝis")
-     & P ("ui.empty", "malplena")
-     & P ("ui.loading", "ŝargata")
-     & P ("ui.saving", "konservata")
-     & P ("ui.saved", "konservita")
-     & P ("ui.unsaved", "nekonservita")
-     & P ("ui.retrying", "reprovanta")
-     & P ("ui.paused", "paŭzigita")
-     & P ("ui.complete", "finita")
-     & P ("ui.failed", "malsukcesis")
-     & P ("ui.due_soon", "limdato baldaŭ")
-     & P ("ui.overdue", "posttempa")
-     & P ("ui.last_seen", "laste vidita")
-     & P ("ui.updated_just_now", "ĵus ĝisdatigita")
-     & P ("queue.queued", "envicigita")
-     & P ("queue.running", "rulanta")
-     & P ("queue.waiting", "atendanta")
-     & P ("queue.blocked", "blokita")
-     & P ("queue.canceled_job", "tasko nuligita")
-     & P ("queue.completed_job", "tasko finita")
-     & P ("search.filtering", "filtrata")
-     & P ("search.filtered", "filtrita")
-     & P ("search.no_matches", "neniuj kongruoj")
-     & P ("search.search_ready", "serĉo preta")
-     & P ("search.search_failed", "serĉo malsukcesis")
-     & P ("search.query_too_short", "serĉmendo tro mallonga")
-     & P ("security.secure", "sekura")
-     & P ("security.insecure", "nesekura")
-     & P ("security.vulnerable", "vundebla")
-     & P ("security.encrypted", "ĉifrita")
-     & P ("security.unencrypted", "neĉifrita")
-     & P ("security.token_expired", "ĵetono eksvalidiĝis")
-     & P ("sync.sync_idle", "sinkronigo senaktiva")
-     & P ("sync.syncing_now", "sinkroniganta nun")
-     & P ("sync.sync_queued", "sinkronigo envicigita")
-     & P ("sync.sync_conflict", "sinkroniga konflikto")
-     & P ("sync.sync_complete", "sinkronigo finita")
-     & P ("sync.sync_error", "sinkroniga eraro")
-     & P ("task.todo", "farenda")
-     & P ("task.in_progress", "farata")
-     & P ("task.done", "farita")
-     & P ("task.skipped", "preterlasita")
-     & P ("task.blocked_task", "blokita")
-     & P ("task.waiting_on", "atendas")
-     & P ("ticket.ticket_new", "bileto nova")
-     & P ("ticket.ticket_open", "bileto malfermita")
-     & P ("ticket.ticket_waiting", "bileto atendanta")
-     & P ("ticket.ticket_escalated", "bileto eskalita")
-     & P ("ticket.ticket_resolved", "bileto solvita")
-     & P ("ticket.ticket_closed", "bileto fermita")
-     & P ("transfer.importing", "importata")
-     & P ("transfer.imported", "importita")
-     & P ("transfer.import_failed", "importo malsukcesis")
-     & P ("transfer.exporting", "eksportata")
-     & P ("transfer.exported", "eksportita")
-     & P ("transfer.export_failed", "eksporto malsukcesis")
-     & P ("validation.required", "deviga")
-     & P ("validation.optional", "nedeviga")
-     & P ("validation.invalid", "nevalida")
-     & P ("validation.too_short", "tro mallonga")
-     & P ("validation.too_long", "tro longa")
-     & P ("validation.out_of_range", "ekster intervalo")
-     & P ("validation.already_exists", "jam ekzistas")
-     & P ("workflow.draft", "malneto")
-     & P ("workflow.in_review", "reviziata")
-     & P ("workflow.approved", "aprobita")
-     & P ("workflow.rejected", "malakceptita")
-     & P ("workflow.published", "publikigita")
-     & P ("workflow.archived", "arĥivita")
-     & P ("database.database_online", "datumbazo enreta")
-     & P ("database.database_offline", "datumbazo eksterreta")
-     & P ("database.database_degraded", "datumbazo degradita")
-     & P ("database.database_migrating", "datumbazo migrata")
-     & P ("database.database_migration_failed", "datumbaza migrado malsukcesis")
-     & P ("database.database_replicating", "datumbazo reproduktata")
-     & P ("database.database_replication_lagging", "datumbaza reproduktado malfruas")
-     & P ("database.database_backup_running", "datumbaza savkopiado rulas")
-     & P ("database.database_backup_failed", "datumbaza savkopiado malsukcesis")
-     & P ("times_noun",
-          "{count, plural, =0 {neniam {other}} =1 {unufoje {one}} =2 {dufoje "
-          & "{other}} other {{count} fojojn {other}}}")
-     & P ("availability.all",
-          "{available} el {total} {total, plural, one {{one}} other {{other}}} "
-          & "{available, plural, one {disponebla} other {disponeblaj}}")
-     & P ("availability.none", "neniuj {other} disponeblaj")
-     & P ("availability.partial",
-          "{available} el {total} {total, plural, one {{one}} other {{other}}} "
-          & "{available, plural, one {disponebla} other {disponeblaj}}, "
-          & "{unavailable} {unavailable, plural, one {nedisponebla} other "
-          & "{nedisponeblaj}}")
-     & P ("operation_progress", "{name} – {state}: {details}")
-     & P ("operation.queued", "envicigita")
-     & P ("operation.running", "rulas")
-     & P ("operation.blocked", "blokita")
-     & P ("operation.retrying", "reprovas")
-     & P ("operation.succeeded", "sukcesis")
-     & P ("operation.partially_succeeded", "parte sukcesis")
-     & P ("operation.failed", "malsukcesis")
-     & P ("operation.canceled", "nuligita")
-     & P ("operation.skipped", "preterlasita")
-     & P ("operation.stale", "malaktuala")
-     & P ("operation.unknown_state", "nekonata")
-     & P ("operation.last_success", "{name} laste sukcesis {time}")
-     & P ("operation.next_retry", "{name} reprovos {time}")
-     & P ("operation.stale_run", "{name} malaktuala de {time}")
-     & P ("summary.skipped", "{count} {count, plural, one {preterlasita} other {preterlasitaj}}")
-     & P ("summary.retried", "{count} {count, plural, one {reprovita} other {reprovitaj}}")
-     & P ("summary.canceled", "{count} {count, plural, one {nuligita} other {nuligitaj}}")
-     & P ("system.service.operational", "funkcianta")
-     & P ("system.service.degraded", "malpliigita rendimento")
-     & P ("system.service.partial_outage", "parta paneo")
-     & P ("system.service.major_outage", "grava paneo")
-     & P ("system.service.maintenance", "en prizorgado")
-     & P ("system.service.unknown", "nekonata serva stato")
-     & P ("system.health.healthy", "sana")
-     & P ("system.health.warning", "averto")
-     & P ("system.health.critical", "kritika")
-     & P ("system.health.unavailable", "neatingebla")
-     & P ("system.health.unknown_health", "nekonata sanstato")
-     & P ("system.readiness.ready", "preta")
-     & P ("system.readiness.not_ready", "nepreta")
-     & P ("system.readiness.starting", "startanta")
-     & P ("system.readiness.draining", "malplenigata")
-     & P ("system.readiness.stopped", "haltigita")
-     & P ("system.readiness.unknown_readiness", "nekonata pretostato")
-     & P ("system.component.online", "enreta")
-     & P ("system.component.offline", "eksterreta")
-     & P ("system.component.starting", "startanta")
-     & P ("system.component.stopping", "haltanta")
-     & P ("system.component.restarting", "restartanta")
-     & P ("system.component.unknown", "nekonata komponanta stato")
-     & P ("system.check.passing", "sukcesa")
-     & P ("system.check.failing", "malsukcesa")
-     & P ("system.check.warning", "averto")
-     & P ("system.check.skipped", "preterlasita")
-     & P ("system.check.timed_out", "tempolimo atingita")
-     & P ("system.check.unknown", "nekonata kontrola stato")
-     & P ("system.incident.investigating", "esplorata")
-     & P ("system.incident.identified", "identigita")
-     & P ("system.incident.monitoring", "observata")
-     & P ("system.incident.resolved", "solvita")
-     & P ("system.incident.scheduled_maintenance", "planita prizorgado")
-     & P ("system.named", "{name}: {state}")
-     & P ("system.check_named", "kontrolo de {name}: {state}")
-     & P ("system.count.components",
-          "{count, plural, =0 {neniu komponanto} one {{count} komponanto} other "
-          & "{{count} komponantoj}}")
-     & P ("system.count.checks",
-          "{count, plural, =0 {neniu kontrolo} one {{count} kontrolo} other "
-          & "{{count} kontroloj}}")
-     & P ("system.count.incidents",
-          "{count, plural, =0 {neniu incidento} one {{count} incidento} other "
-          & "{{count} incidentoj}}")
-     & P ("system.uptime", "funkciotempo {measure}")
-     & P ("system.latency", "latenco {measure}")
-     & P ("system.maintenance_window", "prizorga fenestro {time}")
-     & P ("system.last_checked", "laste kontrolita {time}")
-     & P ("system.http.informational", "informa")
-     & P ("system.http.successful", "sukcesa")
-     & P ("system.http.redirection", "alidirekto")
-     & P ("system.http.client_error", "klienta eraro")
-     & P ("system.http.server_error", "servila eraro")
-     & P ("system.exit.success", "elira kodo {code}: sukceso")
-     & P ("system.exit.failure", "elira kodo {code}: malsukceso")
-     & P ("system.exit.usage_error", "elira kodo {code}: uzeraro")
-     & P ("system.exit.not_executable", "elira kodo {code}: komando ne plenumebla")
-     & P ("system.exit.not_found", "elira kodo {code}: komando ne trovita")
-     & P ("system.exit.invalid_argument", "elira kodo {code}: nevalida elira argumento")
-     & P ("system.exit.signal", "elira kodo {code}: ĉesigita de {signal}")
-     & P ("validation.problem.required", "{field}: estas deviga")
-     & P ("validation.problem.minimum", "{field}: estas sub la minimumo")
-     & P ("validation.problem.maximum", "{field}: estas super la maksimumo")
-     & P ("validation.problem.range", "{field}: estas ekster la permesata intervalo")
-     & P ("validation.problem.pattern", "{field}: ne kongruas kun la ŝablono")
-     & P ("validation.problem.choice", "{field}: devas esti unu el la permesataj elektoj")
-     & P ("validation.problem.dependency", "{field}: dependas de alia kampo")
-     & P ("validation.problem.custom", "{field}: estas nevalida")
-     & P ("validation.constraint.no_relation", "{field}: devas esti valida {value}")
-     & P ("validation.constraint.less_than", "{field}: devas esti malpli ol {value}")
-     & P ("validation.constraint.less_or_equal", "{field}: devas esti maksimume {value}")
-     & P ("validation.constraint.greater_than", "{field}: devas esti pli ol {value}")
-     & P ("validation.constraint.greater_or_equal", "{field}: devas esti minimume {value}")
-     & P ("validation.constraint.equal_to", "{field}: devas egali {value}")
-     & P ("validation.constraint.not_equal_to", "{field}: ne devas egali {value}")
-     & P ("validation.constraint.before_field", "{field}: devas esti antaŭ {value}")
-     & P ("validation.constraint.after_field", "{field}: devas esti post {value}")
-     & P ("validation.choices", "{field}: permesataj valoroj: {choices}")
-     & P ("frame.detail", "{text} ({detail})")
-     & P ("frame.got", "{text}, ricevita: {actual}")
-     & P ("frame.also", "{text}, {detail}")
-     & P ("frame.retry", "{text}, reprovo post {time}")
-     & P ("net_diagnostic.dns", "{endpoint}: DNS-serĉo malsukcesis")
-     & P ("net_diagnostic.tcp", "{endpoint}: TCP-konekto malsukcesis")
-     & P ("net_diagnostic.tls", "{endpoint}: TLS-atestilo malsukcesis")
-     & P ("net_diagnostic.http", "{endpoint}: HTTP-peto malsukcesis")
-     & P ("net_diagnostic.proxy", "{endpoint}: prokurilo malsukcesis")
-     & P ("net_diagnostic.timeout", "{endpoint}: tempolimo atingita")
-     & P ("net_diagnostic.reset", "{endpoint}: konekto rekomencigita")
-     & P ("net_diagnostic.unknown_network", "{endpoint}: reta eraro")
-     & P ("progress.state.not_started", "ne komencita")
-     & P ("progress.state.running", "rulanta")
-     & P ("progress.state.stalled", "haltinta")
-     & P ("progress.state.retrying", "reprovanta")
-     & P ("progress.state.complete", "finita")
-     & P ("progress.state.failed", "malsukcesinta")
-     & P ("progress.of",
-          "{subject}: {done} el {total} {done, plural, one {finita} other "
-          & "{finitaj}} ({percent} %), {state}")
-     & P ("progress.done",
-          "{subject}: {done} {done, plural, one {finita} other {finitaj}}, "
-          & "{state}")
-     & P ("collection.summary",
-          "{name}: {total} {total, plural, one {ero} other {eroj}}, {unique} "
-          & "{unique, plural, one {unika valoro} other {unikaj valoroj}}, "
-          & "{duplicates} {duplicates, plural, one {duplikato} other {duplikatoj}}, "
-          & "{outliers} {outliers, plural, one {eksterordinara valoro} other "
-          & "{eksterordinaraj valoroj}}")
-     & P ("top_frequency", "{name}: {value} ({count} {count, plural, one {fojon} other {fojojn}})")
-     & P ("calendar_date.fiscal_year", "financa jaro {year}")
-     & P ("calendar_date.fiscal_quarter", "financa jaro {year}, {part}-a kvaronjaro")
-     & P ("calendar_date.fiscal_half", "financa jaro {year}, {part}-a duonjaro")
-     & P ("calendar_date.fiscal_year_end", "fino de financa jaro {year}")
-     & P ("calendar_date.semester", "{part}-a semestro {year}")
-     & P ("calendar_date.half_year", "{part}-a duonjaro {year}")
-     & P ("calendar_date.half_year_phrase", "{part, plural, =1 {unua duono de {year}} other {dua duono de {year}}}")
-     & P ("calendar_date.month_phase",
-          "{phase, select, early {komence de {text}} mid {meze de {text}} other "
-          & "{fine de {text}}}")
-     & P ("calendar_date.quarter_phase",
-          "{phase, select, early {komence de {text}} mid {meze de {text}} other "
-          & "{fine de {text}}}")
-     & P ("calendar_range.weekend.last", "pasinta semajnfino")
-     & P ("calendar_range.weekend.this", "ĉi tiu semajnfino")
-     & P ("calendar_range.weekend.next", "venonta semajnfino")
-     & P ("calendar_range.weekend_of", "semajnfino de {date}")
-     & P ("calendar_range.week.last", "pasinta semajno")
-     & P ("calendar_range.week.this", "ĉi tiu semajno")
-     & P ("calendar_range.week.next", "venonta semajno")
-     & P ("calendar_range.week_of", "semajno de {date}")
-     & P ("calendar_range.between", "{first} – {last}");
+   P ("all_count", "ĉiuj {total} {total, plural, one {{one}} other {{other}}}");
+   P ("filtered_count.none", "neniuj kongruaj {other}");
+   P ("filtered_count.all", "ĉiuj {total} {total, plural, one {{one}} other {{other}}} kongruas");
+   P ("filtered_count.some",
+      "{matching} el {total} {total, plural, one {{one}} other {{other}}} "
+      & "kongruas");
+   P ("more_count", "montriĝas {visible}, +{remaining} pliaj");
+   P ("others_count",
+      "{first} kaj {remaining, plural, one {1 alia} other {{remaining} "
+      & "aliaj}}");
+   P ("page_count", "paĝo {page} el {total}");
+   P ("page_size", "{size} {size, plural, one {{one}} other {{other}}} po paĝo");
+   P ("pagination_range",
+      "{first}–{last} el {total} {total, plural, one {{one}} other "
+      & "{{other}}}");
+   P ("position_count", "{position} el {total}");
+   P ("selection_count",
+      "{selected} el {total} {total, plural, one {{one}} other {{other}}} "
+      & "{selected, plural, one {elektita} other {elektitaj}}");
+   P ("showing_count",
+      "montriĝas {showing} el {total} {total, plural, one {{one}} other "
+      & "{{other}}}");
+   P ("validation_count",
+      "{count, plural, =0 {neniuj {severity, select, error {eraroj} warning "
+      & "{avertoj} other {sciigoj}}} one {1 {severity, select, error {eraro} "
+      & "warning {averto} other {sciigo}}} other {{count} {severity, select, "
+      & "error {eraroj} warning {avertoj} other {sciigoj}}}}");
+   P ("collection.empty", "neniuj {other}");
+   P ("collection.none_shown", "neniuj {other} montriĝas");
+   P ("collection.showing_hidden",
+      "montriĝas {visible} el {total} {total, plural, one {{one}} other "
+      & "{{other}}}, {hidden} {hidden, plural, one {kaŝita} other {kaŝitaj}}");
+   P ("collection.showing",
+      "montriĝas {visible} el {total} {total, plural, one {{one}} other "
+      & "{{other}}}");
+   P ("collection.shown_hidden",
+      "{visible} {visible, plural, one {{one}} other {{other}}} montriĝas, "
+      & "{hidden} {hidden, plural, one {kaŝita} other {kaŝitaj}}");
+   P ("collection.shown", "{visible} {visible, plural, one {{one}} other {{other}}} montriĝas");
+   P ("collection.visible_out_of",
+      "{visible} el {total} {total, plural, one {{one}} other {{other}}} "
+      & "videblas");
+   P ("complete_count", "{done} el {total} pretas");
+   P ("percent_complete", "{percent} % finita");
+   P ("step_count", "paŝo {step} el {total}");
+   P ("attempt_count", "provo {attempt} el {total}");
+   P ("throughput_remaining",
+      "restas {remaining} {remaining, plural, one {{one}} other {{other}}} je "
+      & "{rate} {unit}/s");
+   P ("accessible_progress", "{done} el {total} pretas, {percent} procentoj");
+   P ("business_days", "{days} {days, plural, one {labortago} other {labortagoj}}");
+   P ("working_hours", "{hours} {hours, plural, one {laborhoro} other {laborhoroj}}");
+   P ("due.overdue", "malfruas je {days} {days, plural, one {tago} other {tagoj}}");
+   P ("due.today", "limdato hodiaŭ");
+   P ("due.tomorrow", "limdato morgaŭ");
+   P ("due.in", "limdato post {days} {days, plural, one {tago} other {tagoj}}");
+   P ("calendar_difference.future", "post {difference}");
+   P ("calendar_difference.past", "antaŭ {difference}");
+   P ("calendar_difference.same_day", "la sama tago");
+   P ("calendar_difference.zero", "0 tagoj");
+   P ("cpu_load", "CPU-ŝarĝo {measure}");
+   P ("battery", "baterio {measure}");
+   P ("screen_size", "ekrano {measure}");
+   P ("refresh_rate", "refreŝiga frekvenco {measure}");
+   P ("editorial_percent.symbol", "{value} %");
+   P ("editorial_percent.word", "{value} procentoj");
+   P ("recurrence.second", "{every, plural, one {ĉiun sekundon} other {ĉiujn {every} sekundojn}}");
+   P ("recurrence.minute", "{every, plural, one {ĉiun minuton} other {ĉiujn {every} minutojn}}");
+   P ("recurrence.hour", "{every, plural, one {ĉiun horon} other {ĉiujn {every} horojn}}");
+   P ("recurrence.day", "{every, plural, one {ĉiun tagon} other {ĉiujn {every} tagojn}}");
+   P ("recurrence.week", "{every, plural, one {ĉiun semajnon} other {ĉiujn {every} semajnojn}}");
+   P ("recurrence.month", "{every, plural, one {ĉiun monaton} other {ĉiujn {every} monatojn}}");
+   P ("recurrence.quarter",
+      "{every, plural, one {ĉiun jarkvaronon} other {ĉiujn {every} "
+      & "jarkvaronojn}}");
+   P ("recurrence.year", "{every, plural, one {ĉiun jaron} other {ĉiujn {every} jarojn}}");
+   P ("cache_summary.empty", "kaŝmemoro: neniuj petoj");
+   P ("cache_summary",
+      "kaŝmemoro: {hits} {hits, plural, one {trafo} other {trafoj}}, "
+      & "{misses} {misses, plural, one {maltrafo} other {maltrafoj}}, "
+      & "trafoproporcio {rate} %");
+   P ("field_change_summary",
+      "{total} {total, plural, one {{one}} other {{other}}}: ŝanĝitaj "
+      & "{changed}, aldonitaj {added}, forigitaj {removed}");
+   P ("field_diff", "{field} ŝanĝiĝis de {before} al {after}");
+   P ("field_added", "{field} aldoniĝis kun valoro {value}");
+   P ("field_removed", "{field} foriĝis (estis {value})");
+   P ("field_unchanged", "{field} restas senŝanĝe {value}");
+   P ("number_comparison.equal", "{current} egalas al {baseline}");
+   P ("number_comparison.higher", "{current} estas je {quantity} pli granda ol {baseline}");
+   P ("number_comparison.lower", "{current} estas je {quantity} pli malgranda ol {baseline}");
+   P ("percent_comparison.equal", "{current} egalas al {baseline}");
+   P ("percent_comparison.higher", "{current} estas je {quantity} pli alta ol {baseline}");
+   P ("percent_comparison.lower", "{current} estas je {quantity} pli malalta ol {baseline}");
+   P ("file_size_comparison.same", "{current} estas same granda kiel {baseline}");
+   P ("file_size_comparison.larger", "{current} estas je {quantity} pli granda ol {baseline}");
+   P ("file_size_comparison.smaller", "{current} estas je {quantity} pli malgranda ol {baseline}");
+   P ("date_comparison.same", "{current} estas la sama dato kiel {baseline}");
+   P ("date_comparison.after", "{current} estas je {quantity} post {baseline}");
+   P ("date_comparison.before", "{current} estas je {quantity} antaŭ {baseline}");
+   P ("queue_summary", "vico: {details}");
+   P ("queue_summary.empty", "vico malplena");
+   P ("domain_summary",
+      "{domain, select, queue {vico} job {tasko} run {rulo} cache "
+      & "{kaŝmemoro} sync {sinkronigo} import {importo} export {eksporto} "
+      & "other {{domain}}} {state, select, queued {envicigita} running {rulas} "
+      & "waiting {atendas} paused {paŭzigita} complete {finita} failed "
+      & "{malsukcesis} stale {malaktuala} skipped {preterlasita} other "
+      & "{{state}}}: {details}");
+   P ("summary.none", "neniuj {other}");
+   P ("summary.completed",
+      "{count} {count, plural, one {{one}} other {{other}}} {count, plural, "
+      & "one {finita} other {finitaj}}");
+   P ("summary.completed_of",
+      "{count} el {total} {total, plural, one {{one}} other {{other}}} "
+      & "{count, plural, one {finita} other {finitaj}}");
+   P ("summary.failed", "{count} malsukcesis");
+   P ("summary.queued",
+      "{count} {count, plural, one {{one}} other {{other}}} {count, plural, "
+      & "one {envicigita} other {envicigitaj}}");
+   P ("summary.running", "{count} rulas");
+   P ("summary.complete", "{count} pretas");
+   P ("backup.backup_running", "savkopiado rulas");
+   P ("backup.backup_completed", "savkopio finita");
+   P ("backup.backup_failed", "savkopio malsukcesis");
+   P ("backup.backup_stale", "savkopio malaktuala");
+   P ("incident.incident_investigating", "incidento esplorata");
+   P ("incident.incident_identified", "incidento identigita");
+   P ("incident.incident_mitigated", "incidento mildigita");
+   P ("incident.incident_resolved", "incidento solvita");
+   P ("release.release_drafting", "eldono preparata");
+   P ("release.release_ready", "eldono preta");
+   P ("release.release_published", "eldono publikigita");
+   P ("release.release_rolled_back", "eldono malfarita");
+   P ("audit.audit_created", "revizia registraĵo kreita");
+   P ("audit.audit_updated", "revizia registraĵo ĝisdatigita");
+   P ("audit.audit_deleted", "revizia registraĵo forigita");
+   P ("audit.audit_restored", "revizia registraĵo restarigita");
+   P ("flag.flag_enabled", "funkcia flago ŝaltita");
+   P ("flag.flag_disabled", "funkcia flago malŝaltita");
+   P ("flag.flag_rolling_out", "funkcia flago disvastiĝas");
+   P ("flag.flag_rolled_back", "funkcia flago malfarita");
+   P ("webhook.webhook_pending", "retkroĉilo atendas");
+   P ("webhook.webhook_delivered", "retkroĉilo liverita");
+   P ("webhook.webhook_failed", "retkroĉilo malsukcesis");
+   P ("webhook.webhook_retrying", "retkroĉilo reprovata");
+   P ("api_key.api_key_active", "API-ŝlosilo aktiva");
+   P ("api_key.api_key_revoked", "API-ŝlosilo revokita");
+   P ("api_key.api_key_expired", "API-ŝlosilo eksvalidiĝis");
+   P ("api_key.api_key_rotated", "API-ŝlosilo anstataŭigita");
+   P ("quota.quota_available", "kvoto disponebla");
+   P ("quota.quota_near_limit", "kvoto preskaŭ atingita");
+   P ("quota.quota_exceeded", "kvoto superita");
+   P ("quota.quota_reset", "kvoto restarigita");
+   P ("invoice.invoice_draft", "fakturmalneto");
+   P ("invoice.invoice_sent", "fakturo sendita");
+   P ("invoice.invoice_paid", "fakturo pagita");
+   P ("invoice.invoice_refunded", "fakturo repagita");
+   P ("invoice.invoice_overdue", "fakturo malfruas");
+   P ("invoice.refund_failed", "repago malsukcesis");
+   P ("page_navigation.only", "sola paĝo");
+   P ("page_navigation.first", "unua paĝo, sekva disponebla");
+   P ("page_navigation.last", "lasta paĝo, antaŭa disponebla");
+   P ("page_navigation.middle", "antaŭa kaj sekva disponeblaj");
+   P ("end_of_week", "fino de la semajno");
+   P ("end_of_month", "fino de la monato");
+   P ("end_of_quarter", "fino de la jarkvarono");
+   P ("time_of_day.night", "nokto");
+   P ("time_of_day.morning", "mateno");
+   P ("time_of_day.afternoon", "posttagmezo");
+   P ("time_of_day.evening", "vespero");
+   P ("access.allowed", "permesita");
+   P ("access.denied", "rifuzita");
+   P ("access.owner", "posedanto");
+   P ("access.admin", "administranto");
+   P ("access.viewer", "spektanto");
+   P ("access.editor", "redaktanto");
+   P ("auth.signed_in", "ensalutinta");
+   P ("auth.signed_out", "elsalutinta");
+   P ("auth.session_expired", "seanco eksvalidiĝis");
+   P ("auth.locked", "ŝlosita");
+   P ("auth.two_factor_required", "dufaktora aŭtentigo bezonata");
+   P ("billing.trialing", "provperiodo");
+   P ("billing.payment_due", "pago pagenda");
+   P ("billing.payment_failed", "pago malsukcesis");
+   P ("billing.paid", "pagita");
+   P ("billing.past_due", "posttempa");
+   P ("billing.canceled", "nuligita");
+   P ("ci.pipeline_pending", "dukto atendanta");
+   P ("ci.pipeline_running", "dukto rulanta");
+   P ("ci.pipeline_passed", "dukto sukcesis");
+   P ("ci.pipeline_failed", "dukto malsukcesis");
+   P ("ci.review_required", "revizio bezonata");
+   P ("ci.deploy_blocked", "deplojo blokita");
+   P ("collaboration.active_now", "aktiva nun");
+   P ("collaboration.away", "for");
+   P ("collaboration.do_not_disturb", "ne ĝenu");
+   P ("collaboration.typing", "tajpas");
+   P ("collaboration.viewing", "rigardas");
+   P ("collaboration.editing", "redaktas");
+   P ("deployment.deploying", "deplojata");
+   P ("deployment.deployed", "deplojita");
+   P ("deployment.rolling_back", "malfarata");
+   P ("deployment.rolled_back", "malfarita");
+   P ("deployment.build_failed", "konstruo malsukcesis");
+   P ("deployment.checks_passed", "kontroloj sukcesis");
+   P ("empty.no_items", "neniuj eroj");
+   P ("empty.no_results", "neniuj rezultoj");
+   P ("empty.no_messages", "neniuj mesaĝoj");
+   P ("empty.no_selection", "nenio elektita");
+   P ("empty.nothing_to_show", "nenio montrebla");
+   P ("file.uploading", "alŝutata");
+   P ("file.downloading", "elŝutata");
+   P ("file.copying", "kopiata");
+   P ("file.moving", "movata");
+   P ("file.deleting", "forigata");
+   P ("file.deleted", "forigita");
+   P ("file.restoring", "restarigata");
+   P ("file.synced", "sinkronigita");
+   P ("form.valid_input", "valida enigo");
+   P ("form.invalid_input", "nevalida enigo");
+   P ("form.dirty", "ŝanĝita");
+   P ("form.pristine", "neŝanĝita");
+   P ("form.submitted", "sendita");
+   P ("form.submission_failed", "sendo malsukcesis");
+   P ("health.healthy", "sana");
+   P ("health.degraded", "degradita");
+   P ("health.unhealthy", "malsana");
+   P ("health.incident", "incidento");
+   P ("health.maintenance", "prizorgado");
+   P ("health.recovering", "resaniĝanta");
+   P ("issue.open", "malfermita");
+   P ("issue.closed", "fermita");
+   P ("issue.reopened", "remalfermita");
+   P ("issue.assigned", "asignita");
+   P ("issue.unassigned", "neasignita");
+   P ("issue.merged", "kunfandita");
+   P ("network.offline", "eksterreta");
+   P ("network.online", "enreta");
+   P ("network.connecting", "konektiĝanta");
+   P ("network.syncing", "sinkroniganta");
+   P ("network.sync_failed", "sinkronigo malsukcesis");
+   P ("network.permission_denied", "permeso rifuzita");
+   P ("network.read_only", "nurlega");
+   P ("notification.unread", "nelegita");
+   P ("notification.read", "legita");
+   P ("notification.muted", "silentigita");
+   P ("notification.snoozed", "prokrastita");
+   P ("notification.sent", "sendita");
+   P ("notification.delivered", "liverita");
+   P ("payment.payment_authorized", "pago rajtigita");
+   P ("payment.payment_captured", "pago enkasigita");
+   P ("payment.payment_refunded", "pago repagita");
+   P ("payment.payment_disputed", "pago kontestata");
+   P ("payment.payment_requires_action", "pago postulas agon");
+   P ("payment.payment_expired", "pago eksvalidiĝis");
+   P ("ui.empty", "malplena");
+   P ("ui.loading", "ŝargata");
+   P ("ui.saving", "konservata");
+   P ("ui.saved", "konservita");
+   P ("ui.unsaved", "nekonservita");
+   P ("ui.retrying", "reprovanta");
+   P ("ui.paused", "paŭzigita");
+   P ("ui.complete", "finita");
+   P ("ui.failed", "malsukcesis");
+   P ("ui.due_soon", "limdato baldaŭ");
+   P ("ui.overdue", "posttempa");
+   P ("ui.last_seen", "laste vidita");
+   P ("ui.updated_just_now", "ĵus ĝisdatigita");
+   P ("queue.queued", "envicigita");
+   P ("queue.running", "rulanta");
+   P ("queue.waiting", "atendanta");
+   P ("queue.blocked", "blokita");
+   P ("queue.canceled_job", "tasko nuligita");
+   P ("queue.completed_job", "tasko finita");
+   P ("search.filtering", "filtrata");
+   P ("search.filtered", "filtrita");
+   P ("search.no_matches", "neniuj kongruoj");
+   P ("search.search_ready", "serĉo preta");
+   P ("search.search_failed", "serĉo malsukcesis");
+   P ("search.query_too_short", "serĉmendo tro mallonga");
+   P ("security.secure", "sekura");
+   P ("security.insecure", "nesekura");
+   P ("security.vulnerable", "vundebla");
+   P ("security.encrypted", "ĉifrita");
+   P ("security.unencrypted", "neĉifrita");
+   P ("security.token_expired", "ĵetono eksvalidiĝis");
+   P ("sync.sync_idle", "sinkronigo senaktiva");
+   P ("sync.syncing_now", "sinkroniganta nun");
+   P ("sync.sync_queued", "sinkronigo envicigita");
+   P ("sync.sync_conflict", "sinkroniga konflikto");
+   P ("sync.sync_complete", "sinkronigo finita");
+   P ("sync.sync_error", "sinkroniga eraro");
+   P ("task.todo", "farenda");
+   P ("task.in_progress", "farata");
+   P ("task.done", "farita");
+   P ("task.skipped", "preterlasita");
+   P ("task.blocked_task", "blokita");
+   P ("task.waiting_on", "atendas");
+   P ("ticket.ticket_new", "bileto nova");
+   P ("ticket.ticket_open", "bileto malfermita");
+   P ("ticket.ticket_waiting", "bileto atendanta");
+   P ("ticket.ticket_escalated", "bileto eskalita");
+   P ("ticket.ticket_resolved", "bileto solvita");
+   P ("ticket.ticket_closed", "bileto fermita");
+   P ("transfer.importing", "importata");
+   P ("transfer.imported", "importita");
+   P ("transfer.import_failed", "importo malsukcesis");
+   P ("transfer.exporting", "eksportata");
+   P ("transfer.exported", "eksportita");
+   P ("transfer.export_failed", "eksporto malsukcesis");
+   P ("validation.required", "deviga");
+   P ("validation.optional", "nedeviga");
+   P ("validation.invalid", "nevalida");
+   P ("validation.too_short", "tro mallonga");
+   P ("validation.too_long", "tro longa");
+   P ("validation.out_of_range", "ekster intervalo");
+   P ("validation.already_exists", "jam ekzistas");
+   P ("workflow.draft", "malneto");
+   P ("workflow.in_review", "reviziata");
+   P ("workflow.approved", "aprobita");
+   P ("workflow.rejected", "malakceptita");
+   P ("workflow.published", "publikigita");
+   P ("workflow.archived", "arĥivita");
+   P ("database.database_online", "datumbazo enreta");
+   P ("database.database_offline", "datumbazo eksterreta");
+   P ("database.database_degraded", "datumbazo degradita");
+   P ("database.database_migrating", "datumbazo migrata");
+   P ("database.database_migration_failed", "datumbaza migrado malsukcesis");
+   P ("database.database_replicating", "datumbazo reproduktata");
+   P ("database.database_replication_lagging", "datumbaza reproduktado malfruas");
+   P ("database.database_backup_running", "datumbaza savkopiado rulas");
+   P ("database.database_backup_failed", "datumbaza savkopiado malsukcesis");
+   P ("times_noun",
+      "{count, plural, =0 {neniam {other}} =1 {unufoje {one}} =2 {dufoje "
+      & "{other}} other {{count} fojojn {other}}}");
+   P ("availability.all",
+      "{available} el {total} {total, plural, one {{one}} other {{other}}} "
+      & "{available, plural, one {disponebla} other {disponeblaj}}");
+   P ("availability.none", "neniuj {other} disponeblaj");
+   P ("availability.partial",
+      "{available} el {total} {total, plural, one {{one}} other {{other}}} "
+      & "{available, plural, one {disponebla} other {disponeblaj}}, "
+      & "{unavailable} {unavailable, plural, one {nedisponebla} other "
+      & "{nedisponeblaj}}");
+   P ("operation_progress", "{name} – {state}: {details}");
+   P ("operation.queued", "envicigita");
+   P ("operation.running", "rulas");
+   P ("operation.blocked", "blokita");
+   P ("operation.retrying", "reprovas");
+   P ("operation.succeeded", "sukcesis");
+   P ("operation.partially_succeeded", "parte sukcesis");
+   P ("operation.failed", "malsukcesis");
+   P ("operation.canceled", "nuligita");
+   P ("operation.skipped", "preterlasita");
+   P ("operation.stale", "malaktuala");
+   P ("operation.unknown_state", "nekonata");
+   P ("operation.last_success", "{name} laste sukcesis {time}");
+   P ("operation.next_retry", "{name} reprovos {time}");
+   P ("operation.stale_run", "{name} malaktuala de {time}");
+   P ("summary.skipped", "{count} {count, plural, one {preterlasita} other {preterlasitaj}}");
+   P ("summary.retried", "{count} {count, plural, one {reprovita} other {reprovitaj}}");
+   P ("summary.canceled", "{count} {count, plural, one {nuligita} other {nuligitaj}}");
+   P ("system.service.operational", "funkcianta");
+   P ("system.service.degraded", "malpliigita rendimento");
+   P ("system.service.partial_outage", "parta paneo");
+   P ("system.service.major_outage", "grava paneo");
+   P ("system.service.maintenance", "en prizorgado");
+   P ("system.service.unknown", "nekonata serva stato");
+   P ("system.health.healthy", "sana");
+   P ("system.health.warning", "averto");
+   P ("system.health.critical", "kritika");
+   P ("system.health.unavailable", "neatingebla");
+   P ("system.health.unknown_health", "nekonata sanstato");
+   P ("system.readiness.ready", "preta");
+   P ("system.readiness.not_ready", "nepreta");
+   P ("system.readiness.starting", "startanta");
+   P ("system.readiness.draining", "malplenigata");
+   P ("system.readiness.stopped", "haltigita");
+   P ("system.readiness.unknown_readiness", "nekonata pretostato");
+   P ("system.component.online", "enreta");
+   P ("system.component.offline", "eksterreta");
+   P ("system.component.starting", "startanta");
+   P ("system.component.stopping", "haltanta");
+   P ("system.component.restarting", "restartanta");
+   P ("system.component.unknown", "nekonata komponanta stato");
+   P ("system.check.passing", "sukcesa");
+   P ("system.check.failing", "malsukcesa");
+   P ("system.check.warning", "averto");
+   P ("system.check.skipped", "preterlasita");
+   P ("system.check.timed_out", "tempolimo atingita");
+   P ("system.check.unknown", "nekonata kontrola stato");
+   P ("system.incident.investigating", "esplorata");
+   P ("system.incident.identified", "identigita");
+   P ("system.incident.monitoring", "observata");
+   P ("system.incident.resolved", "solvita");
+   P ("system.incident.scheduled_maintenance", "planita prizorgado");
+   P ("system.named", "{name}: {state}");
+   P ("system.check_named", "kontrolo de {name}: {state}");
+   P ("system.count.components",
+      "{count, plural, =0 {neniu komponanto} one {{count} komponanto} other "
+      & "{{count} komponantoj}}");
+   P ("system.count.checks",
+      "{count, plural, =0 {neniu kontrolo} one {{count} kontrolo} other "
+      & "{{count} kontroloj}}");
+   P ("system.count.incidents",
+      "{count, plural, =0 {neniu incidento} one {{count} incidento} other "
+      & "{{count} incidentoj}}");
+   P ("system.uptime", "funkciotempo {measure}");
+   P ("system.latency", "latenco {measure}");
+   P ("system.maintenance_window", "prizorga fenestro {time}");
+   P ("system.last_checked", "laste kontrolita {time}");
+   P ("system.http.informational", "informa");
+   P ("system.http.successful", "sukcesa");
+   P ("system.http.redirection", "alidirekto");
+   P ("system.http.client_error", "klienta eraro");
+   P ("system.http.server_error", "servila eraro");
+   P ("system.exit.success", "elira kodo {code}: sukceso");
+   P ("system.exit.failure", "elira kodo {code}: malsukceso");
+   P ("system.exit.usage_error", "elira kodo {code}: uzeraro");
+   P ("system.exit.not_executable", "elira kodo {code}: komando ne plenumebla");
+   P ("system.exit.not_found", "elira kodo {code}: komando ne trovita");
+   P ("system.exit.invalid_argument", "elira kodo {code}: nevalida elira argumento");
+   P ("system.exit.signal", "elira kodo {code}: ĉesigita de {signal}");
+   P ("validation.problem.required", "{field}: estas deviga");
+   P ("validation.problem.minimum", "{field}: estas sub la minimumo");
+   P ("validation.problem.maximum", "{field}: estas super la maksimumo");
+   P ("validation.problem.range", "{field}: estas ekster la permesata intervalo");
+   P ("validation.problem.pattern", "{field}: ne kongruas kun la ŝablono");
+   P ("validation.problem.choice", "{field}: devas esti unu el la permesataj elektoj");
+   P ("validation.problem.dependency", "{field}: dependas de alia kampo");
+   P ("validation.problem.custom", "{field}: estas nevalida");
+   P ("validation.constraint.no_relation", "{field}: devas esti valida {value}");
+   P ("validation.constraint.less_than", "{field}: devas esti malpli ol {value}");
+   P ("validation.constraint.less_or_equal", "{field}: devas esti maksimume {value}");
+   P ("validation.constraint.greater_than", "{field}: devas esti pli ol {value}");
+   P ("validation.constraint.greater_or_equal", "{field}: devas esti minimume {value}");
+   P ("validation.constraint.equal_to", "{field}: devas egali {value}");
+   P ("validation.constraint.not_equal_to", "{field}: ne devas egali {value}");
+   P ("validation.constraint.before_field", "{field}: devas esti antaŭ {value}");
+   P ("validation.constraint.after_field", "{field}: devas esti post {value}");
+   P ("validation.choices", "{field}: permesataj valoroj: {choices}");
+   P ("frame.detail", "{text} ({detail})");
+   P ("frame.got", "{text}, ricevita: {actual}");
+   P ("frame.also", "{text}, {detail}");
+   P ("frame.retry", "{text}, reprovo post {time}");
+   P ("net_diagnostic.dns", "{endpoint}: DNS-serĉo malsukcesis");
+   P ("net_diagnostic.tcp", "{endpoint}: TCP-konekto malsukcesis");
+   P ("net_diagnostic.tls", "{endpoint}: TLS-atestilo malsukcesis");
+   P ("net_diagnostic.http", "{endpoint}: HTTP-peto malsukcesis");
+   P ("net_diagnostic.proxy", "{endpoint}: prokurilo malsukcesis");
+   P ("net_diagnostic.timeout", "{endpoint}: tempolimo atingita");
+   P ("net_diagnostic.reset", "{endpoint}: konekto rekomencigita");
+   P ("net_diagnostic.unknown_network", "{endpoint}: reta eraro");
+   P ("progress.state.not_started", "ne komencita");
+   P ("progress.state.running", "rulanta");
+   P ("progress.state.stalled", "haltinta");
+   P ("progress.state.retrying", "reprovanta");
+   P ("progress.state.complete", "finita");
+   P ("progress.state.failed", "malsukcesinta");
+   P ("progress.of",
+      "{subject}: {done} el {total} {done, plural, one {finita} other "
+      & "{finitaj}} ({percent} %), {state}");
+   P ("progress.done",
+      "{subject}: {done} {done, plural, one {finita} other {finitaj}}, "
+      & "{state}");
+   P ("collection.summary",
+      "{name}: {total} {total, plural, one {ero} other {eroj}}, {unique} "
+      & "{unique, plural, one {unika valoro} other {unikaj valoroj}}, "
+      & "{duplicates} {duplicates, plural, one {duplikato} other {duplikatoj}}, "
+      & "{outliers} {outliers, plural, one {eksterordinara valoro} other "
+      & "{eksterordinaraj valoroj}}");
+   P ("top_frequency", "{name}: {value} ({count} {count, plural, one {fojon} other {fojojn}})");
+   P ("calendar_date.fiscal_year", "financa jaro {year}");
+   P ("calendar_date.fiscal_quarter", "financa jaro {year}, {part}-a kvaronjaro");
+   P ("calendar_date.fiscal_half", "financa jaro {year}, {part}-a duonjaro");
+   P ("calendar_date.fiscal_year_end", "fino de financa jaro {year}");
+   P ("calendar_date.semester", "{part}-a semestro {year}");
+   P ("calendar_date.half_year", "{part}-a duonjaro {year}");
+   P ("calendar_date.half_year_phrase", "{part, plural, =1 {unua duono de {year}} other {dua duono de {year}}}");
+   P ("calendar_date.month_phase",
+      "{phase, select, early {komence de {text}} mid {meze de {text}} other "
+      & "{fine de {text}}}");
+   P ("calendar_date.quarter_phase",
+      "{phase, select, early {komence de {text}} mid {meze de {text}} other "
+      & "{fine de {text}}}");
+   P ("calendar_range.weekend.last", "pasinta semajnfino");
+   P ("calendar_range.weekend.this", "ĉi tiu semajnfino");
+   P ("calendar_range.weekend.next", "venonta semajnfino");
+   P ("calendar_range.weekend_of", "semajnfino de {date}");
+   P ("calendar_range.week.last", "pasinta semajno");
+   P ("calendar_range.week.this", "ĉi tiu semajno");
+   P ("calendar_range.week.next", "venonta semajno");
+   P ("calendar_range.week_of", "semajno de {date}");
+   P ("calendar_range.between", "{first} – {last}");
+   P ("http.reason.100", "daŭrigu");
+   P ("http.reason.101", "ŝanĝado de protokoloj");
+   P ("http.reason.102", "traktado");
+   P ("http.reason.103", "fruaj sugestoj");
+   P ("http.reason.200", "bone");
+   P ("http.reason.201", "kreita");
+   P ("http.reason.202", "akceptita");
+   P ("http.reason.203", "neaŭtoritata informo");
+   P ("http.reason.204", "neniu enhavo");
+   P ("http.reason.205", "restarigu enhavon");
+   P ("http.reason.206", "parta enhavo");
+   P ("http.reason.207", "multaj statoj");
+   P ("http.reason.208", "jam raportita");
+   P ("http.reason.226", "IM uzita");
+   P ("http.reason.300", "pluraj elektoj");
+   P ("http.reason.301", "movita porĉiame");
+   P ("http.reason.302", "trovita");
+   P ("http.reason.303", "vidu alian");
+   P ("http.reason.304", "ne modifita");
+   P ("http.reason.305", "uzu prokurilon");
+   P ("http.reason.307", "provizora alidirektado");
+   P ("http.reason.308", "porĉiama alidirektado");
+   P ("http.reason.400", "malbona peto");
+   P ("http.reason.401", "nerajtigita");
+   P ("http.reason.402", "pago bezonata");
+   P ("http.reason.403", "malpermesita");
+   P ("http.reason.404", "ne trovita");
+   P ("http.reason.405", "metodo ne permesata");
+   P ("http.reason.406", "ne akceptebla");
+   P ("http.reason.407", "prokurila aŭtentigo bezonata");
+   P ("http.reason.408", "tempolimo de peto");
+   P ("http.reason.409", "konflikto");
+   P ("http.reason.410", "forigita");
+   P ("http.reason.411", "longo bezonata");
+   P ("http.reason.412", "antaŭkondiĉo malsukcesis");
+   P ("http.reason.413", "enhavo tro granda");
+   P ("http.reason.414", "URI tro longa");
+   P ("http.reason.415", "nesubtenata aŭdvidaĵa tipo");
+   P ("http.reason.416", "intervalo ne plenumebla");
+   P ("http.reason.417", "atendo malsukcesis");
+   P ("http.reason.418", "mi estas tekruĉo");
+   P ("http.reason.421", "misdirektita peto");
+   P ("http.reason.422", "netraktebla enhavo");
+   P ("http.reason.423", "ŝlosita");
+   P ("http.reason.424", "malsukcesa dependaĵo");
+   P ("http.reason.425", "tro frue");
+   P ("http.reason.426", "ĝisdatigo bezonata");
+   P ("http.reason.428", "antaŭkondiĉo bezonata");
+   P ("http.reason.429", "tro multaj petoj");
+   P ("http.reason.431", "kapaj kampoj de peto tro grandaj");
+   P ("http.reason.451", "nedisponebla pro juraj kialoj");
+   P ("http.reason.500", "interna servila eraro");
+   P ("http.reason.501", "ne realigita");
+   P ("http.reason.502", "malbona kluzo");
+   P ("http.reason.503", "servo nedisponebla");
+   P ("http.reason.504", "tempolimo de kluzo");
+   P ("http.reason.505", "HTTP-versio ne subtenata");
+   P ("http.reason.506", "varianto ankaŭ intertraktas");
+   P ("http.reason.507", "nesufiĉa konservejo");
+   P ("http.reason.508", "buklo detektita");
+   P ("http.reason.510", "ne etendita");
+   P ("http.reason.511", "reta aŭtentigo bezonata");
+   P ("errno.reason.0", "sukceso");
+   P ("errno.reason.1", "operacio ne permesata");
+   P ("errno.reason.2", "neniu tia dosiero aŭ dosierujo");
+   P ("errno.reason.3", "neniu tia procezo");
+   P ("errno.reason.4", "interrompita sistemvoko");
+   P ("errno.reason.5", "eniga/eliga eraro");
+   P ("errno.reason.6", "neniu tia aparato aŭ adreso");
+   P ("errno.reason.9", "malbona dosierpriskribilo");
+   P ("errno.reason.11", "rimedo provizore nedisponebla");
+   P ("errno.reason.12", "nesufiĉa memoro");
+   P ("errno.reason.13", "permeso rifuzita");
+   P ("errno.reason.17", "dosiero ekzistas");
+   P ("errno.reason.20", "ne estas dosierujo");
+   P ("errno.reason.21", "estas dosierujo");
+   P ("errno.reason.22", "nevalida argumento");
+   P ("errno.reason.24", "tro multaj malfermitaj dosieroj");
+   P ("errno.reason.28", "neniu spaco restas sur aparato");
+   P ("errno.reason.32", "rompita dukto");
+   P ("errno.reason.98", "adreso jam uzata");
+   P ("errno.reason.110", "tempolimo de konekto");
+   P ("errno.reason.111", "konekto rifuzita");
+   P ("signal.reason.1", "malkonekto");
+   P ("signal.reason.2", "interrompo");
+   P ("signal.reason.3", "ĉesigo");
+   P ("signal.reason.4", "nevalida instrukcio");
+   P ("signal.reason.5", "spura kaptilo");
+   P ("signal.reason.6", "abortigo");
+   P ("signal.reason.7", "busa eraro");
+   P ("signal.reason.8", "glitkoma escepto");
+   P ("signal.reason.9", "mortigita");
+   P ("signal.reason.10", "uzanta signalo 1");
+   P ("signal.reason.11", "segmenta eraro");
+   P ("signal.reason.12", "uzanta signalo 2");
+   P ("signal.reason.13", "rompita dukto");
+   P ("signal.reason.14", "alarmo");
+   P ("signal.reason.15", "peto de fino");
+   P ("signal.reason.17", "stato de ida procezo ŝanĝiĝis");
+   P ("signal.reason.18", "daŭrigu");
+   P ("signal.reason.19", "haltigita");
+   P ("signal.reason.20", "terminala halto");
+   P ("signal.reason.28", "grando de fenestro ŝanĝiĝis");
+   P ("sqlstate.reason.00", "sukcesa plenumo");
+   P ("sqlstate.reason.01", "averto");
+   P ("sqlstate.reason.02", "neniuj datumoj");
+   P ("sqlstate.reason.08", "konekta escepto");
+   P ("sqlstate.reason.0a", "funkcio ne subtenata");
+   P ("sqlstate.reason.22", "datuma escepto");
+   P ("sqlstate.reason.23", "malobservo de integreca limigo");
+   P ("sqlstate.reason.24", "nevalida stato de kursoro");
+   P ("sqlstate.reason.25", "nevalida stato de transakcio");
+   P ("sqlstate.reason.28", "nevalida rajtiga specifo");
+   P ("sqlstate.reason.2d", "nevalida fino de transakcio");
+   P ("sqlstate.reason.3d", "nevalida katalognomo");
+   P ("sqlstate.reason.3f", "nevalida skemnomo");
+   P ("sqlstate.reason.40", "malfaro de transakcio");
+   P ("sqlstate.reason.42", "sintaksa eraro aŭ malobservo de alira regulo");
+   P ("sqlstate.reason.53", "nesufiĉaj rimedoj");
+   P ("sqlstate.reason.54", "programa limo superita");
+   P ("sqlstate.reason.55", "objekto ne en antaŭkondiĉa stato");
+   P ("sqlstate.reason.57", "interveno de operatoro");
+   P ("sqlstate.reason.58", "sistema eraro");
+   P ("sqlstate.reason.hv", "eraro de fremddatuma envolvilo");
+   P ("sqlstate.reason.p0", "PL/pgSQL-eraro");
+   P ("sqlstate.reason.xx", "interna eraro");
+   P ("system.signal_numbered", "signalo {number} {name} {reason}");
+   P ("http.reason.unknown", "nekonata stato");
+   P ("errno.reason.unknown", "nekonata eraro");
+   P ("signal.reason.unknown", "nekonata signalo");
+   P ("sqlstate.reason.unknown", "nekonata SQLSTATE-klaso");
 end Locale_Eo;

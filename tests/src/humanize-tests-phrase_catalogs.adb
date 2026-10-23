@@ -17,6 +17,7 @@ with Humanize.Resources;
 with Humanize.Bytes;
 with Humanize.Durations;
 with Humanize.Durations.Formatting;
+with Humanize.Numbers;
 with Humanize.Units;
 with Humanize.Parsing.Localized;
 with Humanize.Parsing.Phrases;
@@ -153,7 +154,35 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"calendar_date.half_year_phrase", +"calendar_date.month_phase", +"calendar_date.quarter_phase",
       +"calendar_range.weekend.last", +"calendar_range.weekend.this", +"calendar_range.weekend.next",
       +"calendar_range.weekend_of", +"calendar_range.week.last", +"calendar_range.week.this",
-      +"calendar_range.week.next", +"calendar_range.week_of", +"calendar_range.between"];
+      +"calendar_range.week.next", +"calendar_range.week_of", +"calendar_range.between",
+      +"http.reason.100", +"http.reason.101", +"http.reason.102", +"http.reason.103", +"http.reason.200",
+      +"http.reason.201", +"http.reason.202", +"http.reason.203", +"http.reason.204", +"http.reason.205",
+      +"http.reason.206", +"http.reason.207", +"http.reason.208", +"http.reason.226", +"http.reason.300",
+      +"http.reason.301", +"http.reason.302", +"http.reason.303", +"http.reason.304", +"http.reason.305",
+      +"http.reason.307", +"http.reason.308", +"http.reason.400", +"http.reason.401", +"http.reason.402",
+      +"http.reason.403", +"http.reason.404", +"http.reason.405", +"http.reason.406", +"http.reason.407",
+      +"http.reason.408", +"http.reason.409", +"http.reason.410", +"http.reason.411", +"http.reason.412",
+      +"http.reason.413", +"http.reason.414", +"http.reason.415", +"http.reason.416", +"http.reason.417",
+      +"http.reason.418", +"http.reason.421", +"http.reason.422", +"http.reason.423", +"http.reason.424",
+      +"http.reason.425", +"http.reason.426", +"http.reason.428", +"http.reason.429", +"http.reason.431",
+      +"http.reason.451", +"http.reason.500", +"http.reason.501", +"http.reason.502", +"http.reason.503",
+      +"http.reason.504", +"http.reason.505", +"http.reason.506", +"http.reason.507", +"http.reason.508",
+      +"http.reason.510", +"http.reason.511", +"errno.reason.0", +"errno.reason.1", +"errno.reason.2",
+      +"errno.reason.3", +"errno.reason.4", +"errno.reason.5", +"errno.reason.6", +"errno.reason.9",
+      +"errno.reason.11", +"errno.reason.12", +"errno.reason.13", +"errno.reason.17", +"errno.reason.20",
+      +"errno.reason.21", +"errno.reason.22", +"errno.reason.24", +"errno.reason.28", +"errno.reason.32",
+      +"errno.reason.98", +"errno.reason.110", +"errno.reason.111", +"signal.reason.1", +"signal.reason.2",
+      +"signal.reason.3", +"signal.reason.4", +"signal.reason.5", +"signal.reason.6", +"signal.reason.7",
+      +"signal.reason.8", +"signal.reason.9", +"signal.reason.10", +"signal.reason.11", +"signal.reason.12",
+      +"signal.reason.13", +"signal.reason.14", +"signal.reason.15", +"signal.reason.17",
+      +"signal.reason.18", +"signal.reason.19", +"signal.reason.20", +"signal.reason.28",
+      +"sqlstate.reason.00", +"sqlstate.reason.01", +"sqlstate.reason.02", +"sqlstate.reason.08",
+      +"sqlstate.reason.0a", +"sqlstate.reason.22", +"sqlstate.reason.23", +"sqlstate.reason.24",
+      +"sqlstate.reason.25", +"sqlstate.reason.28", +"sqlstate.reason.2d", +"sqlstate.reason.3d",
+      +"sqlstate.reason.3f", +"sqlstate.reason.40", +"sqlstate.reason.42", +"sqlstate.reason.53",
+      +"sqlstate.reason.54", +"sqlstate.reason.55", +"sqlstate.reason.57", +"sqlstate.reason.58",
+      +"sqlstate.reason.hv", +"sqlstate.reason.p0", +"sqlstate.reason.xx", +"system.signal_numbered",
+      +"http.reason.unknown", +"errno.reason.unknown", +"signal.reason.unknown", +"sqlstate.reason.unknown"];
 
    --  Every shipped locale besides English.
    Locales : constant array (Positive range <>) of Unbounded_String :=
@@ -167,7 +196,7 @@ package body Humanize.Tests.Phrase_Catalogs is
      [+"total", +"matching", +"visible", +"remaining", +"page", +"size", +"first", +"last", +"position",
       +"selected", +"showing", +"count", +"hidden", +"done", +"step", +"attempt", +"rate", +"days", +"hours",
       +"every", +"hits", +"misses", +"changed", +"added", +"removed", +"available", +"unavailable",
-      +"code", +"done", +"unique", +"duplicates", +"outliers", +"part", +"year"];
+      +"code", +"done", +"unique", +"duplicates", +"outliers", +"part", +"year", +"number"];
 
    procedure Test_Every_Locale_Renders_Every_Phrase
      (T : in out AUnit.Test_Cases.Test_Case'Class)
@@ -228,6 +257,7 @@ package body Humanize.Tests.Phrase_Catalogs is
             Messages.Arguments.Set (Args, "subject", "import");
             Messages.Arguments.Set (Args, "text", "label");
             Messages.Arguments.Set (Args, "detail", "expired");
+            Messages.Arguments.Set (Args, "reason", "killed");
             Messages.Arguments.Set (Args, "year", "2026");
             Messages.Arguments.Set (Args, "part", Count);
             Messages.Arguments.Set (Args, "phase", "mid");
@@ -445,7 +475,7 @@ package body Humanize.Tests.Phrase_Catalogs is
    Text_Arguments : constant array (Positive range <>) of Unbounded_String :=
      [+"unit", +"field", +"before", +"after", +"current", +"baseline", +"quantity",
       +"details", +"difference", +"measure", +"name", +"time", +"signal", +"choices", +"actual", +"endpoint",
-      +"subject", +"text", +"detail", +"date"];
+      +"subject", +"text", +"detail", +"date", +"reason"];
 
    function Digits_Of (Value : Natural) return String is
      (Natural'Image (Value) (2 .. Natural'Image (Value)'Last));
@@ -787,6 +817,19 @@ package body Humanize.Tests.Phrase_Catalogs is
       end loop;
       AUnit.Assertions.Assert
         (L.Parse_Date (Ctx ("de"), "gestern", Today).Value.Day = 9, "German yesterday");
+      --  Percentages, compact numbers, ordinals and amounts.
+      begin
+         AUnit.Assertions.Assert
+           (Near (L.Parse_Percent (Ctx ("de"), Image (Humanize.Numbers.Percent (Ctx ("de"), 12.5))).Value, 12.5),
+            "German percent");
+         AUnit.Assertions.Assert
+           (Near (L.Parse_Compact (Ctx ("de"), Image (Humanize.Numbers.Compact (Ctx ("de"), 2_000_000))).Value,
+                  2_000_000.0), "German compact");
+         AUnit.Assertions.Assert (L.Parse_Ordinal (Ctx ("en"), "21st").Value = 21.0, "English ordinal");
+         AUnit.Assertions.Assert
+           (Near (L.Parse_Currency (Ctx ("de"), Image (Humanize.Numbers.Currency (Ctx ("de"), 1_234.5, "EUR")),
+                                    "EUR").Value, 1_234.5), "German euros");
+      end;
       --  Outside English the presets are CLDR's dates (as ICU writes them).
       declare
          function U (Text : Wide_Wide_String) return String is

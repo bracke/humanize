@@ -1,453 +1,587 @@
 separate (Humanize.Catalogs.Phrase_Data)
-function Locale_Zh_Hant return Wide_Wide_String is
-   function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is
-     (Entry_Line ("zh-Hant", Name, Template));
+procedure Locale_Zh_Hant (Target : in out Catalog_Text) is
+   --  One statement an entry: the catalog grows on the heap, not in one
+   --  expression on the stack.
+   procedure P (Name, Template : Wide_Wide_String) is
+   begin
+      Add (Target, "zh-Hant", Name, Template);
+   end P;
 begin
-   return
-     P ("all_count", "全部{total}個{other}")
-     & P ("filtered_count.none", "沒有符合的{other}")
-     & P ("filtered_count.all", "全部{total}個{other}皆符合")
-     & P ("filtered_count.some", "{total}個{other}中有{matching}個符合")
-     & P ("more_count", "已顯示{visible}個，另有{remaining}個")
-     & P ("others_count", "{first}及其他{remaining}個")
-     & P ("page_count", "第{page}頁，共{total}頁")
-     & P ("page_size", "每頁{size}個{other}")
-     & P ("pagination_range", "第{first}–{last}個，共{total}個{other}")
-     & P ("position_count", "{position}/{total}")
-     & P ("selection_count", "已選取{selected}個，共{total}個{other}")
-     & P ("showing_count", "顯示{showing}個，共{total}個{other}")
-     & P ("validation_count",
-          "{count, plural, =0 {沒有{severity, select, error {錯誤} warning "
-          & "{警告} other {提示}}} other {{count}個{severity, select, error "
-          & "{錯誤} warning {警告} other {提示}}}}")
-     & P ("collection.empty", "沒有{other}")
-     & P ("collection.none_shown", "未顯示任何{other}")
-     & P ("collection.showing_hidden", "顯示{visible}個，共{total}個{other}，{hidden}個已隱藏")
-     & P ("collection.showing", "顯示{visible}個，共{total}個{other}")
-     & P ("collection.shown_hidden", "已顯示{visible}個{other}，{hidden}個已隱藏")
-     & P ("collection.shown", "已顯示{visible}個{other}")
-     & P ("collection.visible_out_of", "{total}個{other}中{visible}個可見")
-     & P ("complete_count", "已完成{done}/{total}")
-     & P ("percent_complete", "已完成{percent}%")
-     & P ("step_count", "第{step}步，共{total}步")
-     & P ("attempt_count", "第{attempt}次嘗試，共{total}次")
-     & P ("throughput_remaining", "剩餘{remaining}個{other}，速度{rate}個{unit}/秒")
-     & P ("accessible_progress", "已完成{done}/{total}，百分之{percent}")
-     & P ("business_days", "{days}個工作天")
-     & P ("working_hours", "{hours}個工時")
-     & P ("due.overdue", "已逾期{days}天")
-     & P ("due.today", "今天到期")
-     & P ("due.tomorrow", "明天到期")
-     & P ("due.in", "{days}天後到期")
-     & P ("calendar_difference.future", "{difference}後")
-     & P ("calendar_difference.past", "{difference}前")
-     & P ("cpu_load", "CPU使用率{measure}")
-     & P ("battery", "電量{measure}")
-     & P ("screen_size", "螢幕{measure}")
-     & P ("refresh_rate", "更新率{measure}")
-     & P ("editorial_percent.symbol", "{value}%")
-     & P ("editorial_percent.word", "百分之{value}")
-     & P ("recurrence.second", "{every, plural, =1 {每秒} other {每{every}秒}}")
-     & P ("recurrence.minute", "{every, plural, =1 {每分鐘} other {每{every}分鐘}}")
-     & P ("recurrence.hour", "{every, plural, =1 {每小時} other {每{every}小時}}")
-     & P ("recurrence.day", "{every, plural, =1 {每天} other {每{every}天}}")
-     & P ("recurrence.week", "{every, plural, =1 {每週} other {每{every}週}}")
-     & P ("recurrence.month", "{every, plural, =1 {每月} other {每{every}個月}}")
-     & P ("recurrence.quarter", "{every, plural, =1 {每季} other {每{every}季}}")
-     & P ("recurrence.year", "{every, plural, =1 {每年} other {每{every}年}}")
-     & P ("cache_summary.empty", "快取：無要求")
-     & P ("cache_summary", "快取：命中{hits}次，未命中{misses}次，命中率{rate}%")
-     & P ("field_change_summary",
-          "{total}個{other}：{changed}個已變更，{added}個已新增，{rem"
-          & "oved}個已移除")
-     & P ("field_diff", "{field}已從{before}變更為{after}")
-     & P ("field_added", "已新增{field}：{value}")
-     & P ("field_removed", "已移除{field}（原為{value}）")
-     & P ("field_unchanged", "{field}未變更，仍為{value}")
-     & P ("number_comparison.equal", "{current}等於{baseline}")
-     & P ("number_comparison.higher", "{current}比{baseline}高{quantity}")
-     & P ("number_comparison.lower", "{current}比{baseline}低{quantity}")
-     & P ("percent_comparison.equal", "{current}等於{baseline}")
-     & P ("percent_comparison.higher", "{current}比{baseline}高{quantity}")
-     & P ("percent_comparison.lower", "{current}比{baseline}低{quantity}")
-     & P ("file_size_comparison.same", "{current}與{baseline}大小相同")
-     & P ("file_size_comparison.larger", "{current}比{baseline}大{quantity}")
-     & P ("file_size_comparison.smaller", "{current}比{baseline}小{quantity}")
-     & P ("date_comparison.same", "{current}與{baseline}是同一天")
-     & P ("date_comparison.after", "{current}比{baseline}晚{quantity}")
-     & P ("date_comparison.before", "{current}比{baseline}早{quantity}")
-     & P ("queue_summary", "佇列：{details}")
-     & P ("domain_summary",
-          "{domain, select, queue {佇列} job {工作} run {執行} cache "
-          & "{快取} sync {同步} import {匯入} export {匯出} other "
-          & "{{domain}}}{state, select, queued {已排入佇列} running "
-          & "{執行中} waiting {等待中} paused {已暫停} complete "
-          & "{已完成} failed {失敗} stale {已過時} skipped {已略過} "
-          & "other {{state}}}：{details}")
-     & P ("summary.none", "沒有{other}")
-     & P ("summary.completed", "已完成{count}個{other}")
-     & P ("summary.completed_of", "{total}個{other}中已完成{count}個")
-     & P ("summary.failed", "{count}個失敗")
-     & P ("summary.queued", "{count}個{other}已排入佇列")
-     & P ("summary.running", "{count}個執行中")
-     & P ("summary.complete", "{count}個已完成")
-     & P ("backup.backup_running", "備份進行中")
-     & P ("backup.backup_completed", "備份已完成")
-     & P ("backup.backup_failed", "備份失敗")
-     & P ("backup.backup_stale", "備份已過時")
-     & P ("incident.incident_investigating", "正在調查事件")
-     & P ("incident.incident_identified", "事件已確認")
-     & P ("incident.incident_mitigated", "事件已緩解")
-     & P ("incident.incident_resolved", "事件已解決")
-     & P ("release.release_drafting", "版本準備中")
-     & P ("release.release_ready", "版本已就緒")
-     & P ("release.release_published", "版本已發布")
-     & P ("release.release_rolled_back", "版本已回復")
-     & P ("audit.audit_created", "稽核項目已建立")
-     & P ("audit.audit_updated", "稽核項目已更新")
-     & P ("audit.audit_deleted", "稽核項目已刪除")
-     & P ("audit.audit_restored", "稽核項目已還原")
-     & P ("flag.flag_enabled", "功能旗標已啟用")
-     & P ("flag.flag_disabled", "功能旗標已停用")
-     & P ("flag.flag_rolling_out", "功能旗標逐步推出中")
-     & P ("flag.flag_rolled_back", "功能旗標已回復")
-     & P ("webhook.webhook_pending", "Webhook待處理")
-     & P ("webhook.webhook_delivered", "Webhook已送達")
-     & P ("webhook.webhook_failed", "Webhook失敗")
-     & P ("webhook.webhook_retrying", "Webhook重試中")
-     & P ("api_key.api_key_active", "API金鑰有效")
-     & P ("api_key.api_key_revoked", "API金鑰已撤銷")
-     & P ("api_key.api_key_expired", "API金鑰已過期")
-     & P ("api_key.api_key_rotated", "API金鑰已輪替")
-     & P ("quota.quota_available", "配額可用")
-     & P ("quota.quota_near_limit", "配額即將用盡")
-     & P ("quota.quota_exceeded", "配額已超出")
-     & P ("quota.quota_reset", "配額已重設")
-     & P ("invoice.invoice_draft", "發票草稿")
-     & P ("invoice.invoice_sent", "發票已寄送")
-     & P ("invoice.invoice_paid", "發票已付款")
-     & P ("invoice.invoice_refunded", "發票已退款")
-     & P ("invoice.invoice_overdue", "發票已逾期")
-     & P ("invoice.refund_failed", "退款失敗")
-     & P ("page_navigation.only", "僅此一頁")
-     & P ("page_navigation.first", "第一頁，可前往下一頁")
-     & P ("page_navigation.last", "最後一頁，可返回上一頁")
-     & P ("page_navigation.middle", "可前往上一頁和下一頁")
-     & P ("end_of_week", "本週結束")
-     & P ("end_of_month", "月底")
-     & P ("end_of_quarter", "季末")
-     & P ("time_of_day.night", "夜間")
-     & P ("time_of_day.morning", "上午")
-     & P ("time_of_day.afternoon", "下午")
-     & P ("time_of_day.evening", "晚上")
-     & P ("calendar_difference.same_day", "同一天")
-     & P ("calendar_difference.zero", "0天")
-     & P ("queue_summary.empty", "佇列為空")
-     & P ("access.allowed", "已允許")
-     & P ("access.denied", "已拒絕")
-     & P ("access.owner", "擁有者")
-     & P ("access.admin", "管理員")
-     & P ("access.viewer", "檢視者")
-     & P ("access.editor", "編輯者")
-     & P ("auth.signed_in", "已登入")
-     & P ("auth.signed_out", "已登出")
-     & P ("auth.session_expired", "工作階段已過期")
-     & P ("auth.locked", "已鎖定")
-     & P ("auth.two_factor_required", "需要雙重驗證")
-     & P ("billing.trialing", "試用中")
-     & P ("billing.payment_due", "待付款")
-     & P ("billing.payment_failed", "付款失敗")
-     & P ("billing.paid", "已付款")
-     & P ("billing.past_due", "已逾期")
-     & P ("billing.canceled", "已取消")
-     & P ("ci.pipeline_pending", "管線待處理")
-     & P ("ci.pipeline_running", "管線執行中")
-     & P ("ci.pipeline_passed", "管線已通過")
-     & P ("ci.pipeline_failed", "管線失敗")
-     & P ("ci.review_required", "需要審查")
-     & P ("ci.deploy_blocked", "部署受阻")
-     & P ("collaboration.active_now", "目前在線上")
-     & P ("collaboration.away", "離開")
-     & P ("collaboration.do_not_disturb", "請勿打擾")
-     & P ("collaboration.typing", "正在輸入")
-     & P ("collaboration.viewing", "正在檢視")
-     & P ("collaboration.editing", "正在編輯")
-     & P ("deployment.deploying", "部署中")
-     & P ("deployment.deployed", "已部署")
-     & P ("deployment.rolling_back", "回復中")
-     & P ("deployment.rolled_back", "已回復")
-     & P ("deployment.build_failed", "建置失敗")
-     & P ("deployment.checks_passed", "檢查已通過")
-     & P ("empty.no_items", "沒有項目")
-     & P ("empty.no_results", "沒有結果")
-     & P ("empty.no_messages", "沒有訊息")
-     & P ("empty.no_selection", "未選取")
-     & P ("empty.nothing_to_show", "沒有可顯示的內容")
-     & P ("file.uploading", "上傳中")
-     & P ("file.downloading", "下載中")
-     & P ("file.copying", "複製中")
-     & P ("file.moving", "移動中")
-     & P ("file.deleting", "刪除中")
-     & P ("file.deleted", "已刪除")
-     & P ("file.restoring", "還原中")
-     & P ("file.synced", "已同步")
-     & P ("form.valid_input", "輸入有效")
-     & P ("form.invalid_input", "輸入無效")
-     & P ("form.dirty", "已變更")
-     & P ("form.pristine", "未變更")
-     & P ("form.submitted", "已送出")
-     & P ("form.submission_failed", "送出失敗")
-     & P ("health.healthy", "正常")
-     & P ("health.degraded", "效能降低")
-     & P ("health.unhealthy", "異常")
-     & P ("health.incident", "發生事件")
-     & P ("health.maintenance", "維護中")
-     & P ("health.recovering", "復原中")
-     & P ("issue.open", "未解決")
-     & P ("issue.closed", "已關閉")
-     & P ("issue.reopened", "已重新開啟")
-     & P ("issue.assigned", "已指派")
-     & P ("issue.unassigned", "未指派")
-     & P ("issue.merged", "已合併")
-     & P ("network.offline", "離線")
-     & P ("network.online", "線上")
-     & P ("network.connecting", "連線中")
-     & P ("network.syncing", "同步中")
-     & P ("network.sync_failed", "同步失敗")
-     & P ("network.permission_denied", "權限遭拒")
-     & P ("network.read_only", "唯讀")
-     & P ("notification.unread", "未讀")
-     & P ("notification.read", "已讀")
-     & P ("notification.muted", "已靜音")
-     & P ("notification.snoozed", "稍後提醒")
-     & P ("notification.sent", "已傳送")
-     & P ("notification.delivered", "已送達")
-     & P ("payment.payment_authorized", "付款已授權")
-     & P ("payment.payment_captured", "款項已收取")
-     & P ("payment.payment_refunded", "已退款")
-     & P ("payment.payment_disputed", "付款有爭議")
-     & P ("payment.payment_requires_action", "付款需要處理")
-     & P ("payment.payment_expired", "付款已過期")
-     & P ("ui.empty", "空白")
-     & P ("ui.loading", "載入中")
-     & P ("ui.saving", "儲存中")
-     & P ("ui.saved", "已儲存")
-     & P ("ui.unsaved", "未儲存")
-     & P ("ui.retrying", "重試中")
-     & P ("ui.paused", "已暫停")
-     & P ("ui.complete", "已完成")
-     & P ("ui.failed", "失敗")
-     & P ("ui.due_soon", "即將到期")
-     & P ("ui.overdue", "已逾期")
-     & P ("ui.last_seen", "上次上線")
-     & P ("ui.updated_just_now", "剛剛更新")
-     & P ("queue.queued", "已排入佇列")
-     & P ("queue.running", "執行中")
-     & P ("queue.waiting", "等待中")
-     & P ("queue.blocked", "受阻")
-     & P ("queue.canceled_job", "工作已取消")
-     & P ("queue.completed_job", "工作已完成")
-     & P ("search.filtering", "正在篩選")
-     & P ("search.filtered", "已篩選")
-     & P ("search.no_matches", "沒有符合項目")
-     & P ("search.search_ready", "搜尋就緒")
-     & P ("search.search_failed", "搜尋失敗")
-     & P ("search.query_too_short", "查詢過短")
-     & P ("security.secure", "安全")
-     & P ("security.insecure", "不安全")
-     & P ("security.vulnerable", "有安全漏洞")
-     & P ("security.encrypted", "已加密")
-     & P ("security.unencrypted", "未加密")
-     & P ("security.token_expired", "權杖已過期")
-     & P ("sync.sync_idle", "同步閒置")
-     & P ("sync.syncing_now", "正在同步")
-     & P ("sync.sync_queued", "同步已排入佇列")
-     & P ("sync.sync_conflict", "同步衝突")
-     & P ("sync.sync_complete", "同步完成")
-     & P ("sync.sync_error", "同步錯誤")
-     & P ("task.todo", "待辦")
-     & P ("task.in_progress", "進行中")
-     & P ("task.done", "已完成")
-     & P ("task.skipped", "已略過")
-     & P ("task.blocked_task", "受阻")
-     & P ("task.waiting_on", "等候中")
-     & P ("ticket.ticket_new", "新票證")
-     & P ("ticket.ticket_open", "票證待處理")
-     & P ("ticket.ticket_waiting", "票證等候中")
-     & P ("ticket.ticket_escalated", "票證已提報")
-     & P ("ticket.ticket_resolved", "票證已解決")
-     & P ("ticket.ticket_closed", "票證已關閉")
-     & P ("transfer.importing", "匯入中")
-     & P ("transfer.imported", "已匯入")
-     & P ("transfer.import_failed", "匯入失敗")
-     & P ("transfer.exporting", "匯出中")
-     & P ("transfer.exported", "已匯出")
-     & P ("transfer.export_failed", "匯出失敗")
-     & P ("validation.required", "必填")
-     & P ("validation.optional", "選填")
-     & P ("validation.invalid", "無效")
-     & P ("validation.too_short", "過短")
-     & P ("validation.too_long", "過長")
-     & P ("validation.out_of_range", "超出範圍")
-     & P ("validation.already_exists", "已存在")
-     & P ("workflow.draft", "草稿")
-     & P ("workflow.in_review", "審查中")
-     & P ("workflow.approved", "已核准")
-     & P ("workflow.rejected", "已拒絕")
-     & P ("workflow.published", "已發布")
-     & P ("workflow.archived", "已封存")
-     & P ("database.database_online", "資料庫線上")
-     & P ("database.database_offline", "資料庫離線")
-     & P ("database.database_degraded", "資料庫效能降低")
-     & P ("database.database_migrating", "資料庫移轉中")
-     & P ("database.database_migration_failed", "資料庫移轉失敗")
-     & P ("database.database_replicating", "資料庫複寫中")
-     & P ("database.database_replication_lagging", "資料庫複寫延遲")
-     & P ("database.database_backup_running", "資料庫備份中")
-     & P ("database.database_backup_failed", "資料庫備份失敗")
-     & P ("times_noun",
-          "{count, plural, =0 {從未{other}} =1 {{other}一次} =2 "
-          & "{{other}兩次} other {{other}{count}次}}")
-     & P ("availability.all", "{total}個{other}中{available}個可用")
-     & P ("availability.none", "沒有可用的{other}")
-     & P ("availability.partial", "{total}個{other}中{available}個可用，{unavailable}個無法使用")
-     & P ("operation_progress", "{name}（{state}）：{details}")
-     & P ("operation.queued", "已排入佇列")
-     & P ("operation.running", "執行中")
-     & P ("operation.blocked", "受阻")
-     & P ("operation.retrying", "正在重試")
-     & P ("operation.succeeded", "成功")
-     & P ("operation.partially_succeeded", "部分成功")
-     & P ("operation.failed", "失敗")
-     & P ("operation.canceled", "已取消")
-     & P ("operation.skipped", "已略過")
-     & P ("operation.stale", "已過時")
-     & P ("operation.unknown_state", "未知")
-     & P ("operation.last_success", "{name}上次成功：{time}")
-     & P ("operation.next_retry", "{name}下次重試：{time}")
-     & P ("operation.stale_run", "{name}已有{time}未更新")
-     & P ("summary.skipped", "{count}個已略過")
-     & P ("summary.retried", "{count}個已重試")
-     & P ("summary.canceled", "{count}個已取消")
-     & P ("system.service.operational", "運作正常")
-     & P ("system.service.degraded", "效能降低")
-     & P ("system.service.partial_outage", "部分中斷")
-     & P ("system.service.major_outage", "嚴重中斷")
-     & P ("system.service.maintenance", "維護中")
-     & P ("system.service.unknown", "服務狀態不明")
-     & P ("system.health.healthy", "健康")
-     & P ("system.health.warning", "警告")
-     & P ("system.health.critical", "嚴重")
-     & P ("system.health.unavailable", "無法使用")
-     & P ("system.health.unknown_health", "健康狀況不明")
-     & P ("system.readiness.ready", "就緒")
-     & P ("system.readiness.not_ready", "未就緒")
-     & P ("system.readiness.starting", "啟動中")
-     & P ("system.readiness.draining", "清空中")
-     & P ("system.readiness.stopped", "已停止")
-     & P ("system.readiness.unknown_readiness", "就緒狀態不明")
-     & P ("system.component.online", "線上")
-     & P ("system.component.offline", "離線")
-     & P ("system.component.starting", "啟動中")
-     & P ("system.component.stopping", "停止中")
-     & P ("system.component.restarting", "重新啟動中")
-     & P ("system.component.unknown", "元件狀態不明")
-     & P ("system.check.passing", "通過")
-     & P ("system.check.failing", "未通過")
-     & P ("system.check.warning", "警告")
-     & P ("system.check.skipped", "已略過")
-     & P ("system.check.timed_out", "已逾時")
-     & P ("system.check.unknown", "檢查狀態不明")
-     & P ("system.incident.investigating", "調查中")
-     & P ("system.incident.identified", "已確認原因")
-     & P ("system.incident.monitoring", "監控中")
-     & P ("system.incident.resolved", "已解決")
-     & P ("system.incident.scheduled_maintenance", "排定維護")
-     & P ("system.named", "{name}：{state}")
-     & P ("system.check_named", "{name}檢查：{state}")
-     & P ("system.count.components", "{count, plural, =0 {沒有元件} other {{count}個元件}}")
-     & P ("system.count.checks", "{count, plural, =0 {沒有檢查} other {{count}項檢查}}")
-     & P ("system.count.incidents", "{count, plural, =0 {沒有事件} other {{count}起事件}}")
-     & P ("system.uptime", "正常運作時間 {measure}")
-     & P ("system.latency", "延遲 {measure}")
-     & P ("system.maintenance_window", "維護時段 {time}")
-     & P ("system.last_checked", "上次檢查 {time}")
-     & P ("system.http.informational", "資訊回應")
-     & P ("system.http.successful", "成功回應")
-     & P ("system.http.redirection", "重新導向")
-     & P ("system.http.client_error", "用戶端錯誤")
-     & P ("system.http.server_error", "伺服器錯誤")
-     & P ("system.exit.success", "結束代碼 {code}：成功")
-     & P ("system.exit.failure", "結束代碼 {code}：失敗")
-     & P ("system.exit.usage_error", "結束代碼 {code}：用法錯誤")
-     & P ("system.exit.not_executable", "結束代碼 {code}：無法執行命令")
-     & P ("system.exit.not_found", "結束代碼 {code}：找不到命令")
-     & P ("system.exit.invalid_argument", "結束代碼 {code}：無效的結束引數")
-     & P ("system.exit.signal", "結束代碼 {code}：被{signal}終止")
-     & P ("validation.problem.required", "{field}：為必填欄位")
-     & P ("validation.problem.minimum", "{field}：低於最小值")
-     & P ("validation.problem.maximum", "{field}：超過最大值")
-     & P ("validation.problem.range", "{field}：超出範圍")
-     & P ("validation.problem.pattern", "{field}：格式不正確")
-     & P ("validation.problem.choice", "{field}：必須是允許的選項之一")
-     & P ("validation.problem.dependency", "{field}：取決於另一個欄位")
-     & P ("validation.problem.custom", "{field}：無效")
-     & P ("validation.constraint.no_relation", "{field}：必須是有效的{value}")
-     & P ("validation.constraint.less_than", "{field}：必須小於{value}")
-     & P ("validation.constraint.less_or_equal", "{field}：不得大於{value}")
-     & P ("validation.constraint.greater_than", "{field}：必須大於{value}")
-     & P ("validation.constraint.greater_or_equal", "{field}：不得小於{value}")
-     & P ("validation.constraint.equal_to", "{field}：必須等於{value}")
-     & P ("validation.constraint.not_equal_to", "{field}：不得等於{value}")
-     & P ("validation.constraint.before_field", "{field}：必須早於{value}")
-     & P ("validation.constraint.after_field", "{field}：必須晚於{value}")
-     & P ("validation.choices", "{field}：允許的值為{choices}")
-     & P ("frame.detail", "{text}（{detail}）")
-     & P ("frame.got", "{text}，輸入值為{actual}")
-     & P ("frame.also", "{text}，{detail}")
-     & P ("frame.retry", "{text}，{time}後重試")
-     & P ("net_diagnostic.dns", "{endpoint}：DNS查詢失敗")
-     & P ("net_diagnostic.tcp", "{endpoint}：TCP連線失敗")
-     & P ("net_diagnostic.tls", "{endpoint}：TLS憑證驗證失敗")
-     & P ("net_diagnostic.http", "{endpoint}：HTTP要求失敗")
-     & P ("net_diagnostic.proxy", "{endpoint}：Proxy連線失敗")
-     & P ("net_diagnostic.timeout", "{endpoint}：連線逾時")
-     & P ("net_diagnostic.reset", "{endpoint}：連線已重設")
-     & P ("net_diagnostic.unknown_network", "{endpoint}：網路錯誤")
-     & P ("progress.state.not_started", "未開始")
-     & P ("progress.state.running", "執行中")
-     & P ("progress.state.stalled", "停滯")
-     & P ("progress.state.retrying", "正在重試")
-     & P ("progress.state.complete", "已完成")
-     & P ("progress.state.failed", "失敗")
-     & P ("progress.of", "{subject}：已完成{done}/{total}（{percent}%），{state}")
-     & P ("progress.done", "{subject}：已完成{done}個，{state}")
-     & P ("collection.summary",
-          "{name}：共{total}項，唯一值{unique}個，重複項{duplicates}"
-          & "個，離群值{outliers}個")
-     & P ("top_frequency", "{name}中最常見的值：{value}（{count}次）")
-     & P ("calendar_date.fiscal_year", "{year}會計年度")
-     & P ("calendar_date.fiscal_quarter", "{year}會計年度第{part}季")
-     & P ("calendar_date.fiscal_half",
-          "{part, plural, =1 {{year}會計年度上半年} other "
-          & "{{year}會計年度下半年}}")
-     & P ("calendar_date.fiscal_year_end", "{year}會計年度末")
-     & P ("calendar_date.semester",
-          "{part, plural, =1 {{year}年第一學期} other "
-          & "{{year}年第二學期}}")
-     & P ("calendar_date.half_year", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}")
-     & P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}")
-     & P ("calendar_date.month_phase",
-          "{phase, select, early {{text}初} mid {{text}中旬} other "
-          & "{{text}底}}")
-     & P ("calendar_date.quarter_phase", "{phase, select, early {{text}初} mid {{text}中} other {{text}末}}")
-     & P ("calendar_range.weekend.last", "上週末")
-     & P ("calendar_range.weekend.this", "本週末")
-     & P ("calendar_range.weekend.next", "下週末")
-     & P ("calendar_range.weekend_of", "{date}所在的週末")
-     & P ("calendar_range.week.last", "上週")
-     & P ("calendar_range.week.this", "本週")
-     & P ("calendar_range.week.next", "下週")
-     & P ("calendar_range.week_of", "{date}所在的一週")
-     & P ("calendar_range.between", "{first}至{last}");
+   P ("all_count", "全部{total}個{other}");
+   P ("filtered_count.none", "沒有符合的{other}");
+   P ("filtered_count.all", "全部{total}個{other}皆符合");
+   P ("filtered_count.some", "{total}個{other}中有{matching}個符合");
+   P ("more_count", "已顯示{visible}個，另有{remaining}個");
+   P ("others_count", "{first}及其他{remaining}個");
+   P ("page_count", "第{page}頁，共{total}頁");
+   P ("page_size", "每頁{size}個{other}");
+   P ("pagination_range", "第{first}–{last}個，共{total}個{other}");
+   P ("position_count", "{position}/{total}");
+   P ("selection_count", "已選取{selected}個，共{total}個{other}");
+   P ("showing_count", "顯示{showing}個，共{total}個{other}");
+   P ("validation_count",
+      "{count, plural, =0 {沒有{severity, select, error {錯誤} warning "
+      & "{警告} other {提示}}} other {{count}個{severity, select, error "
+      & "{錯誤} warning {警告} other {提示}}}}");
+   P ("collection.empty", "沒有{other}");
+   P ("collection.none_shown", "未顯示任何{other}");
+   P ("collection.showing_hidden", "顯示{visible}個，共{total}個{other}，{hidden}個已隱藏");
+   P ("collection.showing", "顯示{visible}個，共{total}個{other}");
+   P ("collection.shown_hidden", "已顯示{visible}個{other}，{hidden}個已隱藏");
+   P ("collection.shown", "已顯示{visible}個{other}");
+   P ("collection.visible_out_of", "{total}個{other}中{visible}個可見");
+   P ("complete_count", "已完成{done}/{total}");
+   P ("percent_complete", "已完成{percent}%");
+   P ("step_count", "第{step}步，共{total}步");
+   P ("attempt_count", "第{attempt}次嘗試，共{total}次");
+   P ("throughput_remaining", "剩餘{remaining}個{other}，速度{rate}個{unit}/秒");
+   P ("accessible_progress", "已完成{done}/{total}，百分之{percent}");
+   P ("business_days", "{days}個工作天");
+   P ("working_hours", "{hours}個工時");
+   P ("due.overdue", "已逾期{days}天");
+   P ("due.today", "今天到期");
+   P ("due.tomorrow", "明天到期");
+   P ("due.in", "{days}天後到期");
+   P ("calendar_difference.future", "{difference}後");
+   P ("calendar_difference.past", "{difference}前");
+   P ("cpu_load", "CPU使用率{measure}");
+   P ("battery", "電量{measure}");
+   P ("screen_size", "螢幕{measure}");
+   P ("refresh_rate", "更新率{measure}");
+   P ("editorial_percent.symbol", "{value}%");
+   P ("editorial_percent.word", "百分之{value}");
+   P ("recurrence.second", "{every, plural, =1 {每秒} other {每{every}秒}}");
+   P ("recurrence.minute", "{every, plural, =1 {每分鐘} other {每{every}分鐘}}");
+   P ("recurrence.hour", "{every, plural, =1 {每小時} other {每{every}小時}}");
+   P ("recurrence.day", "{every, plural, =1 {每天} other {每{every}天}}");
+   P ("recurrence.week", "{every, plural, =1 {每週} other {每{every}週}}");
+   P ("recurrence.month", "{every, plural, =1 {每月} other {每{every}個月}}");
+   P ("recurrence.quarter", "{every, plural, =1 {每季} other {每{every}季}}");
+   P ("recurrence.year", "{every, plural, =1 {每年} other {每{every}年}}");
+   P ("cache_summary.empty", "快取：無要求");
+   P ("cache_summary", "快取：命中{hits}次，未命中{misses}次，命中率{rate}%");
+   P ("field_change_summary",
+      "{total}個{other}：{changed}個已變更，{added}個已新增，{rem"
+      & "oved}個已移除");
+   P ("field_diff", "{field}已從{before}變更為{after}");
+   P ("field_added", "已新增{field}：{value}");
+   P ("field_removed", "已移除{field}（原為{value}）");
+   P ("field_unchanged", "{field}未變更，仍為{value}");
+   P ("number_comparison.equal", "{current}等於{baseline}");
+   P ("number_comparison.higher", "{current}比{baseline}高{quantity}");
+   P ("number_comparison.lower", "{current}比{baseline}低{quantity}");
+   P ("percent_comparison.equal", "{current}等於{baseline}");
+   P ("percent_comparison.higher", "{current}比{baseline}高{quantity}");
+   P ("percent_comparison.lower", "{current}比{baseline}低{quantity}");
+   P ("file_size_comparison.same", "{current}與{baseline}大小相同");
+   P ("file_size_comparison.larger", "{current}比{baseline}大{quantity}");
+   P ("file_size_comparison.smaller", "{current}比{baseline}小{quantity}");
+   P ("date_comparison.same", "{current}與{baseline}是同一天");
+   P ("date_comparison.after", "{current}比{baseline}晚{quantity}");
+   P ("date_comparison.before", "{current}比{baseline}早{quantity}");
+   P ("queue_summary", "佇列：{details}");
+   P ("domain_summary",
+      "{domain, select, queue {佇列} job {工作} run {執行} cache "
+      & "{快取} sync {同步} import {匯入} export {匯出} other "
+      & "{{domain}}}{state, select, queued {已排入佇列} running "
+      & "{執行中} waiting {等待中} paused {已暫停} complete "
+      & "{已完成} failed {失敗} stale {已過時} skipped {已略過} "
+      & "other {{state}}}：{details}");
+   P ("summary.none", "沒有{other}");
+   P ("summary.completed", "已完成{count}個{other}");
+   P ("summary.completed_of", "{total}個{other}中已完成{count}個");
+   P ("summary.failed", "{count}個失敗");
+   P ("summary.queued", "{count}個{other}已排入佇列");
+   P ("summary.running", "{count}個執行中");
+   P ("summary.complete", "{count}個已完成");
+   P ("backup.backup_running", "備份進行中");
+   P ("backup.backup_completed", "備份已完成");
+   P ("backup.backup_failed", "備份失敗");
+   P ("backup.backup_stale", "備份已過時");
+   P ("incident.incident_investigating", "正在調查事件");
+   P ("incident.incident_identified", "事件已確認");
+   P ("incident.incident_mitigated", "事件已緩解");
+   P ("incident.incident_resolved", "事件已解決");
+   P ("release.release_drafting", "版本準備中");
+   P ("release.release_ready", "版本已就緒");
+   P ("release.release_published", "版本已發布");
+   P ("release.release_rolled_back", "版本已回復");
+   P ("audit.audit_created", "稽核項目已建立");
+   P ("audit.audit_updated", "稽核項目已更新");
+   P ("audit.audit_deleted", "稽核項目已刪除");
+   P ("audit.audit_restored", "稽核項目已還原");
+   P ("flag.flag_enabled", "功能旗標已啟用");
+   P ("flag.flag_disabled", "功能旗標已停用");
+   P ("flag.flag_rolling_out", "功能旗標逐步推出中");
+   P ("flag.flag_rolled_back", "功能旗標已回復");
+   P ("webhook.webhook_pending", "Webhook待處理");
+   P ("webhook.webhook_delivered", "Webhook已送達");
+   P ("webhook.webhook_failed", "Webhook失敗");
+   P ("webhook.webhook_retrying", "Webhook重試中");
+   P ("api_key.api_key_active", "API金鑰有效");
+   P ("api_key.api_key_revoked", "API金鑰已撤銷");
+   P ("api_key.api_key_expired", "API金鑰已過期");
+   P ("api_key.api_key_rotated", "API金鑰已輪替");
+   P ("quota.quota_available", "配額可用");
+   P ("quota.quota_near_limit", "配額即將用盡");
+   P ("quota.quota_exceeded", "配額已超出");
+   P ("quota.quota_reset", "配額已重設");
+   P ("invoice.invoice_draft", "發票草稿");
+   P ("invoice.invoice_sent", "發票已寄送");
+   P ("invoice.invoice_paid", "發票已付款");
+   P ("invoice.invoice_refunded", "發票已退款");
+   P ("invoice.invoice_overdue", "發票已逾期");
+   P ("invoice.refund_failed", "退款失敗");
+   P ("page_navigation.only", "僅此一頁");
+   P ("page_navigation.first", "第一頁，可前往下一頁");
+   P ("page_navigation.last", "最後一頁，可返回上一頁");
+   P ("page_navigation.middle", "可前往上一頁和下一頁");
+   P ("end_of_week", "本週結束");
+   P ("end_of_month", "月底");
+   P ("end_of_quarter", "季末");
+   P ("time_of_day.night", "夜間");
+   P ("time_of_day.morning", "上午");
+   P ("time_of_day.afternoon", "下午");
+   P ("time_of_day.evening", "晚上");
+   P ("calendar_difference.same_day", "同一天");
+   P ("calendar_difference.zero", "0天");
+   P ("queue_summary.empty", "佇列為空");
+   P ("access.allowed", "已允許");
+   P ("access.denied", "已拒絕");
+   P ("access.owner", "擁有者");
+   P ("access.admin", "管理員");
+   P ("access.viewer", "檢視者");
+   P ("access.editor", "編輯者");
+   P ("auth.signed_in", "已登入");
+   P ("auth.signed_out", "已登出");
+   P ("auth.session_expired", "工作階段已過期");
+   P ("auth.locked", "已鎖定");
+   P ("auth.two_factor_required", "需要雙重驗證");
+   P ("billing.trialing", "試用中");
+   P ("billing.payment_due", "待付款");
+   P ("billing.payment_failed", "付款失敗");
+   P ("billing.paid", "已付款");
+   P ("billing.past_due", "已逾期");
+   P ("billing.canceled", "已取消");
+   P ("ci.pipeline_pending", "管線待處理");
+   P ("ci.pipeline_running", "管線執行中");
+   P ("ci.pipeline_passed", "管線已通過");
+   P ("ci.pipeline_failed", "管線失敗");
+   P ("ci.review_required", "需要審查");
+   P ("ci.deploy_blocked", "部署受阻");
+   P ("collaboration.active_now", "目前在線上");
+   P ("collaboration.away", "離開");
+   P ("collaboration.do_not_disturb", "請勿打擾");
+   P ("collaboration.typing", "正在輸入");
+   P ("collaboration.viewing", "正在檢視");
+   P ("collaboration.editing", "正在編輯");
+   P ("deployment.deploying", "部署中");
+   P ("deployment.deployed", "已部署");
+   P ("deployment.rolling_back", "回復中");
+   P ("deployment.rolled_back", "已回復");
+   P ("deployment.build_failed", "建置失敗");
+   P ("deployment.checks_passed", "檢查已通過");
+   P ("empty.no_items", "沒有項目");
+   P ("empty.no_results", "沒有結果");
+   P ("empty.no_messages", "沒有訊息");
+   P ("empty.no_selection", "未選取");
+   P ("empty.nothing_to_show", "沒有可顯示的內容");
+   P ("file.uploading", "上傳中");
+   P ("file.downloading", "下載中");
+   P ("file.copying", "複製中");
+   P ("file.moving", "移動中");
+   P ("file.deleting", "刪除中");
+   P ("file.deleted", "已刪除");
+   P ("file.restoring", "還原中");
+   P ("file.synced", "已同步");
+   P ("form.valid_input", "輸入有效");
+   P ("form.invalid_input", "輸入無效");
+   P ("form.dirty", "已變更");
+   P ("form.pristine", "未變更");
+   P ("form.submitted", "已送出");
+   P ("form.submission_failed", "送出失敗");
+   P ("health.healthy", "正常");
+   P ("health.degraded", "效能降低");
+   P ("health.unhealthy", "異常");
+   P ("health.incident", "發生事件");
+   P ("health.maintenance", "維護中");
+   P ("health.recovering", "復原中");
+   P ("issue.open", "未解決");
+   P ("issue.closed", "已關閉");
+   P ("issue.reopened", "已重新開啟");
+   P ("issue.assigned", "已指派");
+   P ("issue.unassigned", "未指派");
+   P ("issue.merged", "已合併");
+   P ("network.offline", "離線");
+   P ("network.online", "線上");
+   P ("network.connecting", "連線中");
+   P ("network.syncing", "同步中");
+   P ("network.sync_failed", "同步失敗");
+   P ("network.permission_denied", "權限遭拒");
+   P ("network.read_only", "唯讀");
+   P ("notification.unread", "未讀");
+   P ("notification.read", "已讀");
+   P ("notification.muted", "已靜音");
+   P ("notification.snoozed", "稍後提醒");
+   P ("notification.sent", "已傳送");
+   P ("notification.delivered", "已送達");
+   P ("payment.payment_authorized", "付款已授權");
+   P ("payment.payment_captured", "款項已收取");
+   P ("payment.payment_refunded", "已退款");
+   P ("payment.payment_disputed", "付款有爭議");
+   P ("payment.payment_requires_action", "付款需要處理");
+   P ("payment.payment_expired", "付款已過期");
+   P ("ui.empty", "空白");
+   P ("ui.loading", "載入中");
+   P ("ui.saving", "儲存中");
+   P ("ui.saved", "已儲存");
+   P ("ui.unsaved", "未儲存");
+   P ("ui.retrying", "重試中");
+   P ("ui.paused", "已暫停");
+   P ("ui.complete", "已完成");
+   P ("ui.failed", "失敗");
+   P ("ui.due_soon", "即將到期");
+   P ("ui.overdue", "已逾期");
+   P ("ui.last_seen", "上次上線");
+   P ("ui.updated_just_now", "剛剛更新");
+   P ("queue.queued", "已排入佇列");
+   P ("queue.running", "執行中");
+   P ("queue.waiting", "等待中");
+   P ("queue.blocked", "受阻");
+   P ("queue.canceled_job", "工作已取消");
+   P ("queue.completed_job", "工作已完成");
+   P ("search.filtering", "正在篩選");
+   P ("search.filtered", "已篩選");
+   P ("search.no_matches", "沒有符合項目");
+   P ("search.search_ready", "搜尋就緒");
+   P ("search.search_failed", "搜尋失敗");
+   P ("search.query_too_short", "查詢過短");
+   P ("security.secure", "安全");
+   P ("security.insecure", "不安全");
+   P ("security.vulnerable", "有安全漏洞");
+   P ("security.encrypted", "已加密");
+   P ("security.unencrypted", "未加密");
+   P ("security.token_expired", "權杖已過期");
+   P ("sync.sync_idle", "同步閒置");
+   P ("sync.syncing_now", "正在同步");
+   P ("sync.sync_queued", "同步已排入佇列");
+   P ("sync.sync_conflict", "同步衝突");
+   P ("sync.sync_complete", "同步完成");
+   P ("sync.sync_error", "同步錯誤");
+   P ("task.todo", "待辦");
+   P ("task.in_progress", "進行中");
+   P ("task.done", "已完成");
+   P ("task.skipped", "已略過");
+   P ("task.blocked_task", "受阻");
+   P ("task.waiting_on", "等候中");
+   P ("ticket.ticket_new", "新票證");
+   P ("ticket.ticket_open", "票證待處理");
+   P ("ticket.ticket_waiting", "票證等候中");
+   P ("ticket.ticket_escalated", "票證已提報");
+   P ("ticket.ticket_resolved", "票證已解決");
+   P ("ticket.ticket_closed", "票證已關閉");
+   P ("transfer.importing", "匯入中");
+   P ("transfer.imported", "已匯入");
+   P ("transfer.import_failed", "匯入失敗");
+   P ("transfer.exporting", "匯出中");
+   P ("transfer.exported", "已匯出");
+   P ("transfer.export_failed", "匯出失敗");
+   P ("validation.required", "必填");
+   P ("validation.optional", "選填");
+   P ("validation.invalid", "無效");
+   P ("validation.too_short", "過短");
+   P ("validation.too_long", "過長");
+   P ("validation.out_of_range", "超出範圍");
+   P ("validation.already_exists", "已存在");
+   P ("workflow.draft", "草稿");
+   P ("workflow.in_review", "審查中");
+   P ("workflow.approved", "已核准");
+   P ("workflow.rejected", "已拒絕");
+   P ("workflow.published", "已發布");
+   P ("workflow.archived", "已封存");
+   P ("database.database_online", "資料庫線上");
+   P ("database.database_offline", "資料庫離線");
+   P ("database.database_degraded", "資料庫效能降低");
+   P ("database.database_migrating", "資料庫移轉中");
+   P ("database.database_migration_failed", "資料庫移轉失敗");
+   P ("database.database_replicating", "資料庫複寫中");
+   P ("database.database_replication_lagging", "資料庫複寫延遲");
+   P ("database.database_backup_running", "資料庫備份中");
+   P ("database.database_backup_failed", "資料庫備份失敗");
+   P ("times_noun",
+      "{count, plural, =0 {從未{other}} =1 {{other}一次} =2 "
+      & "{{other}兩次} other {{other}{count}次}}");
+   P ("availability.all", "{total}個{other}中{available}個可用");
+   P ("availability.none", "沒有可用的{other}");
+   P ("availability.partial", "{total}個{other}中{available}個可用，{unavailable}個無法使用");
+   P ("operation_progress", "{name}（{state}）：{details}");
+   P ("operation.queued", "已排入佇列");
+   P ("operation.running", "執行中");
+   P ("operation.blocked", "受阻");
+   P ("operation.retrying", "正在重試");
+   P ("operation.succeeded", "成功");
+   P ("operation.partially_succeeded", "部分成功");
+   P ("operation.failed", "失敗");
+   P ("operation.canceled", "已取消");
+   P ("operation.skipped", "已略過");
+   P ("operation.stale", "已過時");
+   P ("operation.unknown_state", "未知");
+   P ("operation.last_success", "{name}上次成功：{time}");
+   P ("operation.next_retry", "{name}下次重試：{time}");
+   P ("operation.stale_run", "{name}已有{time}未更新");
+   P ("summary.skipped", "{count}個已略過");
+   P ("summary.retried", "{count}個已重試");
+   P ("summary.canceled", "{count}個已取消");
+   P ("system.service.operational", "運作正常");
+   P ("system.service.degraded", "效能降低");
+   P ("system.service.partial_outage", "部分中斷");
+   P ("system.service.major_outage", "嚴重中斷");
+   P ("system.service.maintenance", "維護中");
+   P ("system.service.unknown", "服務狀態不明");
+   P ("system.health.healthy", "健康");
+   P ("system.health.warning", "警告");
+   P ("system.health.critical", "嚴重");
+   P ("system.health.unavailable", "無法使用");
+   P ("system.health.unknown_health", "健康狀況不明");
+   P ("system.readiness.ready", "就緒");
+   P ("system.readiness.not_ready", "未就緒");
+   P ("system.readiness.starting", "啟動中");
+   P ("system.readiness.draining", "清空中");
+   P ("system.readiness.stopped", "已停止");
+   P ("system.readiness.unknown_readiness", "就緒狀態不明");
+   P ("system.component.online", "線上");
+   P ("system.component.offline", "離線");
+   P ("system.component.starting", "啟動中");
+   P ("system.component.stopping", "停止中");
+   P ("system.component.restarting", "重新啟動中");
+   P ("system.component.unknown", "元件狀態不明");
+   P ("system.check.passing", "通過");
+   P ("system.check.failing", "未通過");
+   P ("system.check.warning", "警告");
+   P ("system.check.skipped", "已略過");
+   P ("system.check.timed_out", "已逾時");
+   P ("system.check.unknown", "檢查狀態不明");
+   P ("system.incident.investigating", "調查中");
+   P ("system.incident.identified", "已確認原因");
+   P ("system.incident.monitoring", "監控中");
+   P ("system.incident.resolved", "已解決");
+   P ("system.incident.scheduled_maintenance", "排定維護");
+   P ("system.named", "{name}：{state}");
+   P ("system.check_named", "{name}檢查：{state}");
+   P ("system.count.components", "{count, plural, =0 {沒有元件} other {{count}個元件}}");
+   P ("system.count.checks", "{count, plural, =0 {沒有檢查} other {{count}項檢查}}");
+   P ("system.count.incidents", "{count, plural, =0 {沒有事件} other {{count}起事件}}");
+   P ("system.uptime", "正常運作時間 {measure}");
+   P ("system.latency", "延遲 {measure}");
+   P ("system.maintenance_window", "維護時段 {time}");
+   P ("system.last_checked", "上次檢查 {time}");
+   P ("system.http.informational", "資訊回應");
+   P ("system.http.successful", "成功回應");
+   P ("system.http.redirection", "重新導向");
+   P ("system.http.client_error", "用戶端錯誤");
+   P ("system.http.server_error", "伺服器錯誤");
+   P ("system.exit.success", "結束代碼 {code}：成功");
+   P ("system.exit.failure", "結束代碼 {code}：失敗");
+   P ("system.exit.usage_error", "結束代碼 {code}：用法錯誤");
+   P ("system.exit.not_executable", "結束代碼 {code}：無法執行命令");
+   P ("system.exit.not_found", "結束代碼 {code}：找不到命令");
+   P ("system.exit.invalid_argument", "結束代碼 {code}：無效的結束引數");
+   P ("system.exit.signal", "結束代碼 {code}：被{signal}終止");
+   P ("validation.problem.required", "{field}：為必填欄位");
+   P ("validation.problem.minimum", "{field}：低於最小值");
+   P ("validation.problem.maximum", "{field}：超過最大值");
+   P ("validation.problem.range", "{field}：超出範圍");
+   P ("validation.problem.pattern", "{field}：格式不正確");
+   P ("validation.problem.choice", "{field}：必須是允許的選項之一");
+   P ("validation.problem.dependency", "{field}：取決於另一個欄位");
+   P ("validation.problem.custom", "{field}：無效");
+   P ("validation.constraint.no_relation", "{field}：必須是有效的{value}");
+   P ("validation.constraint.less_than", "{field}：必須小於{value}");
+   P ("validation.constraint.less_or_equal", "{field}：不得大於{value}");
+   P ("validation.constraint.greater_than", "{field}：必須大於{value}");
+   P ("validation.constraint.greater_or_equal", "{field}：不得小於{value}");
+   P ("validation.constraint.equal_to", "{field}：必須等於{value}");
+   P ("validation.constraint.not_equal_to", "{field}：不得等於{value}");
+   P ("validation.constraint.before_field", "{field}：必須早於{value}");
+   P ("validation.constraint.after_field", "{field}：必須晚於{value}");
+   P ("validation.choices", "{field}：允許的值為{choices}");
+   P ("frame.detail", "{text}（{detail}）");
+   P ("frame.got", "{text}，輸入值為{actual}");
+   P ("frame.also", "{text}，{detail}");
+   P ("frame.retry", "{text}，{time}後重試");
+   P ("net_diagnostic.dns", "{endpoint}：DNS查詢失敗");
+   P ("net_diagnostic.tcp", "{endpoint}：TCP連線失敗");
+   P ("net_diagnostic.tls", "{endpoint}：TLS憑證驗證失敗");
+   P ("net_diagnostic.http", "{endpoint}：HTTP要求失敗");
+   P ("net_diagnostic.proxy", "{endpoint}：Proxy連線失敗");
+   P ("net_diagnostic.timeout", "{endpoint}：連線逾時");
+   P ("net_diagnostic.reset", "{endpoint}：連線已重設");
+   P ("net_diagnostic.unknown_network", "{endpoint}：網路錯誤");
+   P ("progress.state.not_started", "未開始");
+   P ("progress.state.running", "執行中");
+   P ("progress.state.stalled", "停滯");
+   P ("progress.state.retrying", "正在重試");
+   P ("progress.state.complete", "已完成");
+   P ("progress.state.failed", "失敗");
+   P ("progress.of", "{subject}：已完成{done}/{total}（{percent}%），{state}");
+   P ("progress.done", "{subject}：已完成{done}個，{state}");
+   P ("collection.summary",
+      "{name}：共{total}項，唯一值{unique}個，重複項{duplicates}"
+      & "個，離群值{outliers}個");
+   P ("top_frequency", "{name}中最常見的值：{value}（{count}次）");
+   P ("calendar_date.fiscal_year", "{year}會計年度");
+   P ("calendar_date.fiscal_quarter", "{year}會計年度第{part}季");
+   P ("calendar_date.fiscal_half",
+      "{part, plural, =1 {{year}會計年度上半年} other "
+      & "{{year}會計年度下半年}}");
+   P ("calendar_date.fiscal_year_end", "{year}會計年度末");
+   P ("calendar_date.semester",
+      "{part, plural, =1 {{year}年第一學期} other "
+      & "{{year}年第二學期}}");
+   P ("calendar_date.half_year", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}");
+   P ("calendar_date.half_year_phrase", "{part, plural, =1 {{year}年上半年} other {{year}年下半年}}");
+   P ("calendar_date.month_phase",
+      "{phase, select, early {{text}初} mid {{text}中旬} other "
+      & "{{text}底}}");
+   P ("calendar_date.quarter_phase", "{phase, select, early {{text}初} mid {{text}中} other {{text}末}}");
+   P ("calendar_range.weekend.last", "上週末");
+   P ("calendar_range.weekend.this", "本週末");
+   P ("calendar_range.weekend.next", "下週末");
+   P ("calendar_range.weekend_of", "{date}所在的週末");
+   P ("calendar_range.week.last", "上週");
+   P ("calendar_range.week.this", "本週");
+   P ("calendar_range.week.next", "下週");
+   P ("calendar_range.week_of", "{date}所在的一週");
+   P ("calendar_range.between", "{first}至{last}");
+   P ("http.reason.100", "繼續");
+   P ("http.reason.101", "切換通訊協定");
+   P ("http.reason.102", "處理中");
+   P ("http.reason.103", "早期提示");
+   P ("http.reason.200", "成功");
+   P ("http.reason.201", "已建立");
+   P ("http.reason.202", "已接受");
+   P ("http.reason.203", "非權威資訊");
+   P ("http.reason.204", "無內容");
+   P ("http.reason.205", "重設內容");
+   P ("http.reason.206", "部分內容");
+   P ("http.reason.207", "多重狀態");
+   P ("http.reason.208", "已回報");
+   P ("http.reason.226", "已使用 IM");
+   P ("http.reason.300", "多重選擇");
+   P ("http.reason.301", "永久移動");
+   P ("http.reason.302", "已找到");
+   P ("http.reason.303", "參見其他位置");
+   P ("http.reason.304", "未修改");
+   P ("http.reason.305", "使用代理伺服器");
+   P ("http.reason.307", "暫時重新導向");
+   P ("http.reason.308", "永久重新導向");
+   P ("http.reason.400", "錯誤的要求");
+   P ("http.reason.401", "未授權");
+   P ("http.reason.402", "需要付款");
+   P ("http.reason.403", "禁止存取");
+   P ("http.reason.404", "找不到");
+   P ("http.reason.405", "不允許的方法");
+   P ("http.reason.406", "無法接受");
+   P ("http.reason.407", "需要代理伺服器驗證");
+   P ("http.reason.408", "要求逾時");
+   P ("http.reason.409", "衝突");
+   P ("http.reason.410", "已不存在");
+   P ("http.reason.411", "需要長度");
+   P ("http.reason.412", "前提條件失敗");
+   P ("http.reason.413", "內容過大");
+   P ("http.reason.414", "URI 過長");
+   P ("http.reason.415", "不支援的媒體類型");
+   P ("http.reason.416", "範圍無法滿足");
+   P ("http.reason.417", "預期失敗");
+   P ("http.reason.418", "我是茶壺");
+   P ("http.reason.421", "誤導向的要求");
+   P ("http.reason.422", "無法處理的內容");
+   P ("http.reason.423", "已鎖定");
+   P ("http.reason.424", "相依性失敗");
+   P ("http.reason.425", "為時過早");
+   P ("http.reason.426", "需要升級");
+   P ("http.reason.428", "需要前提條件");
+   P ("http.reason.429", "要求過多");
+   P ("http.reason.431", "要求標頭欄位過大");
+   P ("http.reason.451", "因法律原因無法使用");
+   P ("http.reason.500", "內部伺服器錯誤");
+   P ("http.reason.501", "未實作");
+   P ("http.reason.502", "錯誤的閘道");
+   P ("http.reason.503", "服務無法使用");
+   P ("http.reason.504", "閘道逾時");
+   P ("http.reason.505", "不支援的 HTTP 版本");
+   P ("http.reason.506", "變體也在協商");
+   P ("http.reason.507", "儲存空間不足");
+   P ("http.reason.508", "偵測到迴圈");
+   P ("http.reason.510", "未擴充");
+   P ("http.reason.511", "需要網路驗證");
+   P ("errno.reason.0", "成功");
+   P ("errno.reason.1", "不允許的操作");
+   P ("errno.reason.2", "沒有此一檔案或目錄");
+   P ("errno.reason.3", "沒有此一程序");
+   P ("errno.reason.4", "系統呼叫被中斷");
+   P ("errno.reason.5", "輸入/輸出錯誤");
+   P ("errno.reason.6", "沒有此一裝置或位址");
+   P ("errno.reason.9", "錯誤的檔案描述符");
+   P ("errno.reason.11", "資源暫時無法取得");
+   P ("errno.reason.12", "記憶體不足");
+   P ("errno.reason.13", "權限不足");
+   P ("errno.reason.17", "檔案已存在");
+   P ("errno.reason.20", "不是目錄");
+   P ("errno.reason.21", "是一個目錄");
+   P ("errno.reason.22", "無效的引數");
+   P ("errno.reason.24", "開啟的檔案過多");
+   P ("errno.reason.28", "裝置上已無剩餘空間");
+   P ("errno.reason.32", "管線損壞");
+   P ("errno.reason.98", "位址已在使用中");
+   P ("errno.reason.110", "連線逾時");
+   P ("errno.reason.111", "連線被拒");
+   P ("signal.reason.1", "掛斷");
+   P ("signal.reason.2", "中斷");
+   P ("signal.reason.3", "結束");
+   P ("signal.reason.4", "不合法的指令");
+   P ("signal.reason.5", "追蹤陷阱");
+   P ("signal.reason.6", "中止");
+   P ("signal.reason.7", "匯流排錯誤");
+   P ("signal.reason.8", "浮點數例外");
+   P ("signal.reason.9", "已強制終止");
+   P ("signal.reason.10", "使用者定義訊號 1");
+   P ("signal.reason.11", "記憶體區段錯誤");
+   P ("signal.reason.12", "使用者定義訊號 2");
+   P ("signal.reason.13", "管線損壞");
+   P ("signal.reason.14", "鬧鐘");
+   P ("signal.reason.15", "終止要求");
+   P ("signal.reason.17", "子程序狀態已變更");
+   P ("signal.reason.18", "繼續");
+   P ("signal.reason.19", "已停止");
+   P ("signal.reason.20", "終端機停止");
+   P ("signal.reason.28", "視窗大小已變更");
+   P ("sqlstate.reason.00", "成功完成");
+   P ("sqlstate.reason.01", "警告");
+   P ("sqlstate.reason.02", "無資料");
+   P ("sqlstate.reason.08", "連線例外");
+   P ("sqlstate.reason.0a", "不支援的功能");
+   P ("sqlstate.reason.22", "資料例外");
+   P ("sqlstate.reason.23", "違反完整性約束");
+   P ("sqlstate.reason.24", "無效的游標狀態");
+   P ("sqlstate.reason.25", "無效的交易狀態");
+   P ("sqlstate.reason.28", "無效的授權規格");
+   P ("sqlstate.reason.2d", "無效的交易終止");
+   P ("sqlstate.reason.3d", "無效的目錄名稱");
+   P ("sqlstate.reason.3f", "無效的結構描述名稱");
+   P ("sqlstate.reason.40", "交易回復");
+   P ("sqlstate.reason.42", "語法錯誤或違反存取規則");
+   P ("sqlstate.reason.53", "資源不足");
+   P ("sqlstate.reason.54", "超出程式限制");
+   P ("sqlstate.reason.55", "物件未處於必要狀態");
+   P ("sqlstate.reason.57", "操作員介入");
+   P ("sqlstate.reason.58", "系統錯誤");
+   P ("sqlstate.reason.hv", "外部資料包裝器錯誤");
+   P ("sqlstate.reason.p0", "PL/pgSQL 錯誤");
+   P ("sqlstate.reason.xx", "內部錯誤");
+   P ("system.signal_numbered", "訊號 {number} {name} {reason}");
+   P ("http.reason.unknown", "未知狀態");
+   P ("errno.reason.unknown", "未知錯誤");
+   P ("signal.reason.unknown", "未知訊號");
+   P ("sqlstate.reason.unknown", "未知 SQLSTATE 類別");
 end Locale_Zh_Hant;

@@ -13,6 +13,7 @@ with Humanize.Lists;
 with Humanize.Locales;
 with Humanize.Numbers;
 with Humanize.Parsing;
+with Humanize.Parsing.Localized;
 with Humanize.Phrases;
 with Humanize.Rates;
 with Humanize.Status;
@@ -158,11 +159,12 @@ package body Humanize.Tests.Compatibility is
    is
       Text : constant String :=
         Rendered (Humanize.Numbers.Percent (Context, Value), Label);
-      Parsed : constant Humanize.Parsing.Number_Parse_Result :=
-        Humanize.Parsing.Parse_Percent (Text);
+      --  Read in the locale that wrote it (native digits, "١٢٫٥٪").
+      Parsed : constant Humanize.Parsing.Float_Parse_Result :=
+        Humanize.Parsing.Localized.Parse_Percent (Context, Text);
    begin
       AUnit.Assertions.Assert
-        (Parsed.Status = Ok and then Parsed.Value = Rounded,
+        (Parsed.Status = Ok and then Long_Long_Integer (Long_Float'Rounding (Parsed.Value)) = Rounded,
          Locale & " " & Label & " percent roundtrip [" & Text & "]");
    end Check_Percent_Roundtrip;
 

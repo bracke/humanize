@@ -1,8 +1,10 @@
 with Ada.Characters.Handling;
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Message_Keys;
 with Humanize.Selections;
 
 package body Humanize.System_Status.Localized is
@@ -10,6 +12,117 @@ package body Humanize.System_Status.Localized is
    use type Humanize.Status.Status_Code;
 
    package Sel renames Humanize.Selections;
+
+   function Ok_Result (Text : String) return Humanize.Status.Text_Result is
+     (Status => Humanize.Status.Ok, Text => To_Unbounded_String (Text), Key => Humanize.Message_Keys.No_Message);
+
+   --  Reason Key ("http.reason.503") in Context's locale; English where the
+   --  locale is English or has none.
+   function Reason (Context : Humanize.Contexts.Context; Key, English : String) return String is
+      Rendered : constant Humanize.Status.Text_Result :=
+        Humanize.I18N_Rendering.Phrase_Or (Context, Sel.Phrase (Key), Ok_Result (English));
+   begin
+      return To_String (Rendered.Text);
+   end Reason;
+
+   function Text_Of (Result : Humanize.Status.Text_Result) return String is (To_String (Result.Text));
+
+   function Code_Key (Family : String; Code : Integer; English_Reason, Unknown : String) return String is
+     (Family & ".reason."
+      & (if English_Reason = Unknown then "unknown"
+         else Ada.Strings.Fixed.Trim (Integer'Image (Code), Ada.Strings.Left)));
+
+   function HTTP_Status_Reason
+     (Context : Humanize.Contexts.Context;
+      Code    : HTTP_Status_Code)
+      return Humanize.Status.Text_Result
+   is
+      English : constant String := Text_Of (Humanize.System_Status.HTTP_Status_Reason (Code));
+   begin
+      return Ok_Result (Reason (Context, Code_Key ("http", Code, English, "unknown status"), English));
+   end HTTP_Status_Reason;
+
+   function HTTP_Status_Label
+     (Context      : Humanize.Contexts.Context;
+      Code         : HTTP_Status_Code;
+      Include_Code : Boolean := True)
+      return Humanize.Status.Text_Result
+   is
+      Local : constant String := Text_Of (HTTP_Status_Reason (Context, Code));
+   begin
+      return Ok_Result
+        (if Include_Code
+         then "HTTP " & Ada.Strings.Fixed.Trim (Integer'Image (Code), Ada.Strings.Left) & " " & Local
+         else Local);
+   end HTTP_Status_Label;
+
+   function Errno_Label
+     (Context      : Humanize.Contexts.Context;
+      Code         : Errno_Code;
+      Include_Code : Boolean := True)
+      return Humanize.Status.Text_Result
+   is
+      English : constant String := Text_Of (Humanize.System_Status.Errno_Label (Code, Include_Code => False));
+      Full    : constant String := Text_Of (Humanize.System_Status.Errno_Label (Code));
+      Name    : constant String := Full (Full'First .. Full'Last - English'Length - 1);
+      Local   : constant String := Reason (Context, Code_Key ("errno", Code, English, "unknown error"), English);
+   begin
+      return Ok_Result (if Include_Code then Name & " " & Local else Local);
+   end Errno_Label;
+
+   function Signal_Label
+     (Context        : Humanize.Contexts.Context;
+      Number         : Signal_Number;
+      Include_Number : Boolean := True)
+      return Humanize.Status.Text_Result
+   is
+      Plain   : constant String := Text_Of (Humanize.System_Status.Signal_Label (Number, Include_Number => False));
+      Space   : constant Natural := Ada.Strings.Fixed.Index (Plain, " ");
+      --  "SIGKILL killed": the mnemonic, then the reason; an unknown signal is
+      --  "signal 40 unknown signal".
+      English : constant String :=
+        (if Plain'Length > 14 and then Plain (Plain'Last - 13 .. Plain'Last) = "unknown signal" then "unknown signal"
+         elsif Space = 0 then Plain else Plain (Space + 1 .. Plain'Last));
+      Name    : constant String := Plain (Plain'First .. Plain'Last - English'Length - 1);
+      Local   : constant String := Reason (Context, Code_Key ("signal", Number, English, "unknown signal"), English);
+   begin
+      if not Include_Number then
+         return Ok_Result (Name & " " & Local);
+      end if;
+      return Humanize.I18N_Rendering.Phrase_Or
+        (Context,
+         Sel.With_Arg (Sel.With_Arg (Sel.With_Arg (Sel.Phrase ("system.signal_numbered"), "number",
+                                                   Long_Long_Integer (Number)), "name", Name), "reason", Local),
+         Humanize.System_Status.Signal_Label (Number));
+   end Signal_Label;
+
+   function SQLSTATE_Class_Label
+     (Context      : Humanize.Contexts.Context;
+      Class        : SQLSTATE_Class;
+      Include_Code : Boolean := True)
+      return Humanize.Status.Text_Result
+   is
+      English : constant String := Text_Of (Humanize.System_Status.SQLSTATE_Class_Label (Class, Include_Code => False));
+      Key     : constant String :=
+        "sqlstate.reason."
+        & (if English = "unknown SQLSTATE class" then "unknown"
+           else Ada.Characters.Handling.To_Lower (String (Class)));
+      Local   : constant String := Reason (Context, Key, English);
+   begin
+      return Ok_Result (if Include_Code then "SQLSTATE " & String (Class) & " " & Local else Local);
+   end SQLSTATE_Class_Label;
+
+   procedure HTTP_Status_Label_Into
+     (Context      : Humanize.Contexts.Context;
+      Code         : HTTP_Status_Code;
+      Target       : in out String;
+      Written      : out Natural;
+      Status       : out Humanize.Status.Status_Code;
+      Include_Code : Boolean := True)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text (HTTP_Status_Label (Context, Code, Include_Code), Target, Written, Status);
+   end HTTP_Status_Label_Into;
 
    function Key (Family, Image, Suffix : String) return String is
       Lower : constant String := Ada.Characters.Handling.To_Lower (Image);
@@ -71,7 +184,7 @@ package body Humanize.System_Status.Localized is
          when 129 .. 192 =>
             declare
                Signal : constant Humanize.Status.Text_Result :=
-                 Signal_Label (Signal_Number (Code - 128), Include_Number => False);
+                 Signal_Label (Context, Signal_Number (Code - 128), Include_Number => False);
             begin
                if Signal.Status /= Humanize.Status.Ok then
                   return English;

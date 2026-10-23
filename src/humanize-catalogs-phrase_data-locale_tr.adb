@@ -1,458 +1,593 @@
 separate (Humanize.Catalogs.Phrase_Data)
-function Locale_Tr return Wide_Wide_String is
-   function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("tr", Name, Template));
+procedure Locale_Tr (Target : in out Catalog_Text) is
+   --  One statement an entry: the catalog grows on the heap, not in one
+   --  expression on the stack.
+   procedure P (Name, Template : Wide_Wide_String) is
+   begin
+      Add (Target, "tr", Name, Template);
+   end P;
 begin
-   return
-     P ("all_count", "tüm {total, plural, one {{one}} other {{other}}} ({total})")
-     & P ("filtered_count.none", "eşleşen {one} yok")
-     & P ("filtered_count.all", "tümü eşleşiyor ({total} {one})")
-     & P ("filtered_count.some", "{total} {one} içinden {matching} eşleşiyor")
-     & P ("more_count", "{visible} gösteriliyor, +{remaining} daha")
-     & P ("others_count", "{first} ve {remaining} diğeri")
-     & P ("page_count", "sayfa {page}/{total}")
-     & P ("page_size", "sayfa başına {size} {one}")
-     & P ("pagination_range", "toplam {total} {one} içinden {first}–{last}")
-     & P ("position_count", "{position}/{total}")
-     & P ("selection_count", "{total} {one} içinden {selected} seçildi")
-     & P ("showing_count", "{total} {one} içinden {showing} gösteriliyor")
-     & P ("validation_count",
-          "{count, plural, =0 {{severity, select, error {hata yok} warning "
-          & "{uyarı yok} other {bildirim yok}}} other {{count} {severity, select, "
-          & "error {hata} warning {uyarı} other {bildirim}}}}")
-     & P ("collection.empty", "{one} yok")
-     & P ("collection.none_shown", "gösterilen {one} yok")
-     & P ("collection.showing_hidden", "{total} {one} içinden {visible} gösteriliyor, {hidden} gizli")
-     & P ("collection.showing", "{total} {one} içinden {visible} gösteriliyor")
-     & P ("collection.shown_hidden", "{visible} {one} gösteriliyor, {hidden} gizli")
-     & P ("collection.shown", "{visible} {one} gösteriliyor")
-     & P ("collection.visible_out_of", "{total} {one} içinden {visible} görünür")
-     & P ("complete_count", "{done}/{total} tamamlandı")
-     & P ("percent_complete", "%{percent} tamamlandı")
-     & P ("step_count", "adım {step}/{total}")
-     & P ("attempt_count", "deneme {attempt}/{total}")
-     & P ("throughput_remaining", "{remaining} {one} kaldı ({rate} {unit}/s)")
-     & P ("accessible_progress", "{done}/{total} tamamlandı, yüzde {percent}")
-     & P ("business_days", "{days} iş günü")
-     & P ("working_hours", "{hours} çalışma saati")
-     & P ("due.overdue", "{days} gün gecikmiş")
-     & P ("due.today", "son tarih bugün")
-     & P ("due.tomorrow", "son tarih yarın")
-     & P ("due.in", "son tarih {days} gün sonra")
-     & P ("calendar_difference.future", "{difference} sonra")
-     & P ("calendar_difference.past", "{difference} önce")
-     & P ("calendar_difference.same_day", "aynı gün")
-     & P ("calendar_difference.zero", "0 gün")
-     & P ("cpu_load", "CPU yükü {measure}")
-     & P ("battery", "pil {measure}")
-     & P ("screen_size", "ekran {measure}")
-     & P ("refresh_rate", "yenileme hızı {measure}")
-     & P ("editorial_percent.symbol", "%{value}")
-     & P ("editorial_percent.word", "yüzde {value}")
-     & P ("recurrence.second", "{every, plural, one {her saniye} other {her {every} saniyede bir}}")
-     & P ("recurrence.minute", "{every, plural, one {her dakika} other {her {every} dakikada bir}}")
-     & P ("recurrence.hour", "{every, plural, one {her saat} other {her {every} saatte bir}}")
-     & P ("recurrence.day", "{every, plural, one {her gün} other {her {every} günde bir}}")
-     & P ("recurrence.week", "{every, plural, one {her hafta} other {her {every} haftada bir}}")
-     & P ("recurrence.month", "{every, plural, one {her ay} other {her {every} ayda bir}}")
-     & P ("recurrence.quarter", "{every, plural, one {her çeyrek} other {her {every} çeyrekte bir}}")
-     & P ("recurrence.year", "{every, plural, one {her yıl} other {her {every} yılda bir}}")
-     & P ("cache_summary.empty", "önbellek: istek yok")
-     & P ("cache_summary", "önbellek: {hits} isabet, {misses} ıskalama, isabet oranı %{rate}")
-     & P ("field_change_summary",
-          "{total} {one}: {changed} değişti, {added} eklendi, {removed} "
-          & "kaldırıldı")
-     & P ("field_diff", "{field} değişti: {before} → {after}")
-     & P ("field_added", "{field} eklendi: {value}")
-     & P ("field_removed", "{field} kaldırıldı (önceki: {value})")
-     & P ("field_unchanged", "{field} değişmedi: {value}")
-     & P ("number_comparison.equal", "{current}, {baseline} değerine eşit")
-     & P ("number_comparison.higher", "{current}, {baseline} değerinden {quantity} yüksek")
-     & P ("number_comparison.lower", "{current}, {baseline} değerinden {quantity} düşük")
-     & P ("percent_comparison.equal", "{current}, {baseline} değerine eşit")
-     & P ("percent_comparison.higher", "{current}, {baseline} değerinden {quantity} yüksek")
-     & P ("percent_comparison.lower", "{current}, {baseline} değerinden {quantity} düşük")
-     & P ("file_size_comparison.same", "{current}, {baseline} ile aynı boyutta")
-     & P ("file_size_comparison.larger", "{current}, {baseline} boyutundan {quantity} büyük")
-     & P ("file_size_comparison.smaller", "{current}, {baseline} boyutundan {quantity} küçük")
-     & P ("date_comparison.same", "{current}, {baseline} ile aynı tarih")
-     & P ("date_comparison.after", "{current}, {baseline} tarihinden {quantity} sonra")
-     & P ("date_comparison.before", "{current}, {baseline} tarihinden {quantity} önce")
-     & P ("queue_summary", "kuyruk: {details}")
-     & P ("queue_summary.empty", "kuyruk boş")
-     & P ("domain_summary",
-          "{domain, select, queue {kuyruk} job {iş} run {çalıştırma} cache "
-          & "{önbellek} sync {eşitleme} import {içe aktarma} export {dışa "
-          & "aktarma} other {{domain}}} {state, select, queued {kuyrukta} running "
-          & "{çalışıyor} waiting {bekliyor} paused {duraklatıldı} complete "
-          & "{tamamlandı} failed {başarısız} stale {güncel değil} skipped "
-          & "{atlandı} other {{state}}}: {details}")
-     & P ("summary.none", "{one} yok")
-     & P ("summary.completed", "{count} {one} tamamlandı")
-     & P ("summary.completed_of", "{total} {one} içinden {count} tamamlandı")
-     & P ("summary.failed", "{count} başarısız")
-     & P ("summary.queued", "{count} {one} kuyrukta")
-     & P ("summary.running", "{count} çalışıyor")
-     & P ("summary.complete", "{count} tamamlandı")
-     & P ("backup.backup_running", "yedekleme sürüyor")
-     & P ("backup.backup_completed", "yedekleme tamamlandı")
-     & P ("backup.backup_failed", "yedekleme başarısız")
-     & P ("backup.backup_stale", "yedek güncel değil")
-     & P ("incident.incident_investigating", "olay inceleniyor")
-     & P ("incident.incident_identified", "olay belirlendi")
-     & P ("incident.incident_mitigated", "olayın etkisi azaltıldı")
-     & P ("incident.incident_resolved", "olay çözüldü")
-     & P ("release.release_drafting", "sürüm hazırlanıyor")
-     & P ("release.release_ready", "sürüm hazır")
-     & P ("release.release_published", "sürüm yayımlandı")
-     & P ("release.release_rolled_back", "sürüm geri alındı")
-     & P ("audit.audit_created", "denetim kaydı oluşturuldu")
-     & P ("audit.audit_updated", "denetim kaydı güncellendi")
-     & P ("audit.audit_deleted", "denetim kaydı silindi")
-     & P ("audit.audit_restored", "denetim kaydı geri yüklendi")
-     & P ("flag.flag_enabled", "özellik bayrağı etkinleştirildi")
-     & P ("flag.flag_disabled", "özellik bayrağı devre dışı bırakıldı")
-     & P ("flag.flag_rolling_out", "özellik bayrağı kademeli olarak açılıyor")
-     & P ("flag.flag_rolled_back", "özellik bayrağı geri alındı")
-     & P ("webhook.webhook_pending", "webhook bekliyor")
-     & P ("webhook.webhook_delivered", "webhook teslim edildi")
-     & P ("webhook.webhook_failed", "webhook başarısız")
-     & P ("webhook.webhook_retrying", "webhook yeniden deneniyor")
-     & P ("api_key.api_key_active", "API anahtarı etkin")
-     & P ("api_key.api_key_revoked", "API anahtarı iptal edildi")
-     & P ("api_key.api_key_expired", "API anahtarının süresi doldu")
-     & P ("api_key.api_key_rotated", "API anahtarı yenilendi")
-     & P ("quota.quota_available", "kota kullanılabilir")
-     & P ("quota.quota_near_limit", "kota sınıra yakın")
-     & P ("quota.quota_exceeded", "kota aşıldı")
-     & P ("quota.quota_reset", "kota sıfırlandı")
-     & P ("invoice.invoice_draft", "fatura taslağı")
-     & P ("invoice.invoice_sent", "fatura gönderildi")
-     & P ("invoice.invoice_paid", "fatura ödendi")
-     & P ("invoice.invoice_refunded", "fatura iade edildi")
-     & P ("invoice.invoice_overdue", "faturanın vadesi geçti")
-     & P ("invoice.refund_failed", "iade başarısız")
-     & P ("page_navigation.only", "tek sayfa")
-     & P ("page_navigation.first", "ilk sayfa, sonraki mevcut")
-     & P ("page_navigation.last", "son sayfa, önceki mevcut")
-     & P ("page_navigation.middle", "önceki ve sonraki mevcut")
-     & P ("end_of_week", "haftanın sonu")
-     & P ("end_of_month", "ayın sonu")
-     & P ("end_of_quarter", "çeyreğin sonu")
-     & P ("time_of_day.night", "gece")
-     & P ("time_of_day.morning", "sabah")
-     & P ("time_of_day.afternoon", "öğleden sonra")
-     & P ("time_of_day.evening", "akşam")
-     & P ("access.allowed", "izin verildi")
-     & P ("access.denied", "reddedildi")
-     & P ("access.owner", "sahip")
-     & P ("access.admin", "yönetici")
-     & P ("access.viewer", "görüntüleyici")
-     & P ("access.editor", "düzenleyici")
-     & P ("auth.signed_in", "oturum açık")
-     & P ("auth.signed_out", "oturum kapalı")
-     & P ("auth.session_expired", "oturum süresi doldu")
-     & P ("auth.locked", "kilitli")
-     & P ("auth.two_factor_required", "iki adımlı doğrulama gerekli")
-     & P ("billing.trialing", "deneme süresinde")
-     & P ("billing.payment_due", "ödeme bekleniyor")
-     & P ("billing.payment_failed", "ödeme başarısız")
-     & P ("billing.paid", "ödendi")
-     & P ("billing.past_due", "vadesi geçti")
-     & P ("billing.canceled", "iptal edildi")
-     & P ("ci.pipeline_pending", "işlem hattı bekliyor")
-     & P ("ci.pipeline_running", "işlem hattı çalışıyor")
-     & P ("ci.pipeline_passed", "işlem hattı başarılı")
-     & P ("ci.pipeline_failed", "işlem hattı başarısız")
-     & P ("ci.review_required", "inceleme gerekli")
-     & P ("ci.deploy_blocked", "dağıtım engellendi")
-     & P ("collaboration.active_now", "şu an etkin")
-     & P ("collaboration.away", "uzakta")
-     & P ("collaboration.do_not_disturb", "rahatsız etmeyin")
-     & P ("collaboration.typing", "yazıyor")
-     & P ("collaboration.viewing", "görüntülüyor")
-     & P ("collaboration.editing", "düzenliyor")
-     & P ("deployment.deploying", "dağıtılıyor")
-     & P ("deployment.deployed", "dağıtıldı")
-     & P ("deployment.rolling_back", "geri alınıyor")
-     & P ("deployment.rolled_back", "geri alındı")
-     & P ("deployment.build_failed", "derleme başarısız")
-     & P ("deployment.checks_passed", "denetimler başarılı")
-     & P ("empty.no_items", "öğe yok")
-     & P ("empty.no_results", "sonuç yok")
-     & P ("empty.no_messages", "ileti yok")
-     & P ("empty.no_selection", "seçim yok")
-     & P ("empty.nothing_to_show", "gösterilecek bir şey yok")
-     & P ("file.uploading", "yükleniyor")
-     & P ("file.downloading", "indiriliyor")
-     & P ("file.copying", "kopyalanıyor")
-     & P ("file.moving", "taşınıyor")
-     & P ("file.deleting", "siliniyor")
-     & P ("file.deleted", "silindi")
-     & P ("file.restoring", "geri yükleniyor")
-     & P ("file.synced", "eşitlendi")
-     & P ("form.valid_input", "geçerli giriş")
-     & P ("form.invalid_input", "geçersiz giriş")
-     & P ("form.dirty", "değiştirildi")
-     & P ("form.pristine", "değiştirilmedi")
-     & P ("form.submitted", "gönderildi")
-     & P ("form.submission_failed", "gönderim başarısız")
-     & P ("health.healthy", "sağlıklı")
-     & P ("health.degraded", "düşük performanslı")
-     & P ("health.unhealthy", "sağlıksız")
-     & P ("health.incident", "olay")
-     & P ("health.maintenance", "bakımda")
-     & P ("health.recovering", "toparlanıyor")
-     & P ("issue.open", "açık")
-     & P ("issue.closed", "kapalı")
-     & P ("issue.reopened", "yeniden açıldı")
-     & P ("issue.assigned", "atandı")
-     & P ("issue.unassigned", "atanmamış")
-     & P ("issue.merged", "birleştirildi")
-     & P ("network.offline", "çevrimdışı")
-     & P ("network.online", "çevrimiçi")
-     & P ("network.connecting", "bağlanıyor")
-     & P ("network.syncing", "eşitleniyor")
-     & P ("network.sync_failed", "eşitleme başarısız")
-     & P ("network.permission_denied", "izin reddedildi")
-     & P ("network.read_only", "salt okunur")
-     & P ("notification.unread", "okunmamış")
-     & P ("notification.read", "okundu")
-     & P ("notification.muted", "sessize alındı")
-     & P ("notification.snoozed", "ertelendi")
-     & P ("notification.sent", "gönderildi")
-     & P ("notification.delivered", "teslim edildi")
-     & P ("payment.payment_authorized", "ödeme onaylandı")
-     & P ("payment.payment_captured", "ödeme tahsil edildi")
-     & P ("payment.payment_refunded", "ödeme iade edildi")
-     & P ("payment.payment_disputed", "ödemeye itiraz edildi")
-     & P ("payment.payment_requires_action", "ödeme işlem gerektiriyor")
-     & P ("payment.payment_expired", "ödemenin süresi doldu")
-     & P ("ui.empty", "boş")
-     & P ("ui.loading", "yükleniyor")
-     & P ("ui.saving", "kaydediliyor")
-     & P ("ui.saved", "kaydedildi")
-     & P ("ui.unsaved", "kaydedilmemiş")
-     & P ("ui.retrying", "yeniden deneniyor")
-     & P ("ui.paused", "duraklatıldı")
-     & P ("ui.complete", "tamamlandı")
-     & P ("ui.failed", "başarısız")
-     & P ("ui.due_soon", "son tarih yaklaşıyor")
-     & P ("ui.overdue", "gecikmiş")
-     & P ("ui.last_seen", "son görülme")
-     & P ("ui.updated_just_now", "az önce güncellendi")
-     & P ("queue.queued", "kuyrukta")
-     & P ("queue.running", "çalışıyor")
-     & P ("queue.waiting", "bekliyor")
-     & P ("queue.blocked", "engellendi")
-     & P ("queue.canceled_job", "iş iptal edildi")
-     & P ("queue.completed_job", "iş tamamlandı")
-     & P ("search.filtering", "filtreleniyor")
-     & P ("search.filtered", "filtrelendi")
-     & P ("search.no_matches", "eşleşme yok")
-     & P ("search.search_ready", "arama hazır")
-     & P ("search.search_failed", "arama başarısız")
-     & P ("search.query_too_short", "sorgu çok kısa")
-     & P ("security.secure", "güvenli")
-     & P ("security.insecure", "güvenli değil")
-     & P ("security.vulnerable", "savunmasız")
-     & P ("security.encrypted", "şifreli")
-     & P ("security.unencrypted", "şifresiz")
-     & P ("security.token_expired", "belirtecin süresi doldu")
-     & P ("sync.sync_idle", "eşitleme boşta")
-     & P ("sync.syncing_now", "şimdi eşitleniyor")
-     & P ("sync.sync_queued", "eşitleme kuyrukta")
-     & P ("sync.sync_conflict", "eşitleme çakışması")
-     & P ("sync.sync_complete", "eşitleme tamamlandı")
-     & P ("sync.sync_error", "eşitleme hatası")
-     & P ("task.todo", "yapılacak")
-     & P ("task.in_progress", "devam ediyor")
-     & P ("task.done", "bitti")
-     & P ("task.skipped", "atlandı")
-     & P ("task.blocked_task", "engellendi")
-     & P ("task.waiting_on", "bekliyor")
-     & P ("ticket.ticket_new", "yeni talep")
-     & P ("ticket.ticket_open", "talep açık")
-     & P ("ticket.ticket_waiting", "talep bekliyor")
-     & P ("ticket.ticket_escalated", "talep yükseltildi")
-     & P ("ticket.ticket_resolved", "talep çözüldü")
-     & P ("ticket.ticket_closed", "talep kapatıldı")
-     & P ("transfer.importing", "içe aktarılıyor")
-     & P ("transfer.imported", "içe aktarıldı")
-     & P ("transfer.import_failed", "içe aktarma başarısız")
-     & P ("transfer.exporting", "dışa aktarılıyor")
-     & P ("transfer.exported", "dışa aktarıldı")
-     & P ("transfer.export_failed", "dışa aktarma başarısız")
-     & P ("validation.required", "zorunlu")
-     & P ("validation.optional", "isteğe bağlı")
-     & P ("validation.invalid", "geçersiz")
-     & P ("validation.too_short", "çok kısa")
-     & P ("validation.too_long", "çok uzun")
-     & P ("validation.out_of_range", "aralık dışında")
-     & P ("validation.already_exists", "zaten var")
-     & P ("workflow.draft", "taslak")
-     & P ("workflow.in_review", "incelemede")
-     & P ("workflow.approved", "onaylandı")
-     & P ("workflow.rejected", "reddedildi")
-     & P ("workflow.published", "yayımlandı")
-     & P ("workflow.archived", "arşivlendi")
-     & P ("database.database_online", "veritabanı çevrimiçi")
-     & P ("database.database_offline", "veritabanı çevrimdışı")
-     & P ("database.database_degraded", "veritabanı düşük performanslı")
-     & P ("database.database_migrating", "veritabanı taşınıyor")
-     & P ("database.database_migration_failed", "veritabanı taşıması başarısız")
-     & P ("database.database_replicating", "veritabanı çoğaltılıyor")
-     & P ("database.database_replication_lagging", "veritabanı çoğaltması gecikiyor")
-     & P ("database.database_backup_running", "veritabanı yedeklemesi sürüyor")
-     & P ("database.database_backup_failed", "veritabanı yedeklemesi başarısız")
-     & P ("times_noun",
-          "{count, plural, =0 {{one}: hiç} =1 {{one}: bir kez} =2 {{one}: iki "
-          & "kez} other {{one}: {count} kez}}")
-     & P ("availability.all", "{total} {one} içinden {available} kullanılabilir")
-     & P ("availability.none", "kullanılabilir {one} yok")
-     & P ("availability.partial",
-          "{total} {one} içinden {available} kullanılabilir, {unavailable} "
-          & "kullanılamıyor")
-     & P ("operation_progress", "{name} – {state}: {details}")
-     & P ("operation.queued", "kuyrukta")
-     & P ("operation.running", "çalışıyor")
-     & P ("operation.blocked", "engellendi")
-     & P ("operation.retrying", "yeniden deneniyor")
-     & P ("operation.succeeded", "başarılı")
-     & P ("operation.partially_succeeded", "kısmen başarılı")
-     & P ("operation.failed", "başarısız")
-     & P ("operation.canceled", "iptal edildi")
-     & P ("operation.skipped", "atlandı")
-     & P ("operation.stale", "güncel değil")
-     & P ("operation.unknown_state", "bilinmiyor")
-     & P ("operation.last_success", "{name} – son başarılı çalışma: {time}")
-     & P ("operation.next_retry", "{name} – sonraki deneme: {time}")
-     & P ("operation.stale_run", "{name} – {time} süredir güncel değil")
-     & P ("summary.skipped", "{count} atlandı")
-     & P ("summary.retried", "{count} yeniden denendi")
-     & P ("summary.canceled", "{count} iptal edildi")
-     & P ("system.service.operational", "çalışıyor")
-     & P ("system.service.degraded", "düşük performans")
-     & P ("system.service.partial_outage", "kısmi kesinti")
-     & P ("system.service.major_outage", "büyük kesinti")
-     & P ("system.service.maintenance", "bakımda")
-     & P ("system.service.unknown", "hizmet durumu bilinmiyor")
-     & P ("system.health.healthy", "sağlıklı")
-     & P ("system.health.warning", "uyarı")
-     & P ("system.health.critical", "kritik")
-     & P ("system.health.unavailable", "kullanılamıyor")
-     & P ("system.health.unknown_health", "sağlık durumu bilinmiyor")
-     & P ("system.readiness.ready", "hazır")
-     & P ("system.readiness.not_ready", "hazır değil")
-     & P ("system.readiness.starting", "başlatılıyor")
-     & P ("system.readiness.draining", "boşaltılıyor")
-     & P ("system.readiness.stopped", "durduruldu")
-     & P ("system.readiness.unknown_readiness", "hazırlık durumu bilinmiyor")
-     & P ("system.component.online", "çevrimiçi")
-     & P ("system.component.offline", "çevrimdışı")
-     & P ("system.component.starting", "başlatılıyor")
-     & P ("system.component.stopping", "durduruluyor")
-     & P ("system.component.restarting", "yeniden başlatılıyor")
-     & P ("system.component.unknown", "bileşen durumu bilinmiyor")
-     & P ("system.check.passing", "başarılı")
-     & P ("system.check.failing", "başarısız")
-     & P ("system.check.warning", "uyarı")
-     & P ("system.check.skipped", "atlandı")
-     & P ("system.check.timed_out", "zaman aşımı")
-     & P ("system.check.unknown", "kontrol durumu bilinmiyor")
-     & P ("system.incident.investigating", "inceleniyor")
-     & P ("system.incident.identified", "sorun belirlendi")
-     & P ("system.incident.monitoring", "izleniyor")
-     & P ("system.incident.resolved", "çözüldü")
-     & P ("system.incident.scheduled_maintenance", "planlı bakım")
-     & P ("system.named", "{name}: {state}")
-     & P ("system.check_named", "{name} kontrolü: {state}")
-     & P ("system.count.components",
-          "{count, plural, =0 {bileşen yok} one {{count} bileşen} other "
-          & "{{count} bileşen}}")
-     & P ("system.count.checks",
-          "{count, plural, =0 {kontrol yok} one {{count} kontrol} other {{count} "
-          & "kontrol}}")
-     & P ("system.count.incidents", "{count, plural, =0 {olay yok} one {{count} olay} other {{count} olay}}")
-     & P ("system.uptime", "çalışma süresi {measure}")
-     & P ("system.latency", "gecikme {measure}")
-     & P ("system.maintenance_window", "bakım aralığı {time}")
-     & P ("system.last_checked", "son kontrol {time}")
-     & P ("system.http.informational", "bilgilendirme")
-     & P ("system.http.successful", "başarılı")
-     & P ("system.http.redirection", "yönlendirme")
-     & P ("system.http.client_error", "istemci hatası")
-     & P ("system.http.server_error", "sunucu hatası")
-     & P ("system.exit.success", "çıkış kodu {code}: başarılı")
-     & P ("system.exit.failure", "çıkış kodu {code}: başarısız")
-     & P ("system.exit.usage_error", "çıkış kodu {code}: kullanım hatası")
-     & P ("system.exit.not_executable", "çıkış kodu {code}: komut çalıştırılamıyor")
-     & P ("system.exit.not_found", "çıkış kodu {code}: komut bulunamadı")
-     & P ("system.exit.invalid_argument", "çıkış kodu {code}: geçersiz çıkış argümanı")
-     & P ("system.exit.signal", "çıkış kodu {code}: {signal} ile sonlandırıldı")
-     & P ("validation.problem.required", "{field}: zorunludur")
-     & P ("validation.problem.minimum", "{field}: minimum değerin altında")
-     & P ("validation.problem.maximum", "{field}: maksimum değerin üzerinde")
-     & P ("validation.problem.range", "{field}: izin verilen aralığın dışında")
-     & P ("validation.problem.pattern", "{field}: kalıpla eşleşmiyor")
-     & P ("validation.problem.choice", "{field}: izin verilen seçeneklerden biri olmalı")
-     & P ("validation.problem.dependency", "{field}: başka bir alana bağlı")
-     & P ("validation.problem.custom", "{field}: geçersiz")
-     & P ("validation.constraint.no_relation", "{field}: geçerli bir {value} olmalı")
-     & P ("validation.constraint.less_than", "{field}: {value} değerinden küçük olmalı")
-     & P ("validation.constraint.less_or_equal", "{field}: en fazla {value} olmalı")
-     & P ("validation.constraint.greater_than", "{field}: {value} değerinden büyük olmalı")
-     & P ("validation.constraint.greater_or_equal", "{field}: en az {value} olmalı")
-     & P ("validation.constraint.equal_to", "{field}: {value} değerine eşit olmalı")
-     & P ("validation.constraint.not_equal_to", "{field}: {value} değerine eşit olmamalı")
-     & P ("validation.constraint.before_field", "{field}: {value} değerinden önce olmalı")
-     & P ("validation.constraint.after_field", "{field}: {value} değerinden sonra olmalı")
-     & P ("validation.choices", "{field}: izin verilen değerler: {choices}")
-     & P ("frame.detail", "{text} ({detail})")
-     & P ("frame.got", "{text}, alınan değer: {actual}")
-     & P ("frame.also", "{text}, {detail}")
-     & P ("frame.retry", "{text}, {time} sonra yeniden denenecek")
-     & P ("net_diagnostic.dns", "{endpoint}: DNS sorgusu başarısız")
-     & P ("net_diagnostic.tcp", "{endpoint}: TCP bağlantısı başarısız")
-     & P ("net_diagnostic.tls", "{endpoint}: TLS sertifikası hatası")
-     & P ("net_diagnostic.http", "{endpoint}: HTTP isteği başarısız")
-     & P ("net_diagnostic.proxy", "{endpoint}: proxy hatası")
-     & P ("net_diagnostic.timeout", "{endpoint}: zaman aşımı")
-     & P ("net_diagnostic.reset", "{endpoint}: bağlantı sıfırlandı")
-     & P ("net_diagnostic.unknown_network", "{endpoint}: ağ hatası")
-     & P ("progress.state.not_started", "başlamadı")
-     & P ("progress.state.running", "çalışıyor")
-     & P ("progress.state.stalled", "takıldı")
-     & P ("progress.state.retrying", "yeniden deneniyor")
-     & P ("progress.state.complete", "tamamlandı")
-     & P ("progress.state.failed", "başarısız")
-     & P ("progress.of", "{subject}: {done}/{total} tamamlandı (%{percent}), {state}")
-     & P ("progress.done", "{subject}: {done} tamamlandı, {state}")
-     & P ("collection.summary",
-          "{name}: {total} öğe, {unique} benzersiz değer, {duplicates} "
-          & "yinelenen, {outliers} aykırı değer")
-     & P ("top_frequency", "{name}: {value} ({count} kez)")
-     & P ("calendar_date.fiscal_year", "{year} mali yılı")
-     & P ("calendar_date.fiscal_quarter", "{year} mali yılı {part}. çeyrek")
-     & P ("calendar_date.fiscal_half", "{year} mali yılı {part}. yarı")
-     & P ("calendar_date.fiscal_year_end", "{year} mali yılı sonu")
-     & P ("calendar_date.semester", "{year} {part}. dönem")
-     & P ("calendar_date.half_year", "{year} {part}. yarıyıl")
-     & P ("calendar_date.half_year_phrase",
-          "{part, plural, =1 {{year} yılının ilk yarısı} other {{year} "
-          & "yılının ikinci yarısı}}")
-     & P ("calendar_date.month_phase",
-          "{phase, select, early {{text} başı} mid {{text} ortası} other "
-          & "{{text} sonu}}")
-     & P ("calendar_date.quarter_phase",
-          "{phase, select, early {{text} başı} mid {{text} ortası} other "
-          & "{{text} sonu}}")
-     & P ("calendar_range.weekend.last", "geçen hafta sonu")
-     & P ("calendar_range.weekend.this", "bu hafta sonu")
-     & P ("calendar_range.weekend.next", "gelecek hafta sonu")
-     & P ("calendar_range.weekend_of", "{date} hafta sonu")
-     & P ("calendar_range.week.last", "geçen hafta")
-     & P ("calendar_range.week.this", "bu hafta")
-     & P ("calendar_range.week.next", "gelecek hafta")
-     & P ("calendar_range.week_of", "{date} haftası")
-     & P ("calendar_range.between", "{first} – {last}");
+   P ("all_count", "tüm {total, plural, one {{one}} other {{other}}} ({total})");
+   P ("filtered_count.none", "eşleşen {one} yok");
+   P ("filtered_count.all", "tümü eşleşiyor ({total} {one})");
+   P ("filtered_count.some", "{total} {one} içinden {matching} eşleşiyor");
+   P ("more_count", "{visible} gösteriliyor, +{remaining} daha");
+   P ("others_count", "{first} ve {remaining} diğeri");
+   P ("page_count", "sayfa {page}/{total}");
+   P ("page_size", "sayfa başına {size} {one}");
+   P ("pagination_range", "toplam {total} {one} içinden {first}–{last}");
+   P ("position_count", "{position}/{total}");
+   P ("selection_count", "{total} {one} içinden {selected} seçildi");
+   P ("showing_count", "{total} {one} içinden {showing} gösteriliyor");
+   P ("validation_count",
+      "{count, plural, =0 {{severity, select, error {hata yok} warning "
+      & "{uyarı yok} other {bildirim yok}}} other {{count} {severity, select, "
+      & "error {hata} warning {uyarı} other {bildirim}}}}");
+   P ("collection.empty", "{one} yok");
+   P ("collection.none_shown", "gösterilen {one} yok");
+   P ("collection.showing_hidden", "{total} {one} içinden {visible} gösteriliyor, {hidden} gizli");
+   P ("collection.showing", "{total} {one} içinden {visible} gösteriliyor");
+   P ("collection.shown_hidden", "{visible} {one} gösteriliyor, {hidden} gizli");
+   P ("collection.shown", "{visible} {one} gösteriliyor");
+   P ("collection.visible_out_of", "{total} {one} içinden {visible} görünür");
+   P ("complete_count", "{done}/{total} tamamlandı");
+   P ("percent_complete", "%{percent} tamamlandı");
+   P ("step_count", "adım {step}/{total}");
+   P ("attempt_count", "deneme {attempt}/{total}");
+   P ("throughput_remaining", "{remaining} {one} kaldı ({rate} {unit}/s)");
+   P ("accessible_progress", "{done}/{total} tamamlandı, yüzde {percent}");
+   P ("business_days", "{days} iş günü");
+   P ("working_hours", "{hours} çalışma saati");
+   P ("due.overdue", "{days} gün gecikmiş");
+   P ("due.today", "son tarih bugün");
+   P ("due.tomorrow", "son tarih yarın");
+   P ("due.in", "son tarih {days} gün sonra");
+   P ("calendar_difference.future", "{difference} sonra");
+   P ("calendar_difference.past", "{difference} önce");
+   P ("calendar_difference.same_day", "aynı gün");
+   P ("calendar_difference.zero", "0 gün");
+   P ("cpu_load", "CPU yükü {measure}");
+   P ("battery", "pil {measure}");
+   P ("screen_size", "ekran {measure}");
+   P ("refresh_rate", "yenileme hızı {measure}");
+   P ("editorial_percent.symbol", "%{value}");
+   P ("editorial_percent.word", "yüzde {value}");
+   P ("recurrence.second", "{every, plural, one {her saniye} other {her {every} saniyede bir}}");
+   P ("recurrence.minute", "{every, plural, one {her dakika} other {her {every} dakikada bir}}");
+   P ("recurrence.hour", "{every, plural, one {her saat} other {her {every} saatte bir}}");
+   P ("recurrence.day", "{every, plural, one {her gün} other {her {every} günde bir}}");
+   P ("recurrence.week", "{every, plural, one {her hafta} other {her {every} haftada bir}}");
+   P ("recurrence.month", "{every, plural, one {her ay} other {her {every} ayda bir}}");
+   P ("recurrence.quarter", "{every, plural, one {her çeyrek} other {her {every} çeyrekte bir}}");
+   P ("recurrence.year", "{every, plural, one {her yıl} other {her {every} yılda bir}}");
+   P ("cache_summary.empty", "önbellek: istek yok");
+   P ("cache_summary", "önbellek: {hits} isabet, {misses} ıskalama, isabet oranı %{rate}");
+   P ("field_change_summary",
+      "{total} {one}: {changed} değişti, {added} eklendi, {removed} "
+      & "kaldırıldı");
+   P ("field_diff", "{field} değişti: {before} → {after}");
+   P ("field_added", "{field} eklendi: {value}");
+   P ("field_removed", "{field} kaldırıldı (önceki: {value})");
+   P ("field_unchanged", "{field} değişmedi: {value}");
+   P ("number_comparison.equal", "{current}, {baseline} değerine eşit");
+   P ("number_comparison.higher", "{current}, {baseline} değerinden {quantity} yüksek");
+   P ("number_comparison.lower", "{current}, {baseline} değerinden {quantity} düşük");
+   P ("percent_comparison.equal", "{current}, {baseline} değerine eşit");
+   P ("percent_comparison.higher", "{current}, {baseline} değerinden {quantity} yüksek");
+   P ("percent_comparison.lower", "{current}, {baseline} değerinden {quantity} düşük");
+   P ("file_size_comparison.same", "{current}, {baseline} ile aynı boyutta");
+   P ("file_size_comparison.larger", "{current}, {baseline} boyutundan {quantity} büyük");
+   P ("file_size_comparison.smaller", "{current}, {baseline} boyutundan {quantity} küçük");
+   P ("date_comparison.same", "{current}, {baseline} ile aynı tarih");
+   P ("date_comparison.after", "{current}, {baseline} tarihinden {quantity} sonra");
+   P ("date_comparison.before", "{current}, {baseline} tarihinden {quantity} önce");
+   P ("queue_summary", "kuyruk: {details}");
+   P ("queue_summary.empty", "kuyruk boş");
+   P ("domain_summary",
+      "{domain, select, queue {kuyruk} job {iş} run {çalıştırma} cache "
+      & "{önbellek} sync {eşitleme} import {içe aktarma} export {dışa "
+      & "aktarma} other {{domain}}} {state, select, queued {kuyrukta} running "
+      & "{çalışıyor} waiting {bekliyor} paused {duraklatıldı} complete "
+      & "{tamamlandı} failed {başarısız} stale {güncel değil} skipped "
+      & "{atlandı} other {{state}}}: {details}");
+   P ("summary.none", "{one} yok");
+   P ("summary.completed", "{count} {one} tamamlandı");
+   P ("summary.completed_of", "{total} {one} içinden {count} tamamlandı");
+   P ("summary.failed", "{count} başarısız");
+   P ("summary.queued", "{count} {one} kuyrukta");
+   P ("summary.running", "{count} çalışıyor");
+   P ("summary.complete", "{count} tamamlandı");
+   P ("backup.backup_running", "yedekleme sürüyor");
+   P ("backup.backup_completed", "yedekleme tamamlandı");
+   P ("backup.backup_failed", "yedekleme başarısız");
+   P ("backup.backup_stale", "yedek güncel değil");
+   P ("incident.incident_investigating", "olay inceleniyor");
+   P ("incident.incident_identified", "olay belirlendi");
+   P ("incident.incident_mitigated", "olayın etkisi azaltıldı");
+   P ("incident.incident_resolved", "olay çözüldü");
+   P ("release.release_drafting", "sürüm hazırlanıyor");
+   P ("release.release_ready", "sürüm hazır");
+   P ("release.release_published", "sürüm yayımlandı");
+   P ("release.release_rolled_back", "sürüm geri alındı");
+   P ("audit.audit_created", "denetim kaydı oluşturuldu");
+   P ("audit.audit_updated", "denetim kaydı güncellendi");
+   P ("audit.audit_deleted", "denetim kaydı silindi");
+   P ("audit.audit_restored", "denetim kaydı geri yüklendi");
+   P ("flag.flag_enabled", "özellik bayrağı etkinleştirildi");
+   P ("flag.flag_disabled", "özellik bayrağı devre dışı bırakıldı");
+   P ("flag.flag_rolling_out", "özellik bayrağı kademeli olarak açılıyor");
+   P ("flag.flag_rolled_back", "özellik bayrağı geri alındı");
+   P ("webhook.webhook_pending", "webhook bekliyor");
+   P ("webhook.webhook_delivered", "webhook teslim edildi");
+   P ("webhook.webhook_failed", "webhook başarısız");
+   P ("webhook.webhook_retrying", "webhook yeniden deneniyor");
+   P ("api_key.api_key_active", "API anahtarı etkin");
+   P ("api_key.api_key_revoked", "API anahtarı iptal edildi");
+   P ("api_key.api_key_expired", "API anahtarının süresi doldu");
+   P ("api_key.api_key_rotated", "API anahtarı yenilendi");
+   P ("quota.quota_available", "kota kullanılabilir");
+   P ("quota.quota_near_limit", "kota sınıra yakın");
+   P ("quota.quota_exceeded", "kota aşıldı");
+   P ("quota.quota_reset", "kota sıfırlandı");
+   P ("invoice.invoice_draft", "fatura taslağı");
+   P ("invoice.invoice_sent", "fatura gönderildi");
+   P ("invoice.invoice_paid", "fatura ödendi");
+   P ("invoice.invoice_refunded", "fatura iade edildi");
+   P ("invoice.invoice_overdue", "faturanın vadesi geçti");
+   P ("invoice.refund_failed", "iade başarısız");
+   P ("page_navigation.only", "tek sayfa");
+   P ("page_navigation.first", "ilk sayfa, sonraki mevcut");
+   P ("page_navigation.last", "son sayfa, önceki mevcut");
+   P ("page_navigation.middle", "önceki ve sonraki mevcut");
+   P ("end_of_week", "haftanın sonu");
+   P ("end_of_month", "ayın sonu");
+   P ("end_of_quarter", "çeyreğin sonu");
+   P ("time_of_day.night", "gece");
+   P ("time_of_day.morning", "sabah");
+   P ("time_of_day.afternoon", "öğleden sonra");
+   P ("time_of_day.evening", "akşam");
+   P ("access.allowed", "izin verildi");
+   P ("access.denied", "reddedildi");
+   P ("access.owner", "sahip");
+   P ("access.admin", "yönetici");
+   P ("access.viewer", "görüntüleyici");
+   P ("access.editor", "düzenleyici");
+   P ("auth.signed_in", "oturum açık");
+   P ("auth.signed_out", "oturum kapalı");
+   P ("auth.session_expired", "oturum süresi doldu");
+   P ("auth.locked", "kilitli");
+   P ("auth.two_factor_required", "iki adımlı doğrulama gerekli");
+   P ("billing.trialing", "deneme süresinde");
+   P ("billing.payment_due", "ödeme bekleniyor");
+   P ("billing.payment_failed", "ödeme başarısız");
+   P ("billing.paid", "ödendi");
+   P ("billing.past_due", "vadesi geçti");
+   P ("billing.canceled", "iptal edildi");
+   P ("ci.pipeline_pending", "işlem hattı bekliyor");
+   P ("ci.pipeline_running", "işlem hattı çalışıyor");
+   P ("ci.pipeline_passed", "işlem hattı başarılı");
+   P ("ci.pipeline_failed", "işlem hattı başarısız");
+   P ("ci.review_required", "inceleme gerekli");
+   P ("ci.deploy_blocked", "dağıtım engellendi");
+   P ("collaboration.active_now", "şu an etkin");
+   P ("collaboration.away", "uzakta");
+   P ("collaboration.do_not_disturb", "rahatsız etmeyin");
+   P ("collaboration.typing", "yazıyor");
+   P ("collaboration.viewing", "görüntülüyor");
+   P ("collaboration.editing", "düzenliyor");
+   P ("deployment.deploying", "dağıtılıyor");
+   P ("deployment.deployed", "dağıtıldı");
+   P ("deployment.rolling_back", "geri alınıyor");
+   P ("deployment.rolled_back", "geri alındı");
+   P ("deployment.build_failed", "derleme başarısız");
+   P ("deployment.checks_passed", "denetimler başarılı");
+   P ("empty.no_items", "öğe yok");
+   P ("empty.no_results", "sonuç yok");
+   P ("empty.no_messages", "ileti yok");
+   P ("empty.no_selection", "seçim yok");
+   P ("empty.nothing_to_show", "gösterilecek bir şey yok");
+   P ("file.uploading", "yükleniyor");
+   P ("file.downloading", "indiriliyor");
+   P ("file.copying", "kopyalanıyor");
+   P ("file.moving", "taşınıyor");
+   P ("file.deleting", "siliniyor");
+   P ("file.deleted", "silindi");
+   P ("file.restoring", "geri yükleniyor");
+   P ("file.synced", "eşitlendi");
+   P ("form.valid_input", "geçerli giriş");
+   P ("form.invalid_input", "geçersiz giriş");
+   P ("form.dirty", "değiştirildi");
+   P ("form.pristine", "değiştirilmedi");
+   P ("form.submitted", "gönderildi");
+   P ("form.submission_failed", "gönderim başarısız");
+   P ("health.healthy", "sağlıklı");
+   P ("health.degraded", "düşük performanslı");
+   P ("health.unhealthy", "sağlıksız");
+   P ("health.incident", "olay");
+   P ("health.maintenance", "bakımda");
+   P ("health.recovering", "toparlanıyor");
+   P ("issue.open", "açık");
+   P ("issue.closed", "kapalı");
+   P ("issue.reopened", "yeniden açıldı");
+   P ("issue.assigned", "atandı");
+   P ("issue.unassigned", "atanmamış");
+   P ("issue.merged", "birleştirildi");
+   P ("network.offline", "çevrimdışı");
+   P ("network.online", "çevrimiçi");
+   P ("network.connecting", "bağlanıyor");
+   P ("network.syncing", "eşitleniyor");
+   P ("network.sync_failed", "eşitleme başarısız");
+   P ("network.permission_denied", "izin reddedildi");
+   P ("network.read_only", "salt okunur");
+   P ("notification.unread", "okunmamış");
+   P ("notification.read", "okundu");
+   P ("notification.muted", "sessize alındı");
+   P ("notification.snoozed", "ertelendi");
+   P ("notification.sent", "gönderildi");
+   P ("notification.delivered", "teslim edildi");
+   P ("payment.payment_authorized", "ödeme onaylandı");
+   P ("payment.payment_captured", "ödeme tahsil edildi");
+   P ("payment.payment_refunded", "ödeme iade edildi");
+   P ("payment.payment_disputed", "ödemeye itiraz edildi");
+   P ("payment.payment_requires_action", "ödeme işlem gerektiriyor");
+   P ("payment.payment_expired", "ödemenin süresi doldu");
+   P ("ui.empty", "boş");
+   P ("ui.loading", "yükleniyor");
+   P ("ui.saving", "kaydediliyor");
+   P ("ui.saved", "kaydedildi");
+   P ("ui.unsaved", "kaydedilmemiş");
+   P ("ui.retrying", "yeniden deneniyor");
+   P ("ui.paused", "duraklatıldı");
+   P ("ui.complete", "tamamlandı");
+   P ("ui.failed", "başarısız");
+   P ("ui.due_soon", "son tarih yaklaşıyor");
+   P ("ui.overdue", "gecikmiş");
+   P ("ui.last_seen", "son görülme");
+   P ("ui.updated_just_now", "az önce güncellendi");
+   P ("queue.queued", "kuyrukta");
+   P ("queue.running", "çalışıyor");
+   P ("queue.waiting", "bekliyor");
+   P ("queue.blocked", "engellendi");
+   P ("queue.canceled_job", "iş iptal edildi");
+   P ("queue.completed_job", "iş tamamlandı");
+   P ("search.filtering", "filtreleniyor");
+   P ("search.filtered", "filtrelendi");
+   P ("search.no_matches", "eşleşme yok");
+   P ("search.search_ready", "arama hazır");
+   P ("search.search_failed", "arama başarısız");
+   P ("search.query_too_short", "sorgu çok kısa");
+   P ("security.secure", "güvenli");
+   P ("security.insecure", "güvenli değil");
+   P ("security.vulnerable", "savunmasız");
+   P ("security.encrypted", "şifreli");
+   P ("security.unencrypted", "şifresiz");
+   P ("security.token_expired", "belirtecin süresi doldu");
+   P ("sync.sync_idle", "eşitleme boşta");
+   P ("sync.syncing_now", "şimdi eşitleniyor");
+   P ("sync.sync_queued", "eşitleme kuyrukta");
+   P ("sync.sync_conflict", "eşitleme çakışması");
+   P ("sync.sync_complete", "eşitleme tamamlandı");
+   P ("sync.sync_error", "eşitleme hatası");
+   P ("task.todo", "yapılacak");
+   P ("task.in_progress", "devam ediyor");
+   P ("task.done", "bitti");
+   P ("task.skipped", "atlandı");
+   P ("task.blocked_task", "engellendi");
+   P ("task.waiting_on", "bekliyor");
+   P ("ticket.ticket_new", "yeni talep");
+   P ("ticket.ticket_open", "talep açık");
+   P ("ticket.ticket_waiting", "talep bekliyor");
+   P ("ticket.ticket_escalated", "talep yükseltildi");
+   P ("ticket.ticket_resolved", "talep çözüldü");
+   P ("ticket.ticket_closed", "talep kapatıldı");
+   P ("transfer.importing", "içe aktarılıyor");
+   P ("transfer.imported", "içe aktarıldı");
+   P ("transfer.import_failed", "içe aktarma başarısız");
+   P ("transfer.exporting", "dışa aktarılıyor");
+   P ("transfer.exported", "dışa aktarıldı");
+   P ("transfer.export_failed", "dışa aktarma başarısız");
+   P ("validation.required", "zorunlu");
+   P ("validation.optional", "isteğe bağlı");
+   P ("validation.invalid", "geçersiz");
+   P ("validation.too_short", "çok kısa");
+   P ("validation.too_long", "çok uzun");
+   P ("validation.out_of_range", "aralık dışında");
+   P ("validation.already_exists", "zaten var");
+   P ("workflow.draft", "taslak");
+   P ("workflow.in_review", "incelemede");
+   P ("workflow.approved", "onaylandı");
+   P ("workflow.rejected", "reddedildi");
+   P ("workflow.published", "yayımlandı");
+   P ("workflow.archived", "arşivlendi");
+   P ("database.database_online", "veritabanı çevrimiçi");
+   P ("database.database_offline", "veritabanı çevrimdışı");
+   P ("database.database_degraded", "veritabanı düşük performanslı");
+   P ("database.database_migrating", "veritabanı taşınıyor");
+   P ("database.database_migration_failed", "veritabanı taşıması başarısız");
+   P ("database.database_replicating", "veritabanı çoğaltılıyor");
+   P ("database.database_replication_lagging", "veritabanı çoğaltması gecikiyor");
+   P ("database.database_backup_running", "veritabanı yedeklemesi sürüyor");
+   P ("database.database_backup_failed", "veritabanı yedeklemesi başarısız");
+   P ("times_noun",
+      "{count, plural, =0 {{one}: hiç} =1 {{one}: bir kez} =2 {{one}: iki "
+      & "kez} other {{one}: {count} kez}}");
+   P ("availability.all", "{total} {one} içinden {available} kullanılabilir");
+   P ("availability.none", "kullanılabilir {one} yok");
+   P ("availability.partial",
+      "{total} {one} içinden {available} kullanılabilir, {unavailable} "
+      & "kullanılamıyor");
+   P ("operation_progress", "{name} – {state}: {details}");
+   P ("operation.queued", "kuyrukta");
+   P ("operation.running", "çalışıyor");
+   P ("operation.blocked", "engellendi");
+   P ("operation.retrying", "yeniden deneniyor");
+   P ("operation.succeeded", "başarılı");
+   P ("operation.partially_succeeded", "kısmen başarılı");
+   P ("operation.failed", "başarısız");
+   P ("operation.canceled", "iptal edildi");
+   P ("operation.skipped", "atlandı");
+   P ("operation.stale", "güncel değil");
+   P ("operation.unknown_state", "bilinmiyor");
+   P ("operation.last_success", "{name} – son başarılı çalışma: {time}");
+   P ("operation.next_retry", "{name} – sonraki deneme: {time}");
+   P ("operation.stale_run", "{name} – {time} süredir güncel değil");
+   P ("summary.skipped", "{count} atlandı");
+   P ("summary.retried", "{count} yeniden denendi");
+   P ("summary.canceled", "{count} iptal edildi");
+   P ("system.service.operational", "çalışıyor");
+   P ("system.service.degraded", "düşük performans");
+   P ("system.service.partial_outage", "kısmi kesinti");
+   P ("system.service.major_outage", "büyük kesinti");
+   P ("system.service.maintenance", "bakımda");
+   P ("system.service.unknown", "hizmet durumu bilinmiyor");
+   P ("system.health.healthy", "sağlıklı");
+   P ("system.health.warning", "uyarı");
+   P ("system.health.critical", "kritik");
+   P ("system.health.unavailable", "kullanılamıyor");
+   P ("system.health.unknown_health", "sağlık durumu bilinmiyor");
+   P ("system.readiness.ready", "hazır");
+   P ("system.readiness.not_ready", "hazır değil");
+   P ("system.readiness.starting", "başlatılıyor");
+   P ("system.readiness.draining", "boşaltılıyor");
+   P ("system.readiness.stopped", "durduruldu");
+   P ("system.readiness.unknown_readiness", "hazırlık durumu bilinmiyor");
+   P ("system.component.online", "çevrimiçi");
+   P ("system.component.offline", "çevrimdışı");
+   P ("system.component.starting", "başlatılıyor");
+   P ("system.component.stopping", "durduruluyor");
+   P ("system.component.restarting", "yeniden başlatılıyor");
+   P ("system.component.unknown", "bileşen durumu bilinmiyor");
+   P ("system.check.passing", "başarılı");
+   P ("system.check.failing", "başarısız");
+   P ("system.check.warning", "uyarı");
+   P ("system.check.skipped", "atlandı");
+   P ("system.check.timed_out", "zaman aşımı");
+   P ("system.check.unknown", "kontrol durumu bilinmiyor");
+   P ("system.incident.investigating", "inceleniyor");
+   P ("system.incident.identified", "sorun belirlendi");
+   P ("system.incident.monitoring", "izleniyor");
+   P ("system.incident.resolved", "çözüldü");
+   P ("system.incident.scheduled_maintenance", "planlı bakım");
+   P ("system.named", "{name}: {state}");
+   P ("system.check_named", "{name} kontrolü: {state}");
+   P ("system.count.components",
+      "{count, plural, =0 {bileşen yok} one {{count} bileşen} other "
+      & "{{count} bileşen}}");
+   P ("system.count.checks",
+      "{count, plural, =0 {kontrol yok} one {{count} kontrol} other {{count} "
+      & "kontrol}}");
+   P ("system.count.incidents", "{count, plural, =0 {olay yok} one {{count} olay} other {{count} olay}}");
+   P ("system.uptime", "çalışma süresi {measure}");
+   P ("system.latency", "gecikme {measure}");
+   P ("system.maintenance_window", "bakım aralığı {time}");
+   P ("system.last_checked", "son kontrol {time}");
+   P ("system.http.informational", "bilgilendirme");
+   P ("system.http.successful", "başarılı");
+   P ("system.http.redirection", "yönlendirme");
+   P ("system.http.client_error", "istemci hatası");
+   P ("system.http.server_error", "sunucu hatası");
+   P ("system.exit.success", "çıkış kodu {code}: başarılı");
+   P ("system.exit.failure", "çıkış kodu {code}: başarısız");
+   P ("system.exit.usage_error", "çıkış kodu {code}: kullanım hatası");
+   P ("system.exit.not_executable", "çıkış kodu {code}: komut çalıştırılamıyor");
+   P ("system.exit.not_found", "çıkış kodu {code}: komut bulunamadı");
+   P ("system.exit.invalid_argument", "çıkış kodu {code}: geçersiz çıkış argümanı");
+   P ("system.exit.signal", "çıkış kodu {code}: {signal} ile sonlandırıldı");
+   P ("validation.problem.required", "{field}: zorunludur");
+   P ("validation.problem.minimum", "{field}: minimum değerin altında");
+   P ("validation.problem.maximum", "{field}: maksimum değerin üzerinde");
+   P ("validation.problem.range", "{field}: izin verilen aralığın dışında");
+   P ("validation.problem.pattern", "{field}: kalıpla eşleşmiyor");
+   P ("validation.problem.choice", "{field}: izin verilen seçeneklerden biri olmalı");
+   P ("validation.problem.dependency", "{field}: başka bir alana bağlı");
+   P ("validation.problem.custom", "{field}: geçersiz");
+   P ("validation.constraint.no_relation", "{field}: geçerli bir {value} olmalı");
+   P ("validation.constraint.less_than", "{field}: {value} değerinden küçük olmalı");
+   P ("validation.constraint.less_or_equal", "{field}: en fazla {value} olmalı");
+   P ("validation.constraint.greater_than", "{field}: {value} değerinden büyük olmalı");
+   P ("validation.constraint.greater_or_equal", "{field}: en az {value} olmalı");
+   P ("validation.constraint.equal_to", "{field}: {value} değerine eşit olmalı");
+   P ("validation.constraint.not_equal_to", "{field}: {value} değerine eşit olmamalı");
+   P ("validation.constraint.before_field", "{field}: {value} değerinden önce olmalı");
+   P ("validation.constraint.after_field", "{field}: {value} değerinden sonra olmalı");
+   P ("validation.choices", "{field}: izin verilen değerler: {choices}");
+   P ("frame.detail", "{text} ({detail})");
+   P ("frame.got", "{text}, alınan değer: {actual}");
+   P ("frame.also", "{text}, {detail}");
+   P ("frame.retry", "{text}, {time} sonra yeniden denenecek");
+   P ("net_diagnostic.dns", "{endpoint}: DNS sorgusu başarısız");
+   P ("net_diagnostic.tcp", "{endpoint}: TCP bağlantısı başarısız");
+   P ("net_diagnostic.tls", "{endpoint}: TLS sertifikası hatası");
+   P ("net_diagnostic.http", "{endpoint}: HTTP isteği başarısız");
+   P ("net_diagnostic.proxy", "{endpoint}: proxy hatası");
+   P ("net_diagnostic.timeout", "{endpoint}: zaman aşımı");
+   P ("net_diagnostic.reset", "{endpoint}: bağlantı sıfırlandı");
+   P ("net_diagnostic.unknown_network", "{endpoint}: ağ hatası");
+   P ("progress.state.not_started", "başlamadı");
+   P ("progress.state.running", "çalışıyor");
+   P ("progress.state.stalled", "takıldı");
+   P ("progress.state.retrying", "yeniden deneniyor");
+   P ("progress.state.complete", "tamamlandı");
+   P ("progress.state.failed", "başarısız");
+   P ("progress.of", "{subject}: {done}/{total} tamamlandı (%{percent}), {state}");
+   P ("progress.done", "{subject}: {done} tamamlandı, {state}");
+   P ("collection.summary",
+      "{name}: {total} öğe, {unique} benzersiz değer, {duplicates} "
+      & "yinelenen, {outliers} aykırı değer");
+   P ("top_frequency", "{name}: {value} ({count} kez)");
+   P ("calendar_date.fiscal_year", "{year} mali yılı");
+   P ("calendar_date.fiscal_quarter", "{year} mali yılı {part}. çeyrek");
+   P ("calendar_date.fiscal_half", "{year} mali yılı {part}. yarı");
+   P ("calendar_date.fiscal_year_end", "{year} mali yılı sonu");
+   P ("calendar_date.semester", "{year} {part}. dönem");
+   P ("calendar_date.half_year", "{year} {part}. yarıyıl");
+   P ("calendar_date.half_year_phrase",
+      "{part, plural, =1 {{year} yılının ilk yarısı} other {{year} "
+      & "yılının ikinci yarısı}}");
+   P ("calendar_date.month_phase",
+      "{phase, select, early {{text} başı} mid {{text} ortası} other "
+      & "{{text} sonu}}");
+   P ("calendar_date.quarter_phase",
+      "{phase, select, early {{text} başı} mid {{text} ortası} other "
+      & "{{text} sonu}}");
+   P ("calendar_range.weekend.last", "geçen hafta sonu");
+   P ("calendar_range.weekend.this", "bu hafta sonu");
+   P ("calendar_range.weekend.next", "gelecek hafta sonu");
+   P ("calendar_range.weekend_of", "{date} hafta sonu");
+   P ("calendar_range.week.last", "geçen hafta");
+   P ("calendar_range.week.this", "bu hafta");
+   P ("calendar_range.week.next", "gelecek hafta");
+   P ("calendar_range.week_of", "{date} haftası");
+   P ("calendar_range.between", "{first} – {last}");
+   P ("http.reason.100", "devam");
+   P ("http.reason.101", "protokol değiştiriliyor");
+   P ("http.reason.102", "işleniyor");
+   P ("http.reason.103", "erken ipuçları");
+   P ("http.reason.200", "tamam");
+   P ("http.reason.201", "oluşturuldu");
+   P ("http.reason.202", "kabul edildi");
+   P ("http.reason.203", "yetkili olmayan bilgi");
+   P ("http.reason.204", "içerik yok");
+   P ("http.reason.205", "içeriği sıfırla");
+   P ("http.reason.206", "kısmi içerik");
+   P ("http.reason.207", "çoklu durum");
+   P ("http.reason.208", "zaten bildirildi");
+   P ("http.reason.226", "IM kullanıldı");
+   P ("http.reason.300", "birden çok seçenek");
+   P ("http.reason.301", "kalıcı olarak taşındı");
+   P ("http.reason.302", "bulundu");
+   P ("http.reason.303", "diğerine bakın");
+   P ("http.reason.304", "değiştirilmedi");
+   P ("http.reason.305", "vekil sunucu kullanın");
+   P ("http.reason.307", "geçici yönlendirme");
+   P ("http.reason.308", "kalıcı yönlendirme");
+   P ("http.reason.400", "hatalı istek");
+   P ("http.reason.401", "yetkisiz");
+   P ("http.reason.402", "ödeme gerekli");
+   P ("http.reason.403", "yasak");
+   P ("http.reason.404", "bulunamadı");
+   P ("http.reason.405", "yönteme izin verilmiyor");
+   P ("http.reason.406", "kabul edilemez");
+   P ("http.reason.407", "vekil sunucu kimlik doğrulaması gerekli");
+   P ("http.reason.408", "istek zaman aşımı");
+   P ("http.reason.409", "çakışma");
+   P ("http.reason.410", "artık yok");
+   P ("http.reason.411", "uzunluk gerekli");
+   P ("http.reason.412", "ön koşul başarısız");
+   P ("http.reason.413", "içerik çok büyük");
+   P ("http.reason.414", "URI çok uzun");
+   P ("http.reason.415", "desteklenmeyen medya türü");
+   P ("http.reason.416", "aralık karşılanamıyor");
+   P ("http.reason.417", "beklenti karşılanamadı");
+   P ("http.reason.418", "ben bir çaydanlığım");
+   P ("http.reason.421", "yanlış yönlendirilmiş istek");
+   P ("http.reason.422", "işlenemeyen içerik");
+   P ("http.reason.423", "kilitli");
+   P ("http.reason.424", "başarısız bağımlılık");
+   P ("http.reason.425", "çok erken");
+   P ("http.reason.426", "yükseltme gerekli");
+   P ("http.reason.428", "ön koşul gerekli");
+   P ("http.reason.429", "çok fazla istek");
+   P ("http.reason.431", "istek üst bilgi alanları çok büyük");
+   P ("http.reason.451", "yasal nedenlerle kullanılamıyor");
+   P ("http.reason.500", "sunucu iç hatası");
+   P ("http.reason.501", "uygulanmadı");
+   P ("http.reason.502", "hatalı ağ geçidi");
+   P ("http.reason.503", "hizmet kullanılamıyor");
+   P ("http.reason.504", "ağ geçidi zaman aşımı");
+   P ("http.reason.505", "HTTP sürümü desteklenmiyor");
+   P ("http.reason.506", "varyant da müzakere ediyor");
+   P ("http.reason.507", "yetersiz depolama alanı");
+   P ("http.reason.508", "döngü algılandı");
+   P ("http.reason.510", "genişletilmedi");
+   P ("http.reason.511", "ağ kimlik doğrulaması gerekli");
+   P ("errno.reason.0", "başarılı");
+   P ("errno.reason.1", "işleme izin verilmedi");
+   P ("errno.reason.2", "böyle bir dosya ya da dizin yok");
+   P ("errno.reason.3", "böyle bir süreç yok");
+   P ("errno.reason.4", "kesintiye uğrayan sistem çağrısı");
+   P ("errno.reason.5", "girdi/çıktı hatası");
+   P ("errno.reason.6", "böyle bir aygıt ya da adres yok");
+   P ("errno.reason.9", "hatalı dosya tanımlayıcı");
+   P ("errno.reason.11", "kaynak geçici olarak kullanılamıyor");
+   P ("errno.reason.12", "yeterli bellek yok");
+   P ("errno.reason.13", "erişim engellendi");
+   P ("errno.reason.17", "dosya mevcut");
+   P ("errno.reason.20", "bir dizin değil");
+   P ("errno.reason.21", "bir dizin");
+   P ("errno.reason.22", "geçersiz argüman");
+   P ("errno.reason.24", "çok fazla açık dosya");
+   P ("errno.reason.28", "aygıtta yer kalmadı");
+   P ("errno.reason.32", "kırık boru");
+   P ("errno.reason.98", "adres zaten kullanımda");
+   P ("errno.reason.110", "bağlantı zaman aşımına uğradı");
+   P ("errno.reason.111", "bağlantı reddedildi");
+   P ("signal.reason.1", "bağlantı kesildi");
+   P ("signal.reason.2", "kesme");
+   P ("signal.reason.3", "çıkış");
+   P ("signal.reason.4", "geçersiz komut");
+   P ("signal.reason.5", "izleme tuzağı");
+   P ("signal.reason.6", "iptal");
+   P ("signal.reason.7", "veri yolu hatası");
+   P ("signal.reason.8", "kayan nokta istisnası");
+   P ("signal.reason.9", "öldürüldü");
+   P ("signal.reason.10", "kullanıcı sinyali 1");
+   P ("signal.reason.11", "bölütleme hatası");
+   P ("signal.reason.12", "kullanıcı sinyali 2");
+   P ("signal.reason.13", "kırık boru");
+   P ("signal.reason.14", "alarm");
+   P ("signal.reason.15", "sonlandırma isteği");
+   P ("signal.reason.17", "alt süreç durumu değişti");
+   P ("signal.reason.18", "devam");
+   P ("signal.reason.19", "durduruldu");
+   P ("signal.reason.20", "uçbirim durdurması");
+   P ("signal.reason.28", "pencere boyutu değişti");
+   P ("sqlstate.reason.00", "başarılı tamamlama");
+   P ("sqlstate.reason.01", "uyarı");
+   P ("sqlstate.reason.02", "veri yok");
+   P ("sqlstate.reason.08", "bağlantı istisnası");
+   P ("sqlstate.reason.0a", "özellik desteklenmiyor");
+   P ("sqlstate.reason.22", "veri istisnası");
+   P ("sqlstate.reason.23", "bütünlük kısıtlaması ihlali");
+   P ("sqlstate.reason.24", "geçersiz imleç durumu");
+   P ("sqlstate.reason.25", "geçersiz işlem durumu");
+   P ("sqlstate.reason.28", "geçersiz yetkilendirme belirtimi");
+   P ("sqlstate.reason.2d", "geçersiz işlem sonlandırma");
+   P ("sqlstate.reason.3d", "geçersiz katalog adı");
+   P ("sqlstate.reason.3f", "geçersiz şema adı");
+   P ("sqlstate.reason.40", "işlem geri alma");
+   P ("sqlstate.reason.42", "sözdizimi hatası ya da erişim kuralı ihlali");
+   P ("sqlstate.reason.53", "yetersiz kaynak");
+   P ("sqlstate.reason.54", "program sınırı aşıldı");
+   P ("sqlstate.reason.55", "nesne ön koşul durumunda değil");
+   P ("sqlstate.reason.57", "operatör müdahalesi");
+   P ("sqlstate.reason.58", "sistem hatası");
+   P ("sqlstate.reason.hv", "yabancı veri sarmalayıcı hatası");
+   P ("sqlstate.reason.p0", "PL/pgSQL hatası");
+   P ("sqlstate.reason.xx", "iç hata");
+   P ("system.signal_numbered", "sinyal {number} {name} {reason}");
+   P ("http.reason.unknown", "bilinmeyen durum");
+   P ("errno.reason.unknown", "bilinmeyen hata");
+   P ("signal.reason.unknown", "bilinmeyen sinyal");
+   P ("sqlstate.reason.unknown", "bilinmeyen SQLSTATE sınıfı");
 end Locale_Tr;
