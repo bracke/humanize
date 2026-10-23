@@ -109,11 +109,14 @@ package body Humanize.Catalogs.Core_Data is
      --  Ordinal words, a percentage in words and a plain number, by CLDR.
      & "und.humanize.number.ordinal_words = {value, number, ::ordinal-words}" & LF
      & "und.humanize.number.percent_unit = {value, unit, percent/unit-width-full-name}" & LF
-     --  A percentage outside English: the number as the locale writes it,
-     --  between the sign and spacing CLDR's percent pattern gives 50 %
-     --  ("12,5 %"); this entry is the fallback.
+     --  A percentage outside English, by CLDR's percent pattern ("12,5 %",
+     --  "%12,5", "١٢٫٥٪"); value is the fraction (0.125). "free" shows the
+     --  digits given, "fixed_<n>" exactly n.
      & "und.humanize.number.percent = {value, number}%" & LF
-     & "und.humanize.phrase.number.percent_sign = {value, number, ::percent}" & LF
+     & "und.humanize.phrase.number.percent_free = {value, number, ::percent .###}" & LF
+     & "und.humanize.phrase.number.percent_fixed_1 = {value, number, ::percent .0}" & LF
+     & "und.humanize.phrase.number.percent_fixed_2 = {value, number, ::percent .00}" & LF
+     & "und.humanize.phrase.number.percent_fixed_3 = {value, number, ::percent .000}" & LF
      & "und.humanize.number.plain = {value, number}" & LF
      --  The generic phrase key; each phrase has its own key below it.
      & "und.humanize.phrase = {value}" & LF

@@ -287,6 +287,7 @@ package body Humanize.Tests.Numbers is
       --  CLDR's sign and spacing, as ICU writes them (a no-break space).
       Check_Percent (Support.De, 12.5, "12,5" & NBSP & "%", "de comma decimal percent");
       Check_Percent (Support.Fr, 50.0, "50" & NBSP & "%", "fr spaces the percent sign");
+      Check_Percent (Support.Locale ("tr"), 12.5, "%12,5", "tr puts the sign first");
    end Test_Percent;
 
    procedure Test_Editorial_Numbers

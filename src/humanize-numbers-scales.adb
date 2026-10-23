@@ -474,34 +474,34 @@ package body Humanize.Numbers.Scales is
       if Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | "" then
          return English;
       end if;
-      --  The locale's sign and spacing, from how it writes 50 % ("50 %",
-      --  "%50", "٥٠٪"), around the number as it writes decimals.
+      --  CLDR's percent pattern, given the value as a fraction: the digits
+      --  as rounded here, the decimal point moved two places left as text so
+      --  no binary rounding creeps in ("12.5" -> "0.125").
       declare
-         function Rendered (Selection : Humanize.Selections.Message_Selection) return String is
-            Result : constant Humanize.Status.Text_Result := Humanize.I18N_Rendering.Render (Context, Selection);
-         begin
-            return (if Result.Status = Humanize.Status.Ok then To_String (Result.Text) else "");
-         end Rendered;
-         Sample : constant String :=
-           Rendered (Humanize.Selections.With_Arg (Humanize.Selections.Phrase ("number.percent_sign"), "value", "0.5"));
-         Fifty  : constant String :=
-           Rendered (Humanize.Selections.Text_Value (Humanize.Message_Keys.Number_Plain, "50"));
-         Number : constant String :=
-           Rendered (Humanize.Selections.Text_Value
-                       (Humanize.Message_Keys.Number_Plain,
-                        Humanize.Decimal_Images.Decimal_Image
-                          (Value, Options.Maximum_Fraction_Digits, Options.Suppress_Trailing_Zero)));
-         At_Index : constant Natural :=
-           (if Fifty = "" then 0 else Ada.Strings.Fixed.Index (Sample, Fifty));
+         Image : constant String :=
+           Humanize.Decimal_Images.Decimal_Image
+             (Value, Options.Maximum_Fraction_Digits, Options.Suppress_Trailing_Zero);
+         Negative : constant Boolean := Image'Length > 0 and then Image (Image'First) = '-';
+         Digits_Text : constant String := (if Negative then Image (Image'First + 1 .. Image'Last) else Image);
+         Point : constant Natural := Ada.Strings.Fixed.Index (Digits_Text, ".");
+         Whole : constant String := (if Point = 0 then Digits_Text else Digits_Text (Digits_Text'First .. Point - 1));
+         Part  : constant String := (if Point = 0 then "" else Digits_Text (Point + 1 .. Digits_Text'Last));
+         Padded : constant String := (if Whole'Length < 3 then (1 .. 3 - Whole'Length => '0') & Whole else Whole);
+         Fraction : constant String :=
+           (if Negative then "-" else "")
+           & Padded (Padded'First .. Padded'Last - 2) & "." & Padded (Padded'Last - 1 .. Padded'Last) & Part;
+         Name : constant String :=
+           (if Options.Suppress_Trailing_Zero or else Options.Maximum_Fraction_Digits = 0 then "number.percent_free"
+            else "number.percent_fixed_" & Ada.Strings.Fixed.Trim
+                   (Natural'Image (Natural'Min (Options.Maximum_Fraction_Digits, 3)), Ada.Strings.Left));
+         Localized : constant Humanize.Status.Text_Result :=
+           Humanize.I18N_Rendering.Render
+             (Context, Humanize.Selections.With_Arg (Humanize.Selections.Phrase (Name), "value", Fraction));
       begin
-         if At_Index = 0 or else Number = "" then
-            return English;
+         if Localized.Status = Humanize.Status.Ok then
+            return (Status => Humanize.Status.Ok, Text => Localized.Text, Key => English.Key);
          end if;
-         return
-           (Status => Humanize.Status.Ok,
-            Text   => To_Unbounded_String
-              (Sample (Sample'First .. At_Index - 1) & Number & Sample (At_Index + Fifty'Length .. Sample'Last)),
-            Key    => English.Key);
+         return English;
       end;
    end Percent;
 

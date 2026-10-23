@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+* `Numbers.Percent` outside English is CLDR's percent pattern itself,
+  precision included: Turkish "%12,5" as well as German "12,5 %".
+* errno and signal reasons use glibc's own translations wherever the
+  Translation Project's libc catalog has the locale (29 locales; 694 texts
+  replaced); Japanese drops glibc's "です" to stay a label.
+
 * HTTP, errno, signal and SQLSTATE reasons are localized
   (`System_Status.Localized.HTTP_Status_Label`, `Errno_Label`,
   `Signal_Label`, `SQLSTATE_Class_Label`; 131 phrase keys, translated).

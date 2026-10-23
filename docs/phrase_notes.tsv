@@ -69,3 +69,32 @@ sw	Review: "hamisha" serves export, move and migrate; "hoja" serves both query a
 vi	Review: others_count adds "mục" (item), wrong if the others are people.
 eo	Review: editorial_percent.word always says "procentoj" ("1 procentoj").
 ar	Review: recurrence second/minute/hour/quarter/year and business_days/working_hours have no separate many form; the accusative only shows as optional tanween there.
+da	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+de	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+fr	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+es	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+it	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+pt	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+pt-PT	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+nl	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+sv	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+nb	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+fi	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+pl	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+cs	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+tr	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+ru	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+uk	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+ja	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+ko	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+zh	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+zh-Hant	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+ar	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+ro	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+lt	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+sl	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+id	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+eo	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+vi	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+hu	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
+sk	Review: errno.reason.* and signal.reason.* are glibc's own translations (Translation Project libc catalog), case-matched; check others against them.
