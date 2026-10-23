@@ -205,7 +205,10 @@ here, so English output reads back too.
 `Humanize.Parsing.Localized` reads the quantities back the same way:
 `Parse_Number` ("1.234,5", Arabic-Indic digits), `Parse_Duration` ("2
 Stunden, 30 Minuten", Swahili "dakika 5", Arabic "ساعتان"), `Parse_Relative`
-("vor 3 Tagen", "gestern") and `Parse_Bytes` ("1,5 KiB"). It learns a
+("vor 3 Tagen", "gestern"), `Parse_Bytes` ("1,5 KiB"), `Parse_Measure` (the
+`Humanize.Units` families at any scale: "1,5 km", "68 °F" read as 20 °C) and
+`Parse_Date` (`Calendar_Date_Label`'s ISO, short, medium and long styles, and
+`Natural_Day`'s "gestern"). It learns a
 locale's forms by rendering sample values with `Durations.Format_Components`,
 `Datetimes.Relative` and `Bytes.Format` (cached per runtime and locale, about
 70 ms the first time), so it reads exactly what those write. A text the locale

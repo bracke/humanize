@@ -1,6 +1,7 @@
 with Ada.Calendar;
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Containers.Vectors;
+with Ada.Strings.Fixed;
 with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
@@ -8,8 +9,8 @@ with System.Address_Image;
 
 with Humanize.Bytes;
 with Humanize.Catalog_Loads;
-with Humanize.Datetimes;
 with Humanize.Durations;
+with Humanize.Units;
 with Humanize.Parsing.Locale_Digits;
 with Humanize.Status;
 
@@ -30,6 +31,11 @@ package body Humanize.Parsing.Localized is
       Pattern   : Unbounded_String;
       Counted   : Boolean := False;
       Unit      : Long_Float := 0.0;
+      --  Value = number * Unit + Offset; Offset is not 0 for an affine unit
+      --  (degrees Fahrenheit for Celsius).
+      Offset    : Long_Float := 0.0;
+      --  The samples with the smallest and largest number shown, for Fit.
+      Low_Shown, Low_Value, High_Shown, High_Value : Long_Float := 0.0;
       --  The locale also writes a value of the other sign this way (Hindi
       --  "कल" is yesterday and tomorrow).
       Ambiguous : Boolean := False;
@@ -45,7 +51,7 @@ package body Humanize.Parsing.Localized is
       Joins : Text_Vectors.Vector;
    end record;
 
-   type Lexicon_Kind is (Durations_Kind, Relative_Kind, Bytes_Kind);
+   type Lexicon_Kind is (Durations_Kind, Relative_Kind, Bytes_Kind, Measure_Kind, Dates_Kind);
 
    package Lexicon_Maps is new Ada.Containers.Indefinite_Hashed_Maps
      (Key_Type => String, Element_Type => Lexicon, Hash => Ada.Strings.Hash, Equivalent_Keys => "=");
@@ -132,7 +138,7 @@ package body Humanize.Parsing.Localized is
             end if;
          end loop;
          Forms.Append (Form'(Pattern => To_Unbounded_String (Rendered), Counted => False, Unit => Value,
-                             Ambiguous => False));
+                             others => <>));
          return;
       end if;
       if Last = 0 or else Shown = 0.0 then
@@ -149,13 +155,45 @@ package body Humanize.Parsing.Localized is
       begin
          for F of Forms loop
             if F.Pattern = Pattern then
-               F.Ambiguous := F.Ambiguous or else F.Unit * Value < 0.0;
+               F.Ambiguous := F.Ambiguous or else F.High_Value * Value < 0.0;
+               if Shown < F.Low_Shown then
+                  F.Low_Shown := Shown;
+                  F.Low_Value := Value;
+               elsif Shown > F.High_Shown then
+                  F.High_Shown := Shown;
+                  F.High_Value := Value;
+               end if;
                return;
             end if;
          end loop;
-         Forms.Append (Form'(Pattern => Pattern, Counted => True, Unit => Value / Shown, Ambiguous => False));
+         Forms.Append (Form'(Pattern => Pattern, Counted => True, Unit => Value / Shown, Offset => 0.0,
+                             Ambiguous => False, Low_Shown => Shown, Low_Value => Value, High_Shown => Shown,
+                             High_Value => Value));
       end;
    end Learn;
+
+   --  Each counted form's unit from its samples: the largest number shown
+   --  (least rounded, "621 mi" over "1.2 mi") where the samples agree on a
+   --  ratio, else the line through both (an affine unit such as Fahrenheit).
+   procedure Fit (Forms : in out Form_Vectors.Vector) is
+   begin
+      for F of Forms loop
+         if F.Counted and then F.High_Shown /= 0.0 then
+            declare
+               High_Ratio : constant Long_Float := F.High_Value / F.High_Shown;
+               Low_Ratio  : constant Long_Float := F.Low_Value / F.Low_Shown;
+            begin
+               if F.High_Shown = F.Low_Shown or else abs (High_Ratio - Low_Ratio) <= 0.1 * abs High_Ratio then
+                  F.Unit := High_Ratio;
+                  F.Offset := 0.0;
+               else
+                  F.Unit := (F.High_Value - F.Low_Value) / (F.High_Shown - F.Low_Shown);
+                  F.Offset := F.High_Value - F.Unit * F.High_Shown;
+               end if;
+            end;
+         end if;
+      end loop;
+   end Fit;
 
    --  Whether Form F reads Text (From .. To) exactly; its value.
    function Reads (F : Form; Text : String; From, To : Positive; Value : out Long_Float) return Boolean is
@@ -187,7 +225,7 @@ package body Humanize.Parsing.Localized is
             if Last = 0 or else To - Last /= After'Length or else Text (Last + 1 .. To) /= After then
                return False;
             end if;
-            Value := Count * F.Unit;
+            Value := Count * F.Unit + F.Offset;
             return True;
          end;
       end;
@@ -357,6 +395,7 @@ package body Humanize.Parsing.Localized is
       Three.Append (To_Unbounded_String (Render (2 * 3_600, D.Hour, D.Hour, 1)));
       Three.Append (To_Unbounded_String (Render (5 * 60, D.Minute, D.Minute, 1)));
       Learn_Joins (Render (3 * 86_400 + 2 * 3_600 + 5 * 60, D.Day, D.Minute, 3), Three);
+      Fit (Result.Forms);
       return Result;
    end Learn_Durations;
 
@@ -419,6 +458,7 @@ package body Humanize.Parsing.Localized is
             end loop;
          end loop;
       end loop;
+      Fit (Result.Forms);
       return Result;
    end Learn_Relative;
 
@@ -452,13 +492,23 @@ package body Humanize.Parsing.Localized is
             end loop;
          end;
       end loop;
+      Fit (Result.Forms);
       return Result;
    end Learn_Bytes;
 
    --  Context's lexicon of Kind, learnt on first use.
-   function Learned (Context : Humanize.Contexts.Context; Kind : Lexicon_Kind) return Lexicon is
+   function Learn_Measures (Context : Humanize.Contexts.Context; Family : Measure_Family) return Lexicon;
+   function Learn_Dates (Context : Humanize.Contexts.Context) return Lexicon;
+
+   function Learned
+     (Context : Humanize.Contexts.Context;
+      Kind    : Lexicon_Kind;
+      Family  : Measure_Family := Measure_Family'First)
+      return Lexicon
+   is
       Key   : constant String :=
-        Lexicon_Kind'Image (Kind) & "|" & Humanize.Contexts.Locale (Context) & "|"
+        Lexicon_Kind'Image (Kind) & "|" & Measure_Family'Image (Family) & "|"
+        & Humanize.Contexts.Locale (Context) & "|"
         & System.Address_Image (Humanize.Contexts.Runtime (Context).all'Address)
         & "|" & Natural'Image (Humanize.Catalog_Loads.Count);
       Item  : Lexicon;
@@ -470,7 +520,9 @@ package body Humanize.Parsing.Localized is
            (case Kind is
                when Durations_Kind => Learn_Durations (Context),
                when Relative_Kind  => Learn_Relative (Context),
-               when Bytes_Kind     => Learn_Bytes (Context));
+               when Bytes_Kind     => Learn_Bytes (Context),
+               when Measure_Kind   => Learn_Measures (Context, Family),
+               when Dates_Kind     => Learn_Dates (Context));
          Cache.Store (Key, Item);
       end if;
       return Item;
@@ -542,5 +594,223 @@ package body Humanize.Parsing.Localized is
       end if;
       return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Bytes;
+
+   function Learn_Measures (Context : Humanize.Contexts.Context; Family : Measure_Family) return Lexicon is
+      package U renames Humanize.Units;
+      Result : Lexicon;
+
+      function Render (Value : Long_Float) return Humanize.Status.Text_Result is
+        (case Family is
+            when Length      => U.Format_Length (Context, Value),
+            when Mass        => U.Format_Mass (Context, Value),
+            when Volume      => U.Format_Volume (Context, Value),
+            when Area        => U.Format_Area (Context, Value),
+            when Speed       => U.Format_Speed (Context, Value),
+            when Temperature => U.Format_Temperature (Context, Value),
+            when Energy      => U.Format_Energy (Context, Value),
+            when Power       => U.Format_Power (Context, Value),
+            when Pressure    => U.Format_Pressure (Context, Value),
+            when Frequency   => U.Format_Frequency (Context, Value),
+            when Data_Rate   => U.Format_Data_Rate (Context, Value),
+            when Angle       => U.Format_Angle (Context, Value),
+            when Voltage     => U.Format_Voltage (Context, Value),
+            when Current     => U.Format_Electric_Current (Context, Value));
+
+      Steps : constant array (1 .. 4) of Long_Float := [1.0, 2.0, 5.0, 7.0];
+      Scale : Long_Float := 1.0E-6;
+   begin
+      --  Values from a millionth to a trillion base units: every scale the
+      --  formatter picks, each at a few numbers.
+      while Scale <= 1.0E12 loop
+         for Step of Steps loop
+            declare
+               Rendered : constant Humanize.Status.Text_Result := Render (Step * Scale);
+            begin
+               if Rendered.Status = Humanize.Status.Ok then
+                  Learn (Result.Forms, Plain (Context, To_String (Rendered.Text)), Step * Scale);
+               end if;
+            end;
+         end loop;
+         Scale := Scale * 10.0;
+      end loop;
+      Fit (Result.Forms);
+      return Result;
+   end Learn_Measures;
+
+   --  Date forms: Pattern holds a day, year and two-digit year marker, Unit
+   --  the month, Offset the days from the reference for a day word.
+   Day_Marker   : constant Character := Character'Val (2);
+   Year_Marker  : constant Character := Character'Val (3);
+   Short_Marker : constant Character := Character'Val (4);
+   Day_Word     : constant Long_Float := -1.0;
+
+   function Learn_Dates (Context : Humanize.Contexts.Context) return Lexicon is
+      package DT renames Humanize.Datetimes;
+      Result : Lexicon;
+      Styles : constant array (1 .. 4) of DT.Calendar_Date_Style :=
+        [DT.Calendar_Date_ISO, DT.Calendar_Date_Short, DT.Calendar_Date_Medium, DT.Calendar_Date_Long];
+
+      --  Text with the first From replaced by Marker; Text where it is absent.
+      function Mark (Text, From : String; Marker : Character) return String is
+         At_Index : constant Natural := Index (To_Unbounded_String (Text), From);
+      begin
+         return (if At_Index = 0 then Text
+                 else Text (Text'First .. At_Index - 1) & Marker & Text (At_Index + From'Length .. Text'Last));
+      end Mark;
+   begin
+      for Style of Styles loop
+         --  Seven days of each month, so a style that names the weekday has a
+         --  form for each.
+         for Month in Ada.Calendar.Month_Number loop
+            for Day in 22 .. 28 loop
+               declare
+                  Rendered : constant Humanize.Status.Text_Result :=
+                    DT.Calendar_Date_Label (Context, (Year => 2087, Month => Month, Day => Day, others => 0),
+                                            DT.Calendar_Date_Options'(Style => Style, Fiscal_Year_Start_Month => 1));
+                  Day_Text : constant String := Ada.Strings.Fixed.Trim (Natural'Image (Day), Ada.Strings.Left);
+               begin
+                  if Rendered.Status = Humanize.Status.Ok then
+                     declare
+                        Text  : constant String := Plain (Context, To_String (Rendered.Text));
+                        Years : constant String :=
+                          (if Index (To_Unbounded_String (Text), "2087") > 0 then Mark (Text, "2087", Year_Marker)
+                           else Mark (Text, "87", Short_Marker));
+                        Pattern : constant Unbounded_String := To_Unbounded_String (Mark (Years, Day_Text, Day_Marker));
+                     begin
+                        if not (for some F of Result.Forms => F.Pattern = Pattern) then
+                           Result.Forms.Append
+                             (Form'(Pattern => Pattern, Counted => False, Unit => Long_Float (Month), others => <>));
+                        end if;
+                     end;
+                  end if;
+               end;
+            end loop;
+         end loop;
+      end loop;
+      --  Day words around the reference ("gestern", "morgen").
+      for Offset in -2 .. 2 loop
+         declare
+            Reference : constant DT.Civil_Date_Time := (Year => 2087, Month => 6, Day => 15, others => 0);
+            Rendered  : constant Humanize.Status.Text_Result :=
+              DT.Natural_Day (Context, (Reference with delta Day => 15 + Offset), Reference);
+            Text      : constant String :=
+              (if Rendered.Status = Humanize.Status.Ok then Plain (Context, To_String (Rendered.Text)) else "");
+         begin
+            if Text /= "" and then (for all C of Text => C not in '0' .. '9')
+              and then not (for some F of Result.Forms => To_String (F.Pattern) = Text)
+            then
+               Result.Forms.Append
+                 (Form'(Pattern => To_Unbounded_String (Text), Counted => False, Unit => Day_Word,
+                        Offset => Long_Float (Offset), others => <>));
+            end if;
+         end;
+      end loop;
+      return Result;
+   end Learn_Dates;
+
+   function Parse_Measure
+     (Context : Humanize.Contexts.Context;
+      Family  : Measure_Family;
+      Text    : String)
+      return Float_Parse_Result
+   is
+      Value     : Long_Float;
+      Ambiguous : Boolean;
+   begin
+      if Read_Whole (Learned (Context, Measure_Kind, Family).Forms, Trimmed (Plain (Context, Text)), Value,
+                     Ambiguous)
+      then
+         return (Status => Humanize.Status.Ok, Value => Value, Exact => not Ambiguous, Consumed => Text'Length,
+                 others => <>);
+      end if;
+      return (Status => Humanize.Status.Invalid_Argument, others => <>);
+   end Parse_Measure;
+
+   function Parse_Date
+     (Context   : Humanize.Contexts.Context;
+      Text      : String;
+      Reference : Humanize.Datetimes.Civil_Date_Time)
+      return Civil_Date_Parse_Result
+   is
+      Item : constant String := Trimmed (Plain (Context, Text));
+
+      --  Whether Pattern reads all of Item, with the day and year it holds.
+      function Matches (Pattern : String; Day, Year : out Natural) return Boolean is
+         P : Natural := Pattern'First;
+         T : Natural := Item'First;
+
+         function Digits_At return Natural is
+            Stop : Natural := T;
+         begin
+            while Stop <= Item'Last and then Item (Stop) in '0' .. '9' and then Stop - T < 4 loop
+               Stop := Stop + 1;
+            end loop;
+            return Stop - T;
+         end Digits_At;
+      begin
+         Day := 0;
+         Year := 0;
+         while P <= Pattern'Last loop
+            if Pattern (P) in Day_Marker | Year_Marker | Short_Marker then
+               declare
+                  Count : constant Natural := Digits_At;
+               begin
+                  if Count = 0 then
+                     return False;
+                  end if;
+                  if Pattern (P) = Day_Marker then
+                     Day := Natural'Value (Item (T .. T + Count - 1));
+                  elsif Pattern (P) = Year_Marker then
+                     Year := Natural'Value (Item (T .. T + Count - 1));
+                  else
+                     Year := 2000 + Natural'Value (Item (T .. T + Count - 1));
+                  end if;
+                  T := T + Count;
+               end;
+            elsif T > Item'Last or else Item (T) /= Pattern (P) then
+               return False;
+            else
+               T := T + 1;
+            end if;
+            P := P + 1;
+         end loop;
+         return T > Item'Last;
+      end Matches;
+   begin
+      for F of Learned (Context, Dates_Kind).Forms loop
+         if F.Unit = Day_Word then
+            if To_String (F.Pattern) = Item then
+               declare
+                  use Ada.Calendar;
+                  Day : constant Time :=
+                    Time_Of (Reference.Year, Reference.Month, Reference.Day, 43_200.0)
+                    + Duration (F.Offset * 86_400.0);
+               begin
+                  return (Status => Humanize.Status.Ok,
+                          Value  => (Year => Year (Day), Month => Month (Day), Day => Ada.Calendar.Day (Day),
+                                     others => 0),
+                          Exact  => True, Consumed => Text'Length);
+               end;
+            end if;
+         else
+            declare
+               Day, Year : Natural;
+            begin
+               if Matches (To_String (F.Pattern), Day, Year)
+                 and then Day in Ada.Calendar.Day_Number and then Year in Ada.Calendar.Year_Number
+               then
+                  return (Status => Humanize.Status.Ok,
+                          Value  => (Year => Year, Month => Ada.Calendar.Month_Number (F.Unit), Day => Day,
+                                     others => 0),
+                          Exact  => True, Consumed => Text'Length);
+               end if;
+            end;
+         end if;
+      end loop;
+      return (Status => Humanize.Status.Invalid_Argument, others => <>);
+   exception
+      when Constraint_Error | Ada.Calendar.Time_Error =>
+         return (Status => Humanize.Status.Invalid_Argument, others => <>);
+   end Parse_Date;
 
 end Humanize.Parsing.Localized;

@@ -1,4 +1,5 @@
 with Humanize.Contexts;
+with Humanize.Datetimes;
 
 --  Reading back, in a context's locale, what humanize's localized formatters
 --  write: numbers ("1.234,5", Arabic-Indic digits), durations ("2 Stunden,
@@ -7,6 +8,21 @@ with Humanize.Contexts;
 --  by rendering known values with the formatters themselves, so a reading is
 --  exactly what the locale writes.
 package Humanize.Parsing.Localized is
+
+   --  The measurement families Humanize.Units formats, each in its base
+   --  unit: metres, grams, litres, square metres, metres per second, degrees
+   --  Celsius, joules, watts, pascals, hertz, bytes per second, degrees,
+   --  volts, amperes.
+   type Measure_Family is
+     (Length, Mass, Volume, Area, Speed, Temperature, Energy, Power, Pressure, Frequency, Data_Rate, Angle,
+      Voltage, Current);
+
+   type Civil_Date_Parse_Result is record
+      Status         : Humanize.Status.Status_Code := Humanize.Status.Internal_Error;
+      Value          : Humanize.Datetimes.Civil_Date_Time;
+      Exact          : Boolean := False;
+      Consumed       : Natural := 0;
+   end record;
 
    function Parse_Number
      (Context : Humanize.Contexts.Context;
@@ -49,5 +65,29 @@ package Humanize.Parsing.Localized is
    --  locale, binary ("1,5 KiB") or decimal ("1,5 kB") units.
    --  @return The size in bytes, rounded to a whole byte (Exact when no
    --  rounding was needed).
+
+   function Parse_Measure
+     (Context : Humanize.Contexts.Context;
+      Family  : Measure_Family;
+      Text    : String)
+      return Float_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Family What Text measures.
+   --  @param Text A measurement as Humanize.Units writes it in the locale,
+   --  at any scale it picks ("1,5 km", "350 mi", "68 °F").
+   --  @return The value in the family's base unit (metres, degrees Celsius,
+   --  ...); as precise as the text, so a rounded "1.2 mi" reads as 1931 m.
+
+   function Parse_Date
+     (Context   : Humanize.Contexts.Context;
+      Text      : String;
+      Reference : Humanize.Datetimes.Civil_Date_Time)
+      return Civil_Date_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A date as Humanize.Datetimes.Calendar_Date_Label writes it
+   --  in the ISO, short, medium or long style ("23. Oktober 2087",
+   --  "23.10.87"), or a day word Natural_Day writes ("gestern").
+   --  @param Reference Today, for day words.
+   --  @return The date; a two-digit year is read in the 2000s.
 
 end Humanize.Parsing.Localized;

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+* `Parsing.Localized.Parse_Measure` reads the 14 `Humanize.Units` families
+  back at any scale the formatter picks (affine units such as Fahrenheit
+  fitted from two samples), and `Parse_Date` reads `Calendar_Date_Label`'s
+  ISO/short/medium/long dates and `Natural_Day`'s words; both round-trip in
+  34 locales.
+
 * **The caller's noun has a gender.** `With_Noun_Forms (..., Gender =>
   "feminine")` reaches every phrase that takes the noun as `{gender}`, and
   languages with grammatical gender agree with it (French "aucune ligne ne

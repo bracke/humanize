@@ -17,6 +17,7 @@ with Humanize.Resources;
 with Humanize.Bytes;
 with Humanize.Durations;
 with Humanize.Durations.Formatting;
+with Humanize.Units;
 with Humanize.Parsing.Localized;
 with Humanize.Parsing.Phrases;
 with Humanize.Phrases;
@@ -705,6 +706,56 @@ package body Humanize.Tests.Phrase_Catalogs is
       end;
    end Test_Plural_Gender_And_Reload;
 
+   --  Measurements and dates read back as the locale writes them.
+   procedure Test_Localized_Measures_And_Dates
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      package L renames Humanize.Parsing.Localized;
+      package DT renames Humanize.Datetimes;
+      use type Humanize.Status.Status_Code;
+      Runtime : aliased Messages.Runtime.Instance;
+      Loaded  : Messages.Runtime.Load_Result;
+      Today   : constant DT.Civil_Date_Time := (Year => 2026, Month => 3, Day => 10, others => 0);
+
+      function Ctx (Locale : String) return Humanize.Contexts.Context is
+        (Humanize.Contexts.Create (Runtime'Unchecked_Access, Locale));
+      function Near (A, B : Long_Float) return Boolean is (abs (A - B) <= 0.01 * abs B);
+      Date_Locales : constant array (Positive range <>) of Unbounded_String := [+"de", +"fr", +"ja", +"ar", +"ru"];
+   begin
+      Humanize.Catalogs.Load_Defaults (Runtime, Loaded);
+      declare
+         Km   : constant String := Image (Humanize.Units.Format_Length (Ctx ("de"), 1_500.0));
+         Temp : constant String := Image (Humanize.Units.Format_Temperature (Ctx ("en"), 20.0));
+         Back : constant Humanize.Parsing.Float_Parse_Result := L.Parse_Measure (Ctx ("en"), L.Temperature, Temp);
+      begin
+         AUnit.Assertions.Assert
+           (Near (L.Parse_Measure (Ctx ("de"), L.Length, Km).Value, 1_500.0), "German length [" & Km & "]");
+         AUnit.Assertions.Assert
+           (Back.Status = Humanize.Status.Ok and then Near (Back.Value, 20.0),
+            "temperature [" & Temp & "] read" & Back.Value'Image);
+      end;
+      for Locale of Date_Locales loop
+         for Style in DT.Calendar_Date_ISO .. DT.Calendar_Date_Long loop
+            declare
+               Code : constant String := To_String (Locale);
+               Text : constant String :=
+                 Image (DT.Calendar_Date_Label
+                          (Ctx (Code), Today,
+                           DT.Calendar_Date_Options'(Style => Style, Fiscal_Year_Start_Month => 1)));
+               Read : constant L.Civil_Date_Parse_Result := L.Parse_Date (Ctx (Code), Text, Today);
+            begin
+               AUnit.Assertions.Assert
+                 (Read.Status = Humanize.Status.Ok and then Read.Value.Day = 10 and then Read.Value.Month = 3
+                  and then Read.Value.Year = 2026,
+                  Code & " " & Style'Image & " [" & Text & "]");
+            end;
+         end loop;
+      end loop;
+      AUnit.Assertions.Assert
+        (L.Parse_Date (Ctx ("de"), "gestern", Today).Value.Day = 9, "German yesterday");
+   end Test_Localized_Measures_And_Dates;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -723,6 +774,7 @@ package body Humanize.Tests.Phrase_Catalogs is
       Register_Routine (T, Test_Read_Phrases_Back'Access, "read phrases back");
       Register_Routine (T, Test_Localized_Quantities'Access, "localized quantities read back");
       Register_Routine (T, Test_Plural_Gender_And_Reload'Access, "noun plural, gender, reload");
+      Register_Routine (T, Test_Localized_Measures_And_Dates'Access, "localized measures and dates read back");
    end Register_Tests;
 
 end Humanize.Tests.Phrase_Catalogs;
