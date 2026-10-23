@@ -13,9 +13,10 @@
 * `Lists.Format` outside English uses CLDR's list patterns, "or" lists
   included: Japanese "a、b、c", Arabic "a وb وc", German "a, b oder c", where
   it joined with ", " and a translated "and" (and always English "or").
-* `Datetimes.Calendar_Relation` counts ISO weeks (Monday to Sunday), as the
-  parser's "last week" does: weeks started on Thursday, so a Thursday was
-  "next week" from the Wednesday before.
+* `Datetimes.Calendar_Relation` counts weeks from the day the locale's region
+  starts them (CLDR's weekData through `I18N.Week_Data`: Sunday in the United
+  States, Monday in Germany, Saturday in Egypt). Weeks started on Thursday,
+  so a Thursday was "next week" from the Wednesday before.
 * `Parsing.Localized` reads more back in any shipped locale: `Parse_List`
   (the items), `Parse_Spellout`, `Parse_Ordinal_Words`,
   `Parse_Calendar_Difference` and `Parse_Calendar_Relation`. Its number

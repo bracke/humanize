@@ -66,8 +66,9 @@ separate (Humanize.Tests.Parsing)
       type Value_List is array (Positive range <>) of Natural;
       Integer_Samples : constant Value_List := [0, 1, 2, 7, 11, 21, 34, 100, 101, 1_234, 20_000, 99_999, 1_000_000];
 
-      --  A Saturday reference, not the reader's own.
-      Reference : constant DT.Civil_Date_Time := Day (2026, 10, 17);
+      --  A Wednesday, not the reader's own reference: inside the same week
+      --  whether weeks start on Saturday, Sunday or Monday.
+      Reference : constant DT.Civil_Date_Time := Day (2026, 10, 14);
 
       procedure Check_Relation
         (Locale : String; Value : DT.Civil_Date_Time; Period : L.Calendar_Period; Offset : L.Period_Offset)
@@ -95,6 +96,18 @@ separate (Humanize.Tests.Parsing)
       Check_Grouped ("en", "1,234,567", 1_234_567.0);
       Check_Grouped ("hi", "12,34,567", 1_234_567.0);
       Check_Grouped ("de", "-12.000", -12_000.0);
+      --  Weeks start where the locale's region starts them: the Sunday after
+      --  a Saturday is next week in the United States, this week in Germany.
+      AUnit.Assertions.Assert
+        (Humanize.Tests.Support.Text
+           (DT.Calendar_Relation (Humanize.Tests.Support.Locale ("en"), Day (2026, 10, 11), Day (2026, 10, 10)))
+         = "next week",
+         "a United States week starts on Sunday");
+      AUnit.Assertions.Assert
+        (Humanize.Tests.Support.Text
+           (DT.Calendar_Relation (Humanize.Tests.Support.Locale ("de"), Day (2026, 10, 11), Day (2026, 10, 10)))
+         = "diese Woche",
+         "a German week starts on Monday");
       for Locale_Access of Humanize.Locales.Shipped_Locales loop
          declare
             Name : constant String := Locale_Access.all;
@@ -111,13 +124,13 @@ separate (Humanize.Tests.Parsing)
             Check_Difference (Name, Day (2026, 1, 1), Day (2026, 1, 18), 0, 0, 17);
             Check_Difference (Name, Day (2026, 1, 31), Day (2026, 3, 2), 0, 1, 2);
             Check_Difference (Name, Day (1990, 6, 1), Day (2026, 6, 1), 36, 0, 0);
-            Check_Relation (Name, Day (2026, 10, 9), L.Week_Period, -1);
-            Check_Relation (Name, Day (2026, 10, 15), L.Week_Period, 0);
+            Check_Relation (Name, Day (2026, 10, 7), L.Week_Period, -1);
+            Check_Relation (Name, Day (2026, 10, 13), L.Week_Period, 0);
             Check_Relation (Name, Day (2026, 10, 21), L.Week_Period, 1);
-            Check_Relation (Name, Day (2026, 9, 17), L.Month_Period, -1);
-            Check_Relation (Name, Day (2026, 11, 20), L.Month_Period, 1);
-            Check_Relation (Name, Day (2025, 10, 17), L.Year_Period, -1);
-            Check_Relation (Name, Day (2027, 10, 17), L.Year_Period, 1);
+            Check_Relation (Name, Day (2026, 9, 14), L.Month_Period, -1);
+            Check_Relation (Name, Day (2026, 11, 14), L.Month_Period, 1);
+            Check_Relation (Name, Day (2025, 10, 14), L.Year_Period, -1);
+            Check_Relation (Name, Day (2027, 10, 14), L.Year_Period, 1);
          end;
       end loop;
    end Test_Localized_Readers;

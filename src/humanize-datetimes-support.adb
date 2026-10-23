@@ -1,4 +1,5 @@
 with Ada.Calendar.Formatting;
+with I18N.Week_Data;
 with Ada.Strings.Unbounded;
 
 with Humanize.Datetime_Classification;
@@ -739,15 +740,18 @@ package body Humanize.Datetimes.Support is
    function Month_Index (Item : Civil_Date_Time) return Integer is
      (Integer (Item.Year) * 12 + Integer (Item.Month));
 
-   --  The ISO week (Monday to Sunday) Item falls in, as a running count;
-   --  the parser's "last week" reads the same weeks.
-   function Week_Index (Item : Civil_Date_Time) return Integer is
+   --  The week Item falls in, as a running count, in weeks that start on the
+   --  day Locale's region starts them (CLDR's weekData: Sunday in the United
+   --  States, Monday in Germany, Saturday in Egypt).
+   function Week_Index (Item : Civil_Date_Time; Locale : String) return Integer is
       Epoch : constant Ada.Calendar.Time :=
         Ada.Calendar.Time_Of (1970, 1, 1, 0.0);
       Date : constant Ada.Calendar.Time :=
         Ada.Calendar.Time_Of (Item.Year, Item.Month, Item.Day, 0.0);
-      --  1970-01-01 was a Thursday, three days into its week.
-      Into_Week : constant := 3;
+      First_Day : constant String := I18N.Week_Data.First_Day (Locale);
+      --  1970-01-01 was a Thursday: how many days into its week.
+      Into_Week : constant Integer :=
+        (if First_Day = "sun" then 4 elsif First_Day = "sat" then 5 elsif First_Day = "fri" then 6 else 3);
       --  Whole weeks added so the division never sees a negative day count.
       Bias : constant := 7 * 100_000;
    begin

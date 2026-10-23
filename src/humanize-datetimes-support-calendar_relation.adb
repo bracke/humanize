@@ -5,8 +5,10 @@ function Calendar_Relation
    Reference : Civil_Date_Time)
    return Humanize.Status.Text_Result
 is
+   Week_Locale : constant String := Humanize.Contexts.Locale (Context);
+
    function English return Humanize.Status.Text_Result is
-      Week_Diff  : constant Integer := Week_Index (Value) - Week_Index (Reference);
+      Week_Diff  : constant Integer := Week_Index (Value, Week_Locale) - Week_Index (Reference, Week_Locale);
       Month_Diff : constant Integer :=
         Month_Index (Value) - Month_Index (Reference);
       Year_Diff  : constant Integer :=
@@ -39,7 +41,7 @@ is
    end English;
    --  The key for the nearest calendar unit within one step, or "" when none is.
    function Key return String is
-      Week_Diff  : constant Integer := Week_Index (Value) - Week_Index (Reference);
+      Week_Diff  : constant Integer := Week_Index (Value, Week_Locale) - Week_Index (Reference, Week_Locale);
       Month_Diff : constant Integer := Month_Index (Value) - Month_Index (Reference);
       Year_Diff  : constant Integer := Integer (Value.Year) - Integer (Reference.Year);
    begin

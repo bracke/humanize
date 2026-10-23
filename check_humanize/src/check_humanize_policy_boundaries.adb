@@ -43,7 +43,8 @@ package body Check_Humanize_Policy_Boundaries is
          Allows_Locales   : Boolean := False;
          Allows_Result    : Boolean := False;
          Allows_Runtime   : Boolean := False;
-         Allows_CLDR_Text : Boolean := False)
+         Allows_CLDR_Text : Boolean := False;
+         Allows_Week_Data : Boolean := False)
       is
          Path : constant String := Root & "/src/" & Source_Name;
          Allowed_Count : constant Natural :=
@@ -51,7 +52,8 @@ package body Check_Humanize_Policy_Boundaries is
            + Boolean'Pos (Allows_Locales)
            + Boolean'Pos (Allows_Result)
            + Boolean'Pos (Allows_Runtime)
-           + 3 * Boolean'Pos (Allows_CLDR_Text);
+           + 3 * Boolean'Pos (Allows_CLDR_Text)
+           + Boolean'Pos (Allows_Week_Data);
          Allowed : Project_Tools.Ada_Source.String_List (1 .. Allowed_Count);
          Next    : Positive := Allowed'First;
       begin
@@ -75,6 +77,10 @@ package body Check_Humanize_Policy_Boundaries is
             Allowed (Next) := To_Unbounded_String ("I18N.Relative_Format");
             Allowed (Next + 1) := To_Unbounded_String ("I18N.Unit_Format");
             Allowed (Next + 2) := To_Unbounded_String ("I18N.Spellout");
+            Next := Next + 3;
+         end if;
+         if Allows_Week_Data then
+            Allowed (Next) := To_Unbounded_String ("I18N.Week_Data");
          end if;
 
          Project_Tools.Ada_Source.Require_Only_Allowed_With_Clauses
@@ -117,6 +123,10 @@ package body Check_Humanize_Policy_Boundaries is
                   --  learns CLDR's unit names, relative patterns and spelled
                   --  numbers.
                   Check_Allowed_I18N_Imports (Name, Allows_CLDR_Text => True);
+               elsif Name = "humanize-datetimes-support.adb" then
+                  --  Calendar_Relation counts weeks from the day the locale's
+                  --  region starts them (CLDR's weekData).
+                  Check_Allowed_I18N_Imports (Name, Allows_Week_Data => True);
                elsif Name = "humanize-i18n_rendering.adb" then
                   Check_Allowed_I18N_Imports
                     (Name,
