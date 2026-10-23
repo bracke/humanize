@@ -48,8 +48,8 @@ begin
      & P ("step_count", "step {step} of {total}")
      & P ("attempt_count", "attempt {attempt} of {total}")
      & P ("throughput_remaining",
-          "{remaining} {remaining, plural, one {{unit}} other {{unit}s}} "
-          & "remaining at {rate} {unit}/s")
+          "{remaining} {remaining, plural, one {{one}} other {{other}}} remaining "
+          & "at {rate} {unit}/s")
      & P ("accessible_progress", "{done} of {total} complete, {percent} percent")
      & P ("business_days", "{days} business {days, plural, one {day} other {days}}")
      & P ("working_hours", "{hours} working {hours, plural, one {hour} other {hours}}")

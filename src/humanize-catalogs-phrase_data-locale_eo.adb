@@ -49,7 +49,9 @@ begin
      & P ("percent_complete", "{percent} % finita")
      & P ("step_count", "paŝo {step} el {total}")
      & P ("attempt_count", "provo {attempt} el {total}")
-     & P ("throughput_remaining", "restas {remaining} {unit} je {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "restas {remaining} {remaining, plural, one {{one}} other {{other}}} je "
+          & "{rate} {unit}/s")
      & P ("accessible_progress", "{done} el {total} pretas, {percent} procentoj")
      & P ("business_days", "{days} {days, plural, one {labortago} other {labortagoj}}")
      & P ("working_hours", "{hours} {hours, plural, one {laborhoro} other {laborhoroj}}")

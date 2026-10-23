@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+* **The caller's noun has a gender.** `With_Noun_Forms (..., Gender =>
+  "feminine")` reaches every phrase that takes the noun as `{gender}`, and
+  languages with grammatical gender agree with it (French "aucune ligne ne
+  correspond", Swedish "tillgängligt", Spanish "seleccionadas", Hindi verb
+  forms, Arabic adjectives); without a gender the wording is unchanged.
+* `Durations.Formatting.Throughput_Remaining (Context, Remaining, Rate,
+  Singular, Plural)` gives the remaining count its plural and the
+  registered noun forms ("noch 5 Dateien"); the singular-only form is kept.
+* `Parsing.Localized` learns again after humanize loads catalogs into a
+  runtime, and no longer raises reading in a runtime with nothing loaded.
+
 * **Translation review.** An independent second pass over every locale
   fixed 115 phrases: agreement and case (Afrikaans double negation,
   Slovenian "dnevi", Arabic accusative after 11-99), wrong meanings (Swedish

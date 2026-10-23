@@ -49,7 +49,9 @@ begin
      & P ("percent_complete", "{percent} % abgeschlossen")
      & P ("step_count", "Schritt {step} von {total}")
      & P ("attempt_count", "Versuch {attempt} von {total}")
-     & P ("throughput_remaining", "noch {remaining} {unit} bei {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "noch {remaining} {remaining, plural, one {{one}} other {{other}}} bei "
+          & "{rate} {unit}/s")
      & P ("accessible_progress", "{done} von {total} abgeschlossen, {percent} Prozent")
      & P ("business_days", "{days} {days, plural, one {Werktag} other {Werktage}}")
      & P ("working_hours", "{hours} {hours, plural, one {Arbeitsstunde} other {Arbeitsstunden}}")

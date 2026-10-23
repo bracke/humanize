@@ -365,6 +365,23 @@ package Humanize.Durations.Formatting is
    --  @param Unit_Name Unit noun.
    --  @return Phrase such as "120 items remaining at 4 items/s".
 
+   function Throughput_Remaining
+     (Context   : Humanize.Contexts.Context;
+      Remaining : Natural;
+      Rate      : Natural;
+      Singular  : String;
+      Plural    : String)
+      return Humanize.Status.Text_Result;
+   --  The same, with the noun's plural (and the forms registered on Context
+   --  with Humanize.Contexts.With_Noun_Forms) for the remaining count: German
+   --  "noch 5 Dateien", where the singular-only form says "noch 5 Datei".
+   --  @param Context Formatting context.
+   --  @param Remaining Remaining work items.
+   --  @param Rate Work rate per second.
+   --  @param Singular The noun for one item ("file").
+   --  @param Plural The noun for several ("files").
+   --  @return Phrase such as "120 files remaining at 4 file/s".
+
    function Progress_Bar
      (Context : Humanize.Contexts.Context;
       Done    : Natural;

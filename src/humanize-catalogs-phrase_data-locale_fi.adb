@@ -50,7 +50,9 @@ begin
      & P ("percent_complete", "{percent} % valmiina")
      & P ("step_count", "vaihe {step}/{total}")
      & P ("attempt_count", "yritys {attempt}/{total}")
-     & P ("throughput_remaining", "jäljellä {remaining} ({unit}), {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "{remaining, plural, one {{one}} other {{other}}}: {remaining} "
+          & "jäljellä, {rate} {unit}/s")
      & P ("accessible_progress", "{done}/{total} valmiina, {percent} prosenttia")
      & P ("business_days", "{days, plural, one {{days} arkipäivä} other {{days} arkipäivää}}")
      & P ("working_hours", "{hours, plural, one {{hours} työtunti} other {{hours} työtuntia}}")

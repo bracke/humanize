@@ -31,7 +31,7 @@ begin
      & P ("percent_complete", "đã hoàn tất {percent}%")
      & P ("step_count", "bước {step}/{total}")
      & P ("attempt_count", "lần thử {attempt}/{total}")
-     & P ("throughput_remaining", "còn {remaining} {unit}, tốc độ {rate} {unit}/giây")
+     & P ("throughput_remaining", "còn {remaining} {other}, tốc độ {rate} {unit}/giây")
      & P ("accessible_progress", "đã hoàn tất {done}/{total}, {percent} phần trăm")
      & P ("business_days", "{days} ngày làm việc")
      & P ("working_hours", "{hours} giờ làm việc")

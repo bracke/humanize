@@ -30,7 +30,7 @@ begin
      & P ("percent_complete", "{percent}% 완료")
      & P ("step_count", "단계 {step}/{total}")
      & P ("attempt_count", "시도 {attempt}/{total}")
-     & P ("throughput_remaining", "{unit} {remaining}개 남음 ({rate} {unit}/초)")
+     & P ("throughput_remaining", "{other} {remaining}개 남음 ({rate} {unit}/초)")
      & P ("accessible_progress", "{total}개 중 {done}개 완료, {percent}퍼센트")
      & P ("business_days", "영업일 {days}일")
      & P ("working_hours", "근무 {hours}시간")

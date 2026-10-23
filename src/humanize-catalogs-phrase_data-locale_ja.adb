@@ -30,7 +30,7 @@ begin
      & P ("percent_complete", "{percent}%完了")
      & P ("step_count", "ステップ {step}/{total}")
      & P ("attempt_count", "試行 {attempt}/{total}")
-     & P ("throughput_remaining", "残り{remaining} {unit}（{rate} {unit}/秒）")
+     & P ("throughput_remaining", "残り{remaining} {other}（{rate} {unit}/秒）")
      & P ("accessible_progress", "{total}件中{done}件完了、{percent}パーセント")
      & P ("business_days", "{days}営業日")
      & P ("working_hours", "稼働{hours}時間")

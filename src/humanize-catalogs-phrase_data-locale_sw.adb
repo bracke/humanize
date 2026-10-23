@@ -49,7 +49,9 @@ begin
      & P ("percent_complete", "{percent}% imekamilika")
      & P ("step_count", "hatua {step} kati ya {total}")
      & P ("attempt_count", "jaribio {attempt} kati ya {total}")
-     & P ("throughput_remaining", "zimebaki {unit} {remaining} kwa kasi ya {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "zimebaki {remaining, plural, one {{one}} other {{other}}} {remaining} "
+          & "kwa kasi ya {rate} {unit}/s")
      & P ("accessible_progress", "{done} kati ya {total} zimekamilika, asilimia {percent}")
      & P ("business_days", "siku {days} za kazi")
      & P ("working_hours", "saa {hours} za kazi")

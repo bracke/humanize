@@ -54,7 +54,8 @@ private package Humanize.I18N_Rendering is
    --  (Humanize.Contexts.With_Noun_Forms), else the plural -- and
    --  "genitive_one"/"genitive_other"/"accusative_one"/"accusative_other",
    --  "locative_one"/"locative_other"/"instrumental_one"/"instrumental_other",
-   --  else the singular or plural.
+   --  else the singular or plural; and "gender", the registered gender or
+   --  "other".
    function With_Nouns
      (Context   : Humanize.Contexts.Context;
       Selection : Humanize.Selections.Message_Selection;

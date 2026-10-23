@@ -71,8 +71,12 @@ begin
      & P ("step_count", "крок {step} з {total}")
      & P ("attempt_count", "спроба {attempt} з {total}")
      & P ("throughput_remaining",
-          "{unit}: залишилося {remaining}, швидкість {rate} "
-          & "{unit}/с")
+          "{remaining, plural, one {{gender, select, masculine "
+          & "{залишився} feminine {залишилася} neuter "
+          & "{залишилося} other {залишилося}}} other "
+          & "{залишилося}} {remaining} {remaining, plural, one {{one}} "
+          & "few {{few}} many {{genitive_other}} other {{genitive_one}}}, "
+          & "швидкість {rate} {unit}/с")
      & P ("accessible_progress",
           "виконано {done} з {total}, {percent} {percent, plural, one "
           & "{відсоток} few {відсотки} many {відсотків} "

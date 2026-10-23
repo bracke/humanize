@@ -19,9 +19,13 @@ is
          Key => Humanize.Message_Keys.No_Message);
    end English;
 begin
+   --  Only the singular is known: it stands for every form.
    return Humanize.I18N_Rendering.Phrase_Or
      (Context,
-      Sel.With_Arg (Num (Num (Sel.Phrase ("throughput_remaining"), "remaining", Remaining), "rate", Rate), "unit",
-        Unit_Name),
+      Humanize.I18N_Rendering.With_Nouns
+        (Context,
+         Sel.With_Arg (Num (Num (Sel.Phrase ("throughput_remaining"), "remaining", Remaining), "rate", Rate), "unit",
+           Unit_Name),
+         Unit_Name, Unit_Name),
       English);
 end Throughput_Remaining;

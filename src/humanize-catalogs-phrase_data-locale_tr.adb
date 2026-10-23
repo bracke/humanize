@@ -30,7 +30,7 @@ begin
      & P ("percent_complete", "%{percent} tamamlandı")
      & P ("step_count", "adım {step}/{total}")
      & P ("attempt_count", "deneme {attempt}/{total}")
-     & P ("throughput_remaining", "{remaining} {unit} kaldı ({rate} {unit}/s)")
+     & P ("throughput_remaining", "{remaining} {one} kaldı ({rate} {unit}/s)")
      & P ("accessible_progress", "{done}/{total} tamamlandı, yüzde {percent}")
      & P ("business_days", "{days} iş günü")
      & P ("working_hours", "{hours} çalışma saati")

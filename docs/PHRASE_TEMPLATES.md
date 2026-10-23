@@ -26,6 +26,12 @@ here.
   else the singular or plural: Polish "z {total} {total, plural, one
   {{genitive_one}} other {{genitive_other}}}" ("z 5 plików"), Slovak "pri
   všetkých {locative_other}".
+- **`gender`** is the gender the caller registered for its noun
+  (`With_Noun_Forms (Ctx, "lignes", Gender => "feminine")`): "masculine",
+  "feminine", "neuter", "common" or "masculine_animate", else "other". A
+  template agrees with it by selecting, and its `other` branch is the neutral
+  wording: French `{gender, select, masculine {aucun {one}} feminine {aucune
+  {one}} other {pas de {other}}}`.
 - **Text arguments** (`first`, `severity`, ...) are inserted as given, or
   selected on with `{severity, select, ...}`.
 

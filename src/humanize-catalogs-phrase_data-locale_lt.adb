@@ -60,7 +60,9 @@ begin
      & P ("percent_complete", "atlikta {percent} %")
      & P ("step_count", "žingsnis {step} iš {total}")
      & P ("attempt_count", "bandymas {attempt} iš {total}")
-     & P ("throughput_remaining", "{unit}: liko {remaining}, sparta {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "liko {remaining} {remaining, plural, one {{one}} few {{other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}, sparta {rate} {unit}/s")
      & P ("accessible_progress",
           "atlikta {done} iš {total}, {percent} {percent, plural, one "
           & "{procentas} few {procentai} many {procento} other {procentų}}")

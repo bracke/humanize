@@ -8,8 +8,11 @@ begin
           & "{{genitive_other}} other {{genitive_one}}}")
      & P ("filtered_count.none", "brak pasujących {genitive_other}")
      & P ("filtered_count.all",
-          "pasują wszystkie: {total} {total, plural, one {{one}} few {{few}} "
-          & "many {{genitive_other}} other {{genitive_one}}}")
+          "{gender, select, masculine_animate {pasują wszyscy: {total} {total, "
+          & "plural, one {{one}} few {{few}} many {{genitive_other}} other "
+          & "{{genitive_one}}}} other {pasują wszystkie: {total} {total, plural, "
+          & "one {{one}} few {{few}} many {{genitive_other}} other "
+          & "{{genitive_one}}}}}")
      & P ("filtered_count.some",
           "{matching, plural, one {pasuje} few {pasują} many {pasuje} other "
           & "{pasuje}} {matching} z {total} {total, plural, one {{genitive_one}} "
@@ -55,13 +58,20 @@ begin
           "wyświetlono {visible} {visible, plural, one {{accusative_one}} few "
           & "{{accusative_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("collection.visible_out_of",
-          "widoczne: {visible} z {total} {total, plural, one {{genitive_one}} few "
-          & "{{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
+          "{gender, select, masculine_animate {widoczni: {visible} z {total} "
+          & "{total, plural, one {{genitive_one}} few {{genitive_other}} many "
+          & "{{genitive_other}} other {{genitive_one}}}} other {widoczne: {visible} "
+          & "z {total} {total, plural, one {{genitive_one}} few {{genitive_other}} "
+          & "many {{genitive_other}} other {{genitive_one}}}}}")
      & P ("complete_count", "ukończono {done} z {total}")
      & P ("percent_complete", "ukończono {percent}%")
      & P ("step_count", "krok {step} z {total}")
      & P ("attempt_count", "próba {attempt} z {total}")
-     & P ("throughput_remaining", "pozostało: {remaining} ({unit}), {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "{remaining, plural, one {pozostaje} few {pozostają} many {pozostaje} "
+          & "other {pozostaje}} {remaining} {remaining, plural, one {{one}} few "
+          & "{{few}} many {{genitive_other}} other {{genitive_one}}}, {rate} "
+          & "{unit}/s")
      & P ("accessible_progress", "ukończono {done} z {total}, {percent} procent")
      & P ("business_days",
           "{days, plural, one {{days} dzień roboczy} few {{days} dni robocze} "
@@ -392,13 +402,19 @@ begin
           "{count, plural, =0 {nigdy {other}} =1 {raz {one}} =2 {dwa razy "
           & "{other}} other {{count} razy {other}}}")
      & P ("availability.all",
-          "dostępne: {available} z {total} {total, plural, one {{genitive_one}} "
-          & "few {{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
+          "{gender, select, masculine_animate {dostępni: {available} z {total} "
+          & "{total, plural, one {{genitive_one}} few {{genitive_other}} many "
+          & "{{genitive_other}} other {{genitive_one}}}} other {dostępne: "
+          & "{available} z {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_other}} other {{genitive_one}}}}}")
      & P ("availability.none", "brak dostępnych {genitive_other}")
      & P ("availability.partial",
-          "dostępne: {available} z {total} {total, plural, one {{genitive_one}} "
-          & "few {{genitive_other}} many {{genitive_other}} other "
-          & "{{genitive_one}}}, niedostępne: {unavailable}")
+          "{gender, select, masculine_animate {dostępni: {available} z {total} "
+          & "{total, plural, one {{genitive_one}} few {{genitive_other}} many "
+          & "{{genitive_other}} other {{genitive_one}}}, niedostępni: "
+          & "{unavailable}} other {dostępne: {available} z {total} {total, plural, "
+          & "one {{genitive_one}} few {{genitive_other}} many {{genitive_other}} "
+          & "other {{genitive_one}}}, niedostępne: {unavailable}}}")
      & P ("operation_progress", "{name} – {state}: {details}")
      & P ("operation.queued", "w kolejce")
      & P ("operation.running", "w toku")

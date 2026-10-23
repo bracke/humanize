@@ -7,6 +7,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with System.Address_Image;
 
 with Humanize.Bytes;
+with Humanize.Catalog_Loads;
 with Humanize.Datetimes;
 with Humanize.Durations;
 with Humanize.Parsing.Locale_Digits;
@@ -49,8 +50,9 @@ package body Humanize.Parsing.Localized is
    package Lexicon_Maps is new Ada.Containers.Indefinite_Hashed_Maps
      (Key_Type => String, Element_Type => Lexicon, Hash => Ada.Strings.Hash, Equivalent_Keys => "=");
 
-   --  Lexicons learnt so far, per runtime, locale and kind: learning renders a
-   --  few hundred values, reading one is a lookup.
+   --  Lexicons learnt so far, per runtime, locale, kind and catalog load
+   --  (a load can change what the formatters write): learning renders a few
+   --  hundred values, reading one is a lookup.
    protected Cache is
       procedure Find (Key : String; Item : out Lexicon; Found : out Boolean);
       procedure Store (Key : String; Item : Lexicon);
@@ -309,11 +311,13 @@ package body Humanize.Parsing.Localized is
          At_Index : Positive := Whole'First;
       begin
          for I in Parts.First_Index .. Parts.Last_Index loop
+            --  A part the locale could not render: nothing to learn.
+            exit when Length (Parts (I)) = 0 or else At_Index > Whole'Last;
             declare
                Part  : constant String := To_String (Parts (I));
                Found : constant Natural := Index (To_Unbounded_String (Whole (At_Index .. Whole'Last)), Part);
             begin
-               exit when Found = 0 or else Part = "";
+               exit when Found = 0;
                if I > Parts.First_Index then
                   declare
                      Join : constant Unbounded_String :=
@@ -455,7 +459,8 @@ package body Humanize.Parsing.Localized is
    function Learned (Context : Humanize.Contexts.Context; Kind : Lexicon_Kind) return Lexicon is
       Key   : constant String :=
         Lexicon_Kind'Image (Kind) & "|" & Humanize.Contexts.Locale (Context) & "|"
-        & System.Address_Image (Humanize.Contexts.Runtime (Context).all'Address);
+        & System.Address_Image (Humanize.Contexts.Runtime (Context).all'Address)
+        & "|" & Natural'Image (Humanize.Catalog_Loads.Count);
       Item  : Lexicon;
       Found : Boolean;
    begin

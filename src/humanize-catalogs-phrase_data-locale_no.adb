@@ -49,7 +49,9 @@ begin
      & P ("percent_complete", "{percent} % fullført")
      & P ("step_count", "trinn {step} av {total}")
      & P ("attempt_count", "forsøk {attempt} av {total}")
-     & P ("throughput_remaining", "{remaining} igjen med {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "{remaining} {remaining, plural, one {{one}} other {{other}}} igjen med "
+          & "{rate} {unit}/s")
      & P ("accessible_progress", "{done} av {total} fullført, {percent} prosent")
      & P ("business_days", "{days} {days, plural, one {virkedag} other {virkedager}}")
      & P ("working_hours", "{hours} {hours, plural, one {arbeidstime} other {arbeidstimer}}")

@@ -11,8 +11,16 @@ begin
           "الكل مطابق: {total} {total, plural, zero {{zero}} one {{one}} "
           & "two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("filtered_count.some",
-          "المطابق: {matching} من {total} {total, plural, zero {{zero}} "
-          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
+          "{gender, select, masculine {{matching} {matching, plural, zero "
+          & "{{zero}} one {{one}} two {{two}} few {{few}} many {{many}} other "
+          & "{{one}}} {matching, plural, two {مطابقان} few {مطابقة} "
+          & "many {مطابقًا} other {مطابق}} من أصل {total}} "
+          & "feminine {{matching} {matching, plural, zero {{zero}} one {{one}} two "
+          & "{{two}} few {{few}} many {{many}} other {{one}}} {matching, plural, "
+          & "two {مطابقتان} other {مطابقة}} من أصل {total}} "
+          & "other {المطابق: {matching} من {total} {total, plural, zero "
+          & "{{zero}} one {{one}} two {{two}} few {{few}} many {{many}} other "
+          & "{{one}}}}}")
      & P ("more_count", "المعروض: {visible}، +{remaining} أخرى")
      & P ("others_count",
           "{first} و{remaining, plural, one {واحد آخر} two {اثنان "
@@ -26,8 +34,15 @@ begin
           & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("position_count", "{position} من {total}")
      & P ("selection_count",
-          "المحدد: {selected} من {total} {total, plural, zero {{zero}} "
-          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
+          "{gender, select, masculine {{selected} {selected, plural, zero "
+          & "{{zero}} one {{one}} two {{two}} few {{few}} many {{many}} other "
+          & "{{one}}} {selected, plural, two {محددان} few {محددة} many "
+          & "{محددًا} other {محدد}} من أصل {total}} feminine "
+          & "{{selected} {selected, plural, zero {{zero}} one {{one}} two {{two}} "
+          & "few {{few}} many {{many}} other {{one}}} {selected, plural, two "
+          & "{محددتان} other {محددة}} من أصل {total}} other "
+          & "{المحدد: {selected} من {total} {total, plural, zero {{zero}} "
+          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}}}}")
      & P ("showing_count",
           "عرض {showing} من {total} {total, plural, zero {{zero}} one "
           & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
@@ -45,28 +60,60 @@ begin
      & P ("collection.empty", "لا توجد {other}")
      & P ("collection.none_shown", "لا توجد {other} معروضة")
      & P ("collection.showing_hidden",
-          "عرض {visible} من {total} {total, plural, zero {{zero}} one "
+          "{gender, select, masculine {عرض {visible} من {total} {total, "
+          & "plural, zero {{zero}} one {{one}} two {{two}} few {{few}} many "
+          & "{{many}} other {{one}}}، {hidden} {hidden, plural, two {مخفيان} "
+          & "few {مخفية} many {مخفيًا} other {مخفي}}} feminine "
+          & "{عرض {visible} من {total} {total, plural, zero {{zero}} one "
           & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}، "
-          & "المخفي: {hidden}")
+          & "{hidden} {hidden, plural, two {مخفيتان} other {مخفية}}} "
+          & "other {عرض {visible} من {total} {total, plural, zero {{zero}} one "
+          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}، "
+          & "المخفي: {hidden}}}")
      & P ("collection.showing",
           "عرض {visible} من {total} {total, plural, zero {{zero}} one "
           & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("collection.shown_hidden",
-          "المعروض: {visible} {visible, plural, zero {{zero}} one {{one}} "
-          & "two {{two}} few {{few}} many {{many}} other {{one}}}، المخفي: "
-          & "{hidden}")
+          "{gender, select, masculine {{visible} {visible, plural, zero {{zero}} "
+          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}} "
+          & "{visible, plural, two {معروضان} few {معروضة} many "
+          & "{معروضًا} other {معروض}}، {hidden} {hidden, plural, two "
+          & "{مخفيان} few {مخفية} many {مخفيًا} other {مخفي}}} "
+          & "feminine {{visible} {visible, plural, zero {{zero}} one {{one}} two "
+          & "{{two}} few {{few}} many {{many}} other {{one}}} {visible, plural, two "
+          & "{معروضتان} other {معروضة}}، {hidden} {hidden, plural, "
+          & "two {مخفيتان} other {مخفية}}} other {المعروض: "
+          & "{visible} {visible, plural, zero {{zero}} one {{one}} two {{two}} few "
+          & "{{few}} many {{many}} other {{one}}}، المخفي: {hidden}}}")
      & P ("collection.shown",
-          "المعروض: {visible} {visible, plural, zero {{zero}} one {{one}} "
-          & "two {{two}} few {{few}} many {{many}} other {{one}}}")
+          "{gender, select, masculine {{visible} {visible, plural, zero {{zero}} "
+          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}} "
+          & "{visible, plural, two {معروضان} few {معروضة} many "
+          & "{معروضًا} other {معروض}}} feminine {{visible} {visible, "
+          & "plural, zero {{zero}} one {{one}} two {{two}} few {{few}} many "
+          & "{{many}} other {{one}}} {visible, plural, two {معروضتان} other "
+          & "{معروضة}}} other {المعروض: {visible} {visible, plural, "
+          & "zero {{zero}} one {{one}} two {{two}} few {{few}} many {{many}} other "
+          & "{{one}}}}}")
      & P ("collection.visible_out_of",
-          "الظاهر: {visible} من أصل {total} {total, plural, zero "
+          "{gender, select, masculine {{visible} {visible, plural, zero {{zero}} "
+          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}} "
+          & "{visible, plural, two {ظاهران} few {ظاهرة} many "
+          & "{ظاهرًا} other {ظاهر}} من أصل {total}} feminine "
+          & "{{visible} {visible, plural, zero {{zero}} one {{one}} two {{two}} few "
+          & "{{few}} many {{many}} other {{one}}} {visible, plural, two "
+          & "{ظاهرتان} other {ظاهرة}} من أصل {total}} other "
+          & "{الظاهر: {visible} من أصل {total} {total, plural, zero "
           & "{{zero}} one {{one}} two {{two}} few {{few}} many {{many}} other "
-          & "{{one}}}")
+          & "{{one}}}}}")
      & P ("complete_count", "اكتمل {done} من {total}")
      & P ("percent_complete", "اكتمل {percent}٪")
      & P ("step_count", "الخطوة {step} من {total}")
      & P ("attempt_count", "المحاولة {attempt} من {total}")
-     & P ("throughput_remaining", "المتبقي: {remaining} {unit} بمعدل {rate} {unit}/ث")
+     & P ("throughput_remaining",
+          "المتبقي: {remaining} {remaining, plural, zero {{zero}} one "
+          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}} "
+          & "بمعدل {rate} {unit}/ث")
      & P ("accessible_progress", "اكتمل {done} من {total}، {percent} بالمئة")
      & P ("business_days",
           "{days, plural, zero {0 يوم عمل} one {يوم عمل واحد} two "
@@ -129,9 +176,21 @@ begin
           "الذاكرة المؤقتة: الإصابات {hits}، "
           & "الإخفاقات {misses}، معدل الإصابة {rate}٪")
      & P ("field_change_summary",
-          "{total} {total, plural, zero {{zero}} one {{one}} two {{two}} few "
-          & "{{few}} many {{many}} other {{one}}}: المعدّل {changed}، "
-          & "المضاف {added}، المحذوف {removed}")
+          "{gender, select, masculine {{total} {total, plural, zero {{zero}} one "
+          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}: "
+          & "{changed} {changed, plural, two {معدّلان} few {معدّلة} "
+          & "many {معدّلًا} other {معدّل}}، {added} {added, plural, "
+          & "two {مضافان} few {مضافة} many {مضافًا} other "
+          & "{مضاف}}، {removed} {removed, plural, two {محذوفان} few "
+          & "{محذوفة} many {محذوفًا} other {محذوف}}} feminine "
+          & "{{total} {total, plural, zero {{zero}} one {{one}} two {{two}} few "
+          & "{{few}} many {{many}} other {{one}}}: {changed} {changed, plural, two "
+          & "{معدّلتان} other {معدّلة}}، {added} {added, plural, two "
+          & "{مضافتان} other {مضافة}}، {removed} {removed, plural, two "
+          & "{محذوفتان} other {محذوفة}}} other {{total} {total, "
+          & "plural, zero {{zero}} one {{one}} two {{two}} few {{few}} many "
+          & "{{many}} other {{one}}}: المعدّل {changed}، المضاف "
+          & "{added}، المحذوف {removed}}}")
      & P ("field_diff", "تغيّر {field} من {before} إلى {after}")
      & P ("field_added", "أُضيف {field} بالقيمة {value}")
      & P ("field_removed", "أُزيل {field} (القيمة السابقة: {value})")
@@ -161,11 +220,24 @@ begin
           & "التخطي} other {{state}}}: {details}")
      & P ("summary.none", "لا توجد {other}")
      & P ("summary.completed",
-          "المكتمل: {count} {count, plural, zero {{zero}} one {{one}} two "
-          & "{{two}} few {{few}} many {{many}} other {{one}}}")
+          "{gender, select, masculine {{count} {count, plural, zero {{zero}} one "
+          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}} {count, "
+          & "plural, two {مكتملان} few {مكتملة} many {مكتملًا} "
+          & "other {مكتمل}}} feminine {{count} {count, plural, zero {{zero}} "
+          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}} "
+          & "{count, plural, two {مكتملتان} other {مكتملة}}} other "
+          & "{المكتمل: {count} {count, plural, zero {{zero}} one {{one}} two "
+          & "{{two}} few {{few}} many {{many}} other {{one}}}}}")
      & P ("summary.completed_of",
-          "المكتمل: {count} من {total} {total, plural, zero {{zero}} one "
-          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
+          "{gender, select, masculine {{count} {count, plural, zero {{zero}} one "
+          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}} {count, "
+          & "plural, two {مكتملان} few {مكتملة} many {مكتملًا} "
+          & "other {مكتمل}} من أصل {total}} feminine {{count} {count, "
+          & "plural, zero {{zero}} one {{one}} two {{two}} few {{few}} many "
+          & "{{many}} other {{one}}} {count, plural, two {مكتملتان} other "
+          & "{مكتملة}} من أصل {total}} other {المكتمل: {count} "
+          & "من {total} {total, plural, zero {{zero}} one {{one}} two {{two}} few "
+          & "{{few}} many {{many}} other {{one}}}}}")
      & P ("summary.failed", "الفاشل: {count}")
      & P ("summary.queued",
           "في الانتظار: {count} {count, plural, zero {{zero}} one "
@@ -398,13 +470,30 @@ begin
           & "# مرة} two {{two}: # مرة} few {{few}: # مرات} many {{many}: "
           & "# مرة} other {{one}: # مرة}}")
      & P ("availability.all",
-          "المتاح: {available} من {total} {total, plural, zero {{zero}} "
-          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
+          "{gender, select, masculine {{available} {available, plural, zero "
+          & "{{zero}} one {{one}} two {{two}} few {{few}} many {{many}} other "
+          & "{{one}}} {available, plural, two {متاحان} few {متاحة} many "
+          & "{متاحًا} other {متاح}} من أصل {total}} feminine "
+          & "{{available} {available, plural, zero {{zero}} one {{one}} two {{two}} "
+          & "few {{few}} many {{many}} other {{one}}} {available, plural, two "
+          & "{متاحتان} other {متاحة}} من أصل {total}} other "
+          & "{المتاح: {available} من {total} {total, plural, zero {{zero}} "
+          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}}}}")
      & P ("availability.none", "لا توجد {other} متاحة")
      & P ("availability.partial",
-          "المتاح: {available} من {total} {total, plural, zero {{zero}} "
-          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}}، "
-          & "غير المتاح: {unavailable}")
+          "{gender, select, masculine {{available} {available, plural, zero "
+          & "{{zero}} one {{one}} two {{two}} few {{few}} many {{many}} other "
+          & "{{one}}} {available, plural, two {متاحان} few {متاحة} many "
+          & "{متاحًا} other {متاح}} من أصل {total}، {unavailable} "
+          & "{unavailable, plural, two {غير متاحين} few {غير "
+          & "متاحة} many {غير متاح} other {غير متاح}}} feminine "
+          & "{{available} {available, plural, zero {{zero}} one {{one}} two {{two}} "
+          & "few {{few}} many {{many}} other {{one}}} {available, plural, two "
+          & "{متاحتان} other {متاحة}} من أصل {total}، "
+          & "{unavailable} {unavailable, plural, two {غير متاحتين} other "
+          & "{غير متاحة}}} other {المتاح: {available} من {total} "
+          & "{total, plural, zero {{zero}} one {{one}} two {{two}} few {{few}} many "
+          & "{{many}} other {{one}}}، غير المتاح: {unavailable}}}")
      & P ("operation_progress", "{name} – {state}: {details}")
      & P ("operation.queued", "في الانتظار")
      & P ("operation.running", "قيد التشغيل")

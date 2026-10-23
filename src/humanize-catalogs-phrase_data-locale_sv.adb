@@ -21,7 +21,8 @@ begin
      & P ("position_count", "{position} av {total}")
      & P ("selection_count",
           "{selected} av {total} {total, plural, one {{one}} other {{other}}} "
-          & "{selected, plural, one {markerad} other {markerade}}")
+          & "{selected, plural, one {{gender, select, common {markerad} neuter "
+          & "{markerat} other {markerad}}} other {markerade}}")
      & P ("showing_count",
           "visar {showing} av {total} {total, plural, one {{one}} other "
           & "{{other}}}")
@@ -49,7 +50,9 @@ begin
      & P ("percent_complete", "{percent} % klart")
      & P ("step_count", "steg {step} av {total}")
      & P ("attempt_count", "försök {attempt} av {total}")
-     & P ("throughput_remaining", "{remaining} {unit} kvar med {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "{remaining} {remaining, plural, one {{one}} other {{other}}} kvar med "
+          & "{rate} {unit}/s")
      & P ("accessible_progress", "{done} av {total} klara, {percent} procent")
      & P ("business_days", "{days} {days, plural, one {arbetsdag} other {arbetsdagar}}")
      & P ("working_hours", "{hours} {hours, plural, one {arbetstimme} other {arbetstimmar}}")
@@ -116,7 +119,9 @@ begin
           & "{väntar} paused {pausad} complete {klar} failed {misslyckades} stale "
           & "{inaktuell} skipped {hoppades över} other {{state}}}: {details}")
      & P ("summary.none", "inga {other}")
-     & P ("summary.completed", "{count} {count, plural, one {{one} klar} other {{other} klara}}")
+     & P ("summary.completed",
+          "{count} {count, plural, one {{one} {gender, select, common {klar} "
+          & "neuter {klart} other {klar}}} other {{other} klara}}")
      & P ("summary.completed_of", "{count} av {total} {total, plural, one {{one}} other {{other}}} klara")
      & P ("summary.failed", "{count} misslyckades")
      & P ("summary.queued", "{count} {count, plural, one {{one}} other {{other}}} i kö")
@@ -341,12 +346,15 @@ begin
           & "gånger {other}} other {{count} gånger {other}}}")
      & P ("availability.all",
           "{available} av {total} {total, plural, one {{one}} other {{other}}} "
-          & "{available, plural, one {tillgänglig} other {tillgängliga}}")
+          & "{available, plural, one {{gender, select, common {tillgänglig} neuter "
+          & "{tillgängligt} other {tillgänglig}}} other {tillgängliga}}")
      & P ("availability.none", "inga {other} tillgängliga")
      & P ("availability.partial",
           "{available} av {total} {total, plural, one {{one}} other {{other}}} "
-          & "{available, plural, one {tillgänglig} other {tillgängliga}}, "
-          & "{unavailable} {unavailable, plural, one {otillgänglig} other "
+          & "{available, plural, one {{gender, select, common {tillgänglig} neuter "
+          & "{tillgängligt} other {tillgänglig}}} other {tillgängliga}}, "
+          & "{unavailable} {unavailable, plural, one {{gender, select, common "
+          & "{otillgänglig} neuter {otillgängligt} other {otillgänglig}}} other "
           & "{otillgängliga}}")
      & P ("operation_progress", "{name} – {state}: {details}")
      & P ("operation.queued", "i kö")

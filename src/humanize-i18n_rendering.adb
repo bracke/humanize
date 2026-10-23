@@ -277,6 +277,7 @@ package body Humanize.I18N_Rendering is
       Result := With_Arg (Result, "locative_other", Form ("locative_other", Other));
       Result := With_Arg (Result, "instrumental_one", Form ("instrumental_one", Singular));
       Result := With_Arg (Result, "instrumental_other", Form ("instrumental_other", Other));
+      Result := With_Arg (Result, "gender", Form ("gender", "other"));
       return Result;
    end With_Nouns;
 

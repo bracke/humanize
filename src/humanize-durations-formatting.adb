@@ -1274,6 +1274,29 @@ package body Humanize.Durations.Formatting is
       Unit_Name : String)
       return Humanize.Status.Text_Result is separate;
 
+   function Throughput_Remaining
+     (Context   : Humanize.Contexts.Context;
+      Remaining : Standard.Natural;
+      Rate      : Standard.Natural;
+      Singular  : String;
+      Plural    : String)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Ok_Text
+          (No_Space (Standard.Natural'Image (Remaining)) & " " & (if Remaining = 1 then Singular else Plural)
+           & " remaining at " & No_Space (Standard.Natural'Image (Rate)) & " " & Singular & "/s");
+   begin
+      return Humanize.I18N_Rendering.Phrase_Or
+        (Context,
+         Humanize.I18N_Rendering.With_Nouns
+           (Context,
+            Sel.With_Arg (Num (Num (Sel.Phrase ("throughput_remaining"), "remaining", Remaining), "rate", Rate),
+                          "unit", Singular),
+            Singular, Plural),
+         English);
+   end Throughput_Remaining;
+
    function Progress_Bar
      (Context : Humanize.Contexts.Context;
       Done    : Standard.Natural;

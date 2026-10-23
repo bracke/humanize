@@ -65,7 +65,10 @@ begin
      & P ("percent_complete", "dokončano: {percent} %")
      & P ("step_count", "korak {step} od {total}")
      & P ("attempt_count", "poskus {attempt} od {total}")
-     & P ("throughput_remaining", "preostalo: {remaining} ({unit}), {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "{remaining, plural, one {ostaja} two {ostajata} few {ostajajo} other "
+          & "{ostaja}} {remaining} {remaining, plural, one {{one}} two {{two}} few "
+          & "{{few}} other {{genitive_other}}}, {rate} {unit}/s")
      & P ("accessible_progress",
           "dokončano: {done} od {total}, {percent, plural, one {{percent} "
           & "odstotek} two {{percent} odstotka} few {{percent} odstotki} other "

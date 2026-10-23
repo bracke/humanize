@@ -29,8 +29,13 @@ begin
           & "other {{other}}}")
      & P ("position_count", "{position} di {total}")
      & P ("selection_count",
-          "selezione: {selected} di {total} {total, plural, one {{one}} many "
-          & "{{many}} other {{other}}}")
+          "{gender, select, masculine {{selected} {selected, plural, one {{one}} "
+          & "many {{many}} other {{other}}} su {total} {selected, plural, one "
+          & "{selezionato} other {selezionati}}} feminine {{selected} {selected, "
+          & "plural, one {{one}} many {{many}} other {{other}}} su {total} "
+          & "{selected, plural, one {selezionata} other {selezionate}}} other "
+          & "{selezione: {selected} di {total} {total, plural, one {{one}} many "
+          & "{{many}} other {{other}}}}}")
      & P ("showing_count",
           "visualizzazione di {showing} su {total} {total, plural, one {{one}} "
           & "many {{many}} other {{other}}}")
@@ -63,8 +68,9 @@ begin
      & P ("step_count", "passaggio {step} di {total}")
      & P ("attempt_count", "tentativo {attempt} di {total}")
      & P ("throughput_remaining",
-          "{remaining} {unit} {remaining, plural, one {rimanente} other "
-          & "{rimanenti}} a {rate} {unit}/s")
+          "{remaining} {remaining, plural, one {{one}} many {{many}} other "
+          & "{{other}}} {remaining, plural, one {rimanente} other {rimanenti}} a "
+          & "{rate} {unit}/s")
      & P ("accessible_progress",
           "{done} di {total} {done, plural, one {completato} other {completati}}, "
           & "{percent} per cento")
@@ -135,11 +141,19 @@ begin
           & "other {{state}}}: {details}")
      & P ("summary.none", "non ci sono {other}")
      & P ("summary.completed",
-          "completato: {count} {count, plural, one {{one}} many {{many}} other "
-          & "{{other}}}")
+          "{gender, select, masculine {{count} {count, plural, one {{one}} many "
+          & "{{many}} other {{other}}} {count, plural, one {completato} other "
+          & "{completati}}} feminine {{count} {count, plural, one {{one}} many "
+          & "{{many}} other {{other}}} {count, plural, one {completata} other "
+          & "{completate}}} other {completato: {count} {count, plural, one {{one}} "
+          & "many {{many}} other {{other}}}}}")
      & P ("summary.completed_of",
-          "completato: {count} di {total} {total, plural, one {{one}} many "
-          & "{{many}} other {{other}}}")
+          "{gender, select, masculine {{count} {count, plural, one {{one}} many "
+          & "{{many}} other {{other}}} su {total} {count, plural, one {completato} "
+          & "other {completati}}} feminine {{count} {count, plural, one {{one}} "
+          & "many {{many}} other {{other}}} su {total} {count, plural, one "
+          & "{completata} other {completate}}} other {completato: {count} di "
+          & "{total} {total, plural, one {{one}} many {{many}} other {{other}}}}}")
      & P ("summary.failed", "{count} non {count, plural, one {riuscito} other {riusciti}}")
      & P ("summary.queued",
           "{count} {count, plural, one {{one}} many {{many}} other {{other}}} in "

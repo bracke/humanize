@@ -45,12 +45,15 @@ begin
      & P ("collection.shown", "{visible} {visible, plural, one {{one}} other {{other}}} vises")
      & P ("collection.visible_out_of",
           "{visible} af {total} {total, plural, one {{one}} other {{other}}} "
-          & "{visible, plural, one {synlig} other {synlige}}")
+          & "{visible, plural, one {{gender, select, common {synlig} neuter "
+          & "{synligt} other {synlig}}} other {synlige}}")
      & P ("complete_count", "{done} af {total} fuldført")
      & P ("percent_complete", "{percent} % fuldført")
      & P ("step_count", "trin {step} af {total}")
      & P ("attempt_count", "forsøg {attempt} af {total}")
-     & P ("throughput_remaining", "{remaining} {unit} tilbage ved {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "{remaining} {remaining, plural, one {{one}} other {{other}}} tilbage "
+          & "ved {rate} {unit}/s")
      & P ("accessible_progress", "{done} af {total} fuldført, {percent} procent")
      & P ("business_days", "{days} {days, plural, one {arbejdsdag} other {arbejdsdage}}")
      & P ("working_hours", "{hours} {hours, plural, one {arbejdstime} other {arbejdstimer}}")
@@ -331,12 +334,15 @@ begin
           & "{other}} other {{count} gange {other}}}")
      & P ("availability.all",
           "{available} af {total} {total, plural, one {{one}} other {{other}}} "
-          & "{available, plural, one {tilgængelig} other {tilgængelige}}")
+          & "{available, plural, one {{gender, select, common {tilgængelig} neuter "
+          & "{tilgængeligt} other {tilgængelig}}} other {tilgængelige}}")
      & P ("availability.none", "ingen {other} tilgængelige")
      & P ("availability.partial",
           "{available} af {total} {total, plural, one {{one}} other {{other}}} "
-          & "{available, plural, one {tilgængelig} other {tilgængelige}}, "
-          & "{unavailable} {unavailable, plural, one {utilgængelig} other "
+          & "{available, plural, one {{gender, select, common {tilgængelig} neuter "
+          & "{tilgængeligt} other {tilgængelig}}} other {tilgængelige}}, "
+          & "{unavailable} {unavailable, plural, one {{gender, select, common "
+          & "{utilgængelig} neuter {utilgængeligt} other {utilgængelig}}} other "
           & "{utilgængelige}}")
      & P ("operation_progress", "{name} – {state}: {details}")
      & P ("operation.queued", "i kø")

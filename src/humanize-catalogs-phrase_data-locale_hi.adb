@@ -4,13 +4,29 @@ function Locale_Hi return Wide_Wide_String is
 begin
    return
      P ("all_count", "सभी {total} {total, plural, one {{one}} other {{other}}}")
-     & P ("filtered_count.none", "मेल खाते कोई {other} नहीं")
+     & P ("filtered_count.none",
+          "{gender, select, masculine {मेल खाते कोई {other} "
+          & "नहीं} feminine {मेल खाती कोई {other} "
+          & "नहीं} other {मेल खाते कोई {other} "
+          & "नहीं}}")
      & P ("filtered_count.all",
-          "सभी {total} {total, plural, one {{one}} other {{other}}} "
-          & "मेल खाते हैं")
+          "{gender, select, masculine {सभी {total} {total, plural, one "
+          & "{{one}} other {{other}}} {total, plural, one {मेल खाता "
+          & "है} other {मेल खाते हैं}}} feminine {सभी "
+          & "{total} {total, plural, one {{one}} other {{other}}} {total, plural, "
+          & "one {मेल खाती है} other {मेल खाती "
+          & "हैं}}} other {सभी {total} {total, plural, one {{one}} "
+          & "other {{other}}} मेल खाते हैं}}")
      & P ("filtered_count.some",
-          "{total} {total, plural, one {{one}} other {{other}}} में से "
-          & "{matching} मेल खाते हैं")
+          "{gender, select, masculine {{total} {total, plural, one {{one}} other "
+          & "{{other}}} में से {matching} {matching, plural, one "
+          & "{मेल खाता है} other {मेल खाते "
+          & "हैं}}} feminine {{total} {total, plural, one {{one}} other "
+          & "{{other}}} में से {matching} {matching, plural, one "
+          & "{मेल खाती है} other {मेल खाती "
+          & "हैं}}} other {{total} {total, plural, one {{one}} other "
+          & "{{other}}} में से {matching} मेल खाते "
+          & "हैं}}")
      & P ("more_count", "{visible} दिखाए गए, +{remaining} और")
      & P ("others_count",
           "{first} और {remaining, plural, one {1 अन्य} other "
@@ -27,8 +43,15 @@ begin
           "{total} {total, plural, one {{one}} other {{other}}} में से "
           & "{selected} चयनित")
      & P ("showing_count",
-          "{total} {total, plural, one {{one}} other {{other}}} में से "
-          & "{showing} दिखाए जा रहे हैं")
+          "{gender, select, masculine {{total} {total, plural, one {{one}} other "
+          & "{{other}}} में से {showing} {showing, plural, one "
+          & "{दिखाया जा रहा है} other {दिखाए "
+          & "जा रहे हैं}}} feminine {{total} {total, plural, one "
+          & "{{one}} other {{other}}} में से {showing} {showing, plural, "
+          & "one {दिखाई जा रही है} other {दिखाई "
+          & "जा रही हैं}}} other {{total} {total, plural, one "
+          & "{{one}} other {{other}}} में से {showing} दिखाए "
+          & "जा रहे हैं}}")
      & P ("validation_count",
           "{count, plural, =0 {कोई {severity, select, error "
           & "{त्रुटि} warning {चेतावनी} other "
@@ -40,29 +63,63 @@ begin
      & P ("collection.empty", "कोई {other} नहीं")
      & P ("collection.none_shown", "दिखाने के लिए कोई {other} नहीं")
      & P ("collection.showing_hidden",
-          "{total} {total, plural, one {{one}} other {{other}}} में से "
-          & "{visible} दिखाए जा रहे हैं, {hidden} "
-          & "छिपे हुए")
+          "{gender, select, masculine {{total} {total, plural, one {{one}} other "
+          & "{{other}}} में से {visible} {visible, plural, one "
+          & "{दिखाया जा रहा है} other {दिखाए "
+          & "जा रहे हैं}}, {hidden} {hidden, plural, one "
+          & "{छिपा हुआ} other {छिपे हुए}}} feminine "
+          & "{{total} {total, plural, one {{one}} other {{other}}} में से "
+          & "{visible} {visible, plural, one {दिखाई जा रही "
+          & "है} other {दिखाई जा रही हैं}}, {hidden} "
+          & "छिपी हुई} other {{total} {total, plural, one {{one}} "
+          & "other {{other}}} में से {visible} दिखाए जा "
+          & "रहे हैं, {hidden} छिपे हुए}}")
      & P ("collection.showing",
-          "{total} {total, plural, one {{one}} other {{other}}} में से "
-          & "{visible} दिखाए जा रहे हैं")
+          "{gender, select, masculine {{total} {total, plural, one {{one}} other "
+          & "{{other}}} में से {visible} {visible, plural, one "
+          & "{दिखाया जा रहा है} other {दिखाए "
+          & "जा रहे हैं}}} feminine {{total} {total, plural, one "
+          & "{{one}} other {{other}}} में से {visible} {visible, plural, "
+          & "one {दिखाई जा रही है} other {दिखाई "
+          & "जा रही हैं}}} other {{total} {total, plural, one "
+          & "{{one}} other {{other}}} में से {visible} दिखाए "
+          & "जा रहे हैं}}")
      & P ("collection.shown_hidden",
-          "{visible} {visible, plural, one {{one}} other {{other}}} "
-          & "दिखाए गए, {hidden} छिपे हुए")
+          "{gender, select, masculine {{visible} {visible, plural, one {{one}} "
+          & "other {{other}}} {visible, plural, one {दिखाया गया} "
+          & "other {दिखाए गए}}, {hidden} {hidden, plural, one "
+          & "{छिपा हुआ} other {छिपे हुए}}} feminine "
+          & "{{visible} {visible, plural, one {{one}} other {{other}}} {visible, "
+          & "plural, one {दिखाई गई} other {दिखाई "
+          & "गईं}}, {hidden} छिपी हुई} other {{visible} "
+          & "{visible, plural, one {{one}} other {{other}}} दिखाए गए, "
+          & "{hidden} छिपे हुए}}")
      & P ("collection.shown",
-          "{visible} {visible, plural, one {{one}} other {{other}}} "
-          & "दिखाए गए")
+          "{gender, select, masculine {{visible} {visible, plural, one {{one}} "
+          & "other {{other}}} {visible, plural, one {दिखाया गया} "
+          & "other {दिखाए गए}}} feminine {{visible} {visible, plural, "
+          & "one {{one}} other {{other}}} {visible, plural, one {दिखाई "
+          & "गई} other {दिखाई गईं}}} other {{visible} {visible, "
+          & "plural, one {{one}} other {{other}}} दिखाए गए}}")
      & P ("collection.visible_out_of",
-          "{total} {total, plural, one {{one}} other {{other}}} में से "
+          "{gender, select, masculine {{total} {total, plural, one {{one}} other "
+          & "{{other}}} में से {visible} {visible, plural, one {{one}} "
+          & "other {{other}}} {visible, plural, one {दिखाई दे "
+          & "रहा है} other {दिखाई दे रहे हैं}}} "
+          & "feminine {{total} {total, plural, one {{one}} other {{other}}} "
+          & "में से {visible} {visible, plural, one {{one}} other "
+          & "{{other}}} {visible, plural, one {दिखाई दे रही "
+          & "है} other {दिखाई दे रही हैं}}} other "
+          & "{{total} {total, plural, one {{one}} other {{other}}} में से "
           & "{visible} {visible, plural, one {{one}} other {{other}}} "
-          & "दिखाई दे रहे हैं")
+          & "दिखाई दे रहे हैं}}")
      & P ("complete_count", "{total} में से {done} पूर्ण")
      & P ("percent_complete", "{percent}% पूर्ण")
      & P ("step_count", "चरण {step} / {total}")
      & P ("attempt_count", "प्रयास {attempt} / {total}")
      & P ("throughput_remaining",
-          "{remaining} {unit} शेष, {rate} {unit}/से की दर "
-          & "से")
+          "{remaining} {remaining, plural, one {{one}} other {{other}}} "
+          & "शेष, {rate} {unit}/से की दर से")
      & P ("accessible_progress",
           "{total} में से {done} पूर्ण, {percent} "
           & "प्रतिशत")
@@ -117,9 +174,19 @@ begin
           "कैश: {hits} हिट, {misses} मिस, {rate}% हिट "
           & "दर")
      & P ("field_change_summary",
-          "{total} {total, plural, one {{one}} other {{other}}}: {changed} "
-          & "बदले गए, {added} जोड़े गए, {removed} "
-          & "हटाए गए")
+          "{gender, select, masculine {{total} {total, plural, one {{one}} other "
+          & "{{other}}}: {changed} {changed, plural, one {बदला गया} "
+          & "other {बदले गए}}, {added} {added, plural, one "
+          & "{जोड़ा गया} other {जोड़े गए}}, {removed} "
+          & "{removed, plural, one {हटाया गया} other {हटाए "
+          & "गए}}} feminine {{total} {total, plural, one {{one}} other "
+          & "{{other}}}: {changed} {changed, plural, one {बदली गई} "
+          & "other {बदली गईं}}, {added} {added, plural, one "
+          & "{जोड़ी गई} other {जोड़ी गईं}}, {removed} "
+          & "{removed, plural, one {हटाई गई} other {हटाई "
+          & "गईं}}} other {{total} {total, plural, one {{one}} other "
+          & "{{other}}}: {changed} बदले गए, {added} जोड़े "
+          & "गए, {removed} हटाए गए}}")
      & P ("field_diff",
           "{field} को {before} से {after} में बदला "
           & "गया")

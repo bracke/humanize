@@ -16,6 +16,7 @@ with Humanize.Operations;
 with Humanize.Resources;
 with Humanize.Bytes;
 with Humanize.Durations;
+with Humanize.Durations.Formatting;
 with Humanize.Parsing.Localized;
 with Humanize.Parsing.Phrases;
 with Humanize.Phrases;
@@ -181,6 +182,7 @@ package body Humanize.Tests.Phrase_Catalogs is
             Messages.Arguments.Set (Args, "locative_other", "files");
             Messages.Arguments.Set (Args, "instrumental_one", "file");
             Messages.Arguments.Set (Args, "instrumental_other", "files");
+            Messages.Arguments.Set (Args, "gender", (if Count = "1" then "feminine" else "other"));
             Messages.Arguments.Set (Args, "severity", "error");
             Messages.Arguments.Set (Args, "unit", "item");
             Messages.Arguments.Set (Args, "field", "name");
@@ -558,6 +560,8 @@ package body Humanize.Tests.Phrase_Catalogs is
                Messages.Arguments.Set (Args, "severity", "warning");
                Messages.Arguments.Set (Args, "domain", "sync");
                Messages.Arguments.Set (Args, "state", "running");
+               --  A gendered branch, where the locale has one, reads back too.
+               Messages.Arguments.Set (Args, "gender", "feminine");
                declare
                   Rendered : constant Messages.Result.Render_Result :=
                     Messages.Runtime.Render
@@ -650,6 +654,57 @@ package body Humanize.Tests.Phrase_Catalogs is
          "Hindi tomorrow, written like yesterday, is not an exact reading");
    end Test_Localized_Quantities;
 
+   --  The remaining count takes the noun's plural; a registered gender
+   --  reaches the words that agree with the noun; a load after a reading is
+   --  learnt again.
+   procedure Test_Plural_Gender_And_Reload
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
+      pragma Unreferenced (T);
+      use type Humanize.Status.Status_Code;
+      use type Humanize.Durations.Duration_Seconds;
+      Runtime : aliased Messages.Runtime.Instance;
+      Loaded  : Messages.Runtime.Load_Result;
+
+      function Ctx (Locale : String) return Humanize.Contexts.Context is
+        (Humanize.Contexts.Create (Runtime'Unchecked_Access, Locale));
+      function U (Text : Wide_Wide_String) return String is
+        (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode (Text));
+      function Has (Text, Part : String) return Boolean is
+        (Ada.Strings.Unbounded.Index (To_Unbounded_String (Text), Part) > 0);
+   begin
+      --  Read before anything is loaded: nothing to learn from.
+      AUnit.Assertions.Assert
+        (Humanize.Parsing.Localized.Parse_Duration (Ctx ("de"), "2 Stunden").Status /= Humanize.Status.Ok,
+         "no reading before the catalogs are loaded");
+      Humanize.Catalogs.Load_Defaults (Runtime, Loaded);
+      AUnit.Assertions.Assert
+        (Humanize.Parsing.Localized.Parse_Duration (Ctx ("de"), "2 Stunden").Value = 7_200,
+         "a load is learnt again");
+      declare
+         Plural : constant String :=
+           Image (Humanize.Durations.Formatting.Throughput_Remaining (Ctx ("de"), 5, 2, "Datei", "Dateien"));
+         Old    : constant String :=
+           Image (Humanize.Durations.Formatting.Throughput_Remaining (Ctx ("de"), 5, 2, "Datei"));
+      begin
+         AUnit.Assertions.Assert (Has (Plural, "5 Dateien"), "German remaining plural: [" & Plural & "]");
+         AUnit.Assertions.Assert (Has (Old, "5 Datei "), "singular-only form unchanged: [" & Old & "]");
+      end;
+      declare
+         Lines : constant Humanize.Contexts.Context :=
+           Humanize.Contexts.With_Noun_Forms (Ctx ("fr"), "lignes", Gender => "feminine");
+         None  : constant String := Image (Humanize.Lists.Filtered_Count (Lines, 0, 7, "ligne", "lignes"));
+         Plain : constant String := Image (Humanize.Lists.Filtered_Count (Ctx ("fr"), 0, 7, "ligne", "lignes"));
+         Thing : constant Humanize.Contexts.Context :=
+           Humanize.Contexts.With_Noun_Forms (Ctx ("sv"), "objekt", Gender => "neuter");
+         Sv    : constant String := Image (Humanize.Resources.Availability_Label (Thing, 1, 1, "objekt", "objekt"));
+      begin
+         AUnit.Assertions.Assert (Has (None, "aucune ligne"), "French feminine: [" & None & "]");
+         AUnit.Assertions.Assert (not Has (Plain, "aucune ligne"), "no gender keeps the neutral wording");
+         AUnit.Assertions.Assert (Has (Sv, U ("tillgängligt")), "Swedish neuter: [" & Sv & "]");
+      end;
+   end Test_Plural_Gender_And_Reload;
+
    overriding function Name (T : Test_Case) return AUnit.Message_String is
       pragma Unreferenced (T);
    begin
@@ -667,6 +722,7 @@ package body Humanize.Tests.Phrase_Catalogs is
       Register_Routine (T, Test_Regional_Variants'Access, "regional variants");
       Register_Routine (T, Test_Read_Phrases_Back'Access, "read phrases back");
       Register_Routine (T, Test_Localized_Quantities'Access, "localized quantities read back");
+      Register_Routine (T, Test_Plural_Gender_And_Reload'Access, "noun plural, gender, reload");
    end Register_Tests;
 
 end Humanize.Tests.Phrase_Catalogs;

@@ -6,7 +6,10 @@ begin
      P ("all_count",
           "{total, plural, one {{total} {one}} many {les {total} {many}} other "
           & "{les {total} {other}}}")
-     & P ("filtered_count.none", "aucune correspondance parmi les {other}")
+     & P ("filtered_count.none",
+          "{gender, select, masculine {aucun {one} ne correspond} feminine "
+          & "{aucune {one} ne correspond} other {aucune correspondance parmi les "
+          & "{other}}}")
      & P ("filtered_count.all",
           "{total, plural, one {{total} {one} sur {total} correspond} many {les "
           & "{total} {many} correspondent} other {les {total} {other} "
@@ -30,8 +33,13 @@ begin
           & "other {{other}}}")
      & P ("position_count", "{position} sur {total}")
      & P ("selection_count",
-          "sélection : {selected} {selected, plural, one {{one}} many {{many}} "
-          & "other {{other}}} sur {total}")
+          "{gender, select, masculine {{selected} {selected, plural, one {{one}} "
+          & "many {{many}} other {{other}}} sur {total} {selected, plural, one "
+          & "{sélectionné} other {sélectionnés}}} feminine {{selected} "
+          & "{selected, plural, one {{one}} many {{many}} other {{other}}} sur "
+          & "{total} {selected, plural, one {sélectionnée} other "
+          & "{sélectionnées}}} other {sélection : {selected} {selected, plural, "
+          & "one {{one}} many {{many}} other {{other}}} sur {total}}}")
      & P ("showing_count",
           "affichage de {showing} {showing, plural, one {{one}} many {{many}} "
           & "other {{other}}} sur {total}")
@@ -41,8 +49,12 @@ begin
           & "{severity, select, error {erreur} warning {avertissement} other "
           & "{information}}} other {{count} {severity, select, error {erreurs} "
           & "warning {avertissements} other {informations}}}}")
-     & P ("collection.empty", "pas de {other}")
-     & P ("collection.none_shown", "pas de {other} à afficher")
+     & P ("collection.empty",
+          "{gender, select, masculine {aucun {one}} feminine {aucune {one}} other "
+          & "{pas de {other}}}")
+     & P ("collection.none_shown",
+          "{gender, select, masculine {aucun {one} à afficher} feminine {aucune "
+          & "{one} à afficher} other {pas de {other} à afficher}}")
      & P ("collection.showing_hidden",
           "affichage de {visible} {visible, plural, one {{one}} many {{many}} "
           & "other {{other}}} sur {total}, {hidden, plural, one {{hidden} non "
@@ -64,7 +76,9 @@ begin
      & P ("percent_complete", "{percent} % terminé")
      & P ("step_count", "étape {step} sur {total}")
      & P ("attempt_count", "tentative {attempt} sur {total}")
-     & P ("throughput_remaining", "encore {remaining} {unit} à {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "encore {remaining} {remaining, plural, one {{one}} many {{many}} other "
+          & "{{other}}} à {rate} {unit}/s")
      & P ("accessible_progress",
           "{done} sur {total} {done, plural, one {terminé} other {terminés}}, "
           & "{percent} pour cent")
@@ -136,13 +150,23 @@ begin
           & "{obsolète} skipped {{domain, select, queue {ignorée} job {ignorée} "
           & "run {ignorée} cache {ignoré} sync {ignorée} import {ignorée} "
           & "export {ignorée} other {ignoré}}} other {{state}}} : {details}")
-     & P ("summary.none", "pas de {other}")
+     & P ("summary.none",
+          "{gender, select, masculine {aucun {one}} feminine {aucune {one}} other "
+          & "{pas de {other}}}")
      & P ("summary.completed",
-          "terminé : {count} {count, plural, one {{one}} many {{many}} other "
-          & "{{other}}}")
+          "{gender, select, masculine {{count} {count, plural, one {{one}} many "
+          & "{{many}} other {{other}}} {count, plural, one {terminé} other "
+          & "{terminés}}} feminine {{count} {count, plural, one {{one}} many "
+          & "{{many}} other {{other}}} {count, plural, one {terminée} other "
+          & "{terminées}}} other {terminé : {count} {count, plural, one {{one}} "
+          & "many {{many}} other {{other}}}}}")
      & P ("summary.completed_of",
-          "terminé : {count} {count, plural, one {{one}} many {{many}} other "
-          & "{{other}}} sur {total}")
+          "{gender, select, masculine {{count} {count, plural, one {{one}} many "
+          & "{{many}} other {{other}}} sur {total} {count, plural, one {terminé} "
+          & "other {terminés}}} feminine {{count} {count, plural, one {{one}} many "
+          & "{{many}} other {{other}}} sur {total} {count, plural, one {terminée} "
+          & "other {terminées}}} other {terminé : {count} {count, plural, one "
+          & "{{one}} many {{many}} other {{other}}} sur {total}}}")
      & P ("summary.failed", "{count} en échec")
      & P ("summary.queued",
           "{count} {count, plural, one {{one}} many {{many}} other {{other}}} en "
@@ -371,7 +395,9 @@ begin
           "{available} {available, plural, one {{one}} many {{many}} other "
           & "{{other}}} sur {total} {available, plural, one {disponible} other "
           & "{disponibles}}")
-     & P ("availability.none", "pas de {other} disponibles")
+     & P ("availability.none",
+          "{gender, select, masculine {aucun {one} disponible} feminine {aucune "
+          & "{one} disponible} other {pas de {other} disponibles}}")
      & P ("availability.partial",
           "{available} {available, plural, one {{one}} many {{many}} other "
           & "{{other}}} sur {total} {available, plural, one {disponible} other "

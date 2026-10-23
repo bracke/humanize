@@ -30,7 +30,7 @@ begin
      & P ("percent_complete", "{percent}% selesai")
      & P ("step_count", "langkah {step} daripada {total}")
      & P ("attempt_count", "cubaan {attempt} daripada {total}")
-     & P ("throughput_remaining", "{remaining} {unit} lagi pada kadar {rate} {unit}/s")
+     & P ("throughput_remaining", "{remaining} {other} lagi pada kadar {rate} {unit}/s")
      & P ("accessible_progress", "{done} daripada {total} selesai, {percent} peratus")
      & P ("business_days", "{days} hari bekerja")
      & P ("working_hours", "{hours} jam bekerja")

@@ -32,7 +32,7 @@ begin
      & P ("percent_complete", "{percent}% kész")
      & P ("step_count", "{step}/{total}. lépés")
      & P ("attempt_count", "{attempt}/{total}. próbálkozás")
-     & P ("throughput_remaining", "még {remaining} {unit}, {rate} {unit}/s sebességgel")
+     & P ("throughput_remaining", "még {remaining} {one}, {rate} {unit}/s sebességgel")
      & P ("accessible_progress", "{total} közül {done} kész, {percent} százalék")
      & P ("business_days", "{days} munkanap")
      & P ("working_hours", "{hours} munkaóra")

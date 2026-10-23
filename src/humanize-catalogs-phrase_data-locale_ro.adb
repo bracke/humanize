@@ -40,14 +40,18 @@ begin
      & P ("collection.empty", "nu există {other}")
      & P ("collection.none_shown", "nu se afișează {other}")
      & P ("collection.showing_hidden",
-          "se afișează {visible} din {total} {total, plural, one {{one}} few "
-          & "{{few}} other {de {other}}}, ascunse: {hidden}")
+          "{gender, select, masculine {se afișează {visible} din {total} "
+          & "{total, plural, one {{one}} few {{few}} other {de {other}}}, ascunși: "
+          & "{hidden}} other {se afișează {visible} din {total} {total, plural, "
+          & "one {{one}} few {{few}} other {de {other}}}, ascunse: {hidden}}}")
      & P ("collection.showing",
           "se afișează {visible} din {total} {total, plural, one {{one}} few "
           & "{{few}} other {de {other}}}")
      & P ("collection.shown_hidden",
-          "se afișează {visible} {visible, plural, one {{one}} few {{few}} "
-          & "other {de {other}}}, ascunse: {hidden}")
+          "{gender, select, masculine {se afișează {visible} {visible, plural, "
+          & "one {{one}} few {{few}} other {de {other}}}, ascunși: {hidden}} other "
+          & "{se afișează {visible} {visible, plural, one {{one}} few {{few}} "
+          & "other {de {other}}}, ascunse: {hidden}}}")
      & P ("collection.shown",
           "se afișează {visible} {visible, plural, one {{one}} few {{few}} "
           & "other {de {other}}}")
@@ -59,7 +63,10 @@ begin
      & P ("percent_complete", "{percent} % finalizat")
      & P ("step_count", "pasul {step} din {total}")
      & P ("attempt_count", "încercarea {attempt} din {total}")
-     & P ("throughput_remaining", "rămas: {remaining} {unit}, la {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "{remaining, plural, one {mai rămâne} other {mai rămân}} "
+          & "{remaining} {remaining, plural, one {{one}} few {{few}} other {de "
+          & "{other}}}, la {rate} {unit}/s")
      & P ("accessible_progress", "progres: {done} din {total}, {percent} la sută")
      & P ("business_days",
           "{days} {days, plural, one {zi lucrătoare} few {zile lucrătoare} "
@@ -116,8 +123,11 @@ begin
           & "one {ratare} few {ratări} other {de ratări}}, rată de reușită "
           & "{rate} %")
      & P ("field_change_summary",
-          "{total} {total, plural, one {{one}} few {{few}} other {de {other}}}: "
-          & "modificate {changed}, adăugate {added}, eliminate {removed}")
+          "{gender, select, masculine {{total} {total, plural, one {{one}} few "
+          & "{{few}} other {de {other}}}: modificați {changed}, adăugați "
+          & "{added}, eliminați {removed}} other {{total} {total, plural, one "
+          & "{{one}} few {{few}} other {de {other}}}: modificate {changed}, "
+          & "adăugate {added}, eliminate {removed}}}")
      & P ("field_diff", "{field} s-a schimbat din {before} în {after}")
      & P ("field_added", "s-a adăugat {field} cu valoarea {value}")
      & P ("field_removed", "s-a eliminat {field} (era {value})")
@@ -382,8 +392,11 @@ begin
           & "{de {other}}} la dispoziție")
      & P ("availability.none", "nu există {other} la dispoziție")
      & P ("availability.partial",
-          "{available} din {total} {total, plural, one {{one}} few {{few}} other "
-          & "{de {other}}} la dispoziție, indisponibile: {unavailable}")
+          "{gender, select, masculine {{available} din {total} {total, plural, "
+          & "one {{one}} few {{few}} other {de {other}}} la dispoziție, "
+          & "indisponibili: {unavailable}} other {{available} din {total} {total, "
+          & "plural, one {{one}} few {{few}} other {de {other}}} la dispoziție, "
+          & "indisponibile: {unavailable}}}")
      & P ("operation_progress", "{name} – {state}: {details}")
      & P ("operation.queued", "în coadă")
      & P ("operation.running", "în curs")

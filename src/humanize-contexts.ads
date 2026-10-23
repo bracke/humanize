@@ -50,7 +50,8 @@ package Humanize.Contexts is
       Locative_One       : String := "";
       Locative_Other     : String := "";
       Instrumental_One   : String := "";
-      Instrumental_Other : String := "")
+      Instrumental_Other : String := "";
+      Gender             : String := "")
       return Context;
    --  A caller's noun has two forms (a singular and a plural); languages with
    --  more plural categories need more. Registers the extra CLDR forms of the
@@ -72,6 +73,10 @@ package Humanize.Contexts is
    --  @param Locative_Other Plural locative, or "" for the plural form.
    --  @param Instrumental_One Singular instrumental, or "" for the singular.
    --  @param Instrumental_Other Plural instrumental, or "" for the plural form.
+   --  @param Gender The noun's grammatical gender, for templates that agree
+   --  with it: "masculine", "feminine", "neuter", "common" (Danish, Swedish,
+   --  Norwegian), or for Czech, Slovak and Polish "masculine_animate"; ""
+   --  leaves templates their neutral wording.
    --  @return Item with the forms registered.
 
    function Noun_Form
@@ -83,7 +88,7 @@ package Humanize.Contexts is
    --  @param Plural The noun's plural form.
    --  @param Category "zero", "two", "few", "many", "genitive_one",
    --  "genitive_other", "accusative_one", "accusative_other", "locative_one",
-   --  "locative_other", "instrumental_one" or "instrumental_other".
+   --  "locative_other", "instrumental_one", "instrumental_other" or "gender".
    --  @return The registered form, or Plural when none is registered.
 
 private

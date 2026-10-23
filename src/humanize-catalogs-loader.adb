@@ -1,3 +1,4 @@
+with Humanize.Catalog_Loads;
 with Humanize.Catalogs.Core_Data;
 with Humanize.Catalogs.Native_Data;
 with Humanize.Catalogs.Phrase_Data;
@@ -36,6 +37,7 @@ package body Humanize.Catalogs.Loader is
            & Humanize.Catalogs.Phrase_Data.Default_Catalog,
          Result      => Result,
          Policy      => Policy);
+      Humanize.Catalog_Loads.Note_Load;
    end Load_Defaults;
 
    procedure Load_Defaults
@@ -55,6 +57,7 @@ package body Humanize.Catalogs.Loader is
            & Humanize.Catalogs.Phrase_Data.Catalog_For (Humanize.Locales.Language_Code (Locale)),
          Result      => Result,
          Policy      => Policy);
+      Humanize.Catalog_Loads.Note_Load;
    end Load_Defaults;
 
    procedure Load_Phrases
@@ -70,6 +73,7 @@ package body Humanize.Catalogs.Loader is
          Text        => Humanize.Catalogs.Phrase_Data.Catalog_For (Humanize.Locales.Language_Code (Locale)),
          Result      => Result,
          Policy      => Messages.Runtime.Keep_First);
+      Humanize.Catalog_Loads.Note_Load;
    end Load_Phrases;
 
 end Humanize.Catalogs.Loader;

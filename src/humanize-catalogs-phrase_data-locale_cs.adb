@@ -6,7 +6,11 @@ begin
      P ("all_count",
           "celkem {total} {total, plural, one {{one}} few {{few}} many "
           & "{{genitive_one}} other {{genitive_other}}}")
-     & P ("filtered_count.none", "{other}: žádné shody")
+     & P ("filtered_count.none",
+          "{gender, select, masculine {žádné {other} nevyhovují} feminine "
+          & "{žádné {other} nevyhovují} neuter {žádná {other} nevyhovují} "
+          & "masculine_animate {žádní {other} nevyhovují} other {{other}: "
+          & "žádné shody}}")
      & P ("filtered_count.all",
           "{total, plural, one {shoda u {total} {genitive_one}} few {shoda u "
           & "všech {total} {genitive_other}} many {shoda u všech {total} "
@@ -44,7 +48,11 @@ begin
           & "error {chyby} warning {varování} other {upozornění}}} other "
           & "{{count} {severity, select, error {chyb} warning {varování} other "
           & "{upozornění}}}}")
-     & P ("collection.none_shown", "{other}: nic nezobrazeno")
+     & P ("collection.none_shown",
+          "{gender, select, masculine {nejsou zobrazeny žádné {other}} "
+          & "feminine {nejsou zobrazeny žádné {other}} neuter {nejsou zobrazena "
+          & "žádná {other}} masculine_animate {nejsou zobrazeni žádní "
+          & "{other}} other {{other}: nic nezobrazeno}}")
      & P ("collection.showing_hidden",
           "zobrazeno {visible} z {total} {total, plural, one {{genitive_one}} few "
           & "{{genitive_other}} many {{genitive_one}} other {{genitive_other}}}, "
@@ -59,13 +67,22 @@ begin
           "zobrazeno: {visible} {visible, plural, one {{one}} few {{few}} many "
           & "{{genitive_one}} other {{genitive_other}}}")
      & P ("collection.visible_out_of",
-          "viditelné: {visible} z {total} {total, plural, one {{genitive_one}} "
-          & "few {{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
+          "{gender, select, neuter {viditelná: {visible} z {total} {total, "
+          & "plural, one {{genitive_one}} few {{genitive_other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}} masculine_animate "
+          & "{viditelní: {visible} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other "
+          & "{{genitive_other}}}} other {viditelné: {visible} z {total} {total, "
+          & "plural, one {{genitive_one}} few {{genitive_other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}}}")
      & P ("complete_count", "dokončeno {done} z {total}")
      & P ("percent_complete", "dokončeno {percent} %")
      & P ("step_count", "krok {step} z {total}")
      & P ("attempt_count", "pokus {attempt} z {total}")
-     & P ("throughput_remaining", "zbývá: {remaining} ({unit}), {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "{remaining, plural, one {zbývá} few {zbývají} many {zbývá} other "
+          & "{zbývá}} {remaining} {remaining, plural, one {{one}} few {{few}} "
+          & "many {{genitive_one}} other {{genitive_other}}}, {rate} {unit}/s")
      & P ("accessible_progress",
           "dokončeno {done} z {total}, {percent, plural, one {{percent} "
           & "procento} few {{percent} procenta} many {{percent} procenta} other "
@@ -397,8 +414,14 @@ begin
      & P ("noun",
           "{count, plural, one {{one}} few {{few}} many {{genitive_one}} other "
           & "{{genitive_other}}}")
-     & P ("collection.empty", "{other}: 0")
-     & P ("summary.none", "{other}: 0")
+     & P ("collection.empty",
+          "{gender, select, masculine {žádné {other}} feminine {žádné "
+          & "{other}} neuter {žádná {other}} masculine_animate {žádní "
+          & "{other}} other {{other}: 0}}")
+     & P ("summary.none",
+          "{gender, select, masculine {žádné {other}} feminine {žádné "
+          & "{other}} neuter {žádná {other}} masculine_animate {žádní "
+          & "{other}} other {{other}: 0}}")
      & P ("noun.accusative",
           "{count, plural, one {{accusative_one}} few {{accusative_other}} many "
           & "{{genitive_one}} other {{genitive_other}}}")
@@ -407,13 +430,27 @@ begin
           "{count, plural, =0 {nikdy {other}} =1 {jednou {one}} =2 {dvakrát "
           & "{other}} other {{count}krát {other}}}")
      & P ("availability.all",
-          "dostupné: {available} z {total} {total, plural, one {{genitive_one}} "
-          & "few {{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
-     & P ("availability.none", "žádné dostupné {other}")
-     & P ("availability.partial",
-          "dostupné: {available} z {total} {total, plural, one {{genitive_one}} "
+          "{gender, select, neuter {dostupná: {available} z {total} {total, "
+          & "plural, one {{genitive_one}} few {{genitive_other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}} masculine_animate "
+          & "{dostupní: {available} z {total} {total, plural, one {{genitive_one}} "
           & "few {{genitive_other}} many {{genitive_one}} other "
-          & "{{genitive_other}}}, nedostupné: {unavailable}")
+          & "{{genitive_other}}}} other {dostupné: {available} z {total} {total, "
+          & "plural, one {{genitive_one}} few {{genitive_other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}}}")
+     & P ("availability.none",
+          "{gender, select, neuter {žádná dostupná {other}} masculine_animate "
+          & "{žádní dostupní {other}} other {žádné dostupné {other}}}")
+     & P ("availability.partial",
+          "{gender, select, neuter {dostupná: {available} z {total} {total, "
+          & "plural, one {{genitive_one}} few {{genitive_other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}, nedostupná: "
+          & "{unavailable}} masculine_animate {dostupní: {available} z {total} "
+          & "{total, plural, one {{genitive_one}} few {{genitive_other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}, nedostupní: "
+          & "{unavailable}} other {dostupné: {available} z {total} {total, plural, "
+          & "one {{genitive_one}} few {{genitive_other}} many {{genitive_one}} "
+          & "other {{genitive_other}}}, nedostupné: {unavailable}}}")
      & P ("operation_progress", "{name} – {state}: {details}")
      & P ("operation.queued", "ve frontě")
      & P ("operation.running", "běží")

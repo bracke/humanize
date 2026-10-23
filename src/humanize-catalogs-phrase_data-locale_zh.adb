@@ -30,7 +30,7 @@ begin
      & P ("percent_complete", "已完成{percent}%")
      & P ("step_count", "第{step}步，共{total}步")
      & P ("attempt_count", "第{attempt}次尝试，共{total}次")
-     & P ("throughput_remaining", "剩余{remaining}个{unit}，速度{rate}个{unit}/秒")
+     & P ("throughput_remaining", "剩余{remaining}个{other}，速度{rate}个{unit}/秒")
      & P ("accessible_progress", "已完成{done}/{total}，百分之{percent}")
      & P ("business_days", "{days}个工作日")
      & P ("working_hours", "{hours}个工时")

@@ -47,7 +47,8 @@ package body Humanize.Contexts is
       Locative_One       : String := "";
       Locative_Other     : String := "";
       Instrumental_One   : String := "";
-      Instrumental_Other : String := "")
+      Instrumental_Other : String := "";
+      Gender             : String := "")
       return Context
    is
       Result : Context := Item;
@@ -73,6 +74,7 @@ package body Humanize.Contexts is
       Add ("locative_other", Locative_Other);
       Add ("instrumental_one", Instrumental_One);
       Add ("instrumental_other", Instrumental_Other);
+      Add ("gender", Gender);
       Append (Result.Noun_Forms, Item.Noun_Forms);
       return Result;
    end With_Noun_Forms;

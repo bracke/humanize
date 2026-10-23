@@ -52,7 +52,9 @@ begin
      & P ("percent_complete", "{percent}% voltooid")
      & P ("step_count", "stap {step} van {total}")
      & P ("attempt_count", "poging {attempt} van {total}")
-     & P ("throughput_remaining", "nog {remaining} {unit} bij {rate} {unit}/s")
+     & P ("throughput_remaining",
+          "nog {remaining} {remaining, plural, one {{one}} other {{other}}} bij "
+          & "{rate} {unit}/s")
      & P ("accessible_progress", "{done} van {total} voltooid, {percent} procent")
      & P ("business_days", "{days} {days, plural, one {werkdag} other {werkdagen}}")
      & P ("working_hours", "{hours} {hours, plural, one {werkuur} other {werkuren}}")

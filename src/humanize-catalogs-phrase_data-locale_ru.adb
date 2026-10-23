@@ -70,8 +70,11 @@ begin
      & P ("step_count", "шаг {step} из {total}")
      & P ("attempt_count", "попытка {attempt} из {total}")
      & P ("throughput_remaining",
-          "{unit}: осталось {remaining}, скорость {rate} "
-          & "{unit}/с")
+          "{remaining, plural, one {{gender, select, masculine {остался} "
+          & "feminine {осталась} neuter {осталось} other "
+          & "{осталось}}} other {осталось}} {remaining} {remaining, "
+          & "plural, one {{one}} few {{genitive_one}} many {{genitive_other}} other "
+          & "{{genitive_one}}}, скорость {rate} {unit}/с")
      & P ("accessible_progress",
           "выполнено {done} из {total}, {percent} {percent, plural, "
           & "one {процент} few {процента} many {процентов} "
