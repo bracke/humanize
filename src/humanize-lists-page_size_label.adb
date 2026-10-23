@@ -14,6 +14,6 @@ is
 begin
    return Humanize.I18N_Rendering.Phrase_Or
      (Context,
-      With_Nouns (Num (Sel.Phrase ("page_size"), "size", Page_Size), Singular, Plural),
+      With_Nouns (Context, Num (Sel.Phrase ("page_size"), "size", Page_Size), Singular, Plural),
       English);
 end Page_Size_Label;

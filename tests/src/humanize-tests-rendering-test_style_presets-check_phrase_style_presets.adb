@@ -512,7 +512,7 @@ separate (Humanize.Tests.Rendering.Test_Style_Presets)
       AUnit.Assertions.Assert
         (Spanish_Database.Status = Ok
          and then Support.Text (Spanish_Database)
-           = "base de datos replicacion retrasada",
+           = "replicaci" & Character'Val (16#C3#) & Character'Val (16#B3#) & "n de la base de datos con retraso",
          "generated database phrase locale");
       AUnit.Assertions.Assert
         (Spanish_Database_Regional.Status = Ok
@@ -554,8 +554,9 @@ separate (Humanize.Tests.Rendering.Test_Style_Presets)
          and then Humanize.Phrases.Is_Supported_Phrase_Locale ("EN_us")
          and then Humanize.Phrases.Is_Supported_Phrase_Locale ("hi")
          and then Humanize.Phrases.Is_Supported_Phrase_Locale ("HI-in")
-         and then not Humanize.Phrases.Is_Supported_Phrase_Locale ("ro")
-         and then not Humanize.Phrases.Is_Supported_Phrase_Locale ("RO_ro")
+         and then Humanize.Phrases.Is_Supported_Phrase_Locale ("RO_ro")
+         and then not Humanize.Phrases.Is_Supported_Phrase_Locale ("th")
+         and then not Humanize.Phrases.Is_Supported_Phrase_Locale ("TH_th")
          and then not Humanize.Phrases.Is_Generated_Phrase_Locale ("en")
          and then not Humanize.Phrases.Is_Generated_Phrase_Locale ("EN_us")
          and then Humanize.Phrases.Is_Generated_Phrase_Locale ("ja")
@@ -563,13 +564,8 @@ separate (Humanize.Tests.Rendering.Test_Style_Presets)
          "phrase locale metadata");
       AUnit.Assertions.Assert
         (Norwegian_Database_Regional.Status = Ok
-         and then Contains
-           (Support.Text (Norwegian_Database_Regional), "database")
-         and then Contains
-           (Support.Text (Norwegian_Database_Regional), "replikering")
-         and then Contains
-           (Support.Text (Norwegian_Database_Regional), "forsinket"),
-         "regional Norwegian generated phrase tokens use normalized predicate");
+         and then Support.Text (Norwegian_Database_Regional) = "databasereplikering henger etter",
+         "regional Norwegian phrase uses the language's catalog entry");
       AUnit.Assertions.Assert
         (Japanese_Payment_Regional.Status = Ok
          and then Support.Text (Japanese_Payment_Regional) =
@@ -586,11 +582,11 @@ separate (Humanize.Tests.Rendering.Test_Style_Presets)
            = B ("616467616E67206EC3A667746574")
          and then Russian_CI.Status = Ok
          and then Support.Text (Russian_CI)
-           = B ("D0BAD0BED0BDD0B2D0B5D0B9D0B5D18020D181D0B1D0BED0B9")
+           = B ("D181D0B1D0BED0B920D0BAD0BED0BDD0B2D0B5D0B9D0B5D180D0B0")
          and then Japanese_Payment.Status = Ok
          and then Support.Text (Japanese_Payment)
-           = B ("E694AFE68995E38184E8A681E5AFBEE5BF9C"),
-         "generated-source phrase locales");
+           = B ("E694AFE68995E38184E381ABE5AFBEE5BF9CE3818CE5BF85E8A681"),
+         "catalog phrase locales");
       AUnit.Assertions.Assert
         (Phrase_Key.Status = Ok
          and then Support.Text (Phrase_Key) = "ci.pipeline_failed"

@@ -16,6 +16,8 @@ is
 begin
    return Humanize.I18N_Rendering.Phrase_Or
      (Context,
-      With_Nouns (Num (Num (Sel.Phrase ("selection_count"), "selected", Selected), "total", Total), Singular, Plural),
+      With_Nouns
+        (Context,
+         Num (Num (Sel.Phrase ("selection_count"), "selected", Selected), "total", Total), Singular, Plural),
       English);
 end Selection_Count;

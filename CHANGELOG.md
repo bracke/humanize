@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+* **Every status phrase family goes through the phrase catalog.** UI, file,
+  validation, network, auth, billing, workflow, queue, CI, ticket, payment,
+  database and the other domain statuses (162 labels) render through
+  `humanize.phrase.<domain>.<status>` keys in all 32 locales. They replace the
+  older word-by-word generated packs, which covered 21 locales and dropped
+  diacritics ("bald fallig"). `Phrase_Locales` now lists all 33 shipped
+  locales; `Generated_Phrase_Locales` the 32 whose phrases come from the
+  catalog. The feature-flag phrase keys are `flag.*`, as `Feature_Flag_Key`
+  names them.
+* **Nouns with more than two forms.** `Humanize.Contexts.With_Noun_Forms`
+  registers a noun's zero/two/few/many forms; phrases in languages with those
+  categories use them (Polish "5 plików"). `docs/PHRASE_TEMPLATES.md` lists what
+  to pass per language.
+* **Date differences in the case their frame governs**: German "in 2 Jahren",
+  "vor 2 Jahren", Russian "через 1 неделю", Czech "před 2 lety", from CLDR's
+  case forms.
+* **`Load_Defaults (Runtime, Result, Locale)`** loads the phrase translations
+  of one language only: 16 MB and 10 ms instead of 46 MB and 50 ms for all.
+* Measurement phrases fall back to English whole when CLDR cannot render the
+  measure.
+
 * **Phrase formatters speak every shipped locale.** List, pagination,
   progress, business-time, due-date, status, summary, comparison and
   measurement phrases render through `humanize.phrase.<name>` catalog keys

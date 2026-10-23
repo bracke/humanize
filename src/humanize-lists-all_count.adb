@@ -14,6 +14,6 @@ is
 begin
    return Humanize.I18N_Rendering.Phrase_Or
      (Context,
-      With_Nouns (Num (Sel.Phrase ("all_count"), "total", Total), Singular, Plural),
+      With_Nouns (Context, Num (Sel.Phrase ("all_count"), "total", Total), Singular, Plural),
       English);
 end All_Count;

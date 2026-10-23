@@ -56,7 +56,7 @@ Numbers / multi-unit (English):
   status phrase : loading
   file phrase   : uploading
   auth phrase   : session expired
-  db phrase es  : base de datos replicacion retrasada
+  db phrase es  : replicación de la base de datos con retraso
   security      : token expired
   health        : degraded
   issue         : merged

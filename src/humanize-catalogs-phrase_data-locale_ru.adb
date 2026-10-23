@@ -4,31 +4,33 @@ function Locale_Ru return Wide_Wide_String is
 begin
    return
      P ("all_count",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: всего {total}")
+          "всего {total} {total, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}}")
      & P ("filtered_count.none", "{other}: совпадений нет")
      & P ("filtered_count.all",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: совпадают все ({total})")
+          "{total, plural, =1 {совпадает 1 {one}} one "
+          & "{совпадают все {total} {one}} few {совпадают "
+          & "все {total} {few}} many {совпадают все {total} {many}} "
+          & "other {совпадают все {total} {other}}}")
      & P ("filtered_count.some",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: совпадений {matching} из {total}")
+          "совпадают: {matching} {matching, plural, one {{one}} few "
+          & "{{few}} many {{many}} other {{other}}} из {total}")
      & P ("more_count", "показано {visible}, ещё +{remaining}")
      & P ("others_count", "{first} и ещё {remaining}")
      & P ("page_count", "страница {page} из {total}")
      & P ("page_size",
-          "{size, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: {size} на страницу")
+          "{size} {size, plural, one {{one}} few {{few}} many {{many}} other "
+          & "{{other}}} на странице")
      & P ("pagination_range",
           "{total, plural, one {{one}} few {{other}} many {{other}} other "
           & "{{other}}}: {first}–{last} из {total}")
      & P ("position_count", "{position} из {total}")
      & P ("selection_count",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: выбрано {selected} из {total}")
+          "выбрано: {selected} {selected, plural, one {{one}} few {{few}} "
+          & "many {{many}} other {{other}}} из {total}")
      & P ("showing_count",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: показано {showing} из {total}")
+          "показано: {showing} {showing, plural, one {{one}} few {{few}} "
+          & "many {{many}} other {{other}}} из {total}")
      & P ("validation_count",
           "{count, plural, =0 {нет {severity, select, error {ошибок} "
           & "warning {предупреждений} other {замечаний}}} "
@@ -43,21 +45,20 @@ begin
      & P ("collection.empty", "{other} отсутствуют")
      & P ("collection.none_shown", "{other} не показаны")
      & P ("collection.showing_hidden",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: показано {visible} из {total}, скрыто "
-          & "{hidden}")
+          "показано: {visible} {visible, plural, one {{one}} few {{few}} "
+          & "many {{many}} other {{other}}} из {total}, скрыто: {hidden}")
      & P ("collection.showing",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: показано {visible} из {total}")
+          "показано: {visible} {visible, plural, one {{one}} few {{few}} "
+          & "many {{many}} other {{other}}} из {total}")
      & P ("collection.shown_hidden",
-          "{visible, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: показано {visible}, скрыто {hidden}")
+          "показано: {visible} {visible, plural, one {{one}} few {{few}} "
+          & "many {{many}} other {{other}}}, скрыто: {hidden}")
      & P ("collection.shown",
-          "{visible, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: показано {visible}")
+          "показано: {visible} {visible, plural, one {{one}} few {{few}} "
+          & "many {{many}} other {{other}}}")
      & P ("collection.visible_out_of",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: видно {visible} из {total}")
+          "видно: {visible} {visible, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}} из {total}")
      & P ("complete_count", "выполнено {done} из {total}")
      & P ("percent_complete", "выполнено {percent} %")
      & P ("step_count", "шаг {step} из {total}")
@@ -136,9 +137,9 @@ begin
           "кэш: попаданий {hits}, промахов {misses}, доля "
           & "попаданий {rate} %")
      & P ("field_change_summary",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}} ({total}): изменено {changed}, добавлено "
-          & "{added}, удалено {removed}")
+          "{total} {total, plural, one {{one}} few {{few}} many {{many}} other "
+          & "{{other}}}: изменено {changed}, добавлено {added}, "
+          & "удалено {removed}")
      & P ("field_diff", "{field}: было {before}, стало {after}")
      & P ("field_added", "{field}: добавлено значение {value}")
      & P ("field_removed", "{field}: удалено (было {value})")
@@ -167,15 +168,15 @@ begin
           & "{{state}}}: {details}")
      & P ("summary.none", "{other} отсутствуют")
      & P ("summary.completed",
-          "{count, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: завершено {count}")
+          "завершено: {count} {count, plural, one {{one}} few {{few}} "
+          & "many {{many}} other {{other}}}")
      & P ("summary.completed_of",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: завершено {count} из {total}")
+          "завершено: {count} {count, plural, one {{one}} few {{few}} "
+          & "many {{many}} other {{other}}} из {total}")
      & P ("summary.failed", "с ошибкой: {count}")
      & P ("summary.queued",
-          "{count, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: в очереди {count}")
+          "в очереди: {count} {count, plural, one {{one}} few {{few}} "
+          & "many {{many}} other {{other}}}")
      & P ("summary.running", "выполняется: {count}")
      & P ("summary.complete", "завершено: {count}")
      & P ("backup.backup_running", "выполняется резервное копирование")
@@ -194,10 +195,10 @@ begin
      & P ("audit.audit_updated", "запись аудита обновлена")
      & P ("audit.audit_deleted", "запись аудита удалена")
      & P ("audit.audit_restored", "запись аудита восстановлена")
-     & P ("feature_flag.flag_enabled", "флаг функции включён")
-     & P ("feature_flag.flag_disabled", "флаг функции отключён")
-     & P ("feature_flag.flag_rolling_out", "флаг функции развёртывается")
-     & P ("feature_flag.flag_rolled_back", "флаг функции откачен")
+     & P ("flag.flag_enabled", "флаг функции включён")
+     & P ("flag.flag_disabled", "флаг функции отключён")
+     & P ("flag.flag_rolling_out", "флаг функции развёртывается")
+     & P ("flag.flag_rolled_back", "флаг функции откачен")
      & P ("webhook.webhook_pending", "вебхук ожидает отправки")
      & P ("webhook.webhook_delivered", "вебхук доставлен")
      & P ("webhook.webhook_failed", "ошибка вебхука")
@@ -231,5 +232,175 @@ begin
      & P ("time_of_day.evening", "вечер")
      & P ("calendar_difference.same_day", "в тот же день")
      & P ("calendar_difference.zero", "0 дней")
-     & P ("queue_summary.empty", "очередь пуста");
+     & P ("queue_summary.empty", "очередь пуста")
+     & P ("access.allowed", "разрешено")
+     & P ("access.denied", "запрещено")
+     & P ("access.owner", "владелец")
+     & P ("access.admin", "администратор")
+     & P ("access.viewer", "читатель")
+     & P ("access.editor", "редактор")
+     & P ("auth.signed_in", "вход выполнен")
+     & P ("auth.signed_out", "выход выполнен")
+     & P ("auth.session_expired", "сеанс истёк")
+     & P ("auth.locked", "заблокировано")
+     & P ("auth.two_factor_required",
+          "требуется двухфакторная "
+          & "аутентификация")
+     & P ("billing.trialing", "пробный период")
+     & P ("billing.payment_due", "ожидается оплата")
+     & P ("billing.payment_failed", "ошибка оплаты")
+     & P ("billing.paid", "оплачено")
+     & P ("billing.past_due", "просрочено")
+     & P ("billing.canceled", "отменено")
+     & P ("ci.pipeline_pending", "конвейер ожидает")
+     & P ("ci.pipeline_running", "конвейер выполняется")
+     & P ("ci.pipeline_passed", "конвейер пройден")
+     & P ("ci.pipeline_failed", "сбой конвейера")
+     & P ("ci.review_required", "требуется проверка")
+     & P ("ci.deploy_blocked", "развёртывание заблокировано")
+     & P ("collaboration.active_now", "в сети")
+     & P ("collaboration.away", "нет на месте")
+     & P ("collaboration.do_not_disturb", "не беспокоить")
+     & P ("collaboration.typing", "печатает")
+     & P ("collaboration.viewing", "просматривает")
+     & P ("collaboration.editing", "редактирует")
+     & P ("deployment.deploying", "развёртывание")
+     & P ("deployment.deployed", "развёрнуто")
+     & P ("deployment.rolling_back", "откат")
+     & P ("deployment.rolled_back", "откачено")
+     & P ("deployment.build_failed", "ошибка сборки")
+     & P ("deployment.checks_passed", "проверки пройдены")
+     & P ("empty.no_items", "нет элементов")
+     & P ("empty.no_results", "нет результатов")
+     & P ("empty.no_messages", "нет сообщений")
+     & P ("empty.no_selection", "ничего не выбрано")
+     & P ("empty.nothing_to_show", "нечего показать")
+     & P ("file.uploading", "отправка")
+     & P ("file.downloading", "скачивание")
+     & P ("file.copying", "копирование")
+     & P ("file.moving", "перемещение")
+     & P ("file.deleting", "удаление")
+     & P ("file.deleted", "удалено")
+     & P ("file.restoring", "восстановление")
+     & P ("file.synced", "синхронизировано")
+     & P ("form.valid_input", "корректное значение")
+     & P ("form.invalid_input", "некорректное значение")
+     & P ("form.dirty", "изменено")
+     & P ("form.pristine", "без изменений")
+     & P ("form.submitted", "отправлено")
+     & P ("form.submission_failed", "ошибка отправки")
+     & P ("health.healthy", "в норме")
+     & P ("health.degraded", "работает с перебоями")
+     & P ("health.unhealthy", "неисправно")
+     & P ("health.incident", "инцидент")
+     & P ("health.maintenance", "техобслуживание")
+     & P ("health.recovering", "восстановление")
+     & P ("issue.open", "открыто")
+     & P ("issue.closed", "закрыто")
+     & P ("issue.reopened", "открыто повторно")
+     & P ("issue.assigned", "назначено")
+     & P ("issue.unassigned", "не назначено")
+     & P ("issue.merged", "слито")
+     & P ("network.offline", "не в сети")
+     & P ("network.online", "в сети")
+     & P ("network.connecting", "подключение")
+     & P ("network.syncing", "синхронизация")
+     & P ("network.sync_failed", "ошибка синхронизации")
+     & P ("network.permission_denied", "доступ запрещён")
+     & P ("network.read_only", "только чтение")
+     & P ("notification.unread", "не прочитано")
+     & P ("notification.read", "прочитано")
+     & P ("notification.muted", "без звука")
+     & P ("notification.snoozed", "отложено")
+     & P ("notification.sent", "отправлено")
+     & P ("notification.delivered", "доставлено")
+     & P ("payment.payment_authorized", "платёж авторизован")
+     & P ("payment.payment_captured", "платёж проведён")
+     & P ("payment.payment_refunded", "платёж возвращён")
+     & P ("payment.payment_disputed", "платёж оспорен")
+     & P ("payment.payment_requires_action", "платёж требует действий")
+     & P ("payment.payment_expired", "срок платежа истёк")
+     & P ("ui.empty", "пусто")
+     & P ("ui.loading", "загрузка")
+     & P ("ui.saving", "сохранение")
+     & P ("ui.saved", "сохранено")
+     & P ("ui.unsaved", "не сохранено")
+     & P ("ui.retrying", "повторная попытка")
+     & P ("ui.paused", "приостановлено")
+     & P ("ui.complete", "завершено")
+     & P ("ui.failed", "ошибка")
+     & P ("ui.due_soon", "скоро срок")
+     & P ("ui.overdue", "просрочено")
+     & P ("ui.last_seen", "последняя активность")
+     & P ("ui.updated_just_now", "обновлено только что")
+     & P ("queue.queued", "в очереди")
+     & P ("queue.running", "выполняется")
+     & P ("queue.waiting", "ожидание")
+     & P ("queue.blocked", "заблокировано")
+     & P ("queue.canceled_job", "задание отменено")
+     & P ("queue.completed_job", "задание выполнено")
+     & P ("search.filtering", "фильтрация")
+     & P ("search.filtered", "отфильтровано")
+     & P ("search.no_matches", "совпадений нет")
+     & P ("search.search_ready", "поиск готов")
+     & P ("search.search_failed", "ошибка поиска")
+     & P ("search.query_too_short", "слишком короткий запрос")
+     & P ("security.secure", "защищено")
+     & P ("security.insecure", "не защищено")
+     & P ("security.vulnerable", "уязвимо")
+     & P ("security.encrypted", "зашифровано")
+     & P ("security.unencrypted", "не зашифровано")
+     & P ("security.token_expired", "срок действия токена истёк")
+     & P ("sync.sync_idle", "синхронизация не выполняется")
+     & P ("sync.syncing_now", "идёт синхронизация")
+     & P ("sync.sync_queued", "синхронизация в очереди")
+     & P ("sync.sync_conflict", "конфликт синхронизации")
+     & P ("sync.sync_complete", "синхронизация завершена")
+     & P ("sync.sync_error", "ошибка синхронизации")
+     & P ("task.todo", "к выполнению")
+     & P ("task.in_progress", "в работе")
+     & P ("task.done", "готово")
+     & P ("task.skipped", "пропущено")
+     & P ("task.blocked_task", "заблокировано")
+     & P ("task.waiting_on", "ожидает")
+     & P ("ticket.ticket_new", "новая заявка")
+     & P ("ticket.ticket_open", "заявка открыта")
+     & P ("ticket.ticket_waiting", "заявка ожидает")
+     & P ("ticket.ticket_escalated", "заявка эскалирована")
+     & P ("ticket.ticket_resolved", "заявка решена")
+     & P ("ticket.ticket_closed", "заявка закрыта")
+     & P ("transfer.importing", "импорт")
+     & P ("transfer.imported", "импортировано")
+     & P ("transfer.import_failed", "ошибка импорта")
+     & P ("transfer.exporting", "экспорт")
+     & P ("transfer.exported", "экспортировано")
+     & P ("transfer.export_failed", "ошибка экспорта")
+     & P ("validation.required", "обязательно")
+     & P ("validation.optional", "необязательно")
+     & P ("validation.invalid", "некорректно")
+     & P ("validation.too_short", "слишком коротко")
+     & P ("validation.too_long", "слишком длинно")
+     & P ("validation.out_of_range", "вне допустимого диапазона")
+     & P ("validation.already_exists", "уже существует")
+     & P ("workflow.draft", "черновик")
+     & P ("workflow.in_review", "на проверке")
+     & P ("workflow.approved", "одобрено")
+     & P ("workflow.rejected", "отклонено")
+     & P ("workflow.published", "опубликовано")
+     & P ("workflow.archived", "в архиве")
+     & P ("database.database_online", "база данных доступна")
+     & P ("database.database_offline", "база данных недоступна")
+     & P ("database.database_degraded", "база данных работает с перебоями")
+     & P ("database.database_migrating", "миграция базы данных")
+     & P ("database.database_migration_failed", "ошибка миграции базы данных")
+     & P ("database.database_replicating", "репликация базы данных")
+     & P ("database.database_replication_lagging", "отставание репликации базы данных")
+     & P ("database.database_backup_running",
+          "выполняется резервное копирование "
+          & "базы данных")
+     & P ("database.database_backup_failed",
+          "ошибка резервного копирования базы "
+          & "данных")
+     & P ("calendar_difference.case.future", "accusative")
+     & P ("calendar_difference.case.past", "accusative");
 end Locale_Ru;

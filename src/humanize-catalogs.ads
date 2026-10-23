@@ -89,4 +89,18 @@ package Humanize.Catalogs is
    --  @param Result Load result reported by Messages.Runtime.Load_Text.
    --  @param Policy Duplicate-key policy passed through to I18N.
 
+   --  As Load_Defaults, with the phrase translations of Locale's language
+   --  only: an application that renders in one locale need not hold the other
+   --  32 locales' phrases. Phrases in another locale stay English.
+   procedure Load_Defaults
+     (Runtime : in out Messages.Runtime.Instance;
+      Result  : out Messages.Runtime.Load_Result;
+      Locale  : String;
+      Policy  : Messages.Runtime.Duplicate_Policy :=
+        Messages.Runtime.Reject_Duplicates);
+   --  @param Runtime Runtime that receives the built-in catalog fragments.
+   --  @param Result Load result reported by Messages.Runtime.Load_Text.
+   --  @param Locale Locale ("de", "pt-BR") whose phrase translations to load.
+   --  @param Policy Duplicate-key policy passed through to I18N.
+
 end Humanize.Catalogs;

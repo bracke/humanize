@@ -226,4 +226,27 @@ package body Humanize.I18N_Rendering is
       end;
    end Phrase_Or;
 
+   function With_Nouns
+     (Context   : Humanize.Contexts.Context;
+      Selection : Humanize.Selections.Message_Selection;
+      Singular  : String;
+      Plural    : String)
+      return Humanize.Selections.Message_Selection
+   is
+      Other : constant String := (if Plural'Length > 0 then Plural else Singular);
+
+      function Form (Category : String) return String is
+        (Humanize.Contexts.Noun_Form (Context, Other, Category));
+
+      use Humanize.Selections;
+   begin
+      return With_Arg
+        (With_Arg
+           (With_Arg
+              (With_Arg (With_Arg (With_Arg (Selection, "one", Singular), "other", Other), "zero", Form ("zero")),
+               "two", Form ("two")),
+            "few", Form ("few")),
+         "many", Form ("many"));
+   end With_Nouns;
+
 end Humanize.I18N_Rendering;

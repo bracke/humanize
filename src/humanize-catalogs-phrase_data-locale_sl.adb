@@ -4,12 +4,12 @@ function Locale_Sl return Wide_Wide_String is
 begin
    return
      P ("all_count",
-          "skupaj {total} {total, plural, one {{one}} two {{other}} few {{other}} "
+          "skupaj {total} {total, plural, one {{one}} two {{two}} few {{few}} "
           & "other {{other}}}")
-     & P ("filtered_count.none", "{other}: ni ujemanj")
+     & P ("filtered_count.none", "ni ujemajočih se {other}")
      & P ("filtered_count.all",
-          "ujemanje pri vseh: {total} {total, plural, one {{one}} two {{other}} "
-          & "few {{other}} other {{other}}}")
+          "ujemanje pri vseh: {total} {total, plural, one {{one}} two {{two}} few "
+          & "{{few}} other {{other}}}")
      & P ("filtered_count.some",
           "ujema se: {matching} od {total} {total, plural, one {{one}} two "
           & "{{other}} few {{other}} other {{other}}}")
@@ -17,7 +17,7 @@ begin
      & P ("others_count", "{first} in še {remaining}")
      & P ("page_count", "stran {page} od {total}")
      & P ("page_size",
-          "{size} {size, plural, one {{one}} two {{other}} few {{other}} other "
+          "{size} {size, plural, one {{one}} two {{two}} few {{few}} other "
           & "{{other}}} na stran")
      & P ("pagination_range",
           "{first}–{last} od {total} {total, plural, one {{one}} two {{other}} "
@@ -37,8 +37,8 @@ begin
           & "{obvestili}}} few {{count} {severity, select, error {napake} warning "
           & "{opozorila} other {obvestila}}} other {{count} {severity, select, "
           & "error {napak} warning {opozoril} other {obvestil}}}}")
-     & P ("collection.empty", "{other}: jih ni")
-     & P ("collection.none_shown", "{other}: ni prikazanih")
+     & P ("collection.empty", "ni {other}")
+     & P ("collection.none_shown", "ni prikazanih {other}")
      & P ("collection.showing_hidden",
           "prikazano: {visible} od {total} {total, plural, one {{one}} two "
           & "{{other}} few {{other}} other {{other}}}, skrito: {hidden}")
@@ -46,11 +46,11 @@ begin
           "prikazano: {visible} od {total} {total, plural, one {{one}} two "
           & "{{other}} few {{other}} other {{other}}}")
      & P ("collection.shown_hidden",
-          "prikazano: {visible} {visible, plural, one {{one}} two {{other}} few "
-          & "{{other}} other {{other}}}, skrito: {hidden}")
+          "prikazano: {visible} {visible, plural, one {{one}} two {{two}} few "
+          & "{{few}} other {{other}}}, skrito: {hidden}")
      & P ("collection.shown",
-          "prikazano: {visible} {visible, plural, one {{one}} two {{other}} few "
-          & "{{other}} other {{other}}}")
+          "prikazano: {visible} {visible, plural, one {{one}} two {{two}} few "
+          & "{{few}} other {{other}}}")
      & P ("collection.visible_out_of",
           "vidno: {visible} od {total} {total, plural, one {{one}} two {{other}} "
           & "few {{other}} other {{other}}}")
@@ -77,8 +77,10 @@ begin
      & P ("due.in",
           "rok čez {days, plural, one {{days} dan} two {{days} dneva} few "
           & "{{days} dni} other {{days} dni}}")
-     & P ("calendar_difference.future", "še {difference}")
-     & P ("calendar_difference.past", "{difference} nazaj")
+     & P ("calendar_difference.future", "čez {difference}")
+     & P ("calendar_difference.past", "pred {difference}")
+     & P ("calendar_difference.case.future", "accusative")
+     & P ("calendar_difference.case.past", "instrumental")
      & P ("cpu_load", "obremenitev CPE {measure}")
      & P ("battery", "baterija {measure}")
      & P ("screen_size", "zaslon {measure}")
@@ -124,7 +126,7 @@ begin
           & "{{misses} zgrešitve} other {{misses} zgrešitev}}, delež zadetkov "
           & "{rate} %")
      & P ("field_change_summary",
-          "{total} {total, plural, one {{one}} two {{other}} few {{other}} other "
+          "{total} {total, plural, one {{one}} two {{two}} few {{few}} other "
           & "{{other}}}: spremenjeno {changed}, dodano {added}, odstranjeno "
           & "{removed}")
      & P ("field_diff", "{field}: spremenjeno iz {before} v {after}")
@@ -152,17 +154,17 @@ begin
           & "vrsti} running {se izvaja} waiting {čaka} paused {začasno "
           & "ustavljeno} complete {dokončano} failed {ni uspelo} stale {zastarelo} "
           & "skipped {preskočeno} other {{state}}}: {details}")
-     & P ("summary.none", "{other}: jih ni")
+     & P ("summary.none", "ni {other}")
      & P ("summary.completed",
-          "dokončano: {count} {count, plural, one {{one}} two {{other}} few "
-          & "{{other}} other {{other}}}")
+          "dokončano: {count} {count, plural, one {{one}} two {{two}} few "
+          & "{{few}} other {{other}}}")
      & P ("summary.completed_of",
           "dokončano: {count} od {total} {total, plural, one {{one}} two "
           & "{{other}} few {{other}} other {{other}}}")
      & P ("summary.failed", "ni uspelo: {count}")
      & P ("summary.queued",
-          "v čakalni vrsti: {count} {count, plural, one {{one}} two {{other}} "
-          & "few {{other}} other {{other}}}")
+          "v čakalni vrsti: {count} {count, plural, one {{one}} two {{two}} few "
+          & "{{few}} other {{other}}}")
      & P ("summary.running", "se izvaja: {count}")
      & P ("summary.complete", "dokončano: {count}")
      & P ("backup.backup_running", "varnostno kopiranje poteka")
@@ -181,10 +183,10 @@ begin
      & P ("audit.audit_updated", "revizijski vnos posodobljen")
      & P ("audit.audit_deleted", "revizijski vnos izbrisan")
      & P ("audit.audit_restored", "revizijski vnos obnovljen")
-     & P ("feature_flag.flag_enabled", "zastavica funkcije omogočena")
-     & P ("feature_flag.flag_disabled", "zastavica funkcije onemogočena")
-     & P ("feature_flag.flag_rolling_out", "zastavica funkcije se postopno uvaja")
-     & P ("feature_flag.flag_rolled_back", "zastavica funkcije povrnjena")
+     & P ("flag.flag_enabled", "zastavica funkcije omogočena")
+     & P ("flag.flag_disabled", "zastavica funkcije onemogočena")
+     & P ("flag.flag_rolling_out", "zastavica funkcije se postopno uvaja")
+     & P ("flag.flag_rolled_back", "zastavica funkcije povrnjena")
      & P ("webhook.webhook_pending", "webhook čaka")
      & P ("webhook.webhook_delivered", "webhook dostavljen")
      & P ("webhook.webhook_failed", "webhook ni uspel")
@@ -215,5 +217,167 @@ begin
      & P ("time_of_day.afternoon", "popoldne")
      & P ("time_of_day.evening", "večer")
      & P ("calendar_difference.same_day", "isti dan")
-     & P ("calendar_difference.zero", "0 dni");
+     & P ("calendar_difference.zero", "0 dni")
+     & P ("access.allowed", "dovoljeno")
+     & P ("access.denied", "zavrnjeno")
+     & P ("access.owner", "lastnik")
+     & P ("access.admin", "skrbnik")
+     & P ("access.viewer", "bralec")
+     & P ("access.editor", "urednik")
+     & P ("auth.signed_in", "prijavljeno")
+     & P ("auth.signed_out", "odjavljeno")
+     & P ("auth.session_expired", "seja je potekla")
+     & P ("auth.locked", "zaklenjeno")
+     & P ("auth.two_factor_required", "zahtevano dvofaktorsko preverjanje")
+     & P ("billing.trialing", "preizkusno obdobje")
+     & P ("billing.payment_due", "plačilo zapade")
+     & P ("billing.payment_failed", "plačilo ni uspelo")
+     & P ("billing.paid", "plačano")
+     & P ("billing.past_due", "zapadlo")
+     & P ("billing.canceled", "preklicano")
+     & P ("ci.pipeline_pending", "cevovod čaka")
+     & P ("ci.pipeline_running", "cevovod se izvaja")
+     & P ("ci.pipeline_passed", "cevovod uspešen")
+     & P ("ci.pipeline_failed", "cevovod ni uspel")
+     & P ("ci.review_required", "zahtevan pregled")
+     & P ("ci.deploy_blocked", "uvajanje blokirano")
+     & P ("collaboration.active_now", "trenutno aktiven")
+     & P ("collaboration.away", "odsoten")
+     & P ("collaboration.do_not_disturb", "ne moti")
+     & P ("collaboration.typing", "tipka")
+     & P ("collaboration.viewing", "si ogleduje")
+     & P ("collaboration.editing", "ureja")
+     & P ("deployment.deploying", "uvajanje")
+     & P ("deployment.deployed", "uvedeno")
+     & P ("deployment.rolling_back", "povrnitev")
+     & P ("deployment.rolled_back", "povrnjeno")
+     & P ("deployment.build_failed", "gradnja ni uspela")
+     & P ("deployment.checks_passed", "preverjanja uspešna")
+     & P ("empty.no_items", "ni elementov")
+     & P ("empty.no_results", "ni rezultatov")
+     & P ("empty.no_messages", "ni sporočil")
+     & P ("empty.no_selection", "ni izbire")
+     & P ("empty.nothing_to_show", "ni česa prikazati")
+     & P ("file.uploading", "nalaganje")
+     & P ("file.downloading", "prenašanje")
+     & P ("file.copying", "kopiranje")
+     & P ("file.moving", "premikanje")
+     & P ("file.deleting", "brisanje")
+     & P ("file.deleted", "izbrisano")
+     & P ("file.restoring", "obnavljanje")
+     & P ("file.synced", "sinhronizirano")
+     & P ("form.valid_input", "veljaven vnos")
+     & P ("form.invalid_input", "neveljaven vnos")
+     & P ("form.dirty", "spremenjeno")
+     & P ("form.pristine", "nespremenjeno")
+     & P ("form.submitted", "poslano")
+     & P ("form.submission_failed", "pošiljanje ni uspelo")
+     & P ("health.healthy", "brezhibno")
+     & P ("health.degraded", "okrnjeno delovanje")
+     & P ("health.unhealthy", "nedelujoče")
+     & P ("health.incident", "incident")
+     & P ("health.maintenance", "vzdrževanje")
+     & P ("health.recovering", "obnavljanje delovanja")
+     & P ("issue.open", "odprto")
+     & P ("issue.closed", "zaprto")
+     & P ("issue.reopened", "znova odprto")
+     & P ("issue.assigned", "dodeljeno")
+     & P ("issue.unassigned", "nedodeljeno")
+     & P ("issue.merged", "združeno")
+     & P ("network.offline", "brez povezave")
+     & P ("network.online", "povezano")
+     & P ("network.connecting", "povezovanje")
+     & P ("network.syncing", "sinhronizacija")
+     & P ("network.sync_failed", "sinhronizacija ni uspela")
+     & P ("network.permission_denied", "dostop zavrnjen")
+     & P ("network.read_only", "samo za branje")
+     & P ("notification.unread", "neprebrano")
+     & P ("notification.read", "prebrano")
+     & P ("notification.muted", "utišano")
+     & P ("notification.snoozed", "preloženo")
+     & P ("notification.sent", "poslano")
+     & P ("notification.delivered", "dostavljeno")
+     & P ("payment.payment_authorized", "plačilo odobreno")
+     & P ("payment.payment_captured", "plačilo izvedeno")
+     & P ("payment.payment_refunded", "plačilo vrnjeno")
+     & P ("payment.payment_disputed", "plačilo izpodbijano")
+     & P ("payment.payment_requires_action", "plačilo zahteva ukrepanje")
+     & P ("payment.payment_expired", "plačilo je poteklo")
+     & P ("ui.empty", "prazno")
+     & P ("ui.loading", "nalaganje")
+     & P ("ui.saving", "shranjevanje")
+     & P ("ui.saved", "shranjeno")
+     & P ("ui.unsaved", "neshranjeno")
+     & P ("ui.retrying", "ponovni poskus")
+     & P ("ui.paused", "začasno ustavljeno")
+     & P ("ui.complete", "dokončano")
+     & P ("ui.failed", "ni uspelo")
+     & P ("ui.due_soon", "kmalu zapade")
+     & P ("ui.overdue", "zapadlo")
+     & P ("ui.last_seen", "nazadnje viden")
+     & P ("ui.updated_just_now", "pravkar posodobljeno")
+     & P ("queue.queued", "v čakalni vrsti")
+     & P ("queue.running", "se izvaja")
+     & P ("queue.waiting", "čaka")
+     & P ("queue.blocked", "blokirano")
+     & P ("queue.canceled_job", "opravilo preklicano")
+     & P ("queue.completed_job", "opravilo dokončano")
+     & P ("search.filtering", "filtriranje")
+     & P ("search.filtered", "filtrirano")
+     & P ("search.no_matches", "ni ujemanj")
+     & P ("search.search_ready", "iskanje pripravljeno")
+     & P ("search.search_failed", "iskanje ni uspelo")
+     & P ("search.query_too_short", "poizvedba je prekratka")
+     & P ("security.secure", "varno")
+     & P ("security.insecure", "nevarno")
+     & P ("security.vulnerable", "ranljivo")
+     & P ("security.encrypted", "šifrirano")
+     & P ("security.unencrypted", "nešifrirano")
+     & P ("security.token_expired", "žeton je potekel")
+     & P ("sync.sync_idle", "sinhronizacija miruje")
+     & P ("sync.syncing_now", "sinhronizacija poteka")
+     & P ("sync.sync_queued", "sinhronizacija v čakalni vrsti")
+     & P ("sync.sync_conflict", "spor pri sinhronizaciji")
+     & P ("sync.sync_complete", "sinhronizacija dokončana")
+     & P ("sync.sync_error", "napaka sinhronizacije")
+     & P ("task.todo", "neopravljeno")
+     & P ("task.in_progress", "v teku")
+     & P ("task.done", "opravljeno")
+     & P ("task.skipped", "preskočeno")
+     & P ("task.blocked_task", "blokirano")
+     & P ("task.waiting_on", "čaka na")
+     & P ("ticket.ticket_new", "nov zahtevek")
+     & P ("ticket.ticket_open", "zahtevek odprt")
+     & P ("ticket.ticket_waiting", "zahtevek čaka")
+     & P ("ticket.ticket_escalated", "zahtevek posredovan višje")
+     & P ("ticket.ticket_resolved", "zahtevek razrešen")
+     & P ("ticket.ticket_closed", "zahtevek zaprt")
+     & P ("transfer.importing", "uvažanje")
+     & P ("transfer.imported", "uvoženo")
+     & P ("transfer.import_failed", "uvoz ni uspel")
+     & P ("transfer.exporting", "izvažanje")
+     & P ("transfer.exported", "izvoženo")
+     & P ("transfer.export_failed", "izvoz ni uspel")
+     & P ("validation.required", "obvezno")
+     & P ("validation.optional", "izbirno")
+     & P ("validation.invalid", "neveljavno")
+     & P ("validation.too_short", "prekratko")
+     & P ("validation.too_long", "predolgo")
+     & P ("validation.out_of_range", "zunaj obsega")
+     & P ("validation.already_exists", "že obstaja")
+     & P ("workflow.draft", "osnutek")
+     & P ("workflow.in_review", "v pregledu")
+     & P ("workflow.approved", "odobreno")
+     & P ("workflow.rejected", "zavrnjeno")
+     & P ("workflow.published", "objavljeno")
+     & P ("workflow.archived", "arhivirano")
+     & P ("database.database_online", "zbirka podatkov povezana")
+     & P ("database.database_offline", "zbirka podatkov brez povezave")
+     & P ("database.database_degraded", "zbirka podatkov okrnjena")
+     & P ("database.database_migrating", "selitev zbirke podatkov")
+     & P ("database.database_migration_failed", "selitev zbirke podatkov ni uspela")
+     & P ("database.database_replicating", "replikacija zbirke podatkov")
+     & P ("database.database_replication_lagging", "replikacija zbirke podatkov zaostaja")
+     & P ("database.database_backup_running", "varnostno kopiranje zbirke podatkov poteka")
+     & P ("database.database_backup_failed", "varnostno kopiranje zbirke podatkov ni uspelo");
 end Locale_Sl;

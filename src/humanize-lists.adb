@@ -34,8 +34,9 @@ package body Humanize.Lists is
    package Sel renames Humanize.Selections;
    function Num (S : Sel.Message_Selection; Name : String; Value : Natural) return Sel.Message_Selection is
      (Sel.With_Arg (S, Name, Long_Long_Integer (Value)));
-   function With_Nouns (S : Sel.Message_Selection; Singular, Plural : String) return Sel.Message_Selection is
-     (Sel.With_Arg (Sel.With_Arg (S, "one", Singular), "other", (if Plural'Length > 0 then Plural else Singular)));
+   function With_Nouns
+     (Context : Humanize.Contexts.Context; S : Sel.Message_Selection; Singular, Plural : String)
+      return Sel.Message_Selection renames Humanize.I18N_Rendering.With_Nouns;
 
    function Is_Upper (Item : Character) return Boolean
       renames Humanize.Bounded_Text.Is_ASCII_Uppercase;

@@ -48,4 +48,15 @@ private package Humanize.I18N_Rendering is
       English   : Humanize.Status.Text_Result)
       return Humanize.Status.Text_Result;
 
+   --  Selection with a caller's noun as phrase arguments: "one" (Singular),
+   --  "other" (Plural, or Singular when Plural is ""), and "zero", "two",
+   --  "few" and "many" -- the forms registered on Context for that plural
+   --  (Humanize.Contexts.With_Noun_Forms), else the plural.
+   function With_Nouns
+     (Context   : Humanize.Contexts.Context;
+      Selection : Humanize.Selections.Message_Selection;
+      Singular  : String;
+      Plural    : String)
+      return Humanize.Selections.Message_Selection;
+
 end Humanize.I18N_Rendering;

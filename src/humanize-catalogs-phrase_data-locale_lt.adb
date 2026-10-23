@@ -4,31 +4,31 @@ function Locale_Lt return Wide_Wide_String is
 begin
    return
      P ("all_count",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: iš viso {total}")
+          "iš viso {total} {total, plural, one {{one}} few {{few}} many {{many}} "
+          & "other {{other}}}")
      & P ("filtered_count.none", "{other}: atitikmenų nėra")
      & P ("filtered_count.all",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: atitinka {total} iš {total}")
+          "atitinka: {total} {total, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}} iš {total}")
      & P ("filtered_count.some",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: atitinka {matching} iš {total}")
+          "atitinka: {matching} {matching, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}} iš {total}")
      & P ("more_count", "rodoma {visible}, dar +{remaining}")
      & P ("others_count", "{first} ir dar {remaining}")
      & P ("page_count", "puslapis {page} iš {total}")
      & P ("page_size",
-          "{size, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: {size} puslapyje")
+          "{size} {size, plural, one {{one}} few {{few}} many {{many}} other "
+          & "{{other}}} puslapyje")
      & P ("pagination_range",
           "{total, plural, one {{one}} few {{other}} many {{other}} other "
           & "{{other}}}: {first}–{last} iš {total}")
      & P ("position_count", "{position} iš {total}")
      & P ("selection_count",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: pasirinkta {selected} iš {total}")
+          "pasirinkta: {selected} {selected, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}} iš {total}")
      & P ("showing_count",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: rodoma {showing} iš {total}")
+          "rodoma: {showing} {showing, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}} iš {total}")
      & P ("validation_count",
           "{count, plural, =0 {{severity, select, error {klaidų} warning "
           & "{įspėjimų} other {pastabų}} nėra} one {{count} {severity, select, "
@@ -40,20 +40,20 @@ begin
      & P ("collection.empty", "{other}: nėra")
      & P ("collection.none_shown", "{other}: nerodoma")
      & P ("collection.showing_hidden",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: rodoma {visible} iš {total}, paslėpta {hidden}")
+          "rodoma: {visible} {visible, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}} iš {total}, paslėpta: {hidden}")
      & P ("collection.showing",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: rodoma {visible} iš {total}")
+          "rodoma: {visible} {visible, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}} iš {total}")
      & P ("collection.shown_hidden",
-          "{visible, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: rodoma {visible}, paslėpta {hidden}")
+          "rodoma: {visible} {visible, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}}, paslėpta: {hidden}")
      & P ("collection.shown",
-          "{visible, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: rodoma {visible}")
+          "rodoma: {visible} {visible, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}}")
      & P ("collection.visible_out_of",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: matoma {visible} iš {total}")
+          "matoma: {visible} {visible, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}} iš {total}")
      & P ("complete_count", "atlikta {done} iš {total}")
      & P ("percent_complete", "atlikta {percent} %")
      & P ("step_count", "žingsnis {step} iš {total}")
@@ -76,8 +76,8 @@ begin
      & P ("due.in",
           "terminas po {days} {days, plural, one {dienos} few {dienų} many "
           & "{dienos} other {dienų}}")
-     & P ("calendar_difference.future", "liko {difference}")
-     & P ("calendar_difference.past", "praėjo {difference}")
+     & P ("calendar_difference.future", "po {difference}")
+     & P ("calendar_difference.past", "prieš {difference}")
      & P ("cpu_load", "CPU apkrova {measure}")
      & P ("battery", "baterija {measure}")
      & P ("screen_size", "ekranas {measure}")
@@ -121,9 +121,8 @@ begin
           "talpykla: pataikymų {hits}, praleidimų {misses}, pataikymo dažnis "
           & "{rate} %")
      & P ("field_change_summary",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}} ({total}): pakeista {changed}, pridėta {added}, pašalinta "
-          & "{removed}")
+          "{total} {total, plural, one {{one}} few {{few}} many {{many}} other "
+          & "{{other}}}: pakeista {changed}, pridėta {added}, pašalinta {removed}")
      & P ("field_diff", "{field}: buvo {before}, dabar {after}")
      & P ("field_added", "{field}: pridėta reikšmė {value}")
      & P ("field_removed", "{field}: pašalinta (buvo {value})")
@@ -150,15 +149,15 @@ begin
           & "{{state}}}: {details}")
      & P ("summary.none", "{other}: nėra")
      & P ("summary.completed",
-          "{count, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: baigta {count}")
+          "baigta: {count} {count, plural, one {{one}} few {{few}} many {{many}} "
+          & "other {{other}}}")
      & P ("summary.completed_of",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: baigta {count} iš {total}")
+          "baigta: {count} {count, plural, one {{one}} few {{few}} many {{many}} "
+          & "other {{other}}} iš {total}")
      & P ("summary.failed", "nepavyko: {count}")
      & P ("summary.queued",
-          "{count, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: eilėje {count}")
+          "eilėje: {count} {count, plural, one {{one}} few {{few}} many {{many}} "
+          & "other {{other}}}")
      & P ("summary.running", "vykdoma: {count}")
      & P ("summary.complete", "baigta: {count}")
      & P ("backup.backup_running", "vyksta atsarginis kopijavimas")
@@ -177,10 +176,10 @@ begin
      & P ("audit.audit_updated", "audito įrašas atnaujintas")
      & P ("audit.audit_deleted", "audito įrašas ištrintas")
      & P ("audit.audit_restored", "audito įrašas atkurtas")
-     & P ("feature_flag.flag_enabled", "funkcijos vėliavėlė įjungta")
-     & P ("feature_flag.flag_disabled", "funkcijos vėliavėlė išjungta")
-     & P ("feature_flag.flag_rolling_out", "funkcijos vėliavėlė diegiama")
-     & P ("feature_flag.flag_rolled_back", "funkcijos vėliavėlė atšaukta")
+     & P ("flag.flag_enabled", "funkcijos vėliavėlė įjungta")
+     & P ("flag.flag_disabled", "funkcijos vėliavėlė išjungta")
+     & P ("flag.flag_rolling_out", "funkcijos vėliavėlė diegiama")
+     & P ("flag.flag_rolled_back", "funkcijos vėliavėlė atšaukta")
      & P ("webhook.webhook_pending", "webhook: laukiama")
      & P ("webhook.webhook_delivered", "webhook: pristatyta")
      & P ("webhook.webhook_failed", "webhook: nepavyko")
@@ -212,5 +211,169 @@ begin
      & P ("time_of_day.evening", "vakaras")
      & P ("calendar_difference.same_day", "tą pačią dieną")
      & P ("calendar_difference.zero", "0 dienų")
-     & P ("queue_summary.empty", "eilė tuščia");
+     & P ("queue_summary.empty", "eilė tuščia")
+     & P ("access.allowed", "leidžiama")
+     & P ("access.denied", "draudžiama")
+     & P ("access.owner", "savininkas")
+     & P ("access.admin", "administratorius")
+     & P ("access.viewer", "peržiūrėtojas")
+     & P ("access.editor", "redaguotojas")
+     & P ("auth.signed_in", "prisijungta")
+     & P ("auth.signed_out", "atsijungta")
+     & P ("auth.session_expired", "seansas baigėsi")
+     & P ("auth.locked", "užrakinta")
+     & P ("auth.two_factor_required", "būtinas dviejų veiksnių autentifikavimas")
+     & P ("billing.trialing", "bandomasis laikotarpis")
+     & P ("billing.payment_due", "laukiama mokėjimo")
+     & P ("billing.payment_failed", "mokėjimas nepavyko")
+     & P ("billing.paid", "apmokėta")
+     & P ("billing.past_due", "pradelsta")
+     & P ("billing.canceled", "atšaukta")
+     & P ("ci.pipeline_pending", "konvejeris laukia")
+     & P ("ci.pipeline_running", "konvejeris vykdomas")
+     & P ("ci.pipeline_passed", "konvejeris sėkmingas")
+     & P ("ci.pipeline_failed", "konvejeris nepavyko")
+     & P ("ci.review_required", "reikia peržiūros")
+     & P ("ci.deploy_blocked", "diegimas užblokuotas")
+     & P ("collaboration.active_now", "dabar tinkle")
+     & P ("collaboration.away", "nėra vietoje")
+     & P ("collaboration.do_not_disturb", "netrukdyti")
+     & P ("collaboration.typing", "rašo")
+     & P ("collaboration.viewing", "peržiūri")
+     & P ("collaboration.editing", "redaguoja")
+     & P ("deployment.deploying", "diegiama")
+     & P ("deployment.deployed", "įdiegta")
+     & P ("deployment.rolling_back", "grąžinama ankstesnė versija")
+     & P ("deployment.rolled_back", "grąžinta ankstesnė versija")
+     & P ("deployment.build_failed", "kompiliavimas nepavyko")
+     & P ("deployment.checks_passed", "patikros sėkmingos")
+     & P ("empty.no_items", "elementų nėra")
+     & P ("empty.no_results", "rezultatų nėra")
+     & P ("empty.no_messages", "pranešimų nėra")
+     & P ("empty.no_selection", "nieko nepasirinkta")
+     & P ("empty.nothing_to_show", "nėra ką rodyti")
+     & P ("file.uploading", "įkeliama")
+     & P ("file.downloading", "atsisiunčiama")
+     & P ("file.copying", "kopijuojama")
+     & P ("file.moving", "perkeliama")
+     & P ("file.deleting", "šalinama")
+     & P ("file.deleted", "pašalinta")
+     & P ("file.restoring", "atkuriama")
+     & P ("file.synced", "sinchronizuota")
+     & P ("form.valid_input", "tinkama įvestis")
+     & P ("form.invalid_input", "netinkama įvestis")
+     & P ("form.dirty", "pakeista")
+     & P ("form.pristine", "nepakeista")
+     & P ("form.submitted", "pateikta")
+     & P ("form.submission_failed", "pateikti nepavyko")
+     & P ("health.healthy", "veikia tinkamai")
+     & P ("health.degraded", "veikia su trikdžiais")
+     & P ("health.unhealthy", "neveikia")
+     & P ("health.incident", "incidentas")
+     & P ("health.maintenance", "techninė priežiūra")
+     & P ("health.recovering", "atkuriama")
+     & P ("issue.open", "atvira")
+     & P ("issue.closed", "uždaryta")
+     & P ("issue.reopened", "vėl atidaryta")
+     & P ("issue.assigned", "priskirta")
+     & P ("issue.unassigned", "nepriskirta")
+     & P ("issue.merged", "sulieta")
+     & P ("network.offline", "neprisijungus")
+     & P ("network.online", "prisijungus")
+     & P ("network.connecting", "jungiamasi")
+     & P ("network.syncing", "sinchronizuojama")
+     & P ("network.sync_failed", "sinchronizuoti nepavyko")
+     & P ("network.permission_denied", "prieiga uždrausta")
+     & P ("network.read_only", "tik skaityti")
+     & P ("notification.unread", "neskaityta")
+     & P ("notification.read", "perskaityta")
+     & P ("notification.muted", "nutildyta")
+     & P ("notification.snoozed", "atidėta")
+     & P ("notification.sent", "išsiųsta")
+     & P ("notification.delivered", "pristatyta")
+     & P ("payment.payment_authorized", "mokėjimas autorizuotas")
+     & P ("payment.payment_captured", "mokėjimas nurašytas")
+     & P ("payment.payment_refunded", "mokėjimas grąžintas")
+     & P ("payment.payment_disputed", "mokėjimas užginčytas")
+     & P ("payment.payment_requires_action", "mokėjimui reikia veiksmo")
+     & P ("payment.payment_expired", "mokėjimo galiojimas baigėsi")
+     & P ("ui.empty", "tuščia")
+     & P ("ui.loading", "įkeliama")
+     & P ("ui.saving", "įrašoma")
+     & P ("ui.saved", "įrašyta")
+     & P ("ui.unsaved", "neįrašyta")
+     & P ("ui.retrying", "bandoma dar kartą")
+     & P ("ui.paused", "pristabdyta")
+     & P ("ui.complete", "baigta")
+     & P ("ui.failed", "nepavyko")
+     & P ("ui.due_soon", "netrukus terminas")
+     & P ("ui.overdue", "pradelsta")
+     & P ("ui.last_seen", "paskutinis aktyvumas")
+     & P ("ui.updated_just_now", "ką tik atnaujinta")
+     & P ("queue.queued", "eilėje")
+     & P ("queue.running", "vykdoma")
+     & P ("queue.waiting", "laukiama")
+     & P ("queue.blocked", "užblokuota")
+     & P ("queue.canceled_job", "užduotis atšaukta")
+     & P ("queue.completed_job", "užduotis atlikta")
+     & P ("search.filtering", "filtruojama")
+     & P ("search.filtered", "išfiltruota")
+     & P ("search.no_matches", "atitikmenų nėra")
+     & P ("search.search_ready", "paieška parengta")
+     & P ("search.search_failed", "paieška nepavyko")
+     & P ("search.query_too_short", "užklausa per trumpa")
+     & P ("security.secure", "saugu")
+     & P ("security.insecure", "nesaugu")
+     & P ("security.vulnerable", "pažeidžiama")
+     & P ("security.encrypted", "šifruota")
+     & P ("security.unencrypted", "nešifruota")
+     & P ("security.token_expired", "prieigos rakto galiojimas baigėsi")
+     & P ("sync.sync_idle", "sinchronizavimas neaktyvus")
+     & P ("sync.syncing_now", "sinchronizuojama")
+     & P ("sync.sync_queued", "sinchronizavimas eilėje")
+     & P ("sync.sync_conflict", "sinchronizavimo konfliktas")
+     & P ("sync.sync_complete", "sinchronizavimas baigtas")
+     & P ("sync.sync_error", "sinchronizavimo klaida")
+     & P ("task.todo", "reikia atlikti")
+     & P ("task.in_progress", "vykdoma")
+     & P ("task.done", "atlikta")
+     & P ("task.skipped", "praleista")
+     & P ("task.blocked_task", "užblokuota")
+     & P ("task.waiting_on", "laukiama")
+     & P ("ticket.ticket_new", "nauja užklausa")
+     & P ("ticket.ticket_open", "užklausa atvira")
+     & P ("ticket.ticket_waiting", "užklausa laukia")
+     & P ("ticket.ticket_escalated", "užklausa eskaluota")
+     & P ("ticket.ticket_resolved", "užklausa išspręsta")
+     & P ("ticket.ticket_closed", "užklausa uždaryta")
+     & P ("transfer.importing", "importuojama")
+     & P ("transfer.imported", "importuota")
+     & P ("transfer.import_failed", "importuoti nepavyko")
+     & P ("transfer.exporting", "eksportuojama")
+     & P ("transfer.exported", "eksportuota")
+     & P ("transfer.export_failed", "eksportuoti nepavyko")
+     & P ("validation.required", "privaloma")
+     & P ("validation.optional", "neprivaloma")
+     & P ("validation.invalid", "netinkama")
+     & P ("validation.too_short", "per trumpa")
+     & P ("validation.too_long", "per ilga")
+     & P ("validation.out_of_range", "už leistino intervalo ribų")
+     & P ("validation.already_exists", "jau yra")
+     & P ("workflow.draft", "juodraštis")
+     & P ("workflow.in_review", "peržiūrima")
+     & P ("workflow.approved", "patvirtinta")
+     & P ("workflow.rejected", "atmesta")
+     & P ("workflow.published", "paskelbta")
+     & P ("workflow.archived", "archyvuota")
+     & P ("database.database_online", "duomenų bazė pasiekiama")
+     & P ("database.database_offline", "duomenų bazė nepasiekiama")
+     & P ("database.database_degraded", "duomenų bazė veikia su trikdžiais")
+     & P ("database.database_migrating", "vykdoma duomenų bazės migracija")
+     & P ("database.database_migration_failed", "duomenų bazės migracija nepavyko")
+     & P ("database.database_replicating", "duomenų bazė replikuojama")
+     & P ("database.database_replication_lagging", "duomenų bazės replikacija vėluoja")
+     & P ("database.database_backup_running", "kuriama duomenų bazės atsarginė kopija")
+     & P ("database.database_backup_failed", "nepavyko sukurti duomenų bazės atsarginės kopijos")
+     & P ("calendar_difference.case.future", "genitive")
+     & P ("calendar_difference.case.past", "accusative");
 end Locale_Lt;

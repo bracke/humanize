@@ -4,32 +4,32 @@ function Locale_Ro return Wide_Wide_String is
 begin
    return
      P ("all_count",
-          "{total} {total, plural, one {{one}} few {{other}} other {de {other}}} "
+          "{total} {total, plural, one {{one}} few {{few}} other {de {other}}} "
           & "în total")
      & P ("filtered_count.none", "{other}: nicio potrivire")
      & P ("filtered_count.all",
-          "{total} din {total} {total, plural, one {{one}} few {{other}} other "
-          & "{de {other}}} {total, plural, one {corespunde} other {corespund}}")
+          "{total} din {total} {total, plural, one {{one}} few {{few}} other {de "
+          & "{other}}} {total, plural, one {corespunde} other {corespund}}")
      & P ("filtered_count.some",
-          "{matching} din {total} {total, plural, one {{one}} few {{other}} other "
+          "{matching} din {total} {total, plural, one {{one}} few {{few}} other "
           & "{de {other}}} {matching, plural, one {corespunde} other {corespund}}")
      & P ("more_count", "se afișează {visible}, încă {remaining}")
      & P ("others_count", "{first} și încă {remaining}")
      & P ("page_count", "pagina {page} din {total}")
      & P ("page_size",
-          "{size} {size, plural, one {{one}} few {{other}} other {de {other}}} pe "
+          "{size} {size, plural, one {{one}} few {{few}} other {de {other}}} pe "
           & "pagină")
      & P ("pagination_range",
-          "{first}–{last} din {total} {total, plural, one {{one}} few {{other}} "
+          "{first}–{last} din {total} {total, plural, one {{one}} few {{few}} "
           & "other {de {other}}}")
      & P ("position_count", "{position} din {total}")
      & P ("selection_count",
           "{selected, plural, one {s-a selectat} other {s-au selectat}} "
-          & "{selected} din {total} {total, plural, one {{one}} few {{other}} other "
+          & "{selected} din {total} {total, plural, one {{one}} few {{few}} other "
           & "{de {other}}}")
      & P ("showing_count",
           "se afișează {showing} din {total} {total, plural, one {{one}} few "
-          & "{{other}} other {de {other}}}")
+          & "{{few}} other {de {other}}}")
      & P ("validation_count",
           "{count, plural, =0 {{severity, select, error {nicio eroare} warning "
           & "{niciun avertisment} other {nicio notificare}}} one {1 {severity, "
@@ -41,20 +41,20 @@ begin
      & P ("collection.none_shown", "nu se afișează {other}")
      & P ("collection.showing_hidden",
           "se afișează {visible} din {total} {total, plural, one {{one}} few "
-          & "{{other}} other {de {other}}}, ascunse: {hidden}")
+          & "{{few}} other {de {other}}}, ascunse: {hidden}")
      & P ("collection.showing",
           "se afișează {visible} din {total} {total, plural, one {{one}} few "
-          & "{{other}} other {de {other}}}")
+          & "{{few}} other {de {other}}}")
      & P ("collection.shown_hidden",
-          "se afișează {visible} {visible, plural, one {{one}} few {{other}} "
+          "se afișează {visible} {visible, plural, one {{one}} few {{few}} "
           & "other {de {other}}}, ascunse: {hidden}")
      & P ("collection.shown",
-          "se afișează {visible} {visible, plural, one {{one}} few {{other}} "
+          "se afișează {visible} {visible, plural, one {{one}} few {{few}} "
           & "other {de {other}}}")
      & P ("collection.visible_out_of",
           "{visible, plural, one {se vede} other {se văd}} {visible} {visible, "
-          & "plural, one {{one}} few {{other}} other {de {other}}} din {total} "
-          & "{total, plural, one {{one}} few {{other}} other {de {other}}}")
+          & "plural, one {{one}} few {{few}} other {de {other}}} din {total} "
+          & "{total, plural, one {{one}} few {{few}} other {de {other}}}")
      & P ("complete_count", "finalizate: {done} din {total}")
      & P ("percent_complete", "{percent} % finalizat")
      & P ("step_count", "pasul {step} din {total}")
@@ -116,7 +116,7 @@ begin
           & "one {ratare} few {ratări} other {de ratări}}, rată de reușită "
           & "{rate} %")
      & P ("field_change_summary",
-          "{total} {total, plural, one {{one}} few {{other}} other {de {other}}}: "
+          "{total} {total, plural, one {{one}} few {{few}} other {de {other}}}: "
           & "modificate {changed}, adăugate {added}, eliminate {removed}")
      & P ("field_diff", "{field} s-a schimbat din {before} în {after}")
      & P ("field_added", "s-a adăugat {field} cu valoarea {value}")
@@ -151,14 +151,14 @@ begin
      & P ("summary.none", "nu există {other}")
      & P ("summary.completed",
           "{count, plural, one {s-a finalizat} other {s-au finalizat}} {count} "
-          & "{count, plural, one {{one}} few {{other}} other {de {other}}}")
+          & "{count, plural, one {{one}} few {{few}} other {de {other}}}")
      & P ("summary.completed_of",
           "{count, plural, one {s-a finalizat} other {s-au finalizat}} {count} "
-          & "din {total} {total, plural, one {{one}} few {{other}} other {de "
+          & "din {total} {total, plural, one {{one}} few {{few}} other {de "
           & "{other}}}")
      & P ("summary.failed", "eșuate: {count}")
      & P ("summary.queued",
-          "{count} {count, plural, one {{one}} few {{other}} other {de {other}}} "
+          "{count} {count, plural, one {{one}} few {{few}} other {de {other}}} "
           & "în coadă")
      & P ("summary.running", "în curs: {count}")
      & P ("summary.complete", "finalizate: {count}")
@@ -178,10 +178,10 @@ begin
      & P ("audit.audit_updated", "înregistrare de audit actualizată")
      & P ("audit.audit_deleted", "înregistrare de audit ștearsă")
      & P ("audit.audit_restored", "înregistrare de audit restaurată")
-     & P ("feature_flag.flag_enabled", "flag de funcționalitate activat")
-     & P ("feature_flag.flag_disabled", "flag de funcționalitate dezactivat")
-     & P ("feature_flag.flag_rolling_out", "flag de funcționalitate în curs de lansare")
-     & P ("feature_flag.flag_rolled_back", "flag de funcționalitate retras")
+     & P ("flag.flag_enabled", "flag de funcționalitate activat")
+     & P ("flag.flag_disabled", "flag de funcționalitate dezactivat")
+     & P ("flag.flag_rolling_out", "flag de funcționalitate în curs de lansare")
+     & P ("flag.flag_rolled_back", "flag de funcționalitate retras")
      & P ("webhook.webhook_pending", "webhook în așteptare")
      & P ("webhook.webhook_delivered", "webhook livrat")
      & P ("webhook.webhook_failed", "webhook eșuat")
@@ -210,5 +210,167 @@ begin
      & P ("time_of_day.night", "noapte")
      & P ("time_of_day.morning", "dimineață")
      & P ("time_of_day.afternoon", "după-amiază")
-     & P ("time_of_day.evening", "seară");
+     & P ("time_of_day.evening", "seară")
+     & P ("access.allowed", "permis")
+     & P ("access.denied", "refuzat")
+     & P ("access.owner", "proprietar")
+     & P ("access.admin", "administrator")
+     & P ("access.viewer", "vizualizator")
+     & P ("access.editor", "editor")
+     & P ("auth.signed_in", "conectat")
+     & P ("auth.signed_out", "deconectat")
+     & P ("auth.session_expired", "sesiune expirată")
+     & P ("auth.locked", "blocat")
+     & P ("auth.two_factor_required", "autentificare în doi pași necesară")
+     & P ("billing.trialing", "perioadă de probă")
+     & P ("billing.payment_due", "plată scadentă")
+     & P ("billing.payment_failed", "plată eșuată")
+     & P ("billing.paid", "plătit")
+     & P ("billing.past_due", "restant")
+     & P ("billing.canceled", "anulat")
+     & P ("ci.pipeline_pending", "pipeline în așteptare")
+     & P ("ci.pipeline_running", "pipeline în curs")
+     & P ("ci.pipeline_passed", "pipeline reușit")
+     & P ("ci.pipeline_failed", "pipeline eșuat")
+     & P ("ci.review_required", "revizuire necesară")
+     & P ("ci.deploy_blocked", "implementare blocată")
+     & P ("collaboration.active_now", "activ acum")
+     & P ("collaboration.away", "absent")
+     & P ("collaboration.do_not_disturb", "nu deranjați")
+     & P ("collaboration.typing", "scrie")
+     & P ("collaboration.viewing", "vizualizează")
+     & P ("collaboration.editing", "editează")
+     & P ("deployment.deploying", "implementare în curs")
+     & P ("deployment.deployed", "implementat")
+     & P ("deployment.rolling_back", "revenire în curs")
+     & P ("deployment.rolled_back", "revenire efectuată")
+     & P ("deployment.build_failed", "build eșuat")
+     & P ("deployment.checks_passed", "verificări reușite")
+     & P ("empty.no_items", "niciun element")
+     & P ("empty.no_results", "niciun rezultat")
+     & P ("empty.no_messages", "niciun mesaj")
+     & P ("empty.no_selection", "nicio selecție")
+     & P ("empty.nothing_to_show", "nimic de afișat")
+     & P ("file.uploading", "încărcare în curs")
+     & P ("file.downloading", "descărcare în curs")
+     & P ("file.copying", "copiere în curs")
+     & P ("file.moving", "mutare în curs")
+     & P ("file.deleting", "ștergere în curs")
+     & P ("file.deleted", "șters")
+     & P ("file.restoring", "restaurare în curs")
+     & P ("file.synced", "sincronizat")
+     & P ("form.valid_input", "intrare validă")
+     & P ("form.invalid_input", "intrare nevalidă")
+     & P ("form.dirty", "modificat")
+     & P ("form.pristine", "nemodificat")
+     & P ("form.submitted", "trimis")
+     & P ("form.submission_failed", "trimitere eșuată")
+     & P ("health.healthy", "funcțional")
+     & P ("health.degraded", "degradat")
+     & P ("health.unhealthy", "nefuncțional")
+     & P ("health.incident", "incident")
+     & P ("health.maintenance", "mentenanță")
+     & P ("health.recovering", "recuperare în curs")
+     & P ("issue.open", "deschis")
+     & P ("issue.closed", "închis")
+     & P ("issue.reopened", "redeschis")
+     & P ("issue.assigned", "atribuit")
+     & P ("issue.unassigned", "neatribuit")
+     & P ("issue.merged", "îmbinat")
+     & P ("network.offline", "offline")
+     & P ("network.online", "online")
+     & P ("network.connecting", "conectare în curs")
+     & P ("network.syncing", "sincronizare în curs")
+     & P ("network.sync_failed", "sincronizare eșuată")
+     & P ("network.permission_denied", "permisiune refuzată")
+     & P ("network.read_only", "doar citire")
+     & P ("notification.unread", "necitit")
+     & P ("notification.read", "citit")
+     & P ("notification.muted", "fără sunet")
+     & P ("notification.snoozed", "amânat")
+     & P ("notification.sent", "trimis")
+     & P ("notification.delivered", "livrat")
+     & P ("payment.payment_authorized", "plată autorizată")
+     & P ("payment.payment_captured", "plată încasată")
+     & P ("payment.payment_refunded", "plată rambursată")
+     & P ("payment.payment_disputed", "plată contestată")
+     & P ("payment.payment_requires_action", "plata necesită acțiune")
+     & P ("payment.payment_expired", "plată expirată")
+     & P ("ui.empty", "gol")
+     & P ("ui.loading", "se încarcă")
+     & P ("ui.saving", "se salvează")
+     & P ("ui.saved", "salvat")
+     & P ("ui.unsaved", "nesalvat")
+     & P ("ui.retrying", "reîncercare")
+     & P ("ui.paused", "întrerupt")
+     & P ("ui.complete", "finalizat")
+     & P ("ui.failed", "eșuat")
+     & P ("ui.due_soon", "scadent în curând")
+     & P ("ui.overdue", "termen depășit")
+     & P ("ui.last_seen", "văzut ultima dată")
+     & P ("ui.updated_just_now", "actualizat chiar acum")
+     & P ("queue.queued", "în coadă")
+     & P ("queue.running", "în curs")
+     & P ("queue.waiting", "în așteptare")
+     & P ("queue.blocked", "blocat")
+     & P ("queue.canceled_job", "sarcină anulată")
+     & P ("queue.completed_job", "sarcină finalizată")
+     & P ("search.filtering", "filtrare în curs")
+     & P ("search.filtered", "filtrat")
+     & P ("search.no_matches", "nicio potrivire")
+     & P ("search.search_ready", "căutare pregătită")
+     & P ("search.search_failed", "căutare eșuată")
+     & P ("search.query_too_short", "interogare prea scurtă")
+     & P ("security.secure", "securizat")
+     & P ("security.insecure", "nesecurizat")
+     & P ("security.vulnerable", "vulnerabil")
+     & P ("security.encrypted", "criptat")
+     & P ("security.unencrypted", "necriptat")
+     & P ("security.token_expired", "token expirat")
+     & P ("sync.sync_idle", "sincronizare inactivă")
+     & P ("sync.syncing_now", "se sincronizează acum")
+     & P ("sync.sync_queued", "sincronizare în coadă")
+     & P ("sync.sync_conflict", "conflict de sincronizare")
+     & P ("sync.sync_complete", "sincronizare finalizată")
+     & P ("sync.sync_error", "eroare de sincronizare")
+     & P ("task.todo", "de făcut")
+     & P ("task.in_progress", "în desfășurare")
+     & P ("task.done", "gata")
+     & P ("task.skipped", "omis")
+     & P ("task.blocked_task", "blocat")
+     & P ("task.waiting_on", "în așteptarea altora")
+     & P ("ticket.ticket_new", "tichet nou")
+     & P ("ticket.ticket_open", "tichet deschis")
+     & P ("ticket.ticket_waiting", "tichet în așteptare")
+     & P ("ticket.ticket_escalated", "tichet escaladat")
+     & P ("ticket.ticket_resolved", "tichet rezolvat")
+     & P ("ticket.ticket_closed", "tichet închis")
+     & P ("transfer.importing", "import în curs")
+     & P ("transfer.imported", "importat")
+     & P ("transfer.import_failed", "import eșuat")
+     & P ("transfer.exporting", "export în curs")
+     & P ("transfer.exported", "exportat")
+     & P ("transfer.export_failed", "export eșuat")
+     & P ("validation.required", "obligatoriu")
+     & P ("validation.optional", "opțional")
+     & P ("validation.invalid", "nevalid")
+     & P ("validation.too_short", "prea scurt")
+     & P ("validation.too_long", "prea lung")
+     & P ("validation.out_of_range", "în afara intervalului")
+     & P ("validation.already_exists", "există deja")
+     & P ("workflow.draft", "ciornă")
+     & P ("workflow.in_review", "în revizuire")
+     & P ("workflow.approved", "aprobat")
+     & P ("workflow.rejected", "respins")
+     & P ("workflow.published", "publicat")
+     & P ("workflow.archived", "arhivat")
+     & P ("database.database_online", "bază de date online")
+     & P ("database.database_offline", "bază de date offline")
+     & P ("database.database_degraded", "bază de date degradată")
+     & P ("database.database_migrating", "migrare bază de date în curs")
+     & P ("database.database_migration_failed", "migrare bază de date eșuată")
+     & P ("database.database_replicating", "replicare bază de date în curs")
+     & P ("database.database_replication_lagging", "replicare bază de date întârziată")
+     & P ("database.database_backup_running", "backup bază de date în curs")
+     & P ("database.database_backup_failed", "backup bază de date eșuat");
 end Locale_Ro;

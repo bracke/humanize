@@ -69,7 +69,7 @@ begin
    end if;
    return Humanize.I18N_Rendering.Phrase_Or
      (Context,
-      With_Nouns (Num (Num (Num (Sel.Phrase (if Total = 0 then "collection.empty" elsif Visible = 0
+      With_Nouns (Context, Num (Num (Num (Sel.Phrase (if Total = 0 then "collection.empty" elsif Visible = 0
         then "collection.none_shown" elsif Options.Style = Collection_Accessible_Summary
           then "collection.visible_out_of" elsif Options.Include_Total and then Options.Include_Hidden and
             then Total > Visible then "collection.showing_hidden" elsif Options.Include_Total

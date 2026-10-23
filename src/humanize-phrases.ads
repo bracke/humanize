@@ -637,9 +637,9 @@ package Humanize.Phrases is
 
    --  Facade section: locale and phrase-key metadata.
 
-   Phrase_Locale_Count : constant Positive := 22;
+   Phrase_Locale_Count : constant Positive := 33;
 
-   Generated_Phrase_Locale_Count : constant Positive := 19;
+   Generated_Phrase_Locale_Count : constant Positive := 32;
 
    subtype Phrase_Locale_List is
      Humanize.Locales.Locale_Code_Array (1 .. Phrase_Locale_Count);
@@ -651,7 +651,7 @@ package Humanize.Phrases is
    --  @return Locale prefixes with Humanize-owned phrase-pack text.
 
    function Generated_Phrase_Locales return Generated_Phrase_Locale_List;
-   --  @return Locale prefixes whose phrase-pack text is generated.
+   --  @return Locale prefixes whose phrase text comes from the phrase catalog.
 
    function Is_Supported_Phrase_Locale (Locale : String) return Boolean;
    --  @param Locale Locale prefix or tag, such as "en" or "ja-JP".

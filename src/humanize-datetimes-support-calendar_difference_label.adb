@@ -61,6 +61,22 @@ is
    function Localized return String is
       use Ada.Strings.Unbounded;
       Diff  : constant Calendar_Difference_Result := Calendar_Difference (First, Last);
+      --  The case the locale's "in ..." or "... ago" frame governs, as its
+      --  catalog names it; the nominative outside a frame or where none is
+      --  named.
+      function Governed_Case return String is
+         Frame : constant String :=
+           (if Diff.Direction = Future_Date then "calendar_difference.case.future"
+            else "calendar_difference.case.past");
+         Named : constant Humanize.Status.Text_Result :=
+           Humanize.I18N_Rendering.Render (Context, Sel.Phrase (Frame));
+      begin
+         if Options.Style /= Calendar_Difference_Relative or else Named.Status /= Humanize.Status.Ok then
+            return "nominative";
+         end if;
+         return To_String (Named.Text);
+      end Governed_Case;
+      Case_Name : constant String := Governed_Case;
       Parts : Unbounded_String;
       Count : Natural := 0;
 
@@ -74,7 +90,10 @@ is
          declare
             Text : constant Humanize.Status.Text_Result :=
               Humanize.I18N_Rendering.Render
-                (Context, Num (Sel.With_Arg (Sel.Phrase ("calendar_difference.part"), "unit", Unit), "value", Value));
+                (Context,
+                 Num (Sel.With_Arg (Sel.With_Arg (Sel.Phrase ("calendar_difference.part"), "unit", Unit),
+                                    "case", Case_Name),
+                      "value", Value));
          begin
             if Text.Status /= Humanize.Status.Ok or else Length (Text.Text) = 0 then
                return False;

@@ -16,4 +16,11 @@ private package Humanize.Catalogs.Loader is
         Messages.Runtime.Reject_Duplicates);
    --  Load the built-in catalog fragments into Runtime.
 
+   procedure Load_Defaults
+     (Runtime : in out Messages.Runtime.Instance;
+      Result  : out Messages.Runtime.Load_Result;
+      Locale  : String;
+      Policy  : Messages.Runtime.Duplicate_Policy :=
+        Messages.Runtime.Reject_Duplicates);
+
 end Humanize.Catalogs.Loader;

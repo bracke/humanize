@@ -28,9 +28,6 @@ package body Humanize.Phrases.Support.Backend is
    function Natural_Text (Value : Natural) return String
       renames Humanize.Bounded_Text.Image;
 
-   function Lower (Text : String) return String
-      renames Humanize.Bounded_Text.Lower_Text;
-
    function Lower_Char (Char : Character) return Character
       renames Humanize.Bounded_Text.Lower_Char;
 
@@ -43,9 +40,6 @@ package body Humanize.Phrases.Support.Backend is
 
    function Invalid_Text return Humanize.Status.Text_Result
       renames Humanize.Bounded_Text.Invalid_Value_Text;
-
-   function B (Hex : String) return String
-      renames Humanize.Bounded_Text.Hex_Bytes;
 
    function Severity_Label
      (Severity : Phrase_Severity)
@@ -358,6 +352,17 @@ package body Humanize.Phrases.Support.Backend is
    Zh_Locale : aliased constant String := "zh";
    Ar_Locale : aliased constant String := "ar";
    Hi_Locale : aliased constant String := "hi";
+   Ro_Locale : aliased constant String := "ro";
+   Lt_Locale : aliased constant String := "lt";
+   Sl_Locale : aliased constant String := "sl";
+   Id_Locale : aliased constant String := "id";
+   Ms_Locale : aliased constant String := "ms";
+   Eo_Locale : aliased constant String := "eo";
+   Vi_Locale : aliased constant String := "vi";
+   Sw_Locale : aliased constant String := "sw";
+   Af_Locale : aliased constant String := "af";
+   Hu_Locale : aliased constant String := "hu";
+   Sk_Locale : aliased constant String := "sk";
 
    Phrase_Locale_Table : constant Phrase_Locale_List :=
      [En_Locale'Access,
@@ -381,10 +386,23 @@ package body Humanize.Phrases.Support.Backend is
       Ko_Locale'Access,
       Zh_Locale'Access,
       Ar_Locale'Access,
-      Hi_Locale'Access];
+      Hi_Locale'Access,
+      Ro_Locale'Access,
+      Lt_Locale'Access,
+      Sl_Locale'Access,
+      Id_Locale'Access,
+      Ms_Locale'Access,
+      Eo_Locale'Access,
+      Vi_Locale'Access,
+      Sw_Locale'Access,
+      Af_Locale'Access,
+      Hu_Locale'Access,
+      Sk_Locale'Access];
 
    Generated_Phrase_Locale_Table : constant Generated_Phrase_Locale_List :=
      [Da_Locale'Access,
+      De_Locale'Access,
+      Fr_Locale'Access,
       Es_Locale'Access,
       It_Locale'Access,
       Pt_Locale'Access,
@@ -402,7 +420,18 @@ package body Humanize.Phrases.Support.Backend is
       Ko_Locale'Access,
       Zh_Locale'Access,
       Ar_Locale'Access,
-      Hi_Locale'Access];
+      Hi_Locale'Access,
+      Ro_Locale'Access,
+      Lt_Locale'Access,
+      Sl_Locale'Access,
+      Id_Locale'Access,
+      Ms_Locale'Access,
+      Eo_Locale'Access,
+      Vi_Locale'Access,
+      Sw_Locale'Access,
+      Af_Locale'Access,
+      Hu_Locale'Access,
+      Sk_Locale'Access];
 
    function Phrase_Locales return Phrase_Locale_List is
    begin
@@ -561,10 +590,8 @@ package body Humanize.Phrases.Support.Backend is
       Text : constant Humanize.Status.Text_Result :=
         Humanize.I18N_Rendering.Render
           (Context,
-           Sel.With_Arg
-             (Sel.With_Arg (Num (Num (Sel.Phrase ("summary." & Name), "count", Count), "total", Total),
-                            "one", Singular),
-              "other", Plural));
+           Humanize.I18N_Rendering.With_Nouns
+             (Context, Num (Num (Sel.Phrase ("summary." & Name), "count", Count), "total", Total), Singular, Plural));
    begin
       return (if Text.Status = Humanize.Status.Ok then To_String (Text.Text) else "");
    end Segment;
@@ -824,55 +851,13 @@ package body Humanize.Phrases.Support.Backend is
       return Result;
    end Key_Text;
 
-   function Has_Generated_Phrase_Pack (Locale : String) return Boolean is
-   begin
-      return Is_Generated_Phrase_Locale (Locale);
-   end Has_Generated_Phrase_Pack;
-
-   function Phrase_Separator (Locale : String) return String is
-   begin
-      if Is_CJK (Locale) then
-         return "";
-      else
-         return " ";
-      end if;
-   end Phrase_Separator;
-
-   function Database_Token_Text (Locale, Token : String) return String
-      is separate;
-
-   function Token_Text (Locale, Token : String) return String
-      is separate;
-
-   function Generated_Phrase (Locale, Image : String) return String is
-      Result : Unbounded_String;
-      First  : Positive := Image'First;
-      Sep    : constant String := Phrase_Separator (Locale);
-
-      procedure Add_Token (Last : Natural) is
-         Token : constant String := Image (First .. Last);
-      begin
-         if Length (Result) > 0 then
-            Append (Result, Sep);
-         end if;
-         Append (Result, Token_Text (Locale, Token));
-      end Add_Token;
-   begin
-      for I in Image'Range loop
-         if Image (I) = '_' then
-            if I > First then
-               Add_Token (I - 1);
-            end if;
-            First := I + 1;
-         end if;
-      end loop;
-
-      if First <= Image'Last then
-         Add_Token (Image'Last);
-      end if;
-
-      return To_String (Result);
-   end Generated_Phrase;
+   --  A status label through its phrase key outside English; English as given.
+   function Status_Phrase
+     (Context : Humanize.Contexts.Context;
+      Name    : String;
+      English : String)
+      return Humanize.Status.Text_Result
+   is (Humanize.I18N_Rendering.Phrase_Or (Context, Sel.Phrase (Name), Ok_Text (English)));
 
    function Status_Key
      (Status : UI_Status)
@@ -979,119 +964,53 @@ package body Humanize.Phrases.Support.Backend is
       return Ok_Text (Key_Text ("invoice", Invoice_Status'Image (Status)));
    end Invoice_Key;
 
-   function Phrase_Text
-     (Locale : String;
-      Status : UI_Status)
-      return String
-      is separate;
+   function Phrase_Text (Status : UI_Status) return String is separate;
 
-   function File_Text (Locale : String; Status : File_Status) return String
-      is separate;
+   function File_Text (Status : File_Status) return String is separate;
 
-   function Validation_Text
-     (Locale : String;
-      Status : Validation_Status)
-      return String
-      is separate;
+   function Validation_Text (Status : Validation_Status) return String is separate;
 
-   function Empty_Text (Locale : String; State : Empty_State) return String
-      is separate;
+   function Empty_Text (State : Empty_State) return String is separate;
 
-   function Network_Text
-     (Locale : String;
-      Status : Network_Status)
-      return String
-      is separate;
+   function Network_Text (Status : Network_Status) return String is separate;
 
-   function Auth_Text (Locale : String; Status : Auth_Status) return String
-      is separate;
+   function Auth_Text (Status : Auth_Status) return String is separate;
 
-   function Billing_Text
-     (Locale : String;
-      Status : Billing_Status)
-      return String
-      is separate;
+   function Billing_Text (Status : Billing_Status) return String is separate;
 
-   function Workflow_Text
-     (Locale : String;
-      Status : Workflow_Status)
-      return String
-      is separate;
+   function Workflow_Text (Status : Workflow_Status) return String is separate;
 
-   function Queue_Text (Locale : String; Status : Queue_Status) return String
-      is separate;
+   function Queue_Text (Status : Queue_Status) return String is separate;
 
-   function Security_Text
-     (Locale : String;
-      Status : Security_Status)
-      return String
-      is separate;
+   function Security_Text (Status : Security_Status) return String is separate;
 
-   function Deployment_Text
-     (Locale : String;
-      Status : Deployment_Status)
-      return String
-      is separate;
+   function Deployment_Text (Status : Deployment_Status) return String is separate;
 
-   function Health_Text
-     (Locale : String;
-      Status : Health_Status)
-      return String
-      is separate;
+   function Health_Text (Status : Health_Status) return String is separate;
 
-   function Notification_Text
-     (Locale : String;
-      Status : Notification_Status)
-      return String
-      is separate;
+   function Notification_Text (Status : Notification_Status) return String is separate;
 
-   function Form_Text
-     (Locale : String;
-      Status : Form_Status)
-      return String
-      is separate;
+   function Form_Text (Status : Form_Status) return String is separate;
 
-   function Access_Text (Locale : String; Status : Access_Status) return String
-      is separate;
+   function Access_Text (Status : Access_Status) return String is separate;
 
-   function Sync_Text (Locale : String; Status : Sync_Status) return String
-      is separate;
+   function Sync_Text (Status : Sync_Status) return String is separate;
 
-   function Transfer_Text
-     (Locale : String;
-      Status : Transfer_Status)
-      return String
-      is separate;
+   function Transfer_Text (Status : Transfer_Status) return String is separate;
 
-   function Search_Text (Locale : String; Status : Search_Status) return String
-      is separate;
+   function Search_Text (Status : Search_Status) return String is separate;
 
-   function Collaboration_Text
-     (Locale : String;
-      Status : Collaboration_Status)
-      return String
-      is separate;
+   function Collaboration_Text (Status : Collaboration_Status) return String is separate;
 
-   function Issue_Text (Locale : String; Status : Issue_Status) return String
-      is separate;
+   function Issue_Text (Status : Issue_Status) return String is separate;
 
-   function Task_Text (Locale : String; Status : Task_Status) return String
-      is separate;
+   function Task_Text (Status : Task_Status) return String is separate;
 
-   function CI_Text (Locale : String; Status : CI_Status) return String
-      is separate;
+   function CI_Text (Status : CI_Status) return String is separate;
 
-   function Ticket_Text
-     (Locale : String;
-      Status : Ticket_Status)
-      return String
-      is separate;
+   function Ticket_Text (Status : Ticket_Status) return String is separate;
 
-   function Payment_Lifecycle_Text
-     (Locale : String;
-      Status : Payment_Lifecycle_Status)
-      return String
-      is separate;
+   function Payment_Lifecycle_Text (Status : Payment_Lifecycle_Status) return String is separate;
 
    procedure Severity_Label_Into
      (Severity : Phrase_Severity;
@@ -1119,7 +1038,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Phrase_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("ui", UI_Status'Image (Status)), Phrase_Text (Status));
    end Status_Phrase;
 
    function File_Phrase
@@ -1128,7 +1047,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (File_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("file", File_Status'Image (Status)), File_Text (Status));
    end File_Phrase;
 
    function Validation_Phrase
@@ -1137,7 +1056,9 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Validation_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase
+        (Context, Key_Text ("validation", Validation_Status'Image (Status)),
+         Validation_Text (Status));
    end Validation_Phrase;
 
    function Empty_State_Phrase
@@ -1146,7 +1067,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Empty_Text (Language_Code (Humanize.Contexts.Locale (Context)), State));
+      return Status_Phrase (Context, Key_Text ("empty", Empty_State'Image (State)), Empty_Text (State));
    end Empty_State_Phrase;
 
    function Network_Phrase
@@ -1155,7 +1076,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Network_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("network", Network_Status'Image (Status)), Network_Text (Status));
    end Network_Phrase;
 
    function Auth_Phrase
@@ -1164,7 +1085,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Auth_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("auth", Auth_Status'Image (Status)), Auth_Text (Status));
    end Auth_Phrase;
 
    function Billing_Phrase
@@ -1173,7 +1094,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Billing_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("billing", Billing_Status'Image (Status)), Billing_Text (Status));
    end Billing_Phrase;
 
    function Workflow_Phrase
@@ -1182,7 +1103,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Workflow_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("workflow", Workflow_Status'Image (Status)), Workflow_Text (Status));
    end Workflow_Phrase;
 
    function Queue_Phrase
@@ -1191,7 +1112,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Queue_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("queue", Queue_Status'Image (Status)), Queue_Text (Status));
    end Queue_Phrase;
 
    function Security_Phrase
@@ -1200,7 +1121,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Security_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("security", Security_Status'Image (Status)), Security_Text (Status));
    end Security_Phrase;
 
    function Deployment_Phrase
@@ -1209,7 +1130,9 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Deployment_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase
+        (Context, Key_Text ("deployment", Deployment_Status'Image (Status)),
+         Deployment_Text (Status));
    end Deployment_Phrase;
 
    function Health_Phrase
@@ -1218,7 +1141,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Health_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("health", Health_Status'Image (Status)), Health_Text (Status));
    end Health_Phrase;
 
    function Notification_Phrase
@@ -1227,7 +1150,9 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Notification_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase
+        (Context, Key_Text ("notification", Notification_Status'Image (Status)),
+         Notification_Text (Status));
    end Notification_Phrase;
 
    function Form_Phrase
@@ -1236,7 +1161,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Form_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("form", Form_Status'Image (Status)), Form_Text (Status));
    end Form_Phrase;
 
    function Access_Phrase
@@ -1244,7 +1169,7 @@ package body Humanize.Phrases.Support.Backend is
       Status  : Access_Status)
       return Humanize.Status.Text_Result is
    begin
-      return Ok_Text (Access_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("access", Access_Status'Image (Status)), Access_Text (Status));
    end Access_Phrase;
 
    function Sync_Phrase
@@ -1252,7 +1177,7 @@ package body Humanize.Phrases.Support.Backend is
       Status  : Sync_Status)
       return Humanize.Status.Text_Result is
    begin
-      return Ok_Text (Sync_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("sync", Sync_Status'Image (Status)), Sync_Text (Status));
    end Sync_Phrase;
 
    function Transfer_Phrase
@@ -1260,7 +1185,7 @@ package body Humanize.Phrases.Support.Backend is
       Status  : Transfer_Status)
       return Humanize.Status.Text_Result is
    begin
-      return Ok_Text (Transfer_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("transfer", Transfer_Status'Image (Status)), Transfer_Text (Status));
    end Transfer_Phrase;
 
    function Search_Phrase
@@ -1268,7 +1193,7 @@ package body Humanize.Phrases.Support.Backend is
       Status  : Search_Status)
       return Humanize.Status.Text_Result is
    begin
-      return Ok_Text (Search_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("search", Search_Status'Image (Status)), Search_Text (Status));
    end Search_Phrase;
 
    function Collaboration_Phrase
@@ -1276,7 +1201,9 @@ package body Humanize.Phrases.Support.Backend is
       Status  : Collaboration_Status)
       return Humanize.Status.Text_Result is
    begin
-      return Ok_Text (Collaboration_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase
+        (Context, Key_Text ("collaboration", Collaboration_Status'Image (Status)),
+         Collaboration_Text (Status));
    end Collaboration_Phrase;
 
    function Issue_Phrase
@@ -1284,7 +1211,7 @@ package body Humanize.Phrases.Support.Backend is
       Status  : Issue_Status)
       return Humanize.Status.Text_Result is
    begin
-      return Ok_Text (Issue_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("issue", Issue_Status'Image (Status)), Issue_Text (Status));
    end Issue_Phrase;
 
    function Task_Phrase
@@ -1292,7 +1219,7 @@ package body Humanize.Phrases.Support.Backend is
       Status  : Task_Status)
       return Humanize.Status.Text_Result is
    begin
-      return Ok_Text (Task_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("task", Task_Status'Image (Status)), Task_Text (Status));
    end Task_Phrase;
 
    function CI_Phrase
@@ -1301,7 +1228,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (CI_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("ci", CI_Status'Image (Status)), CI_Text (Status));
    end CI_Phrase;
 
    function Ticket_Phrase
@@ -1310,7 +1237,7 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Ticket_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase (Context, Key_Text ("ticket", Ticket_Status'Image (Status)), Ticket_Text (Status));
    end Ticket_Phrase;
 
    function Payment_Lifecycle_Phrase
@@ -1319,7 +1246,9 @@ package body Humanize.Phrases.Support.Backend is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text (Payment_Lifecycle_Text (Language_Code (Humanize.Contexts.Locale (Context)), Status));
+      return Status_Phrase
+        (Context, Key_Text ("payment", Payment_Lifecycle_Status'Image (Status)),
+         Payment_Lifecycle_Text (Status));
    end Payment_Lifecycle_Phrase;
 
    function Backup_Phrase

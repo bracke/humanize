@@ -21,8 +21,12 @@ is
 begin
    return Humanize.I18N_Rendering.Phrase_Or
      (Context,
-      Sel.With_Arg (Sel.With_Arg (Num (Num (Num (Num (Sel.Phrase ("field_change_summary"), "total",
-        Changed + Added + Removed), "changed", Changed), "added", Added), "removed", Removed), "one", Singular),
-          "other", Plural),
+      Humanize.I18N_Rendering.With_Nouns
+        (Context,
+         Num (Num (Num (Num (Sel.Phrase ("field_change_summary"), "total", Changed + Added + Removed),
+                        "changed", Changed),
+                   "added", Added),
+              "removed", Removed),
+         Singular, Plural),
       English);
 end Field_Change_Summary;

@@ -15,7 +15,11 @@ here.
 - **`one` / `other`** are the caller's singular and plural noun, already in the
   caller's language. Choose between them by the locale's plural rules on the
   number the phrase counts: `{total, plural, one {{one}} other {{other}}}`.
-  Languages with more forms (few, many) still have only these two nouns.
+- **`zero` / `two` / `few` / `many`** are the noun's further forms, which a
+  caller registers on its context
+  (`Humanize.Contexts.With_Noun_Forms (Ctx, "pliki", Many => "plików")`); each
+  is the plural form where none is registered. Use them in languages with those
+  plural categories: `one {{one}} few {{few}} many {{many}} other {{other}}`.
 - **Text arguments** (`first`, `severity`, ...) are inserted as given, or
   selected on with `{severity, select, ...}`.
 
@@ -103,7 +107,10 @@ reads as a quote; write U+2019 instead.
 A calendar relation more than one year away is an ISO date in every locale.
 A calendar difference's parts come from CLDR in every locale
 (`calendar_difference.part`, `calendar_difference.join`); only the four keys
-above need a translation.
+above need a translation. A locale whose frame governs a grammatical case
+names it in `calendar_difference.case.future` / `calendar_difference.case.past`
+(German "in"/"vor" take the dative: "in 2 Jahren"); the parts then come in
+CLDR's forms for that case. Without the key they are nominative.
 
 ## Measurements
 
@@ -120,10 +127,30 @@ The measure argument is the value in CLDR's unit for the locale
 | `editorial_percent.word` | value | `{value} percent` |
 | `recurrence.<unit>`, unit second, minute, hour, day, week, month, quarter, year | every | `every {every} {every, plural, one {<unit>} other {<unit>s}}` |
 
+## Nouns by language
+
+What a caller passes as the plural (`Plural`) and registers, so the
+translations come out right. Languages not listed need only singular and plural.
+
+| Language | Plural | Register |
+|---|---|---|
+| Polish | nominative plural ("pliki") | Many: genitive plural ("plików") |
+| Russian, Ukrainian | nominative plural ("файлы") | Few: nominative plural; Many: genitive plural ("файлов") |
+| Czech, Slovak | genitive plural ("souborů") | Few: nominative plural ("soubory"); Many: genitive singular ("souboru") |
+| Slovenian | genitive plural ("datotek") | Two: dual ("datoteki"); Few: nominative plural ("datoteke") |
+| Lithuanian | genitive plural ("failų") | Few: nominative plural ("failai"); Many: genitive singular |
+| Romanian | plural ("fișiere") | Few: plural (the template adds "de" for 20 and up) |
+| Arabic | plural ("ملفات") | Two: dual; Few: plural; Many: singular accusative ("ملفًا"); Zero: singular |
+
 ## Statuses
 
 Each key is `<domain>.<status>`, the status as the enumeration names it in
-lower case; the English is the phrase the formatter writes.
+lower case, the same text the `*_Key` functions return; the English is the
+phrase the formatter writes. Besides the domains below: `ui`, `file`,
+`validation`, `empty`, `network`, `auth`, `billing`, `workflow`, `queue`,
+`security`, `deployment`, `health`, `notification`, `form`, `access`, `sync`,
+`transfer`, `search`, `collaboration`, `issue`, `task`, `ci`, `ticket`,
+`payment` and `database` (`database.database_online`, ...).
 
 | Domain | Statuses | English |
 |---|---|---|
@@ -131,7 +158,7 @@ lower case; the English is the phrase the formatter writes.
 | `incident` | incident_investigating, incident_identified, incident_mitigated, incident_resolved | `investigating incident`, `incident identified`, ... |
 | `release` | release_drafting, release_ready, release_published, release_rolled_back | `release drafting`, ... |
 | `audit` | audit_created, audit_updated, audit_deleted, audit_restored | `audit entry created`, ... |
-| `feature_flag` | flag_enabled, flag_disabled, flag_rolling_out, flag_rolled_back | `feature flag enabled`, ... |
+| `flag` | flag_enabled, flag_disabled, flag_rolling_out, flag_rolled_back | `feature flag enabled`, ... |
 | `webhook` | webhook_pending, webhook_delivered, webhook_failed, webhook_retrying | `webhook pending`, ... |
 | `api_key` | api_key_active, api_key_revoked, api_key_expired, api_key_rotated | `API key active`, ... |
 | `quota` | quota_available, quota_near_limit, quota_exceeded, quota_reset | `quota available`, ... |

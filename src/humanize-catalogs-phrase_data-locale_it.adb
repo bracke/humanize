@@ -3,14 +3,17 @@ function Locale_It return Wide_Wide_String is
    function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("it", Name, Template));
 begin
    return
-     P ("all_count", "{total} {total, plural, one {{one}} other {{other}}} in totale")
+     P ("all_count",
+          "{total} {total, plural, one {{one}} many {{many}} other {{other}}} in "
+          & "totale")
      & P ("filtered_count.none", "non ci sono {other} corrispondenti")
      & P ("filtered_count.all",
-          "{total, plural, one {{total} su {total} {one} corrisponde} other "
-          & "{{total} su {total} {other} corrispondono}}")
+          "{total, plural, one {{total} su {total} {one} corrisponde} many "
+          & "{{total} su {total} {many} corrispondono} other {{total} su {total} "
+          & "{other} corrispondono}}")
      & P ("filtered_count.some",
-          "{matching} su {total} {total, plural, one {{one}} other {{other}}} "
-          & "{matching, plural, one {corrisponde} other {corrispondono}}")
+          "{matching} su {total} {total, plural, one {{one}} many {{many}} other "
+          & "{{other}}} {matching, plural, one {corrisponde} other {corrispondono}}")
      & P ("more_count",
           "{visible} {visible, plural, one {visibile} other {visibili}}, "
           & "+{remaining} in più")
@@ -18,17 +21,19 @@ begin
           "{first} e {remaining, plural, one {un altro} other {altri "
           & "{remaining}}}")
      & P ("page_count", "pagina {page} di {total}")
-     & P ("page_size", "{size} {size, plural, one {{one}} other {{other}}} per pagina")
+     & P ("page_size",
+          "{size} {size, plural, one {{one}} many {{many}} other {{other}}} per "
+          & "pagina")
      & P ("pagination_range",
-          "{first}–{last} di {total} {total, plural, one {{one}} other "
-          & "{{other}}}")
+          "{first}–{last} di {total} {total, plural, one {{one}} many {{many}} "
+          & "other {{other}}}")
      & P ("position_count", "{position} di {total}")
      & P ("selection_count",
-          "selezione: {selected} di {total} {total, plural, one {{one}} other "
-          & "{{other}}}")
+          "selezione: {selected} di {total} {total, plural, one {{one}} many "
+          & "{{many}} other {{other}}}")
      & P ("showing_count",
           "visualizzazione di {showing} su {total} {total, plural, one {{one}} "
-          & "other {{other}}}")
+          & "many {{many}} other {{other}}}")
      & P ("validation_count",
           "{count, plural, =0 {{severity, select, error {nessun errore} warning "
           & "{nessun avviso} other {nessuna nota}}} one {{count} {severity, select, "
@@ -38,21 +43,21 @@ begin
      & P ("collection.none_shown", "non ci sono {other} da mostrare")
      & P ("collection.showing_hidden",
           "visualizzazione di {visible} su {total} {total, plural, one {{one}} "
-          & "other {{other}}}, {hidden} non {hidden, plural, one {visibile} other "
-          & "{visibili}}")
+          & "many {{many}} other {{other}}}, {hidden} non {hidden, plural, one "
+          & "{visibile} other {visibili}}")
      & P ("collection.showing",
           "visualizzazione di {visible} su {total} {total, plural, one {{one}} "
-          & "other {{other}}}")
+          & "many {{many}} other {{other}}}")
      & P ("collection.shown_hidden",
-          "{visible} {visible, plural, one {{one}} other {{other}}} {visible, "
-          & "plural, one {visibile} other {visibili}}, {hidden} non {hidden, "
-          & "plural, one {visibile} other {visibili}}")
+          "{visible} {visible, plural, one {{one}} many {{many}} other {{other}}} "
+          & "{visible, plural, one {visibile} other {visibili}}, {hidden} non "
+          & "{hidden, plural, one {visibile} other {visibili}}")
      & P ("collection.shown",
-          "{visible} {visible, plural, one {{one}} other {{other}}} {visible, "
-          & "plural, one {visibile} other {visibili}}")
+          "{visible} {visible, plural, one {{one}} many {{many}} other {{other}}} "
+          & "{visible, plural, one {visibile} other {visibili}}")
      & P ("collection.visible_out_of",
-          "{visible} {visible, plural, one {{one}} other {{other}}} {visible, "
-          & "plural, one {visibile} other {visibili}} su {total}")
+          "{visible} {visible, plural, one {{one}} many {{many}} other {{other}}} "
+          & "{visible, plural, one {visibile} other {visibili}} su {total}")
      & P ("complete_count", "{done} di {total} {done, plural, one {completato} other {completati}}")
      & P ("percent_complete", "{percent}% completato")
      & P ("step_count", "passaggio {step} di {total}")
@@ -90,10 +95,11 @@ begin
      & P ("cache_summary.empty", "cache: nessuna richiesta")
      & P ("cache_summary", "cache: {hits} hit, {misses} miss, percentuale di hit {rate}%")
      & P ("field_change_summary",
-          "{total} {total, plural, one {{one}} other {{other}}}: {changed, "
-          & "plural, one {{changed} modifica} other {{changed} modifiche}}, {added, "
-          & "plural, one {{added} aggiunta} other {{added} aggiunte}}, {removed, "
-          & "plural, one {{removed} rimozione} other {{removed} rimozioni}}")
+          "{total} {total, plural, one {{one}} many {{many}} other {{other}}}: "
+          & "{changed, plural, one {{changed} modifica} other {{changed} "
+          & "modifiche}}, {added, plural, one {{added} aggiunta} other {{added} "
+          & "aggiunte}}, {removed, plural, one {{removed} rimozione} other "
+          & "{{removed} rimozioni}}")
      & P ("field_diff", "{field}: valore modificato da {before} a {after}")
      & P ("field_added", "{field}: valore {value} aggiunto")
      & P ("field_removed", "{field}: valore {value} rimosso")
@@ -128,12 +134,16 @@ begin
           & "sync {saltata} import {saltata} export {saltata} other {saltato}}} "
           & "other {{state}}}: {details}")
      & P ("summary.none", "non ci sono {other}")
-     & P ("summary.completed", "completato: {count} {count, plural, one {{one}} other {{other}}}")
-     & P ("summary.completed_of",
-          "completato: {count} di {total} {total, plural, one {{one}} other "
+     & P ("summary.completed",
+          "completato: {count} {count, plural, one {{one}} many {{many}} other "
           & "{{other}}}")
+     & P ("summary.completed_of",
+          "completato: {count} di {total} {total, plural, one {{one}} many "
+          & "{{many}} other {{other}}}")
      & P ("summary.failed", "{count} con errore")
-     & P ("summary.queued", "{count} {count, plural, one {{one}} other {{other}}} in coda")
+     & P ("summary.queued",
+          "{count} {count, plural, one {{one}} many {{many}} other {{other}}} in "
+          & "coda")
      & P ("summary.running", "{count} in corso")
      & P ("summary.complete", "{count} {count, plural, one {completato} other {completati}}")
      & P ("backup.backup_running", "backup in corso")
@@ -152,10 +162,10 @@ begin
      & P ("audit.audit_updated", "voce di audit aggiornata")
      & P ("audit.audit_deleted", "voce di audit eliminata")
      & P ("audit.audit_restored", "voce di audit ripristinata")
-     & P ("feature_flag.flag_enabled", "feature flag attivato")
-     & P ("feature_flag.flag_disabled", "feature flag disattivato")
-     & P ("feature_flag.flag_rolling_out", "feature flag in fase di rilascio")
-     & P ("feature_flag.flag_rolled_back", "feature flag annullato")
+     & P ("flag.flag_enabled", "feature flag attivato")
+     & P ("flag.flag_disabled", "feature flag disattivato")
+     & P ("flag.flag_rolling_out", "feature flag in fase di rilascio")
+     & P ("flag.flag_rolled_back", "feature flag annullato")
      & P ("webhook.webhook_pending", "webhook in sospeso")
      & P ("webhook.webhook_delivered", "webhook consegnato")
      & P ("webhook.webhook_failed", "webhook non riuscito")
@@ -187,5 +197,167 @@ begin
      & P ("time_of_day.evening", "sera")
      & P ("calendar_difference.same_day", "stesso giorno")
      & P ("calendar_difference.zero", "0 giorni")
-     & P ("queue_summary.empty", "coda vuota");
+     & P ("queue_summary.empty", "coda vuota")
+     & P ("access.allowed", "consentito")
+     & P ("access.denied", "negato")
+     & P ("access.owner", "proprietario")
+     & P ("access.admin", "amministratore")
+     & P ("access.viewer", "visualizzatore")
+     & P ("access.editor", "editor")
+     & P ("auth.signed_in", "accesso effettuato")
+     & P ("auth.signed_out", "disconnesso")
+     & P ("auth.session_expired", "sessione scaduta")
+     & P ("auth.locked", "bloccato")
+     & P ("auth.two_factor_required", "autenticazione a due fattori richiesta")
+     & P ("billing.trialing", "periodo di prova")
+     & P ("billing.payment_due", "pagamento in scadenza")
+     & P ("billing.payment_failed", "pagamento non riuscito")
+     & P ("billing.paid", "pagato")
+     & P ("billing.past_due", "scaduto")
+     & P ("billing.canceled", "annullato")
+     & P ("ci.pipeline_pending", "pipeline in attesa")
+     & P ("ci.pipeline_running", "pipeline in esecuzione")
+     & P ("ci.pipeline_passed", "pipeline superata")
+     & P ("ci.pipeline_failed", "pipeline non riuscita")
+     & P ("ci.review_required", "revisione richiesta")
+     & P ("ci.deploy_blocked", "deployment bloccato")
+     & P ("collaboration.active_now", "attivo ora")
+     & P ("collaboration.away", "assente")
+     & P ("collaboration.do_not_disturb", "non disturbare")
+     & P ("collaboration.typing", "sta scrivendo")
+     & P ("collaboration.viewing", "sta visualizzando")
+     & P ("collaboration.editing", "sta modificando")
+     & P ("deployment.deploying", "deployment in corso")
+     & P ("deployment.deployed", "deployment completato")
+     & P ("deployment.rolling_back", "rollback in corso")
+     & P ("deployment.rolled_back", "rollback completato")
+     & P ("deployment.build_failed", "build non riuscita")
+     & P ("deployment.checks_passed", "controlli superati")
+     & P ("empty.no_items", "nessun elemento")
+     & P ("empty.no_results", "nessun risultato")
+     & P ("empty.no_messages", "nessun messaggio")
+     & P ("empty.no_selection", "nessuna selezione")
+     & P ("empty.nothing_to_show", "niente da mostrare")
+     & P ("file.uploading", "caricamento in corso")
+     & P ("file.downloading", "download in corso")
+     & P ("file.copying", "copia in corso")
+     & P ("file.moving", "spostamento in corso")
+     & P ("file.deleting", "eliminazione in corso")
+     & P ("file.deleted", "eliminato")
+     & P ("file.restoring", "ripristino in corso")
+     & P ("file.synced", "sincronizzato")
+     & P ("form.valid_input", "input valido")
+     & P ("form.invalid_input", "input non valido")
+     & P ("form.dirty", "modificato")
+     & P ("form.pristine", "non modificato")
+     & P ("form.submitted", "inviato")
+     & P ("form.submission_failed", "invio non riuscito")
+     & P ("health.healthy", "integro")
+     & P ("health.degraded", "degradato")
+     & P ("health.unhealthy", "non integro")
+     & P ("health.incident", "incidente")
+     & P ("health.maintenance", "manutenzione")
+     & P ("health.recovering", "ripristino in corso")
+     & P ("issue.open", "aperto")
+     & P ("issue.closed", "chiuso")
+     & P ("issue.reopened", "riaperto")
+     & P ("issue.assigned", "assegnato")
+     & P ("issue.unassigned", "non assegnato")
+     & P ("issue.merged", "unito")
+     & P ("network.offline", "offline")
+     & P ("network.online", "online")
+     & P ("network.connecting", "connessione in corso")
+     & P ("network.syncing", "sincronizzazione in corso")
+     & P ("network.sync_failed", "sincronizzazione non riuscita")
+     & P ("network.permission_denied", "autorizzazione negata")
+     & P ("network.read_only", "sola lettura")
+     & P ("notification.unread", "non letto")
+     & P ("notification.read", "letto")
+     & P ("notification.muted", "silenziato")
+     & P ("notification.snoozed", "posticipato")
+     & P ("notification.sent", "inviato")
+     & P ("notification.delivered", "consegnato")
+     & P ("payment.payment_authorized", "pagamento autorizzato")
+     & P ("payment.payment_captured", "pagamento incassato")
+     & P ("payment.payment_refunded", "pagamento rimborsato")
+     & P ("payment.payment_disputed", "pagamento contestato")
+     & P ("payment.payment_requires_action", "il pagamento richiede un’azione")
+     & P ("payment.payment_expired", "pagamento scaduto")
+     & P ("ui.empty", "vuoto")
+     & P ("ui.loading", "caricamento")
+     & P ("ui.saving", "salvataggio")
+     & P ("ui.saved", "salvato")
+     & P ("ui.unsaved", "non salvato")
+     & P ("ui.retrying", "nuovo tentativo")
+     & P ("ui.paused", "in pausa")
+     & P ("ui.complete", "completato")
+     & P ("ui.failed", "non riuscito")
+     & P ("ui.due_soon", "in scadenza")
+     & P ("ui.overdue", "scaduto")
+     & P ("ui.last_seen", "ultimo accesso")
+     & P ("ui.updated_just_now", "aggiornato ora")
+     & P ("queue.queued", "in coda")
+     & P ("queue.running", "in esecuzione")
+     & P ("queue.waiting", "in attesa")
+     & P ("queue.blocked", "bloccato")
+     & P ("queue.canceled_job", "processo annullato")
+     & P ("queue.completed_job", "processo completato")
+     & P ("search.filtering", "filtraggio in corso")
+     & P ("search.filtered", "filtrato")
+     & P ("search.no_matches", "nessuna corrispondenza")
+     & P ("search.search_ready", "ricerca pronta")
+     & P ("search.search_failed", "ricerca non riuscita")
+     & P ("search.query_too_short", "query troppo breve")
+     & P ("security.secure", "sicuro")
+     & P ("security.insecure", "non sicuro")
+     & P ("security.vulnerable", "vulnerabile")
+     & P ("security.encrypted", "crittografato")
+     & P ("security.unencrypted", "non crittografato")
+     & P ("security.token_expired", "token scaduto")
+     & P ("sync.sync_idle", "sincronizzazione inattiva")
+     & P ("sync.syncing_now", "sincronizzazione in corso")
+     & P ("sync.sync_queued", "sincronizzazione in coda")
+     & P ("sync.sync_conflict", "conflitto di sincronizzazione")
+     & P ("sync.sync_complete", "sincronizzazione completata")
+     & P ("sync.sync_error", "errore di sincronizzazione")
+     & P ("task.todo", "da fare")
+     & P ("task.in_progress", "in corso")
+     & P ("task.done", "fatto")
+     & P ("task.skipped", "saltato")
+     & P ("task.blocked_task", "bloccato")
+     & P ("task.waiting_on", "in attesa di")
+     & P ("ticket.ticket_new", "ticket nuovo")
+     & P ("ticket.ticket_open", "ticket aperto")
+     & P ("ticket.ticket_waiting", "ticket in attesa")
+     & P ("ticket.ticket_escalated", "ticket inoltrato")
+     & P ("ticket.ticket_resolved", "ticket risolto")
+     & P ("ticket.ticket_closed", "ticket chiuso")
+     & P ("transfer.importing", "importazione in corso")
+     & P ("transfer.imported", "importato")
+     & P ("transfer.import_failed", "importazione non riuscita")
+     & P ("transfer.exporting", "esportazione in corso")
+     & P ("transfer.exported", "esportato")
+     & P ("transfer.export_failed", "esportazione non riuscita")
+     & P ("validation.required", "obbligatorio")
+     & P ("validation.optional", "facoltativo")
+     & P ("validation.invalid", "non valido")
+     & P ("validation.too_short", "troppo corto")
+     & P ("validation.too_long", "troppo lungo")
+     & P ("validation.out_of_range", "fuori intervallo")
+     & P ("validation.already_exists", "esiste già")
+     & P ("workflow.draft", "bozza")
+     & P ("workflow.in_review", "in revisione")
+     & P ("workflow.approved", "approvato")
+     & P ("workflow.rejected", "rifiutato")
+     & P ("workflow.published", "pubblicato")
+     & P ("workflow.archived", "archiviato")
+     & P ("database.database_online", "database online")
+     & P ("database.database_offline", "database offline")
+     & P ("database.database_degraded", "database degradato")
+     & P ("database.database_migrating", "migrazione del database in corso")
+     & P ("database.database_migration_failed", "migrazione del database non riuscita")
+     & P ("database.database_replicating", "replica del database in corso")
+     & P ("database.database_replication_lagging", "replica del database in ritardo")
+     & P ("database.database_backup_running", "backup del database in corso")
+     & P ("database.database_backup_failed", "backup del database non riuscito");
 end Locale_It;

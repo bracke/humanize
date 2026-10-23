@@ -36,11 +36,44 @@ package Humanize.Contexts is
    --  @param Item Context to inspect.
    --  @return Referenced I18N runtime.
 
+   function With_Noun_Forms
+     (Item   : Context;
+      Plural : String;
+      Zero   : String := "";
+      Two    : String := "";
+      Few    : String := "";
+      Many   : String := "")
+      return Context;
+   --  A caller's noun has two forms (a singular and a plural); languages with
+   --  more plural categories need more. Registers the extra CLDR forms of the
+   --  noun whose plural form is Plural, for the phrases rendered with the
+   --  returned context ("pliki", Many => "plików" -- Polish "5 plików").
+   --  @param Item Context to extend.
+   --  @param Plural The noun's plural form, as passed to the formatters.
+   --  @param Zero Form for the zero category, or "" for the plural form.
+   --  @param Two Form for the two category, or "" for the plural form.
+   --  @param Few Form for the few category, or "" for the plural form.
+   --  @param Many Form for the many category, or "" for the plural form.
+   --  @return Item with the forms registered.
+
+   function Noun_Form
+     (Item     : Context;
+      Plural   : String;
+      Category : String)
+      return String;
+   --  @param Item Context to inspect.
+   --  @param Plural The noun's plural form.
+   --  @param Category "zero", "two", "few" or "many".
+   --  @return The registered form, or Plural when none is registered.
+
 private
 
    type Context is record
       Runtime_Ref : Runtime_Access;
       Locale_Text : Ada.Strings.Unbounded.Unbounded_String;
+      --  Registered noun forms: "<plural> <category> <form>" records, fields
+      --  separated by unit separators, records by record separators.
+      Noun_Forms  : Ada.Strings.Unbounded.Unbounded_String;
    end record;
 
 end Humanize.Contexts;

@@ -4,15 +4,15 @@ function Locale_Cs return Wide_Wide_String is
 begin
    return
      P ("all_count",
-          "celkem {total} {total, plural, one {{one}} few {{other}} many "
-          & "{{other}} other {{other}}}")
-     & P ("filtered_count.none", "{other}: žádné shody")
+          "celkem {total} {total, plural, one {{one}} few {{few}} many {{many}} "
+          & "other {{other}}}")
+     & P ("filtered_count.none", "{few}: žádné shody")
      & P ("filtered_count.all",
-          "shoda u všech: {total} {total, plural, one {{one}} few {{other}} many "
-          & "{{other}} other {{other}}}")
+          "shoda u všech: {total} {total, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}}")
      & P ("filtered_count.some",
-          "vyhovuje: {matching} z {total} {total, plural, one {{one}} few "
-          & "{{other}} many {{other}} other {{other}}}")
+          "vyhovuje: {matching} z {total} {total, plural, one {{many}} few "
+          & "{{other}} many {{many}} other {{other}}}")
      & P ("more_count", "zobrazeno {visible}, +{remaining} dalších")
      & P ("others_count",
           "{first} a {remaining, plural, one {{remaining} další} few "
@@ -20,18 +20,18 @@ begin
           & "dalších}}")
      & P ("page_count", "strana {page} z {total}")
      & P ("page_size",
-          "{size} {size, plural, one {{one}} few {{other}} many {{other}} other "
+          "{size} {size, plural, one {{one}} few {{few}} many {{many}} other "
           & "{{other}}} na stránku")
      & P ("pagination_range",
-          "{first}–{last} z {total} {total, plural, one {{one}} few {{other}} "
-          & "many {{other}} other {{other}}}")
+          "{first}–{last} z {total} {total, plural, one {{many}} few {{other}} "
+          & "many {{many}} other {{other}}}")
      & P ("position_count", "{position} z {total}")
      & P ("selection_count",
-          "vybráno: {selected} z {total} {total, plural, one {{one}} few "
-          & "{{other}} many {{other}} other {{other}}}")
+          "vybráno {selected} z {total} {total, plural, one {{many}} few "
+          & "{{other}} many {{many}} other {{other}}}")
      & P ("showing_count",
-          "zobrazeno {showing} z {total} {total, plural, one {{one}} few "
-          & "{{other}} many {{other}} other {{other}}}")
+          "zobrazeno {showing} z {total} {total, plural, one {{many}} few "
+          & "{{other}} many {{many}} other {{other}}}")
      & P ("validation_count",
           "{count, plural, =0 {{severity, select, error {žádné chyby} warning "
           & "{žádná varování} other {žádná upozornění}}} one {1 "
@@ -41,23 +41,23 @@ begin
           & "error {chyby} warning {varování} other {upozornění}}} other "
           & "{{count} {severity, select, error {chyb} warning {varování} other "
           & "{upozornění}}}}")
-     & P ("collection.empty", "{other}: žádné")
-     & P ("collection.none_shown", "{other}: nic nezobrazeno")
+     & P ("collection.empty", "{few}: žádné")
+     & P ("collection.none_shown", "{few}: nic nezobrazeno")
      & P ("collection.showing_hidden",
-          "zobrazeno {visible} z {total} {total, plural, one {{one}} few "
-          & "{{other}} many {{other}} other {{other}}}, skryto {hidden}")
+          "zobrazeno {visible} z {total} {total, plural, one {{many}} few "
+          & "{{other}} many {{many}} other {{other}}}, skryto {hidden}")
      & P ("collection.showing",
-          "zobrazeno {visible} z {total} {total, plural, one {{one}} few "
-          & "{{other}} many {{other}} other {{other}}}")
+          "zobrazeno {visible} z {total} {total, plural, one {{many}} few "
+          & "{{other}} many {{many}} other {{other}}}")
      & P ("collection.shown_hidden",
-          "zobrazeno {visible} {visible, plural, one {{one}} few {{other}} many "
-          & "{{other}} other {{other}}}, skryto {hidden}")
+          "zobrazeno: {visible} {visible, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}}, skryto: {hidden}")
      & P ("collection.shown",
-          "zobrazeno {visible} {visible, plural, one {{one}} few {{other}} many "
-          & "{{other}} other {{other}}}")
+          "zobrazeno: {visible} {visible, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}}")
      & P ("collection.visible_out_of",
-          "viditelné: {visible} z {total} {total, plural, one {{one}} few "
-          & "{{other}} many {{other}} other {{other}}}")
+          "viditelné: {visible} z {total} {total, plural, one {{many}} few "
+          & "{{other}} many {{many}} other {{other}}}")
      & P ("complete_count", "dokončeno {done} z {total}")
      & P ("percent_complete", "dokončeno {percent} %")
      & P ("step_count", "krok {step} z {total}")
@@ -83,7 +83,9 @@ begin
           "termín za {days, plural, one {{days} den} few {{days} dny} many "
           & "{{days} dne} other {{days} dní}}")
      & P ("calendar_difference.future", "za {difference}")
-     & P ("calendar_difference.past", "{difference} zpět")
+     & P ("calendar_difference.past", "před {difference}")
+     & P ("calendar_difference.case.future", "accusative")
+     & P ("calendar_difference.case.past", "instrumental")
      & P ("cpu_load", "zatížení CPU {measure}")
      & P ("battery", "baterie {measure}")
      & P ("screen_size", "obrazovka {measure}")
@@ -131,7 +133,7 @@ begin
           & "{{misses} výpadek} few {{misses} výpadky} many {{misses} výpadku} "
           & "other {{misses} výpadků}}, úspěšnost {rate} %")
      & P ("field_change_summary",
-          "{total} {total, plural, one {{one}} few {{other}} many {{other}} other "
+          "{total} {total, plural, one {{one}} few {{few}} many {{many}} other "
           & "{{other}}}: změněno {changed}, přidáno {added}, odebráno "
           & "{removed}")
      & P ("field_diff", "{field}: změněno z {before} na {after}")
@@ -159,17 +161,17 @@ begin
           & "{běží} waiting {čeká} paused {pozastaveno} complete {dokončeno} "
           & "failed {selhalo} stale {zastaralé} skipped {přeskočeno} other "
           & "{{state}}}: {details}")
-     & P ("summary.none", "{other}: žádné")
+     & P ("summary.none", "{few}: žádné")
      & P ("summary.completed",
-          "dokončeno: {count} {count, plural, one {{one}} few {{other}} many "
-          & "{{other}} other {{other}}}")
+          "dokončeno: {count} {count, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}}")
      & P ("summary.completed_of",
-          "dokončeno: {count} z {total} {total, plural, one {{one}} few "
-          & "{{other}} many {{other}} other {{other}}}")
+          "dokončeno: {count} z {total} {total, plural, one {{many}} few "
+          & "{{other}} many {{many}} other {{other}}}")
      & P ("summary.failed", "selhalo: {count}")
      & P ("summary.queued",
-          "ve frontě: {count} {count, plural, one {{one}} few {{other}} many "
-          & "{{other}} other {{other}}}")
+          "ve frontě: {count} {count, plural, one {{one}} few {{few}} many "
+          & "{{many}} other {{other}}}")
      & P ("summary.running", "běží: {count}")
      & P ("summary.complete", "dokončeno: {count}")
      & P ("backup.backup_running", "záloha probíhá")
@@ -188,10 +190,10 @@ begin
      & P ("audit.audit_updated", "záznam auditu aktualizován")
      & P ("audit.audit_deleted", "záznam auditu odstraněn")
      & P ("audit.audit_restored", "záznam auditu obnoven")
-     & P ("feature_flag.flag_enabled", "příznak funkce zapnut")
-     & P ("feature_flag.flag_disabled", "příznak funkce vypnut")
-     & P ("feature_flag.flag_rolling_out", "příznak funkce se postupně zavádí")
-     & P ("feature_flag.flag_rolled_back", "příznak funkce vrácen zpět")
+     & P ("flag.flag_enabled", "příznak funkce zapnut")
+     & P ("flag.flag_disabled", "příznak funkce vypnut")
+     & P ("flag.flag_rolling_out", "příznak funkce se postupně zavádí")
+     & P ("flag.flag_rolled_back", "příznak funkce vrácen zpět")
      & P ("webhook.webhook_pending", "webhook čeká")
      & P ("webhook.webhook_delivered", "webhook doručen")
      & P ("webhook.webhook_failed", "webhook selhal")
@@ -222,5 +224,167 @@ begin
      & P ("time_of_day.afternoon", "odpoledne")
      & P ("time_of_day.evening", "večer")
      & P ("calendar_difference.same_day", "tentýž den")
-     & P ("calendar_difference.zero", "0 dní");
+     & P ("calendar_difference.zero", "0 dní")
+     & P ("access.allowed", "povoleno")
+     & P ("access.denied", "zamítnuto")
+     & P ("access.owner", "vlastník")
+     & P ("access.admin", "správce")
+     & P ("access.viewer", "čtenář")
+     & P ("access.editor", "editor")
+     & P ("auth.signed_in", "přihlášeno")
+     & P ("auth.signed_out", "odhlášeno")
+     & P ("auth.session_expired", "relace vypršela")
+     & P ("auth.locked", "uzamčeno")
+     & P ("auth.two_factor_required", "vyžadováno dvoufázové ověření")
+     & P ("billing.trialing", "zkušební období")
+     & P ("billing.payment_due", "platba splatná")
+     & P ("billing.payment_failed", "platba selhala")
+     & P ("billing.paid", "zaplaceno")
+     & P ("billing.past_due", "po splatnosti")
+     & P ("billing.canceled", "zrušeno")
+     & P ("ci.pipeline_pending", "pipeline čeká")
+     & P ("ci.pipeline_running", "pipeline běží")
+     & P ("ci.pipeline_passed", "pipeline úspěšná")
+     & P ("ci.pipeline_failed", "pipeline selhala")
+     & P ("ci.review_required", "vyžadována kontrola")
+     & P ("ci.deploy_blocked", "nasazení zablokováno")
+     & P ("collaboration.active_now", "aktivní teď")
+     & P ("collaboration.away", "nepřítomen")
+     & P ("collaboration.do_not_disturb", "nerušit")
+     & P ("collaboration.typing", "píše")
+     & P ("collaboration.viewing", "prohlíží")
+     & P ("collaboration.editing", "upravuje")
+     & P ("deployment.deploying", "nasazování")
+     & P ("deployment.deployed", "nasazeno")
+     & P ("deployment.rolling_back", "vracení zpět")
+     & P ("deployment.rolled_back", "vráceno zpět")
+     & P ("deployment.build_failed", "sestavení selhalo")
+     & P ("deployment.checks_passed", "kontroly úspěšné")
+     & P ("empty.no_items", "žádné položky")
+     & P ("empty.no_results", "žádné výsledky")
+     & P ("empty.no_messages", "žádné zprávy")
+     & P ("empty.no_selection", "nic nevybráno")
+     & P ("empty.nothing_to_show", "nic k zobrazení")
+     & P ("file.uploading", "nahrávání")
+     & P ("file.downloading", "stahování")
+     & P ("file.copying", "kopírování")
+     & P ("file.moving", "přesouvání")
+     & P ("file.deleting", "mazání")
+     & P ("file.deleted", "smazáno")
+     & P ("file.restoring", "obnovování")
+     & P ("file.synced", "synchronizováno")
+     & P ("form.valid_input", "platný vstup")
+     & P ("form.invalid_input", "neplatný vstup")
+     & P ("form.dirty", "změněno")
+     & P ("form.pristine", "beze změn")
+     & P ("form.submitted", "odesláno")
+     & P ("form.submission_failed", "odeslání selhalo")
+     & P ("health.healthy", "v pořádku")
+     & P ("health.degraded", "omezený provoz")
+     & P ("health.unhealthy", "nefunkční")
+     & P ("health.incident", "incident")
+     & P ("health.maintenance", "údržba")
+     & P ("health.recovering", "obnovování provozu")
+     & P ("issue.open", "otevřeno")
+     & P ("issue.closed", "uzavřeno")
+     & P ("issue.reopened", "znovu otevřeno")
+     & P ("issue.assigned", "přiřazeno")
+     & P ("issue.unassigned", "nepřiřazeno")
+     & P ("issue.merged", "sloučeno")
+     & P ("network.offline", "offline")
+     & P ("network.online", "online")
+     & P ("network.connecting", "připojování")
+     & P ("network.syncing", "synchronizace")
+     & P ("network.sync_failed", "synchronizace selhala")
+     & P ("network.permission_denied", "přístup odepřen")
+     & P ("network.read_only", "jen pro čtení")
+     & P ("notification.unread", "nepřečteno")
+     & P ("notification.read", "přečteno")
+     & P ("notification.muted", "ztlumeno")
+     & P ("notification.snoozed", "odloženo")
+     & P ("notification.sent", "odesláno")
+     & P ("notification.delivered", "doručeno")
+     & P ("payment.payment_authorized", "platba autorizována")
+     & P ("payment.payment_captured", "platba stržena")
+     & P ("payment.payment_refunded", "platba vrácena")
+     & P ("payment.payment_disputed", "platba rozporována")
+     & P ("payment.payment_requires_action", "platba vyžaduje akci")
+     & P ("payment.payment_expired", "platnost platby vypršela")
+     & P ("ui.empty", "prázdné")
+     & P ("ui.loading", "načítání")
+     & P ("ui.saving", "ukládání")
+     & P ("ui.saved", "uloženo")
+     & P ("ui.unsaved", "neuloženo")
+     & P ("ui.retrying", "opakování")
+     & P ("ui.paused", "pozastaveno")
+     & P ("ui.complete", "dokončeno")
+     & P ("ui.failed", "selhalo")
+     & P ("ui.due_soon", "brzy splatné")
+     & P ("ui.overdue", "po termínu")
+     & P ("ui.last_seen", "naposledy viděn")
+     & P ("ui.updated_just_now", "právě aktualizováno")
+     & P ("queue.queued", "ve frontě")
+     & P ("queue.running", "běží")
+     & P ("queue.waiting", "čeká")
+     & P ("queue.blocked", "blokováno")
+     & P ("queue.canceled_job", "úloha zrušena")
+     & P ("queue.completed_job", "úloha dokončena")
+     & P ("search.filtering", "filtrování")
+     & P ("search.filtered", "filtrováno")
+     & P ("search.no_matches", "žádné shody")
+     & P ("search.search_ready", "vyhledávání připraveno")
+     & P ("search.search_failed", "vyhledávání selhalo")
+     & P ("search.query_too_short", "dotaz je příliš krátký")
+     & P ("security.secure", "zabezpečeno")
+     & P ("security.insecure", "nezabezpečeno")
+     & P ("security.vulnerable", "zranitelné")
+     & P ("security.encrypted", "šifrováno")
+     & P ("security.unencrypted", "nešifrováno")
+     & P ("security.token_expired", "platnost tokenu vypršela")
+     & P ("sync.sync_idle", "synchronizace nečinná")
+     & P ("sync.syncing_now", "probíhá synchronizace")
+     & P ("sync.sync_queued", "synchronizace ve frontě")
+     & P ("sync.sync_conflict", "konflikt synchronizace")
+     & P ("sync.sync_complete", "synchronizace dokončena")
+     & P ("sync.sync_error", "chyba synchronizace")
+     & P ("task.todo", "k provedení")
+     & P ("task.in_progress", "probíhá")
+     & P ("task.done", "hotovo")
+     & P ("task.skipped", "přeskočeno")
+     & P ("task.blocked_task", "blokováno")
+     & P ("task.waiting_on", "čeká na")
+     & P ("ticket.ticket_new", "nový tiket")
+     & P ("ticket.ticket_open", "tiket otevřen")
+     & P ("ticket.ticket_waiting", "tiket čeká")
+     & P ("ticket.ticket_escalated", "tiket eskalován")
+     & P ("ticket.ticket_resolved", "tiket vyřešen")
+     & P ("ticket.ticket_closed", "tiket uzavřen")
+     & P ("transfer.importing", "importování")
+     & P ("transfer.imported", "importováno")
+     & P ("transfer.import_failed", "import selhal")
+     & P ("transfer.exporting", "exportování")
+     & P ("transfer.exported", "exportováno")
+     & P ("transfer.export_failed", "export selhal")
+     & P ("validation.required", "povinné")
+     & P ("validation.optional", "volitelné")
+     & P ("validation.invalid", "neplatné")
+     & P ("validation.too_short", "příliš krátké")
+     & P ("validation.too_long", "příliš dlouhé")
+     & P ("validation.out_of_range", "mimo rozsah")
+     & P ("validation.already_exists", "již existuje")
+     & P ("workflow.draft", "koncept")
+     & P ("workflow.in_review", "v kontrole")
+     & P ("workflow.approved", "schváleno")
+     & P ("workflow.rejected", "zamítnuto")
+     & P ("workflow.published", "zveřejněno")
+     & P ("workflow.archived", "archivováno")
+     & P ("database.database_online", "databáze online")
+     & P ("database.database_offline", "databáze offline")
+     & P ("database.database_degraded", "databáze v omezeném provozu")
+     & P ("database.database_migrating", "migrace databáze")
+     & P ("database.database_migration_failed", "migrace databáze selhala")
+     & P ("database.database_replicating", "replikace databáze")
+     & P ("database.database_replication_lagging", "replikace databáze se zpožďuje")
+     & P ("database.database_backup_running", "probíhá záloha databáze")
+     & P ("database.database_backup_failed", "záloha databáze selhala");
 end Locale_Cs;

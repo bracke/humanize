@@ -44,7 +44,7 @@ separate (Humanize.Tests.Parsing.Test_Text_Domain_Round_Trips)
             (Support.Text (Phrase_Locales_Text));
       Invalid_Phrase_Locales : constant
         Humanize.Parsing.Phrase_Locales_Parse_Result :=
-          Humanize.Parsing.Parse_Supported_Phrase_Locales ("en ro");
+          Humanize.Parsing.Parse_Supported_Phrase_Locales ("en th");
    begin
       AUnit.Assertions.Assert
         (Domain_Summary.Status = Humanize.Status.Ok

@@ -16,6 +16,6 @@ is
 begin
    return Humanize.I18N_Rendering.Phrase_Or
      (Context,
-      Sel.Phrase (Key_Text ("feature_flag", Feature_Flag_Status'Image (Status))),
+      Sel.Phrase (Key_Text ("flag", Feature_Flag_Status'Image (Status))),
       English);
 end Feature_Flag_Phrase;

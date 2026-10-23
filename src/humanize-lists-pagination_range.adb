@@ -18,7 +18,9 @@ is
 begin
    return Humanize.I18N_Rendering.Phrase_Or
      (Context,
-      With_Nouns (Num (Num (Num (Sel.Phrase ("pagination_range"), "first", First), "last", Last), "total", Total),
+      With_Nouns
+        (Context,
+         Num (Num (Num (Sel.Phrase ("pagination_range"), "first", First), "last", Last), "total", Total),
         Singular, Plural),
       English);
 end Pagination_Range;

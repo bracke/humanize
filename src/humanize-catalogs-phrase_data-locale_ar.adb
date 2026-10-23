@@ -3,30 +3,34 @@ function Locale_Ar return Wide_Wide_String is
    function P (Name, Template : Wide_Wide_String) return Wide_Wide_String is (Entry_Line ("ar", Name, Template));
 begin
    return
-     P ("all_count", "الكل: {total} {total, plural, few {{other}} other {{one}}}")
+     P ("all_count",
+          "الكل: {total} {total, plural, zero {{zero}} one {{one}} two "
+          & "{{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("filtered_count.none", "لا توجد {other} مطابقة")
      & P ("filtered_count.all",
-          "الكل مطابق: {total} {total, plural, few {{other}} other "
-          & "{{one}}}")
+          "الكل مطابق: {total} {total, plural, zero {{zero}} one {{one}} "
+          & "two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("filtered_count.some",
-          "المطابق: {matching} من {total} {total, plural, few {{other}} "
-          & "other {{one}}}")
+          "المطابق: {matching} من {total} {total, plural, zero {{zero}} "
+          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("more_count", "المعروض: {visible}، +{remaining} أخرى")
      & P ("others_count",
           "{first} و{remaining, plural, one {واحد آخر} two {اثنان "
           & "آخران} other {{remaining} آخرون}}")
      & P ("page_count", "الصفحة {page} من {total}")
-     & P ("page_size", "{size} {size, plural, few {{other}} other {{one}}} لكل صفحة")
+     & P ("page_size",
+          "{size} {size, plural, zero {{zero}} one {{one}} two {{two}} few "
+          & "{{few}} many {{many}} other {{one}}} لكل صفحة")
      & P ("pagination_range",
-          "{first}–{last} من {total} {total, plural, few {{other}} other "
-          & "{{one}}}")
+          "{first}–{last} من {total} {total, plural, zero {{zero}} one "
+          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("position_count", "{position} من {total}")
      & P ("selection_count",
-          "المحدد: {selected} من {total} {total, plural, few {{other}} "
-          & "other {{one}}}")
+          "المحدد: {selected} من {total} {total, plural, zero {{zero}} "
+          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("showing_count",
-          "عرض {showing} من {total} {total, plural, few {{other}} other "
-          & "{{one}}}")
+          "عرض {showing} من {total} {total, plural, zero {{zero}} one "
+          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("validation_count",
           "{count, plural, =0 {لا {severity, select, error {أخطاء} warning "
           & "{تحذيرات} other {ملاحظات}}} one {{severity, select, "
@@ -39,20 +43,23 @@ begin
      & P ("collection.empty", "لا توجد {other}")
      & P ("collection.none_shown", "لا توجد {other} معروضة")
      & P ("collection.showing_hidden",
-          "عرض {visible} من {total} {total, plural, few {{other}} other "
-          & "{{one}}}، المخفي: {hidden}")
+          "عرض {visible} من {total} {total, plural, zero {{zero}} one "
+          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}، "
+          & "المخفي: {hidden}")
      & P ("collection.showing",
-          "عرض {visible} من {total} {total, plural, few {{other}} other "
-          & "{{one}}}")
+          "عرض {visible} من {total} {total, plural, zero {{zero}} one "
+          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("collection.shown_hidden",
-          "المعروض: {visible} {visible, plural, few {{other}} other "
-          & "{{one}}}، المخفي: {hidden}")
+          "المعروض: {visible} {visible, plural, zero {{zero}} one {{one}} "
+          & "two {{two}} few {{few}} many {{many}} other {{one}}}، المخفي: "
+          & "{hidden}")
      & P ("collection.shown",
-          "المعروض: {visible} {visible, plural, few {{other}} other "
-          & "{{one}}}")
+          "المعروض: {visible} {visible, plural, zero {{zero}} one {{one}} "
+          & "two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("collection.visible_out_of",
-          "الظاهر: {visible} من أصل {total} {total, plural, few "
-          & "{{other}} other {{one}}}")
+          "الظاهر: {visible} من أصل {total} {total, plural, zero "
+          & "{{zero}} one {{one}} two {{two}} few {{few}} many {{many}} other "
+          & "{{one}}}")
      & P ("complete_count", "اكتمل {done} من {total}")
      & P ("percent_complete", "اكتمل {percent}٪")
      & P ("step_count", "الخطوة {step} من {total}")
@@ -117,8 +124,9 @@ begin
           "الذاكرة المؤقتة: الإصابات {hits}، "
           & "الإخفاقات {misses}، معدل الإصابة {rate}٪")
      & P ("field_change_summary",
-          "{total} {total, plural, few {{other}} other {{one}}}: المعدّل "
-          & "{changed}، المضاف {added}، المحذوف {removed}")
+          "{total} {total, plural, zero {{zero}} one {{one}} two {{two}} few "
+          & "{{few}} many {{many}} other {{one}}}: المعدّل {changed}، "
+          & "المضاف {added}، المحذوف {removed}")
      & P ("field_diff", "تغيّر {field} من {before} إلى {after}")
      & P ("field_added", "أُضيف {field} بالقيمة {value}")
      & P ("field_removed", "أُزيل {field} (القيمة السابقة: {value})")
@@ -147,14 +155,16 @@ begin
           & "complete {مكتمل} failed {فشل} stale {قديم} skipped {تم "
           & "التخطي} other {{state}}}: {details}")
      & P ("summary.none", "لا توجد {other}")
-     & P ("summary.completed", "المكتمل: {count} {count, plural, few {{other}} other {{one}}}")
+     & P ("summary.completed",
+          "المكتمل: {count} {count, plural, zero {{zero}} one {{one}} two "
+          & "{{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("summary.completed_of",
-          "المكتمل: {count} من {total} {total, plural, few {{other}} "
-          & "other {{one}}}")
+          "المكتمل: {count} من {total} {total, plural, zero {{zero}} one "
+          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("summary.failed", "الفاشل: {count}")
      & P ("summary.queued",
-          "في الانتظار: {count} {count, plural, few {{other}} other "
-          & "{{one}}}")
+          "في الانتظار: {count} {count, plural, zero {{zero}} one "
+          & "{{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
      & P ("summary.running", "قيد التشغيل: {count}")
      & P ("summary.complete", "المكتمل: {count}")
      & P ("backup.backup_running", "النسخ الاحتياطي قيد التشغيل")
@@ -173,10 +183,10 @@ begin
      & P ("audit.audit_updated", "تم تحديث إدخال التدقيق")
      & P ("audit.audit_deleted", "تم حذف إدخال التدقيق")
      & P ("audit.audit_restored", "تمت استعادة إدخال التدقيق")
-     & P ("feature_flag.flag_enabled", "تم تفعيل علامة الميزة")
-     & P ("feature_flag.flag_disabled", "تم تعطيل علامة الميزة")
-     & P ("feature_flag.flag_rolling_out", "جارٍ طرح علامة الميزة")
-     & P ("feature_flag.flag_rolled_back", "تم التراجع عن علامة الميزة")
+     & P ("flag.flag_enabled", "تم تفعيل علامة الميزة")
+     & P ("flag.flag_disabled", "تم تعطيل علامة الميزة")
+     & P ("flag.flag_rolling_out", "جارٍ طرح علامة الميزة")
+     & P ("flag.flag_rolled_back", "تم التراجع عن علامة الميزة")
      & P ("webhook.webhook_pending", "خطاف الويب معلّق")
      & P ("webhook.webhook_delivered", "تم تسليم خطاف الويب")
      & P ("webhook.webhook_failed", "فشل خطاف الويب")
@@ -205,5 +215,170 @@ begin
      & P ("time_of_day.night", "الليل")
      & P ("time_of_day.morning", "الصباح")
      & P ("time_of_day.afternoon", "بعد الظهر")
-     & P ("time_of_day.evening", "المساء");
+     & P ("time_of_day.evening", "المساء")
+     & P ("access.allowed", "مسموح")
+     & P ("access.denied", "مرفوض")
+     & P ("access.owner", "المالك")
+     & P ("access.admin", "المسؤول")
+     & P ("access.viewer", "مشاهد")
+     & P ("access.editor", "محرر")
+     & P ("auth.signed_in", "تم تسجيل الدخول")
+     & P ("auth.signed_out", "تم تسجيل الخروج")
+     & P ("auth.session_expired", "انتهت الجلسة")
+     & P ("auth.locked", "مقفل")
+     & P ("auth.two_factor_required", "المصادقة الثنائية مطلوبة")
+     & P ("billing.trialing", "فترة تجريبية")
+     & P ("billing.payment_due", "الدفع مستحق")
+     & P ("billing.payment_failed", "فشل الدفع")
+     & P ("billing.paid", "مدفوع")
+     & P ("billing.past_due", "متأخر السداد")
+     & P ("billing.canceled", "ملغى")
+     & P ("ci.pipeline_pending", "خط المعالجة معلّق")
+     & P ("ci.pipeline_running", "خط المعالجة قيد التشغيل")
+     & P ("ci.pipeline_passed", "نجح خط المعالجة")
+     & P ("ci.pipeline_failed", "فشل خط المعالجة")
+     & P ("ci.review_required", "المراجعة مطلوبة")
+     & P ("ci.deploy_blocked", "النشر محظور")
+     & P ("collaboration.active_now", "نشط الآن")
+     & P ("collaboration.away", "بعيد")
+     & P ("collaboration.do_not_disturb", "عدم الإزعاج")
+     & P ("collaboration.typing", "يكتب")
+     & P ("collaboration.viewing", "يشاهد")
+     & P ("collaboration.editing", "يحرر")
+     & P ("deployment.deploying", "جارٍ النشر")
+     & P ("deployment.deployed", "تم النشر")
+     & P ("deployment.rolling_back", "جارٍ التراجع")
+     & P ("deployment.rolled_back", "تم التراجع")
+     & P ("deployment.build_failed", "فشل البناء")
+     & P ("deployment.checks_passed", "نجحت الفحوصات")
+     & P ("empty.no_items", "لا توجد عناصر")
+     & P ("empty.no_results", "لا توجد نتائج")
+     & P ("empty.no_messages", "لا توجد رسائل")
+     & P ("empty.no_selection", "لا يوجد تحديد")
+     & P ("empty.nothing_to_show", "لا شيء لعرضه")
+     & P ("file.uploading", "جارٍ الرفع")
+     & P ("file.downloading", "جارٍ التنزيل")
+     & P ("file.copying", "جارٍ النسخ")
+     & P ("file.moving", "جارٍ النقل")
+     & P ("file.deleting", "جارٍ الحذف")
+     & P ("file.deleted", "محذوف")
+     & P ("file.restoring", "جارٍ الاستعادة")
+     & P ("file.synced", "تمت المزامنة")
+     & P ("form.valid_input", "إدخال صالح")
+     & P ("form.invalid_input", "إدخال غير صالح")
+     & P ("form.dirty", "معدّل")
+     & P ("form.pristine", "غير معدّل")
+     & P ("form.submitted", "تم الإرسال")
+     & P ("form.submission_failed", "فشل الإرسال")
+     & P ("health.healthy", "سليم")
+     & P ("health.degraded", "متدهور")
+     & P ("health.unhealthy", "غير سليم")
+     & P ("health.incident", "حادث")
+     & P ("health.maintenance", "صيانة")
+     & P ("health.recovering", "جارٍ التعافي")
+     & P ("issue.open", "مفتوح")
+     & P ("issue.closed", "مغلق")
+     & P ("issue.reopened", "أُعيد فتحه")
+     & P ("issue.assigned", "معيّن")
+     & P ("issue.unassigned", "غير معيّن")
+     & P ("issue.merged", "مدموج")
+     & P ("network.offline", "غير متصل")
+     & P ("network.online", "متصل")
+     & P ("network.connecting", "جارٍ الاتصال")
+     & P ("network.syncing", "جارٍ المزامنة")
+     & P ("network.sync_failed", "فشلت المزامنة")
+     & P ("network.permission_denied", "تم رفض الإذن")
+     & P ("network.read_only", "للقراءة فقط")
+     & P ("notification.unread", "غير مقروء")
+     & P ("notification.read", "مقروء")
+     & P ("notification.muted", "مكتوم")
+     & P ("notification.snoozed", "مؤجل")
+     & P ("notification.sent", "مُرسل")
+     & P ("notification.delivered", "تم التسليم")
+     & P ("payment.payment_authorized", "تم تفويض الدفع")
+     & P ("payment.payment_captured", "تم تحصيل الدفع")
+     & P ("payment.payment_refunded", "تم استرداد الدفع")
+     & P ("payment.payment_disputed", "الدفع متنازع عليه")
+     & P ("payment.payment_requires_action", "الدفع يتطلب إجراءً")
+     & P ("payment.payment_expired", "انتهت صلاحية الدفع")
+     & P ("ui.empty", "فارغ")
+     & P ("ui.loading", "جارٍ التحميل")
+     & P ("ui.saving", "جارٍ الحفظ")
+     & P ("ui.saved", "محفوظ")
+     & P ("ui.unsaved", "غير محفوظ")
+     & P ("ui.retrying", "جارٍ إعادة المحاولة")
+     & P ("ui.paused", "متوقف مؤقتًا")
+     & P ("ui.complete", "مكتمل")
+     & P ("ui.failed", "فشل")
+     & P ("ui.due_soon", "مستحق قريبًا")
+     & P ("ui.overdue", "متأخر")
+     & P ("ui.last_seen", "آخر ظهور")
+     & P ("ui.updated_just_now", "حُدّث للتو")
+     & P ("queue.queued", "في قائمة الانتظار")
+     & P ("queue.running", "قيد التشغيل")
+     & P ("queue.waiting", "قيد الانتظار")
+     & P ("queue.blocked", "محظور")
+     & P ("queue.canceled_job", "أُلغيت المهمة")
+     & P ("queue.completed_job", "اكتملت المهمة")
+     & P ("search.filtering", "جارٍ التصفية")
+     & P ("search.filtered", "مُصفّى")
+     & P ("search.no_matches", "لا توجد تطابقات")
+     & P ("search.search_ready", "البحث جاهز")
+     & P ("search.search_failed", "فشل البحث")
+     & P ("search.query_too_short", "الاستعلام قصير جدًا")
+     & P ("security.secure", "آمن")
+     & P ("security.insecure", "غير آمن")
+     & P ("security.vulnerable", "معرّض للخطر")
+     & P ("security.encrypted", "مشفّر")
+     & P ("security.unencrypted", "غير مشفّر")
+     & P ("security.token_expired", "انتهت صلاحية الرمز المميز")
+     & P ("sync.sync_idle", "المزامنة خاملة")
+     & P ("sync.syncing_now", "جارٍ المزامنة الآن")
+     & P ("sync.sync_queued", "المزامنة في الانتظار")
+     & P ("sync.sync_conflict", "تعارض في المزامنة")
+     & P ("sync.sync_complete", "اكتملت المزامنة")
+     & P ("sync.sync_error", "خطأ في المزامنة")
+     & P ("task.todo", "للتنفيذ")
+     & P ("task.in_progress", "قيد التنفيذ")
+     & P ("task.done", "تم")
+     & P ("task.skipped", "تم التخطي")
+     & P ("task.blocked_task", "محظور")
+     & P ("task.waiting_on", "في انتظار")
+     & P ("ticket.ticket_new", "تذكرة جديدة")
+     & P ("ticket.ticket_open", "تذكرة مفتوحة")
+     & P ("ticket.ticket_waiting", "تذكرة قيد الانتظار")
+     & P ("ticket.ticket_escalated", "تذكرة مُصعّدة")
+     & P ("ticket.ticket_resolved", "تذكرة محلولة")
+     & P ("ticket.ticket_closed", "تذكرة مغلقة")
+     & P ("transfer.importing", "جارٍ الاستيراد")
+     & P ("transfer.imported", "تم الاستيراد")
+     & P ("transfer.import_failed", "فشل الاستيراد")
+     & P ("transfer.exporting", "جارٍ التصدير")
+     & P ("transfer.exported", "تم التصدير")
+     & P ("transfer.export_failed", "فشل التصدير")
+     & P ("validation.required", "مطلوب")
+     & P ("validation.optional", "اختياري")
+     & P ("validation.invalid", "غير صالح")
+     & P ("validation.too_short", "قصير جدًا")
+     & P ("validation.too_long", "طويل جدًا")
+     & P ("validation.out_of_range", "خارج النطاق")
+     & P ("validation.already_exists", "موجود بالفعل")
+     & P ("workflow.draft", "مسودة")
+     & P ("workflow.in_review", "قيد المراجعة")
+     & P ("workflow.approved", "تمت الموافقة")
+     & P ("workflow.rejected", "مرفوض")
+     & P ("workflow.published", "منشور")
+     & P ("workflow.archived", "مؤرشف")
+     & P ("database.database_online", "قاعدة البيانات متصلة")
+     & P ("database.database_offline", "قاعدة البيانات غير متصلة")
+     & P ("database.database_degraded", "قاعدة البيانات متدهورة")
+     & P ("database.database_migrating", "جارٍ ترحيل قاعدة البيانات")
+     & P ("database.database_migration_failed", "فشل ترحيل قاعدة البيانات")
+     & P ("database.database_replicating", "جارٍ النسخ المتماثل لقاعدة البيانات")
+     & P ("database.database_replication_lagging",
+          "النسخ المتماثل لقاعدة البيانات متأخر")
+     & P ("database.database_backup_running",
+          "النسخ الاحتياطي لقاعدة البيانات قيد "
+          & "التشغيل")
+     & P ("database.database_backup_failed", "فشل النسخ الاحتياطي لقاعدة البيانات");
 end Locale_Ar;

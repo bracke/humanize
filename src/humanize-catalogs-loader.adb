@@ -1,6 +1,7 @@
 with Humanize.Catalogs.Core_Data;
 with Humanize.Catalogs.Native_Data;
 with Humanize.Catalogs.Phrase_Data;
+with Humanize.Locales;
 
 package body Humanize.Catalogs.Loader is
 
@@ -33,6 +34,25 @@ package body Humanize.Catalogs.Loader is
            Humanize.Catalogs.Core_Data.Default_Catalog
            & Humanize.Catalogs.Native_Data.Default_Catalog
            & Humanize.Catalogs.Phrase_Data.Default_Catalog,
+         Result      => Result,
+         Policy      => Policy);
+   end Load_Defaults;
+
+   procedure Load_Defaults
+     (Runtime : in out Messages.Runtime.Instance;
+      Result  : out Messages.Runtime.Load_Result;
+      Locale  : String;
+      Policy  : Messages.Runtime.Duplicate_Policy :=
+        Messages.Runtime.Reject_Duplicates)
+   is
+   begin
+      Messages.Runtime.Load_Text
+        (Item        => Runtime,
+         Source_Name => "humanize.builtin.catalog",
+         Text        =>
+           Humanize.Catalogs.Core_Data.Default_Catalog
+           & Humanize.Catalogs.Native_Data.Default_Catalog
+           & Humanize.Catalogs.Phrase_Data.Catalog_For (Humanize.Locales.Language_Code (Locale)),
          Result      => Result,
          Policy      => Policy);
    end Load_Defaults;
