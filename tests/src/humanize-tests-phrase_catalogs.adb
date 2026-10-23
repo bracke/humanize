@@ -194,7 +194,13 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"diff_node.list", +"diff.node", +"checksum.not_checked", +"checksum.valid", +"checksum.mismatch",
       +"checksum.missing", +"product_code", +"time_zone.utc", +"time_zone.offset", +"time_zone.named",
       +"time_zone.local", +"time_zone.unknown", +"time_zone.dst", +"zoned_time.plain", +"zoned_time.named",
-      +"zoned_time.ambiguous"];
+      +"zoned_time.ambiguous",
+      +"number.under", +"number.up_to", +"number.between", +"number.range_words", +"number.uncertainty_words",
+      +"number.range_inclusive", +"number.range_exclusive", +"number.range_low_inclusive",
+      +"number.range_high_inclusive", +"number.at_least", +"number.more_than", +"number.at_most",
+      +"number.less_than", +"number.exactly", +"number.within", +"number.below", +"number.above", +"number.per",
+      +"number.one_in", +"number.out_of", +"number.unchanged", +"number.change_up", +"number.change_down",
+      +"number.change_more", +"number.change_fewer", +"number.since"];
 
    --  Every shipped locale besides English.
    Locales : constant array (Positive range <>) of Unbounded_String :=
@@ -254,6 +260,16 @@ package body Humanize.Tests.Phrase_Catalogs is
             Messages.Arguments.Set (Args, "current", "A");
             Messages.Arguments.Set (Args, "baseline", "B");
             Messages.Arguments.Set (Args, "quantity", "5 MB");
+            Messages.Arguments.Set (Args, "low", "10");
+            Messages.Arguments.Set (Args, "high", "20");
+            Messages.Arguments.Set (Args, "delta", "0.5");
+            Messages.Arguments.Set (Args, "bounds", "1-10");
+            Messages.Arguments.Set (Args, "numerator", "3 errors");
+            Messages.Arguments.Set (Args, "denominator", "1000 requests");
+            Messages.Arguments.Set (Args, "whole", "20");
+            Messages.Arguments.Set (Args, "tail", "files");
+            Messages.Arguments.Set (Args, "change", "up 5");
+            Messages.Arguments.Set (Args, "since", "last week");
             Messages.Arguments.Set (Args, "details", "d1, d2");
             Messages.Arguments.Set (Args, "domain", "queue");
             Messages.Arguments.Set (Args, "state", "running");
@@ -498,7 +514,8 @@ package body Humanize.Tests.Phrase_Catalogs is
      [+"unit", +"field", +"before", +"after", +"current", +"baseline", +"quantity",
       +"details", +"difference", +"measure", +"name", +"time", +"signal", +"choices", +"actual", +"endpoint",
       +"subject", +"text", +"detail", +"date", +"reason", +"path", +"kind", +"checksum", +"expected",
-      +"offset"];
+      +"offset", +"low", +"high", +"delta", +"bounds", +"numerator", +"denominator", +"whole", +"tail", +"change",
+      +"since"];
 
    function Digits_Of (Value : Natural) return String is
      (Natural'Image (Value) (2 .. Natural'Image (Value)'Last));

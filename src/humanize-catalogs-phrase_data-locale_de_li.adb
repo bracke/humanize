@@ -22,4 +22,7 @@ begin
    P ("http.reason.413", "Inhalt zu gross");
    P ("http.reason.431", "Header-Felder der Anfrage zu gross");
    P ("signal.reason.28", "Fenstergrösse geändert");
+   P ("number.range_inclusive", "{low} bis einschliesslich {high}");
+   P ("number.range_exclusive", "grösser als {low} und kleiner als {high}");
+   P ("number.range_high_inclusive", "grösser als {low} und höchstens {high}");
 end Locale_De_Li;

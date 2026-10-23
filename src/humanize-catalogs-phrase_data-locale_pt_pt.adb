@@ -207,4 +207,5 @@ begin
    P ("zoned_time.plain", "hora com fuso: {time} {offset}");
    P ("zoned_time.named", "hora com fuso: {time} {name} ({offset})");
    P ("zoned_time.ambiguous", "{text}, hora local ambígua");
+   P ("number.change_down", "desce {quantity}");
 end Locale_Pt_Pt;

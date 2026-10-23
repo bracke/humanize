@@ -91,7 +91,9 @@ procedure Phrase_Review_Data is
          (+"detail", +"expired"), (+"reason", +"killed"), (+"path", +"user.email"),
          (+"kind", +"archive"), (+"checksum", +"abc123"), (+"expected", +"image"), (+"offset", +"UTC+02:00"), (+"phase", +"mid"),
          (+"date", +"9 Oct 2026"), (+"first", +"9 Oct 2026"), (+"last", +"15 Oct 2026"),
-         (+"time", +"2 hours ago")];
+         (+"time", +"2 hours ago"), (+"low", +"10"), (+"high", +"20"), (+"delta", +"0.5"),
+         (+"bounds", +"1-10"), (+"numerator", +"3 errors"), (+"denominator", +"1,000 requests"),
+         (+"whole", +"20"), (+"tail", +"files"), (+"change", +"up 5"), (+"since", +"last week")];
    begin
       for Name of Numbers loop
          Messages.Arguments.Set (Args, To_String (Name), Count);

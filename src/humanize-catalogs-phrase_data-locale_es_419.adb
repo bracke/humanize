@@ -32,4 +32,7 @@ begin
    P ("checksum.valid", "suma de verificación válida");
    P ("checksum.mismatch", "suma de verificación no coincidente");
    P ("checksum.missing", "suma de verificación ausente");
+   P ("number.within", "{value} está dentro del rango {bounds}");
+   P ("number.below", "{value} está por debajo del rango {bounds}");
+   P ("number.above", "{value} está por encima del rango {bounds}");
 end Locale_Es_419;

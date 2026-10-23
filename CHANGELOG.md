@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+* Number phrases are translated whole: `Numbers.Under_Number`, `Up_To`,
+  `Between`, `Qualified_Range`, `Threshold`, `Range_Position`, `Ratio_Per`,
+  `One_In`, `Out_Of`, the change labels (`Change`, "since") and the
+  spelled-out ranges render from 26 phrase keys translated for every locale,
+  with numbers in the locale's digits ("mindestens 1.200", "um 12,5 %
+  gestiegen"). They glued English-ordered words around the number from a
+  seven-locale table written without diacritics ("hoechstens 5",
+  "groesser als") and English elsewhere.
+
 * Ranges are localized outside English. `Datetimes.Date_Range` with month
   names uses CLDR's interval formats ("9.–15. Okt. 2026", "2026年10月9日～15日"),
   and `Numbers.Number_Range`, `Approximate_Range` and `Decimal_Range` use the

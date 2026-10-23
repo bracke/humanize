@@ -106,6 +106,66 @@ package body Humanize.Numbers.Ranges is
         (Context, Humanize.Selections.Text_Value (Humanize.Message_Keys.Number_Plain, Value));
    end CLDR_Range;
 
+   --  Value in the locale's numbers ("1.234"), its plain digits in English.
+   function Number_Text (Context : Humanize.Contexts.Context; Value : Long_Long_Integer) return String is
+      Rendered : constant Humanize.Status.Text_Result := CLDR_Range (Context, Plain (Value));
+   begin
+      return (if Rendered.Status = Humanize.Status.Ok and then Ada.Strings.Unbounded.Length (Rendered.Text) > 0
+              then Ada.Strings.Unbounded.To_String (Rendered.Text) else Plain (Value));
+   end Number_Text;
+
+   --  Text with runs of spaces made one and none at either end: a phrase
+   --  whose optional argument was empty.
+   function Tidy (Text : String) return String is
+      Result : Ada.Strings.Unbounded.Unbounded_String;
+   begin
+      for C of Text loop
+         if C /= ' ' or else (Ada.Strings.Unbounded.Length (Result) > 0
+                              and then Ada.Strings.Unbounded.Element
+                                (Result, Ada.Strings.Unbounded.Length (Result)) /= ' ')
+         then
+            Ada.Strings.Unbounded.Append (Result, C);
+         end if;
+      end loop;
+      declare
+         Done : constant String := Ada.Strings.Unbounded.To_String (Result);
+      begin
+         return (if Done'Length > 0 and then Done (Done'Last) = ' ' then Done (Done'First .. Done'Last - 1) else Done);
+      end;
+   end Tidy;
+
+   --  Phrase Name ("number.at_least") with its arguments in the locale;
+   --  English, its own wording.
+   function Say
+     (Context : Humanize.Contexts.Context;
+      English : String;
+      Name    : String;
+      A1, V1  : String;
+      A2, V2  : String := "";
+      A3, V3  : String := "")
+      return Humanize.Status.Text_Result
+   is
+      package Sel renames Humanize.Selections;
+      Selection : Sel.Message_Selection := Sel.Phrase (Name);
+   begin
+      if A1 /= "" then
+         Selection := Sel.With_Arg (Selection, A1, V1);
+      end if;
+      if A2 /= "" then
+         Selection := Sel.With_Arg (Selection, A2, V2);
+      end if;
+      if A3 /= "" then
+         Selection := Sel.With_Arg (Selection, A3, V3);
+      end if;
+      declare
+         Rendered : constant Humanize.Status.Text_Result :=
+           Humanize.I18N_Rendering.Phrase_Or (Context, Selection, Ok_Text (English));
+      begin
+         return (if Rendered.Status = Humanize.Status.Ok
+                 then Ok_Text (Tidy (Ada.Strings.Unbounded.To_String (Rendered.Text))) else Rendered);
+      end;
+   end Say;
+
    function Number_Range
      (Context : Humanize.Contexts.Context;
       Low     : Long_Long_Integer;
@@ -233,10 +293,9 @@ package body Humanize.Numbers.Ranges is
          return Right;
       end if;
 
-      return Ok_Text
-        (Result_Text (Left) & " "
-         & Number_Phrase (Context, Phrase_To) & " "
-         & Result_Text (Right));
+      return Say
+        (Context, Result_Text (Left) & " " & Number_Phrase (Context, Phrase_To) & " " & Result_Text (Right),
+         "number.range_words", "low", Result_Text (Left), "high", Result_Text (Right));
    end Decimal_Range_Words;
 
    function Uncertainty_Words
@@ -259,9 +318,9 @@ package body Humanize.Numbers.Ranges is
          return Delta_Text;
       end if;
 
-      return Ok_Text
-        (Result_Text (Center) & " plus or minus "
-         & Result_Text (Delta_Text));
+      return Say
+        (Context, Result_Text (Center) & " plus or minus " & Result_Text (Delta_Text),
+         "number.uncertainty_words", "value", Result_Text (Center), "delta", Result_Text (Delta_Text));
    end Uncertainty_Words;
 
    function Under_Number
@@ -270,8 +329,8 @@ package body Humanize.Numbers.Ranges is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text
-        (Number_Phrase (Context, Phrase_Under) & " " & Plain (Value));
+      return Say (Context, Number_Phrase (Context, Phrase_Under) & " " & Plain (Value),
+                  "number.under", "value", Number_Text (Context, Value));
    end Under_Number;
 
    function Up_To
@@ -280,8 +339,8 @@ package body Humanize.Numbers.Ranges is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text
-        (Number_Phrase (Context, Phrase_Up_To) & " " & Plain (Value));
+      return Say (Context, Number_Phrase (Context, Phrase_Up_To) & " " & Plain (Value),
+                  "number.up_to", "value", Number_Text (Context, Value));
    end Up_To;
 
    function Between
@@ -294,9 +353,10 @@ package body Humanize.Numbers.Ranges is
       if High < Low then
          return (Status => Humanize.Status.Invalid_Value, others => <>);
       end if;
-      return Ok_Text
-        (Number_Phrase (Context, Phrase_Between) & " " & Plain (Low) & " "
-         & Number_Phrase (Context, Phrase_And) & " " & Plain (High));
+      return Say
+        (Context, Number_Phrase (Context, Phrase_Between) & " " & Plain (Low) & " "
+         & Number_Phrase (Context, Phrase_And) & " " & Plain (High),
+         "number.between", "low", Number_Text (Context, Low), "high", Number_Text (Context, High));
    end Between;
 
    function Range_Text
@@ -308,246 +368,43 @@ package body Humanize.Numbers.Ranges is
       return Plain (Low) & "-" & Plain (High);
    end Range_Text;
 
+   --  English's word for Key; other locales write whole phrases from the
+   --  phrase catalogs (see Say).
    function Number_Phrase
      (Context : Humanize.Contexts.Context;
       Key     : Number_Phrase_Key)
       return String
    is
-      Locale : constant String := Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context));
+      pragma Unreferenced (Context);
    begin
-      if Locale = "da" then
-         case Key is
-            when Phrase_About        => return "cirka";
-            when Phrase_Under        => return "under";
-            when Phrase_Up_To        => return "op til";
-            when Phrase_Between      => return "mellem";
-            when Phrase_And          => return "og";
-            when Phrase_To           => return "til";
-            when Phrase_Inclusive    => return "inklusive";
-            when Phrase_Greater_Than => return "storre end";
-            when Phrase_Or_More      => return "eller mere";
-            when Phrase_At_Least     => return "mindst";
-            when Phrase_More_Than    => return "mere end";
-            when Phrase_At_Most      => return "hojst";
-            when Phrase_Less_Than    => return "mindre end";
-            when Phrase_Exactly      => return "praecis";
-            when Phrase_Is_Within    => return "er inden for";
-            when Phrase_Is_Below     => return "er under";
-            when Phrase_Is_Above     => return "er over";
-            when Phrase_Per          => return "per";
-            when Phrase_In           => return "ud af";
-            when Phrase_Out_Of       => return "ud af";
-            when Phrase_Unchanged    => return "uaendret";
-            when Phrase_Up           => return "op";
-            when Phrase_Down         => return "ned";
-            when Phrase_More         => return "mere";
-            when Phrase_Fewer        => return "faerre";
-            when Phrase_Since        => return "siden";
-         end case;
-      elsif Locale = "de" then
-         case Key is
-            when Phrase_About        => return "ungefaehr";
-            when Phrase_Under        => return "unter";
-            when Phrase_Up_To        => return "bis zu";
-            when Phrase_Between      => return "zwischen";
-            when Phrase_And          => return "und";
-            when Phrase_To           => return "bis";
-            when Phrase_Inclusive    => return "einschliesslich";
-            when Phrase_Greater_Than => return "groesser als";
-            when Phrase_Or_More      => return "oder mehr";
-            when Phrase_At_Least     => return "mindestens";
-            when Phrase_More_Than    => return "mehr als";
-            when Phrase_At_Most      => return "hoechstens";
-            when Phrase_Less_Than    => return "weniger als";
-            when Phrase_Exactly      => return "genau";
-            when Phrase_Is_Within    => return "liegt innerhalb von";
-            when Phrase_Is_Below     => return "liegt unter";
-            when Phrase_Is_Above     => return "liegt ueber";
-            when Phrase_Per          => return "pro";
-            when Phrase_In           => return "von";
-            when Phrase_Out_Of       => return "von";
-            when Phrase_Unchanged    => return "unveraendert";
-            when Phrase_Up           => return "plus";
-            when Phrase_Down         => return "minus";
-            when Phrase_More         => return "mehr";
-            when Phrase_Fewer        => return "weniger";
-            when Phrase_Since        => return "seit";
-         end case;
-      elsif Locale = "fr" then
-         case Key is
-            when Phrase_About        => return "environ";
-            when Phrase_Under        => return "moins de";
-            when Phrase_Up_To        => return "jusqu'a";
-            when Phrase_Between      => return "entre";
-            when Phrase_And          => return "et";
-            when Phrase_To           => return "a";
-            when Phrase_Inclusive    => return "inclus";
-            when Phrase_Greater_Than => return "superieur a";
-            when Phrase_Or_More      => return "ou plus";
-            when Phrase_At_Least     => return "au moins";
-            when Phrase_More_Than    => return "plus de";
-            when Phrase_At_Most      => return "au plus";
-            when Phrase_Less_Than    => return "moins de";
-            when Phrase_Exactly      => return "exactement";
-            when Phrase_Is_Within    => return "est dans";
-            when Phrase_Is_Below     => return "est sous";
-            when Phrase_Is_Above     => return "est au-dessus de";
-            when Phrase_Per          => return "par";
-            when Phrase_In           => return "sur";
-            when Phrase_Out_Of       => return "sur";
-            when Phrase_Unchanged    => return "inchange";
-            when Phrase_Up           => return "en hausse de";
-            when Phrase_Down         => return "en baisse de";
-            when Phrase_More         => return "de plus";
-            when Phrase_Fewer        => return "de moins";
-            when Phrase_Since        => return "depuis";
-         end case;
-      elsif Locale = "es" then
-         case Key is
-            when Phrase_About        => return "aproximadamente";
-            when Phrase_Under        => return "menos de";
-            when Phrase_Up_To        => return "hasta";
-            when Phrase_Between      => return "entre";
-            when Phrase_And          => return "y";
-            when Phrase_To           => return "a";
-            when Phrase_Inclusive    => return "inclusive";
-            when Phrase_Greater_Than => return "mayor que";
-            when Phrase_Or_More      => return "o mas";
-            when Phrase_At_Least     => return "al menos";
-            when Phrase_More_Than    => return "mas de";
-            when Phrase_At_Most      => return "como maximo";
-            when Phrase_Less_Than    => return "menos de";
-            when Phrase_Exactly      => return "exactamente";
-            when Phrase_Is_Within    => return "esta dentro de";
-            when Phrase_Is_Below     => return "esta por debajo de";
-            when Phrase_Is_Above     => return "esta por encima de";
-            when Phrase_Per          => return "por";
-            when Phrase_In           => return "en";
-            when Phrase_Out_Of       => return "de";
-            when Phrase_Unchanged    => return "sin cambios";
-            when Phrase_Up           => return "sube";
-            when Phrase_Down         => return "baja";
-            when Phrase_More         => return "mas";
-            when Phrase_Fewer        => return "menos";
-            when Phrase_Since        => return "desde";
-         end case;
-      elsif Locale = "it" then
-         case Key is
-            when Phrase_About        => return "circa";
-            when Phrase_Under        => return "meno di";
-            when Phrase_Up_To        => return "fino a";
-            when Phrase_Between      => return "tra";
-            when Phrase_And          => return "e";
-            when Phrase_To           => return "a";
-            when Phrase_Inclusive    => return "incluso";
-            when Phrase_Greater_Than => return "maggiore di";
-            when Phrase_Or_More      => return "o piu";
-            when Phrase_At_Least     => return "almeno";
-            when Phrase_More_Than    => return "piu di";
-            when Phrase_At_Most      => return "al massimo";
-            when Phrase_Less_Than    => return "meno di";
-            when Phrase_Exactly      => return "esattamente";
-            when Phrase_Is_Within    => return "e entro";
-            when Phrase_Is_Below     => return "e sotto";
-            when Phrase_Is_Above     => return "e sopra";
-            when Phrase_Per          => return "per";
-            when Phrase_In           => return "su";
-            when Phrase_Out_Of       => return "su";
-            when Phrase_Unchanged    => return "invariato";
-            when Phrase_Up           => return "su";
-            when Phrase_Down         => return "giu";
-            when Phrase_More         => return "in piu";
-            when Phrase_Fewer        => return "in meno";
-            when Phrase_Since        => return "da";
-         end case;
-      elsif Locale = "pt" then
-         case Key is
-            when Phrase_About        => return "aproximadamente";
-            when Phrase_Under        => return "menos de";
-            when Phrase_Up_To        => return "ate";
-            when Phrase_Between      => return "entre";
-            when Phrase_And          => return "e";
-            when Phrase_To           => return "a";
-            when Phrase_Inclusive    => return "inclusive";
-            when Phrase_Greater_Than => return "maior que";
-            when Phrase_Or_More      => return "ou mais";
-            when Phrase_At_Least     => return "pelo menos";
-            when Phrase_More_Than    => return "mais de";
-            when Phrase_At_Most      => return "no maximo";
-            when Phrase_Less_Than    => return "menos de";
-            when Phrase_Exactly      => return "exatamente";
-            when Phrase_Is_Within    => return "esta dentro de";
-            when Phrase_Is_Below     => return "esta abaixo de";
-            when Phrase_Is_Above     => return "esta acima de";
-            when Phrase_Per          => return "por";
-            when Phrase_In           => return "em";
-            when Phrase_Out_Of       => return "de";
-            when Phrase_Unchanged    => return "inalterado";
-            when Phrase_Up           => return "sobe";
-            when Phrase_Down         => return "desce";
-            when Phrase_More         => return "mais";
-            when Phrase_Fewer        => return "menos";
-            when Phrase_Since        => return "desde";
-         end case;
-      elsif Locale = "nl" then
-         case Key is
-            when Phrase_About        => return "ongeveer";
-            when Phrase_Under        => return "onder";
-            when Phrase_Up_To        => return "tot";
-            when Phrase_Between      => return "tussen";
-            when Phrase_And          => return "en";
-            when Phrase_To           => return "tot";
-            when Phrase_Inclusive    => return "inclusief";
-            when Phrase_Greater_Than => return "groter dan";
-            when Phrase_Or_More      => return "of meer";
-            when Phrase_At_Least     => return "minstens";
-            when Phrase_More_Than    => return "meer dan";
-            when Phrase_At_Most      => return "hoogstens";
-            when Phrase_Less_Than    => return "minder dan";
-            when Phrase_Exactly      => return "precies";
-            when Phrase_Is_Within    => return "ligt binnen";
-            when Phrase_Is_Below     => return "ligt onder";
-            when Phrase_Is_Above     => return "ligt boven";
-            when Phrase_Per          => return "per";
-            when Phrase_In           => return "op";
-            when Phrase_Out_Of       => return "van";
-            when Phrase_Unchanged    => return "ongewijzigd";
-            when Phrase_Up           => return "omhoog";
-            when Phrase_Down         => return "omlaag";
-            when Phrase_More         => return "meer";
-            when Phrase_Fewer        => return "minder";
-            when Phrase_Since        => return "sinds";
-         end case;
-      else
-         case Key is
-            when Phrase_About        => return "about";
-            when Phrase_Under        => return "under";
-            when Phrase_Up_To        => return "up to";
-            when Phrase_Between      => return "between";
-            when Phrase_And          => return "and";
-            when Phrase_To           => return "to";
-            when Phrase_Inclusive    => return "inclusive";
-            when Phrase_Greater_Than => return "greater than";
-            when Phrase_Or_More      => return "or more";
-            when Phrase_At_Least     => return "at least";
-            when Phrase_More_Than    => return "more than";
-            when Phrase_At_Most      => return "at most";
-            when Phrase_Less_Than    => return "less than";
-            when Phrase_Exactly      => return "exactly";
-            when Phrase_Is_Within    => return "is within";
-            when Phrase_Is_Below     => return "is below";
-            when Phrase_Is_Above     => return "is above";
-            when Phrase_Per          => return "per";
-            when Phrase_In           => return "in";
-            when Phrase_Out_Of       => return "out of";
-            when Phrase_Unchanged    => return "unchanged";
-            when Phrase_Up           => return "up";
-            when Phrase_Down         => return "down";
-            when Phrase_More         => return "more";
-            when Phrase_Fewer        => return "fewer";
-            when Phrase_Since        => return "since";
-         end case;
-      end if;
+      case Key is
+         when Phrase_About        => return "about";
+         when Phrase_Under        => return "under";
+         when Phrase_Up_To        => return "up to";
+         when Phrase_Between      => return "between";
+         when Phrase_And          => return "and";
+         when Phrase_To           => return "to";
+         when Phrase_Inclusive    => return "inclusive";
+         when Phrase_Greater_Than => return "greater than";
+         when Phrase_Or_More      => return "or more";
+         when Phrase_At_Least     => return "at least";
+         when Phrase_More_Than    => return "more than";
+         when Phrase_At_Most      => return "at most";
+         when Phrase_Less_Than    => return "less than";
+         when Phrase_Exactly      => return "exactly";
+         when Phrase_Is_Within    => return "is within";
+         when Phrase_Is_Below     => return "is below";
+         when Phrase_Is_Above     => return "is above";
+         when Phrase_Per          => return "per";
+         when Phrase_In           => return "in";
+         when Phrase_Out_Of       => return "out of";
+         when Phrase_Unchanged    => return "unchanged";
+         when Phrase_Up           => return "up";
+         when Phrase_Down         => return "down";
+         when Phrase_More         => return "more";
+         when Phrase_Fewer        => return "fewer";
+         when Phrase_Since        => return "since";
+      end case;
    end Number_Phrase;
 
    function Qualified_Range
@@ -564,28 +421,30 @@ package body Humanize.Numbers.Ranges is
 
       case Boundary is
          when Inclusive_Range =>
-            return Ok_Text
-              (Plain (Low) & " " & Number_Phrase (Context, Phrase_To) & " "
-               & Plain (High) & " "
-               & Number_Phrase (Context, Phrase_Inclusive));
+            return Say
+              (Context, Plain (Low) & " " & Number_Phrase (Context, Phrase_To) & " "
+               & Plain (High) & " " & Number_Phrase (Context, Phrase_Inclusive),
+               "number.range_inclusive", "low", Number_Text (Context, Low), "high", Number_Text (Context, High));
          when Exclusive_Range =>
-            return Ok_Text
-              (Number_Phrase (Context, Phrase_Greater_Than) & " "
+            return Say
+              (Context, Number_Phrase (Context, Phrase_Greater_Than) & " "
                & Plain (Low) & " " & Number_Phrase (Context, Phrase_And)
-               & " " & Number_Phrase (Context, Phrase_Less_Than) & " "
-               & Plain (High));
+               & " " & Number_Phrase (Context, Phrase_Less_Than) & " " & Plain (High),
+               "number.range_exclusive", "low", Number_Text (Context, Low), "high", Number_Text (Context, High));
          when Include_Low_Only =>
-            return Ok_Text
-              (Plain (Low) & " " & Number_Phrase (Context, Phrase_Or_More)
+            return Say
+              (Context, Plain (Low) & " " & Number_Phrase (Context, Phrase_Or_More)
                & " " & Number_Phrase (Context, Phrase_And) & " "
-               & Number_Phrase (Context, Phrase_Less_Than) & " "
-               & Plain (High));
+               & Number_Phrase (Context, Phrase_Less_Than) & " " & Plain (High),
+               "number.range_low_inclusive", "low", Number_Text (Context, Low), "high",
+               Number_Text (Context, High));
          when Include_High_Only =>
-            return Ok_Text
-              (Number_Phrase (Context, Phrase_Greater_Than) & " "
+            return Say
+              (Context, Number_Phrase (Context, Phrase_Greater_Than) & " "
                & Plain (Low) & " " & Number_Phrase (Context, Phrase_And)
-               & " " & Number_Phrase (Context, Phrase_Up_To) & " "
-               & Plain (High));
+               & " " & Number_Phrase (Context, Phrase_Up_To) & " " & Plain (High),
+               "number.range_high_inclusive", "low", Number_Text (Context, Low), "high",
+               Number_Text (Context, High));
       end case;
    end Qualified_Range;
 
@@ -609,20 +468,20 @@ package body Humanize.Numbers.Ranges is
    begin
       case Direction is
          when At_Least_Threshold =>
-            return Ok_Text
-              (Number_Phrase (Context, Phrase_At_Least) & " " & Plain (Value));
+            return Say (Context, Number_Phrase (Context, Phrase_At_Least) & " " & Plain (Value),
+                        "number.at_least", "value", Number_Text (Context, Value));
          when More_Than_Threshold =>
-            return Ok_Text
-              (Number_Phrase (Context, Phrase_More_Than) & " " & Plain (Value));
+            return Say (Context, Number_Phrase (Context, Phrase_More_Than) & " " & Plain (Value),
+                        "number.more_than", "value", Number_Text (Context, Value));
          when At_Most_Threshold =>
-            return Ok_Text
-              (Number_Phrase (Context, Phrase_At_Most) & " " & Plain (Value));
+            return Say (Context, Number_Phrase (Context, Phrase_At_Most) & " " & Plain (Value),
+                        "number.at_most", "value", Number_Text (Context, Value));
          when Less_Than_Threshold =>
-            return Ok_Text
-              (Number_Phrase (Context, Phrase_Less_Than) & " " & Plain (Value));
+            return Say (Context, Number_Phrase (Context, Phrase_Less_Than) & " " & Plain (Value),
+                        "number.less_than", "value", Number_Text (Context, Value));
          when Exactly_Threshold =>
-            return Ok_Text
-              (Number_Phrase (Context, Phrase_Exactly) & " " & Plain (Value));
+            return Say (Context, Number_Phrase (Context, Phrase_Exactly) & " " & Plain (Value),
+                        "number.exactly", "value", Number_Text (Context, Value));
       end case;
    end Threshold;
 
@@ -655,23 +514,29 @@ package body Humanize.Numbers.Ranges is
       return Humanize.Status.Text_Result
    is
       Bounds : constant String := Range_Text (Low, High);
+      --  The bounds as the locale writes a range ("1.000–5.000").
+      Localized_Bounds : constant Humanize.Status.Text_Result :=
+        CLDR_Range (Context, Plain (Low) & "/" & Plain (High));
+      Local_Bounds : constant String :=
+        (if Localized_Bounds.Status = Humanize.Status.Ok
+         then Ada.Strings.Unbounded.To_String (Localized_Bounds.Text) else Bounds);
    begin
       if High < Low then
          return (Status => Humanize.Status.Invalid_Value, others => <>);
       elsif Contains_Value (Value, Low, High, Boundary) then
-         return Ok_Text
-           (Plain (Value) & " " & Number_Phrase (Context, Phrase_Is_Within)
-            & " " & Bounds);
+         return Say
+           (Context, Plain (Value) & " " & Number_Phrase (Context, Phrase_Is_Within) & " " & Bounds,
+            "number.within", "value", Number_Text (Context, Value), "bounds", Local_Bounds);
       elsif Value < Low or else (Value = Low and then Boundary in
         Exclusive_Range | Include_High_Only)
       then
-         return Ok_Text
-           (Plain (Value) & " " & Number_Phrase (Context, Phrase_Is_Below)
-            & " " & Bounds);
+         return Say
+           (Context, Plain (Value) & " " & Number_Phrase (Context, Phrase_Is_Below) & " " & Bounds,
+            "number.below", "value", Number_Text (Context, Value), "bounds", Local_Bounds);
       else
-         return Ok_Text
-           (Plain (Value) & " " & Number_Phrase (Context, Phrase_Is_Above)
-            & " " & Bounds);
+         return Say
+           (Context, Plain (Value) & " " & Number_Phrase (Context, Phrase_Is_Above) & " " & Bounds,
+            "number.above", "value", Number_Text (Context, Value), "bounds", Local_Bounds);
       end if;
    end Range_Position;
 
@@ -713,9 +578,9 @@ package body Humanize.Numbers.Ranges is
                 (Context, Long_Float (Denominator), Denominator_Singular, Denominator_Plural,
                  English => Plural_Text (Denominator, Denominator_Singular, Denominator_Plural)));
    begin
-      return Ok_Text
-        (Numerator_Text & " " & Number_Phrase (Context, Phrase_Per)
-         & " " & Denominator_Text);
+      return Say
+        (Context, Numerator_Text & " " & Number_Phrase (Context, Phrase_Per) & " " & Denominator_Text,
+         "number.per", "numerator", Numerator_Text, "denominator", Denominator_Text);
    end Ratio_Per;
 
    function One_In
@@ -724,9 +589,9 @@ package body Humanize.Numbers.Ranges is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text
-        ("1 " & Number_Phrase (Context, Phrase_In) & " "
-         & Natural_Text (Natural (Denominator)));
+      return Say
+        (Context, "1 " & Number_Phrase (Context, Phrase_In) & " " & Natural_Text (Natural (Denominator)),
+         "number.one_in", "whole", Number_Text (Context, Long_Long_Integer (Denominator)));
    end One_In;
 
    function Out_Of
@@ -736,10 +601,11 @@ package body Humanize.Numbers.Ranges is
       return Humanize.Status.Text_Result
    is
    begin
-      return Ok_Text
-        (Natural_Text (Count) & " "
-         & Number_Phrase (Context, Phrase_Out_Of) & " "
-         & Natural_Text (Natural (Total)));
+      return Say
+        (Context, Natural_Text (Count) & " " & Number_Phrase (Context, Phrase_Out_Of) & " "
+         & Natural_Text (Natural (Total)),
+         "number.out_of", "value", Number_Text (Context, Long_Long_Integer (Count)), "whole",
+         Number_Text (Context, Long_Long_Integer (Total)));
    end Out_Of;
 
    function Direction_Of_Change
@@ -781,18 +647,18 @@ package body Humanize.Numbers.Ranges is
         (if Tail'Length = 0 then Quantity else Quantity & " " & Tail);
    begin
       if Direction = Change_None and then Options.Zero_Style = Unchanged_Zero then
-         return Ok_Text (Number_Phrase (Context, Phrase_Unchanged));
+         return Say (Context, Number_Phrase (Context, Phrase_Unchanged), "number.unchanged", "", "");
       end if;
 
       case Options.Style is
          when Directional_Change =>
             case Direction is
                when Change_Up =>
-                  return Ok_Text
-                    (Number_Phrase (Context, Phrase_Up) & " " & Full_Quantity);
+                  return Say (Context, Number_Phrase (Context, Phrase_Up) & " " & Full_Quantity,
+                              "number.change_up", "quantity", Full_Quantity);
                when Change_Down =>
-                  return Ok_Text
-                    (Number_Phrase (Context, Phrase_Down) & " " & Full_Quantity);
+                  return Say (Context, Number_Phrase (Context, Phrase_Down) & " " & Full_Quantity,
+                              "number.change_down", "quantity", Full_Quantity);
                when Change_None =>
                   return Ok_Text (Full_Quantity);
             end case;
@@ -808,13 +674,15 @@ package body Humanize.Numbers.Ranges is
          when Comparative_Change =>
             case Direction is
                when Change_Up =>
-                  return Ok_Text
-                    (Quantity & " " & Number_Phrase (Context, Phrase_More)
-                     & (if Tail'Length = 0 then "" else " " & Tail));
+                  return Say
+                    (Context, Quantity & " " & Number_Phrase (Context, Phrase_More)
+                     & (if Tail'Length = 0 then "" else " " & Tail),
+                     "number.change_more", "quantity", Quantity, "tail", Tail);
                when Change_Down =>
-                  return Ok_Text
-                    (Quantity & " " & Number_Phrase (Context, Phrase_Fewer)
-                     & (if Tail'Length = 0 then "" else " " & Tail));
+                  return Say
+                    (Context, Quantity & " " & Number_Phrase (Context, Phrase_Fewer)
+                     & (if Tail'Length = 0 then "" else " " & Tail),
+                     "number.change_fewer", "quantity", Quantity, "tail", Tail);
                when Change_None =>
                   return Ok_Text (Full_Quantity);
             end case;
@@ -831,9 +699,9 @@ package body Humanize.Numbers.Ranges is
       if Base.Status /= Humanize.Status.Ok or else Since'Length = 0 then
          return Base;
       else
-         return Ok_Text
-           (Result_Text (Base) & " "
-            & Number_Phrase (Context, Phrase_Since) & " " & Since);
+         return Say
+           (Context, Result_Text (Base) & " " & Number_Phrase (Context, Phrase_Since) & " " & Since,
+            "number.since", "change", Result_Text (Base), "since", Since);
       end if;
    end Append_Since;
 
