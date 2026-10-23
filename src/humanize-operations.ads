@@ -1,3 +1,4 @@
+with Humanize.Contexts;
 with Humanize.Status;
 
 --  Deterministic labels for queues, jobs, runs, caches, and data movement.
@@ -239,4 +240,90 @@ package Humanize.Operations is
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
+   --  Localized forms: each speaks Context's locale through the phrase
+   --  catalog (docs/PHRASE_TEMPLATES.md, "Operations") and is the function
+   --  above in English. The log output mode stays the machine form.
+
+   function Operation_State_Label
+     (Context : Humanize.Contexts.Context;
+      State   : Operation_State)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param State Operational lifecycle state.
+   --  @return The state as a localized label.
+
+   function Progress_Summary
+     (Context   : Humanize.Contexts.Context;
+      Name      : String;
+      State     : Operation_State;
+      Completed : Natural;
+      Total     : Natural;
+      Failed    : Natural := 0;
+      Skipped   : Natural := 0;
+      Retried   : Natural := 0;
+      Canceled  : Natural := 0;
+      Singular  : String := "item";
+      Plural    : String := "items")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name Operation display name.
+   --  @param State Operational lifecycle state.
+   --  @param Completed Completed unit count.
+   --  @param Total Total unit count.
+   --  @param Failed Failed unit count.
+   --  @param Skipped Skipped unit count.
+   --  @param Retried Retried unit count.
+   --  @param Canceled Canceled unit count.
+   --  @param Singular Singular unit noun.
+   --  @param Plural Plural unit noun.
+   --  @return Localized progress summary.
+
+   function Unknown_Total_Summary
+     (Context   : Humanize.Contexts.Context;
+      Name      : String;
+      State     : Operation_State;
+      Completed : Natural;
+      Failed    : Natural := 0;
+      Singular  : String := "item";
+      Plural    : String := "items")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name Operation display name.
+   --  @param State Operational lifecycle state.
+   --  @param Completed Completed unit count.
+   --  @param Failed Failed unit count.
+   --  @param Singular Singular unit noun.
+   --  @param Plural Plural unit noun.
+   --  @return Localized progress summary without a known total.
+
+   function Last_Success_Label
+     (Context   : Humanize.Contexts.Context;
+      Name      : String;
+      Time_Text : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name Operation display name.
+   --  @param Time_Text Caller-supplied, already localized time label.
+   --  @return Localized last-success label.
+
+   function Next_Retry_Label
+     (Context   : Humanize.Contexts.Context;
+      Name      : String;
+      Time_Text : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name Operation display name.
+   --  @param Time_Text Caller-supplied, already localized time label.
+   --  @return Localized next-retry label.
+
+   function Stale_Run_Label
+     (Context   : Humanize.Contexts.Context;
+      Name      : String;
+      Time_Text : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name Operation display name.
+   --  @param Time_Text Caller-supplied, already localized duration label.
+   --  @return Localized stale-run label.
+
 end Humanize.Operations;

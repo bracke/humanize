@@ -11,6 +11,8 @@ with Humanize.Catalogs;
 with Humanize.Contexts;
 with Humanize.Datetimes;
 with Humanize.Lists;
+with Humanize.Operations;
+with Humanize.Resources;
 with Humanize.Parsing.Phrases;
 with Humanize.Phrases;
 with Humanize.Status;
@@ -102,20 +104,26 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"database.database_online", +"database.database_offline", +"database.database_degraded",
       +"database.database_migrating", +"database.database_migration_failed",
       +"database.database_replicating", +"database.database_replication_lagging",
-      +"database.database_backup_running", +"database.database_backup_failed"];
+      +"database.database_backup_running", +"database.database_backup_failed", +"times_noun",
+      +"availability.all", +"availability.none", +"availability.partial", +"operation_progress",
+      +"operation.queued", +"operation.running", +"operation.blocked", +"operation.retrying",
+      +"operation.succeeded", +"operation.partially_succeeded", +"operation.failed",
+      +"operation.canceled", +"operation.skipped", +"operation.stale",
+      +"operation.unknown_state", +"operation.last_success", +"operation.next_retry",
+      +"operation.stale_run", +"summary.skipped", +"summary.retried", +"summary.canceled"];
 
    --  Every shipped locale besides English.
    Locales : constant array (Positive range <>) of Unbounded_String :=
      [+"da", +"de", +"fr", +"es", +"it", +"pt", +"nl", +"sv", +"no", +"nb", +"fi", +"pl", +"cs",
       +"tr", +"ru", +"uk", +"ja", +"ko", +"zh", +"ar", +"hi", +"ro", +"lt", +"sl", +"id", +"ms",
       +"eo", +"vi", +"sw", +"af", +"hu", +"sk", +"zh-Hant", +"zh-TW", +"pt-PT", +"es-419", +"fr-CA",
-      +"de-CH", +"en-GB"];
+      +"de-CH", +"de-LI", +"en-GB", +"en-AU"];
 
    --  The numeric arguments any phrase takes, and the text ones.
    Numbers : constant array (Positive range <>) of Unbounded_String :=
      [+"total", +"matching", +"visible", +"remaining", +"page", +"size", +"first", +"last", +"position",
       +"selected", +"showing", +"count", +"hidden", +"done", +"step", +"attempt", +"rate", +"days", +"hours",
-      +"every", +"hits", +"misses", +"changed", +"added", +"removed"];
+      +"every", +"hits", +"misses", +"changed", +"added", +"removed", +"available", +"unavailable"];
 
    procedure Test_Every_Locale_Renders_Every_Phrase
      (T : in out AUnit.Test_Cases.Test_Case'Class)
@@ -161,6 +169,11 @@ package body Humanize.Tests.Phrase_Catalogs is
             Messages.Arguments.Set (Args, "difference", "2 X");
             Messages.Arguments.Set (Args, "measure", "12 %");
             Messages.Arguments.Set (Args, "percent", "50");
+            Messages.Arguments.Set (Args, "name", "import");
+            Messages.Arguments.Set (Args, "state", "running");
+            Messages.Arguments.Set (Args, "time", "2 h");
+            Messages.Arguments.Set (Args, "available", Count);
+            Messages.Arguments.Set (Args, "unavailable", Count);
             for Locale of Locales loop
                for Key of Keys loop
                   declare
@@ -328,6 +341,8 @@ package body Humanize.Tests.Phrase_Catalogs is
                      (Humanize.Contexts.Create (Runtime'Unchecked_Access, Locale), Humanize.Phrases.Canceled)));
       begin
          AUnit.Assertions.Assert (Canceled ("en-GB") = "cancelled", "en-GB: [" & Canceled ("en-GB") & "]");
+         AUnit.Assertions.Assert (Canceled ("en-AU") = "cancelled", "en-AU: [" & Canceled ("en-AU") & "]");
+         AUnit.Assertions.Assert (Canceled ("en-IN") = "cancelled", "en-IN: [" & Canceled ("en-IN") & "]");
          AUnit.Assertions.Assert (Canceled ("en-US") = "canceled", "en-US: [" & Canceled ("en-US") & "]");
       end;
    end Test_Regional_Variants;
@@ -339,7 +354,7 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"accusative_one", +"accusative_other"];
    Text_Arguments : constant array (Positive range <>) of Unbounded_String :=
      [+"unit", +"field", +"before", +"after", +"current", +"baseline", +"quantity",
-      +"details", +"difference", +"measure"];
+      +"details", +"difference", +"measure", +"name", +"time"];
 
    function Digits_Of (Value : Natural) return String is
      (Natural'Image (Value) (2 .. Natural'Image (Value)'Last));
@@ -396,6 +411,29 @@ package body Humanize.Tests.Phrase_Catalogs is
          AUnit.Assertions.Assert
            (P.Parse (Ctx ("de"), "page_count", "Kapitel 3 von 5").Status /= Humanize.Status.Ok,
             "text the phrase does not render is rejected");
+      end;
+      --  The operations and availability labels speak the locale and read back.
+      declare
+         Progress : constant String :=
+           Image (Humanize.Operations.Progress_Summary
+                    (Ctx ("de"), "Import", Humanize.Operations.Running, 3, 10, Failed => 1,
+                     Singular => "Datei", Plural => "Dateien"));
+         Avail : constant String :=
+           Image (Humanize.Resources.Availability_Label (Ctx ("de"), 2, 5, "Replik", "Repliken"));
+      begin
+         AUnit.Assertions.Assert
+           (Progress = "Import " & Character'Val (16#E2#) & Character'Val (16#80#) & Character'Val (16#93#)
+                       & " l" & Character'Val (16#C3#) & Character'Val (16#A4#)
+                       & "uft: 3 von 10 Dateien abgeschlossen und 1 fehlgeschlagen",
+            "German operation progress: [" & Progress & "]");
+         AUnit.Assertions.Assert
+           (Avail = "2 von 5 Repliken verf" & Character'Val (16#C3#) & Character'Val (16#BC#) & "gbar, 3 nicht verf"
+                    & Character'Val (16#C3#) & Character'Val (16#BC#) & "gbar",
+            "German availability: [" & Avail & "]");
+         AUnit.Assertions.Assert
+           (P.Parse (Ctx ("de"), "availability.partial", Avail).Status = Humanize.Status.Ok
+            and then P.Number (P.Parse (Ctx ("de"), "availability.partial", Avail), "unavailable") = 3,
+            "German availability reads back");
       end;
       --  The locale's own digits and grouping read back too.
       declare

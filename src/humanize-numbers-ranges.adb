@@ -710,17 +710,21 @@ package body Humanize.Numbers.Ranges is
       Denominator_Plural   : String := "")
       return Humanize.Status.Text_Result
    is
+      --  The nouns by the locale's plural rules and registered forms.
       Numerator_Text : constant String :=
         Natural_Text (Numerator) & " "
-        & Plural_Text (Numerator, Numerator_Singular, Numerator_Plural);
+        & Humanize.I18N_Rendering.Noun
+            (Context, Long_Float (Numerator), Numerator_Singular, Numerator_Plural,
+             English => Plural_Text (Numerator, Numerator_Singular, Numerator_Plural));
       Denominator_Text : constant String :=
         (if Denominator = 1 then
             Plural_Text
               (1, Denominator_Singular, Denominator_Plural)
          else
             Natural_Text (Natural (Denominator)) & " "
-            & Plural_Text
-              (Denominator, Denominator_Singular, Denominator_Plural));
+            & Humanize.I18N_Rendering.Noun
+                (Context, Long_Float (Denominator), Denominator_Singular, Denominator_Plural,
+                 English => Plural_Text (Denominator, Denominator_Singular, Denominator_Plural)));
    begin
       return Ok_Text
         (Numerator_Text & " " & Number_Phrase (Context, Phrase_Per)

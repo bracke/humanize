@@ -383,5 +383,38 @@ begin
           & "other {# {genitive_one}}}")
      & P ("noun",
           "{count, plural, one {{one}} few {{few}} many {{genitive_other}} other "
-          & "{{genitive_one}}}");
+          & "{{genitive_one}}}")
+     & P ("noun.accusative",
+          "{count, plural, one {{accusative_one}} few {{accusative_other}} many "
+          & "{{genitive_other}} other {{genitive_one}}}")
+     & P ("number_comparison.case", "accusative")
+     & P ("times_noun",
+          "{count, plural, =0 {nigdy {other}} =1 {raz {one}} =2 {dwa razy "
+          & "{other}} other {{count} razy {other}}}")
+     & P ("availability.all",
+          "dostępne: {available} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
+     & P ("availability.none", "brak dostępnych {genitive_other}")
+     & P ("availability.partial",
+          "dostępne: {available} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}, niedostępne: {unavailable}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "w kolejce")
+     & P ("operation.running", "w toku")
+     & P ("operation.blocked", "zablokowane")
+     & P ("operation.retrying", "ponawianie")
+     & P ("operation.succeeded", "zakończono pomyślnie")
+     & P ("operation.partially_succeeded", "częściowo pomyślnie")
+     & P ("operation.failed", "niepowodzenie")
+     & P ("operation.canceled", "anulowano")
+     & P ("operation.skipped", "pominięto")
+     & P ("operation.stale", "nieaktualne")
+     & P ("operation.unknown_state", "nieznane")
+     & P ("operation.last_success", "{name}: ostatni sukces {time}")
+     & P ("operation.next_retry", "{name}: następna próba {time}")
+     & P ("operation.stale_run", "{name} – nieaktualne: {time}")
+     & P ("summary.skipped", "pominięte: {count}")
+     & P ("summary.retried", "ponowione: {count}")
+     & P ("summary.canceled", "anulowane: {count}");
 end Locale_Pl;

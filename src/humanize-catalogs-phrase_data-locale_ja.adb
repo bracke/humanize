@@ -301,5 +301,31 @@ begin
      & P ("database.database_replicating", "データベース レプリケーション中")
      & P ("database.database_replication_lagging", "データベース レプリケーション遅延")
      & P ("database.database_backup_running", "データベース バックアップ中")
-     & P ("database.database_backup_failed", "データベース バックアップ失敗");
+     & P ("database.database_backup_failed", "データベース バックアップ失敗")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}は一度もなし} =1 {{other}1回} other "
+          & "{{other}{count}回}}")
+     & P ("availability.all", "{total}件中{available}件の{other}が利用可能")
+     & P ("availability.none", "利用可能な{other}はありません")
+     & P ("availability.partial",
+          "{total}件中{available}件の{other}が利用可能、{unavailable}"
+          & "件が利用不可")
+     & P ("operation_progress", "{name}（{state}）：{details}")
+     & P ("operation.queued", "待機中")
+     & P ("operation.running", "実行中")
+     & P ("operation.blocked", "ブロック中")
+     & P ("operation.retrying", "再試行中")
+     & P ("operation.succeeded", "成功")
+     & P ("operation.partially_succeeded", "一部成功")
+     & P ("operation.failed", "失敗")
+     & P ("operation.canceled", "キャンセル済み")
+     & P ("operation.skipped", "スキップ済み")
+     & P ("operation.stale", "古い")
+     & P ("operation.unknown_state", "不明")
+     & P ("operation.last_success", "{name}の最終成功：{time}")
+     & P ("operation.next_retry", "{name}の次回再試行：{time}")
+     & P ("operation.stale_run", "{name}の停滞期間：{time}")
+     & P ("summary.skipped", "{count}件スキップ")
+     & P ("summary.retried", "{count}件再試行")
+     & P ("summary.canceled", "{count}件キャンセル");
 end Locale_Ja;

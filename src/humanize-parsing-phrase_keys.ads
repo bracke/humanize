@@ -317,6 +317,32 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("database.database_replicating|||"),
       new String'("database.database_replication_lagging|||"),
       new String'("database.database_backup_running|||"),
-      new String'("database.database_backup_failed|||")];
+      new String'("database.database_backup_failed|||"),
+      new String'("times_noun|count||one,other,zero,two,few,many,genitive_one,"
+                  & "genitive_other,accusative_one,accusative_other"),
+      new String'("availability.all|available,total,unavailable||one,other,zero,two,few,"
+                  & "many,genitive_one,genitive_other,accusative_one,accusative_other"),
+      new String'("availability.none|available,total,unavailable||one,other,zero,two,few,"
+                  & "many,genitive_one,genitive_other,accusative_one,accusative_other"),
+      new String'("availability.partial|available,total,unavailable||one,other,zero,two,"
+                  & "few,many,genitive_one,genitive_other,accusative_one,accusative_other"),
+      new String'("operation_progress|||name,state,details"),
+      new String'("operation.queued|||"),
+      new String'("operation.running|||"),
+      new String'("operation.blocked|||"),
+      new String'("operation.retrying|||"),
+      new String'("operation.succeeded|||"),
+      new String'("operation.partially_succeeded|||"),
+      new String'("operation.failed|||"),
+      new String'("operation.canceled|||"),
+      new String'("operation.skipped|||"),
+      new String'("operation.stale|||"),
+      new String'("operation.unknown_state|||"),
+      new String'("operation.last_success|||name,time"),
+      new String'("operation.next_retry|||name,time"),
+      new String'("operation.stale_run|||name,time"),
+      new String'("summary.skipped|count||"),
+      new String'("summary.retried|count||"),
+      new String'("summary.canceled|count||")];
 
 end Humanize.Parsing.Phrase_Keys;

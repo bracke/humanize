@@ -335,5 +335,35 @@ begin
      & P ("database.database_replicating", "databas replikeras")
      & P ("database.database_replication_lagging", "databasreplikeringen ligger efter")
      & P ("database.database_backup_running", "databassäkerhetskopiering pågår")
-     & P ("database.database_backup_failed", "databassäkerhetskopieringen misslyckades");
+     & P ("database.database_backup_failed", "databassäkerhetskopieringen misslyckades")
+     & P ("times_noun",
+          "{count, plural, =0 {aldrig {other}} =1 {en gång {one}} =2 {två "
+          & "gånger {other}} other {{count} gånger {other}}}")
+     & P ("availability.all",
+          "{available} av {total} {total, plural, one {{one}} other {{other}}} "
+          & "{available, plural, one {tillgänglig} other {tillgängliga}}")
+     & P ("availability.none", "inga {other} tillgängliga")
+     & P ("availability.partial",
+          "{available} av {total} {total, plural, one {{one}} other {{other}}} "
+          & "{available, plural, one {tillgänglig} other {tillgängliga}}, "
+          & "{unavailable} {unavailable, plural, one {otillgänglig} other "
+          & "{otillgängliga}}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "i kö")
+     & P ("operation.running", "körs")
+     & P ("operation.blocked", "blockerad")
+     & P ("operation.retrying", "försöker igen")
+     & P ("operation.succeeded", "lyckades")
+     & P ("operation.partially_succeeded", "lyckades delvis")
+     & P ("operation.failed", "misslyckades")
+     & P ("operation.canceled", "avbruten")
+     & P ("operation.skipped", "hoppades över")
+     & P ("operation.stale", "inaktuell")
+     & P ("operation.unknown_state", "okänd")
+     & P ("operation.last_success", "{name} lyckades senast {time}")
+     & P ("operation.next_retry", "{name} nästa försök: {time}")
+     & P ("operation.stale_run", "{name} inaktuell i {time}")
+     & P ("summary.skipped", "{count} hoppades över")
+     & P ("summary.retried", "{count} försöktes igen")
+     & P ("summary.canceled", "{count} avbröts");
 end Locale_Sv;

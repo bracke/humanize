@@ -412,5 +412,41 @@ begin
           & "other {# {genitive_one}}}")
      & P ("noun",
           "{count, plural, one {{one}} few {{few}} many {{genitive_other}} other "
-          & "{{genitive_one}}}");
+          & "{{genitive_one}}}")
+     & P ("noun.accusative",
+          "{count, plural, one {{accusative_one}} few {{accusative_other}} many "
+          & "{{genitive_other}} other {{genitive_one}}}")
+     & P ("number_comparison.case", "accusative")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}: жодного разу} =1 {{one}: "
+          & "один раз} =2 {{other}: двічі} one {{other}: {count} "
+          & "раз} few {{other}: {count} рази} many {{other}: {count} "
+          & "разів} other {{other}: {count} раза}}")
+     & P ("availability.all",
+          "доступно {available} з {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
+     & P ("availability.none", "немає доступних {genitive_other}")
+     & P ("availability.partial",
+          "доступно {available} з {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}, недоступно {unavailable}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "у черзі")
+     & P ("operation.running", "виконується")
+     & P ("operation.blocked", "заблоковано")
+     & P ("operation.retrying", "повторна спроба")
+     & P ("operation.succeeded", "успішно")
+     & P ("operation.partially_succeeded", "частково успішно")
+     & P ("operation.failed", "помилка")
+     & P ("operation.canceled", "скасовано")
+     & P ("operation.skipped", "пропущено")
+     & P ("operation.stale", "застаріло")
+     & P ("operation.unknown_state", "невідомо")
+     & P ("operation.last_success", "{name} – останній успішний запуск: {time}")
+     & P ("operation.next_retry", "{name} – наступна спроба: {time}")
+     & P ("operation.stale_run", "{name} – не оновлювалося {time}")
+     & P ("summary.skipped", "пропущено: {count}")
+     & P ("summary.retried", "повторено: {count}")
+     & P ("summary.canceled", "скасовано: {count}");
 end Locale_Uk;

@@ -392,5 +392,39 @@ begin
           & "{genitive_other}}}")
      & P ("noun",
           "{count, plural, one {{one}} two {{two}} few {{few}} other "
-          & "{{genitive_other}}}");
+          & "{{genitive_other}}}")
+     & P ("noun.accusative",
+          "{count, plural, one {{accusative_one}} two {{two}} few {{few}} other "
+          & "{{genitive_other}}}")
+     & P ("number_comparison.case", "accusative")
+     & P ("times_noun",
+          "{count, plural, =0 {nikoli {other}} =1 {enkrat {one}} =2 {dvakrat "
+          & "{other}} other {{count}-krat {other}}}")
+     & P ("availability.all",
+          "na voljo: {available} od {total} {total, plural, one {{genitive_one}} "
+          & "two {{genitive_other}} few {{genitive_other}} other "
+          & "{{genitive_other}}}")
+     & P ("availability.none", "ni razpoložljivih {genitive_other}")
+     & P ("availability.partial",
+          "na voljo: {available} od {total} {total, plural, one {{genitive_one}} "
+          & "two {{genitive_other}} few {{genitive_other}} other "
+          & "{{genitive_other}}}, ni na voljo: {unavailable}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "v čakalni vrsti")
+     & P ("operation.running", "se izvaja")
+     & P ("operation.blocked", "blokirano")
+     & P ("operation.retrying", "ponovni poskus")
+     & P ("operation.succeeded", "uspešno")
+     & P ("operation.partially_succeeded", "delno uspešno")
+     & P ("operation.failed", "ni uspelo")
+     & P ("operation.canceled", "preklicano")
+     & P ("operation.skipped", "preskočeno")
+     & P ("operation.stale", "zastarelo")
+     & P ("operation.unknown_state", "neznano")
+     & P ("operation.last_success", "{name}: zadnji uspeh {time}")
+     & P ("operation.next_retry", "{name}: naslednji poskus {time}")
+     & P ("operation.stale_run", "{name} – zastarelo: {time}")
+     & P ("summary.skipped", "preskočeno: {count}")
+     & P ("summary.retried", "ponovljeno: {count}")
+     & P ("summary.canceled", "preklicano: {count}");
 end Locale_Sl;

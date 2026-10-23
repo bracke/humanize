@@ -303,5 +303,31 @@ begin
      & P ("database.database_replicating", "veritabanı çoğaltılıyor")
      & P ("database.database_replication_lagging", "veritabanı çoğaltma gecikmede")
      & P ("database.database_backup_running", "veritabanı yedeklemesi sürüyor")
-     & P ("database.database_backup_failed", "veritabanı yedeklemesi başarısız");
+     & P ("database.database_backup_failed", "veritabanı yedeklemesi başarısız")
+     & P ("times_noun",
+          "{count, plural, =0 {{one}: hiç} =1 {{one}: bir kez} =2 {{one}: iki "
+          & "kez} other {{one}: {count} kez}}")
+     & P ("availability.all", "{total} {one} içinden {available} kullanılabilir")
+     & P ("availability.none", "kullanılabilir {one} yok")
+     & P ("availability.partial",
+          "{total} {one} içinden {available} kullanılabilir, {unavailable} "
+          & "kullanılamıyor")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "kuyrukta")
+     & P ("operation.running", "çalışıyor")
+     & P ("operation.blocked", "engellendi")
+     & P ("operation.retrying", "yeniden deneniyor")
+     & P ("operation.succeeded", "başarılı")
+     & P ("operation.partially_succeeded", "kısmen başarılı")
+     & P ("operation.failed", "başarısız")
+     & P ("operation.canceled", "iptal edildi")
+     & P ("operation.skipped", "atlandı")
+     & P ("operation.stale", "eskimiş")
+     & P ("operation.unknown_state", "bilinmiyor")
+     & P ("operation.last_success", "{name} – son başarılı çalışma: {time}")
+     & P ("operation.next_retry", "{name} – sonraki deneme: {time}")
+     & P ("operation.stale_run", "{name} – eskimiş: {time}")
+     & P ("summary.skipped", "{count} atlandı")
+     & P ("summary.retried", "{count} yeniden denendi")
+     & P ("summary.canceled", "{count} iptal edildi");
 end Locale_Tr;

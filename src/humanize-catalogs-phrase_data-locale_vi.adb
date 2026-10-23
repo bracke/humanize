@@ -306,5 +306,31 @@ begin
      & P ("database.database_replicating", "cơ sở dữ liệu đang sao chép")
      & P ("database.database_replication_lagging", "sao chép cơ sở dữ liệu bị trễ")
      & P ("database.database_backup_running", "đang sao lưu cơ sở dữ liệu")
-     & P ("database.database_backup_failed", "sao lưu cơ sở dữ liệu thất bại");
+     & P ("database.database_backup_failed", "sao lưu cơ sở dữ liệu thất bại")
+     & P ("times_noun",
+          "{count, plural, =0 {chưa từng {other}} =1 {{other} một lần} =2 "
+          & "{{other} hai lần} other {{other} {count} lần}}")
+     & P ("availability.all", "{available}/{total} {other} khả dụng")
+     & P ("availability.none", "không có {other} nào khả dụng")
+     & P ("availability.partial",
+          "{available}/{total} {other} khả dụng, {unavailable} không khả "
+          & "dụng")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "đang chờ")
+     & P ("operation.running", "đang chạy")
+     & P ("operation.blocked", "bị chặn")
+     & P ("operation.retrying", "đang thử lại")
+     & P ("operation.succeeded", "thành công")
+     & P ("operation.partially_succeeded", "thành công một phần")
+     & P ("operation.failed", "thất bại")
+     & P ("operation.canceled", "đã hủy")
+     & P ("operation.skipped", "đã bỏ qua")
+     & P ("operation.stale", "lỗi thời")
+     & P ("operation.unknown_state", "không xác định")
+     & P ("operation.last_success", "{name} thành công lần cuối {time}")
+     & P ("operation.next_retry", "{name} thử lại lần tới {time}")
+     & P ("operation.stale_run", "{name} đã lỗi thời {time}")
+     & P ("summary.skipped", "{count} bị bỏ qua")
+     & P ("summary.retried", "{count} đã thử lại")
+     & P ("summary.canceled", "{count} đã hủy");
 end Locale_Vi;

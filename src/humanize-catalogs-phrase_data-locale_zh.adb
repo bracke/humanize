@@ -303,5 +303,29 @@ begin
      & P ("database.database_replicating", "数据库复制中")
      & P ("database.database_replication_lagging", "数据库复制延迟")
      & P ("database.database_backup_running", "数据库备份中")
-     & P ("database.database_backup_failed", "数据库备份失败");
+     & P ("database.database_backup_failed", "数据库备份失败")
+     & P ("times_noun",
+          "{count, plural, =0 {从未{other}} =1 {{other}一次} =2 "
+          & "{{other}两次} other {{other}{count}次}}")
+     & P ("availability.all", "{total}个{other}中{available}个可用")
+     & P ("availability.none", "没有可用的{other}")
+     & P ("availability.partial", "{total}个{other}中{available}个可用，{unavailable}个不可用")
+     & P ("operation_progress", "{name}（{state}）：{details}")
+     & P ("operation.queued", "已排队")
+     & P ("operation.running", "运行中")
+     & P ("operation.blocked", "已阻塞")
+     & P ("operation.retrying", "正在重试")
+     & P ("operation.succeeded", "成功")
+     & P ("operation.partially_succeeded", "部分成功")
+     & P ("operation.failed", "失败")
+     & P ("operation.canceled", "已取消")
+     & P ("operation.skipped", "已跳过")
+     & P ("operation.stale", "已过时")
+     & P ("operation.unknown_state", "未知")
+     & P ("operation.last_success", "{name}上次成功：{time}")
+     & P ("operation.next_retry", "{name}下次重试：{time}")
+     & P ("operation.stale_run", "{name}已过时{time}")
+     & P ("summary.skipped", "{count}个已跳过")
+     & P ("summary.retried", "{count}个已重试")
+     & P ("summary.canceled", "{count}个已取消");
 end Locale_Zh;

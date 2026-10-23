@@ -328,5 +328,33 @@ begin
      & P ("database.database_backup_running", "Datenbanksicherung läuft")
      & P ("database.database_backup_failed", "Datenbanksicherung fehlgeschlagen")
      & P ("calendar_difference.case.future", "dative")
-     & P ("calendar_difference.case.past", "dative");
+     & P ("calendar_difference.case.past", "dative")
+     & P ("times_noun",
+          "{count, plural, =0 {nie {other}} =1 {einmal {one}} =2 {zweimal "
+          & "{other}} other {{count}-mal {other}}}")
+     & P ("availability.all",
+          "{available} von {total} {total, plural, one {{one}} other {{other}}} "
+          & "verfügbar")
+     & P ("availability.none", "keine {other} verfügbar")
+     & P ("availability.partial",
+          "{available} von {total} {total, plural, one {{one}} other {{other}}} "
+          & "verfügbar, {unavailable} nicht verfügbar")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "eingereiht")
+     & P ("operation.running", "läuft")
+     & P ("operation.blocked", "blockiert")
+     & P ("operation.retrying", "neuer Versuch")
+     & P ("operation.succeeded", "erfolgreich")
+     & P ("operation.partially_succeeded", "teilweise erfolgreich")
+     & P ("operation.failed", "fehlgeschlagen")
+     & P ("operation.canceled", "abgebrochen")
+     & P ("operation.skipped", "übersprungen")
+     & P ("operation.stale", "veraltet")
+     & P ("operation.unknown_state", "unbekannt")
+     & P ("operation.last_success", "{name} zuletzt erfolgreich: {time}")
+     & P ("operation.next_retry", "{name} nächster Versuch: {time}")
+     & P ("operation.stale_run", "{name} {time} lang veraltet")
+     & P ("summary.skipped", "{count} übersprungen")
+     & P ("summary.retried", "{count} wiederholt")
+     & P ("summary.canceled", "{count} abgebrochen");
 end Locale_De;

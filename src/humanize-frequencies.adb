@@ -48,7 +48,6 @@ package body Humanize.Frequencies is
       Plural   : String)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Text       : constant String :=
         (case Count is
            when 0 => "never " & Plural,
@@ -56,7 +55,14 @@ package body Humanize.Frequencies is
            when 2 => "twice " & Plural,
            when others => Integer_Text (Count) & " " & Plural);
    begin
-      return Ok_Text (Text);
+      return Humanize.I18N_Rendering.Phrase_Or
+        (Context,
+         Humanize.I18N_Rendering.With_Nouns
+           (Context,
+            Humanize.Selections.With_Arg
+              (Humanize.Selections.Phrase ("times_noun"), "count", Long_Long_Integer (Count)),
+            Singular, Plural),
+         Ok_Text (Text));
    end Times;
 
    procedure Times_Into

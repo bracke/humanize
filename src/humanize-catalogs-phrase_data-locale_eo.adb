@@ -333,5 +333,35 @@ begin
      & P ("database.database_replicating", "datumbazo reproduktata")
      & P ("database.database_replication_lagging", "datumbaza reproduktado malfruas")
      & P ("database.database_backup_running", "datumbaza savkopiado rulas")
-     & P ("database.database_backup_failed", "datumbaza savkopiado malsukcesis");
+     & P ("database.database_backup_failed", "datumbaza savkopiado malsukcesis")
+     & P ("times_noun",
+          "{count, plural, =0 {neniam {other}} =1 {unufoje {one}} =2 {dufoje "
+          & "{other}} other {{count} fojojn {other}}}")
+     & P ("availability.all",
+          "{available} el {total} {total, plural, one {{one}} other {{other}}} "
+          & "{available, plural, one {disponebla} other {disponeblaj}}")
+     & P ("availability.none", "neniuj {other} disponeblaj")
+     & P ("availability.partial",
+          "{available} el {total} {total, plural, one {{one}} other {{other}}} "
+          & "{available, plural, one {disponebla} other {disponeblaj}}, "
+          & "{unavailable} {unavailable, plural, one {nedisponebla} other "
+          & "{nedisponeblaj}}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "envicigita")
+     & P ("operation.running", "rulas")
+     & P ("operation.blocked", "blokita")
+     & P ("operation.retrying", "reprovas")
+     & P ("operation.succeeded", "sukcesis")
+     & P ("operation.partially_succeeded", "parte sukcesis")
+     & P ("operation.failed", "malsukcesis")
+     & P ("operation.canceled", "nuligita")
+     & P ("operation.skipped", "preterlasita")
+     & P ("operation.stale", "malaktuala")
+     & P ("operation.unknown_state", "nekonata")
+     & P ("operation.last_success", "{name} laste sukcesis {time}")
+     & P ("operation.next_retry", "{name} reprovos {time}")
+     & P ("operation.stale_run", "{name} malaktuala de {time}")
+     & P ("summary.skipped", "{count} {count, plural, one {preterlasita} other {preterlasitaj}}")
+     & P ("summary.retried", "{count} {count, plural, one {reprovita} other {reprovitaj}}")
+     & P ("summary.canceled", "{count} {count, plural, one {nuligita} other {nuligitaj}}");
 end Locale_Eo;

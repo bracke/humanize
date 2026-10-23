@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+* **Operations, availability and frequency speak the locale.**
+  `Humanize.Operations` (state label, progress and unknown-total summaries,
+  last success, next retry, stale run) and `Resources.Availability_Label`
+  gain context-taking overloads; `Frequencies.Times` with a noun and
+  `Numbers.Ratio_Per` localize their wording and nouns. 22 new phrase keys,
+  translated into every shipped locale.
+* Number comparisons decline the caller's noun in the case their frame
+  governs (Polish "o 5 plików więcej", Russian "на 5 файлов больше").
+* British spellings moved to `en-001`, which en-GB, en-AU, en-IN and the
+  other Commonwealth variants reach; `de-LI` writes ss like `de-CH`.
+* Czech/Slovak "none" labels are gender-free; Arabic counts take the
+  singular for 100 and up.
+* Phrase reading tries 2 among the unshown counts ("twice") and compares a
+  rendering in the locale's own digits normalized.
+
 * `Humanize.Parsing.Phrases.Phrase_Count` / `Phrase_Name` list every phrase;
   `examples/phrase_review_data` writes the phrase review page's data from the
   catalogs and `docs/phrase_notes.tsv`.

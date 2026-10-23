@@ -326,5 +326,33 @@ begin
      & P ("database.database_replicating", "hifadhidata inanakiliwa")
      & P ("database.database_replication_lagging", "unakili wa hifadhidata unachelewa")
      & P ("database.database_backup_running", "nakala rudufu ya hifadhidata inaendelea")
-     & P ("database.database_backup_failed", "nakala rudufu ya hifadhidata imeshindwa");
+     & P ("database.database_backup_failed", "nakala rudufu ya hifadhidata imeshindwa")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}: kamwe} =1 {{one}: mara moja} =2 {{other}: "
+          & "mara mbili} other {{other}: mara {count}}}")
+     & P ("availability.all",
+          "{available} kati ya {total, plural, one {{one}} other {{other}}} "
+          & "{total} zinapatikana")
+     & P ("availability.none", "hakuna {other} zinazopatikana")
+     & P ("availability.partial",
+          "{available} kati ya {total, plural, one {{one}} other {{other}}} "
+          & "{total} zinapatikana, {unavailable} hazipatikani")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "kwenye foleni")
+     & P ("operation.running", "inaendelea")
+     & P ("operation.blocked", "imezuiwa")
+     & P ("operation.retrying", "inajaribu tena")
+     & P ("operation.succeeded", "imefaulu")
+     & P ("operation.partially_succeeded", "imefaulu kwa sehemu")
+     & P ("operation.failed", "imeshindwa")
+     & P ("operation.canceled", "imeghairiwa")
+     & P ("operation.skipped", "imerukwa")
+     & P ("operation.stale", "imepitwa na wakati")
+     & P ("operation.unknown_state", "haijulikani")
+     & P ("operation.last_success", "{name} – ilifaulu mara ya mwisho: {time}")
+     & P ("operation.next_retry", "{name} – jaribio linalofuata: {time}")
+     & P ("operation.stale_run", "{name} – imepitwa na wakati kwa {time}")
+     & P ("summary.skipped", "{count} zimerukwa")
+     & P ("summary.retried", "{count} zimejaribiwa tena")
+     & P ("summary.canceled", "{count} zimeghairiwa");
 end Locale_Sw;

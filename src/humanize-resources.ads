@@ -1,3 +1,4 @@
+with Humanize.Contexts;
 with Humanize.Domain_Details;
 with Humanize.Status;
 
@@ -140,6 +141,21 @@ package Humanize.Resources is
    --  @param Singular Singular resource noun.
    --  @param Plural Plural resource noun.
    --  @return Human-readable availability label.
+
+   function Availability_Label
+     (Context   : Humanize.Contexts.Context;
+      Available : Resource_Count;
+      Total     : Resource_Count;
+      Singular  : String := "replica";
+      Plural    : String := "replicas")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context: the label in its locale, through the
+   --  phrase catalog; the function above in English.
+   --  @param Available Available resource count.
+   --  @param Total Total resource count.
+   --  @param Singular Singular resource noun.
+   --  @param Plural Plural resource noun.
+   --  @return Localized availability label.
 
    procedure Availability_Label_Into
      (Available : Resource_Count;

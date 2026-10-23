@@ -157,6 +157,9 @@ package body Humanize.Catalogs.Core_Data is
      & " few {# {few}} many {# {many}} other {# {other}}}" & LF
      & "und.humanize.phrase.noun = {count, plural, zero {{zero}} one {{one}} two {{two}}"
      & " few {{few}} many {{many}} other {{other}}}" & LF
+     --  The noun in a case: where a language has no entry, the nominative.
+     & "und.humanize.phrase.noun.accusative = {count, plural, zero {{zero}} one {{accusative_one}}"
+     & " two {{two}} few {{few}} many {{many}} other {{accusative_other}}}" & LF
      --  "last week", "this month", "next year": CLDR's relative names.
      & "und.humanize.phrase.calendar_relation.week.past = {minus_one, relative, week}" & LF
      & "und.humanize.phrase.calendar_relation.week.current = {zero, relative, week}" & LF

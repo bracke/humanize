@@ -330,5 +330,33 @@ begin
      & P ("database.database_replication_lagging", "tietokannan replikointi viivästyy")
      & P ("database.database_backup_running", "tietokannan varmuuskopiointi käynnissä")
      & P ("database.database_backup_failed", "tietokannan varmuuskopiointi epäonnistui")
-     & P ("calendar_difference.case.future", "genitive");
+     & P ("calendar_difference.case.future", "genitive")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}: ei koskaan} =1 {{one}: kerran} =2 "
+          & "{{other}: kaksi kertaa} other {{other}: {count} kertaa}}")
+     & P ("availability.all",
+          "{total, plural, one {{one}} other {{other}}}: {available}/{total} "
+          & "saatavilla")
+     & P ("availability.none", "{other}: ei yhtään saatavilla")
+     & P ("availability.partial",
+          "{total, plural, one {{one}} other {{other}}}: {available}/{total} "
+          & "saatavilla, {unavailable} ei saatavilla")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "jonossa")
+     & P ("operation.running", "käynnissä")
+     & P ("operation.blocked", "estetty")
+     & P ("operation.retrying", "yritetään uudelleen")
+     & P ("operation.succeeded", "onnistui")
+     & P ("operation.partially_succeeded", "onnistui osittain")
+     & P ("operation.failed", "epäonnistui")
+     & P ("operation.canceled", "peruttu")
+     & P ("operation.skipped", "ohitettu")
+     & P ("operation.stale", "vanhentunut")
+     & P ("operation.unknown_state", "tuntematon")
+     & P ("operation.last_success", "{name} – viimeksi onnistunut: {time}")
+     & P ("operation.next_retry", "{name} – seuraava uusintayritys: {time}")
+     & P ("operation.stale_run", "{name} – vanhentunut: {time}")
+     & P ("summary.skipped", "{count} ohitettu")
+     & P ("summary.retried", "{count} yritetty uudelleen")
+     & P ("summary.canceled", "{count} peruttu");
 end Locale_Fi;

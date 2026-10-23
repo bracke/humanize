@@ -133,6 +133,27 @@ The measure argument is the value in CLDR's unit for the locale
 | `editorial_percent.word` | value | `{value} percent` |
 | `recurrence.<unit>`, unit second, minute, hour, day, week, month, quarter, year | every | `every {every} {every, plural, one {<unit>} other {<unit>s}}` |
 
+## Operations, availability and frequency
+
+| Key | Arguments | English |
+|---|---|---|
+| `times_noun` | count, one, other | `{count, plural, =0 {never {other}} =1 {once {one}} =2 {twice {other}} other {{count} {other}}}` |
+| `availability.all` | available, total, unavailable, one, other | `{available} of {total} {total, plural, one {{one}} other {{other}}} available` |
+| `availability.none` | available, total, unavailable, one, other | `no {total, plural, one {{one}} other {{other}}} available` |
+| `availability.partial` | available, total, unavailable, one, other | `{available} of {total} … available, {unavailable} unavailable` |
+| `operation_progress` | name, state (a translated `operation.*` label), details (joined `summary.*` segments) | `{name} {state}: {details}` |
+| `operation.<state>` | | queued, running, blocked, retrying, succeeded, partially succeeded, failed, canceled, skipped, stale, unknown |
+| `operation.last_success` | name, time | `{name} last succeeded {time}` |
+| `operation.next_retry` | name, time | `{name} next retry {time}` |
+| `operation.stale_run` | name, time | `{name} stale for {time}` |
+| `summary.skipped`, `summary.retried`, `summary.canceled` | count | `{count} skipped`, ... |
+
+`Humanize.Operations` and `Humanize.Resources.Availability_Label` speak a
+locale through the overloads that take a context. A number comparison's noun
+(`Unit_Singular`/`Unit_Plural`) takes the case its frame governs
+(`number_comparison.case`, `noun.<case>`), and `count`/`noun` entries per
+language map plural categories to the registered noun forms.
+
 ## Review page
 
 The phrase review page (https://claude.ai/artifact/4gdexMdU8CmmxUaysWinzu) shows
@@ -150,8 +171,10 @@ here, so English output reads back too.
 
 ## Regional variants
 
-`fr-CA`, `de-CH` (ss for ß) and `en-GB` ("cancelled") are overrides too; a
-regional English entry replaces the formatter's own English.
+`fr-CA`, `de-CH` and `de-LI` (ss for ß) and `en-001` ("cancelled", which
+en-GB, en-AU, en-IN and the other variants CLDR places under international
+English reach) are overrides too; a regional English entry replaces the
+formatter's own English.
 
 `zh-Hant` is a whole Traditional Chinese catalog (Taiwan usage), which zh-TW,
 zh-HK and zh-MO reach through CLDR's likely scripts. `pt-PT` and `es-419` hold

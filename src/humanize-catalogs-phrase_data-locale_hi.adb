@@ -386,5 +386,34 @@ begin
           "डेटाबेस प्रतिकृति पिछड़ "
           & "रही है")
      & P ("database.database_backup_running", "डेटाबेस बैकअप चल रहा है")
-     & P ("database.database_backup_failed", "डेटाबेस बैकअप विफल");
+     & P ("database.database_backup_failed", "डेटाबेस बैकअप विफल")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}: कभी नहीं} =1 {{one}: एक "
+          & "बार} =2 {{other}: दो बार} other {{other}: {count} "
+          & "बार}}")
+     & P ("availability.all",
+          "{total} {total, plural, one {{one}} other {{other}}} में से "
+          & "{available} उपलब्ध")
+     & P ("availability.none", "कोई {other} उपलब्ध नहीं")
+     & P ("availability.partial",
+          "{total} {total, plural, one {{one}} other {{other}}} में से "
+          & "{available} उपलब्ध, {unavailable} अनुपलब्ध")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "कतार में")
+     & P ("operation.running", "चालू")
+     & P ("operation.blocked", "अवरुद्ध")
+     & P ("operation.retrying", "पुनः प्रयास जारी")
+     & P ("operation.succeeded", "सफल")
+     & P ("operation.partially_succeeded", "आंशिक रूप से सफल")
+     & P ("operation.failed", "विफल")
+     & P ("operation.canceled", "रद्द")
+     & P ("operation.skipped", "छोड़ा गया")
+     & P ("operation.stale", "पुराना")
+     & P ("operation.unknown_state", "अज्ञात")
+     & P ("operation.last_success", "{name} – अंतिम सफलता: {time}")
+     & P ("operation.next_retry", "{name} – अगला प्रयास: {time}")
+     & P ("operation.stale_run", "{name} – {time} से पुराना")
+     & P ("summary.skipped", "{count} छोड़े गए")
+     & P ("summary.retried", "{count} पुनः प्रयास किए गए")
+     & P ("summary.canceled", "{count} रद्द");
 end Locale_Hi;

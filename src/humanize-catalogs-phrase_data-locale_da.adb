@@ -325,5 +325,35 @@ begin
      & P ("database.database_replicating", "database replikeres")
      & P ("database.database_replication_lagging", "databasereplikering halter bagefter")
      & P ("database.database_backup_running", "databasebackup kører")
-     & P ("database.database_backup_failed", "databasebackup mislykkedes");
+     & P ("database.database_backup_failed", "databasebackup mislykkedes")
+     & P ("times_noun",
+          "{count, plural, =0 {aldrig {other}} =1 {én gang {one}} =2 {to gange "
+          & "{other}} other {{count} gange {other}}}")
+     & P ("availability.all",
+          "{available} af {total} {total, plural, one {{one}} other {{other}}} "
+          & "{available, plural, one {tilgængelig} other {tilgængelige}}")
+     & P ("availability.none", "ingen {other} tilgængelige")
+     & P ("availability.partial",
+          "{available} af {total} {total, plural, one {{one}} other {{other}}} "
+          & "{available, plural, one {tilgængelig} other {tilgængelige}}, "
+          & "{unavailable} {unavailable, plural, one {utilgængelig} other "
+          & "{utilgængelige}}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "i kø")
+     & P ("operation.running", "kører")
+     & P ("operation.blocked", "blokeret")
+     & P ("operation.retrying", "prøver igen")
+     & P ("operation.succeeded", "lykkedes")
+     & P ("operation.partially_succeeded", "delvist lykkedes")
+     & P ("operation.failed", "mislykkedes")
+     & P ("operation.canceled", "annulleret")
+     & P ("operation.skipped", "sprunget over")
+     & P ("operation.stale", "forældet")
+     & P ("operation.unknown_state", "ukendt")
+     & P ("operation.last_success", "{name} lykkedes senest {time}")
+     & P ("operation.next_retry", "{name} næste forsøg: {time}")
+     & P ("operation.stale_run", "{name} forældet i {time}")
+     & P ("summary.skipped", "{count} sprunget over")
+     & P ("summary.retried", "{count} forsøgt igen")
+     & P ("summary.canceled", "{count} annulleret");
 end Locale_Da;

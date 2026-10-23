@@ -362,5 +362,37 @@ begin
      & P ("database.database_replicating", "réplication de la base de données en cours")
      & P ("database.database_replication_lagging", "réplication de la base de données en retard")
      & P ("database.database_backup_running", "sauvegarde de la base de données en cours")
-     & P ("database.database_backup_failed", "échec de la sauvegarde de la base de données");
+     & P ("database.database_backup_failed", "échec de la sauvegarde de la base de données")
+     & P ("times_noun",
+          "{count, plural, =0 {{other} : jamais} =1 {{one} : une fois} =2 "
+          & "{{other} : deux fois} many {{many} : {count} fois} other {{other} : "
+          & "{count} fois}}")
+     & P ("availability.all",
+          "{available} {available, plural, one {{one}} many {{many}} other "
+          & "{{other}}} sur {total} {available, plural, one {disponible} other "
+          & "{disponibles}}")
+     & P ("availability.none", "pas de {other} disponibles")
+     & P ("availability.partial",
+          "{available} {available, plural, one {{one}} many {{many}} other "
+          & "{{other}}} sur {total} {available, plural, one {disponible} other "
+          & "{disponibles}}, {unavailable} {unavailable, plural, one {indisponible} "
+          & "other {indisponibles}}")
+     & P ("operation_progress", "{name} – {state} : {details}")
+     & P ("operation.queued", "en file d’attente")
+     & P ("operation.running", "en cours")
+     & P ("operation.blocked", "bloqué")
+     & P ("operation.retrying", "nouvelle tentative")
+     & P ("operation.succeeded", "réussi")
+     & P ("operation.partially_succeeded", "partiellement réussi")
+     & P ("operation.failed", "en échec")
+     & P ("operation.canceled", "annulé")
+     & P ("operation.skipped", "ignoré")
+     & P ("operation.stale", "obsolète")
+     & P ("operation.unknown_state", "inconnu")
+     & P ("operation.last_success", "{name} – dernière réussite {time}")
+     & P ("operation.next_retry", "{name} – prochaine tentative {time}")
+     & P ("operation.stale_run", "{name} – obsolète depuis {time}")
+     & P ("summary.skipped", "{count} {count, plural, one {ignoré} other {ignorés}}")
+     & P ("summary.retried", "{count} {count, plural, one {relancé} other {relancés}}")
+     & P ("summary.canceled", "{count} {count, plural, one {annulé} other {annulés}}");
 end Locale_Fr;

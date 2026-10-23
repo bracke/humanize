@@ -100,5 +100,6 @@ begin
      & P ("database.database_replicating", "replicação da base de dados em curso")
      & P ("database.database_replication_lagging", "replicação da base de dados atrasada")
      & P ("database.database_backup_running", "cópia de segurança da base de dados em curso")
-     & P ("database.database_backup_failed", "falha na cópia de segurança da base de dados");
+     & P ("database.database_backup_failed", "falha na cópia de segurança da base de dados")
+     & P ("operation.retrying", "a tentar novamente");
 end Locale_Pt_Pt;

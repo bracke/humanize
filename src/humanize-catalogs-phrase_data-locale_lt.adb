@@ -386,5 +386,37 @@ begin
           & "other {# {genitive_other}}}")
      & P ("noun",
           "{count, plural, one {{one}} few {{other}} many {{genitive_one}} other "
-          & "{{genitive_other}}}");
+          & "{{genitive_other}}}")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}: niekada} =1 {{one}: vieną kartą} =2 "
+          & "{{other}: du kartus} one {{other}: {count} kartą} few {{other}: "
+          & "{count} kartus} many {{other}: {count} karto} other {{other}: {count} "
+          & "kartų}}")
+     & P ("availability.all",
+          "pasiekiama {available} iš {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_one}} other "
+          & "{{genitive_other}}}")
+     & P ("availability.none", "nėra pasiekiamų {genitive_other}")
+     & P ("availability.partial",
+          "pasiekiama {available} iš {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_one}} other "
+          & "{{genitive_other}}}, nepasiekiama {unavailable}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "eilėje")
+     & P ("operation.running", "vykdoma")
+     & P ("operation.blocked", "užblokuota")
+     & P ("operation.retrying", "kartojama")
+     & P ("operation.succeeded", "sėkmingai")
+     & P ("operation.partially_succeeded", "iš dalies sėkmingai")
+     & P ("operation.failed", "nepavyko")
+     & P ("operation.canceled", "atšaukta")
+     & P ("operation.skipped", "praleista")
+     & P ("operation.stale", "pasenę")
+     & P ("operation.unknown_state", "nežinoma")
+     & P ("operation.last_success", "{name} – paskutinį kartą pavyko: {time}")
+     & P ("operation.next_retry", "{name} – kitas bandymas: {time}")
+     & P ("operation.stale_run", "{name} – neatnaujinta: {time}")
+     & P ("summary.skipped", "praleista: {count}")
+     & P ("summary.retried", "kartota: {count}")
+     & P ("summary.canceled", "atšaukta: {count}");
 end Locale_Lt;

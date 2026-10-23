@@ -44,7 +44,6 @@ begin
           & "error {chyby} warning {varování} other {upozornění}}} other "
           & "{{count} {severity, select, error {chyb} warning {varování} other "
           & "{upozornění}}}}")
-     & P ("collection.empty", "{other}: žádné")
      & P ("collection.none_shown", "{other}: nic nezobrazeno")
      & P ("collection.showing_hidden",
           "zobrazeno {visible} z {total} {total, plural, one {{genitive_one}} few "
@@ -165,7 +164,6 @@ begin
           & "{běží} waiting {čeká} paused {pozastaveno} complete {dokončeno} "
           & "failed {selhalo} stale {zastaralé} skipped {přeskočeno} other "
           & "{{state}}}: {details}")
-     & P ("summary.none", "{other}: žádné")
      & P ("summary.completed",
           "dokončeno: {count} {count, plural, one {{one}} few {{few}} many "
           & "{{genitive_one}} other {{genitive_other}}}")
@@ -398,5 +396,40 @@ begin
           & "other {# {genitive_other}}}")
      & P ("noun",
           "{count, plural, one {{one}} few {{few}} many {{genitive_one}} other "
-          & "{{genitive_other}}}");
+          & "{{genitive_other}}}")
+     & P ("collection.empty", "{other}: 0")
+     & P ("summary.none", "{other}: 0")
+     & P ("noun.accusative",
+          "{count, plural, one {{accusative_one}} few {{accusative_other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}")
+     & P ("number_comparison.case", "accusative")
+     & P ("times_noun",
+          "{count, plural, =0 {nikdy {other}} =1 {jednou {one}} =2 {dvakrát "
+          & "{other}} other {{count}krát {other}}}")
+     & P ("availability.all",
+          "dostupné: {available} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
+     & P ("availability.none", "žádné dostupné {other}")
+     & P ("availability.partial",
+          "dostupné: {available} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other "
+          & "{{genitive_other}}}, nedostupné: {unavailable}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "ve frontě")
+     & P ("operation.running", "běží")
+     & P ("operation.blocked", "blokováno")
+     & P ("operation.retrying", "opakování")
+     & P ("operation.succeeded", "úspěšně dokončeno")
+     & P ("operation.partially_succeeded", "částečně úspěšné")
+     & P ("operation.failed", "selhalo")
+     & P ("operation.canceled", "zrušeno")
+     & P ("operation.skipped", "přeskočeno")
+     & P ("operation.stale", "zastaralé")
+     & P ("operation.unknown_state", "neznámé")
+     & P ("operation.last_success", "{name}: naposledy úspěšně {time}")
+     & P ("operation.next_retry", "{name}: další pokus {time}")
+     & P ("operation.stale_run", "{name} – zastaralé: {time}")
+     & P ("summary.skipped", "přeskočeno: {count}")
+     & P ("summary.retried", "opakováno: {count}")
+     & P ("summary.canceled", "zrušeno: {count}");
 end Locale_Cs;

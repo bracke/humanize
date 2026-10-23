@@ -305,5 +305,31 @@ begin
      & P ("database.database_replicating", "pangkalan data sedang direplikasi")
      & P ("database.database_replication_lagging", "replikasi pangkalan data ketinggalan")
      & P ("database.database_backup_running", "sandaran pangkalan data berjalan")
-     & P ("database.database_backup_failed", "sandaran pangkalan data gagal");
+     & P ("database.database_backup_failed", "sandaran pangkalan data gagal")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}: tidak pernah} =1 {{other}: sekali} =2 "
+          & "{{other}: dua kali} other {{other}: {count} kali}}")
+     & P ("availability.all", "{available} daripada {total} {other} tersedia")
+     & P ("availability.none", "tiada {other} tersedia")
+     & P ("availability.partial",
+          "{available} daripada {total} {other} tersedia, {unavailable} tidak "
+          & "tersedia")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "dalam baris gilir")
+     & P ("operation.running", "berjalan")
+     & P ("operation.blocked", "disekat")
+     & P ("operation.retrying", "mencuba semula")
+     & P ("operation.succeeded", "berjaya")
+     & P ("operation.partially_succeeded", "berjaya sebahagiannya")
+     & P ("operation.failed", "gagal")
+     & P ("operation.canceled", "dibatalkan")
+     & P ("operation.skipped", "dilangkau")
+     & P ("operation.stale", "lapuk")
+     & P ("operation.unknown_state", "tidak diketahui")
+     & P ("operation.last_success", "{name} kali terakhir berjaya {time}")
+     & P ("operation.next_retry", "{name} cubaan semula seterusnya {time}")
+     & P ("operation.stale_run", "{name} lapuk selama {time}")
+     & P ("summary.skipped", "{count} dilangkau")
+     & P ("summary.retried", "{count} dicuba semula")
+     & P ("summary.canceled", "{count} dibatalkan");
 end Locale_Ms;

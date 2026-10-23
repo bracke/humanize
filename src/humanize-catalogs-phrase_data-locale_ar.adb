@@ -380,5 +380,42 @@ begin
      & P ("database.database_backup_running",
           "النسخ الاحتياطي لقاعدة البيانات قيد "
           & "التشغيل")
-     & P ("database.database_backup_failed", "فشل النسخ الاحتياطي لقاعدة البيانات");
+     & P ("database.database_backup_failed", "فشل النسخ الاحتياطي لقاعدة البيانات")
+     & P ("count",
+          "{count, plural, zero {# {zero}} one {# {one}} two {# {two}} few {# "
+          & "{few}} many {# {many}} other {# {one}}}")
+     & P ("noun",
+          "{count, plural, zero {{zero}} one {{one}} two {{two}} few {{few}} many "
+          & "{{many}} other {{one}}}")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}: ولا مرة} =1 {{one}: مرة "
+          & "واحدة} =2 {{two}: مرتان} zero {{zero}: # مرة} one {{one}: "
+          & "# مرة} two {{two}: # مرة} few {{few}: # مرات} many {{many}: "
+          & "# مرة} other {{one}: # مرة}}")
+     & P ("availability.all",
+          "المتاح: {available} من {total} {total, plural, zero {{zero}} "
+          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}}")
+     & P ("availability.none", "لا توجد {other} متاحة")
+     & P ("availability.partial",
+          "المتاح: {available} من {total} {total, plural, zero {{zero}} "
+          & "one {{one}} two {{two}} few {{few}} many {{many}} other {{one}}}، "
+          & "غير المتاح: {unavailable}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "في الانتظار")
+     & P ("operation.running", "قيد التشغيل")
+     & P ("operation.blocked", "محظور")
+     & P ("operation.retrying", "إعادة المحاولة")
+     & P ("operation.succeeded", "ناجح")
+     & P ("operation.partially_succeeded", "ناجح جزئيًا")
+     & P ("operation.failed", "فاشل")
+     & P ("operation.canceled", "ملغى")
+     & P ("operation.skipped", "متخطى")
+     & P ("operation.stale", "قديم")
+     & P ("operation.unknown_state", "غير معروف")
+     & P ("operation.last_success", "{name} – آخر نجاح: {time}")
+     & P ("operation.next_retry", "{name} – المحاولة التالية: {time}")
+     & P ("operation.stale_run", "{name} – قديم منذ {time}")
+     & P ("summary.skipped", "المتخطى: {count}")
+     & P ("summary.retried", "المعاد محاولته: {count}")
+     & P ("summary.canceled", "الملغى: {count}");
 end Locale_Ar;

@@ -417,5 +417,41 @@ begin
           & "{genitive_other}} other {# {genitive_one}}}")
      & P ("noun",
           "{count, plural, one {{one}} few {{genitive_one}} many "
-          & "{{genitive_other}} other {{genitive_one}}}");
+          & "{{genitive_other}} other {{genitive_one}}}")
+     & P ("noun.accusative",
+          "{count, plural, one {{accusative_one}} few {{genitive_one}} many "
+          & "{{genitive_other}} other {{genitive_one}}}")
+     & P ("number_comparison.case", "accusative")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}: ни разу} =1 {{one}: один "
+          & "раз} =2 {{other}: дважды} one {{other}: {count} раз} few "
+          & "{{other}: {count} раза} many {{other}: {count} раз} other "
+          & "{{other}: {count} раза}}")
+     & P ("availability.all",
+          "доступно {available} из {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
+     & P ("availability.none", "нет доступных {genitive_other}")
+     & P ("availability.partial",
+          "доступно {available} из {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}, недоступно {unavailable}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "в очереди")
+     & P ("operation.running", "выполняется")
+     & P ("operation.blocked", "заблокировано")
+     & P ("operation.retrying", "повторная попытка")
+     & P ("operation.succeeded", "успешно")
+     & P ("operation.partially_succeeded", "частично успешно")
+     & P ("operation.failed", "ошибка")
+     & P ("operation.canceled", "отменено")
+     & P ("operation.skipped", "пропущено")
+     & P ("operation.stale", "устарело")
+     & P ("operation.unknown_state", "неизвестно")
+     & P ("operation.last_success", "{name} – последний успешный запуск: {time}")
+     & P ("operation.next_retry", "{name} – следующая попытка: {time}")
+     & P ("operation.stale_run", "{name} – не обновлялось {time}")
+     & P ("summary.skipped", "пропущено: {count}")
+     & P ("summary.retried", "повторено: {count}")
+     & P ("summary.canceled", "отменено: {count}");
 end Locale_Ru;

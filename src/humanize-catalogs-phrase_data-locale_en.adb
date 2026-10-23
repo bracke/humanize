@@ -320,5 +320,33 @@ begin
      & P ("database.database_replicating", "database replicating")
      & P ("database.database_replication_lagging", "database replication lagging")
      & P ("database.database_backup_running", "database backup running")
-     & P ("database.database_backup_failed", "database backup failed");
+     & P ("database.database_backup_failed", "database backup failed")
+     & P ("times_noun",
+          "{count, plural, =0 {never {other}} =1 {once {one}} =2 {twice {other}} "
+          & "other {{count} {other}}}")
+     & P ("availability.all",
+          "{available} of {total} {total, plural, one {{one}} other {{other}}} "
+          & "available")
+     & P ("availability.none", "no {total, plural, one {{one}} other {{other}}} available")
+     & P ("availability.partial",
+          "{available} of {total} {total, plural, one {{one}} other {{other}}} "
+          & "available, {unavailable} unavailable")
+     & P ("operation_progress", "{name} {state}: {details}")
+     & P ("operation.queued", "queued")
+     & P ("operation.running", "running")
+     & P ("operation.blocked", "blocked")
+     & P ("operation.retrying", "retrying")
+     & P ("operation.succeeded", "succeeded")
+     & P ("operation.partially_succeeded", "partially succeeded")
+     & P ("operation.failed", "failed")
+     & P ("operation.canceled", "canceled")
+     & P ("operation.skipped", "skipped")
+     & P ("operation.stale", "stale")
+     & P ("operation.unknown_state", "unknown")
+     & P ("operation.last_success", "{name} last succeeded {time}")
+     & P ("operation.next_retry", "{name} next retry {time}")
+     & P ("operation.stale_run", "{name} stale for {time}")
+     & P ("summary.skipped", "{count} skipped")
+     & P ("summary.retried", "{count} retried")
+     & P ("summary.canceled", "{count} canceled");
 end Locale_En;

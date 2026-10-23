@@ -595,4 +595,79 @@ package body Humanize.Operations is
    begin
       Copy_Result (Stale_Run_Label (Name, Time_Text), Target, Written, Status);
    end Stale_Run_Label_Into;
+   --  The localized forms (Context overloads).
+   package Localized is
+      function Operation_State_Label
+        (Context : Humanize.Contexts.Context; State : Operation_State) return Humanize.Status.Text_Result;
+      function Progress_Summary
+        (Context : Humanize.Contexts.Context; Name : String; State : Operation_State;
+         Completed, Total, Failed, Skipped, Retried, Canceled : Natural; Singular, Plural : String)
+         return Humanize.Status.Text_Result;
+      function Unknown_Total_Summary
+        (Context : Humanize.Contexts.Context; Name : String; State : Operation_State;
+         Completed, Failed : Natural; Singular, Plural : String) return Humanize.Status.Text_Result;
+      function Time_Label
+        (Context : Humanize.Contexts.Context; Key, Name, Time_Text : String;
+         English : Humanize.Status.Text_Result) return Humanize.Status.Text_Result;
+   end Localized;
+
+   package body Localized is separate;
+
+   function Operation_State_Label
+     (Context : Humanize.Contexts.Context;
+      State   : Operation_State)
+      return Humanize.Status.Text_Result
+      renames Localized.Operation_State_Label;
+
+   function Progress_Summary
+     (Context   : Humanize.Contexts.Context;
+      Name      : String;
+      State     : Operation_State;
+      Completed : Natural;
+      Total     : Natural;
+      Failed    : Natural := 0;
+      Skipped   : Natural := 0;
+      Retried   : Natural := 0;
+      Canceled  : Natural := 0;
+      Singular  : String := "item";
+      Plural    : String := "items")
+      return Humanize.Status.Text_Result
+   is (Localized.Progress_Summary
+         (Context, Name, State, Completed, Total, Failed, Skipped, Retried, Canceled, Singular, Plural));
+
+   function Unknown_Total_Summary
+     (Context   : Humanize.Contexts.Context;
+      Name      : String;
+      State     : Operation_State;
+      Completed : Natural;
+      Failed    : Natural := 0;
+      Singular  : String := "item";
+      Plural    : String := "items")
+      return Humanize.Status.Text_Result
+   is (Localized.Unknown_Total_Summary (Context, Name, State, Completed, Failed, Singular, Plural));
+
+   function Last_Success_Label
+     (Context   : Humanize.Contexts.Context;
+      Name      : String;
+      Time_Text : String)
+      return Humanize.Status.Text_Result
+   is (Localized.Time_Label (Context, "operation.last_success", Name, Time_Text,
+                             Last_Success_Label (Name, Time_Text)));
+
+   function Next_Retry_Label
+     (Context   : Humanize.Contexts.Context;
+      Name      : String;
+      Time_Text : String)
+      return Humanize.Status.Text_Result
+   is (Localized.Time_Label (Context, "operation.next_retry", Name, Time_Text,
+                             Next_Retry_Label (Name, Time_Text)));
+
+   function Stale_Run_Label
+     (Context   : Humanize.Contexts.Context;
+      Name      : String;
+      Time_Text : String)
+      return Humanize.Status.Text_Result
+   is (Localized.Time_Label (Context, "operation.stale_run", Name, Time_Text,
+                             Stale_Run_Label (Name, Time_Text)));
+
 end Humanize.Operations;

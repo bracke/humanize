@@ -330,5 +330,33 @@ begin
      & P ("database.database_replicating", "database wordt gerepliceerd")
      & P ("database.database_replication_lagging", "databasereplicatie loopt achter")
      & P ("database.database_backup_running", "databaseback-up wordt uitgevoerd")
-     & P ("database.database_backup_failed", "databaseback-up mislukt");
+     & P ("database.database_backup_failed", "databaseback-up mislukt")
+     & P ("times_noun",
+          "{count, plural, =0 {nooit {other}} =1 {eenmaal {one}} =2 {tweemaal "
+          & "{other}} other {{count} keer {other}}}")
+     & P ("availability.all",
+          "{available} van {total} {total, plural, one {{one}} other {{other}}} "
+          & "beschikbaar")
+     & P ("availability.none", "geen {other} beschikbaar")
+     & P ("availability.partial",
+          "{available} van {total} {total, plural, one {{one}} other {{other}}} "
+          & "beschikbaar, {unavailable} niet beschikbaar")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "in wachtrij")
+     & P ("operation.running", "bezig")
+     & P ("operation.blocked", "geblokkeerd")
+     & P ("operation.retrying", "nieuwe poging")
+     & P ("operation.succeeded", "geslaagd")
+     & P ("operation.partially_succeeded", "gedeeltelijk geslaagd")
+     & P ("operation.failed", "mislukt")
+     & P ("operation.canceled", "geannuleerd")
+     & P ("operation.skipped", "overgeslagen")
+     & P ("operation.stale", "verouderd")
+     & P ("operation.unknown_state", "onbekend")
+     & P ("operation.last_success", "{name} laatst geslaagd: {time}")
+     & P ("operation.next_retry", "{name} volgende poging: {time}")
+     & P ("operation.stale_run", "{name} al {time} verouderd")
+     & P ("summary.skipped", "{count} overgeslagen")
+     & P ("summary.retried", "{count} opnieuw geprobeerd")
+     & P ("summary.canceled", "{count} geannuleerd");
 end Locale_Nl;

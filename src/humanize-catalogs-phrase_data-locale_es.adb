@@ -357,5 +357,36 @@ begin
      & P ("database.database_replicating", "replicación de la base de datos en curso")
      & P ("database.database_replication_lagging", "replicación de la base de datos con retraso")
      & P ("database.database_backup_running", "copia de seguridad de la base de datos en curso")
-     & P ("database.database_backup_failed", "error en la copia de seguridad de la base de datos");
+     & P ("database.database_backup_failed", "error en la copia de seguridad de la base de datos")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}: nunca} =1 {{one}: una vez} =2 {{other}: "
+          & "dos veces} many {{many}: {count} veces} other {{other}: {count} "
+          & "veces}}")
+     & P ("availability.all",
+          "{available} de {total} {total, plural, one {{one}} many {{many}} other "
+          & "{{other}}} {available, plural, one {disponible} other {disponibles}}")
+     & P ("availability.none", "sin {other} disponibles")
+     & P ("availability.partial",
+          "{available} de {total} {total, plural, one {{one}} many {{many}} other "
+          & "{{other}}} {available, plural, one {disponible} other {disponibles}}, "
+          & "{unavailable} no {unavailable, plural, one {disponible} other "
+          & "{disponibles}}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "en cola")
+     & P ("operation.running", "en curso")
+     & P ("operation.blocked", "bloqueado")
+     & P ("operation.retrying", "reintentando")
+     & P ("operation.succeeded", "correcto")
+     & P ("operation.partially_succeeded", "parcialmente correcto")
+     & P ("operation.failed", "con error")
+     & P ("operation.canceled", "cancelado")
+     & P ("operation.skipped", "omitido")
+     & P ("operation.stale", "desactualizado")
+     & P ("operation.unknown_state", "desconocido")
+     & P ("operation.last_success", "{name}: último éxito {time}")
+     & P ("operation.next_retry", "{name}: próximo reintento {time}")
+     & P ("operation.stale_run", "{name}: sin actualizar desde hace {time}")
+     & P ("summary.skipped", "{count} {count, plural, one {omitido} other {omitidos}}")
+     & P ("summary.retried", "{count} {count, plural, one {reintentado} other {reintentados}}")
+     & P ("summary.canceled", "{count} {count, plural, one {cancelado} other {cancelados}}");
 end Locale_Es;

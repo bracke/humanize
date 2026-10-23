@@ -1,5 +1,8 @@
 with Humanize.Bounded_Text;
 
+with Humanize.I18N_Rendering;
+with Humanize.Selections;
+
 package body Humanize.Resources is
    function Trim (Text : String) return String
       renames Humanize.Bounded_Text.Clean;
@@ -270,6 +273,32 @@ package body Humanize.Resources is
            (Image (Available) & " of " & Image (Total) & " " & Noun
             & " available, " & Image (Long_Long_Integer (Total - Available)) & " unavailable");
       end if;
+   end Availability_Label;
+
+   function Availability_Label
+     (Context   : Humanize.Contexts.Context;
+      Available : Resource_Count;
+      Total     : Resource_Count;
+      Singular  : String := "replica";
+      Plural    : String := "replicas")
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result := Availability_Label (Available, Total, Singular, Plural);
+      Key     : constant String :=
+        (if Available = Total then "availability.all" elsif Available = 0 then "availability.none"
+         else "availability.partial");
+      function Num (S : Humanize.Selections.Message_Selection; Name : String; Value : Resource_Count)
+        return Humanize.Selections.Message_Selection is
+        (Humanize.Selections.With_Arg (S, Name, Long_Long_Integer (Value)));
+   begin
+      return Humanize.I18N_Rendering.Phrase_Or
+        (Context,
+         Humanize.I18N_Rendering.With_Nouns
+           (Context,
+            Num (Num (Num (Humanize.Selections.Phrase (Key), "available", Available), "total", Total),
+                 "unavailable", Total - Available),
+            Trim (Singular), Trim (Plural)),
+         English);
    end Availability_Label;
 
    procedure Availability_Label_Into

@@ -303,5 +303,29 @@ begin
      & P ("database.database_replicating", "資料庫複寫中")
      & P ("database.database_replication_lagging", "資料庫複寫延遲")
      & P ("database.database_backup_running", "資料庫備份中")
-     & P ("database.database_backup_failed", "資料庫備份失敗");
+     & P ("database.database_backup_failed", "資料庫備份失敗")
+     & P ("times_noun",
+          "{count, plural, =0 {從未{other}} =1 {{other}一次} =2 "
+          & "{{other}兩次} other {{other}{count}次}}")
+     & P ("availability.all", "{total}個{other}中{available}個可用")
+     & P ("availability.none", "沒有可用的{other}")
+     & P ("availability.partial", "{total}個{other}中{available}個可用，{unavailable}個無法使用")
+     & P ("operation_progress", "{name}（{state}）：{details}")
+     & P ("operation.queued", "已排入佇列")
+     & P ("operation.running", "執行中")
+     & P ("operation.blocked", "受阻")
+     & P ("operation.retrying", "正在重試")
+     & P ("operation.succeeded", "成功")
+     & P ("operation.partially_succeeded", "部分成功")
+     & P ("operation.failed", "失敗")
+     & P ("operation.canceled", "已取消")
+     & P ("operation.skipped", "已略過")
+     & P ("operation.stale", "已過時")
+     & P ("operation.unknown_state", "未知")
+     & P ("operation.last_success", "{name}上次成功：{time}")
+     & P ("operation.next_retry", "{name}下次重試：{time}")
+     & P ("operation.stale_run", "{name}已過時{time}")
+     & P ("summary.skipped", "{count}個已略過")
+     & P ("summary.retried", "{count}個已重試")
+     & P ("summary.canceled", "{count}個已取消");
 end Locale_Zh_Hant;

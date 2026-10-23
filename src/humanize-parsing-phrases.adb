@@ -102,8 +102,9 @@ package body Humanize.Parsing.Phrases is
       Count  : Natural := 0;
    end record;
 
-   --  The distinct digit runs in Text, then 0 and 1 for counts it does not
-   --  show ("due today"; "all 5 files", one number for two counts).
+   --  The distinct digit runs in Text, then 0, 1 and 2 for counts it does not
+   --  show ("due today"; "twice files"; "all 5 files", one number for two
+   --  counts).
    function Candidates (Text : String) return Pool_Type is
       Result : Pool_Type;
       Start  : Natural := 0;
@@ -136,6 +137,7 @@ package body Humanize.Parsing.Phrases is
       end loop;
       Add (0);
       Add (1);
+      Add (2);
       return Result;
    end Candidates;
 
@@ -271,7 +273,8 @@ package body Humanize.Parsing.Phrases is
    function Parse_Entry
      (Context    : Humanize.Contexts.Context;
       Entry_Text : String;
-      Text       : String)
+      Text       : String;
+      Normalize  : Boolean := False)
       return Phrase_Parse_Result
    is
       Name     : constant String := Field (Entry_Text, 1);
@@ -336,7 +339,10 @@ package body Humanize.Parsing.Phrases is
             Rendered : constant Humanize.Status.Text_Result := Humanize.I18N_Rendering.Render (Context, Selection);
          begin
             if Rendered.Status /= Humanize.Status.Ok
-              or else not Matches (To_String (Rendered.Text), Text, Result.Texts, Result.Text_Count)
+              or else not Matches
+                            ((if Normalize then Normalized (Context, To_String (Rendered.Text))
+                              else To_String (Rendered.Text)),
+                             Text, Result.Texts, Result.Text_Count)
             then
                return (Status => Humanize.Status.Invalid_Argument, others => <>);
             end if;
@@ -499,7 +505,10 @@ package body Humanize.Parsing.Phrases is
                declare
                   Plain : constant String := Normalized (Context, Text);
                begin
-                  return (if Plain = Text then Raw else Parse_Entry (Context, Entry_Text.all, Plain));
+                  --  The rendering in the locale's digits is compared
+                  --  normalized too.
+                  return (if Plain = Text then Raw
+                          else Parse_Entry (Context, Entry_Text.all, Plain, Normalize => True));
                end;
             end;
          end if;

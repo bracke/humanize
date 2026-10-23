@@ -359,5 +359,36 @@ begin
      & P ("database.database_replicating", "replica del database in corso")
      & P ("database.database_replication_lagging", "replica del database in ritardo")
      & P ("database.database_backup_running", "backup del database in corso")
-     & P ("database.database_backup_failed", "backup del database non riuscito");
+     & P ("database.database_backup_failed", "backup del database non riuscito")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}: mai} =1 {{one}: una volta} =2 {{other}: "
+          & "due volte} many {{many}: {count} volte} other {{other}: {count} "
+          & "volte}}")
+     & P ("availability.all",
+          "{available} di {total} {total, plural, one {{one}} many {{many}} other "
+          & "{{other}}} {available, plural, one {disponibile} other {disponibili}}")
+     & P ("availability.none", "non ci sono {other} disponibili")
+     & P ("availability.partial",
+          "{available} di {total} {total, plural, one {{one}} many {{many}} other "
+          & "{{other}}} {available, plural, one {disponibile} other {disponibili}}, "
+          & "{unavailable} non {unavailable, plural, one {disponibile} other "
+          & "{disponibili}}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "in coda")
+     & P ("operation.running", "in corso")
+     & P ("operation.blocked", "bloccato")
+     & P ("operation.retrying", "nuovo tentativo")
+     & P ("operation.succeeded", "riuscito")
+     & P ("operation.partially_succeeded", "parzialmente riuscito")
+     & P ("operation.failed", "non riuscito")
+     & P ("operation.canceled", "annullato")
+     & P ("operation.skipped", "ignorato")
+     & P ("operation.stale", "obsoleto")
+     & P ("operation.unknown_state", "sconosciuto")
+     & P ("operation.last_success", "{name}: ultimo esito positivo {time}")
+     & P ("operation.next_retry", "{name}: prossimo tentativo {time}")
+     & P ("operation.stale_run", "{name}: senza aggiornamenti da {time}")
+     & P ("summary.skipped", "{count} {count, plural, one {ignorato} other {ignorati}}")
+     & P ("summary.retried", "{count} {count, plural, one {ritentato} other {ritentati}}")
+     & P ("summary.canceled", "{count} {count, plural, one {annullato} other {annullati}}");
 end Locale_It;

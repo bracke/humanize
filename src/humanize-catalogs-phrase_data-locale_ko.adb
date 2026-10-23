@@ -303,5 +303,31 @@ begin
      & P ("database.database_replicating", "데이터베이스 복제 중")
      & P ("database.database_replication_lagging", "데이터베이스 복제 지연")
      & P ("database.database_backup_running", "데이터베이스 백업 중")
-     & P ("database.database_backup_failed", "데이터베이스 백업 실패");
+     & P ("database.database_backup_failed", "데이터베이스 백업 실패")
+     & P ("times_noun",
+          "{count, plural, =0 {{other} 한 번도 없음} =1 {{other} 한 번} =2 "
+          & "{{other} 두 번} other {{other} {count}회}}")
+     & P ("availability.all", "{other} {total}개 중 {available}개 사용 가능")
+     & P ("availability.none", "사용 가능한 {other} 없음")
+     & P ("availability.partial",
+          "{other} {total}개 중 {available}개 사용 가능, {unavailable}개 "
+          & "사용 불가")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "대기 중")
+     & P ("operation.running", "실행 중")
+     & P ("operation.blocked", "차단됨")
+     & P ("operation.retrying", "재시도 중")
+     & P ("operation.succeeded", "성공")
+     & P ("operation.partially_succeeded", "부분 성공")
+     & P ("operation.failed", "실패")
+     & P ("operation.canceled", "취소됨")
+     & P ("operation.skipped", "건너뜀")
+     & P ("operation.stale", "오래됨")
+     & P ("operation.unknown_state", "알 수 없음")
+     & P ("operation.last_success", "{name} 마지막 성공: {time}")
+     & P ("operation.next_retry", "{name} 다음 재시도: {time}")
+     & P ("operation.stale_run", "{name} {time} 동안 갱신 없음")
+     & P ("summary.skipped", "{count}개 건너뜀")
+     & P ("summary.retried", "{count}개 재시도됨")
+     & P ("summary.canceled", "{count}개 취소됨");
 end Locale_Ko;

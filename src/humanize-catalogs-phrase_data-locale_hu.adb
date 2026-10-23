@@ -309,5 +309,31 @@ begin
      & P ("database.database_replicating", "adatbázis-replikáció folyamatban")
      & P ("database.database_replication_lagging", "adatbázis-replikáció késik")
      & P ("database.database_backup_running", "adatbázis-mentés folyamatban")
-     & P ("database.database_backup_failed", "sikertelen adatbázis-mentés");
+     & P ("database.database_backup_failed", "sikertelen adatbázis-mentés")
+     & P ("times_noun",
+          "{count, plural, =0 {{one}: soha} =1 {{one}: egyszer} =2 {{one}: "
+          & "kétszer} other {{one}: {count} alkalommal}}")
+     & P ("availability.all", "{total} {one} közül {available} elérhető")
+     & P ("availability.none", "nincs elérhető {one}")
+     & P ("availability.partial",
+          "{total} {one} közül {available} elérhető, {unavailable} nem "
+          & "elérhető")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "sorban áll")
+     & P ("operation.running", "fut")
+     & P ("operation.blocked", "blokkolva")
+     & P ("operation.retrying", "újrapróbálkozás")
+     & P ("operation.succeeded", "sikeres")
+     & P ("operation.partially_succeeded", "részben sikeres")
+     & P ("operation.failed", "sikertelen")
+     & P ("operation.canceled", "megszakítva")
+     & P ("operation.skipped", "kihagyva")
+     & P ("operation.stale", "elavult")
+     & P ("operation.unknown_state", "ismeretlen")
+     & P ("operation.last_success", "{name} utolsó sikeres futása: {time}")
+     & P ("operation.next_retry", "{name} következő próbálkozás: {time}")
+     & P ("operation.stale_run", "{name} {time} óta elavult")
+     & P ("summary.skipped", "{count} kihagyva")
+     & P ("summary.retried", "{count} újrapróbálva")
+     & P ("summary.canceled", "{count} megszakítva");
 end Locale_Hu;

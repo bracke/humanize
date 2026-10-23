@@ -324,5 +324,35 @@ begin
      & P ("database.database_replicating", "database replikeres")
      & P ("database.database_replication_lagging", "databasereplikering henger etter")
      & P ("database.database_backup_running", "databasesikkerhetskopiering pågår")
-     & P ("database.database_backup_failed", "databasesikkerhetskopiering mislyktes");
+     & P ("database.database_backup_failed", "databasesikkerhetskopiering mislyktes")
+     & P ("times_noun",
+          "{count, plural, =0 {aldri {other}} =1 {én gang {one}} =2 {to ganger "
+          & "{other}} other {{count} ganger {other}}}")
+     & P ("availability.all",
+          "{available} av {total} {total, plural, one {{one}} other {{other}}} "
+          & "{available, plural, one {tilgjengelig} other {tilgjengelige}}")
+     & P ("availability.none", "ingen {other} tilgjengelige")
+     & P ("availability.partial",
+          "{available} av {total} {total, plural, one {{one}} other {{other}}} "
+          & "{available, plural, one {tilgjengelig} other {tilgjengelige}}, "
+          & "{unavailable} {unavailable, plural, one {utilgjengelig} other "
+          & "{utilgjengelige}}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "i kø")
+     & P ("operation.running", "kjører")
+     & P ("operation.blocked", "blokkert")
+     & P ("operation.retrying", "prøver på nytt")
+     & P ("operation.succeeded", "vellykket")
+     & P ("operation.partially_succeeded", "delvis vellykket")
+     & P ("operation.failed", "mislyktes")
+     & P ("operation.canceled", "avbrutt")
+     & P ("operation.skipped", "hoppet over")
+     & P ("operation.stale", "utdatert")
+     & P ("operation.unknown_state", "ukjent")
+     & P ("operation.last_success", "{name} lyktes sist {time}")
+     & P ("operation.next_retry", "{name} neste forsøk: {time}")
+     & P ("operation.stale_run", "{name} utdatert i {time}")
+     & P ("summary.skipped", "{count} hoppet over")
+     & P ("summary.retried", "{count} forsøkt på nytt")
+     & P ("summary.canceled", "{count} avbrutt");
 end Locale_No;

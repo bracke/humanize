@@ -361,5 +361,36 @@ begin
      & P ("database.database_replicating", "replicação do banco de dados em andamento")
      & P ("database.database_replication_lagging", "replicação do banco de dados atrasada")
      & P ("database.database_backup_running", "backup do banco de dados em andamento")
-     & P ("database.database_backup_failed", "falha no backup do banco de dados");
+     & P ("database.database_backup_failed", "falha no backup do banco de dados")
+     & P ("times_noun",
+          "{count, plural, =0 {{other}: nunca} =1 {{one}: uma vez} =2 {{other}: "
+          & "duas vezes} many {{many}: {count} vezes} other {{other}: {count} "
+          & "vezes}}")
+     & P ("availability.all",
+          "{available} de {total} {total, plural, one {{one}} many {{many}} other "
+          & "{{other}}} {available, plural, one {disponível} other {disponíveis}}")
+     & P ("availability.none", "sem {other} disponíveis")
+     & P ("availability.partial",
+          "{available} de {total} {total, plural, one {{one}} many {{many}} other "
+          & "{{other}}} {available, plural, one {disponível} other "
+          & "{disponíveis}}, {unavailable} {unavailable, plural, one "
+          & "{indisponível} other {indisponíveis}}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "na fila")
+     & P ("operation.running", "em execução")
+     & P ("operation.blocked", "bloqueado")
+     & P ("operation.retrying", "tentando novamente")
+     & P ("operation.succeeded", "bem-sucedido")
+     & P ("operation.partially_succeeded", "parcialmente bem-sucedido")
+     & P ("operation.failed", "com falha")
+     & P ("operation.canceled", "cancelado")
+     & P ("operation.skipped", "ignorado")
+     & P ("operation.stale", "desatualizado")
+     & P ("operation.unknown_state", "desconhecido")
+     & P ("operation.last_success", "{name}: último sucesso {time}")
+     & P ("operation.next_retry", "{name}: próxima tentativa {time}")
+     & P ("operation.stale_run", "{name}: sem atualização há {time}")
+     & P ("summary.skipped", "{count} {count, plural, one {ignorado} other {ignorados}}")
+     & P ("summary.retried", "{count} com nova tentativa")
+     & P ("summary.canceled", "{count} {count, plural, one {cancelado} other {cancelados}}");
 end Locale_Pt;

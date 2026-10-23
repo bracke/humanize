@@ -372,5 +372,34 @@ begin
      & P ("database.database_replicating", "replicare bază de date în curs")
      & P ("database.database_replication_lagging", "replicare bază de date întârziată")
      & P ("database.database_backup_running", "backup bază de date în curs")
-     & P ("database.database_backup_failed", "backup bază de date eșuat");
+     & P ("database.database_backup_failed", "backup bază de date eșuat")
+     & P ("times_noun",
+          "{count, plural, =0 {niciodată {other}} =1 {o dată {one}} =2 {de "
+          & "două ori {other}} few {de {count} ori {other}} other {de {count} de "
+          & "ori {other}}}")
+     & P ("availability.all",
+          "{available} din {total} {total, plural, one {{one}} few {{few}} other "
+          & "{de {other}}} la dispoziție")
+     & P ("availability.none", "nu există {other} la dispoziție")
+     & P ("availability.partial",
+          "{available} din {total} {total, plural, one {{one}} few {{few}} other "
+          & "{de {other}}} la dispoziție, indisponibile: {unavailable}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "în coadă")
+     & P ("operation.running", "în curs")
+     & P ("operation.blocked", "blocat")
+     & P ("operation.retrying", "reîncercare")
+     & P ("operation.succeeded", "reușit")
+     & P ("operation.partially_succeeded", "reușit parțial")
+     & P ("operation.failed", "eșuat")
+     & P ("operation.canceled", "anulat")
+     & P ("operation.skipped", "omis")
+     & P ("operation.stale", "învechit")
+     & P ("operation.unknown_state", "necunoscut")
+     & P ("operation.last_success", "{name} – ultima reușită: {time}")
+     & P ("operation.next_retry", "{name} – următoarea reîncercare: {time}")
+     & P ("operation.stale_run", "{name} – fără actualizare de {time}")
+     & P ("summary.skipped", "omise: {count}")
+     & P ("summary.retried", "reîncercate: {count}")
+     & P ("summary.canceled", "anulate: {count}");
 end Locale_Ro;

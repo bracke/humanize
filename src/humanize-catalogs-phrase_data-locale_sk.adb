@@ -7,9 +7,6 @@ begin
           "spolu {total} {total, plural, one {{one}} few {{few}} many "
           & "{{genitive_one}} other {{genitive_other}}}")
      & P ("filtered_count.none", "{other}: žiadne zhody")
-     & P ("filtered_count.all",
-          "zhoda pri všetkých: {total} {total, plural, one {{one}} few {{few}} "
-          & "many {{genitive_one}} other {{genitive_other}}}")
      & P ("filtered_count.some",
           "{matching, plural, one {vyhovuje} few {vyhovujú} many {vyhovuje} "
           & "other {vyhovuje}} {matching} z {total} {total, plural, one "
@@ -39,7 +36,6 @@ begin
           & "{oznámenia}}} many {{count} {severity, select, error {chyby} warning "
           & "{varovania} other {oznámenia}}} other {{count} {severity, select, "
           & "error {chýb} warning {varovaní} other {oznámení}}}}")
-     & P ("collection.empty", "{other}: žiadne")
      & P ("collection.none_shown", "{other}: nič sa nezobrazuje")
      & P ("collection.showing_hidden",
           "zobrazené: {visible} z {total} {total, plural, one {{genitive_one}} "
@@ -160,7 +156,6 @@ begin
           & "running {beží} waiting {čaká} paused {pozastavené} complete "
           & "{dokončené} failed {zlyhalo} stale {zastarané} skipped "
           & "{preskočené} other {{state}}}: {details}")
-     & P ("summary.none", "{other}: žiadne")
      & P ("summary.completed",
           "dokončené: {count} {count, plural, one {{one}} few {{few}} many "
           & "{{genitive_one}} other {{genitive_other}}}")
@@ -393,5 +388,43 @@ begin
           & "other {# {genitive_other}}}")
      & P ("noun",
           "{count, plural, one {{one}} few {{few}} many {{genitive_one}} other "
-          & "{{genitive_other}}}");
+          & "{{genitive_other}}}")
+     & P ("collection.empty", "{other}: 0")
+     & P ("summary.none", "{other}: 0")
+     & P ("filtered_count.all",
+          "zhoda: {total} z {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
+     & P ("noun.accusative",
+          "{count, plural, one {{accusative_one}} few {{accusative_other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}")
+     & P ("number_comparison.case", "accusative")
+     & P ("times_noun",
+          "{count, plural, =0 {nikdy {other}} =1 {raz {one}} =2 {dvakrát "
+          & "{other}} other {{count}-krát {other}}}")
+     & P ("availability.all",
+          "dostupné: {available} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
+     & P ("availability.none", "žiadne dostupné {other}")
+     & P ("availability.partial",
+          "dostupné: {available} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other "
+          & "{{genitive_other}}}, nedostupné: {unavailable}")
+     & P ("operation_progress", "{name} – {state}: {details}")
+     & P ("operation.queued", "vo fronte")
+     & P ("operation.running", "beží")
+     & P ("operation.blocked", "blokované")
+     & P ("operation.retrying", "opakuje sa")
+     & P ("operation.succeeded", "úspešne dokončené")
+     & P ("operation.partially_succeeded", "čiastočne úspešné")
+     & P ("operation.failed", "zlyhalo")
+     & P ("operation.canceled", "zrušené")
+     & P ("operation.skipped", "preskočené")
+     & P ("operation.stale", "zastarané")
+     & P ("operation.unknown_state", "neznáme")
+     & P ("operation.last_success", "{name}: naposledy úspešne {time}")
+     & P ("operation.next_retry", "{name}: ďalší pokus {time}")
+     & P ("operation.stale_run", "{name} – zastarané: {time}")
+     & P ("summary.skipped", "preskočené: {count}")
+     & P ("summary.retried", "opakované: {count}")
+     & P ("summary.canceled", "zrušené: {count}");
 end Locale_Sk;

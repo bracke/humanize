@@ -10,7 +10,10 @@ with Humanize.Contexts;
 with Humanize.Datetimes;
 with Humanize.Durations;
 with Humanize.Lists;
+with Humanize.Frequencies;
 with Humanize.Numbers;
+with Humanize.Operations;
+with Humanize.Resources;
 with Humanize.Parsing.Phrases;
 with Humanize.Phrases;
 with Humanize.Status;
@@ -164,6 +167,18 @@ package body Humanize.Tests.Phrase_Consistency is
       Check ("number_comparison.equal", Ph.Number_Comparison (En, 10.0, 10.0));
       Check ("percent_comparison.lower", Ph.Percent_Comparison (En, 8.0, 10.0));
       Check ("date_comparison.same", Ph.Date_Comparison (En, Day, Day));
+      Check ("times_noun", Humanize.Frequencies.Times (En, 0, "file", "files"));
+      Check ("times_noun", Humanize.Frequencies.Times (En, 1, "file", "files"));
+      Check ("times_noun", Humanize.Frequencies.Times (En, 2, "file", "files"));
+      Check ("times_noun", Humanize.Frequencies.Times (En, 7, "file", "files"));
+      Check ("availability.all", Humanize.Resources.Availability_Label (En, 3, 3));
+      Check ("availability.none", Humanize.Resources.Availability_Label (En, 0, 3));
+      Check ("availability.partial", Humanize.Resources.Availability_Label (En, 2, 5));
+      Check ("operation.partially_succeeded",
+             Humanize.Operations.Operation_State_Label (En, Humanize.Operations.Partially_Succeeded));
+      Check ("operation.last_success", Humanize.Operations.Last_Success_Label (En, "import", "2 hours ago"));
+      Check ("operation.next_retry", Humanize.Operations.Next_Retry_Label (En, "import", "in 5 minutes"));
+      Check ("operation.stale_run", Humanize.Operations.Stale_Run_Label (En, "import", "3 days"));
    end Test_Formatter_Templates;
 
    overriding function Name (T : Test_Case) return AUnit.Message_String is
