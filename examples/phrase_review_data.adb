@@ -67,7 +67,8 @@ procedure Phrase_Review_Data is
       Numbers : constant array (Positive range <>) of Unbounded_String :=
         [+"total", +"matching", +"visible", +"remaining", +"page", +"size", +"first", +"last", +"position",
          +"selected", +"showing", +"count", +"hidden", +"done", +"step", +"attempt", +"rate", +"days",
-         +"hours", +"every", +"hits", +"misses", +"changed", +"added", +"removed"];
+         +"hours", +"every", +"hits", +"misses", +"changed", +"added", +"removed", +"available",
+         +"unavailable"];
       Samples : constant array (Positive range <>) of Locale_Row :=
         [(+"one", +"file"), (+"other", +"files"), (+"zero", +"files(zero)"), (+"two", +"files(two)"),
          (+"few", +"files(few)"), (+"many", +"files(many)"), (+"genitive_one", +"file(gen)"),
@@ -76,7 +77,8 @@ procedure Phrase_Review_Data is
          (+"field", +"Title"), (+"before", +"Draft"), (+"after", +"Final"), (+"value", +"2.5"),
          (+"current", +"Today"), (+"baseline", +"Yesterday"), (+"quantity", +"5 MB"),
          (+"details", +"3 files queued, 1 failed"), (+"domain", +"sync"), (+"state", +"running"),
-         (+"difference", +"2 years"), (+"measure", +"12.5 %"), (+"percent", +"50")];
+         (+"difference", +"2 years"), (+"measure", +"12.5 %"), (+"percent", +"50"), (+"name", +"Import"),
+         (+"time", +"2 hours ago")];
    begin
       for Name of Numbers loop
          Messages.Arguments.Set (Args, To_String (Name), Count);
