@@ -392,8 +392,10 @@ begin
      & P ("collection.empty", "{other}: 0")
      & P ("summary.none", "{other}: 0")
      & P ("filtered_count.all",
-          "zhoda: {total} z {total} {total, plural, one {{genitive_one}} few "
-          & "{{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
+          "{total, plural, one {zhoda pri {total} {locative_one}} few {zhoda pri "
+          & "všetkých {total} {locative_other}} many {zhoda pri všetkých "
+          & "{total} {genitive_one}} other {zhoda pri všetkých {total} "
+          & "{locative_other}}}")
      & P ("noun.accusative",
           "{count, plural, one {{accusative_one}} few {{accusative_other}} many "
           & "{{genitive_one}} other {{genitive_other}}}")

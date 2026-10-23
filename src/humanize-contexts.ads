@@ -46,7 +46,11 @@ package Humanize.Contexts is
       Genitive_One     : String := "";
       Genitive_Other   : String := "";
       Accusative_One   : String := "";
-      Accusative_Other : String := "")
+      Accusative_Other : String := "";
+      Locative_One       : String := "";
+      Locative_Other     : String := "";
+      Instrumental_One   : String := "";
+      Instrumental_Other : String := "")
       return Context;
    --  A caller's noun has two forms (a singular and a plural); languages with
    --  more plural categories need more. Registers the extra CLDR forms of the
@@ -63,6 +67,11 @@ package Humanize.Contexts is
    --  @param Genitive_Other Plural genitive, or "" for the plural form.
    --  @param Accusative_One Singular accusative, or "" for the singular.
    --  @param Accusative_Other Plural accusative, or "" for the plural form.
+   --  @param Locative_One Singular locative ("súbore" after Slovak "pri"), or
+   --  "" for the singular.
+   --  @param Locative_Other Plural locative, or "" for the plural form.
+   --  @param Instrumental_One Singular instrumental, or "" for the singular.
+   --  @param Instrumental_Other Plural instrumental, or "" for the plural form.
    --  @return Item with the forms registered.
 
    function Noun_Form
@@ -73,7 +82,8 @@ package Humanize.Contexts is
    --  @param Item Context to inspect.
    --  @param Plural The noun's plural form.
    --  @param Category "zero", "two", "few", "many", "genitive_one",
-   --  "genitive_other", "accusative_one" or "accusative_other".
+   --  "genitive_other", "accusative_one", "accusative_other", "locative_one",
+   --  "locative_other", "instrumental_one" or "instrumental_other".
    --  @return The registered form, or Plural when none is registered.
 
 private

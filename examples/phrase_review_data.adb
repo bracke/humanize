@@ -32,8 +32,10 @@ procedure Phrase_Review_Data is
    function "+" (Text : String) return Unbounded_String renames To_Unbounded_String;
 
    Locales : constant array (Positive range <>) of Locale_Row :=
-     [(+"en", +"English"), (+"en-GB", +"English (UK)"), (+"da", +"Danish"), (+"de", +"German"),
-      (+"de-CH", +"German (Switzerland)"), (+"fr", +"French"), (+"fr-CA", +"French (Canada)"),
+     [(+"en", +"English"), (+"en-GB", +"English (UK)"), (+"en-CA", +"English (Canada)"),
+      (+"da", +"Danish"), (+"de", +"German"),
+      (+"de-CH", +"German (Switzerland)"), (+"de-LI", +"German (Liechtenstein)"), (+"fr", +"French"),
+      (+"fr-CA", +"French (Canada)"), (+"fr-CH", +"French (Switzerland)"), (+"fr-BE", +"French (Belgium)"),
       (+"es", +"Spanish"), (+"es-419", +"Spanish (Latin America)"), (+"it", +"Italian"),
       (+"pt", +"Portuguese (Brazil)"), (+"pt-PT", +"Portuguese (Portugal)"), (+"nl", +"Dutch"),
       (+"sv", +"Swedish"), (+"no", +"Norwegian"),
@@ -43,7 +45,8 @@ procedure Phrase_Review_Data is
       (+"ro", +"Romanian"), (+"tr", +"Turkish"), (+"id", +"Indonesian"), (+"ms", +"Malay"),
       (+"eo", +"Esperanto"), (+"vi", +"Vietnamese"), (+"sw", +"Swahili"), (+"af", +"Afrikaans"),
       (+"ja", +"Japanese"), (+"ko", +"Korean"), (+"zh", +"Chinese (Simplified)"),
-      (+"zh-Hant", +"Chinese (Traditional)"), (+"ar", +"Arabic"), (+"hi", +"Hindi")];
+      (+"zh-Hant", +"Chinese (Traditional)"), (+"zh-HK", +"Chinese (Hong Kong)"), (+"ar", +"Arabic"),
+      (+"hi", +"Hindi")];
 
    --  Text as a JSON string literal.
    function Quoted (Text : String) return String is
@@ -73,7 +76,9 @@ procedure Phrase_Review_Data is
         [(+"one", +"file"), (+"other", +"files"), (+"zero", +"files(zero)"), (+"two", +"files(two)"),
          (+"few", +"files(few)"), (+"many", +"files(many)"), (+"genitive_one", +"file(gen)"),
          (+"genitive_other", +"files(gen)"), (+"accusative_one", +"file(acc)"),
-         (+"accusative_other", +"files(acc)"), (+"severity", +"warning"), (+"unit", +"item"),
+         (+"accusative_other", +"files(acc)"),
+         (+"locative_one", +"file(loc)"), (+"locative_other", +"files(loc)"), (+"instrumental_one", +"file(ins)"),
+         (+"instrumental_other", +"files(ins)"), (+"severity", +"warning"), (+"unit", +"item"),
          (+"field", +"Title"), (+"before", +"Draft"), (+"after", +"Final"), (+"value", +"2.5"),
          (+"current", +"Today"), (+"baseline", +"Yesterday"), (+"quantity", +"5 MB"),
          (+"details", +"3 files queued, 1 failed"), (+"domain", +"sync"), (+"state", +"running"),

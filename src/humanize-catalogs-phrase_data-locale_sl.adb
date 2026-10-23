@@ -8,8 +8,9 @@ begin
           & "other {{genitive_other}}}")
      & P ("filtered_count.none", "ni ujemajočih se {genitive_other}")
      & P ("filtered_count.all",
-          "ujemanje pri vseh: {total} {total, plural, one {{one}} two {{two}} few "
-          & "{{few}} other {{genitive_other}}}")
+          "{total, plural, =1 {ujemanje pri {total} {locative_one}} one {ujemanje "
+          & "pri vseh {total} {locative_one}} other {ujemanje pri vseh {total} "
+          & "{locative_other}}}")
      & P ("filtered_count.some",
           "{matching, plural, one {ujema se} two {ujemata se} few {ujemajo se} "
           & "other {ujema se}} {matching} od {total} {total, plural, one "

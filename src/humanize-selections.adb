@@ -117,11 +117,20 @@ package body Humanize.Selections is
    is
       Result : Message_Selection := Selection;
    begin
-      if Result.Named_Count < Max_Named then
-         Result.Named_Count := Result.Named_Count + 1;
-         Result.Named (Result.Named_Count) :=
-           (Name => To_Unbounded_String (Name), Value => To_Unbounded_String (Value));
+      --  A name given again takes the new value.
+      for I in 1 .. Result.Named_Count loop
+         if To_String (Result.Named (I).Name) = Name then
+            Result.Named (I).Value := To_Unbounded_String (Value);
+            return Result;
+         end if;
+      end loop;
+      if Result.Named_Count = Max_Named then
+         raise Program_Error with "phrase " & To_String (Result.Phrase_Name) & " has more than"
+           & Max_Named'Image & " arguments";
       end if;
+      Result.Named_Count := Result.Named_Count + 1;
+      Result.Named (Result.Named_Count) :=
+        (Name => To_Unbounded_String (Name), Value => To_Unbounded_String (Value));
       return Result;
    end With_Arg;
 

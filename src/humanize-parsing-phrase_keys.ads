@@ -8,41 +8,56 @@ private package Humanize.Parsing.Phrase_Keys is
    --  "<name>|<numeric args>|<select args>|<text args>", the arguments
    --  comma-separated.
    Entries : constant array (Positive range <>) of Text_Access :=
-     [new String'("all_count|total||one,other,zero,two,few,many,genitive_one,"
-                  & "genitive_other,accusative_one,accusative_other"),
-      new String'("filtered_count.none|matching,total||one,other,zero,two,few,many,"
-                  & "genitive_one,genitive_other,accusative_one,accusative_other"),
-      new String'("filtered_count.all|matching,total||one,other,zero,two,few,many,"
-                  & "genitive_one,genitive_other,accusative_one,accusative_other"),
-      new String'("filtered_count.some|matching,total||one,other,zero,two,few,many,"
-                  & "genitive_one,genitive_other,accusative_one,accusative_other"),
+     [new String'("all_count|total||one,other,zero,two,few,many,genitive_one,genitive_other,"
+                  & "accusative_one,accusative_other,locative_one,locative_other,instrumental_one,"
+                  & "instrumental_other"),
+      new String'("filtered_count.none|matching,total||one,other,zero,two,few,many,genitive_one,"
+                  & "genitive_other,accusative_one,accusative_other,locative_one,locative_other,"
+                  & "instrumental_one,instrumental_other"),
+      new String'("filtered_count.all|matching,total||one,other,zero,two,few,many,genitive_one,"
+                  & "genitive_other,accusative_one,accusative_other,locative_one,locative_other,"
+                  & "instrumental_one,instrumental_other"),
+      new String'("filtered_count.some|matching,total||one,other,zero,two,few,many,genitive_one,"
+                  & "genitive_other,accusative_one,accusative_other,locative_one,locative_other,"
+                  & "instrumental_one,instrumental_other"),
       new String'("more_count|visible,remaining||"),
       new String'("others_count|remaining||first"),
       new String'("page_count|page,total||"),
-      new String'("page_size|size||one,other,zero,two,few,many,genitive_one,"
-                  & "genitive_other,accusative_one,accusative_other"),
-      new String'("pagination_range|first,last,total||one,other,zero,two,few,many,"
-                  & "genitive_one,genitive_other,accusative_one,accusative_other"),
+      new String'("page_size|size||one,other,zero,two,few,many,genitive_one,genitive_other,"
+                  & "accusative_one,accusative_other,locative_one,locative_other,instrumental_one,"
+                  & "instrumental_other"),
+      new String'("pagination_range|first,last,total||one,other,zero,two,few,many,genitive_one,"
+                  & "genitive_other,accusative_one,accusative_other,locative_one,locative_other,"
+                  & "instrumental_one,instrumental_other"),
       new String'("position_count|position,total||"),
-      new String'("selection_count|selected,total||one,other,zero,two,few,many,"
-                  & "genitive_one,genitive_other,accusative_one,accusative_other"),
+      new String'("selection_count|selected,total||one,other,zero,two,few,many,genitive_one,"
+                  & "genitive_other,accusative_one,accusative_other,locative_one,locative_other,"
+                  & "instrumental_one,instrumental_other"),
       new String'("showing_count|showing,total||one,other,zero,two,few,many,genitive_one,"
-                  & "genitive_other,accusative_one,accusative_other"),
+                  & "genitive_other,accusative_one,accusative_other,locative_one,locative_other,"
+                  & "instrumental_one,instrumental_other"),
       new String'("validation_count|count|severity|"),
-      new String'("collection.empty|visible,total,hidden||one,other,zero,two,few,many,"
-                  & "genitive_one,genitive_other,accusative_one,accusative_other"),
-      new String'("collection.none_shown|visible,total,hidden||one,other,zero,two,few,"
-                  & "many,genitive_one,genitive_other,accusative_one,accusative_other"),
-      new String'("collection.showing_hidden|visible,total,hidden||one,other,zero,two,"
-                  & "few,many,genitive_one,genitive_other,accusative_one,accusative_other"),
+      new String'("collection.empty|visible,total,hidden||one,other,zero,two,few,many,genitive_one,"
+                  & "genitive_other,accusative_one,accusative_other,locative_one,locative_other,"
+                  & "instrumental_one,instrumental_other"),
+      new String'("collection.none_shown|visible,total,hidden||one,other,zero,two,few,many,"
+                  & "genitive_one,genitive_other,accusative_one,accusative_other,locative_one,"
+                  & "locative_other,instrumental_one,instrumental_other"),
+      new String'("collection.showing_hidden|visible,total,hidden||one,other,zero,two,few,many,"
+                  & "genitive_one,genitive_other,accusative_one,accusative_other,locative_one,"
+                  & "locative_other,instrumental_one,instrumental_other"),
       new String'("collection.showing|visible,total,hidden||one,other,zero,two,few,many,"
-                  & "genitive_one,genitive_other,accusative_one,accusative_other"),
-      new String'("collection.shown_hidden|visible,total,hidden||one,other,zero,two,few,"
-                  & "many,genitive_one,genitive_other,accusative_one,accusative_other"),
-      new String'("collection.shown|visible,total,hidden||one,other,zero,two,few,many,"
-                  & "genitive_one,genitive_other,accusative_one,accusative_other"),
-      new String'("collection.visible_out_of|visible,total,hidden||one,other,zero,two,"
-                  & "few,many,genitive_one,genitive_other,accusative_one,accusative_other"),
+                  & "genitive_one,genitive_other,accusative_one,accusative_other,locative_one,"
+                  & "locative_other,instrumental_one,instrumental_other"),
+      new String'("collection.shown_hidden|visible,total,hidden||one,other,zero,two,few,many,"
+                  & "genitive_one,genitive_other,accusative_one,accusative_other,locative_one,"
+                  & "locative_other,instrumental_one,instrumental_other"),
+      new String'("collection.shown|visible,total,hidden||one,other,zero,two,few,many,genitive_one,"
+                  & "genitive_other,accusative_one,accusative_other,locative_one,locative_other,"
+                  & "instrumental_one,instrumental_other"),
+      new String'("collection.visible_out_of|visible,total,hidden||one,other,zero,two,few,many,"
+                  & "genitive_one,genitive_other,accusative_one,accusative_other,locative_one,"
+                  & "locative_other,instrumental_one,instrumental_other"),
       new String'("complete_count|done,total||"),
       new String'("percent_complete|||percent"),
       new String'("step_count|step,total||"),
@@ -73,8 +88,9 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("recurrence.year|every||"),
       new String'("cache_summary.empty|hits,misses,rate||"),
       new String'("cache_summary|hits,misses,rate||"),
-      new String'("field_change_summary|total,changed,added,removed||one,other,zero,two,"
-                  & "few,many,genitive_one,genitive_other,accusative_one,accusative_other"),
+      new String'("field_change_summary|total,changed,added,removed||one,other,zero,two,few,many,"
+                  & "genitive_one,genitive_other,accusative_one,accusative_other,locative_one,"
+                  & "locative_other,instrumental_one,instrumental_other"),
       new String'("field_diff|||field,before,after"),
       new String'("field_added|||field,value"),
       new String'("field_removed|||field,value"),
@@ -94,14 +110,18 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("queue_summary|||details"),
       new String'("domain_summary||domain,state|details"),
       new String'("summary.none|count,total||one,other,zero,two,few,many,genitive_one,"
-                  & "genitive_other,accusative_one,accusative_other"),
-      new String'("summary.completed|count,total||one,other,zero,two,few,many,"
-                  & "genitive_one,genitive_other,accusative_one,accusative_other"),
-      new String'("summary.completed_of|count,total||one,other,zero,two,few,many,"
-                  & "genitive_one,genitive_other,accusative_one,accusative_other"),
+                  & "genitive_other,accusative_one,accusative_other,locative_one,locative_other,"
+                  & "instrumental_one,instrumental_other"),
+      new String'("summary.completed|count,total||one,other,zero,two,few,many,genitive_one,"
+                  & "genitive_other,accusative_one,accusative_other,locative_one,locative_other,"
+                  & "instrumental_one,instrumental_other"),
+      new String'("summary.completed_of|count,total||one,other,zero,two,few,many,genitive_one,"
+                  & "genitive_other,accusative_one,accusative_other,locative_one,locative_other,"
+                  & "instrumental_one,instrumental_other"),
       new String'("summary.failed|count||"),
-      new String'("summary.queued|count||one,other,zero,two,few,many,genitive_one,"
-                  & "genitive_other,accusative_one,accusative_other"),
+      new String'("summary.queued|count||one,other,zero,two,few,many,genitive_one,genitive_other,"
+                  & "accusative_one,accusative_other,locative_one,locative_other,instrumental_one,"
+                  & "instrumental_other"),
       new String'("summary.running|count||"),
       new String'("summary.complete|count||"),
       new String'("backup.backup_running|||"),
@@ -318,14 +338,18 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("database.database_replication_lagging|||"),
       new String'("database.database_backup_running|||"),
       new String'("database.database_backup_failed|||"),
-      new String'("times_noun|count||one,other,zero,two,few,many,genitive_one,"
-                  & "genitive_other,accusative_one,accusative_other"),
-      new String'("availability.all|available,total,unavailable||one,other,zero,two,few,"
-                  & "many,genitive_one,genitive_other,accusative_one,accusative_other"),
-      new String'("availability.none|available,total,unavailable||one,other,zero,two,few,"
-                  & "many,genitive_one,genitive_other,accusative_one,accusative_other"),
-      new String'("availability.partial|available,total,unavailable||one,other,zero,two,"
-                  & "few,many,genitive_one,genitive_other,accusative_one,accusative_other"),
+      new String'("times_noun|count||one,other,zero,two,few,many,genitive_one,genitive_other,"
+                  & "accusative_one,accusative_other,locative_one,locative_other,instrumental_one,"
+                  & "instrumental_other"),
+      new String'("availability.all|available,total,unavailable||one,other,zero,two,few,many,"
+                  & "genitive_one,genitive_other,accusative_one,accusative_other,locative_one,"
+                  & "locative_other,instrumental_one,instrumental_other"),
+      new String'("availability.none|available,total,unavailable||one,other,zero,two,few,many,"
+                  & "genitive_one,genitive_other,accusative_one,accusative_other,locative_one,"
+                  & "locative_other,instrumental_one,instrumental_other"),
+      new String'("availability.partial|available,total,unavailable||one,other,zero,two,few,many,"
+                  & "genitive_one,genitive_other,accusative_one,accusative_other,locative_one,"
+                  & "locative_other,instrumental_one,instrumental_other"),
       new String'("operation_progress|||name,state,details"),
       new String'("operation.queued|||"),
       new String'("operation.running|||"),

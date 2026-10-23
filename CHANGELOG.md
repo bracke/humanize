@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+* **Locative and instrumental noun forms.** `With_Noun_Forms` takes
+  `Locative_One/Other` and `Instrumental_One/Other`; Slovak and Slovenian
+  "matches in all N files" use the locative ("zhoda pri všetkých 5
+  súboroch").
+* A phrase selection holds 32 arguments (was 16, and the 17th was dropped
+  without a word, which broke availability phrases once the noun had 14
+  forms); a repeated name replaces its value, and overflowing raises.
+* The phrase review data covers en-CA, de-LI, fr-CH, fr-BE and zh-HK.
+
 * Regional overrides for en-CA ("cancelled"), fr-CH and fr-BE ("jours
   ouvrables") and zh-Hant-HK (今日, 上載, 每星期), which zh-HK and zh-MO now
   reach; en-001 gains the British spelling of the operation and summary

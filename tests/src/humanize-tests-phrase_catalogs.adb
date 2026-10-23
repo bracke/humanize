@@ -1,3 +1,4 @@
+with Ada.Strings.UTF_Encoding.Wide_Wide_Strings;
 with Ada.Calendar;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
@@ -154,6 +155,10 @@ package body Humanize.Tests.Phrase_Catalogs is
             Messages.Arguments.Set (Args, "genitive_other", "files");
             Messages.Arguments.Set (Args, "accusative_one", "file");
             Messages.Arguments.Set (Args, "accusative_other", "files");
+            Messages.Arguments.Set (Args, "locative_one", "file");
+            Messages.Arguments.Set (Args, "locative_other", "files");
+            Messages.Arguments.Set (Args, "instrumental_one", "file");
+            Messages.Arguments.Set (Args, "instrumental_other", "files");
             Messages.Arguments.Set (Args, "severity", "error");
             Messages.Arguments.Set (Args, "unit", "item");
             Messages.Arguments.Set (Args, "field", "name");
@@ -238,6 +243,21 @@ package body Humanize.Tests.Phrase_Catalogs is
             and then Image (Humanize.Lists.Count (Forms, 22, "plik", "pliki")) = "22 pliki"
             and then Image (Humanize.Lists.Count (Forms, 1, "plik", "pliki")) = "1 plik",
             "count by Polish categories: [" & Image (Humanize.Lists.Count (Forms, 5, "plik", "pliki")) & "]");
+      end;
+      --  Slovak "pri" governs the locative: "zhoda pri všetkých 5 súboroch".
+      declare
+         function U (Text : Wide_Wide_String) return String is
+           (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode (Text));
+         Sk  : constant Humanize.Contexts.Context :=
+           Humanize.Contexts.With_Noun_Forms
+             (Humanize.Contexts.Create (Runtime'Unchecked_Access, "sk"), U ("súbory"),
+              Genitive_One => U ("súboru"), Genitive_Other => U ("súborov"),
+              Locative_One => U ("súbore"), Locative_Other => U ("súboroch"));
+         All_Five : constant String := Image (Humanize.Lists.Filtered_Count (Sk, 5, 5, U ("súbor"), U ("súbory")));
+      begin
+         AUnit.Assertions.Assert
+           (Ada.Strings.Unbounded.Index (To_Unbounded_String (All_Five), U ("súboroch")) > 0,
+            "Slovak locative: [" & All_Five & "]");
       end;
    end Test_Registered_Noun_Forms;
 
@@ -363,7 +383,8 @@ package body Humanize.Tests.Phrase_Catalogs is
      [+"en", +"de", +"ru", +"ja", +"ar"];
    Noun_Arguments : constant array (Positive range <>) of Unbounded_String :=
      [+"one", +"other", +"zero", +"two", +"few", +"many", +"genitive_one", +"genitive_other",
-      +"accusative_one", +"accusative_other"];
+      +"accusative_one", +"accusative_other", +"locative_one", +"locative_other", +"instrumental_one",
+      +"instrumental_other"];
    Text_Arguments : constant array (Positive range <>) of Unbounded_String :=
      [+"unit", +"field", +"before", +"after", +"current", +"baseline", +"quantity",
       +"details", +"difference", +"measure", +"name", +"time"];

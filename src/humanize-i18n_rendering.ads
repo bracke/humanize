@@ -53,6 +53,7 @@ private package Humanize.I18N_Rendering is
    --  "few" and "many" -- the forms registered on Context for that plural
    --  (Humanize.Contexts.With_Noun_Forms), else the plural -- and
    --  "genitive_one"/"genitive_other"/"accusative_one"/"accusative_other",
+   --  "locative_one"/"locative_other"/"instrumental_one"/"instrumental_other",
    --  else the singular or plural.
    function With_Nouns
      (Context   : Humanize.Contexts.Context;

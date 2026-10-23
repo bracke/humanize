@@ -20,10 +20,12 @@ here.
   (`Humanize.Contexts.With_Noun_Forms (Ctx, "pliki", Many => "plików")`); each
   is the plural form where none is registered. Use them in languages with those
   plural categories: `one {{one}} few {{few}} many {{many}} other {{other}}`.
-- **`genitive_one` / `genitive_other` / `accusative_one` / `accusative_other`**
-  are the noun's case forms, registered the same way, else the singular or
-  plural: Polish "z {total} {total, plural, one {{genitive_one}} other
-  {{genitive_other}}}" ("z 5 plików").
+- **`genitive_one` / `genitive_other` / `accusative_one` / `accusative_other`
+  / `locative_one` / `locative_other` / `instrumental_one` /
+  `instrumental_other`** are the noun's case forms, registered the same way,
+  else the singular or plural: Polish "z {total} {total, plural, one
+  {{genitive_one}} other {{genitive_other}}}" ("z 5 plików"), Slovak "pri
+  všetkých {locative_other}".
 - **Text arguments** (`first`, `severity`, ...) are inserted as given, or
   selected on with `{severity, select, ...}`.
 
@@ -196,8 +198,8 @@ need only singular and plural.
 |---|---|---|
 | Polish | nominative plural ("pliki") | Genitive_One "pliku", Genitive_Other "plików"; Accusative_One/Other where they differ ("kartę") |
 | Czech | nominative plural ("soubory") | Genitive_One "souboru", Genitive_Other "souborů" |
-| Slovak | nominative plural ("súbory") | Genitive_One "súboru", Genitive_Other "súborov" |
-| Slovenian | nominative plural ("datoteke") | Two: dual ("datoteki"); Genitive_One "datoteke", Genitive_Other "datotek" |
+| Slovak | nominative plural ("súbory") | Genitive_One "súboru", Genitive_Other "súborov"; Locative_One "súbore", Locative_Other "súboroch" |
+| Slovenian | nominative plural ("datoteke") | Two: dual ("datoteki"); Genitive_One "datoteke", Genitive_Other "datotek"; Locative_One "datoteki", Locative_Other "datotekah" |
 | Russian | nominative plural ("файлы") | Few: genitive singular ("файла"); Many: genitive plural ("файлов"); Genitive_One "файла", Genitive_Other "файлов" |
 | Ukrainian | nominative plural ("файли") | Many: genitive plural ("файлів"); Genitive_One "файлу", Genitive_Other "файлів" |
 | Lithuanian | nominative plural ("failai") | Genitive_One "failo", Genitive_Other "failų" |
