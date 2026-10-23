@@ -186,4 +186,25 @@ begin
    P ("signal.reason.19", "Parado (sinal)");
    P ("signal.reason.20", "Parado");
    P ("signal.reason.28", "Janela alterada");
+   P ("diff.redacted", "diff {path}: alterado; valores ocultos");
+   P ("file.kind.plain", "ficheiro");
+   P ("file.kind.archive", "pacote de ficheiros");
+   P ("file.kind.compressed", "ficheiro comprimido");
+   P ("file.kind.unknown", "ficheiro desconhecido");
+   P ("file.metadata", "ficheiro {name}: {kind}");
+   P ("file.signature_match", "assinatura de ficheiro {name}: {kind}, corresponde à extensão");
+   P ("file.signature_mismatch",
+      "assinatura de ficheiro {name}: extensão do tipo {expected}, conteúdo "
+      & "do tipo {actual}");
+   P ("network_event.connecting", "a ligar");
+   P ("network_event.connected", "ligado");
+   P ("network_event.retrying", "a tentar novamente");
+   P ("network_event.stalled", "parado");
+   P ("checksum.mismatch", "soma de verificação não coincidente");
+   P ("checksum.missing", "soma de verificação em falta");
+   P ("time_zone.local", "fuso horário: hora local");
+   P ("time_zone.dst", "{text}, aplica a hora de verão");
+   P ("zoned_time.plain", "hora com fuso: {time} {offset}");
+   P ("zoned_time.named", "hora com fuso: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, hora local ambígua");
 end Locale_Pt_Pt;

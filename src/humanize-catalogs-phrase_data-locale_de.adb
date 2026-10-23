@@ -624,4 +624,60 @@ begin
    P ("errno.reason.unknown", "unbekannter Fehler");
    P ("signal.reason.unknown", "unbekanntes Signal");
    P ("sqlstate.reason.unknown", "unbekannte SQLSTATE-Klasse");
+   P ("diff.changed", "Diff {path}: geändert von {before} zu {after}");
+   P ("diff.added", "Diff {path}: {after} hinzugefügt");
+   P ("diff.removed", "Diff {path}: {before} entfernt");
+   P ("diff.unchanged", "Diff {path}: unverändert");
+   P ("diff.redacted", "Diff {path}: geändert; Werte geschwärzt");
+   P ("validation.result",
+      "Validierungsergebnis: {fields} {fields, plural, one {Feld} other "
+      & "{Felder}}, {errors} {errors, plural, one {Fehler} other {Fehler}}, "
+      & "{warnings} {warnings, plural, one {Warnung} other {Warnungen}}, "
+      & "{required} {required, plural, one {Pflichtfeld} other "
+      & "{Pflichtfelder}}, {hidden} {hidden, plural, one {verborgenes Problem} "
+      & "other {verborgene Probleme}}");
+   P ("file.kind.plain", "Datei");
+   P ("file.kind.directory", "Verzeichnis");
+   P ("file.kind.archive", "Archiv");
+   P ("file.kind.compressed", "komprimierte Datei");
+   P ("file.kind.image", "Bild");
+   P ("file.kind.script", "Skript");
+   P ("file.kind.executable", "ausführbare Datei");
+   P ("file.kind.unknown", "unbekannte Datei");
+   P ("file.metadata", "Datei {name}: {kind}");
+   P ("file.checksum", "{text}, Prüfsumme {checksum}");
+   P ("file.signature_match", "Dateisignatur {name}: {kind}, passt zur Dateiendung");
+   P ("file.signature_mismatch",
+      "Dateisignatur {name}: laut Dateiendung {expected}, laut Inhalt "
+      & "{actual}");
+   P ("network_event.connecting", "wird verbunden");
+   P ("network_event.connected", "verbunden");
+   P ("network_event.redirected", "umgeleitet");
+   P ("network_event.retrying", "neuer Versuch");
+   P ("network_event.rate_limited", "Ratenlimit erreicht");
+   P ("network_event.tls_failed", "TLS fehlgeschlagen");
+   P ("network_event.stalled", "ins Stocken geraten");
+   P ("network_event.complete", "abgeschlossen");
+   P ("network_event.failed", "fehlgeschlagen");
+   P ("network.session", "Netzwerk {endpoint}: {state}");
+   P ("diff_node.field", "Feld");
+   P ("diff_node.object", "Objekt");
+   P ("diff_node.list", "Liste");
+   P ("diff.node",
+      "Diff-Knoten {path}: {kind}, {count} {count, plural, one {Änderung} "
+      & "other {Änderungen}}");
+   P ("checksum.not_checked", "Prüfsumme nicht geprüft");
+   P ("checksum.valid", "Prüfsumme gültig");
+   P ("checksum.mismatch", "Prüfsumme stimmt nicht überein");
+   P ("checksum.missing", "Prüfsumme fehlt");
+   P ("product_code", "Produktcode {kind}: {value}, {state}");
+   P ("time_zone.utc", "Zeitzone: UTC");
+   P ("time_zone.offset", "Zeitzone: {offset}");
+   P ("time_zone.named", "Zeitzone: {name} ({offset})");
+   P ("time_zone.local", "Zeitzone: Ortszeit");
+   P ("time_zone.unknown", "Zeitzone: unbekannte Zone");
+   P ("time_zone.dst", "{text}, mit Sommerzeit");
+   P ("zoned_time.plain", "Zonenzeit: {time} {offset}");
+   P ("zoned_time.named", "Zonenzeit: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, mehrdeutige Ortszeit");
 end Locale_De;

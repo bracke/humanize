@@ -538,8 +538,8 @@ usecase = "Localized reading of numbers, durations, relative times, byte sizes, 
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_ar.adb"
-target_lines = 807
-max_lines = 1207
+target_lines = 875
+max_lines = 1275
 min_headroom_lines = 100
 max_bytes = 79000
 split_prefix = ""
@@ -548,8 +548,8 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_cs.adb"
-target_lines = 744
-max_lines = 1144
+target_lines = 802
+max_lines = 1202
 min_headroom_lines = 100
 max_bytes = 65000
 split_prefix = ""
@@ -558,8 +558,8 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_hi.adb"
-target_lines = 800
-max_lines = 1200
+target_lines = 868
+max_lines = 1268
 min_headroom_lines = 100
 max_bytes = 83000
 split_prefix = ""
@@ -568,8 +568,8 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_pl.adb"
-target_lines = 708
-max_lines = 1108
+target_lines = 766
+max_lines = 1166
 min_headroom_lines = 100
 max_bytes = 62000
 split_prefix = ""
@@ -578,8 +578,8 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_ru.adb"
-target_lines = 777
-max_lines = 1177
+target_lines = 841
+max_lines = 1241
 min_headroom_lines = 100
 max_bytes = 76000
 split_prefix = ""
@@ -588,8 +588,8 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_sk.adb"
-target_lines = 757
-max_lines = 1157
+target_lines = 815
+max_lines = 1215
 min_headroom_lines = 100
 max_bytes = 67000
 split_prefix = ""
@@ -598,8 +598,8 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_sl.adb"
-target_lines = 705
-max_lines = 1105
+target_lines = 761
+max_lines = 1161
 min_headroom_lines = 100
 max_bytes = 60000
 split_prefix = ""
@@ -608,8 +608,8 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_uk.adb"
-target_lines = 756
-max_lines = 1156
+target_lines = 822
+max_lines = 1222
 min_headroom_lines = 100
 max_bytes = 75000
 split_prefix = ""

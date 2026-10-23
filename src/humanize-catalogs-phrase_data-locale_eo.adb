@@ -633,4 +633,60 @@ begin
    P ("errno.reason.unknown", "nekonata eraro");
    P ("signal.reason.unknown", "nekonata signalo");
    P ("sqlstate.reason.unknown", "nekonata SQLSTATE-klaso");
+   P ("diff.changed", "diferenco {path}: ŝanĝita de {before} al {after}");
+   P ("diff.added", "diferenco {path}: aldonita {after}");
+   P ("diff.removed", "diferenco {path}: forigita {before}");
+   P ("diff.unchanged", "diferenco {path}: neŝanĝita");
+   P ("diff.redacted", "diferenco {path}: ŝanĝita; valoroj kaŝitaj");
+   P ("validation.result",
+      "valida rezulto: {fields} {fields, plural, one {kampo} other {kampoj}}, "
+      & "{errors} {errors, plural, one {eraro} other {eraroj}}, {warnings} "
+      & "{warnings, plural, one {averto} other {avertoj}}, {required} "
+      & "{required, plural, one {deviga kampo} other {devigaj kampoj}}, "
+      & "{hidden} {hidden, plural, one {kaŝita problemo} other {kaŝitaj "
+      & "problemoj}}");
+   P ("file.kind.plain", "dosiero");
+   P ("file.kind.directory", "dosierujo");
+   P ("file.kind.archive", "arkivo");
+   P ("file.kind.compressed", "densigita dosiero");
+   P ("file.kind.image", "bildo");
+   P ("file.kind.script", "skripto");
+   P ("file.kind.executable", "plenumebla dosiero");
+   P ("file.kind.unknown", "nekonata dosiero");
+   P ("file.metadata", "dosiero {name}: {kind}");
+   P ("file.checksum", "{text}, kontrolsumo {checksum}");
+   P ("file.signature_match", "dosiersignaturo {name}: {kind}, kongruas kun la sufikso");
+   P ("file.signature_mismatch",
+      "dosiersignaturo {name}: laŭ la sufikso {expected}, laŭ la enhavo "
+      & "{actual}");
+   P ("network_event.connecting", "konektiĝanta");
+   P ("network_event.connected", "konektita");
+   P ("network_event.redirected", "alidirektita");
+   P ("network_event.retrying", "reprovanta");
+   P ("network_event.rate_limited", "rapide limigita");
+   P ("network_event.tls_failed", "TLS malsukcesis");
+   P ("network_event.stalled", "haltinta");
+   P ("network_event.complete", "kompleta");
+   P ("network_event.failed", "malsukcesis");
+   P ("network.session", "reto {endpoint}: {state}");
+   P ("diff_node.field", "kampo");
+   P ("diff_node.object", "objekto");
+   P ("diff_node.list", "listo");
+   P ("diff.node",
+      "diferenca nodo {path}: {kind}, {count} {count, plural, one {ŝanĝo} "
+      & "other {ŝanĝoj}}");
+   P ("checksum.not_checked", "kontrolsumo ne kontrolita");
+   P ("checksum.valid", "kontrolsumo valida");
+   P ("checksum.mismatch", "kontrolsumo malkongrua");
+   P ("checksum.missing", "kontrolsumo mankas");
+   P ("product_code", "produktokodo {kind}: {value}, {state}");
+   P ("time_zone.utc", "horzono: UTC");
+   P ("time_zone.offset", "horzono: {offset}");
+   P ("time_zone.named", "horzono: {name} ({offset})");
+   P ("time_zone.local", "horzono: loka tempo");
+   P ("time_zone.unknown", "horzono: nekonata zono");
+   P ("time_zone.dst", "{text}, uzas someran tempon");
+   P ("zoned_time.plain", "zona tempo: {time} {offset}");
+   P ("zoned_time.named", "zona tempo: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, ambigua loka tempo");
 end Locale_Eo;

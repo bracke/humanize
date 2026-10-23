@@ -692,4 +692,63 @@ begin
    P ("errno.reason.unknown", "nežinoma klaida");
    P ("signal.reason.unknown", "nežinomas signalas");
    P ("sqlstate.reason.unknown", "nežinoma SQLSTATE klasė");
+   P ("diff.changed", "skirtumas {path}: pakeista iš {before} į {after}");
+   P ("diff.added", "skirtumas {path}: pridėta {after}");
+   P ("diff.removed", "skirtumas {path}: pašalinta {before}");
+   P ("diff.unchanged", "skirtumas {path}: nepakeista");
+   P ("diff.redacted", "skirtumas {path}: pakeista; reikšmės paslėptos");
+   P ("validation.result",
+      "tikrinimo rezultatas: {fields} {fields, plural, one {laukas} few "
+      & "{laukai} many {lauko} other {laukų}}, {errors} {errors, plural, one "
+      & "{klaida} few {klaidos} many {klaidos} other {klaidų}}, {warnings} "
+      & "{warnings, plural, one {įspėjimas} few {įspėjimai} many "
+      & "{įspėjimo} other {įspėjimų}}, {required} {required, plural, one "
+      & "{privalomas laukas} few {privalomi laukai} many {privalomo lauko} "
+      & "other {privalomų laukų}}, {hidden} {hidden, plural, one {paslėpta "
+      & "problema} few {paslėptos problemos} many {paslėptos problemos} other "
+      & "{paslėptų problemų}}");
+   P ("file.kind.plain", "failas");
+   P ("file.kind.directory", "katalogas");
+   P ("file.kind.archive", "archyvas");
+   P ("file.kind.compressed", "suglaudintas failas");
+   P ("file.kind.image", "paveikslėlis");
+   P ("file.kind.script", "scenarijus");
+   P ("file.kind.executable", "vykdomasis failas");
+   P ("file.kind.unknown", "nežinomas failas");
+   P ("file.metadata", "failas {name}: {kind}");
+   P ("file.checksum", "{text}, kontrolinė suma {checksum}");
+   P ("file.signature_match", "failo parašas {name}: {kind}, atitinka plėtinį");
+   P ("file.signature_mismatch",
+      "failo parašas {name}: pagal plėtinį – {expected}, pagal turinį "
+      & "– {actual}");
+   P ("network_event.connecting", "jungiamasi");
+   P ("network_event.connected", "prisijungta");
+   P ("network_event.redirected", "peradresuota");
+   P ("network_event.retrying", "kartojama");
+   P ("network_event.rate_limited", "apribotas dažnis");
+   P ("network_event.tls_failed", "TLS klaida");
+   P ("network_event.stalled", "užstrigo");
+   P ("network_event.complete", "baigta");
+   P ("network_event.failed", "nepavyko");
+   P ("network.session", "tinklas {endpoint}: {state}");
+   P ("diff_node.field", "laukas");
+   P ("diff_node.object", "objektas");
+   P ("diff_node.list", "sąrašas");
+   P ("diff.node",
+      "skirtumų mazgas {path}: {kind}, {count} {count, plural, one "
+      & "{pakeitimas} few {pakeitimai} many {pakeitimo} other {pakeitimų}}");
+   P ("checksum.not_checked", "kontrolinė suma netikrinta");
+   P ("checksum.valid", "kontrolinė suma tinkama");
+   P ("checksum.mismatch", "kontrolinė suma nesutampa");
+   P ("checksum.missing", "kontrolinės sumos nėra");
+   P ("product_code", "produkto kodas {kind}: {value}, {state}");
+   P ("time_zone.utc", "laiko juosta: UTC");
+   P ("time_zone.offset", "laiko juosta: {offset}");
+   P ("time_zone.named", "laiko juosta: {name} ({offset})");
+   P ("time_zone.local", "laiko juosta: vietos laikas");
+   P ("time_zone.unknown", "laiko juosta: nežinoma juosta");
+   P ("time_zone.dst", "{text}, taikomas vasaros laikas");
+   P ("zoned_time.plain", "laikas juostoje: {time} {offset}");
+   P ("zoned_time.named", "laikas juostoje: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, dviprasmiškas vietos laikas");
 end Locale_Lt;

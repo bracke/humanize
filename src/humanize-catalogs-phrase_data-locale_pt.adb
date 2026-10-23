@@ -679,4 +679,61 @@ begin
    P ("errno.reason.unknown", "erro desconhecido");
    P ("signal.reason.unknown", "sinal desconhecido");
    P ("sqlstate.reason.unknown", "classe SQLSTATE desconhecida");
+   P ("diff.changed", "diff {path}: alterado de {before} para {after}");
+   P ("diff.added", "diff {path}: adicionado {after}");
+   P ("diff.removed", "diff {path}: removido {before}");
+   P ("diff.unchanged", "diff {path}: sem alterações");
+   P ("diff.redacted", "diff {path}: alterado; valores ocultados");
+   P ("validation.result",
+      "resultado da validação: {fields} {fields, plural, one {campo} many "
+      & "{de campos} other {campos}}, {errors} {errors, plural, one {erro} many "
+      & "{de erros} other {erros}}, {warnings} {warnings, plural, one {aviso} "
+      & "many {de avisos} other {avisos}}, {required} {required, plural, one "
+      & "{campo obrigatório} many {de campos obrigatórios} other {campos "
+      & "obrigatórios}}, {hidden} {hidden, plural, one {problema oculto} many "
+      & "{de problemas ocultos} other {problemas ocultos}}");
+   P ("file.kind.plain", "arquivo");
+   P ("file.kind.directory", "pasta");
+   P ("file.kind.archive", "pacote de arquivos");
+   P ("file.kind.compressed", "arquivo compactado");
+   P ("file.kind.image", "imagem");
+   P ("file.kind.script", "script");
+   P ("file.kind.executable", "executável");
+   P ("file.kind.unknown", "arquivo desconhecido");
+   P ("file.metadata", "arquivo {name}: {kind}");
+   P ("file.checksum", "{text}, soma de verificação {checksum}");
+   P ("file.signature_match", "assinatura de arquivo {name}: {kind}, corresponde à extensão");
+   P ("file.signature_mismatch",
+      "assinatura de arquivo {name}: extensão do tipo {expected}, conteúdo "
+      & "do tipo {actual}");
+   P ("network_event.connecting", "conectando");
+   P ("network_event.connected", "conectado");
+   P ("network_event.redirected", "redirecionado");
+   P ("network_event.retrying", "tentando novamente");
+   P ("network_event.rate_limited", "limite de taxa atingido");
+   P ("network_event.tls_failed", "falha de TLS");
+   P ("network_event.stalled", "travado");
+   P ("network_event.complete", "concluído");
+   P ("network_event.failed", "falhou");
+   P ("network.session", "rede {endpoint}: {state}");
+   P ("diff_node.field", "campo");
+   P ("diff_node.object", "objeto");
+   P ("diff_node.list", "lista");
+   P ("diff.node",
+      "nó de diff {path}: {kind}, {count} {count, plural, one {alteração} "
+      & "many {de alterações} other {alterações}}");
+   P ("checksum.not_checked", "soma de verificação não verificada");
+   P ("checksum.valid", "soma de verificação válida");
+   P ("checksum.mismatch", "soma de verificação divergente");
+   P ("checksum.missing", "soma de verificação ausente");
+   P ("product_code", "código de produto {kind}: {value}, {state}");
+   P ("time_zone.utc", "fuso horário: UTC");
+   P ("time_zone.offset", "fuso horário: {offset}");
+   P ("time_zone.named", "fuso horário: {name} ({offset})");
+   P ("time_zone.local", "fuso horário: horário local");
+   P ("time_zone.unknown", "fuso horário: fuso desconhecido");
+   P ("time_zone.dst", "{text}, adota horário de verão");
+   P ("zoned_time.plain", "horário com fuso: {time} {offset}");
+   P ("zoned_time.named", "horário com fuso: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, horário local ambíguo");
 end Locale_Pt;

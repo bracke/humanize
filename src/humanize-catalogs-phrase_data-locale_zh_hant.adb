@@ -584,4 +584,54 @@ begin
    P ("errno.reason.unknown", "未知錯誤");
    P ("signal.reason.unknown", "未知訊號");
    P ("sqlstate.reason.unknown", "未知 SQLSTATE 類別");
+   P ("diff.changed", "差異 {path}：已從{before}變更為{after}");
+   P ("diff.added", "差異 {path}：已新增{after}");
+   P ("diff.removed", "差異 {path}：已刪除{before}");
+   P ("diff.unchanged", "差異 {path}：未變更");
+   P ("diff.redacted", "差異 {path}：已變更；值已隱藏");
+   P ("validation.result",
+      "驗證結果：{fields}個欄位，{errors}個錯誤，{warnings}個"
+      & "警告，{required}個必填欄位，{hidden}個隱藏問題");
+   P ("file.kind.plain", "檔案");
+   P ("file.kind.directory", "目錄");
+   P ("file.kind.archive", "封存檔");
+   P ("file.kind.compressed", "壓縮檔");
+   P ("file.kind.image", "圖片");
+   P ("file.kind.script", "指令碼");
+   P ("file.kind.executable", "執行檔");
+   P ("file.kind.unknown", "不明檔案");
+   P ("file.metadata", "檔案 {name}：{kind}");
+   P ("file.checksum", "{text}，總和檢查碼 {checksum}");
+   P ("file.signature_match", "檔案簽章 {name}：{kind}，與副檔名相符");
+   P ("file.signature_mismatch",
+      "檔案簽章 "
+      & "{name}：副檔名表示為{expected}，內容看似{actual}");
+   P ("network_event.connecting", "連線中");
+   P ("network_event.connected", "已連線");
+   P ("network_event.redirected", "已重新導向");
+   P ("network_event.retrying", "重試中");
+   P ("network_event.rate_limited", "已限速");
+   P ("network_event.tls_failed", "TLS失敗");
+   P ("network_event.stalled", "停滯");
+   P ("network_event.complete", "已完成");
+   P ("network_event.failed", "失敗");
+   P ("network.session", "網路 {endpoint}：{state}");
+   P ("diff_node.field", "欄位");
+   P ("diff_node.object", "物件");
+   P ("diff_node.list", "清單");
+   P ("diff.node", "差異節點 {path}：{kind}，{count}項變更");
+   P ("checksum.not_checked", "未檢查總和檢查碼");
+   P ("checksum.valid", "總和檢查碼有效");
+   P ("checksum.mismatch", "總和檢查碼不符");
+   P ("checksum.missing", "缺少總和檢查碼");
+   P ("product_code", "產品代碼 {kind}：{value}，{state}");
+   P ("time_zone.utc", "時區：UTC");
+   P ("time_zone.offset", "時區：{offset}");
+   P ("time_zone.named", "時區：{name}（{offset}）");
+   P ("time_zone.local", "時區：當地時間");
+   P ("time_zone.unknown", "時區：不明時區");
+   P ("time_zone.dst", "{text}，實施夏令時間");
+   P ("zoned_time.plain", "含時區時間：{time} {offset}");
+   P ("zoned_time.named", "含時區時間：{time} {name}（{offset}）");
+   P ("zoned_time.ambiguous", "{text}，當地時間不明確");
 end Locale_Zh_Hant;

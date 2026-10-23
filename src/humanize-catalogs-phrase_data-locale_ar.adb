@@ -804,4 +804,72 @@ begin
    P ("errno.reason.unknown", "خطأ غير معروف");
    P ("signal.reason.unknown", "إشارة غير معروفة");
    P ("sqlstate.reason.unknown", "فئة SQLSTATE غير معروفة");
+   P ("diff.changed", "الفرق {path}: تغيّر من {before} إلى {after}");
+   P ("diff.added", "الفرق {path}: أُضيف {after}");
+   P ("diff.removed", "الفرق {path}: أُزيل {before}");
+   P ("diff.unchanged", "الفرق {path}: بلا تغيير");
+   P ("diff.redacted", "الفرق {path}: تغيّر؛ القيم محجوبة");
+   P ("validation.result",
+      "نتيجة التحقق: {fields, plural, zero {لا حقول} one "
+      & "{حقل واحد} two {حقلان} few {{fields} حقول} many "
+      & "{{fields} حقلًا} other {{fields} حقل}}، {errors, plural, zero "
+      & "{لا أخطاء} one {خطأ واحد} two {خطآن} few {{errors} "
+      & "أخطاء} many {{errors} خطأً} other {{errors} خطأ}}، "
+      & "{warnings, plural, zero {لا تحذيرات} one {تحذير "
+      & "واحد} two {تحذيران} few {{warnings} تحذيرات} many "
+      & "{{warnings} تحذيرًا} other {{warnings} تحذير}}، "
+      & "{required, plural, zero {لا حقول مطلوبة} one {حقل "
+      & "مطلوب واحد} two {حقلان مطلوبان} few {{required} "
+      & "حقول مطلوبة} many {{required} حقلًا مطلوبًا} "
+      & "other {{required} حقل مطلوب}}، {hidden, plural, zero {لا "
+      & "مشكلات مخفية} one {مشكلة مخفية واحدة} two "
+      & "{مشكلتان مخفيتان} few {{hidden} مشكلات مخفية} "
+      & "many {{hidden} مشكلةً مخفيةً} other {{hidden} مشكلة "
+      & "مخفية}}");
+   P ("file.kind.plain", "ملف");
+   P ("file.kind.directory", "مجلد");
+   P ("file.kind.archive", "أرشيف");
+   P ("file.kind.compressed", "ملف مضغوط");
+   P ("file.kind.image", "صورة");
+   P ("file.kind.script", "برنامج نصي");
+   P ("file.kind.executable", "ملف تنفيذي");
+   P ("file.kind.unknown", "ملف غير معروف");
+   P ("file.metadata", "الملف {name}: {kind}");
+   P ("file.checksum", "{text}، المجموع الاختباري {checksum}");
+   P ("file.signature_match", "توقيع الملف {name}: {kind}، يطابق الامتداد");
+   P ("file.signature_mismatch",
+      "توقيع الملف {name}: الامتداد يشير إلى "
+      & "{expected}، والمحتوى يبدو {actual}");
+   P ("network_event.connecting", "جارٍ الاتصال");
+   P ("network_event.connected", "متصل");
+   P ("network_event.redirected", "تمت إعادة التوجيه");
+   P ("network_event.retrying", "جارٍ إعادة المحاولة");
+   P ("network_event.rate_limited", "تم تقييد المعدّل");
+   P ("network_event.tls_failed", "فشل TLS");
+   P ("network_event.stalled", "متوقف");
+   P ("network_event.complete", "مكتمل");
+   P ("network_event.failed", "فشل");
+   P ("network.session", "الشبكة {endpoint}: {state}");
+   P ("diff_node.field", "حقل");
+   P ("diff_node.object", "كائن");
+   P ("diff_node.list", "قائمة");
+   P ("diff.node",
+      "عقدة الفرق {path}: {kind}، {count, plural, zero {لا "
+      & "تغييرات} one {تغيير واحد} two {تغييران} few "
+      & "{{count} تغييرات} many {{count} تغييرًا} other {{count} "
+      & "تغيير}}");
+   P ("checksum.not_checked", "لم يُتحقق من المجموع الاختباري");
+   P ("checksum.valid", "المجموع الاختباري صالح");
+   P ("checksum.mismatch", "المجموع الاختباري غير مطابق");
+   P ("checksum.missing", "المجموع الاختباري مفقود");
+   P ("product_code", "رمز المنتج {kind}: {value}، {state}");
+   P ("time_zone.utc", "المنطقة الزمنية: UTC");
+   P ("time_zone.offset", "المنطقة الزمنية: {offset}");
+   P ("time_zone.named", "المنطقة الزمنية: {name} ({offset})");
+   P ("time_zone.local", "المنطقة الزمنية: التوقيت المحلي");
+   P ("time_zone.unknown", "المنطقة الزمنية: منطقة غير معروفة");
+   P ("time_zone.dst", "{text}، تطبّق التوقيت الصيفي");
+   P ("zoned_time.plain", "الوقت حسب المنطقة: {time} {offset}");
+   P ("zoned_time.named", "الوقت حسب المنطقة: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}، وقت محلي ملتبس");
 end Locale_Ar;

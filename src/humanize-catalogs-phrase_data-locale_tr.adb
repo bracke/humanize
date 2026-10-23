@@ -590,4 +590,54 @@ begin
    P ("errno.reason.unknown", "bilinmeyen hata");
    P ("signal.reason.unknown", "bilinmeyen sinyal");
    P ("sqlstate.reason.unknown", "bilinmeyen SQLSTATE sınıfı");
+   P ("diff.changed", "fark {path}: değiştirildi, önceki: {before}, yeni: {after}");
+   P ("diff.added", "fark {path}: eklendi: {after}");
+   P ("diff.removed", "fark {path}: kaldırıldı: {before}");
+   P ("diff.unchanged", "fark {path}: değişmedi");
+   P ("diff.redacted", "fark {path}: değiştirildi; değerler gizlendi");
+   P ("validation.result",
+      "doğrulama sonucu: {fields} alan, {errors} hata, {warnings} uyarı, "
+      & "{required} zorunlu alan, {hidden} gizli sorun");
+   P ("file.kind.plain", "dosya");
+   P ("file.kind.directory", "dizin");
+   P ("file.kind.archive", "arşiv");
+   P ("file.kind.compressed", "sıkıştırılmış dosya");
+   P ("file.kind.image", "görüntü");
+   P ("file.kind.script", "betik");
+   P ("file.kind.executable", "yürütülebilir dosya");
+   P ("file.kind.unknown", "bilinmeyen dosya");
+   P ("file.metadata", "dosya {name}: {kind}");
+   P ("file.checksum", "{text}, sağlama toplamı {checksum}");
+   P ("file.signature_match", "dosya imzası {name}: {kind}, uzantıyla eşleşiyor");
+   P ("file.signature_mismatch",
+      "dosya imzası {name}: uzantıya göre {expected}, içeriğe göre "
+      & "{actual}");
+   P ("network_event.connecting", "bağlanıyor");
+   P ("network_event.connected", "bağlandı");
+   P ("network_event.redirected", "yönlendirildi");
+   P ("network_event.retrying", "yeniden deneniyor");
+   P ("network_event.rate_limited", "hız sınırına takıldı");
+   P ("network_event.tls_failed", "TLS başarısız");
+   P ("network_event.stalled", "takıldı");
+   P ("network_event.complete", "tamamlandı");
+   P ("network_event.failed", "başarısız");
+   P ("network.session", "ağ {endpoint}: {state}");
+   P ("diff_node.field", "alan");
+   P ("diff_node.object", "nesne");
+   P ("diff_node.list", "liste");
+   P ("diff.node", "fark düğümü {path}: {kind}, {count} değişiklik");
+   P ("checksum.not_checked", "sağlama toplamı denetlenmedi");
+   P ("checksum.valid", "sağlama toplamı geçerli");
+   P ("checksum.mismatch", "sağlama toplamı uyuşmuyor");
+   P ("checksum.missing", "sağlama toplamı eksik");
+   P ("product_code", "ürün kodu {kind}: {value}, {state}");
+   P ("time_zone.utc", "saat dilimi: UTC");
+   P ("time_zone.offset", "saat dilimi: {offset}");
+   P ("time_zone.named", "saat dilimi: {name} ({offset})");
+   P ("time_zone.local", "saat dilimi: yerel saat");
+   P ("time_zone.unknown", "saat dilimi: bilinmeyen dilim");
+   P ("time_zone.dst", "{text}, yaz saati uygulanır");
+   P ("zoned_time.plain", "bölgesel saat: {time} {offset}");
+   P ("zoned_time.named", "bölgesel saat: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, belirsiz yerel saat");
 end Locale_Tr;

@@ -80,3 +80,9 @@ prefix = "tests/src/"
 parent_max_lines = 80
 subunit_max_lines = 80
 usecase = "Standalone test runners and suite registries must stay tiny."
+
+[[suite]]
+prefix = "tests/src/humanize-tests-phrase_catalogs"
+parent_max_lines = 1000
+subunit_max_lines = 850
+usecase = "Phrase catalog suite lists every translated key per round; its key tables grow with the catalog."

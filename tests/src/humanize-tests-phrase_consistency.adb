@@ -275,6 +275,18 @@ package body Humanize.Tests.Phrase_Consistency is
       Check ("collection.summary", CL.Collection_Summary_Label (En, "tags", 1, 1, 0, 0));
       Check ("top_frequency", CL.Top_Frequency_Label (En, "tag", "red", 4));
       Check ("top_frequency", CL.Top_Frequency_Label (En, "tag", "red", 1));
+      Check ("diff.changed", CL.Structured_Diff_Label (En, "user.email", "a@x", "b@x"));
+      Check ("diff.added", CL.Structured_Diff_Label (En, "user.email", "", "b@x"));
+      Check ("diff.redacted", CL.Structured_Diff_Label (En, "user.email", "a@x", "b@x", True));
+      Check ("validation.result", CL.Validation_Result_Label (En, (Fields => 5, Errors => 1, others => <>)));
+      for Kind in C.File_Metadata_Kind loop
+         Check ("file.metadata", CL.File_Metadata_Label (En, "a.tar", Kind));
+      end loop;
+      Check ("file.signature_mismatch", CL.File_Signature_Label (En, "a.png", C.Image_File, C.Executable_File));
+      Check ("network.session", CL.Network_Session_Label (En, "api", C.Rate_Limited_Network));
+      Check ("diff.node", CL.Diff_Node_Label (En, "a.b", C.List_Node, 2));
+      Check ("time_zone.named", CL.Time_Zone_Label (En, C.Named_Zone, "Europe/Berlin", 120));
+      Check ("zoned_time.named", CL.Zoned_Time_Label (En, "02:30", "Europe/Berlin", 60));
    end Test_Cross_Domain_Templates;
 
    overriding function Name (T : Test_Case) return AUnit.Message_String is

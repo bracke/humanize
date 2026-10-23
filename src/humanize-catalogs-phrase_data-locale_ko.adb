@@ -590,4 +590,55 @@ begin
    P ("errno.reason.unknown", "알 수 없는 오류");
    P ("signal.reason.unknown", "알 수 없는 시그널");
    P ("sqlstate.reason.unknown", "알 수 없는 SQLSTATE 클래스");
+   P ("diff.changed", "차이 {path}: {before}에서 {after}(으)로 변경됨");
+   P ("diff.added", "차이 {path}: {after} 추가됨");
+   P ("diff.removed", "차이 {path}: {before} 제거됨");
+   P ("diff.unchanged", "차이 {path}: 변경 없음");
+   P ("diff.redacted", "차이 {path}: 변경됨, 값 숨김");
+   P ("validation.result",
+      "검증 결과: 필드 {fields}개, 오류 {errors}개, 경고 "
+      & "{warnings}개, 필수 필드 {required}개, 숨겨진 문제 "
+      & "{hidden}개");
+   P ("file.kind.plain", "파일");
+   P ("file.kind.directory", "디렉터리");
+   P ("file.kind.archive", "아카이브");
+   P ("file.kind.compressed", "압축 파일");
+   P ("file.kind.image", "이미지");
+   P ("file.kind.script", "스크립트");
+   P ("file.kind.executable", "실행 파일");
+   P ("file.kind.unknown", "알 수 없는 파일");
+   P ("file.metadata", "파일 {name}: {kind}");
+   P ("file.checksum", "{text}, 체크섬 {checksum}");
+   P ("file.signature_match", "파일 시그니처 {name}: {kind}, 확장자와 일치");
+   P ("file.signature_mismatch",
+      "파일 시그니처 {name}: 확장자는 {expected}, 내용은 "
+      & "{actual}(으)로 보임");
+   P ("network_event.connecting", "연결 중");
+   P ("network_event.connected", "연결됨");
+   P ("network_event.redirected", "리디렉션됨");
+   P ("network_event.retrying", "재시도 중");
+   P ("network_event.rate_limited", "속도 제한됨");
+   P ("network_event.tls_failed", "TLS 실패");
+   P ("network_event.stalled", "응답 없음");
+   P ("network_event.complete", "완료");
+   P ("network_event.failed", "실패");
+   P ("network.session", "네트워크 {endpoint}: {state}");
+   P ("diff_node.field", "필드");
+   P ("diff_node.object", "객체");
+   P ("diff_node.list", "목록");
+   P ("diff.node", "차이 노드 {path}: {kind}, 변경 {count}개");
+   P ("checksum.not_checked", "체크섬 확인 안 함");
+   P ("checksum.valid", "체크섬 유효");
+   P ("checksum.mismatch", "체크섬 불일치");
+   P ("checksum.missing", "체크섬 없음");
+   P ("product_code", "제품 코드 {kind}: {value}, {state}");
+   P ("time_zone.utc", "시간대: UTC");
+   P ("time_zone.offset", "시간대: {offset}");
+   P ("time_zone.named", "시간대: {name} ({offset})");
+   P ("time_zone.local", "시간대: 현지 시간");
+   P ("time_zone.unknown", "시간대: 알 수 없는 시간대");
+   P ("time_zone.dst", "{text}, 일광 절약 시간 적용");
+   P ("zoned_time.plain", "시간대 시각: {time} {offset}");
+   P ("zoned_time.named", "시간대 시각: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, 모호한 현지 시각");
 end Locale_Ko;

@@ -687,4 +687,62 @@ begin
    P ("errno.reason.unknown", "eroare necunoscută");
    P ("signal.reason.unknown", "semnal necunoscut");
    P ("sqlstate.reason.unknown", "clasă SQLSTATE necunoscută");
+   P ("diff.changed", "diff {path}: modificat din {before} în {after}");
+   P ("diff.added", "diff {path}: adăugat {after}");
+   P ("diff.removed", "diff {path}: eliminat {before}");
+   P ("diff.unchanged", "diff {path}: neschimbat");
+   P ("diff.redacted", "diff {path}: modificat; valori ascunse");
+   P ("validation.result",
+      "rezultatul validării: {fields} {fields, plural, one {câmp} few "
+      & "{câmpuri} other {de câmpuri}}, {errors} {errors, plural, one "
+      & "{eroare} few {erori} other {de erori}}, {warnings} {warnings, plural, "
+      & "one {avertisment} few {avertismente} other {de avertismente}}, "
+      & "{required} {required, plural, one {câmp obligatoriu} few {câmpuri "
+      & "obligatorii} other {de câmpuri obligatorii}}, {hidden} {hidden, "
+      & "plural, one {problemă ascunsă} few {probleme ascunse} other {de "
+      & "probleme ascunse}}");
+   P ("file.kind.plain", "fișier");
+   P ("file.kind.directory", "director");
+   P ("file.kind.archive", "arhivă");
+   P ("file.kind.compressed", "fișier comprimat");
+   P ("file.kind.image", "imagine");
+   P ("file.kind.script", "script");
+   P ("file.kind.executable", "executabil");
+   P ("file.kind.unknown", "fișier necunoscut");
+   P ("file.metadata", "fișierul {name}: {kind}");
+   P ("file.checksum", "{text}, suma de control {checksum}");
+   P ("file.signature_match", "semnătura fișierului {name}: {kind}, corespunde extensiei");
+   P ("file.signature_mismatch",
+      "semnătura fișierului {name}: extensie de tip {expected}, conținut "
+      & "de tip {actual}");
+   P ("network_event.connecting", "conectare în curs");
+   P ("network_event.connected", "conectat");
+   P ("network_event.redirected", "redirecționat");
+   P ("network_event.retrying", "reîncercare");
+   P ("network_event.rate_limited", "limită de rată atinsă");
+   P ("network_event.tls_failed", "TLS eșuat");
+   P ("network_event.stalled", "blocat");
+   P ("network_event.complete", "finalizat");
+   P ("network_event.failed", "eșuat");
+   P ("network.session", "rețeaua {endpoint}: {state}");
+   P ("diff_node.field", "câmp");
+   P ("diff_node.object", "obiect");
+   P ("diff_node.list", "listă");
+   P ("diff.node",
+      "nodul diff {path}: {kind}, {count} {count, plural, one {modificare} "
+      & "few {modificări} other {de modificări}}");
+   P ("checksum.not_checked", "sumă de control neverificată");
+   P ("checksum.valid", "sumă de control validă");
+   P ("checksum.mismatch", "sumă de control nepotrivită");
+   P ("checksum.missing", "sumă de control lipsă");
+   P ("product_code", "codul de produs {kind}: {value}, {state}");
+   P ("time_zone.utc", "fus orar: UTC");
+   P ("time_zone.offset", "fus orar: {offset}");
+   P ("time_zone.named", "fus orar: {name} ({offset})");
+   P ("time_zone.local", "fus orar: oră locală");
+   P ("time_zone.unknown", "fus orar: fus necunoscut");
+   P ("time_zone.dst", "{text}, respectă ora de vară");
+   P ("zoned_time.plain", "oră cu fus orar: {time} {offset}");
+   P ("zoned_time.named", "oră cu fus orar: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, oră locală ambiguă");
 end Locale_Ro;

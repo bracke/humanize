@@ -772,4 +772,70 @@ begin
    P ("errno.reason.unknown", "неизвестная ошибка");
    P ("signal.reason.unknown", "неизвестный сигнал");
    P ("sqlstate.reason.unknown", "неизвестный класс SQLSTATE");
+   P ("diff.changed", "разница {path}: изменено с {before} на {after}");
+   P ("diff.added", "разница {path}: добавлено {after}");
+   P ("diff.removed", "разница {path}: удалено {before}");
+   P ("diff.unchanged", "разница {path}: без изменений");
+   P ("diff.redacted", "разница {path}: изменено; значения скрыты");
+   P ("validation.result",
+      "результат проверки: {fields} {fields, plural, one "
+      & "{поле} few {поля} many {полей} other {поля}}, "
+      & "{errors} {errors, plural, one {ошибка} few {ошибки} many "
+      & "{ошибок} other {ошибки}}, {warnings} {warnings, plural, "
+      & "one {предупреждение} few {предупреждения} "
+      & "many {предупреждений} other "
+      & "{предупреждения}}, {required} {required, plural, one "
+      & "{обязательное поле} few {обязательных "
+      & "поля} many {обязательных полей} other "
+      & "{обязательного поля}}, {hidden} {hidden, plural, one "
+      & "{скрытая проблема} few {скрытые "
+      & "проблемы} many {скрытых проблем} other "
+      & "{скрытой проблемы}}");
+   P ("file.kind.plain", "файл");
+   P ("file.kind.directory", "каталог");
+   P ("file.kind.archive", "архив");
+   P ("file.kind.compressed", "сжатый файл");
+   P ("file.kind.image", "изображение");
+   P ("file.kind.script", "скрипт");
+   P ("file.kind.executable", "исполняемый файл");
+   P ("file.kind.unknown", "неизвестный файл");
+   P ("file.metadata", "файл {name}: {kind}");
+   P ("file.checksum", "{text}, контрольная сумма {checksum}");
+   P ("file.signature_match",
+      "сигнатура файла {name}: {kind}, "
+      & "соответствует расширению");
+   P ("file.signature_mismatch",
+      "сигнатура файла {name}: по расширению — "
+      & "{expected}, по содержимому — {actual}");
+   P ("network_event.connecting", "подключение");
+   P ("network_event.connected", "подключено");
+   P ("network_event.redirected", "перенаправлено");
+   P ("network_event.retrying", "повторная попытка");
+   P ("network_event.rate_limited", "ограничение частоты");
+   P ("network_event.tls_failed", "ошибка TLS");
+   P ("network_event.stalled", "нет прогресса");
+   P ("network_event.complete", "завершено");
+   P ("network_event.failed", "сбой");
+   P ("network.session", "сеть {endpoint}: {state}");
+   P ("diff_node.field", "поле");
+   P ("diff_node.object", "объект");
+   P ("diff_node.list", "список");
+   P ("diff.node",
+      "узел различий {path}: {kind}, {count} {count, plural, one "
+      & "{изменение} few {изменения} many "
+      & "{изменений} other {изменения}}");
+   P ("checksum.not_checked", "контрольная сумма не проверена");
+   P ("checksum.valid", "контрольная сумма верна");
+   P ("checksum.mismatch", "контрольная сумма не совпадает");
+   P ("checksum.missing", "контрольная сумма отсутствует");
+   P ("product_code", "код товара {kind}: {value}, {state}");
+   P ("time_zone.utc", "часовой пояс: UTC");
+   P ("time_zone.offset", "часовой пояс: {offset}");
+   P ("time_zone.named", "часовой пояс: {name} ({offset})");
+   P ("time_zone.local", "часовой пояс: местное время");
+   P ("time_zone.unknown", "часовой пояс: неизвестный пояс");
+   P ("time_zone.dst", "{text}, с переходом на летнее время");
+   P ("zoned_time.plain", "время с поясом: {time} {offset}");
+   P ("zoned_time.named", "время с поясом: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, неоднозначное местное время");
 end Locale_Ru;

@@ -626,4 +626,60 @@ begin
    P ("errno.reason.unknown", "tuntematon virhe");
    P ("signal.reason.unknown", "tuntematon signaali");
    P ("sqlstate.reason.unknown", "tuntematon SQLSTATE-luokka");
+   P ("diff.changed", "ero {path}: muutettu arvosta {before} arvoon {after}");
+   P ("diff.added", "ero {path}: lisätty {after}");
+   P ("diff.removed", "ero {path}: poistettu {before}");
+   P ("diff.unchanged", "ero {path}: ennallaan");
+   P ("diff.redacted", "ero {path}: muutettu; arvot piilotettu");
+   P ("validation.result",
+      "validoinnin tulos: {fields} {fields, plural, one {kenttä} other "
+      & "{kenttää}}, {errors} {errors, plural, one {virhe} other "
+      & "{virhettä}}, {warnings} {warnings, plural, one {varoitus} other "
+      & "{varoitusta}}, {required} {required, plural, one {pakollinen kenttä} "
+      & "other {pakollista kenttää}}, {hidden} {hidden, plural, one "
+      & "{piilotettu ongelma} other {piilotettua ongelmaa}}");
+   P ("file.kind.plain", "tiedosto");
+   P ("file.kind.directory", "kansio");
+   P ("file.kind.archive", "arkisto");
+   P ("file.kind.compressed", "pakattu tiedosto");
+   P ("file.kind.image", "kuva");
+   P ("file.kind.script", "skripti");
+   P ("file.kind.executable", "suoritettava tiedosto");
+   P ("file.kind.unknown", "tuntematon tiedosto");
+   P ("file.metadata", "tiedosto {name}: {kind}");
+   P ("file.checksum", "{text}, tarkistussumma {checksum}");
+   P ("file.signature_match", "tiedoston allekirjoitus {name}: {kind}, vastaa tiedostopäätettä");
+   P ("file.signature_mismatch",
+      "tiedoston allekirjoitus {name}: tiedostopääte: {expected}, sisältö "
+      & "näyttää tältä: {actual}");
+   P ("network_event.connecting", "yhdistetään");
+   P ("network_event.connected", "yhdistetty");
+   P ("network_event.redirected", "uudelleenohjattu");
+   P ("network_event.retrying", "yritetään uudelleen");
+   P ("network_event.rate_limited", "nopeusrajoitettu");
+   P ("network_event.tls_failed", "TLS epäonnistui");
+   P ("network_event.stalled", "jumissa");
+   P ("network_event.complete", "valmis");
+   P ("network_event.failed", "epäonnistui");
+   P ("network.session", "verkko {endpoint}: {state}");
+   P ("diff_node.field", "kenttä");
+   P ("diff_node.object", "objekti");
+   P ("diff_node.list", "luettelo");
+   P ("diff.node",
+      "erosolmu {path}: {kind}, {count} {count, plural, one {muutos} other "
+      & "{muutosta}}");
+   P ("checksum.not_checked", "tarkistussummaa ei tarkistettu");
+   P ("checksum.valid", "tarkistussumma kelvollinen");
+   P ("checksum.mismatch", "tarkistussumma ei täsmää");
+   P ("checksum.missing", "tarkistussumma puuttuu");
+   P ("product_code", "tuotekoodi {kind}: {value}, {state}");
+   P ("time_zone.utc", "aikavyöhyke: UTC");
+   P ("time_zone.offset", "aikavyöhyke: {offset}");
+   P ("time_zone.named", "aikavyöhyke: {name} ({offset})");
+   P ("time_zone.local", "aikavyöhyke: paikallinen aika");
+   P ("time_zone.unknown", "aikavyöhyke: tuntematon vyöhyke");
+   P ("time_zone.dst", "{text}, kesäaika käytössä");
+   P ("zoned_time.plain", "vyöhykeaika: {time} {offset}");
+   P ("zoned_time.named", "vyöhykeaika: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, monitulkintainen paikallinen aika");
 end Locale_Fi;

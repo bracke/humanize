@@ -797,4 +797,72 @@ begin
    P ("errno.reason.unknown", "अज्ञात त्रुटि");
    P ("signal.reason.unknown", "अज्ञात संकेत");
    P ("sqlstate.reason.unknown", "अज्ञात SQLSTATE वर्ग");
+   P ("diff.changed",
+      "अंतर {path}: {before} से {after} में बदला "
+      & "गया");
+   P ("diff.added", "अंतर {path}: {after} जोड़ा गया");
+   P ("diff.removed", "अंतर {path}: {before} हटाया गया");
+   P ("diff.unchanged", "अंतर {path}: अपरिवर्तित");
+   P ("diff.redacted",
+      "अंतर {path}: बदला गया; मान छिपाए "
+      & "गए");
+   P ("validation.result",
+      "सत्यापन परिणाम: {fields} फ़ील्ड, "
+      & "{errors} {errors, plural, =1 {त्रुटि} other "
+      & "{त्रुटियाँ}}, {warnings} {warnings, plural, =1 "
+      & "{चेतावनी} other {चेतावनियाँ}}, "
+      & "{required} आवश्यक फ़ील्ड, {hidden} {hidden, "
+      & "plural, =1 {छिपी समस्या} other {छिपी "
+      & "समस्याएँ}}");
+   P ("file.kind.plain", "फ़ाइल");
+   P ("file.kind.directory", "निर्देशिका");
+   P ("file.kind.archive", "आर्काइव");
+   P ("file.kind.compressed", "संपीड़ित फ़ाइल");
+   P ("file.kind.image", "छवि");
+   P ("file.kind.script", "स्क्रिप्ट");
+   P ("file.kind.executable", "निष्पादन योग्य फ़ाइल");
+   P ("file.kind.unknown", "अज्ञात फ़ाइल");
+   P ("file.metadata", "फ़ाइल {name}: {kind}");
+   P ("file.checksum", "{text}, चेकसम {checksum}");
+   P ("file.signature_match",
+      "फ़ाइल हस्ताक्षर {name}: {kind}, "
+      & "एक्सटेंशन से मेल खाता है");
+   P ("file.signature_mismatch",
+      "फ़ाइल हस्ताक्षर {name}: "
+      & "एक्सटेंशन के अनुसार {expected}, "
+      & "सामग्री {actual} जैसी लगती है");
+   P ("network_event.connecting", "कनेक्ट हो रहा है");
+   P ("network_event.connected", "कनेक्ट हो गया");
+   P ("network_event.redirected", "रीडायरेक्ट किया गया");
+   P ("network_event.retrying", "फिर से प्रयास हो रहा है");
+   P ("network_event.rate_limited", "दर सीमित");
+   P ("network_event.tls_failed", "TLS विफल");
+   P ("network_event.stalled", "रुका हुआ");
+   P ("network_event.complete", "पूर्ण");
+   P ("network_event.failed", "विफल");
+   P ("network.session", "नेटवर्क {endpoint}: {state}");
+   P ("diff_node.field", "फ़ील्ड");
+   P ("diff_node.object", "ऑब्जेक्ट");
+   P ("diff_node.list", "सूची");
+   P ("diff.node",
+      "अंतर नोड {path}: {kind}, {count} "
+      & "परिवर्तन");
+   P ("checksum.not_checked", "चेकसम जाँचा नहीं गया");
+   P ("checksum.valid", "चेकसम मान्य");
+   P ("checksum.mismatch", "चेकसम बेमेल");
+   P ("checksum.missing", "चेकसम अनुपलब्ध");
+   P ("product_code", "उत्पाद कोड {kind}: {value}, {state}");
+   P ("time_zone.utc", "समय क्षेत्र: UTC");
+   P ("time_zone.offset", "समय क्षेत्र: {offset}");
+   P ("time_zone.named", "समय क्षेत्र: {name} ({offset})");
+   P ("time_zone.local", "समय क्षेत्र: स्थानीय समय");
+   P ("time_zone.unknown",
+      "समय क्षेत्र: अज्ञात "
+      & "क्षेत्र");
+   P ("time_zone.dst",
+      "{text}, डेलाइट सेविंग टाइम "
+      & "लागू होता है");
+   P ("zoned_time.plain", "क्षेत्रीय समय: {time} {offset}");
+   P ("zoned_time.named", "क्षेत्रीय समय: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, अस्पष्ट स्थानीय समय");
 end Locale_Hi;

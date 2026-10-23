@@ -588,4 +588,55 @@ begin
    P ("errno.reason.unknown", "不明なエラー");
    P ("signal.reason.unknown", "不明なシグナル");
    P ("sqlstate.reason.unknown", "不明な SQLSTATE クラス");
+   P ("diff.changed", "差分 {path}：{before} から {after} に変更");
+   P ("diff.added", "差分 {path}：{after} を追加");
+   P ("diff.removed", "差分 {path}：{before} を削除");
+   P ("diff.unchanged", "差分 {path}：変更なし");
+   P ("diff.redacted", "差分 {path}：変更あり（値は非表示）");
+   P ("validation.result",
+      "検証結果：フィールド {fields} 件、エラー {errors} "
+      & "件、警告 {warnings} 件、必須フィールド {required} "
+      & "件、非表示の問題 {hidden} 件");
+   P ("file.kind.plain", "ファイル");
+   P ("file.kind.directory", "ディレクトリ");
+   P ("file.kind.archive", "アーカイブ");
+   P ("file.kind.compressed", "圧縮ファイル");
+   P ("file.kind.image", "画像");
+   P ("file.kind.script", "スクリプト");
+   P ("file.kind.executable", "実行ファイル");
+   P ("file.kind.unknown", "不明なファイル");
+   P ("file.metadata", "ファイル {name}：{kind}");
+   P ("file.checksum", "{text}、チェックサム {checksum}");
+   P ("file.signature_match", "ファイルシグネチャ {name}：{kind}、拡張子と一致");
+   P ("file.signature_mismatch",
+      "ファイルシグネチャ "
+      & "{name}：拡張子は{expected}、内容は{actual}のようです");
+   P ("network_event.connecting", "接続中");
+   P ("network_event.connected", "接続済み");
+   P ("network_event.redirected", "リダイレクト済み");
+   P ("network_event.retrying", "再試行中");
+   P ("network_event.rate_limited", "レート制限中");
+   P ("network_event.tls_failed", "TLS 失敗");
+   P ("network_event.stalled", "応答停止");
+   P ("network_event.complete", "完了");
+   P ("network_event.failed", "失敗");
+   P ("network.session", "ネットワーク {endpoint}：{state}");
+   P ("diff_node.field", "フィールド");
+   P ("diff_node.object", "オブジェクト");
+   P ("diff_node.list", "リスト");
+   P ("diff.node", "差分ノード {path}：{kind}、変更 {count} 件");
+   P ("checksum.not_checked", "チェックサム未検証");
+   P ("checksum.valid", "チェックサム有効");
+   P ("checksum.mismatch", "チェックサム不一致");
+   P ("checksum.missing", "チェックサムなし");
+   P ("product_code", "製品コード {kind}：{value}、{state}");
+   P ("time_zone.utc", "タイムゾーン：UTC");
+   P ("time_zone.offset", "タイムゾーン：{offset}");
+   P ("time_zone.named", "タイムゾーン：{name}（{offset}）");
+   P ("time_zone.local", "タイムゾーン：ローカル時刻");
+   P ("time_zone.unknown", "タイムゾーン：不明なタイムゾーン");
+   P ("time_zone.dst", "{text}、夏時間あり");
+   P ("zoned_time.plain", "タイムゾーン付き時刻：{time} {offset}");
+   P ("zoned_time.named", "タイムゾーン付き時刻：{time} {name}（{offset}）");
+   P ("zoned_time.ambiguous", "{text}、曖昧なローカル時刻");
 end Locale_Ja;

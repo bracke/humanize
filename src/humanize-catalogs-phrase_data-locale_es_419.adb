@@ -26,4 +26,10 @@ begin
    P ("calendar_date.quarter_phase",
       "{phase, select, early {principios del {text}} mid {mediados del "
       & "{text}} other {fines del {text}}}");
+   P ("diff.added", "diff {path}: agregado {after}");
+   P ("file.checksum", "{text}, suma de verificación {checksum}");
+   P ("checksum.not_checked", "suma de verificación sin verificar");
+   P ("checksum.valid", "suma de verificación válida");
+   P ("checksum.mismatch", "suma de verificación no coincidente");
+   P ("checksum.missing", "suma de verificación ausente");
 end Locale_Es_419;

@@ -182,7 +182,19 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"sqlstate.reason.3f", +"sqlstate.reason.40", +"sqlstate.reason.42", +"sqlstate.reason.53",
       +"sqlstate.reason.54", +"sqlstate.reason.55", +"sqlstate.reason.57", +"sqlstate.reason.58",
       +"sqlstate.reason.hv", +"sqlstate.reason.p0", +"sqlstate.reason.xx", +"system.signal_numbered",
-      +"http.reason.unknown", +"errno.reason.unknown", +"signal.reason.unknown", +"sqlstate.reason.unknown"];
+      +"http.reason.unknown", +"errno.reason.unknown", +"signal.reason.unknown", +"sqlstate.reason.unknown",
+      +"diff.changed", +"diff.added", +"diff.removed", +"diff.unchanged", +"diff.redacted",
+      +"validation.result", +"file.kind.plain", +"file.kind.directory", +"file.kind.archive",
+      +"file.kind.compressed", +"file.kind.image", +"file.kind.script", +"file.kind.executable",
+      +"file.kind.unknown", +"file.metadata", +"file.checksum", +"file.signature_match",
+      +"file.signature_mismatch", +"network_event.connecting", +"network_event.connected",
+      +"network_event.redirected", +"network_event.retrying", +"network_event.rate_limited",
+      +"network_event.tls_failed", +"network_event.stalled", +"network_event.complete",
+      +"network_event.failed", +"network.session", +"diff_node.field", +"diff_node.object",
+      +"diff_node.list", +"diff.node", +"checksum.not_checked", +"checksum.valid", +"checksum.mismatch",
+      +"checksum.missing", +"product_code", +"time_zone.utc", +"time_zone.offset", +"time_zone.named",
+      +"time_zone.local", +"time_zone.unknown", +"time_zone.dst", +"zoned_time.plain", +"zoned_time.named",
+      +"zoned_time.ambiguous"];
 
    --  Every shipped locale besides English.
    Locales : constant array (Positive range <>) of Unbounded_String :=
@@ -196,7 +208,8 @@ package body Humanize.Tests.Phrase_Catalogs is
      [+"total", +"matching", +"visible", +"remaining", +"page", +"size", +"first", +"last", +"position",
       +"selected", +"showing", +"count", +"hidden", +"done", +"step", +"attempt", +"rate", +"days", +"hours",
       +"every", +"hits", +"misses", +"changed", +"added", +"removed", +"available", +"unavailable",
-      +"code", +"done", +"unique", +"duplicates", +"outliers", +"part", +"year", +"number"];
+      +"code", +"done", +"unique", +"duplicates", +"outliers", +"part", +"year", +"number",
+      +"fields", +"errors", +"warnings", +"required", +"hidden"];
 
    procedure Test_Every_Locale_Renders_Every_Phrase
      (T : in out AUnit.Test_Cases.Test_Case'Class)
@@ -258,6 +271,11 @@ package body Humanize.Tests.Phrase_Catalogs is
             Messages.Arguments.Set (Args, "text", "label");
             Messages.Arguments.Set (Args, "detail", "expired");
             Messages.Arguments.Set (Args, "reason", "killed");
+            Messages.Arguments.Set (Args, "path", "user.email");
+            Messages.Arguments.Set (Args, "kind", "archive");
+            Messages.Arguments.Set (Args, "checksum", "abc123");
+            Messages.Arguments.Set (Args, "expected", "image");
+            Messages.Arguments.Set (Args, "offset", "UTC+02:00");
             Messages.Arguments.Set (Args, "year", "2026");
             Messages.Arguments.Set (Args, "part", Count);
             Messages.Arguments.Set (Args, "phase", "mid");
@@ -475,7 +493,8 @@ package body Humanize.Tests.Phrase_Catalogs is
    Text_Arguments : constant array (Positive range <>) of Unbounded_String :=
      [+"unit", +"field", +"before", +"after", +"current", +"baseline", +"quantity",
       +"details", +"difference", +"measure", +"name", +"time", +"signal", +"choices", +"actual", +"endpoint",
-      +"subject", +"text", +"detail", +"date", +"reason"];
+      +"subject", +"text", +"detail", +"date", +"reason", +"path", +"kind", +"checksum", +"expected",
+      +"offset"];
 
    function Digits_Of (Value : Natural) return String is
      (Natural'Image (Value) (2 .. Natural'Image (Value)'Last));

@@ -702,4 +702,60 @@ begin
    P ("errno.reason.unknown", "neznana napaka");
    P ("signal.reason.unknown", "neznan signal");
    P ("sqlstate.reason.unknown", "neznan razred SQLSTATE");
+   P ("diff.changed", "razlika {path}: spremenjeno iz {before} v {after}");
+   P ("diff.added", "razlika {path}: dodano {after}");
+   P ("diff.removed", "razlika {path}: odstranjeno {before}");
+   P ("diff.unchanged", "razlika {path}: nespremenjeno");
+   P ("diff.redacted", "razlika {path}: spremenjeno; vrednosti skrite");
+   P ("validation.result",
+      "rezultat preverjanja: {fields} {fields, plural, one {polje} two "
+      & "{polji} few {polja} other {polj}}, {errors} {errors, plural, one "
+      & "{napaka} two {napaki} few {napake} other {napak}}, {warnings} "
+      & "{warnings, plural, one {opozorilo} two {opozorili} few {opozorila} "
+      & "other {opozoril}}, {required} {required, plural, one {obvezno polje} "
+      & "two {obvezni polji} few {obvezna polja} other {obveznih polj}}, "
+      & "{hidden} {hidden, plural, one {skrita težava} two {skriti težavi} "
+      & "few {skrite težave} other {skritih težav}}");
+   P ("file.kind.plain", "datoteka");
+   P ("file.kind.directory", "mapa");
+   P ("file.kind.archive", "arhiv");
+   P ("file.kind.compressed", "stisnjena datoteka");
+   P ("file.kind.image", "slika");
+   P ("file.kind.script", "skript");
+   P ("file.kind.executable", "izvršljiva datoteka");
+   P ("file.kind.unknown", "neznana datoteka");
+   P ("file.metadata", "datoteka {name}: {kind}");
+   P ("file.checksum", "{text}, kontrolna vsota {checksum}");
+   P ("file.signature_match", "podpis datoteke {name}: {kind}, ustreza priponi");
+   P ("file.signature_mismatch", "podpis datoteke {name}: po priponi {expected}, po vsebini {actual}");
+   P ("network_event.connecting", "povezovanje");
+   P ("network_event.connected", "povezano");
+   P ("network_event.redirected", "preusmerjeno");
+   P ("network_event.retrying", "ponovni poskus");
+   P ("network_event.rate_limited", "omejena pogostost");
+   P ("network_event.tls_failed", "napaka TLS");
+   P ("network_event.stalled", "zastoj");
+   P ("network_event.complete", "dokončano");
+   P ("network_event.failed", "neuspeh");
+   P ("network.session", "omrežje {endpoint}: {state}");
+   P ("diff_node.field", "polje");
+   P ("diff_node.object", "objekt");
+   P ("diff_node.list", "seznam");
+   P ("diff.node",
+      "vozlišče razlike {path}: {kind}, {count} {count, plural, one "
+      & "{sprememba} two {spremembi} few {spremembe} other {sprememb}}");
+   P ("checksum.not_checked", "kontrolna vsota ni preverjena");
+   P ("checksum.valid", "kontrolna vsota veljavna");
+   P ("checksum.mismatch", "kontrolna vsota se ne ujema");
+   P ("checksum.missing", "kontrolna vsota manjka");
+   P ("product_code", "koda izdelka {kind}: {value}, {state}");
+   P ("time_zone.utc", "časovni pas: UTC");
+   P ("time_zone.offset", "časovni pas: {offset}");
+   P ("time_zone.named", "časovni pas: {name} ({offset})");
+   P ("time_zone.local", "časovni pas: lokalni čas");
+   P ("time_zone.unknown", "časovni pas: neznan pas");
+   P ("time_zone.dst", "{text}, upošteva poletni čas");
+   P ("zoned_time.plain", "čas v pasu: {time} {offset}");
+   P ("zoned_time.named", "čas v pasu: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, dvoumen lokalni čas");
 end Locale_Sl;

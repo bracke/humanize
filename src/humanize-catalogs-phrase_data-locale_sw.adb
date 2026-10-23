@@ -625,4 +625,59 @@ begin
    P ("errno.reason.unknown", "hitilafu isiyojulikana");
    P ("signal.reason.unknown", "ishara isiyojulikana");
    P ("sqlstate.reason.unknown", "darasa la SQLSTATE lisilojulikana");
+   P ("diff.changed", "tofauti {path}: imebadilishwa kutoka {before} hadi {after}");
+   P ("diff.added", "tofauti {path}: imeongezwa {after}");
+   P ("diff.removed", "tofauti {path}: imeondolewa {before}");
+   P ("diff.unchanged", "tofauti {path}: haijabadilika");
+   P ("diff.redacted", "tofauti {path}: imebadilishwa; thamani zimefichwa");
+   P ("validation.result",
+      "matokeo ya uthibitishaji: sehemu {fields}, hitilafu {errors}, "
+      & "{warnings, plural, one {onyo} other {maonyo}} {warnings}, {required, "
+      & "plural, one {sehemu inayohitajika} other {sehemu zinazohitajika}} "
+      & "{required}, {hidden, plural, one {tatizo lililofichwa} other {matatizo "
+      & "yaliyofichwa}} {hidden}");
+   P ("file.kind.plain", "faili");
+   P ("file.kind.directory", "saraka");
+   P ("file.kind.archive", "kumbukumbu");
+   P ("file.kind.compressed", "faili iliyobanwa");
+   P ("file.kind.image", "picha");
+   P ("file.kind.script", "hati");
+   P ("file.kind.executable", "faili inayotekelezeka");
+   P ("file.kind.unknown", "faili isiyojulikana");
+   P ("file.metadata", "faili {name}: {kind}");
+   P ("file.checksum", "{text}, checksum {checksum}");
+   P ("file.signature_match", "sahihi ya faili {name}: {kind}, inalingana na kiendelezi");
+   P ("file.signature_mismatch",
+      "sahihi ya faili {name}: kiendelezi kinaonyesha {expected}, maudhui "
+      & "yanaonekana kuwa {actual}");
+   P ("network_event.connecting", "inaunganisha");
+   P ("network_event.connected", "imeunganishwa");
+   P ("network_event.redirected", "imeelekezwa upya");
+   P ("network_event.retrying", "inajaribu tena");
+   P ("network_event.rate_limited", "kasi imedhibitiwa");
+   P ("network_event.tls_failed", "TLS imeshindwa");
+   P ("network_event.stalled", "imekwama");
+   P ("network_event.complete", "imekamilika");
+   P ("network_event.failed", "imeshindwa");
+   P ("network.session", "mtandao {endpoint}: {state}");
+   P ("diff_node.field", "sehemu");
+   P ("diff_node.object", "kitu");
+   P ("diff_node.list", "orodha");
+   P ("diff.node",
+      "nodi ya tofauti {path}: {kind}, {count, plural, one {badiliko} other "
+      & "{mabadiliko}} {count}");
+   P ("checksum.not_checked", "checksum haijakaguliwa");
+   P ("checksum.valid", "checksum ni sahihi");
+   P ("checksum.mismatch", "checksum hailingani");
+   P ("checksum.missing", "checksum haipo");
+   P ("product_code", "msimbo wa bidhaa {kind}: {value}, {state}");
+   P ("time_zone.utc", "saa za eneo: UTC");
+   P ("time_zone.offset", "saa za eneo: {offset}");
+   P ("time_zone.named", "saa za eneo: {name} ({offset})");
+   P ("time_zone.local", "saa za eneo: saa za mahali hapa");
+   P ("time_zone.unknown", "saa za eneo: eneo lisilojulikana");
+   P ("time_zone.dst", "{text}, hutumia saa za kuokoa mchana");
+   P ("zoned_time.plain", "saa yenye eneo: {time} {offset}");
+   P ("zoned_time.named", "saa yenye eneo: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, saa ya mahali yenye utata");
 end Locale_Sw;

@@ -705,4 +705,62 @@ begin
    P ("errno.reason.unknown", "nieznany błąd");
    P ("signal.reason.unknown", "nieznany sygnał");
    P ("sqlstate.reason.unknown", "nieznana klasa SQLSTATE");
+   P ("diff.changed", "różnica {path}: zmieniono z {before} na {after}");
+   P ("diff.added", "różnica {path}: dodano {after}");
+   P ("diff.removed", "różnica {path}: usunięto {before}");
+   P ("diff.unchanged", "różnica {path}: bez zmian");
+   P ("diff.redacted", "różnica {path}: zmieniono; wartości ukryte");
+   P ("validation.result",
+      "wynik walidacji: {fields} {fields, plural, one {pole} few {pola} many "
+      & "{pól} other {pola}}, {errors} {errors, plural, one {błąd} few "
+      & "{błędy} many {błędów} other {błędu}}, {warnings} {warnings, "
+      & "plural, one {ostrzeżenie} few {ostrzeżenia} many {ostrzeżeń} other "
+      & "{ostrzeżenia}}, {required} {required, plural, one {pole wymagane} few "
+      & "{pola wymagane} many {pól wymaganych} other {pola wymaganego}}, "
+      & "{hidden} {hidden, plural, one {ukryty problem} few {ukryte problemy} "
+      & "many {ukrytych problemów} other {ukrytego problemu}}");
+   P ("file.kind.plain", "plik");
+   P ("file.kind.directory", "katalog");
+   P ("file.kind.archive", "archiwum");
+   P ("file.kind.compressed", "plik skompresowany");
+   P ("file.kind.image", "obraz");
+   P ("file.kind.script", "skrypt");
+   P ("file.kind.executable", "plik wykonywalny");
+   P ("file.kind.unknown", "nieznany plik");
+   P ("file.metadata", "plik {name}: {kind}");
+   P ("file.checksum", "{text}, suma kontrolna {checksum}");
+   P ("file.signature_match", "sygnatura pliku {name}: {kind}, zgodnie z rozszerzeniem");
+   P ("file.signature_mismatch",
+      "sygnatura pliku {name}: według rozszerzenia {expected}, według "
+      & "zawartości {actual}");
+   P ("network_event.connecting", "łączenie");
+   P ("network_event.connected", "połączono");
+   P ("network_event.redirected", "przekierowano");
+   P ("network_event.retrying", "ponawianie");
+   P ("network_event.rate_limited", "limit żądań");
+   P ("network_event.tls_failed", "błąd TLS");
+   P ("network_event.stalled", "brak postępu");
+   P ("network_event.complete", "zakończono");
+   P ("network_event.failed", "niepowodzenie");
+   P ("network.session", "sieć {endpoint}: {state}");
+   P ("diff_node.field", "pole");
+   P ("diff_node.object", "obiekt");
+   P ("diff_node.list", "lista");
+   P ("diff.node",
+      "węzeł różnicy {path}: {kind}, {count} {count, plural, one {zmiana} "
+      & "few {zmiany} many {zmian} other {zmiany}}");
+   P ("checksum.not_checked", "suma kontrolna niesprawdzona");
+   P ("checksum.valid", "suma kontrolna poprawna");
+   P ("checksum.mismatch", "niezgodna suma kontrolna");
+   P ("checksum.missing", "brak sumy kontrolnej");
+   P ("product_code", "kod produktu {kind}: {value}, {state}");
+   P ("time_zone.utc", "strefa czasowa: UTC");
+   P ("time_zone.offset", "strefa czasowa: {offset}");
+   P ("time_zone.named", "strefa czasowa: {name} ({offset})");
+   P ("time_zone.local", "strefa czasowa: czas lokalny");
+   P ("time_zone.unknown", "strefa czasowa: nieznana strefa");
+   P ("time_zone.dst", "{text}, stosuje czas letni");
+   P ("zoned_time.plain", "czas strefowy: {time} {offset}");
+   P ("zoned_time.named", "czas strefowy: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, niejednoznaczny czas lokalny");
 end Locale_Pl;

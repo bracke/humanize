@@ -102,6 +102,120 @@ package Humanize.Cross_Domain.Localized is
    --  @param Count As for the parent's Top_Frequency_Label.
    --  @return The most frequent value, localized.
 
+   function Structured_Diff_Label
+     (Context   : Humanize.Contexts.Context;
+      Path      : String;
+      Old_Value : String := "";
+      New_Value : String := "";
+      Redacted  : Boolean := False)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Path As for the parent's Structured_Diff_Label.
+   --  @param Old_Value As for the parent's Structured_Diff_Label.
+   --  @param New_Value As for the parent's Structured_Diff_Label.
+   --  @param Redacted As for the parent's Structured_Diff_Label.
+   --  @return The change, localized.
+
+   function Validation_Result_Label
+     (Context : Humanize.Contexts.Context;
+      Summary : Validation_Result_Summary)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Summary As for the parent's Validation_Result_Label.
+   --  @return The validation counts, localized.
+
+   function File_Metadata_Label
+     (Context  : Humanize.Contexts.Context;
+      Name     : String;
+      Kind     : File_Metadata_Kind;
+      Size     : String := "";
+      Checksum : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's File_Metadata_Label.
+   --  @param Kind As for the parent's File_Metadata_Label.
+   --  @param Size As for the parent's File_Metadata_Label.
+   --  @param Checksum As for the parent's File_Metadata_Label.
+   --  @return The file's kind, size and checksum, localized.
+
+   function File_Signature_Label
+     (Context        : Humanize.Contexts.Context;
+      Name           : String;
+      Extension_Kind : File_Metadata_Kind;
+      Signature_Kind : File_Metadata_Kind)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's File_Signature_Label.
+   --  @param Extension_Kind As for the parent's File_Signature_Label.
+   --  @param Signature_Kind As for the parent's File_Signature_Label.
+   --  @return Whether the content matches the extension, localized.
+
+   function Network_Session_Label
+     (Context     : Humanize.Contexts.Context;
+      Endpoint    : String;
+      Event       : Network_Event_Kind;
+      Detail      : String := "";
+      Retry_After : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Endpoint As for the parent's Network_Session_Label.
+   --  @param Event As for the parent's Network_Session_Label.
+   --  @param Detail As for the parent's Network_Session_Label.
+   --  @param Retry_After As for the parent's Network_Session_Label.
+   --  @return The session's state, localized.
+
+   function Diff_Node_Label
+     (Context : Humanize.Contexts.Context;
+      Path    : String;
+      Kind    : Diff_Node_Kind;
+      Changes : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Path As for the parent's Diff_Node_Label.
+   --  @param Kind As for the parent's Diff_Node_Label.
+   --  @param Changes As for the parent's Diff_Node_Label.
+   --  @return The diff node, localized.
+
+   function Product_Code_Label
+     (Context  : Humanize.Contexts.Context;
+      Value    : String;
+      Kind     : Product_Code_Kind := Unknown_Product_Code;
+      Checksum : Checksum_State := Checksum_Not_Checked)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Value As for the parent's Product_Code_Label.
+   --  @param Kind As for the parent's Product_Code_Label.
+   --  @param Checksum As for the parent's Product_Code_Label.
+   --  @return The code and its checksum state, localized.
+
+   function Time_Zone_Label
+     (Context        : Humanize.Contexts.Context;
+      Kind           : Time_Zone_Kind;
+      Name           : String := "";
+      Offset_Minutes : Integer := 0;
+      Has_DST        : Boolean := False)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Kind As for the parent's Time_Zone_Label.
+   --  @param Name As for the parent's Time_Zone_Label.
+   --  @param Offset_Minutes As for the parent's Time_Zone_Label.
+   --  @param Has_DST As for the parent's Time_Zone_Label.
+   --  @return The time zone, localized.
+
+   function Zoned_Time_Label
+     (Context        : Humanize.Contexts.Context;
+      Local_Time     : String;
+      Zone_Name      : String;
+      Offset_Minutes : Integer;
+      Ambiguous      : Boolean := False)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Local_Time As for the parent's Zoned_Time_Label.
+   --  @param Zone_Name As for the parent's Zoned_Time_Label.
+   --  @param Offset_Minutes As for the parent's Zoned_Time_Label.
+   --  @param Ambiguous As for the parent's Zoned_Time_Label.
+   --  @return The local time in its zone, localized.
+
    --  Bounded forms: each writes its function's text into Target.
 
    procedure Validation_Problem_Label_Into

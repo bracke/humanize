@@ -598,4 +598,57 @@ begin
    P ("errno.reason.unknown", "ismeretlen hiba");
    P ("signal.reason.unknown", "ismeretlen szignál");
    P ("sqlstate.reason.unknown", "ismeretlen SQLSTATE-osztály");
+   P ("diff.changed",
+      "eltérés – {path}: módosult, régi érték: {before}, új érték: "
+      & "{after}");
+   P ("diff.added", "eltérés – {path}: hozzáadva: {after}");
+   P ("diff.removed", "eltérés – {path}: eltávolítva: {before}");
+   P ("diff.unchanged", "eltérés – {path}: változatlan");
+   P ("diff.redacted", "eltérés – {path}: módosult; az értékek rejtve");
+   P ("validation.result",
+      "ellenőrzés eredménye: {fields} mező, {errors} hiba, {warnings} "
+      & "figyelmeztetés, {required} kötelező mező, {hidden} rejtett "
+      & "probléma");
+   P ("file.kind.plain", "fájl");
+   P ("file.kind.directory", "mappa");
+   P ("file.kind.archive", "archívum");
+   P ("file.kind.compressed", "tömörített fájl");
+   P ("file.kind.image", "kép");
+   P ("file.kind.script", "szkript");
+   P ("file.kind.executable", "futtatható fájl");
+   P ("file.kind.unknown", "ismeretlen fájl");
+   P ("file.metadata", "fájl – {name}: {kind}");
+   P ("file.checksum", "{text}, ellenőrzőösszeg: {checksum}");
+   P ("file.signature_match", "fájlaláírás – {name}: {kind}, egyezik a kiterjesztéssel");
+   P ("file.signature_mismatch",
+      "fájlaláírás – {name}: a kiterjesztés szerint {expected}, a "
+      & "tartalom alapján {actual}");
+   P ("network_event.connecting", "csatlakozás");
+   P ("network_event.connected", "csatlakozva");
+   P ("network_event.redirected", "átirányítva");
+   P ("network_event.retrying", "újrapróbálkozás");
+   P ("network_event.rate_limited", "sebességkorlátozva");
+   P ("network_event.tls_failed", "TLS sikertelen");
+   P ("network_event.stalled", "elakadt");
+   P ("network_event.complete", "kész");
+   P ("network_event.failed", "sikertelen");
+   P ("network.session", "hálózat – {endpoint}: {state}");
+   P ("diff_node.field", "mező");
+   P ("diff_node.object", "objektum");
+   P ("diff_node.list", "lista");
+   P ("diff.node", "eltéréscsomópont – {path}: {kind}, {count} változás");
+   P ("checksum.not_checked", "ellenőrzőösszeg nincs ellenőrizve");
+   P ("checksum.valid", "ellenőrzőösszeg érvényes");
+   P ("checksum.mismatch", "ellenőrzőösszeg eltér");
+   P ("checksum.missing", "ellenőrzőösszeg hiányzik");
+   P ("product_code", "termékkód – {kind}: {value}, {state}");
+   P ("time_zone.utc", "időzóna: UTC");
+   P ("time_zone.offset", "időzóna: {offset}");
+   P ("time_zone.named", "időzóna: {name} ({offset})");
+   P ("time_zone.local", "időzóna: helyi idő");
+   P ("time_zone.unknown", "időzóna: ismeretlen zóna");
+   P ("time_zone.dst", "{text}, nyári időszámítással");
+   P ("zoned_time.plain", "zónaidő: {time} {offset}");
+   P ("zoned_time.named", "zónaidő: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, nem egyértelmű helyi idő");
 end Locale_Hu;

@@ -584,4 +584,54 @@ begin
    P ("errno.reason.unknown", "未知错误");
    P ("signal.reason.unknown", "未知信号");
    P ("sqlstate.reason.unknown", "未知 SQLSTATE 类别");
+   P ("diff.changed", "差异 {path}：已从{before}更改为{after}");
+   P ("diff.added", "差异 {path}：已添加{after}");
+   P ("diff.removed", "差异 {path}：已删除{before}");
+   P ("diff.unchanged", "差异 {path}：未更改");
+   P ("diff.redacted", "差异 {path}：已更改；值已隐去");
+   P ("validation.result",
+      "验证结果：{fields}个字段，{errors}个错误，{warnings}个"
+      & "警告，{required}个必填字段，{hidden}个隐藏问题");
+   P ("file.kind.plain", "文件");
+   P ("file.kind.directory", "目录");
+   P ("file.kind.archive", "归档");
+   P ("file.kind.compressed", "压缩文件");
+   P ("file.kind.image", "图像");
+   P ("file.kind.script", "脚本");
+   P ("file.kind.executable", "可执行文件");
+   P ("file.kind.unknown", "未知文件");
+   P ("file.metadata", "文件 {name}：{kind}");
+   P ("file.checksum", "{text}，校验和 {checksum}");
+   P ("file.signature_match", "文件签名 {name}：{kind}，与扩展名一致");
+   P ("file.signature_mismatch",
+      "文件签名 "
+      & "{name}：扩展名表明是{expected}，内容看似{actual}");
+   P ("network_event.connecting", "正在连接");
+   P ("network_event.connected", "已连接");
+   P ("network_event.redirected", "已重定向");
+   P ("network_event.retrying", "正在重试");
+   P ("network_event.rate_limited", "已限速");
+   P ("network_event.tls_failed", "TLS失败");
+   P ("network_event.stalled", "已停滞");
+   P ("network_event.complete", "已完成");
+   P ("network_event.failed", "失败");
+   P ("network.session", "网络 {endpoint}：{state}");
+   P ("diff_node.field", "字段");
+   P ("diff_node.object", "对象");
+   P ("diff_node.list", "列表");
+   P ("diff.node", "差异节点 {path}：{kind}，{count}处更改");
+   P ("checksum.not_checked", "未检查校验和");
+   P ("checksum.valid", "校验和有效");
+   P ("checksum.mismatch", "校验和不匹配");
+   P ("checksum.missing", "缺少校验和");
+   P ("product_code", "产品代码 {kind}：{value}，{state}");
+   P ("time_zone.utc", "时区：UTC");
+   P ("time_zone.offset", "时区：{offset}");
+   P ("time_zone.named", "时区：{name}（{offset}）");
+   P ("time_zone.local", "时区：本地时间");
+   P ("time_zone.unknown", "时区：未知时区");
+   P ("time_zone.dst", "{text}，实行夏令时");
+   P ("zoned_time.plain", "带时区时间：{time} {offset}");
+   P ("zoned_time.named", "带时区时间：{time} {name}（{offset}）");
+   P ("zoned_time.ambiguous", "{text}，本地时间不明确");
 end Locale_Zh;

@@ -741,4 +741,62 @@ begin
    P ("errno.reason.unknown", "neznámá chyba");
    P ("signal.reason.unknown", "neznámý signál");
    P ("sqlstate.reason.unknown", "neznámá třída SQLSTATE");
+   P ("diff.changed", "rozdíl {path}: změněno z {before} na {after}");
+   P ("diff.added", "rozdíl {path}: přidáno {after}");
+   P ("diff.removed", "rozdíl {path}: odebráno {before}");
+   P ("diff.unchanged", "rozdíl {path}: beze změny");
+   P ("diff.redacted", "rozdíl {path}: změněno; hodnoty skryty");
+   P ("validation.result",
+      "výsledek ověření: {fields} {fields, plural, one {pole} few {pole} "
+      & "many {pole} other {polí}}, {errors} {errors, plural, one {chyba} few "
+      & "{chyby} many {chyby} other {chyb}}, {warnings} {warnings, plural, one "
+      & "{varování} few {varování} many {varování} other {varování}}, "
+      & "{required} {required, plural, one {povinné pole} few {povinná pole} "
+      & "many {povinného pole} other {povinných polí}}, {hidden} {hidden, "
+      & "plural, one {skrytý problém} few {skryté problémy} many {skrytého "
+      & "problému} other {skrytých problémů}}");
+   P ("file.kind.plain", "soubor");
+   P ("file.kind.directory", "adresář");
+   P ("file.kind.archive", "archiv");
+   P ("file.kind.compressed", "komprimovaný soubor");
+   P ("file.kind.image", "obrázek");
+   P ("file.kind.script", "skript");
+   P ("file.kind.executable", "spustitelný soubor");
+   P ("file.kind.unknown", "neznámý soubor");
+   P ("file.metadata", "soubor {name}: {kind}");
+   P ("file.checksum", "{text}, kontrolní součet {checksum}");
+   P ("file.signature_match", "signatura souboru {name}: {kind}, odpovídá příponě");
+   P ("file.signature_mismatch",
+      "signatura souboru {name}: podle přípony {expected}, podle obsahu "
+      & "{actual}");
+   P ("network_event.connecting", "připojování");
+   P ("network_event.connected", "připojeno");
+   P ("network_event.redirected", "přesměrováno");
+   P ("network_event.retrying", "opakování");
+   P ("network_event.rate_limited", "omezení četnosti");
+   P ("network_event.tls_failed", "selhání TLS");
+   P ("network_event.stalled", "bez postupu");
+   P ("network_event.complete", "dokončeno");
+   P ("network_event.failed", "selhání");
+   P ("network.session", "síť {endpoint}: {state}");
+   P ("diff_node.field", "pole");
+   P ("diff_node.object", "objekt");
+   P ("diff_node.list", "seznam");
+   P ("diff.node",
+      "uzel rozdílu {path}: {kind}, {count} {count, plural, one {změna} few "
+      & "{změny} many {změny} other {změn}}");
+   P ("checksum.not_checked", "kontrolní součet neověřen");
+   P ("checksum.valid", "kontrolní součet platný");
+   P ("checksum.mismatch", "kontrolní součet nesouhlasí");
+   P ("checksum.missing", "kontrolní součet chybí");
+   P ("product_code", "kód produktu {kind}: {value}, {state}");
+   P ("time_zone.utc", "časové pásmo: UTC");
+   P ("time_zone.offset", "časové pásmo: {offset}");
+   P ("time_zone.named", "časové pásmo: {name} ({offset})");
+   P ("time_zone.local", "časové pásmo: místní čas");
+   P ("time_zone.unknown", "časové pásmo: neznámé pásmo");
+   P ("time_zone.dst", "{text}, používá letní čas");
+   P ("zoned_time.plain", "čas v pásmu: {time} {offset}");
+   P ("zoned_time.named", "čas v pásmu: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, nejednoznačný místní čas");
 end Locale_Cs;

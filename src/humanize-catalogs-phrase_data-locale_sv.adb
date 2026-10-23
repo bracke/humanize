@@ -639,4 +639,60 @@ begin
    P ("errno.reason.unknown", "okänt fel");
    P ("signal.reason.unknown", "okänd signal");
    P ("sqlstate.reason.unknown", "okänd SQLSTATE-klass");
+   P ("diff.changed", "diff {path}: ändrat från {before} till {after}");
+   P ("diff.added", "diff {path}: {after} tillagt");
+   P ("diff.removed", "diff {path}: {before} borttaget");
+   P ("diff.unchanged", "diff {path}: oförändrat");
+   P ("diff.redacted", "diff {path}: ändrat; värden dolda");
+   P ("validation.result",
+      "valideringsresultat: {fields} {fields, plural, one {fält} other "
+      & "{fält}}, {errors} {errors, plural, one {fel} other {fel}}, {warnings} "
+      & "{warnings, plural, one {varning} other {varningar}}, {required} "
+      & "{required, plural, one {obligatoriskt fält} other {obligatoriska "
+      & "fält}}, {hidden} {hidden, plural, one {dolt problem} other {dolda "
+      & "problem}}");
+   P ("file.kind.plain", "fil");
+   P ("file.kind.directory", "katalog");
+   P ("file.kind.archive", "arkiv");
+   P ("file.kind.compressed", "komprimerad fil");
+   P ("file.kind.image", "bild");
+   P ("file.kind.script", "skript");
+   P ("file.kind.executable", "körbar fil");
+   P ("file.kind.unknown", "okänd fil");
+   P ("file.metadata", "fil {name}: {kind}");
+   P ("file.checksum", "{text}, kontrollsumma {checksum}");
+   P ("file.signature_match", "filsignatur {name}: {kind}, stämmer med filändelsen");
+   P ("file.signature_mismatch",
+      "filsignatur {name}: enligt filändelse {expected}, enligt innehåll "
+      & "{actual}");
+   P ("network_event.connecting", "ansluter");
+   P ("network_event.connected", "ansluten");
+   P ("network_event.redirected", "omdirigerad");
+   P ("network_event.retrying", "försöker igen");
+   P ("network_event.rate_limited", "hastighetsbegränsad");
+   P ("network_event.tls_failed", "TLS misslyckades");
+   P ("network_event.stalled", "avstannad");
+   P ("network_event.complete", "slutförd");
+   P ("network_event.failed", "misslyckades");
+   P ("network.session", "nätverk {endpoint}: {state}");
+   P ("diff_node.field", "fält");
+   P ("diff_node.object", "objekt");
+   P ("diff_node.list", "lista");
+   P ("diff.node",
+      "diff-nod {path}: {kind}, {count} {count, plural, one {ändring} other "
+      & "{ändringar}}");
+   P ("checksum.not_checked", "kontrollsumma ej kontrollerad");
+   P ("checksum.valid", "kontrollsumma giltig");
+   P ("checksum.mismatch", "kontrollsumma stämmer inte");
+   P ("checksum.missing", "kontrollsumma saknas");
+   P ("product_code", "produktkod {kind}: {value}, {state}");
+   P ("time_zone.utc", "tidszon: UTC");
+   P ("time_zone.offset", "tidszon: {offset}");
+   P ("time_zone.named", "tidszon: {name} ({offset})");
+   P ("time_zone.local", "tidszon: lokal tid");
+   P ("time_zone.unknown", "tidszon: okänd zon");
+   P ("time_zone.dst", "{text}, har sommartid");
+   P ("zoned_time.plain", "zontid: {time} {offset}");
+   P ("zoned_time.named", "zontid: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, tvetydig lokal tid");
 end Locale_Sv;

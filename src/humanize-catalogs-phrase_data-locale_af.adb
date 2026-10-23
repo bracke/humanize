@@ -621,4 +621,60 @@ begin
    P ("errno.reason.unknown", "onbekende fout");
    P ("signal.reason.unknown", "onbekende sein");
    P ("sqlstate.reason.unknown", "onbekende SQLSTATE-klas");
+   P ("diff.changed", "diff {path}: verander van {before} na {after}");
+   P ("diff.added", "diff {path}: {after} bygevoeg");
+   P ("diff.removed", "diff {path}: {before} verwyder");
+   P ("diff.unchanged", "diff {path}: onveranderd");
+   P ("diff.redacted", "diff {path}: verander; waardes verberg");
+   P ("validation.result",
+      "valideringsresultaat: {fields} {fields, plural, one {veld} other "
+      & "{velde}}, {errors} {errors, plural, one {fout} other {foute}}, "
+      & "{warnings} {warnings, plural, one {waarskuwing} other {waarskuwings}}, "
+      & "{required} {required, plural, one {verpligte veld} other {verpligte "
+      & "velde}}, {hidden} {hidden, plural, one {verborge probleem} other "
+      & "{verborge probleme}}");
+   P ("file.kind.plain", "lêer");
+   P ("file.kind.directory", "gids");
+   P ("file.kind.archive", "argief");
+   P ("file.kind.compressed", "saamgeperste lêer");
+   P ("file.kind.image", "beeld");
+   P ("file.kind.script", "skrip");
+   P ("file.kind.executable", "uitvoerbare lêer");
+   P ("file.kind.unknown", "onbekende lêer");
+   P ("file.metadata", "lêer {name}: {kind}");
+   P ("file.checksum", "{text}, kontrolesom {checksum}");
+   P ("file.signature_match", "lêerhandtekening {name}: {kind}, stem ooreen met uitbreiding");
+   P ("file.signature_mismatch",
+      "lêerhandtekening {name}: volgens uitbreiding {expected}, volgens "
+      & "inhoud {actual}");
+   P ("network_event.connecting", "koppel tans");
+   P ("network_event.connected", "gekoppel");
+   P ("network_event.redirected", "herlei");
+   P ("network_event.retrying", "probeer weer");
+   P ("network_event.rate_limited", "tempolimiet bereik");
+   P ("network_event.tls_failed", "TLS het misluk");
+   P ("network_event.stalled", "vasgeval");
+   P ("network_event.complete", "voltooi");
+   P ("network_event.failed", "misluk");
+   P ("network.session", "netwerk {endpoint}: {state}");
+   P ("diff_node.field", "veld");
+   P ("diff_node.object", "objek");
+   P ("diff_node.list", "lys");
+   P ("diff.node",
+      "diff-nodus {path}: {kind}, {count} {count, plural, one {verandering} "
+      & "other {veranderinge}}");
+   P ("checksum.not_checked", "kontrolesom nie nagegaan nie");
+   P ("checksum.valid", "kontrolesom geldig");
+   P ("checksum.mismatch", "kontrolesom stem nie ooreen nie");
+   P ("checksum.missing", "kontrolesom ontbreek");
+   P ("product_code", "produkkode {kind}: {value}, {state}");
+   P ("time_zone.utc", "tydsone: UTC");
+   P ("time_zone.offset", "tydsone: {offset}");
+   P ("time_zone.named", "tydsone: {name} ({offset})");
+   P ("time_zone.local", "tydsone: plaaslike tyd");
+   P ("time_zone.unknown", "tydsone: onbekende sone");
+   P ("time_zone.dst", "{text}, met somertyd");
+   P ("zoned_time.plain", "sonetyd: {time} {offset}");
+   P ("zoned_time.named", "sonetyd: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, dubbelsinnige plaaslike tyd");
 end Locale_Af;

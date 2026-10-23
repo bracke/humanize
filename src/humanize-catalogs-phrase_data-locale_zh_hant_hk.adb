@@ -42,4 +42,17 @@ begin
    P ("signal.reason.12", "使用者定義信號 2");
    P ("system.signal_numbered", "信號 {number} {name} {reason}");
    P ("signal.reason.unknown", "未知信號");
+   P ("file.kind.script", "腳本");
+   P ("file.checksum", "{text}，檢查碼 {checksum}");
+   P ("file.signature_match", "檔案簽名 {name}：{kind}，與副檔名相符");
+   P ("file.signature_mismatch",
+      "檔案簽名 "
+      & "{name}：副檔名表示為{expected}，內容看似{actual}");
+   P ("network_event.connecting", "連接中");
+   P ("network_event.connected", "已連接");
+   P ("network.session", "網絡 {endpoint}：{state}");
+   P ("checksum.not_checked", "未檢查檢查碼");
+   P ("checksum.valid", "檢查碼有效");
+   P ("checksum.mismatch", "檢查碼不符");
+   P ("checksum.missing", "缺少檢查碼");
 end Locale_Zh_Hant_Hk;

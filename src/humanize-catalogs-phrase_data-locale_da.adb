@@ -627,4 +627,60 @@ begin
    P ("errno.reason.unknown", "ukendt fejl");
    P ("signal.reason.unknown", "ukendt signal");
    P ("sqlstate.reason.unknown", "ukendt SQLSTATE-klasse");
+   P ("diff.changed", "diff {path}: ændret fra {before} til {after}");
+   P ("diff.added", "diff {path}: {after} tilføjet");
+   P ("diff.removed", "diff {path}: {before} fjernet");
+   P ("diff.unchanged", "diff {path}: uændret");
+   P ("diff.redacted", "diff {path}: ændret; værdier skjult");
+   P ("validation.result",
+      "valideringsresultat: {fields} {fields, plural, one {felt} other "
+      & "{felter}}, {errors} {errors, plural, one {fejl} other {fejl}}, "
+      & "{warnings} {warnings, plural, one {advarsel} other {advarsler}}, "
+      & "{required} {required, plural, one {obligatorisk felt} other "
+      & "{obligatoriske felter}}, {hidden} {hidden, plural, one {skjult "
+      & "problem} other {skjulte problemer}}");
+   P ("file.kind.plain", "fil");
+   P ("file.kind.directory", "mappe");
+   P ("file.kind.archive", "arkiv");
+   P ("file.kind.compressed", "komprimeret fil");
+   P ("file.kind.image", "billede");
+   P ("file.kind.script", "script");
+   P ("file.kind.executable", "eksekverbar fil");
+   P ("file.kind.unknown", "ukendt fil");
+   P ("file.metadata", "fil {name}: {kind}");
+   P ("file.checksum", "{text}, kontrolsum {checksum}");
+   P ("file.signature_match", "filsignatur {name}: {kind}, svarer til filtypenavnet");
+   P ("file.signature_mismatch",
+      "filsignatur {name}: ifølge filtypenavn {expected}, ifølge indhold "
+      & "{actual}");
+   P ("network_event.connecting", "forbinder");
+   P ("network_event.connected", "forbundet");
+   P ("network_event.redirected", "omdirigeret");
+   P ("network_event.retrying", "prøver igen");
+   P ("network_event.rate_limited", "hastighedsbegrænset");
+   P ("network_event.tls_failed", "TLS mislykkedes");
+   P ("network_event.stalled", "gået i stå");
+   P ("network_event.complete", "fuldført");
+   P ("network_event.failed", "mislykkedes");
+   P ("network.session", "netværk {endpoint}: {state}");
+   P ("diff_node.field", "felt");
+   P ("diff_node.object", "objekt");
+   P ("diff_node.list", "liste");
+   P ("diff.node",
+      "diff-node {path}: {kind}, {count} {count, plural, one {ændring} other "
+      & "{ændringer}}");
+   P ("checksum.not_checked", "kontrolsum ikke kontrolleret");
+   P ("checksum.valid", "kontrolsum gyldig");
+   P ("checksum.mismatch", "kontrolsum stemmer ikke");
+   P ("checksum.missing", "kontrolsum mangler");
+   P ("product_code", "produktkode {kind}: {value}, {state}");
+   P ("time_zone.utc", "tidszone: UTC");
+   P ("time_zone.offset", "tidszone: {offset}");
+   P ("time_zone.named", "tidszone: {name} ({offset})");
+   P ("time_zone.local", "tidszone: lokal tid");
+   P ("time_zone.unknown", "tidszone: ukendt zone");
+   P ("time_zone.dst", "{text}, har sommertid");
+   P ("zoned_time.plain", "zonetid: {time} {offset}");
+   P ("zoned_time.named", "zonetid: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, tvetydig lokal tid");
 end Locale_Da;

@@ -677,4 +677,61 @@ begin
    P ("errno.reason.unknown", "errore sconosciuto");
    P ("signal.reason.unknown", "segnale sconosciuto");
    P ("sqlstate.reason.unknown", "classe SQLSTATE sconosciuta");
+   P ("diff.changed", "diff {path}: modificato da {before} a {after}");
+   P ("diff.added", "diff {path}: aggiunto {after}");
+   P ("diff.removed", "diff {path}: rimosso {before}");
+   P ("diff.unchanged", "diff {path}: invariato");
+   P ("diff.redacted", "diff {path}: modificato; valori oscurati");
+   P ("validation.result",
+      "risultato della convalida: {fields} {fields, plural, one {campo} many "
+      & "{di campi} other {campi}}, {errors} {errors, plural, one {errore} many "
+      & "{di errori} other {errori}}, {warnings} {warnings, plural, one "
+      & "{avviso} many {di avvisi} other {avvisi}}, {required} {required, "
+      & "plural, one {campo obbligatorio} many {di campi obbligatori} other "
+      & "{campi obbligatori}}, {hidden} {hidden, plural, one {problema "
+      & "nascosto} many {di problemi nascosti} other {problemi nascosti}}");
+   P ("file.kind.plain", "file");
+   P ("file.kind.directory", "cartella");
+   P ("file.kind.archive", "archivio");
+   P ("file.kind.compressed", "file compresso");
+   P ("file.kind.image", "immagine");
+   P ("file.kind.script", "script");
+   P ("file.kind.executable", "eseguibile");
+   P ("file.kind.unknown", "file sconosciuto");
+   P ("file.metadata", "file {name}: {kind}");
+   P ("file.checksum", "{text}, checksum {checksum}");
+   P ("file.signature_match", "firma del file {name}: {kind}, corrisponde all’estensione");
+   P ("file.signature_mismatch",
+      "firma del file {name}: estensione di tipo {expected}, contenuto di "
+      & "tipo {actual}");
+   P ("network_event.connecting", "connessione in corso");
+   P ("network_event.connected", "connesso");
+   P ("network_event.redirected", "reindirizzato");
+   P ("network_event.retrying", "nuovo tentativo");
+   P ("network_event.rate_limited", "limite di frequenza raggiunto");
+   P ("network_event.tls_failed", "TLS non riuscito");
+   P ("network_event.stalled", "bloccato");
+   P ("network_event.complete", "completato");
+   P ("network_event.failed", "non riuscito");
+   P ("network.session", "rete {endpoint}: {state}");
+   P ("diff_node.field", "campo");
+   P ("diff_node.object", "oggetto");
+   P ("diff_node.list", "elenco");
+   P ("diff.node",
+      "nodo diff {path}: {kind}, {count} {count, plural, one {modifica} many "
+      & "{di modifiche} other {modifiche}}");
+   P ("checksum.not_checked", "checksum non verificato");
+   P ("checksum.valid", "checksum valido");
+   P ("checksum.mismatch", "checksum non corrispondente");
+   P ("checksum.missing", "checksum mancante");
+   P ("product_code", "codice prodotto {kind}: {value}, {state}");
+   P ("time_zone.utc", "fuso orario: UTC");
+   P ("time_zone.offset", "fuso orario: {offset}");
+   P ("time_zone.named", "fuso orario: {name} ({offset})");
+   P ("time_zone.local", "fuso orario: ora locale");
+   P ("time_zone.unknown", "fuso orario: fuso sconosciuto");
+   P ("time_zone.dst", "{text}, osserva l’ora legale");
+   P ("zoned_time.plain", "ora con fuso: {time} {offset}");
+   P ("zoned_time.named", "ora con fuso: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, ora locale ambigua");
 end Locale_It;

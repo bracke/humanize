@@ -72,7 +72,8 @@ procedure Phrase_Review_Data is
          +"selected", +"showing", +"count", +"hidden", +"done", +"step", +"attempt", +"rate", +"days",
          +"hours", +"every", +"hits", +"misses", +"changed", +"added", +"removed", +"available",
          +"unavailable", +"code", +"done", +"unique", +"duplicates", +"outliers",
-         +"part", +"year", +"number"];
+         +"part", +"year", +"number",
+         +"fields", +"errors", +"warnings", +"required", +"hidden"];
       Samples : constant array (Positive range <>) of Locale_Row :=
         [(+"one", +"file"), (+"other", +"files"), (+"zero", +"files(zero)"), (+"two", +"files(two)"),
          (+"few", +"files(few)"), (+"many", +"files(many)"), (+"genitive_one", +"file(gen)"),
@@ -87,7 +88,8 @@ procedure Phrase_Review_Data is
          (+"difference", +"2 years"), (+"measure", +"12.5 %"), (+"percent", +"50"), (+"name", +"Import"),
          (+"signal", +"SIGKILL killed"), (+"choices", +"S, M, L"), (+"actual", +"XL"),
          (+"endpoint", +"api.example.com"), (+"subject", +"Import"), (+"text", +"[label]"),
-         (+"detail", +"expired"), (+"reason", +"killed"), (+"phase", +"mid"),
+         (+"detail", +"expired"), (+"reason", +"killed"), (+"path", +"user.email"),
+         (+"kind", +"archive"), (+"checksum", +"abc123"), (+"expected", +"image"), (+"offset", +"UTC+02:00"), (+"phase", +"mid"),
          (+"date", +"9 Oct 2026"), (+"first", +"9 Oct 2026"), (+"last", +"15 Oct 2026"),
          (+"time", +"2 hours ago")];
    begin

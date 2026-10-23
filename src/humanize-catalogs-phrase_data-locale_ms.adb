@@ -588,4 +588,54 @@ begin
    P ("errno.reason.unknown", "ralat tidak diketahui");
    P ("signal.reason.unknown", "isyarat tidak diketahui");
    P ("sqlstate.reason.unknown", "kelas SQLSTATE tidak diketahui");
+   P ("diff.changed", "perbezaan {path}: diubah daripada {before} kepada {after}");
+   P ("diff.added", "perbezaan {path}: ditambah {after}");
+   P ("diff.removed", "perbezaan {path}: dibuang {before}");
+   P ("diff.unchanged", "perbezaan {path}: tidak berubah");
+   P ("diff.redacted", "perbezaan {path}: diubah; nilai disembunyikan");
+   P ("validation.result",
+      "keputusan pengesahan: {fields} medan, {errors} ralat, {warnings} "
+      & "amaran, {required} medan wajib, {hidden} masalah tersembunyi");
+   P ("file.kind.plain", "fail");
+   P ("file.kind.directory", "direktori");
+   P ("file.kind.archive", "arkib");
+   P ("file.kind.compressed", "fail termampat");
+   P ("file.kind.image", "imej");
+   P ("file.kind.script", "skrip");
+   P ("file.kind.executable", "fail boleh laku");
+   P ("file.kind.unknown", "fail tidak diketahui");
+   P ("file.metadata", "fail {name}: {kind}");
+   P ("file.checksum", "{text}, hasil tambah semak {checksum}");
+   P ("file.signature_match", "tandatangan fail {name}: {kind}, sepadan dengan sambungan");
+   P ("file.signature_mismatch",
+      "tandatangan fail {name}: sambungan menunjukkan {expected}, kandungan "
+      & "kelihatan seperti {actual}");
+   P ("network_event.connecting", "menyambung");
+   P ("network_event.connected", "disambungkan");
+   P ("network_event.redirected", "diubah hala");
+   P ("network_event.retrying", "mencuba semula");
+   P ("network_event.rate_limited", "kadar dihadkan");
+   P ("network_event.tls_failed", "TLS gagal");
+   P ("network_event.stalled", "terhenti");
+   P ("network_event.complete", "selesai");
+   P ("network_event.failed", "gagal");
+   P ("network.session", "rangkaian {endpoint}: {state}");
+   P ("diff_node.field", "medan");
+   P ("diff_node.object", "objek");
+   P ("diff_node.list", "senarai");
+   P ("diff.node", "nod perbezaan {path}: {kind}, {count} perubahan");
+   P ("checksum.not_checked", "hasil tambah semak belum disemak");
+   P ("checksum.valid", "hasil tambah semak sah");
+   P ("checksum.mismatch", "hasil tambah semak tidak sepadan");
+   P ("checksum.missing", "hasil tambah semak tiada");
+   P ("product_code", "kod produk {kind}: {value}, {state}");
+   P ("time_zone.utc", "zon waktu: UTC");
+   P ("time_zone.offset", "zon waktu: {offset}");
+   P ("time_zone.named", "zon waktu: {name} ({offset})");
+   P ("time_zone.local", "zon waktu: waktu tempatan");
+   P ("time_zone.unknown", "zon waktu: zon tidak diketahui");
+   P ("time_zone.dst", "{text}, mengamalkan waktu jimat siang");
+   P ("zoned_time.plain", "masa berzon: {time} {offset}");
+   P ("zoned_time.named", "masa berzon: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, waktu tempatan taksa");
 end Locale_Ms;

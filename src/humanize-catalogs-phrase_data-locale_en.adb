@@ -615,4 +615,60 @@ begin
    P ("errno.reason.unknown", "unknown error");
    P ("signal.reason.unknown", "unknown signal");
    P ("sqlstate.reason.unknown", "unknown SQLSTATE class");
+   P ("diff.changed", "diff {path}: changed from {before} to {after}");
+   P ("diff.added", "diff {path}: added {after}");
+   P ("diff.removed", "diff {path}: removed {before}");
+   P ("diff.unchanged", "diff {path}: unchanged");
+   P ("diff.redacted", "diff {path}: changed; values redacted");
+   P ("validation.result",
+      "validation result: {fields} {fields, plural, one {field} other "
+      & "{fields}}, {errors} {errors, plural, one {error} other {errors}}, "
+      & "{warnings} {warnings, plural, one {warning} other {warnings}}, "
+      & "{required} {required, plural, one {required field} other {required "
+      & "fields}}, {hidden} {hidden, plural, one {hidden problem} other {hidden "
+      & "problems}}");
+   P ("file.kind.plain", "file");
+   P ("file.kind.directory", "directory");
+   P ("file.kind.archive", "archive");
+   P ("file.kind.compressed", "compressed file");
+   P ("file.kind.image", "image");
+   P ("file.kind.script", "script");
+   P ("file.kind.executable", "executable");
+   P ("file.kind.unknown", "unknown file");
+   P ("file.metadata", "file {name}: {kind}");
+   P ("file.checksum", "{text}, checksum {checksum}");
+   P ("file.signature_match", "file signature {name}: {kind} matches extension");
+   P ("file.signature_mismatch",
+      "file signature {name}: extension says {expected}, content looks like "
+      & "{actual}");
+   P ("network_event.connecting", "connecting");
+   P ("network_event.connected", "connected");
+   P ("network_event.redirected", "redirected");
+   P ("network_event.retrying", "retrying");
+   P ("network_event.rate_limited", "rate limited");
+   P ("network_event.tls_failed", "TLS failed");
+   P ("network_event.stalled", "stalled");
+   P ("network_event.complete", "complete");
+   P ("network_event.failed", "failed");
+   P ("network.session", "network {endpoint}: {state}");
+   P ("diff_node.field", "field");
+   P ("diff_node.object", "object");
+   P ("diff_node.list", "list");
+   P ("diff.node",
+      "diff node {path}: {kind}, {count} {count, plural, one {change} other "
+      & "{changes}}");
+   P ("checksum.not_checked", "checksum not checked");
+   P ("checksum.valid", "checksum valid");
+   P ("checksum.mismatch", "checksum mismatch");
+   P ("checksum.missing", "checksum missing");
+   P ("product_code", "product code {kind}: {value}, {state}");
+   P ("time_zone.utc", "time zone: UTC");
+   P ("time_zone.offset", "time zone: {offset}");
+   P ("time_zone.named", "time zone: {name} ({offset})");
+   P ("time_zone.local", "time zone: local time");
+   P ("time_zone.unknown", "time zone: unknown zone");
+   P ("time_zone.dst", "{text}, observes daylight saving");
+   P ("zoned_time.plain", "zoned time: {time} {offset}");
+   P ("zoned_time.named", "zoned time: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, ambiguous local time");
 end Locale_En;

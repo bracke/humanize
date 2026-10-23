@@ -597,4 +597,55 @@ begin
    P ("errno.reason.unknown", "lỗi không xác định");
    P ("signal.reason.unknown", "tín hiệu không xác định");
    P ("sqlstate.reason.unknown", "lớp SQLSTATE không xác định");
+   P ("diff.changed", "khác biệt {path}: đã đổi từ {before} thành {after}");
+   P ("diff.added", "khác biệt {path}: đã thêm {after}");
+   P ("diff.removed", "khác biệt {path}: đã xóa {before}");
+   P ("diff.unchanged", "khác biệt {path}: không đổi");
+   P ("diff.redacted", "khác biệt {path}: đã đổi; giá trị bị ẩn");
+   P ("validation.result",
+      "kết quả xác thực: {fields} trường, {errors} lỗi, "
+      & "{warnings} cảnh báo, {required} trường bắt buộc, {hidden} "
+      & "vấn đề ẩn");
+   P ("file.kind.plain", "tệp");
+   P ("file.kind.directory", "thư mục");
+   P ("file.kind.archive", "tệp lưu trữ");
+   P ("file.kind.compressed", "tệp nén");
+   P ("file.kind.image", "hình ảnh");
+   P ("file.kind.script", "tập lệnh");
+   P ("file.kind.executable", "tệp thực thi");
+   P ("file.kind.unknown", "tệp không xác định");
+   P ("file.metadata", "tệp {name}: {kind}");
+   P ("file.checksum", "{text}, tổng kiểm tra {checksum}");
+   P ("file.signature_match", "chữ ký tệp {name}: {kind}, khớp với phần mở rộng");
+   P ("file.signature_mismatch",
+      "chữ ký tệp {name}: phần mở rộng cho biết {expected}, "
+      & "nội dung có vẻ là {actual}");
+   P ("network_event.connecting", "đang kết nối");
+   P ("network_event.connected", "đã kết nối");
+   P ("network_event.redirected", "đã chuyển hướng");
+   P ("network_event.retrying", "đang thử lại");
+   P ("network_event.rate_limited", "bị giới hạn tốc độ");
+   P ("network_event.tls_failed", "TLS thất bại");
+   P ("network_event.stalled", "bị đình trệ");
+   P ("network_event.complete", "hoàn tất");
+   P ("network_event.failed", "thất bại");
+   P ("network.session", "mạng {endpoint}: {state}");
+   P ("diff_node.field", "trường");
+   P ("diff_node.object", "đối tượng");
+   P ("diff_node.list", "danh sách");
+   P ("diff.node", "nút khác biệt {path}: {kind}, {count} thay đổi");
+   P ("checksum.not_checked", "chưa kiểm tra tổng kiểm tra");
+   P ("checksum.valid", "tổng kiểm tra hợp lệ");
+   P ("checksum.mismatch", "tổng kiểm tra không khớp");
+   P ("checksum.missing", "thiếu tổng kiểm tra");
+   P ("product_code", "mã sản phẩm {kind}: {value}, {state}");
+   P ("time_zone.utc", "múi giờ: UTC");
+   P ("time_zone.offset", "múi giờ: {offset}");
+   P ("time_zone.named", "múi giờ: {name} ({offset})");
+   P ("time_zone.local", "múi giờ: giờ địa phương");
+   P ("time_zone.unknown", "múi giờ: múi giờ không xác định");
+   P ("time_zone.dst", "{text}, áp dụng giờ mùa hè");
+   P ("zoned_time.plain", "giờ theo múi giờ: {time} {offset}");
+   P ("zoned_time.named", "giờ theo múi giờ: {time} {name} ({offset})");
+   P ("zoned_time.ambiguous", "{text}, giờ địa phương không rõ ràng");
 end Locale_Vi;

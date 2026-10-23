@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+* The technical cross-domain labels are localized
+  (`Cross_Domain.Localized`: structured diffs and diff nodes, validation
+  results, file metadata and signatures, network sessions, product codes,
+  time zones and zoned times; 46 phrase keys, translated). Checksums,
+  offsets and product values pass through unchanged.
+
 * `Parsing.Localized.Parse_Clock_Label` reads `Calendar_Clock_Label` back
   (a day word, weekday or date, and the time in the locale's hour cycle);
   165 labels round-trip in 33 locales, Hindi "कल" read as the past and not
