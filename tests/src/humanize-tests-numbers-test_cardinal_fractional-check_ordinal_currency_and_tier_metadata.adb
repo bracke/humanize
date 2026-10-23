@@ -93,15 +93,18 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
          "ordinal words");
       AUnit.Assertions.Assert
         (German_Ordinal_Text.Status = Ok
-         and then Support.Text (German_Ordinal_Text) = "ein" & Support.U (16#AD#) & "und" & Support.U (16#AD#) & "zwanzigste",
+         and then Support.Text (German_Ordinal_Text) = "ein" & Support.U (16#AD#) & "und" & Support.U (16#AD#)
+           & "zwanzigste",
          "locale ordinal words");
       AUnit.Assertions.Assert
         (German_Regional_Ordinal_Text.Status = Ok
-         and then Support.Text (German_Regional_Ordinal_Text) = "ein" & Support.U (16#AD#) & "und" & Support.U (16#AD#) & "zwanzigste",
+         and then Support.Text (German_Regional_Ordinal_Text) = "ein" & Support.U (16#AD#) & "und"
+           & Support.U (16#AD#) & "zwanzigste",
          "regional German ordinal words use language-code fallback");
       AUnit.Assertions.Assert
         (Dutch_Ordinal_Text.Status = Ok
-         and then Support.Text (Dutch_Ordinal_Text) = "een" & Support.U (16#AD#) & "en" & Support.U (16#AD#) & "twintigste",
+         and then Support.Text (Dutch_Ordinal_Text) = "een" & Support.U (16#AD#) & "en" & Support.U (16#AD#)
+           & "twintigste",
          "Dutch locale ordinal words");
       AUnit.Assertions.Assert
         (French_Ordinal_Seventeen.Status = Ok

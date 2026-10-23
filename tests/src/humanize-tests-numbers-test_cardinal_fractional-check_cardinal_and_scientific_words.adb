@@ -186,7 +186,8 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
          "native Spanish irregular hundred");
       AUnit.Assertions.Assert
         (Italian_One_Eighty_One.Status = Ok
-         and then Support.Text (Italian_One_Eighty_One) = "cent" & Support.U (16#AD#) & "ottant" & Support.U (16#AD#) & "uno",
+         and then Support.Text (Italian_One_Eighty_One) = "cent" & Support.U (16#AD#) & "ottant" & Support.U (16#AD#)
+           & "uno",
          "native Italian cento elision");
       AUnit.Assertions.Assert
         (Portuguese_Nine_Ninety_Nine.Status = Ok
