@@ -1048,13 +1048,58 @@ package body Humanize.Durations.Formatting is
          return Left;
       elsif Right.Status /= Humanize.Status.Ok then
          return Right;
-      else
-         return
-           (Status => Humanize.Status.Ok,
-            Text   => To_Unbounded_String
-              (To_String (Left.Text) & "-" & To_String (Right.Text)),
-            Key    => Humanize.Message_Keys.No_Message);
       end if;
+      --  Outside English, two counts of one unit as CLDR writes a range of
+      --  them: the unit once ("1–2 Stunden", "2–5 часов").
+      if Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) not in "en" | "" then
+         declare
+            type Unit_Choice is record
+               Seconds : Duration_Seconds;
+               Key     : Humanize.Message_Keys.Message_Id;
+            end record;
+            Units : constant array (1 .. 4) of Unit_Choice :=
+              [(86_400, Humanize.Message_Keys.Duration_Unit_Day), (3_600, Humanize.Message_Keys.Duration_Unit_Hour),
+               (60, Humanize.Message_Keys.Duration_Unit_Minute), (1, Humanize.Message_Keys.Duration_Unit_Second)];
+
+            function Image (Value : Duration_Seconds) return String is
+               Text : constant String := Duration_Seconds'Image (Value);
+            begin
+               return Text (Text'First + 1 .. Text'Last);
+            end Image;
+
+            function Count_Text (Key : Humanize.Message_Keys.Message_Id; Count : Duration_Seconds) return String is
+               Rendered : constant Humanize.Status.Text_Result :=
+                 Humanize.I18N_Rendering.Render (Context, Humanize.Selections.Text_Value (Key, Image (Count)));
+            begin
+               return (if Rendered.Status = Humanize.Status.Ok then To_String (Rendered.Text) else "");
+            end Count_Text;
+         begin
+            for Unit of Units loop
+               if High >= Unit.Seconds and then Low mod Unit.Seconds = 0 and then High mod Unit.Seconds = 0
+                 and then Count_Text (Unit.Key, Low / Unit.Seconds) = To_String (Left.Text)
+                 and then Count_Text (Unit.Key, High / Unit.Seconds) = To_String (Right.Text)
+               then
+                  declare
+                     Joined : constant Humanize.Status.Text_Result :=
+                       Humanize.I18N_Rendering.Render
+                         (Context,
+                          Humanize.Selections.Text_Value
+                            (Unit.Key, Image (Low / Unit.Seconds) & "/" & Image (High / Unit.Seconds)));
+                  begin
+                     if Joined.Status = Humanize.Status.Ok and then Length (Joined.Text) > 0 then
+                        return (Status => Humanize.Status.Ok, Text => Joined.Text,
+                                Key => Humanize.Message_Keys.No_Message);
+                     end if;
+                  end;
+               end if;
+            end loop;
+         end;
+      end if;
+      return
+        (Status => Humanize.Status.Ok,
+         Text   => To_Unbounded_String
+           (To_String (Left.Text) & "-" & To_String (Right.Text)),
+         Key    => Humanize.Message_Keys.No_Message);
    end Format_Range;
 
    function Countdown

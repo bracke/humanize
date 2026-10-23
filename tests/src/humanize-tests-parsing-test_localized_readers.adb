@@ -164,6 +164,11 @@ separate (Humanize.Tests.Parsing)
                (DT.Default_Range_Options with delta Use_Month_Names => True)))
          = "9." & Humanize.Tests.Support.U (16#2013#) & "15. Okt. 2026",
          "a German date range writes the month and year once");
+      AUnit.Assertions.Assert
+        (Humanize.Tests.Support.Text
+           (Humanize.Durations.Format_Range (Humanize.Tests.Support.Locale ("de"), 3_600, 7_200))
+         = "1" & Humanize.Tests.Support.U (16#2013#) & "2 Stunden",
+         "a German range of hours writes the unit once");
       --  Weeks start where the locale's region starts them: the Sunday after
       --  a Saturday is next week in the United States, this week in Germany.
       AUnit.Assertions.Assert

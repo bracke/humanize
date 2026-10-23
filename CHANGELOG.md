@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+* `Durations.Format_Range` outside English writes two counts of one unit as
+  CLDR's range, the unit once ("1–2 Stunden", "2–5 часов", "1～2 時間"), where
+  it wrote "1 Stunde-2 Stunden"; `Parsing.Localized.Parse_Duration_Range`
+  reads both forms.
+
 * Number phrases are translated whole: `Numbers.Under_Number`, `Up_To`,
   `Between`, `Qualified_Range`, `Threshold`, `Range_Position`, `Ratio_Per`,
   `One_In`, `Out_Of`, the change labels (`Change`, "since") and the
