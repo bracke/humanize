@@ -29,8 +29,8 @@ Numbers / multi-unit (English):
   signed words  : minus forty-two
   locale words  : fem
   spanish words : dieciséis
-  swedish words : två tusen tre hundra fyrtiofem
-  finnish words : kaksi tuhatta kolmesataneljäkymmentäviisi
+  swedish words : två­tusen tre­hundra­fyrtio­fem
+  finnish words : kaksi­tuhatta­kolme­sataa­neljä­kymmentä­viisi
   turkish words : iki bin üç yüz kırk beş
   currency      : about 12.5 USD
   scientific    : 1.23e6

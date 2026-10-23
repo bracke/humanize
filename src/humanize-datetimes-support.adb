@@ -14,6 +14,18 @@ package body Humanize.Datetimes.Support is
    use type Ada.Calendar.Time;
    use type Humanize.Status.Status_Code;
 
+   --  A phrase template's arguments, numbers as ASCII digits.
+   package Sel renames Humanize.Selections;
+   --  "past", "current" or "next" for a step of -1, 0 or 1.
+   function Relation_Step (Step : Integer) return String is
+     (if Step < 0 then "past" elsif Step = 0 then "current" else "next");
+   --  Whole days from Reference's date to Due's.
+   function Due_Days (Due, Reference : Civil_Date_Time) return Integer is
+     (Integer ((Ada.Calendar.Time_Of (Due.Year, Due.Month, Due.Day, 0.0)
+                - Ada.Calendar.Time_Of (Reference.Year, Reference.Month, Reference.Day, 0.0)) / 86_400.0));
+   function Num (S : Sel.Message_Selection; Name : String; Value : Integer) return Sel.Message_Selection is
+     (Sel.With_Arg (S, Name, Long_Long_Integer (Value)));
+
    function Natural_Text (Value : Natural) return String
       renames Humanize.Bounded_Text.Image;
 
@@ -718,61 +730,13 @@ package body Humanize.Datetimes.Support is
    function Natural_Time_Of_Day
      (Context : Humanize.Contexts.Context;
       Value   : Civil_Date_Time)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      if Value.Hour < 5 then
-         return Ok_Text ("night");
-      elsif Value.Hour < 12 then
-         return Ok_Text ("morning");
-      elsif Value.Hour < 17 then
-         return Ok_Text ("afternoon");
-      elsif Value.Hour < 21 then
-         return Ok_Text ("evening");
-      else
-         return Ok_Text ("night");
-      end if;
-   end Natural_Time_Of_Day;
+      return Humanize.Status.Text_Result is separate;
 
    function Calendar_Relation
      (Context   : Humanize.Contexts.Context;
       Value     : Civil_Date_Time;
       Reference : Civil_Date_Time)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Week_Diff  : constant Integer := Week_Index (Value) - Week_Index (Reference);
-      Month_Diff : constant Integer :=
-        Month_Index (Value) - Month_Index (Reference);
-      Year_Diff  : constant Integer :=
-        Integer (Value.Year) - Integer (Reference.Year);
-   begin
-      if Week_Diff in -1 .. 1 then
-         case Week_Diff is
-            when -1 => return Ok_Text ("last week");
-            when 0  => return Ok_Text ("this week");
-            when others => return Ok_Text ("next week");
-         end case;
-      elsif Month_Diff in -1 .. 1 then
-         case Month_Diff is
-            when -1 => return Ok_Text ("last month");
-            when 0  => return Ok_Text ("this month");
-            when others => return Ok_Text ("next month");
-         end case;
-      elsif Year_Diff in -1 .. 1 then
-         case Year_Diff is
-            when -1 => return Ok_Text ("last year");
-            when 0  => return Ok_Text ("this year");
-            when others => return Ok_Text ("next year");
-         end case;
-      else
-         return Ok_Text (ISO_Date (Value));
-      end if;
-   exception
-      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
-         return (Status => Humanize.Status.Invalid_Value, others => <>);
-   end Calendar_Relation;
+      return Humanize.Status.Text_Result is separate;
 
    function Date_Range
      (Context : Humanize.Contexts.Context;
@@ -1893,31 +1857,7 @@ package body Humanize.Datetimes.Support is
      (Context   : Humanize.Contexts.Context;
       Due       : Civil_Date_Time;
       Reference : Civil_Date_Time)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Due_Time : constant Ada.Calendar.Time :=
-        Ada.Calendar.Time_Of (Due.Year, Due.Month, Due.Day, 0.0);
-      Ref_Time : constant Ada.Calendar.Time :=
-        Ada.Calendar.Time_Of (Reference.Year, Reference.Month, Reference.Day, 0.0);
-      Days : constant Integer := Integer ((Due_Time - Ref_Time) / 86_400.0);
-   begin
-      if Days < 0 then
-         return Ok_Text
-           ("overdue by " & Signed_Text (-Days)
-            & (if Days = -1 then " day" else " days"));
-      elsif Days = 0 then
-         return Ok_Text ("due today");
-      elsif Days = 1 then
-         return Ok_Text ("due tomorrow");
-      else
-         return Ok_Text
-           ("due in " & Signed_Text (Days) & " days");
-      end if;
-   exception
-      when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery
-         return (Status => Humanize.Status.Invalid_Value, others => <>);
-   end Due_Status;
+      return Humanize.Status.Text_Result is separate;
 
    procedure Offset_Label_Into
      (Context        : Humanize.Contexts.Context;

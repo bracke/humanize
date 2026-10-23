@@ -133,7 +133,9 @@ package body Humanize.Selections is
    is
       Image : constant String := Long_Long_Integer'Image (Value);
    begin
-      return With_Arg (Selection, Name, (if Image (Image'First) = ' ' then Image (Image'First + 1 .. Image'Last) else Image));
+      return With_Arg
+        (Selection, Name,
+         (if Image (Image'First) = ' ' then Image (Image'First + 1 .. Image'Last) else Image));
    end With_Arg;
 
 end Humanize.Selections;

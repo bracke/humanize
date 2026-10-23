@@ -14,6 +14,11 @@ package body Humanize.Durations.Formatting is
    use Ada.Strings.Unbounded;
    use type Humanize.Status.Status_Code;
 
+   --  A phrase template's arguments, numbers as ASCII digits.
+   package Sel renames Humanize.Selections;
+   function Num (S : Sel.Message_Selection; Name : String; Value : Standard.Natural) return Sel.Message_Selection is
+     (Sel.With_Arg (S, Name, Long_Long_Integer (Value)));
+
    type Precise_Component is record
       Unit  : Precise_Duration_Unit := Millisecond;
       Count : Long_Long_Integer := 0;
@@ -1225,32 +1230,12 @@ package body Humanize.Durations.Formatting is
      (Context  : Humanize.Contexts.Context;
       Done     : Standard.Natural;
       Total    : Standard.Natural)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text   => To_Unbounded_String
-           (No_Space (Standard.Natural'Image (Done)) & " of "
-            & No_Space (Standard.Natural'Image (Total)) & " complete"),
-         Key    => Humanize.Message_Keys.No_Message);
-   end Complete_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function Percent_Complete
      (Context : Humanize.Contexts.Context;
       Percent : Long_Float)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text   => To_Unbounded_String
-           (Humanize.Decimal_Images.Decimal_Image (Percent, 1, True)
-            & "% complete"),
-         Key    => Humanize.Message_Keys.No_Message);
-   end Percent_Complete;
+      return Humanize.Status.Text_Result is separate;
 
    function Retry_In
      (Context : Humanize.Contexts.Context;
@@ -1265,33 +1250,13 @@ package body Humanize.Durations.Formatting is
      (Context : Humanize.Contexts.Context;
       Step    : Standard.Natural;
       Total   : Standard.Natural)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text => To_Unbounded_String
-           ("step " & No_Space (Standard.Natural'Image (Step)) & " of "
-            & No_Space (Standard.Natural'Image (Total))),
-         Key => Humanize.Message_Keys.No_Message);
-   end Step_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function Attempt_Count
      (Context : Humanize.Contexts.Context;
       Attempt : Standard.Natural;
       Total   : Standard.Natural)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text => To_Unbounded_String
-           ("attempt " & No_Space (Standard.Natural'Image (Attempt)) & " of "
-            & No_Space (Standard.Natural'Image (Total))),
-         Key => Humanize.Message_Keys.No_Message);
-   end Attempt_Count;
+      return Humanize.Status.Text_Result is separate;
 
    function ETA
      (Context : Humanize.Contexts.Context;
@@ -1307,20 +1272,7 @@ package body Humanize.Durations.Formatting is
       Remaining : Standard.Natural;
       Rate      : Standard.Natural;
       Unit_Name : String)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Noun : constant String :=
-        (if Remaining = 1 then Unit_Name else Unit_Name & "s");
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text => To_Unbounded_String
-           (No_Space (Standard.Natural'Image (Remaining)) & " " & Noun
-            & " remaining at " & No_Space (Standard.Natural'Image (Rate)) & " "
-            & Unit_Name & "/s"),
-         Key => Humanize.Message_Keys.No_Message);
-   end Throughput_Remaining;
+      return Humanize.Status.Text_Result is separate;
 
    function Progress_Bar
      (Context : Humanize.Contexts.Context;
@@ -1350,85 +1302,29 @@ package body Humanize.Durations.Formatting is
      (Context : Humanize.Contexts.Context;
       Done    : Standard.Natural;
       Total   : Positive)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Percent : constant Standard.Natural := Standard.Natural'Min (100, Done * 100 / Total);
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text => To_Unbounded_String
-           (No_Space (Standard.Natural'Image (Done)) & " of "
-            & No_Space (Positive'Image (Total)) & " complete, "
-            & No_Space (Standard.Natural'Image (Percent)) & " percent"),
-         Key => Humanize.Message_Keys.No_Message);
-   end Accessible_Progress;
+      return Humanize.Status.Text_Result is separate;
 
    function Business_Days
      (Context : Humanize.Contexts.Context;
       Days    : Standard.Natural)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text => To_Unbounded_String
-           (No_Space (Standard.Natural'Image (Days)) & " business "
-            & (if Days = 1 then "day" else "days")),
-         Key => Humanize.Message_Keys.No_Message);
-   end Business_Days;
+      return Humanize.Status.Text_Result is separate;
 
    function Working_Hours
      (Context : Humanize.Contexts.Context;
       Hours   : Standard.Natural)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text => To_Unbounded_String
-           (No_Space (Standard.Natural'Image (Hours)) & " working "
-            & (if Hours = 1 then "hour" else "hours")),
-         Key => Humanize.Message_Keys.No_Message);
-   end Working_Hours;
+      return Humanize.Status.Text_Result is separate;
 
    function End_Of_Week
      (Context : Humanize.Contexts.Context)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text => To_Unbounded_String ("end of week"),
-         Key => Humanize.Message_Keys.No_Message);
-   end End_Of_Week;
+      return Humanize.Status.Text_Result is separate;
 
    function End_Of_Month
      (Context : Humanize.Contexts.Context)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text => To_Unbounded_String ("end of month"),
-         Key => Humanize.Message_Keys.No_Message);
-   end End_Of_Month;
+      return Humanize.Status.Text_Result is separate;
 
    function End_Of_Quarter
      (Context : Humanize.Contexts.Context)
-      return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return
-        (Status => Humanize.Status.Ok,
-         Text => To_Unbounded_String ("end of quarter"),
-         Key => Humanize.Message_Keys.No_Message);
-   end End_Of_Quarter;
+      return Humanize.Status.Text_Result is separate;
 
    procedure Format_Range_Into
      (Context : Humanize.Contexts.Context;

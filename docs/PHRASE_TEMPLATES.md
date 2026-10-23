@@ -49,3 +49,43 @@ The English column is what the formatter writes in English, as a template.
 | `collection.shown_hidden` | visible, total, hidden, one, other | `{visible} {visible, plural, one {{one}} other {{other}}} shown, {hidden} hidden` |
 | `collection.shown` | visible, total, hidden, one, other | `{visible} {visible, plural, one {{one}} other {{other}}} shown` |
 | `collection.visible_out_of` | visible, total, hidden, one, other | `{visible} {visible, plural, one {{one}} other {{other}}} visible out of {total} {total, plural, one {{one}} other {{other}}}` |
+
+## Progress and business time
+
+| Key | Arguments | English |
+|---|---|---|
+| `complete_count` | done, total | `{done} of {total} complete` |
+| `percent_complete` | percent (decimal text, one place) | `{percent}% complete` |
+| `step_count` | step, total | `step {step} of {total}` |
+| `attempt_count` | attempt, total | `attempt {attempt} of {total}` |
+| `throughput_remaining` | remaining, rate, unit (the caller's singular noun) | `{remaining} {remaining, plural, one {{unit}} other {{unit}s}} remaining at {rate} {unit}/s` |
+| `accessible_progress` | done, total, percent | `{done} of {total} complete, {percent} percent` |
+| `business_days` | days | `{days} business {days, plural, one {day} other {days}}` |
+| `working_hours` | hours | `{hours} working {hours, plural, one {hour} other {hours}}` |
+| `end_of_week` | | `end of week` |
+| `end_of_month` | | `end of month` |
+| `end_of_quarter` | | `end of quarter` |
+
+## Dates
+
+| Key | Arguments | English |
+|---|---|---|
+| `time_of_day.night` | | `night` |
+| `time_of_day.morning` | | `morning` |
+| `time_of_day.afternoon` | | `afternoon` |
+| `time_of_day.evening` | | `evening` |
+| `calendar_relation.week.past` | | `last week` |
+| `calendar_relation.week.current` | | `this week` |
+| `calendar_relation.week.next` | | `next week` |
+| `calendar_relation.month.past` | | `last month` |
+| `calendar_relation.month.current` | | `this month` |
+| `calendar_relation.month.next` | | `next month` |
+| `calendar_relation.year.past` | | `last year` |
+| `calendar_relation.year.current` | | `this year` |
+| `calendar_relation.year.next` | | `next year` |
+| `due.overdue` | days (positive) | `overdue by {days} {days, plural, one {day} other {days}}` |
+| `due.today` | days | `due today` |
+| `due.tomorrow` | days | `due tomorrow` |
+| `due.in` | days | `due in {days} days` |
+
+A calendar relation more than one year away is an ISO date in every locale.
