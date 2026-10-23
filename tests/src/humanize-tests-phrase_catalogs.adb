@@ -117,7 +117,7 @@ package body Humanize.Tests.Phrase_Catalogs is
      [+"da", +"de", +"fr", +"es", +"it", +"pt", +"nl", +"sv", +"no", +"nb", +"fi", +"pl", +"cs",
       +"tr", +"ru", +"uk", +"ja", +"ko", +"zh", +"ar", +"hi", +"ro", +"lt", +"sl", +"id", +"ms",
       +"eo", +"vi", +"sw", +"af", +"hu", +"sk", +"zh-Hant", +"zh-TW", +"pt-PT", +"es-419", +"fr-CA",
-      +"de-CH", +"de-LI", +"en-GB", +"en-AU"];
+      +"de-CH", +"de-LI", +"en-GB", +"en-AU", +"en-CA", +"fr-CH", +"fr-BE", +"zh-HK"];
 
    --  The numeric arguments any phrase takes, and the text ones.
    Numbers : constant array (Positive range <>) of Unbounded_String :=
@@ -344,6 +344,18 @@ package body Humanize.Tests.Phrase_Catalogs is
          AUnit.Assertions.Assert (Canceled ("en-AU") = "cancelled", "en-AU: [" & Canceled ("en-AU") & "]");
          AUnit.Assertions.Assert (Canceled ("en-IN") = "cancelled", "en-IN: [" & Canceled ("en-IN") & "]");
          AUnit.Assertions.Assert (Canceled ("en-US") = "canceled", "en-US: [" & Canceled ("en-US") & "]");
+         AUnit.Assertions.Assert (Canceled ("en-CA") = "cancelled", "en-CA: [" & Canceled ("en-CA") & "]");
+      end;
+      declare
+         function Uploading (Locale : String) return String is
+           (Image (Humanize.Phrases.File_Phrase
+                     (Humanize.Contexts.Create (Runtime'Unchecked_Access, Locale), Humanize.Phrases.Uploading)));
+      begin
+         AUnit.Assertions.Assert
+           (Uploading ("zh-HK") = Bytes ("E4B88AE8BC89E4B8AD"), "zh-HK: [" & Uploading ("zh-HK") & "]");
+         AUnit.Assertions.Assert
+           (Uploading ("zh-MO") = Bytes ("E4B88AE8BC89E4B8AD"), "zh-MO: [" & Uploading ("zh-MO") & "]");
+         AUnit.Assertions.Assert (Uploading ("zh-TW") /= Bytes ("E4B88AE8BC89E4B8AD"), "zh-TW keeps Taiwan wording");
       end;
    end Test_Regional_Variants;
 

@@ -55,6 +55,12 @@ package body Humanize.Catalogs.Phrase_Data is
    --  International English (en-001), which en-GB, en-AU, en-IN and the
    --  other Commonwealth variants fall back to.
    function Locale_En_001 return Wide_Wide_String is separate;
+   --  Canadian English (cancelled, like en-001, though CLDR's parent is en),
+   --  Swiss and Belgian French, Hong Kong Traditional Chinese.
+   function Locale_En_Ca return Wide_Wide_String is separate;
+   function Locale_Fr_Ch return Wide_Wide_String is separate;
+   function Locale_Fr_Be return Wide_Wide_String is separate;
+   function Locale_Zh_Hant_Hk return Wide_Wide_String is separate;
 
    function Default_Catalog return String is
      (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode
@@ -97,20 +103,24 @@ package body Humanize.Catalogs.Phrase_Data is
            & Locale_Fr_Ca
            & Locale_De_Ch
            & Locale_De_Li
-           & Locale_En_001));
+           & Locale_En_001
+           & Locale_En_Ca
+           & Locale_Fr_Ch
+           & Locale_Fr_Be
+           & Locale_Zh_Hant_Hk));
 
    function Catalog_For (Language : String) return String is
       function Encode (Text : Wide_Wide_String) return String is
         (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode (Text));
    begin
       if Language in "en" | "" then
-         return Encode (Locale_En & Locale_En_001);
+         return Encode (Locale_En & Locale_En_001 & Locale_En_Ca);
       elsif Language = "da" then
          return Encode (Locale_Da);
       elsif Language = "de" then
          return Encode (Locale_De & Locale_De_Ch & Locale_De_Li);
       elsif Language = "fr" then
-         return Encode (Locale_Fr & Locale_Fr_Ca);
+         return Encode (Locale_Fr & Locale_Fr_Ca & Locale_Fr_Ch & Locale_Fr_Be);
       elsif Language = "es" then
          return Encode (Locale_Es & Locale_Es_419);
       elsif Language = "it" then
@@ -140,7 +150,7 @@ package body Humanize.Catalogs.Phrase_Data is
       elsif Language = "ko" then
          return Encode (Locale_Ko);
       elsif Language = "zh" then
-         return Encode (Locale_Zh & Locale_Zh_Hant);
+         return Encode (Locale_Zh & Locale_Zh_Hant & Locale_Zh_Hant_Hk);
       elsif Language = "ar" then
          return Encode (Locale_Ar);
       elsif Language = "hi" then

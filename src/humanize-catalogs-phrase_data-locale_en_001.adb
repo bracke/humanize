@@ -5,5 +5,7 @@ begin
    return
      P ("billing.canceled", "cancelled")
      & P ("payment.payment_authorized", "payment authorised")
-     & P ("queue.canceled_job", "job cancelled");
+     & P ("queue.canceled_job", "job cancelled")
+     & P ("operation.canceled", "cancelled")
+     & P ("summary.canceled", "{count} cancelled");
 end Locale_En_001;

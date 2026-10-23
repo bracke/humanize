@@ -174,10 +174,13 @@ here, so English output reads back too.
 `fr-CA`, `de-CH` and `de-LI` (ss for ß) and `en-001` ("cancelled", which
 en-GB, en-AU, en-IN and the other variants CLDR places under international
 English reach) are overrides too; a regional English entry replaces the
-formatter's own English.
+formatter's own English. `en-CA` repeats en-001's "cancelled" (CLDR's parent
+for en-CA is en, but Canadian usage doubles the l). `fr-CH` and `fr-BE` say
+"jours ouvrables" where France says "jours ouvrés".
 
 `zh-Hant` is a whole Traditional Chinese catalog (Taiwan usage), which zh-TW,
-zh-HK and zh-MO reach through CLDR's likely scripts. `pt-PT` and `es-419` hold
+zh-HK and zh-MO reach through CLDR's likely scripts. zh-HK and zh-MO reach
+`zh-Hant-HK` first (今日, 上載, 每星期). `pt-PT` and `es-419` hold
 only the entries that differ from `pt` (Brazilian) and `es`; pt-AO, pt-MZ, ...
 reach pt-PT and es-MX, es-AR, ... reach es-419 through CLDR's parent locales.
 A regional file may leave any key out.

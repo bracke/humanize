@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+* Regional overrides for en-CA ("cancelled"), fr-CH and fr-BE ("jours
+  ouvrables") and zh-Hant-HK (今日, 上載, 每星期), which zh-HK and zh-MO now
+  reach; en-001 gains the British spelling of the operation and summary
+  "canceled" labels.
+
 * **Operations, availability and frequency speak the locale.**
   `Humanize.Operations` (state label, progress and unknown-total summaries,
   last success, next retry, stale run) and `Resources.Availability_Label`
