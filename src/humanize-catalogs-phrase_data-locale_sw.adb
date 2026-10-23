@@ -58,7 +58,7 @@ begin
      & P ("due.tomorrow", "mwisho ni kesho")
      & P ("due.in", "mwisho ni baada ya siku {days}")
      & P ("calendar_difference.future", "baada ya {difference}")
-     & P ("calendar_difference.past", "{difference} nyuma")
+     & P ("calendar_difference.past", "{difference} kabla ya sasa")
      & P ("calendar_difference.same_day", "siku hiyo hiyo")
      & P ("calendar_difference.zero", "siku 0")
      & P ("cpu_load", "matumizi ya CPU: {measure}")

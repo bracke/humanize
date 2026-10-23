@@ -4,31 +4,32 @@ function Locale_Lt return Wide_Wide_String is
 begin
    return
      P ("all_count",
-          "iš viso {total} {total, plural, one {{one}} few {{few}} many {{many}} "
-          & "other {{other}}}")
-     & P ("filtered_count.none", "{other}: atitikmenų nėra")
+          "iš viso {total} {total, plural, one {{one}} few {{other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}")
+     & P ("filtered_count.none", "nėra atitinkančių {genitive_other}")
      & P ("filtered_count.all",
-          "atitinka: {total} {total, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}} iš {total}")
+          "{total, plural, =1 {atitinka 1 {one}} other {atitinka {total} iš "
+          & "{total} {total, plural, one {{genitive_one}} few {{genitive_other}} "
+          & "many {{genitive_one}} other {{genitive_other}}}}}")
      & P ("filtered_count.some",
-          "atitinka: {matching} {matching, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}} iš {total}")
+          "atitinka {matching} iš {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("more_count", "rodoma {visible}, dar +{remaining}")
      & P ("others_count", "{first} ir dar {remaining}")
      & P ("page_count", "puslapis {page} iš {total}")
      & P ("page_size",
-          "{size} {size, plural, one {{one}} few {{few}} many {{many}} other "
-          & "{{other}}} puslapyje")
+          "{size} {size, plural, one {{one}} few {{other}} many {{genitive_one}} "
+          & "other {{genitive_other}}} puslapyje")
      & P ("pagination_range",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: {first}–{last} iš {total}")
+          "{first}–{last} iš {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("position_count", "{position} iš {total}")
      & P ("selection_count",
-          "pasirinkta: {selected} {selected, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}} iš {total}")
+          "pasirinkta {selected} iš {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("showing_count",
-          "rodoma: {showing} {showing, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}} iš {total}")
+          "rodoma {showing} iš {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("validation_count",
           "{count, plural, =0 {{severity, select, error {klaidų} warning "
           & "{įspėjimų} other {pastabų}} nėra} one {{count} {severity, select, "
@@ -37,23 +38,24 @@ begin
           & "{pastabos}}} many {{count} {severity, select, error {klaidos} warning "
           & "{įspėjimo} other {pastabos}}} other {{count} {severity, select, "
           & "error {klaidų} warning {įspėjimų} other {pastabų}}}}")
-     & P ("collection.empty", "{other}: nėra")
-     & P ("collection.none_shown", "{other}: nerodoma")
+     & P ("collection.empty", "nėra {genitive_other}")
+     & P ("collection.none_shown", "nerodoma jokių {genitive_other}")
      & P ("collection.showing_hidden",
-          "rodoma: {visible} {visible, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}} iš {total}, paslėpta: {hidden}")
+          "rodoma {visible} iš {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_one}} other {{genitive_other}}}, "
+          & "paslėpta {hidden}")
      & P ("collection.showing",
-          "rodoma: {visible} {visible, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}} iš {total}")
+          "rodoma {visible} iš {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("collection.shown_hidden",
-          "rodoma: {visible} {visible, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}, paslėpta: {hidden}")
+          "rodoma: {visible} {visible, plural, one {{one}} few {{other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}, paslėpta: {hidden}")
      & P ("collection.shown",
-          "rodoma: {visible} {visible, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}")
+          "rodoma: {visible} {visible, plural, one {{one}} few {{other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}")
      & P ("collection.visible_out_of",
-          "matoma: {visible} {visible, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}} iš {total}")
+          "matoma {visible} iš {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("complete_count", "atlikta {done} iš {total}")
      & P ("percent_complete", "atlikta {percent} %")
      & P ("step_count", "žingsnis {step} iš {total}")
@@ -121,8 +123,9 @@ begin
           "talpykla: pataikymų {hits}, praleidimų {misses}, pataikymo dažnis "
           & "{rate} %")
      & P ("field_change_summary",
-          "{total} {total, plural, one {{one}} few {{few}} many {{many}} other "
-          & "{{other}}}: pakeista {changed}, pridėta {added}, pašalinta {removed}")
+          "{total} {total, plural, one {{one}} few {{other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}: pakeista {changed}, "
+          & "pridėta {added}, pašalinta {removed}")
      & P ("field_diff", "{field}: buvo {before}, dabar {after}")
      & P ("field_added", "{field}: pridėta reikšmė {value}")
      & P ("field_removed", "{field}: pašalinta (buvo {value})")
@@ -145,17 +148,17 @@ begin
           & "running {vykdoma} waiting {laukiama} paused {pristabdyta} complete "
           & "{baigta} failed {nepavyko} stale {pasenę} skipped {praleista} other "
           & "{{state}}}: {details}")
-     & P ("summary.none", "{other}: nėra")
+     & P ("summary.none", "nėra {genitive_other}")
      & P ("summary.completed",
-          "baigta: {count} {count, plural, one {{one}} few {{few}} many {{many}} "
-          & "other {{other}}}")
+          "baigta: {count} {count, plural, one {{one}} few {{other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}")
      & P ("summary.completed_of",
-          "baigta: {count} {count, plural, one {{one}} few {{few}} many {{many}} "
-          & "other {{other}}} iš {total}")
+          "baigta {count} iš {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("summary.failed", "nepavyko: {count}")
      & P ("summary.queued",
-          "eilėje: {count} {count, plural, one {{one}} few {{few}} many {{many}} "
-          & "other {{other}}}")
+          "eilėje: {count} {count, plural, one {{one}} few {{other}} many "
+          & "{{genitive_one}} other {{genitive_other}}}")
      & P ("summary.running", "vykdoma: {count}")
      & P ("summary.complete", "baigta: {count}")
      & P ("backup.backup_running", "vyksta atsarginis kopijavimas")
@@ -377,5 +380,11 @@ begin
      & P ("date_comparison.after", "{current} {quantity} vėliau nei {baseline}")
      & P ("date_comparison.before", "{current} {quantity} anksčiau nei {baseline}")
      & P ("date_comparison.case.after", "instrumental")
-     & P ("date_comparison.case.before", "instrumental");
+     & P ("date_comparison.case.before", "instrumental")
+     & P ("count",
+          "{count, plural, one {# {one}} few {# {other}} many {# {genitive_one}} "
+          & "other {# {genitive_other}}}")
+     & P ("noun",
+          "{count, plural, one {{one}} few {{other}} many {{genitive_one}} other "
+          & "{{genitive_other}}}");
 end Locale_Lt;

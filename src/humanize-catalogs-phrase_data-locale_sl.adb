@@ -5,30 +5,34 @@ begin
    return
      P ("all_count",
           "skupaj {total} {total, plural, one {{one}} two {{two}} few {{few}} "
-          & "other {{other}}}")
-     & P ("filtered_count.none", "ni ujemajočih se {other}")
+          & "other {{genitive_other}}}")
+     & P ("filtered_count.none", "ni ujemajočih se {genitive_other}")
      & P ("filtered_count.all",
           "ujemanje pri vseh: {total} {total, plural, one {{one}} two {{two}} few "
-          & "{{few}} other {{other}}}")
+          & "{{few}} other {{genitive_other}}}")
      & P ("filtered_count.some",
-          "ujema se: {matching} od {total} {total, plural, one {{one}} two "
-          & "{{other}} few {{other}} other {{other}}}")
+          "{matching, plural, one {ujema se} two {ujemata se} few {ujemajo se} "
+          & "other {ujema se}} {matching} od {total} {total, plural, one "
+          & "{{genitive_one}} two {{genitive_other}} few {{genitive_other}} other "
+          & "{{genitive_other}}}")
      & P ("more_count", "prikazano: {visible}, +{remaining} več")
      & P ("others_count", "{first} in še {remaining}")
      & P ("page_count", "stran {page} od {total}")
      & P ("page_size",
           "{size} {size, plural, one {{one}} two {{two}} few {{few}} other "
-          & "{{other}}} na stran")
+          & "{{genitive_other}}} na stran")
      & P ("pagination_range",
-          "{first}–{last} od {total} {total, plural, one {{one}} two {{other}} "
-          & "few {{other}} other {{other}}}")
+          "{first}–{last} od {total} {total, plural, one {{genitive_one}} two "
+          & "{{genitive_other}} few {{genitive_other}} other {{genitive_other}}}")
      & P ("position_count", "{position} od {total}")
      & P ("selection_count",
-          "izbrano: {selected} od {total} {total, plural, one {{one}} two "
-          & "{{other}} few {{other}} other {{other}}}")
+          "izbrano: {selected} od {total} {total, plural, one {{genitive_one}} "
+          & "two {{genitive_other}} few {{genitive_other}} other "
+          & "{{genitive_other}}}")
      & P ("showing_count",
-          "prikazano: {showing} od {total} {total, plural, one {{one}} two "
-          & "{{other}} few {{other}} other {{other}}}")
+          "prikazano: {showing} od {total} {total, plural, one {{genitive_one}} "
+          & "two {{genitive_other}} few {{genitive_other}} other "
+          & "{{genitive_other}}}")
      & P ("validation_count",
           "{count, plural, =0 {{severity, select, error {brez napak} warning "
           & "{brez opozoril} other {brez obvestil}}} one {{count} {severity, "
@@ -37,23 +41,25 @@ begin
           & "{obvestili}}} few {{count} {severity, select, error {napake} warning "
           & "{opozorila} other {obvestila}}} other {{count} {severity, select, "
           & "error {napak} warning {opozoril} other {obvestil}}}}")
-     & P ("collection.empty", "ni {other}")
-     & P ("collection.none_shown", "ni prikazanih {other}")
+     & P ("collection.empty", "ni {genitive_other}")
+     & P ("collection.none_shown", "ni prikazanih {genitive_other}")
      & P ("collection.showing_hidden",
-          "prikazano: {visible} od {total} {total, plural, one {{one}} two "
-          & "{{other}} few {{other}} other {{other}}}, skrito: {hidden}")
+          "prikazano: {visible} od {total} {total, plural, one {{genitive_one}} "
+          & "two {{genitive_other}} few {{genitive_other}} other "
+          & "{{genitive_other}}}, skrito: {hidden}")
      & P ("collection.showing",
-          "prikazano: {visible} od {total} {total, plural, one {{one}} two "
-          & "{{other}} few {{other}} other {{other}}}")
+          "prikazano: {visible} od {total} {total, plural, one {{genitive_one}} "
+          & "two {{genitive_other}} few {{genitive_other}} other "
+          & "{{genitive_other}}}")
      & P ("collection.shown_hidden",
           "prikazano: {visible} {visible, plural, one {{one}} two {{two}} few "
-          & "{{few}} other {{other}}}, skrito: {hidden}")
+          & "{{few}} other {{genitive_other}}}, skrito: {hidden}")
      & P ("collection.shown",
           "prikazano: {visible} {visible, plural, one {{one}} two {{two}} few "
-          & "{{few}} other {{other}}}")
+          & "{{few}} other {{genitive_other}}}")
      & P ("collection.visible_out_of",
-          "vidno: {visible} od {total} {total, plural, one {{one}} two {{other}} "
-          & "few {{other}} other {{other}}}")
+          "vidno: {visible} od {total} {total, plural, one {{genitive_one}} two "
+          & "{{genitive_other}} few {{genitive_other}} other {{genitive_other}}}")
      & P ("complete_count", "dokončano: {done} od {total}")
      & P ("percent_complete", "dokončano: {percent} %")
      & P ("step_count", "korak {step} od {total}")
@@ -90,33 +96,33 @@ begin
           "{value, plural, one {{value} odstotek} two {{value} odstotka} few "
           & "{{value} odstotki} other {{value} odstotkov}}")
      & P ("recurrence.second",
-          "{every, plural, =1 {vsako sekundo} one {vsakih {every} sekund} two "
+          "{every, plural, =1 {vsako sekundo} one {vsako {every} sekundo} two "
           & "{vsaki {every} sekundi} few {vsake {every} sekunde} other {vsakih "
           & "{every} sekund}}")
      & P ("recurrence.minute",
-          "{every, plural, =1 {vsako minuto} one {vsakih {every} minut} two "
+          "{every, plural, =1 {vsako minuto} one {vsako {every} minuto} two "
           & "{vsaki {every} minuti} few {vsake {every} minute} other {vsakih "
           & "{every} minut}}")
      & P ("recurrence.hour",
-          "{every, plural, =1 {vsako uro} one {vsakih {every} ur} two {vsaki "
+          "{every, plural, =1 {vsako uro} one {vsako {every} uro} two {vsaki "
           & "{every} uri} few {vsake {every} ure} other {vsakih {every} ur}}")
      & P ("recurrence.day",
-          "{every, plural, =1 {vsak dan} one {vsakih {every} dni} two {vsaka "
+          "{every, plural, =1 {vsak dan} one {vsak {every} dan} two {vsaka "
           & "{every} dneva} few {vsake {every} dni} other {vsakih {every} dni}}")
      & P ("recurrence.week",
-          "{every, plural, =1 {vsak teden} one {vsakih {every} tednov} two {vsaka "
+          "{every, plural, =1 {vsak teden} one {vsak {every} teden} two {vsaka "
           & "{every} tedna} few {vsake {every} tedne} other {vsakih {every} "
           & "tednov}}")
      & P ("recurrence.month",
-          "{every, plural, =1 {vsak mesec} one {vsakih {every} mesecev} two "
-          & "{vsaka {every} meseca} few {vsake {every} mesece} other {vsakih "
-          & "{every} mesecev}}")
+          "{every, plural, =1 {vsak mesec} one {vsak {every} mesec} two {vsaka "
+          & "{every} meseca} few {vsake {every} mesece} other {vsakih {every} "
+          & "mesecev}}")
      & P ("recurrence.quarter",
-          "{every, plural, =1 {vsako četrtletje} one {vsakih {every} "
-          & "četrtletij} two {vsaki {every} četrtletji} few {vsaka {every} "
-          & "četrtletja} other {vsakih {every} četrtletij}}")
+          "{every, plural, =1 {vsako četrtletje} one {vsako {every} četrtletje} "
+          & "two {vsaki {every} četrtletji} few {vsaka {every} četrtletja} other "
+          & "{vsakih {every} četrtletij}}")
      & P ("recurrence.year",
-          "{every, plural, =1 {vsako leto} one {vsakih {every} let} two {vsaki "
+          "{every, plural, =1 {vsako leto} one {vsako {every} leto} two {vsaki "
           & "{every} leti} few {vsaka {every} leta} other {vsakih {every} let}}")
      & P ("cache_summary.empty", "predpomnilnik: ni zahtev")
      & P ("cache_summary",
@@ -127,8 +133,8 @@ begin
           & "{rate} %")
      & P ("field_change_summary",
           "{total} {total, plural, one {{one}} two {{two}} few {{few}} other "
-          & "{{other}}}: spremenjeno {changed}, dodano {added}, odstranjeno "
-          & "{removed}")
+          & "{{genitive_other}}}: spremenjeno {changed}, dodano {added}, "
+          & "odstranjeno {removed}")
      & P ("field_diff", "{field}: spremenjeno iz {before} v {after}")
      & P ("field_added", "{field}: dodano z vrednostjo {value}")
      & P ("field_removed", "{field}: odstranjeno (prej {value})")
@@ -154,17 +160,18 @@ begin
           & "vrsti} running {se izvaja} waiting {čaka} paused {začasno "
           & "ustavljeno} complete {dokončano} failed {ni uspelo} stale {zastarelo} "
           & "skipped {preskočeno} other {{state}}}: {details}")
-     & P ("summary.none", "ni {other}")
+     & P ("summary.none", "ni {genitive_other}")
      & P ("summary.completed",
           "dokončano: {count} {count, plural, one {{one}} two {{two}} few "
-          & "{{few}} other {{other}}}")
+          & "{{few}} other {{genitive_other}}}")
      & P ("summary.completed_of",
-          "dokončano: {count} od {total} {total, plural, one {{one}} two "
-          & "{{other}} few {{other}} other {{other}}}")
+          "dokončano: {count} od {total} {total, plural, one {{genitive_one}} "
+          & "two {{genitive_other}} few {{genitive_other}} other "
+          & "{{genitive_other}}}")
      & P ("summary.failed", "ni uspelo: {count}")
      & P ("summary.queued",
           "v čakalni vrsti: {count} {count, plural, one {{one}} two {{two}} few "
-          & "{{few}} other {{other}}}")
+          & "{{few}} other {{genitive_other}}}")
      & P ("summary.running", "se izvaja: {count}")
      & P ("summary.complete", "dokončano: {count}")
      & P ("backup.backup_running", "varnostno kopiranje poteka")
@@ -298,7 +305,7 @@ begin
      & P ("notification.sent", "poslano")
      & P ("notification.delivered", "dostavljeno")
      & P ("payment.payment_authorized", "plačilo odobreno")
-     & P ("payment.payment_captured", "plačilo izvedeno")
+     & P ("payment.payment_captured", "plačilo prejeto")
      & P ("payment.payment_refunded", "plačilo vrnjeno")
      & P ("payment.payment_disputed", "plačilo izpodbijano")
      & P ("payment.payment_requires_action", "plačilo zahteva ukrepanje")
@@ -340,7 +347,7 @@ begin
      & P ("sync.sync_conflict", "spor pri sinhronizaciji")
      & P ("sync.sync_complete", "sinhronizacija dokončana")
      & P ("sync.sync_error", "napaka sinhronizacije")
-     & P ("task.todo", "neopravljeno")
+     & P ("task.todo", "za izvedbo")
      & P ("task.in_progress", "v teku")
      & P ("task.done", "opravljeno")
      & P ("task.skipped", "preskočeno")
@@ -379,5 +386,11 @@ begin
      & P ("database.database_replicating", "replikacija zbirke podatkov")
      & P ("database.database_replication_lagging", "replikacija zbirke podatkov zaostaja")
      & P ("database.database_backup_running", "varnostno kopiranje zbirke podatkov poteka")
-     & P ("database.database_backup_failed", "varnostno kopiranje zbirke podatkov ni uspelo");
+     & P ("database.database_backup_failed", "varnostno kopiranje zbirke podatkov ni uspelo")
+     & P ("count",
+          "{count, plural, one {# {one}} two {# {two}} few {# {few}} other {# "
+          & "{genitive_other}}}")
+     & P ("noun",
+          "{count, plural, one {{one}} two {{two}} few {{few}} other "
+          & "{{genitive_other}}}");
 end Locale_Sl;

@@ -39,7 +39,11 @@ package body Humanize.Contexts is
       Zero   : String := "";
       Two    : String := "";
       Few    : String := "";
-      Many   : String := "")
+      Many   : String := "";
+      Genitive_One     : String := "";
+      Genitive_Other   : String := "";
+      Accusative_One   : String := "";
+      Accusative_Other : String := "")
       return Context
    is
       Result : Context := Item;
@@ -57,6 +61,10 @@ package body Humanize.Contexts is
       Add ("two", Two);
       Add ("few", Few);
       Add ("many", Many);
+      Add ("genitive_one", Genitive_One);
+      Add ("genitive_other", Genitive_Other);
+      Add ("accusative_one", Accusative_One);
+      Add ("accusative_other", Accusative_Other);
       Append (Result.Noun_Forms, Item.Noun_Forms);
       return Result;
    end With_Noun_Forms;

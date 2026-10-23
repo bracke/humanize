@@ -4,31 +4,33 @@ function Locale_Sk return Wide_Wide_String is
 begin
    return
      P ("all_count",
-          "spolu {total} {total, plural, one {{one}} few {{few}} many {{many}} "
-          & "other {{other}}}")
-     & P ("filtered_count.none", "{few}: žiadne zhody")
+          "spolu {total} {total, plural, one {{one}} few {{few}} many "
+          & "{{genitive_one}} other {{genitive_other}}}")
+     & P ("filtered_count.none", "{other}: žiadne zhody")
      & P ("filtered_count.all",
           "zhoda pri všetkých: {total} {total, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}}")
+          & "many {{genitive_one}} other {{genitive_other}}}")
      & P ("filtered_count.some",
-          "vyhovuje: {matching} z {total} {total, plural, one {{many}} few "
-          & "{{other}} many {{many}} other {{other}}}")
+          "{matching, plural, one {vyhovuje} few {vyhovujú} many {vyhovuje} "
+          & "other {vyhovuje}} {matching} z {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_one}} other "
+          & "{{genitive_other}}}")
      & P ("more_count", "zobrazené: {visible}, +{remaining} ďalších")
      & P ("others_count", "{first} a ešte {remaining}")
      & P ("page_count", "strana {page} z {total}")
      & P ("page_size",
-          "{size} {size, plural, one {{one}} few {{few}} many {{many}} other "
-          & "{{other}}} na stranu")
+          "{size} {size, plural, one {{one}} few {{few}} many {{genitive_one}} "
+          & "other {{genitive_other}}} na stranu")
      & P ("pagination_range",
-          "{first}–{last} z {total} {total, plural, one {{many}} few {{other}} "
-          & "many {{many}} other {{other}}}")
+          "{first}–{last} z {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("position_count", "{position} z {total}")
      & P ("selection_count",
-          "vybrané: {selected} z {total} {total, plural, one {{many}} few "
-          & "{{other}} many {{many}} other {{other}}}")
+          "vybrané: {selected} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("showing_count",
-          "zobrazené: {showing} z {total} {total, plural, one {{many}} few "
-          & "{{other}} many {{many}} other {{other}}}")
+          "zobrazené: {showing} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("validation_count",
           "{count, plural, =0 {{severity, select, error {žiadne chyby} warning "
           & "{žiadne varovania} other {žiadne oznámenia}}} one {1 {severity, "
@@ -37,23 +39,24 @@ begin
           & "{oznámenia}}} many {{count} {severity, select, error {chyby} warning "
           & "{varovania} other {oznámenia}}} other {{count} {severity, select, "
           & "error {chýb} warning {varovaní} other {oznámení}}}}")
-     & P ("collection.empty", "{few}: žiadne")
-     & P ("collection.none_shown", "{few}: nič sa nezobrazuje")
+     & P ("collection.empty", "{other}: žiadne")
+     & P ("collection.none_shown", "{other}: nič sa nezobrazuje")
      & P ("collection.showing_hidden",
-          "zobrazené: {visible} z {total} {total, plural, one {{many}} few "
-          & "{{other}} many {{many}} other {{other}}}, skryté: {hidden}")
+          "zobrazené: {visible} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other "
+          & "{{genitive_other}}}, skryté: {hidden}")
      & P ("collection.showing",
-          "zobrazené: {visible} z {total} {total, plural, one {{many}} few "
-          & "{{other}} many {{many}} other {{other}}}")
+          "zobrazené: {visible} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("collection.shown_hidden",
           "zobrazené: {visible} {visible, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}, skryté: {hidden}")
+          & "{{genitive_one}} other {{genitive_other}}}, skryté: {hidden}")
      & P ("collection.shown",
           "zobrazené: {visible} {visible, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}")
+          & "{{genitive_one}} other {{genitive_other}}}")
      & P ("collection.visible_out_of",
-          "viditeľné: {visible} z {total} {total, plural, one {{many}} few "
-          & "{{other}} many {{many}} other {{other}}}")
+          "viditeľné: {visible} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("complete_count", "dokončené: {done} z {total}")
      & P ("percent_complete", "dokončené: {percent} %")
      & P ("step_count", "krok {step} z {total}")
@@ -129,9 +132,9 @@ begin
           & "plural, one {{misses} výpadok} few {{misses} výpadky} many {{misses} "
           & "výpadku} other {{misses} výpadkov}}, úspešnosť {rate} %")
      & P ("field_change_summary",
-          "{total} {total, plural, one {{one}} few {{few}} many {{many}} other "
-          & "{{other}}}: zmenené: {changed}, pridané: {added}, odstránené: "
-          & "{removed}")
+          "{total} {total, plural, one {{one}} few {{few}} many {{genitive_one}} "
+          & "other {{genitive_other}}}: zmenené: {changed}, pridané: {added}, "
+          & "odstránené: {removed}")
      & P ("field_diff", "{field}: zmenené z {before} na {after}")
      & P ("field_added", "{field}: pridané s hodnotou {value}")
      & P ("field_removed", "{field}: odstránené (predtým {value})")
@@ -157,17 +160,17 @@ begin
           & "running {beží} waiting {čaká} paused {pozastavené} complete "
           & "{dokončené} failed {zlyhalo} stale {zastarané} skipped "
           & "{preskočené} other {{state}}}: {details}")
-     & P ("summary.none", "{few}: žiadne")
+     & P ("summary.none", "{other}: žiadne")
      & P ("summary.completed",
           "dokončené: {count} {count, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}")
+          & "{{genitive_one}} other {{genitive_other}}}")
      & P ("summary.completed_of",
-          "dokončené: {count} z {total} {total, plural, one {{many}} few "
-          & "{{other}} many {{many}} other {{other}}}")
+          "dokončené: {count} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_one}} other {{genitive_other}}}")
      & P ("summary.failed", "zlyhalo: {count}")
      & P ("summary.queued",
           "vo fronte: {count} {count, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}")
+          & "{{genitive_one}} other {{genitive_other}}}")
      & P ("summary.running", "beží: {count}")
      & P ("summary.complete", "dokončené: {count}")
      & P ("backup.backup_running", "záloha prebieha")
@@ -349,12 +352,12 @@ begin
      & P ("task.skipped", "preskočené")
      & P ("task.blocked_task", "blokované")
      & P ("task.waiting_on", "čaká na")
-     & P ("ticket.ticket_new", "nový tiket")
-     & P ("ticket.ticket_open", "tiket otvorený")
-     & P ("ticket.ticket_waiting", "tiket čaká")
-     & P ("ticket.ticket_escalated", "tiket eskalovaný")
-     & P ("ticket.ticket_resolved", "tiket vyriešený")
-     & P ("ticket.ticket_closed", "tiket zatvorený")
+     & P ("ticket.ticket_new", "nová požiadavka")
+     & P ("ticket.ticket_open", "požiadavka otvorená")
+     & P ("ticket.ticket_waiting", "požiadavka čaká")
+     & P ("ticket.ticket_escalated", "požiadavka eskalovaná")
+     & P ("ticket.ticket_resolved", "požiadavka vyriešená")
+     & P ("ticket.ticket_closed", "požiadavka uzavretá")
      & P ("transfer.importing", "importovanie")
      & P ("transfer.imported", "importované")
      & P ("transfer.import_failed", "import zlyhal")
@@ -384,5 +387,11 @@ begin
      & P ("database.database_backup_running", "prebieha záloha databázy")
      & P ("database.database_backup_failed", "záloha databázy zlyhala")
      & P ("date_comparison.case.after", "accusative")
-     & P ("date_comparison.case.before", "accusative");
+     & P ("date_comparison.case.before", "accusative")
+     & P ("count",
+          "{count, plural, one {# {one}} few {# {few}} many {# {genitive_one}} "
+          & "other {# {genitive_other}}}")
+     & P ("noun",
+          "{count, plural, one {{one}} few {{few}} many {{genitive_one}} other "
+          & "{{genitive_other}}}");
 end Locale_Sk;

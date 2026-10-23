@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+* **Case forms of the caller's noun.** `With_Noun_Forms` takes
+  `Genitive_One/Other` and `Accusative_One/Other`; Polish, Czech, Slovak,
+  Slovenian, Russian, Ukrainian and Lithuanian phrases use them ("z 5
+  plików", "выбрано 2 из 5 файлов") and take the nominative plural as the
+  plural, one convention throughout (table in `docs/PHRASE_TEMPLATES.md`).
+  Plain counts follow the same convention per language.
+* Regional overrides for fr-CA, de-CH and en-GB; a regional English entry
+  replaces the formatter's own English ("cancelled").
+* Translation fixes: weak labels in pl, sl, cs, sk, ro, tr, sw and fi; the
+  Slovenian recurrence for 101, 201, ....
+* Fractions: Japanese "四分の三", Chinese "四分之三", Korean "사분의 삼" (the
+  denominator particle was wrong), and figures ("3/7") instead of English
+  "over" where a locale has no denominator word.
+
 * Phrase reading accepts the locale's own digits and grouping ("Seite 1.234
   von 5.000", Arabic-Indic digits), learnt from how the locale writes
   1234567890, and tries the numbers in the order the phrase shows its

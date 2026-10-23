@@ -5,30 +5,31 @@ begin
    return
      P ("all_count",
           "łącznie {total} {total, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}")
-     & P ("filtered_count.none", "brak pasujących {many}")
+          & "{{genitive_other}} other {{genitive_one}}}")
+     & P ("filtered_count.none", "brak pasujących {genitive_other}")
      & P ("filtered_count.all",
           "pasują wszystkie: {total} {total, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}}")
+          & "many {{genitive_other}} other {{genitive_one}}}")
      & P ("filtered_count.some",
-          "pasujące: {matching} z {total} {total, plural, one {{one}} few "
-          & "{{many}} many {{many}} other {{other}}}")
+          "{matching, plural, one {pasuje} few {pasują} many {pasuje} other "
+          & "{pasuje}} {matching} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("more_count", "wyświetlono {visible}, +{remaining} więcej")
      & P ("others_count", "{first} i jeszcze {remaining}")
      & P ("page_count", "strona {page} z {total}")
      & P ("page_size",
-          "{size} {size, plural, one {{one}} few {{few}} many {{many}} other "
-          & "{{other}}} na stronę")
+          "{size} {size, plural, one {{one}} few {{few}} many {{genitive_other}} "
+          & "other {{genitive_one}}} na stronę")
      & P ("pagination_range",
-          "{first}–{last} z {total} {total, plural, one {{one}} few {{many}} "
-          & "many {{many}} other {{other}}}")
+          "{first}–{last} z {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("position_count", "{position} z {total}")
      & P ("selection_count",
-          "wybrano {selected} z {total} {total, plural, one {{one}} few {{many}} "
-          & "many {{many}} other {{other}}}")
+          "wybrano {selected} z {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("showing_count",
-          "wyświetlono {showing} z {total} {total, plural, one {{one}} few "
-          & "{{many}} many {{many}} other {{other}}}")
+          "wyświetlono {showing} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("validation_count",
           "{count, plural, =0 {brak {severity, select, error {błędów} warning "
           & "{ostrzeżeń} other {uwag}}} one {1 {severity, select, error {błąd} "
@@ -37,23 +38,25 @@ begin
           & "{severity, select, error {błędów} warning {ostrzeżeń} other "
           & "{uwag}}} other {{count} {severity, select, error {błędu} warning "
           & "{ostrzeżenia} other {uwagi}}}}")
-     & P ("collection.empty", "brak {many}")
-     & P ("collection.none_shown", "nie wyświetlono żadnych {many}")
+     & P ("collection.empty", "brak {genitive_other}")
+     & P ("collection.none_shown", "nie wyświetlono żadnych {genitive_other}")
      & P ("collection.showing_hidden",
-          "wyświetlono {visible} z {total} {total, plural, one {{one}} few "
-          & "{{many}} many {{many}} other {{other}}}, ukryto {hidden}")
+          "wyświetlono {visible} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}, ukryto {hidden}")
      & P ("collection.showing",
-          "wyświetlono {visible} z {total} {total, plural, one {{one}} few "
-          & "{{many}} many {{many}} other {{other}}}")
+          "wyświetlono {visible} z {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("collection.shown_hidden",
-          "wyświetlono: {visible} {visible, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}, ukryto: {hidden}")
+          "wyświetlono {visible} {visible, plural, one {{accusative_one}} few "
+          & "{{accusative_other}} many {{genitive_other}} other {{genitive_one}}}, "
+          & "ukryto {hidden}")
      & P ("collection.shown",
-          "wyświetlono: {visible} {visible, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}")
+          "wyświetlono {visible} {visible, plural, one {{accusative_one}} few "
+          & "{{accusative_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("collection.visible_out_of",
-          "widoczne: {visible} z {total} {total, plural, one {{one}} few {{many}} "
-          & "many {{many}} other {{other}}}")
+          "widoczne: {visible} z {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("complete_count", "ukończono {done} z {total}")
      & P ("percent_complete", "ukończono {percent}%")
      & P ("step_count", "krok {step} z {total}")
@@ -119,8 +122,9 @@ begin
           & "plural, one {{misses} chybienie} few {{misses} chybienia} many "
           & "{{misses} chybień} other {{misses} chybienia}}, skuteczność {rate}%")
      & P ("field_change_summary",
-          "{total} {total, plural, one {{one}} few {{few}} many {{many}} other "
-          & "{{other}}}: zmieniono {changed}, dodano {added}, usunięto {removed}")
+          "{total} {total, plural, one {{one}} few {{few}} many "
+          & "{{genitive_other}} other {{genitive_one}}}: zmieniono {changed}, "
+          & "dodano {added}, usunięto {removed}")
      & P ("field_diff", "{field}: zmieniono z {before} na {after}")
      & P ("field_added", "{field}: dodano z wartością {value}")
      & P ("field_removed", "{field}: usunięto (poprzednio {value})")
@@ -146,17 +150,17 @@ begin
           & "running {w toku} waiting {oczekiwanie} paused {wstrzymano} complete "
           & "{ukończono} failed {niepowodzenie} stale {nieaktualne} skipped "
           & "{pominięto} other {{state}}}: {details}")
-     & P ("summary.none", "brak {many}")
+     & P ("summary.none", "brak {genitive_other}")
      & P ("summary.completed",
-          "ukończono: {count} {count, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}")
+          "ukończono {count} {count, plural, one {{accusative_one}} few "
+          & "{{accusative_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("summary.completed_of",
-          "ukończono {count} z {total} {total, plural, one {{one}} few {{many}} "
-          & "many {{many}} other {{other}}}")
+          "ukończono {count} z {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("summary.failed", "nieudane: {count}")
      & P ("summary.queued",
           "w kolejce: {count} {count, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}")
+          & "{{genitive_other}} other {{genitive_one}}}")
      & P ("summary.running", "w toku: {count}")
      & P ("summary.complete", "ukończone: {count}")
      & P ("backup.backup_running", "kopia zapasowa w toku")
@@ -222,7 +226,7 @@ begin
      & P ("auth.locked", "zablokowano")
      & P ("auth.two_factor_required", "wymagane uwierzytelnianie dwuskładnikowe")
      & P ("billing.trialing", "okres próbny")
-     & P ("billing.payment_due", "płatność wymagalna")
+     & P ("billing.payment_due", "do zapłaty")
      & P ("billing.payment_failed", "płatność nieudana")
      & P ("billing.paid", "opłacono")
      & P ("billing.past_due", "po terminie")
@@ -373,5 +377,11 @@ begin
      & P ("database.database_backup_running", "kopia zapasowa bazy danych w toku")
      & P ("database.database_backup_failed", "kopia zapasowa bazy danych nieudana")
      & P ("date_comparison.case.after", "accusative")
-     & P ("date_comparison.case.before", "accusative");
+     & P ("date_comparison.case.before", "accusative")
+     & P ("count",
+          "{count, plural, one {# {one}} few {# {few}} many {# {genitive_other}} "
+          & "other {# {genitive_one}}}")
+     & P ("noun",
+          "{count, plural, one {{one}} few {{few}} many {{genitive_other}} other "
+          & "{{genitive_one}}}");
 end Locale_Pl;

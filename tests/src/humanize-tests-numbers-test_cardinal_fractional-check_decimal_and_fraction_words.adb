@@ -77,7 +77,7 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
         (Polish_Decimal_Text.Status = Ok
          and then Support.Text (Polish_Decimal_Text)
            = "dwana" & U (16#15B#) & "cie przecinek pi"
-             & U (16#119#) & U (16#107#) & " zero",
+             & U (16#119#) & U (16#107#) & "dziesi" & U (16#105#) & "t",
          "generated Polish decimal words");
       AUnit.Assertions.Assert
         (Japanese_Decimal_Text.Status = Ok
@@ -131,8 +131,8 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
       AUnit.Assertions.Assert
         (Japanese_Fraction_Text.Status = Ok
          and then Support.Text (Japanese_Fraction_Text)
-           = U (16#56DB#) & U (16#5206#) & U (16#4E4B#)
-             & U (16#4E00#) & U (16#4E09#),
+           --  四分の三: three of four parts, the denominator first.
+           = U (16#56DB#) & U (16#5206#) & U (16#306E#) & U (16#4E09#),
          "generated Japanese fraction words");
       AUnit.Assertions.Assert
         (Arabic_Fraction_Text.Status = Ok

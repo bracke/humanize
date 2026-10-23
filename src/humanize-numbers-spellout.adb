@@ -656,9 +656,12 @@ package body Humanize.Numbers.Spellout is
             when others => return "";
          end case;
       elsif Humanize.Locales.Is_CJK (Locale) then
+         --  The denominator and the particle the numerator follows: Chinese
+         --  "四分之" (三), Japanese "四分の" (三), Korean "사분의 " (삼).
          return Small_Locale_Word (Locale, Denominator)
-           & (if Locale = "ko" then U (16#BD84#) & U (16#C758#)
-              else U (16#5206#) & U (16#4E4B#) & U (16#4E00#));
+           & (if Locale = "ko" then U (16#BD84#) & U (16#C758#) & " "
+              elsif Locale = "ja" then U (16#5206#) & U (16#306E#)
+              else U (16#5206#) & U (16#4E4B#));
       elsif Locale = "ar" then
          case Denominator is
             when 2 => return U (16#646#) & U (16#635#) & U (16#641#);
@@ -695,35 +698,7 @@ package body Humanize.Numbers.Spellout is
       Numerator   : Positive;
       Denominator : Positive)
       return Humanize.Status.Text_Result
-   is
-      Locale : constant String := Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context));
-      Den : constant String :=
-        Locale_Fraction_Denominator_Word
-          (Locale, Denominator, Numerator /= 1);
-      Text : constant String :=
-        (if Den'Length > 0
-         then
-           (if Humanize.Locales.Is_CJK (Locale)
-            then Den &
-              Result_Text
-                (Locale_Cardinal (Context, Long_Long_Integer (Numerator)))
-            elsif Locale = "tr" and then Denominator > 2
-            then Den & " " &
-              Result_Text
-                (Locale_Cardinal (Context, Long_Long_Integer (Numerator)))
-            else Result_Text
-              (Locale_Cardinal (Context, Long_Long_Integer (Numerator)))
-              & " " & Den)
-         elsif Locale = "en"
-         then Cardinal_Text (Numerator) & " over " & Cardinal_Text (Denominator)
-         else Result_Text
-           (Locale_Cardinal (Context, Long_Long_Integer (Numerator)))
-           & " over "
-           & Result_Text
-             (Locale_Cardinal (Context, Long_Long_Integer (Denominator))));
-   begin
-      return Ok_Text (Text);
-   end Fraction_Words;
+      is separate;
 
    procedure Fraction_Words_Into
      (Context     : Humanize.Contexts.Context;

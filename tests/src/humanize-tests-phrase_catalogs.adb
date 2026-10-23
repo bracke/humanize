@@ -108,7 +108,8 @@ package body Humanize.Tests.Phrase_Catalogs is
    Locales : constant array (Positive range <>) of Unbounded_String :=
      [+"da", +"de", +"fr", +"es", +"it", +"pt", +"nl", +"sv", +"no", +"nb", +"fi", +"pl", +"cs",
       +"tr", +"ru", +"uk", +"ja", +"ko", +"zh", +"ar", +"hi", +"ro", +"lt", +"sl", +"id", +"ms",
-      +"eo", +"vi", +"sw", +"af", +"hu", +"sk", +"zh-Hant", +"zh-TW", +"pt-PT", +"es-419"];
+      +"eo", +"vi", +"sw", +"af", +"hu", +"sk", +"zh-Hant", +"zh-TW", +"pt-PT", +"es-419", +"fr-CA",
+      +"de-CH", +"en-GB"];
 
    --  The numeric arguments any phrase takes, and the text ones.
    Numbers : constant array (Positive range <>) of Unbounded_String :=
@@ -141,6 +142,10 @@ package body Humanize.Tests.Phrase_Catalogs is
             Messages.Arguments.Set (Args, "two", "files");
             Messages.Arguments.Set (Args, "few", "files");
             Messages.Arguments.Set (Args, "many", "files");
+            Messages.Arguments.Set (Args, "genitive_one", "file");
+            Messages.Arguments.Set (Args, "genitive_other", "files");
+            Messages.Arguments.Set (Args, "accusative_one", "file");
+            Messages.Arguments.Set (Args, "accusative_other", "files");
             Messages.Arguments.Set (Args, "severity", "error");
             Messages.Arguments.Set (Args, "unit", "item");
             Messages.Arguments.Set (Args, "field", "name");
@@ -200,7 +205,8 @@ package body Humanize.Tests.Phrase_Catalogs is
          Plain : constant Humanize.Contexts.Context :=
            Humanize.Contexts.Create (Runtime'Unchecked_Access, "pl");
          Forms : constant Humanize.Contexts.Context :=
-           Humanize.Contexts.With_Noun_Forms (Plain, "pliki", Few => "pliki", Many => "plików");
+           Humanize.Contexts.With_Noun_Forms
+             (Plain, "pliki", Few => "pliki", Genitive_One => "pliku", Genitive_Other => "plików");
          Five  : constant String := Image (Humanize.Lists.All_Count (Forms, 5, "plik", "pliki"));
          Three : constant String := Image (Humanize.Lists.All_Count (Forms, 3, "plik", "pliki"));
       begin
@@ -316,12 +322,21 @@ package body Humanize.Tests.Phrase_Catalogs is
         (Loading ("zh-TW") = Bytes ("E8BC89E585A5E4B8AD"), "zh-TW Traditional: [" & Loading ("zh-TW") & "]");
       AUnit.Assertions.Assert (Loading ("pt-PT") = "a carregar", "pt-PT: [" & Loading ("pt-PT") & "]");
       AUnit.Assertions.Assert (Loading ("pt-BR") = "carregando", "pt-BR: [" & Loading ("pt-BR") & "]");
+      declare
+         function Canceled (Locale : String) return String is
+           (Image (Humanize.Phrases.Billing_Phrase
+                     (Humanize.Contexts.Create (Runtime'Unchecked_Access, Locale), Humanize.Phrases.Canceled)));
+      begin
+         AUnit.Assertions.Assert (Canceled ("en-GB") = "cancelled", "en-GB: [" & Canceled ("en-GB") & "]");
+         AUnit.Assertions.Assert (Canceled ("en-US") = "canceled", "en-US: [" & Canceled ("en-US") & "]");
+      end;
    end Test_Regional_Variants;
 
    Read_Back_Locales : constant array (Positive range <>) of Unbounded_String :=
      [+"en", +"de", +"ru", +"ja", +"ar"];
    Noun_Arguments : constant array (Positive range <>) of Unbounded_String :=
-     [+"one", +"other", +"zero", +"two", +"few", +"many"];
+     [+"one", +"other", +"zero", +"two", +"few", +"many", +"genitive_one", +"genitive_other",
+      +"accusative_one", +"accusative_other"];
    Text_Arguments : constant array (Positive range <>) of Unbounded_String :=
      [+"unit", +"field", +"before", +"after", +"current", +"baseline", +"quantity",
       +"details", +"difference", +"measure"];

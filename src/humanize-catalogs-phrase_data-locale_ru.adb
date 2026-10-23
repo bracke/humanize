@@ -5,32 +5,36 @@ begin
    return
      P ("all_count",
           "всего {total} {total, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}")
-     & P ("filtered_count.none", "{other}: совпадений нет")
+          & "{{many}} other {{genitive_one}}}")
+     & P ("filtered_count.none", "нет совпадающих {genitive_other}")
      & P ("filtered_count.all",
           "{total, plural, =1 {совпадает 1 {one}} one "
           & "{совпадают все {total} {one}} few {совпадают "
           & "все {total} {few}} many {совпадают все {total} {many}} "
-          & "other {совпадают все {total} {other}}}")
+          & "other {совпадают все {total} {genitive_one}}}")
      & P ("filtered_count.some",
-          "совпадают: {matching} {matching, plural, one {{one}} few "
-          & "{{few}} many {{many}} other {{other}}} из {total}")
+          "{matching, plural, one {совпадает} other "
+          & "{совпадают}} {matching} из {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
      & P ("more_count", "показано {visible}, ещё +{remaining}")
      & P ("others_count", "{first} и ещё {remaining}")
      & P ("page_count", "страница {page} из {total}")
      & P ("page_size",
           "{size} {size, plural, one {{one}} few {{few}} many {{many}} other "
-          & "{{other}}} на странице")
+          & "{{genitive_one}}} на странице")
      & P ("pagination_range",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: {first}–{last} из {total}")
+          "{first}–{last} из {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("position_count", "{position} из {total}")
      & P ("selection_count",
-          "выбрано: {selected} {selected, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}} из {total}")
+          "выбрано {selected} из {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
      & P ("showing_count",
-          "показано: {showing} {showing, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}} из {total}")
+          "показано {showing} из {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
      & P ("validation_count",
           "{count, plural, =0 {нет {severity, select, error {ошибок} "
           & "warning {предупреждений} other {замечаний}}} "
@@ -42,23 +46,25 @@ begin
           & "{предупреждений} other {замечаний}}} other "
           & "{{count} {severity, select, error {ошибки} warning "
           & "{предупреждения} other {замечания}}}}")
-     & P ("collection.empty", "{other} отсутствуют")
-     & P ("collection.none_shown", "{other} не показаны")
+     & P ("collection.empty", "нет {genitive_other}")
+     & P ("collection.none_shown", "нет отображаемых {genitive_other}")
      & P ("collection.showing_hidden",
-          "показано: {visible} {visible, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}} из {total}, скрыто: {hidden}")
+          "показано {visible} из {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}, скрыто {hidden}")
      & P ("collection.showing",
-          "показано: {visible} {visible, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}} из {total}")
+          "показано {visible} из {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
      & P ("collection.shown_hidden",
           "показано: {visible} {visible, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}}, скрыто: {hidden}")
+          & "many {{many}} other {{genitive_one}}}, скрыто: {hidden}")
      & P ("collection.shown",
           "показано: {visible} {visible, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}}")
+          & "many {{many}} other {{genitive_one}}}")
      & P ("collection.visible_out_of",
-          "видно: {visible} {visible, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}} из {total}")
+          "видно {visible} из {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("complete_count", "выполнено {done} из {total}")
      & P ("percent_complete", "выполнено {percent} %")
      & P ("step_count", "шаг {step} из {total}")
@@ -138,8 +144,8 @@ begin
           & "попаданий {rate} %")
      & P ("field_change_summary",
           "{total} {total, plural, one {{one}} few {{few}} many {{many}} other "
-          & "{{other}}}: изменено {changed}, добавлено {added}, "
-          & "удалено {removed}")
+          & "{{genitive_one}}}: изменено {changed}, добавлено "
+          & "{added}, удалено {removed}")
      & P ("field_diff", "{field}: было {before}, стало {after}")
      & P ("field_added", "{field}: добавлено значение {value}")
      & P ("field_removed", "{field}: удалено (было {value})")
@@ -164,17 +170,18 @@ begin
           & "{завершено} failed {ошибка} stale "
           & "{неактуально} skipped {пропущено} other "
           & "{{state}}}: {details}")
-     & P ("summary.none", "{other} отсутствуют")
+     & P ("summary.none", "нет {genitive_other}")
      & P ("summary.completed",
           "завершено: {count} {count, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}}")
+          & "many {{many}} other {{genitive_one}}}")
      & P ("summary.completed_of",
-          "завершено: {count} {count, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}} из {total}")
+          "завершено {count} из {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
      & P ("summary.failed", "с ошибкой: {count}")
      & P ("summary.queued",
           "в очереди: {count} {count, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}}")
+          & "many {{many}} other {{genitive_one}}}")
      & P ("summary.running", "выполняется: {count}")
      & P ("summary.complete", "завершено: {count}")
      & P ("backup.backup_running", "выполняется резервное копирование")
@@ -404,5 +411,11 @@ begin
      & P ("date_comparison.after", "{current} на {quantity} позже, чем {baseline}")
      & P ("date_comparison.before", "{current} на {quantity} раньше, чем {baseline}")
      & P ("date_comparison.case.after", "accusative")
-     & P ("date_comparison.case.before", "accusative");
+     & P ("date_comparison.case.before", "accusative")
+     & P ("count",
+          "{count, plural, one {# {one}} few {# {genitive_one}} many {# "
+          & "{genitive_other}} other {# {genitive_one}}}")
+     & P ("noun",
+          "{count, plural, one {{one}} few {{genitive_one}} many "
+          & "{{genitive_other}} other {{genitive_one}}}");
 end Locale_Ru;

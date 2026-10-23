@@ -214,9 +214,24 @@ package body Humanize.I18N_Rendering is
    is
       Locale : constant String := Humanize.Contexts.Locale (Context);
    begin
-      if English.Status /= Humanize.Status.Ok
-        or else Humanize.Locales.Language_Code (Locale) in "en" | ""
-      then
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      elsif Humanize.Locales.Language_Code (Locale) in "en" | "" then
+         --  A regional English (en-GB "cancelled") overrides where its
+         --  catalog differs from en's; elsewhere the formatter's own English.
+         if Locale'Length > 2 then
+            declare
+               Regional : constant Humanize.Status.Text_Result := Render (Context, Selection);
+               Plain    : constant Humanize.Status.Text_Result :=
+                 Render (Humanize.Contexts.Create (Humanize.Contexts.Runtime (Context), "en"), Selection);
+            begin
+               if Regional.Status = Humanize.Status.Ok and then Plain.Status = Humanize.Status.Ok
+                 and then Regional.Text /= Plain.Text
+               then
+                  return Regional;
+               end if;
+            end;
+         end if;
          return English;
       end if;
       declare
@@ -227,6 +242,10 @@ package body Humanize.I18N_Rendering is
       end;
    end Phrase_Or;
 
+   type Text_Access is access constant String;
+   Plural_Forms : constant array (1 .. 4) of Text_Access :=
+     [new String'("zero"), new String'("two"), new String'("few"), new String'("many")];
+
    function With_Nouns
      (Context   : Humanize.Contexts.Context;
       Selection : Humanize.Selections.Message_Selection;
@@ -236,18 +255,25 @@ package body Humanize.I18N_Rendering is
    is
       Other : constant String := (if Plural'Length > 0 then Plural else Singular);
 
-      function Form (Category : String) return String is
-        (Humanize.Contexts.Noun_Form (Context, Other, Category));
+      --  The registered form, else Default (Noun_Form answers the plural for
+      --  a form not registered).
+      function Form (Category, Default : String) return String is
+         Registered : constant String := Humanize.Contexts.Noun_Form (Context, Other, Category);
+      begin
+         return (if Registered = Other then Default else Registered);
+      end Form;
 
       use Humanize.Selections;
+      Result : Message_Selection := With_Arg (With_Arg (Selection, "one", Singular), "other", Other);
    begin
-      return With_Arg
-        (With_Arg
-           (With_Arg
-              (With_Arg (With_Arg (With_Arg (Selection, "one", Singular), "other", Other), "zero", Form ("zero")),
-               "two", Form ("two")),
-            "few", Form ("few")),
-         "many", Form ("many"));
+      for Category of Plural_Forms loop
+         Result := With_Arg (Result, Category.all, Form (Category.all, Other));
+      end loop;
+      Result := With_Arg (Result, "genitive_one", Form ("genitive_one", Singular));
+      Result := With_Arg (Result, "genitive_other", Form ("genitive_other", Other));
+      Result := With_Arg (Result, "accusative_one", Form ("accusative_one", Singular));
+      Result := With_Arg (Result, "accusative_other", Form ("accusative_other", Other));
+      return Result;
    end With_Nouns;
 
    function Noun

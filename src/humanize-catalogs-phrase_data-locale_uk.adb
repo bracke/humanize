@@ -5,32 +5,36 @@ begin
    return
      P ("all_count",
           "усього {total} {total, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}")
-     & P ("filtered_count.none", "{other}: збігів немає")
+          & "{{many}} other {{genitive_one}}}")
+     & P ("filtered_count.none", "немає відповідних {genitive_other}")
      & P ("filtered_count.all",
           "{total, plural, =1 {збігається 1 {one}} one "
           & "{збігаються всі {total} {one}} few {збігаються "
           & "всі {total} {few}} many {збігаються всі {total} "
-          & "{many}} other {збігаються всі {total} {other}}}")
+          & "{many}} other {збігаються всі {total} {genitive_one}}}")
      & P ("filtered_count.some",
-          "збігаються: {matching} {matching, plural, one {{one}} few "
-          & "{{few}} many {{many}} other {{other}}} з {total}")
+          "{matching, plural, one {збігається} other "
+          & "{збігаються}} {matching} з {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
      & P ("more_count", "показано {visible}, ще +{remaining}")
      & P ("others_count", "{first} та ще {remaining}")
      & P ("page_count", "сторінка {page} з {total}")
      & P ("page_size",
           "{size} {size, plural, one {{one}} few {{few}} many {{many}} other "
-          & "{{other}}} на сторінці")
+          & "{{genitive_one}}} на сторінці")
      & P ("pagination_range",
-          "{total, plural, one {{one}} few {{other}} many {{other}} other "
-          & "{{other}}}: {first}–{last} з {total}")
+          "{first}–{last} з {total} {total, plural, one {{genitive_one}} few "
+          & "{{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("position_count", "{position} з {total}")
      & P ("selection_count",
-          "вибрано: {selected} {selected, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}} з {total}")
+          "вибрано {selected} з {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
      & P ("showing_count",
-          "показано: {showing} {showing, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}} з {total}")
+          "показано {showing} з {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
      & P ("validation_count",
           "{count, plural, =0 {немає {severity, select, error "
           & "{помилок} warning {попереджень} other "
@@ -43,24 +47,25 @@ begin
           & "{зауважень}}} other {{count} {severity, select, error "
           & "{помилки} warning {попередження} other "
           & "{зауваження}}}}")
-     & P ("collection.empty", "{other} відсутні")
-     & P ("collection.none_shown", "{other} не показано")
+     & P ("collection.empty", "немає {genitive_other}")
+     & P ("collection.none_shown", "немає показаних {genitive_other}")
      & P ("collection.showing_hidden",
-          "показано: {visible} {visible, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}} з {total}, приховано: "
-          & "{hidden}")
+          "показано {visible} з {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}, приховано {hidden}")
      & P ("collection.showing",
-          "показано: {visible} {visible, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}} з {total}")
+          "показано {visible} з {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
      & P ("collection.shown_hidden",
           "показано: {visible} {visible, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}}, приховано: {hidden}")
+          & "many {{many}} other {{genitive_one}}}, приховано: {hidden}")
      & P ("collection.shown",
           "показано: {visible} {visible, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}}")
+          & "many {{many}} other {{genitive_one}}}")
      & P ("collection.visible_out_of",
-          "видно: {visible} {visible, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}} з {total}")
+          "видно {visible} з {total} {total, plural, one {{genitive_one}} "
+          & "few {{genitive_other}} many {{genitive_other}} other {{genitive_one}}}")
      & P ("complete_count", "виконано {done} з {total}")
      & P ("percent_complete", "виконано {percent} %")
      & P ("step_count", "крок {step} з {total}")
@@ -139,7 +144,7 @@ begin
           & "влучань {rate} %")
      & P ("field_change_summary",
           "{total} {total, plural, one {{one}} few {{few}} many {{many}} other "
-          & "{{other}}}: змінено {changed}, додано {added}, "
+          & "{{genitive_one}}}: змінено {changed}, додано {added}, "
           & "видалено {removed}")
      & P ("field_diff", "{field}: було {before}, стало {after}")
      & P ("field_added", "{field}: додано значення {value}")
@@ -165,17 +170,18 @@ begin
           & "{завершено} failed {помилка} stale "
           & "{застаріло} skipped {пропущено} other {{state}}}: "
           & "{details}")
-     & P ("summary.none", "{other} відсутні")
+     & P ("summary.none", "немає {genitive_other}")
      & P ("summary.completed",
           "завершено: {count} {count, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}}")
+          & "many {{many}} other {{genitive_one}}}")
      & P ("summary.completed_of",
-          "завершено: {count} {count, plural, one {{one}} few {{few}} "
-          & "many {{many}} other {{other}}} з {total}")
+          "завершено {count} з {total} {total, plural, one "
+          & "{{genitive_one}} few {{genitive_other}} many {{genitive_other}} other "
+          & "{{genitive_one}}}")
      & P ("summary.failed", "з помилкою: {count}")
      & P ("summary.queued",
           "у черзі: {count} {count, plural, one {{one}} few {{few}} many "
-          & "{{many}} other {{other}}}")
+          & "{{many}} other {{genitive_one}}}")
      & P ("summary.running", "виконується: {count}")
      & P ("summary.complete", "завершено: {count}")
      & P ("backup.backup_running", "триває резервне копіювання")
@@ -400,5 +406,11 @@ begin
      & P ("date_comparison.after", "{current} на {quantity} пізніше, ніж {baseline}")
      & P ("date_comparison.before", "{current} на {quantity} раніше, ніж {baseline}")
      & P ("date_comparison.case.after", "accusative")
-     & P ("date_comparison.case.before", "accusative");
+     & P ("date_comparison.case.before", "accusative")
+     & P ("count",
+          "{count, plural, one {# {one}} few {# {few}} many {# {genitive_other}} "
+          & "other {# {genitive_one}}}")
+     & P ("noun",
+          "{count, plural, one {{one}} few {{few}} many {{genitive_other}} other "
+          & "{{genitive_one}}}");
 end Locale_Uk;

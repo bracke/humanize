@@ -47,6 +47,11 @@ package body Humanize.Catalogs.Phrase_Data is
    function Locale_Zh_Hant return Wide_Wide_String is separate;
    function Locale_Pt_Pt return Wide_Wide_String is separate;
    function Locale_Es_419 return Wide_Wide_String is separate;
+   --  Canadian French, Swiss German (ss for ß) and British English, where
+   --  they differ.
+   function Locale_Fr_Ca return Wide_Wide_String is separate;
+   function Locale_De_Ch return Wide_Wide_String is separate;
+   function Locale_En_Gb return Wide_Wide_String is separate;
 
    function Default_Catalog return String is
      (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode
@@ -85,20 +90,23 @@ package body Humanize.Catalogs.Phrase_Data is
            & Locale_Sk
            & Locale_Zh_Hant
            & Locale_Pt_Pt
-           & Locale_Es_419));
+           & Locale_Es_419
+           & Locale_Fr_Ca
+           & Locale_De_Ch
+           & Locale_En_Gb));
 
    function Catalog_For (Language : String) return String is
       function Encode (Text : Wide_Wide_String) return String is
         (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode (Text));
    begin
       if Language in "en" | "" then
-         return Encode (Locale_En);
+         return Encode (Locale_En & Locale_En_Gb);
       elsif Language = "da" then
          return Encode (Locale_Da);
       elsif Language = "de" then
-         return Encode (Locale_De);
+         return Encode (Locale_De & Locale_De_Ch);
       elsif Language = "fr" then
-         return Encode (Locale_Fr);
+         return Encode (Locale_Fr & Locale_Fr_Ca);
       elsif Language = "es" then
          return Encode (Locale_Es & Locale_Es_419);
       elsif Language = "it" then

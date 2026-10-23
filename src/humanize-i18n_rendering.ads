@@ -51,7 +51,9 @@ private package Humanize.I18N_Rendering is
    --  Selection with a caller's noun as phrase arguments: "one" (Singular),
    --  "other" (Plural, or Singular when Plural is ""), and "zero", "two",
    --  "few" and "many" -- the forms registered on Context for that plural
-   --  (Humanize.Contexts.With_Noun_Forms), else the plural.
+   --  (Humanize.Contexts.With_Noun_Forms), else the plural -- and
+   --  "genitive_one"/"genitive_other"/"accusative_one"/"accusative_other",
+   --  else the singular or plural.
    function With_Nouns
      (Context   : Humanize.Contexts.Context;
       Selection : Humanize.Selections.Message_Selection;

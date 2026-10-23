@@ -20,6 +20,10 @@ here.
   (`Humanize.Contexts.With_Noun_Forms (Ctx, "pliki", Many => "plików")`); each
   is the plural form where none is registered. Use them in languages with those
   plural categories: `one {{one}} few {{few}} many {{many}} other {{other}}`.
+- **`genitive_one` / `genitive_other` / `accusative_one` / `accusative_other`**
+  are the noun's case forms, registered the same way, else the singular or
+  plural: Polish "z {total} {total, plural, one {{genitive_one}} other
+  {{genitive_other}}}" ("z 5 plików").
 - **Text arguments** (`first`, `severity`, ...) are inserted as given, or
   selected on with `{severity, select, ...}`.
 
@@ -139,6 +143,9 @@ here, so English output reads back too.
 
 ## Regional variants
 
+`fr-CA`, `de-CH` (ss for ß) and `en-GB` ("cancelled") are overrides too; a
+regional English entry replaces the formatter's own English.
+
 `zh-Hant` is a whole Traditional Chinese catalog (Taiwan usage), which zh-TW,
 zh-HK and zh-MO reach through CLDR's likely scripts. `pt-PT` and `es-419` hold
 only the entries that differ from `pt` (Brazilian) and `es`; pt-AO, pt-MZ, ...
@@ -147,16 +154,20 @@ A regional file may leave any key out.
 
 ## Nouns by language
 
-What a caller passes as the plural (`Plural`) and registers, so the
-translations come out right. Languages not listed need only singular and plural.
+What a caller passes as the plural (`Plural`) and registers on its context
+(`Humanize.Contexts.With_Noun_Forms`) so the translations come out right; an
+unregistered form falls back to the singular or plural. Languages not listed
+need only singular and plural.
 
 | Language | Plural | Register |
 |---|---|---|
-| Polish | nominative plural ("pliki") | Many: genitive plural ("plików") |
-| Russian, Ukrainian | nominative plural ("файлы") | Few: nominative plural; Many: genitive plural ("файлов") |
-| Czech, Slovak | genitive plural ("souborů") | Few: nominative plural ("soubory"); Many: genitive singular ("souboru") |
-| Slovenian | genitive plural ("datotek") | Two: dual ("datoteki"); Few: nominative plural ("datoteke") |
-| Lithuanian | genitive plural ("failų") | Few: nominative plural ("failai"); Many: genitive singular |
+| Polish | nominative plural ("pliki") | Genitive_One "pliku", Genitive_Other "plików"; Accusative_One/Other where they differ ("kartę") |
+| Czech | nominative plural ("soubory") | Genitive_One "souboru", Genitive_Other "souborů" |
+| Slovak | nominative plural ("súbory") | Genitive_One "súboru", Genitive_Other "súborov" |
+| Slovenian | nominative plural ("datoteke") | Two: dual ("datoteki"); Genitive_One "datoteke", Genitive_Other "datotek" |
+| Russian | nominative plural ("файлы") | Few: genitive singular ("файла"); Many: genitive plural ("файлов"); Genitive_One "файла", Genitive_Other "файлов" |
+| Ukrainian | nominative plural ("файли") | Many: genitive plural ("файлів"); Genitive_One "файлу", Genitive_Other "файлів" |
+| Lithuanian | nominative plural ("failai") | Genitive_One "failo", Genitive_Other "failų" |
 | Romanian | plural ("fișiere") | Few: plural (the template adds "de" for 20 and up) |
 | Arabic | plural ("ملفات") | Two: dual; Few: plural; Many: singular accusative ("ملفًا"); Zero: singular |
 
