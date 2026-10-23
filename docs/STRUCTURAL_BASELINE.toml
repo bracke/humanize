@@ -525,3 +525,13 @@ max_bytes = 32000
 split_prefix = ""
 min_split_bodies = 0
 usecase = "Notification and delivery label facade body; new notification families should prefer focused support helpers."
+
+[[body]]
+path = "src/humanize-parsing-localized.adb"
+target_lines = 816
+max_lines = 966
+min_headroom_lines = 100
+max_bytes = 45000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Localized reading of numbers, durations, relative times, byte sizes, measurements and dates, learnt from the formatters; new kinds should prefer subunits."
