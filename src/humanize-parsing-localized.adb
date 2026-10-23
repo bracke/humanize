@@ -52,7 +52,7 @@ package body Humanize.Parsing.Localized is
 
    type Lexicon_Kind is
      (Durations_Kind, Relative_Kind, Bytes_Kind, Measure_Kind, Dates_Kind, Percent_Kind, Compact_Kind, Ordinal_Kind,
-      Currency_Kind, Difference_Kind, Times_Kind);
+      Currency_Kind, Difference_Kind, Difference_Future_Kind, Difference_Past_Kind, Times_Kind);
 
    package Lexicon_Maps is new Ada.Containers.Indefinite_Hashed_Maps
      (Key_Type => String, Element_Type => Lexicon, Hash => Ada.Strings.Hash, Equivalent_Keys => "=");
@@ -451,7 +451,7 @@ package body Humanize.Parsing.Localized is
      is separate;
 
    --  Calendar differences, valued years * 10_000 + months * 100 + days.
-   function Learn_Differences (Context : Humanize.Contexts.Context) return Lexicon is separate;
+   function Learn_Differences (Context : Humanize.Contexts.Context; Kind : Lexicon_Kind) return Lexicon is separate;
 
    function Learned
      (Context : Humanize.Contexts.Context;
@@ -479,7 +479,8 @@ package body Humanize.Parsing.Localized is
                when Dates_Kind     => Learn_Dates (Context),
                when Percent_Kind | Compact_Kind | Ordinal_Kind | Currency_Kind | Times_Kind =>
                  Learn_Numbers (Context, Kind, Code),
-               when Difference_Kind => Learn_Differences (Context));
+               when Difference_Kind | Difference_Future_Kind | Difference_Past_Kind =>
+                 Learn_Differences (Context, Kind));
          Cache.Store (Key, Item);
       end if;
       return Item;

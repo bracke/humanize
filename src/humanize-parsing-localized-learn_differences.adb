@@ -1,15 +1,46 @@
+with Humanize.Parsing.Phrases;
+
 separate (Humanize.Parsing.Localized)
-function Learn_Differences (Context : Humanize.Contexts.Context) return Lexicon is
+function Learn_Differences (Context : Humanize.Contexts.Context; Kind : Lexicon_Kind) return Lexicon is
    package DT renames Humanize.Datetimes;
    Result : Lexicon;
+
+   --  The frame a relative difference of Kind sits in ("vor {difference}").
+   Frame : constant String :=
+     (if Kind = Difference_Future_Kind then "calendar_difference.future" else "calendar_difference.past");
 
    function Day (Year, Month, Day_Of_Month : Integer) return DT.Civil_Date_Time is
      (DT.Civil_Date_Time'(Year => Year, Month => Month, Day => Day_Of_Month, others => <>));
 
+   --  The difference between First and Last as the label writes it: plain,
+   --  or for a relative Kind the part inside its frame ("2 Jahren" from "vor
+   --  2 Jahren"), in whichever order of the two the label points Kind's way.
    function Render (First, Last : DT.Civil_Date_Time) return String is
-      Rendered : constant Humanize.Status.Text_Result := DT.Calendar_Difference_Label (Context, First, Last);
+      function Label (From, To : DT.Civil_Date_Time; Style : DT.Calendar_Difference_Style) return String is
+         Rendered : constant Humanize.Status.Text_Result :=
+           DT.Calendar_Difference_Label
+             (Context, From, To, (DT.Default_Calendar_Difference_Options with delta Style => Style));
+      begin
+         return (if Rendered.Status = Humanize.Status.Ok then To_String (Rendered.Text) else "");
+      end Label;
    begin
-      return (if Rendered.Status = Humanize.Status.Ok then Plain (Context, To_String (Rendered.Text)) else "");
+      if Kind = Difference_Kind then
+         return Plain (Context, Label (First, Last, DT.Calendar_Difference_Plain));
+      end if;
+      for Swap in Boolean loop
+         declare
+            Text   : constant String :=
+              (if Swap then Label (Last, First, DT.Calendar_Difference_Relative)
+               else Label (First, Last, DT.Calendar_Difference_Relative));
+            Inside : constant Humanize.Parsing.Phrases.Phrase_Parse_Result :=
+              Humanize.Parsing.Phrases.Parse (Context, Frame, Text);
+         begin
+            if Text /= "" and then Inside.Status = Humanize.Status.Ok and then Inside.Text_Count >= 1 then
+               return Plain (Context, To_String (Inside.Texts (1)));
+            end if;
+         end;
+      end loop;
+      return "";
    end Render;
 
    procedure Take (Rendered : String; Value : Long_Float) is

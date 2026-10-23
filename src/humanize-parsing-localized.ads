@@ -166,11 +166,16 @@ package Humanize.Parsing.Localized is
    --  the numeric ordinal it writes beyond them ("2.345.").
    --  @return The number.
 
+   --  Which way a difference points: the relative style says ("in 2 Jahren",
+   --  "vor 2 Jahren"), the plain one does not.
+   type Difference_Direction is (Unstated, Past, Future, Same_Day);
+
    type Calendar_Difference_Parse_Result is record
-      Status : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
-      Years  : Natural := 0;
-      Months : Natural := 0;
-      Days   : Natural := 0;
+      Status    : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Years     : Natural := 0;
+      Months    : Natural := 0;
+      Days      : Natural := 0;
+      Direction : Difference_Direction := Unstated;
    end record;
 
    function Parse_Calendar_Difference
@@ -179,8 +184,9 @@ package Humanize.Parsing.Localized is
       return Calendar_Difference_Parse_Result;
    --  @param Context Context whose locale wrote Text.
    --  @param Text A difference as Humanize.Datetimes.Calendar_Difference_Label
-   --  writes it ("2 Jahre, 2 Monate und 4 Tage", Arabic "سنتان، وشهران").
-   --  @return Its years, months and days.
+   --  writes it, plain ("2 Jahre, 2 Monate und 4 Tage", Arabic "سنتان، وشهران")
+   --  or relative ("vor 2 Jahren", "in 3 Tagen", "am selben Tag").
+   --  @return Its years, months and days, and its direction where it says.
 
    type Calendar_Period is (Week_Period, Month_Period, Year_Period);
    subtype Period_Offset is Integer range -1 .. 1;

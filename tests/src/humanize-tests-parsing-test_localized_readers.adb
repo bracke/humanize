@@ -51,6 +51,27 @@ separate (Humanize.Tests.Parsing)
             Locale & " ordinal" & Value'Image & " read back: " & Ordinal);
       end Check_Words;
 
+      procedure Check_Relative_Difference (Locale : String; First, Last : DT.Civil_Date_Time) is
+         use type L.Difference_Direction;
+         Context : constant Humanize.Contexts.Context := Humanize.Tests.Support.Locale (Locale);
+         Relative : constant DT.Calendar_Difference_Options :=
+           (DT.Default_Calendar_Difference_Options with delta Style => DT.Calendar_Difference_Relative);
+         Ahead   : constant String :=
+           Humanize.Tests.Support.Text (DT.Calendar_Difference_Label (Context, First, Last, Relative));
+         Behind  : constant String :=
+           Humanize.Tests.Support.Text (DT.Calendar_Difference_Label (Context, Last, First, Relative));
+         Read_Ahead  : constant L.Calendar_Difference_Parse_Result := L.Parse_Calendar_Difference (Context, Ahead);
+         Read_Behind : constant L.Calendar_Difference_Parse_Result := L.Parse_Calendar_Difference (Context, Behind);
+      begin
+         AUnit.Assertions.Assert
+           (Read_Ahead.Status = Humanize.Status.Ok and then Read_Behind.Status = Humanize.Status.Ok
+            and then Read_Ahead.Direction /= Read_Behind.Direction
+            and then Read_Ahead.Direction in L.Past | L.Future and then Read_Behind.Direction in L.Past | L.Future
+            and then Read_Ahead.Years = 2 and then Read_Ahead.Months = 2 and then Read_Ahead.Days = 4
+            and then Read_Behind.Years = 2 and then Read_Behind.Months = 2 and then Read_Behind.Days = 4,
+            Locale & " relative differences read back with their direction: " & Ahead & " | " & Behind);
+      end Check_Relative_Difference;
+
       procedure Check_Difference (Locale : String; First, Last : DT.Civil_Date_Time; Y, M, D : Natural) is
          Context : constant Humanize.Contexts.Context := Humanize.Tests.Support.Locale (Locale);
          Text    : constant String :=
@@ -220,6 +241,7 @@ separate (Humanize.Tests.Parsing)
                Check_Words (Name, Value);
             end loop;
             Check_Difference (Name, Day (2024, 1, 5), Day (2026, 3, 9), 2, 2, 4);
+            Check_Relative_Difference (Name, Day (2024, 1, 5), Day (2026, 3, 9));
             Check_Difference (Name, Day (2025, 1, 1), Day (2026, 1, 1), 1, 0, 0);
             Check_Difference (Name, Day (2026, 1, 1), Day (2026, 1, 18), 0, 0, 17);
             Check_Difference (Name, Day (2026, 1, 31), Day (2026, 3, 2), 0, 1, 2);

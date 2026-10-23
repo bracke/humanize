@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+* `Parsing.Localized.Parse_Calendar_Difference` reads the relative style too
+  ("vor 2 Jahren, 2 Monaten und 4 Tagen", "через 2 года", "am selben Tag") and
+  says which way it points (`Direction`: past, future, same day; unstated for
+  the plain style, which writes a magnitude).
+
 * `Datetimes.Time_Range` and `Date_Time_Range` outside English use CLDR's
   interval formats: "14:00–15:30 Uhr", "2:00 – 3:30 PM"-style in 12-hour
   locales, and one day written once ("9. Okt. 2026, 14:00–15:30 Uhr"); a
