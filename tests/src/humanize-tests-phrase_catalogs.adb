@@ -296,6 +296,10 @@ package body Humanize.Tests.Phrase_Catalogs is
                   begin
                      if Text = ""
                        or else (for some C of Text => C = '{' or else C = '}')
+                       --  U+FFFD: text decoded with the wrong charset on import.
+                       or else (for some I in Text'First .. Text'Last - 2 =>
+                                  Text (I .. I + 2)
+                                  = Character'Val (16#EF#) & Character'Val (16#BF#) & Character'Val (16#BD#))
                      then
                         Failed := Failed + 1;
                         if Failed <= 20 then

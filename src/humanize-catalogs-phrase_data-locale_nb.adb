@@ -568,13 +568,13 @@ begin
    P ("errno.reason.20", "ikke en filkatalog");
    P ("errno.reason.21", "er en filkatalog");
    P ("errno.reason.22", "ugyldig argument");
-   P ("errno.reason.24", "for mange �pne filer");
-   P ("errno.reason.28", "ikke mer plass p� enheten");
-   P ("errno.reason.32", "r�ret ble brutt");
+   P ("errno.reason.24", "for mange åpne filer");
+   P ("errno.reason.28", "ikke mer plass på enheten");
+   P ("errno.reason.32", "røret ble brutt");
    P ("errno.reason.98", "adressen er allerede i bruk");
    P ("errno.reason.110", "oppkoblingen overskred tidsgrensen");
    P ("errno.reason.111", "oppkobling nektes");
-   P ("signal.reason.1", "legg p� (SIGHUP)");
+   P ("signal.reason.1", "legg på (SIGHUP)");
    P ("signal.reason.2", "avbrutt");
    P ("signal.reason.3", "avsluttet");
    P ("signal.reason.4", "ulovlig instruksjon (SIGILL)");
@@ -586,7 +586,7 @@ begin
    P ("signal.reason.10", "brukerdefinert signal 1");
    P ("signal.reason.11", "minnesegmentsfeil");
    P ("signal.reason.12", "brukerdefinert signal 2");
-   P ("signal.reason.13", "r�ret ble brutt");
+   P ("signal.reason.13", "røret ble brutt");
    P ("signal.reason.14", "alarmen gikk");
    P ("signal.reason.15", "terminert");
    P ("signal.reason.17", "barnet avsluttet");

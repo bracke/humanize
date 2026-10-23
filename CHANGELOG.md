@@ -18,6 +18,9 @@
 * errno and signal reasons use glibc's own translations wherever the
   Translation Project's libc catalog has the locale (29 locales; 694 texts
   replaced); Japanese drops glibc's "です" to stay a label.
+  Danish and Norwegian take glibc's Latin-1 catalogs decoded as Latin-1
+  ("adgang nægtet", not "adgang n�gtet"); every phrase is checked for
+  U+FFFD.
 
 * HTTP, errno, signal and SQLSTATE reasons are localized
   (`System_Status.Localized.HTTP_Status_Label`, `Errno_Label`,
