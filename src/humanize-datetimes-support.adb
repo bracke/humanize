@@ -835,19 +835,31 @@ package body Humanize.Datetimes.Support is
       return Humanize.Status.Text_Result
    is separate;
 
+   function Clock_Value (Value : Civil_Date_Time) return String is
+     (Pad2 (Natural (Value.Hour)) & ":" & Pad2 (Natural (Value.Minute)) & ":" & Pad2 (Natural (Value.Second)));
+
+   --  Outside English, Key over the interval Value ("14:00:00/15:30:00") by
+   --  CLDR's interval formats; not Ok in English, whose own wording stands.
+   function CLDR_Interval
+     (Context : Humanize.Contexts.Context;
+      Key     : Humanize.Message_Keys.Message_Id;
+      Value   : String)
+      return Humanize.Status.Text_Result
+   is
+   begin
+      if Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | "" then
+         return (Status => Humanize.Status.Missing_Message, others => <>);
+      end if;
+      return Humanize.I18N_Rendering.Render (Context, Humanize.Selections.Text_Value (Key, Value));
+   end CLDR_Interval;
+
    function Time_Range
      (Context : Humanize.Contexts.Context;
       First   : Civil_Date_Time;
       Last    : Civil_Date_Time;
       Options : Range_Options := Default_Range_Options)
       return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text
-        (Time_Label (First, Options) & [1 => Options.Separator]
-         & Time_Label (Last, Options));
-   end Time_Range;
+   is separate;
 
    function Same_Date (Left, Right : Civil_Date_Time) return Boolean is
      (Left.Year = Right.Year
@@ -861,38 +873,7 @@ package body Humanize.Datetimes.Support is
       Reference : Civil_Date_Time;
       Options   : Range_Options := Default_Range_Options)
       return Humanize.Status.Text_Result
-   is
-      Sep : constant String := [1 => Options.Separator];
-      Day_Label : Humanize.Status.Text_Result;
-   begin
-      if Same_Date (First, Last) then
-         if Options.Relative_When_Same_Day then
-            Day_Label := Natural_Day (Context, First, Reference);
-            if Day_Label.Status /= Humanize.Status.Ok then
-               return Day_Label;
-            end if;
-            return Ok_Text
-              (Result_Text (Day_Label) & " "
-               & Time_Label (First, Options) & Sep & Time_Label (Last, Options));
-         else
-            return Ok_Text
-              (Date_Label (Context, First, Options, True) & " "
-               & Time_Label (First, Options) & Sep & Time_Label (Last, Options));
-         end if;
-      elsif Options.Elide_Same_Year and then First.Year = Last.Year then
-         return Ok_Text
-           (Date_Label (Context, First, Options, True) & " "
-            & Time_Label (First, Options) & Sep
-            & Date_Label (Context, Last, Options, False) & " "
-            & Time_Label (Last, Options));
-      else
-         return Ok_Text
-           (Date_Label (Context, First, Options, True) & " "
-            & Time_Label (First, Options) & Sep
-            & Date_Label (Context, Last, Options, True) & " "
-            & Time_Label (Last, Options));
-      end if;
-   end Date_Time_Range;
+   is separate;
 
    procedure Rule_Weekday_Hours
      (Value      : Civil_Date_Time;

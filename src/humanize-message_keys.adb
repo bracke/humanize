@@ -115,6 +115,10 @@ package body Humanize.Message_Keys is
             return "humanize.datetime.range.day";
          when Datetime_Range_Weekday =>
             return "humanize.datetime.range.weekday";
+         when Datetime_Range_Time =>
+            return "humanize.datetime.range.time";
+         when Datetime_Range_Moment =>
+            return "humanize.datetime.range.moment";
          when Number_Ordinal_Words =>
             return "humanize.number.ordinal_words";
          when Number_Percent_Unit =>

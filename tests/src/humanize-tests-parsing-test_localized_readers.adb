@@ -169,6 +169,21 @@ separate (Humanize.Tests.Parsing)
            (Humanize.Durations.Format_Range (Humanize.Tests.Support.Locale ("de"), 3_600, 7_200))
          = "1" & Humanize.Tests.Support.U (16#2013#) & "2 Stunden",
          "a German range of hours writes the unit once");
+      declare
+         From  : constant DT.Civil_Date_Time := (Year => 2026, Month => 10, Day => 9, Hour => 14, others => <>);
+         To_Time : constant DT.Civil_Date_Time :=
+           (Year => 2026, Month => 10, Day => 9, Hour => 15, Minute => 30, others => <>);
+         German : constant Humanize.Contexts.Context := Humanize.Tests.Support.Locale ("de");
+      begin
+         AUnit.Assertions.Assert
+           (Humanize.Tests.Support.Text (DT.Time_Range (German, From, To_Time))
+            = "14:00" & Humanize.Tests.Support.U (16#2013#) & "15:30 Uhr",
+            "a German time range by CLDR's interval format");
+         AUnit.Assertions.Assert
+           (Humanize.Tests.Support.Text (DT.Date_Time_Range (German, From, To_Time, From))
+            = "9. Okt. 2026, 14:00" & Humanize.Tests.Support.U (16#2013#) & "15:30 Uhr",
+            "a German date-time range writes one day once");
+      end;
       --  Weeks start where the locale's region starts them: the Sunday after
       --  a Saturday is next week in the United States, this week in Germany.
       AUnit.Assertions.Assert

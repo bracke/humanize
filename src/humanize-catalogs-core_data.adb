@@ -113,6 +113,10 @@ package body Humanize.Catalogs.Core_Data is
      --  interval formats over an ISO interval "first/last".
      & "und.humanize.datetime.range.day = {value, date, ::yMMMd}" & LF
      & "und.humanize.datetime.range.weekday = {value, date, ::yMMMEd}" & LF
+     --  Time_Range and Date_Time_Range outside English: times "a/b", and
+     --  moments "a/b" in UTC as given (the day once when it is shared).
+     & "und.humanize.datetime.range.time = {value, time, ::jm}" & LF
+     & "und.humanize.datetime.range.moment = {value, datetime, ::yMMMdjm, UTC}" & LF
      --  Ordinal words, a percentage in words and a plain number, by CLDR.
      & "und.humanize.number.ordinal_words = {value, number, ::ordinal-words}" & LF
      & "und.humanize.number.percent_unit = {value, unit, percent/unit-width-full-name}" & LF

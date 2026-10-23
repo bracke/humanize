@@ -28,7 +28,7 @@ usecase = "Text display, editing, names, paths, prose, metadata, and terminal re
 
 [[body]]
 path = "src/humanize-datetimes-support.adb"
-target_lines = 2119
+target_lines = 2100
 max_lines = 2300
 min_headroom_lines = 120
 max_bytes = 83000

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+* `Datetimes.Time_Range` and `Date_Time_Range` outside English use CLDR's
+  interval formats: "14:00–15:30 Uhr", "2:00 – 3:30 PM"-style in 12-hour
+  locales, and one day written once ("9. Okt. 2026, 14:00–15:30 Uhr"); a
+  relative day keeps its day word. They wrote "14:00-15:30" in every locale.
+
 * `Durations.Format_Range` outside English writes two counts of one unit as
   CLDR's range, the unit once ("1–2 Stunden", "2–5 часов", "1～2 時間"), where
   it wrote "1 Stunde-2 Stunden"; `Parsing.Localized.Parse_Duration_Range`

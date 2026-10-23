@@ -68,6 +68,8 @@ package Humanize.Message_Keys is
       List_Joined_Or,
       Datetime_Range_Day,
       Datetime_Range_Weekday,
+      Datetime_Range_Time,
+      Datetime_Range_Moment,
       Number_Ordinal_Words,
       Number_Percent_Unit,
       Number_Plain,

@@ -10,8 +10,8 @@ source = "checked-in catalog fragments"
 coverage = "core native catalog keys"
 currentness = "reviewed with release verification"
 marker = "Provenance: Humanize-owned catalog data"
-line_count = 877
-sha256 = "4ca83bac02b16695a354e2410f4fff575dfe0a3adbb6c2bbb3398a844ea6456f"
+line_count = 881
+sha256 = "52d60a834ca4a2c96f4fb7cd677e84e276be9161ab5b045f597de19bd98efea3"
 
 [[artifact]]
 path = "src/humanize-catalogs-unit_data.adb"
