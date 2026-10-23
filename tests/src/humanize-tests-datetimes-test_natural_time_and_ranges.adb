@@ -426,10 +426,10 @@ separate (Humanize.Tests.Datetimes)
          "medium calendar date label");
       AUnit.Assertions.Assert
         (Date_German_Regional.Status = Ok
-         and then Support.Text (Date_German_Regional) = "Marz 21, 2026"
+         and then Support.Text (Date_German_Regional) = "21.03.2026"
          and then Date_French_Regional.Status = Ok
-         and then Support.Text (Date_French_Regional) = "mars 21, 2026",
-         "calendar date labels use language-code regional fallback");
+         and then Support.Text (Date_French_Regional) = "21 mars 2026",
+         "calendar date labels are CLDR's medium dates outside English (as ICU)");
       AUnit.Assertions.Assert
         (Date_Long.Status = Ok
          and then Support.Text (Date_Long) = "Saturday, March 21, 2026",

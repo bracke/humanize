@@ -1654,6 +1654,32 @@ package body Humanize.Datetimes.Support is
          return (Status => Humanize.Status.Invalid_Value, others => <>);
       end if;
 
+      --  Outside English, the presets CLDR has a form for are written as the
+      --  locale writes dates ("09.10.26", "9. Oktober 2026").
+      if not CLDR_Labels.Is_English (Context)
+        and then Options.Style in Calendar_Date_Short | Calendar_Date_Medium | Calendar_Date_Long
+                                | Calendar_Date_Weekday | Calendar_Date_Month_Year | Calendar_Date_Quarter
+      then
+         declare
+            Name : constant String :=
+              (case Options.Style is
+                  when Calendar_Date_Short      => "short",
+                  when Calendar_Date_Medium     => "medium",
+                  when Calendar_Date_Long       => "long",
+                  when Calendar_Date_Weekday    => "weekday",
+                  when Calendar_Date_Month_Year => "month_year",
+                  when others                   => "quarter");
+            Localized : constant Humanize.Status.Text_Result :=
+              Humanize.I18N_Rendering.Render
+                (Context,
+                 Humanize.Selections.With_Arg
+                   (Humanize.Selections.Phrase ("calendar_date." & Name), "value", ISO_Date (Value)));
+         begin
+            if Localized.Status = Humanize.Status.Ok then
+               return Localized;
+            end if;
+         end;
+      end if;
       return Ok_Text (Calendar_Date_Preset_Label (Context, Value, Options));
    exception
       when Constraint_Error | Ada.Calendar.Time_Error => --  defensive recovery

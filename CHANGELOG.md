@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+* `Calendar_Date_Label`'s short, medium, long, weekday, month-year and
+  quarter presets are CLDR's dates outside English ("09.10.26", "Freitag,
+  9. Oktober 2026", "2026年10月"), where they were US order with mixed
+  English ("10/09/2026", "Friday, Oktober 9, 2026"). English keeps its own.
+
 * **`Humanize.Cross_Domain.Localized`**: validation problems, constraints and
   choices, network diagnostics, progress, collection statistics and the most
   frequent value in every shipped locale (40 phrase keys, translated), with

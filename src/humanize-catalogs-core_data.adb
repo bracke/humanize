@@ -486,6 +486,13 @@ package body Humanize.Catalogs.Core_Data is
      & "und.humanize.datetime.clock.time = {value, time, ::jm}" & LF
      & "und.humanize.datetime.clock.weekday = {value, date, ::EEEE}" & LF
      & "und.humanize.datetime.clock.date = {value, date, medium}" & LF
+     --  Calendar_Date_Label's presets outside English, as CLDR writes dates.
+     & "und.humanize.phrase.calendar_date.short = {value, date, short}" & LF
+     & "und.humanize.phrase.calendar_date.medium = {value, date, medium}" & LF
+     & "und.humanize.phrase.calendar_date.long = {value, date, full}" & LF
+     & "und.humanize.phrase.calendar_date.weekday = {value, date, ::yMMMEd}" & LF
+     & "und.humanize.phrase.calendar_date.month_year = {value, date, ::yMMM}" & LF
+     & "und.humanize.phrase.calendar_date.quarter = {value, date, ::yQQQ}" & LF
      & "und.humanize.datetime.weekday.previous = "
      & "{value, select,"
      & " mon {{minus_one, relative, mon}}"

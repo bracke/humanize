@@ -774,6 +774,23 @@ package body Humanize.Tests.Phrase_Catalogs is
       end loop;
       AUnit.Assertions.Assert
         (L.Parse_Date (Ctx ("de"), "gestern", Today).Value.Day = 9, "German yesterday");
+      --  Outside English the presets are CLDR's dates (as ICU writes them).
+      declare
+         function U (Text : Wide_Wide_String) return String is
+           (Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Encode (Text));
+         function Label (Locale : String; Style : DT.Calendar_Date_Style) return String is
+           (Image (DT.Calendar_Date_Label
+                     (Ctx (Locale), Today, DT.Calendar_Date_Options'(Style => Style, Fiscal_Year_Start_Month => 1))));
+      begin
+         AUnit.Assertions.Assert
+           (Label ("de", DT.Calendar_Date_Long) = U ("Dienstag, 10. März 2026"), Label ("de", DT.Calendar_Date_Long));
+         AUnit.Assertions.Assert
+           (Label ("de", DT.Calendar_Date_Short) = "10.03.26", Label ("de", DT.Calendar_Date_Short));
+         AUnit.Assertions.Assert
+           (Label ("ja", DT.Calendar_Date_Month_Year) = U ("2026年3月"), Label ("ja", DT.Calendar_Date_Month_Year));
+         AUnit.Assertions.Assert
+           (Label ("en", DT.Calendar_Date_Short) = "03/10/2026", "English keeps its own presets");
+      end;
    end Test_Localized_Measures_And_Dates;
 
    overriding function Name (T : Test_Case) return AUnit.Message_String is
