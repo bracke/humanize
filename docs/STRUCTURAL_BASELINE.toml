@@ -528,7 +528,7 @@ usecase = "Notification and delivery label facade body; new notification familie
 
 [[body]]
 path = "src/humanize-parsing-localized.adb"
-target_lines = 794
+target_lines = 783
 max_lines = 966
 min_headroom_lines = 100
 max_bytes = 45000
