@@ -15,7 +15,8 @@ private package Humanize.Selections is
       Count_Argument,
       Value_Argument,
       Decimal_Argument,
-      Value_Suffix_Argument);
+      Value_Suffix_Argument,
+      Count_Value_Suffix_Argument);
 
    type Message_Selection is record
       Key       : Humanize.Message_Keys.Message_Id := Humanize.Message_Keys.No_Message;
@@ -52,6 +53,15 @@ private package Humanize.Selections is
    --  Selection for a plural key whose quantity is a decimal. Decimal_Text is a
    --  locale-neutral ASCII decimal (e.g. "1.5"): it is the plural selector
    --  (passed as "count") and the raw numeric "value".
+   --  A count with two texts, as a plural message picking between a
+   --  singular and a plural noun needs: "count", "value" and "suffix".
+   function Count_Value_Suffix
+     (Key    : Humanize.Message_Keys.Message_Id;
+      Count  : Count_Value;
+      Value  : String;
+      Suffix : String)
+      return Message_Selection;
+
    function Decimal
      (Key          : Humanize.Message_Keys.Message_Id;
       Decimal_Text : String)

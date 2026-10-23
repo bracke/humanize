@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+* **Measurements, spelled-out numbers, counts and compact durations outside
+  English come from CLDR.** These formatters ignored their context and wrote
+  English. Outside English they now render through locale-neutral entries;
+  English keeps its own output.
+  - Units use CLDR's unit and per pattern ("25 Мбит/c", "٣٫٣ فولت",
+    "12,5 N⋅m", 34 units). SI symbols CLDR has no unit for (kV, kΩ, nF, dB)
+    follow the locale's number.
+  - `Spellout.Cardinal` / `Signed_Cardinal` use CLDR's rules ("минус сорок
+    два").
+  - `Lists.Count` / `Counted_Noun` use the locale's digits, and its plural
+    category picks the caller's noun (Russian 21 takes the singular).
+  - `Format_Compact` uses CLDR's narrow units and narrow unit list ("1 ч 30
+    мин", "1h30m", "١ س و٣٠ د").
+  - Phrase formatters whose wording CLDR has no form for stay English.
+* The staged release check reads i18n's data from the pinned checkout, as a
+  consumer ships it; outside the workspace the CLDR-backed entries found no
+  data and every formatter came back empty.
+
 * **Decimal byte sizes use CLDR's unit names** -- "4,5 Mo" in French,
   "2 кБ" in Russian, "٤٫٥ م.ب" in Arabic, "1바이트" in Korean -- through
   locale-neutral entries, so every CLDR locale has them (an unshipped one

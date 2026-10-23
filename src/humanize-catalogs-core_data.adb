@@ -49,6 +49,60 @@ package body Humanize.Catalogs.Core_Data is
      & "und.humanize.bytes.mb = {value, unit, megabyte/unit-width-short}" & LF
      & "und.humanize.bytes.gb = {value, unit, gigabyte/unit-width-short}" & LF
      & "und.humanize.bytes.tb = {value, unit, terabyte/unit-width-short}" & LF
+     --  A measurement in CLDR's unit for it, selected by the formatter.
+     & "und.humanize.unit.measure = {suffix, select,"
+     & " bit {{value, unit, bit/unit-width-short}}"
+     & " kilobit {{value, unit, kilobit/unit-width-short}}"
+     & " megabit {{value, unit, megabit/unit-width-short}}"
+     & " gigabit {{value, unit, gigabit/unit-width-short}}"
+     & " bit_per_second {{value, unit, bit/unit-width-short/second}}"
+     & " kilobit_per_second {{value, unit, kilobit/unit-width-short/second}}"
+     & " megabit_per_second {{value, unit, megabit/unit-width-short/second}}"
+     & " gigabit_per_second {{value, unit, gigabit/unit-width-short/second}}"
+     & " byte_per_second {{value, unit, byte/unit-width-short/second}}"
+     & " kilobyte_per_second {{value, unit, kilobyte/unit-width-short/second}}"
+     & " megabyte_per_second {{value, unit, megabyte/unit-width-short/second}}"
+     & " gigabyte_per_second {{value, unit, gigabyte/unit-width-short/second}}"
+     & " kilogram_per_cubic_meter {{value, unit, kilogram/unit-width-short/cubic-meter}}"
+     & " meter_per_square_second {{value, unit, meter-per-square-second/unit-width-short}}"
+     & " newton_meter {{value, unit, newton-meter/unit-width-short}}"
+     & " liter_per_100_kilometer {{value, unit, liter-per-100-kilometer/unit-width-short}}"
+     & " milliliter_per_second {{value, unit, milliliter/unit-width-short/second}}"
+     & " liter_per_second {{value, unit, liter/unit-width-short/second}}"
+     & " milliampere {{value, unit, milliampere/unit-width-short}}"
+     & " ampere {{value, unit, ampere/unit-width-short}}"
+     & " volt {{value, unit, volt/unit-width-short}}"
+     & " ohm {{value, unit, ohm/unit-width-short}}"
+     & " farad {{value, unit, farad/unit-width-short}}"
+     & " henry {{value, unit, henry/unit-width-short}}"
+     & " mole_per_liter {{value, unit, mole/unit-width-short/liter}}"
+     & " mile_per_gallon {{value, unit, mile-per-gallon/unit-width-short}}"
+     & " mile_per_hour {{value, unit, mile-per-hour/unit-width-short}}"
+     & " second {{value, unit, second/unit-width-short}}"
+     & " millisecond {{value, unit, millisecond/unit-width-short}}"
+     & " microsecond {{value, unit, microsecond/unit-width-short}}"
+     & " point {{value, unit, point/unit-width-short}}"
+     & " pixel_per_inch {{value, unit, pixel-per-inch/unit-width-short}}"
+     & " dot_per_inch {{value, unit, dot-per-inch/unit-width-short}}"
+     & " candela_per_square_meter {{value, unit, candela/unit-width-short/square-meter}}"
+     & " other {}}" & LF
+     --  An SI symbol CLDR has no unit for, after the localized number.
+     & "und.humanize.unit.symbol = {value, number} {suffix}" & LF
+     --  A number in words, by CLDR's spell-out rules.
+     & "und.humanize.number.spellout = {value, number, ::spellout}" & LF
+     --  A count and the caller's noun, in the locale's plural category.
+     & "und.humanize.lists.count = {count, plural, one {# {value}} other {# {suffix}}}" & LF
+     --  A compact duration: CLDR's narrow units, joined by its narrow unit list.
+     & "und.humanize.duration.narrow = {suffix, select,"
+     & " second {{value, unit, second/unit-width-narrow}}"
+     & " minute {{value, unit, minute/unit-width-narrow}}"
+     & " hour {{value, unit, hour/unit-width-narrow}}"
+     & " day {{value, unit, day/unit-width-narrow}}"
+     & " week {{value, unit, week/unit-width-narrow}}"
+     & " month {{value, unit, month/unit-width-narrow}}"
+     & " year {{value, unit, year/unit-width-narrow}}"
+     & " other {}}" & LF
+     & "und.humanize.list.unit_narrow = {value, list, unit-narrow}" & LF
      --  The clock label: the time in the locale's own hour cycle, a weekday,
      --  a date, and CLDR's "last Monday" / "next Monday".
      & "und.humanize.datetime.clock.time = {value, time, ::jm}" & LF

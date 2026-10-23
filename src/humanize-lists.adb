@@ -371,6 +371,19 @@ package body Humanize.Lists is
       end;
    end Format_Limited;
 
+   --  Quantity in the locale's digits with the caller's noun for its CLDR
+   --  plural category, outside English; not Ok in English, whose idioms --
+   --  "no", "a", "one", "1.2k" -- have no CLDR form.
+   function CLDR_Count
+     (Context  : Humanize.Contexts.Context;
+      Quantity : Natural;
+      Singular : String;
+      Plural   : String)
+      return Humanize.Status.Text_Result is separate;
+
+   function Either (Preferred, Fallback : Humanize.Status.Text_Result) return Humanize.Status.Text_Result is
+     (if Preferred.Status = Humanize.Status.Ok then Preferred else Fallback);
+
    function Count
      (Context  : Humanize.Contexts.Context;
       Quantity : Natural;
@@ -378,14 +391,11 @@ package body Humanize.Lists is
       Plural   : String := "")
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Noun : constant String := Noun_For (Quantity, Singular, Plural);
    begin
-      if Quantity = 0 then
-         return Ok_Text ("no " & Noun);
-      else
-         return Ok_Text (Natural_Text (Quantity) & " " & Noun);
-      end if;
+      return Either
+        (CLDR_Count (Context, Quantity, Singular, Plural),
+         (if Quantity = 0 then Ok_Text ("no " & Noun) else Ok_Text (Natural_Text (Quantity) & " " & Noun)));
    end Count;
 
    function Counted_Noun
@@ -396,7 +406,6 @@ package body Humanize.Lists is
       Options  : Counted_Noun_Options := Default_Counted_Noun_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Noun : constant String := Noun_For_Advanced (Quantity, Singular, Plural);
       Prefix : constant String := Count_Text (Quantity, Singular, Options);
    begin
@@ -404,11 +413,12 @@ package body Humanize.Lists is
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
       elsif Options.Compact_At = 0 then
          return (Status => Humanize.Status.Invalid_Options, others => <>);
-      elsif Options.Include_Noun then
-         return Ok_Text (Prefix & " " & Noun);
-      else
-         return Ok_Text (Prefix);
       end if;
+      return Either
+        (CLDR_Count
+           (Context, Quantity, (if Options.Include_Noun then Singular else ""),
+            (if Options.Include_Noun then Plural else "")),
+         (if Options.Include_Noun then Ok_Text (Prefix & " " & Noun) else Ok_Text (Prefix)));
    end Counted_Noun;
 
    function Validation_Count

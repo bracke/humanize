@@ -662,4 +662,19 @@ separate (Humanize.Tests.Durations)
         (Code = Buffer_Overflow
          and then Buffer (1 .. Written) = "second business day of each mont",
          "bounded ordinal business day schedule phrase");
+      --  Outside English: CLDR's narrow units, joined by its narrow unit list.
+      AUnit.Assertions.Assert
+        (Support.Text (Format_Compact (Support.Locale ("ru"), 5_430))
+         = "1 " & Support.U (16#447#) & " 30 " & Support.U (16#43C#) & Support.U (16#438#)
+           & Support.U (16#43D#),
+         "Russian compact duration");
+      AUnit.Assertions.Assert
+        (Support.Text (Format_Compact (Support.Locale ("ja"), 5_430))
+         = "1h30m",
+         "Japanese compact duration joins with nothing");
+      AUnit.Assertions.Assert
+        (Support.Text (Format_Compact (Support.Locale ("ar"), 5_430))
+         = Support.U (16#661#) & " " & Support.U (16#633#) & " " & Support.U (16#648#)
+           & Support.U (16#663#) & Support.U (16#660#) & " " & Support.U (16#62F#),
+         "Arabic compact duration");
    end Test_Compact_And_Clock;

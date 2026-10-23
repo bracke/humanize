@@ -628,6 +628,13 @@ package body Check_Humanize_Release is
            (Stage_Root & Config.Humanize_Development_Manifest, Quiet => True);
          Project_Tools.Release_Checks.Require_Absolute_Directory
            (I18N_Root, Quiet => True);
+         --  The CLDR-backed catalog entries need i18n's data files, which a
+         --  consumer ships beside its program; the staged tree, outside the
+         --  workspace, finds no sibling copy, so its runs read the pinned
+         --  i18n checkout's.
+         if not Ada.Environment_Variables.Exists ("I18N_DATA_DIR") then
+            Ada.Environment_Variables.Set ("I18N_DATA_DIR", I18N_Root & "/share/i18n");
+         end if;
          Project_Tools.Alire_Manifests.Write_Build_Manifest_Overlay
            (Template => Stage_Root & Config.Humanize_Development_Manifest,
             Target   => Stage_Root & Config.Humanize_Build_Overlay,

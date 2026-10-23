@@ -82,4 +82,23 @@ package body Humanize.Tests.Support is
       return Humanize.Bounded_Text.Result_Text (Item);
    end Text;
 
+   function U (Code : Natural) return String is
+   begin
+      if Code <= 16#7F# then
+         return String'(1 => Character'Val (Code));
+      elsif Code <= 16#7FF# then
+         return Character'Val (16#C0# + Code / 64)
+           & Character'Val (16#80# + Code mod 64);
+      elsif Code <= 16#FFFF# then
+         return Character'Val (16#E0# + Code / 4_096)
+           & Character'Val (16#80# + (Code / 64) mod 64)
+           & Character'Val (16#80# + Code mod 64);
+      else
+         return Character'Val (16#F0# + Code / 262_144)
+           & Character'Val (16#80# + (Code / 4_096) mod 64)
+           & Character'Val (16#80# + (Code / 64) mod 64)
+           & Character'Val (16#80# + Code mod 64);
+      end if;
+   end U;
+
 end Humanize.Tests.Support;

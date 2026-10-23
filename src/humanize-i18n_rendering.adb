@@ -77,6 +77,11 @@ package body Humanize.I18N_Rendering is
          when Humanize.Selections.Value_Suffix_Argument =>
             Messages.Arguments.Set (Args, "value", To_String (Selection.Value));
             Messages.Arguments.Set (Args, "suffix", To_String (Selection.Suffix));
+         when Humanize.Selections.Count_Value_Suffix_Argument =>
+            Messages.Arguments.Set_Integer
+              (Args, "count", Long_Long_Integer (Selection.Count));
+            Messages.Arguments.Set (Args, "value", To_String (Selection.Value));
+            Messages.Arguments.Set (Args, "suffix", To_String (Selection.Suffix));
          when Humanize.Selections.Decimal_Argument =>
             --  ASCII decimal selects the plural category ("count") and is also
             --  passed to catalog-side number formatting as "value".

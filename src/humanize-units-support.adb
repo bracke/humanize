@@ -1,6 +1,9 @@
+with Ada.Strings.Unbounded;
 with Humanize.Decimal_Images;
 with Humanize.I18N_Rendering;
 with Humanize.Locales;
+with Humanize.Message_Keys;
+with Humanize.Selections;
 with Humanize.Unit_Classification;
 with Humanize.Bounded_Text;
 
@@ -209,6 +212,34 @@ package body Humanize.Units.Support is
       return Abbreviated_Result (Decimal_Text (Value, Options) & " " & Unit);
    end Compound;
 
+   --  U+03A9 and U+00B5 in UTF-8, for the symbols outside English.
+   Omega : constant String := Character'Val (16#CE#) & Character'Val (16#A9#);
+   Micro : constant String := Character'Val (16#C2#) & Character'Val (16#B5#);
+
+   function Is_English (Context : Humanize.Contexts.Context) return Boolean is
+     (Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | "");
+
+   --  Value in a unit CLDR names -- Unit selects it in the measure entry --
+   --  outside English ("2,5 Mbit/s", Arabic "فولت"); English, and a locale
+   --  the entry cannot render, keep Symbol.
+   function Measure
+     (Context : Humanize.Contexts.Context;
+      Value   : Long_Float;
+      Symbol  : String;
+      Unit    : String;
+      Options : Humanize.Numbers.Number_Options)
+      return Humanize.Status.Text_Result is separate;
+
+   --  Value and an SI symbol CLDR has no unit for (kV, nF, dB): outside
+   --  English the number is the locale's and the symbol Local_Symbol.
+   function SI_Symbol
+     (Context      : Humanize.Contexts.Context;
+      Value        : Long_Float;
+      Symbol       : String;
+      Local_Symbol : String;
+      Options      : Humanize.Numbers.Number_Options)
+      return Humanize.Status.Text_Result is separate;
+
    function Format
      (Context : Humanize.Contexts.Context;
       Value   : Natural;
@@ -411,7 +442,7 @@ package body Humanize.Units.Support is
       if System = Metric_System or else System = Cooking_US_System then
          return Format_Speed (Context, Meters_Per_Second, Options.Number_Style);
       else
-         return Compound (Meters_Per_Second * 2.2369362920544, "mph",
+         return Measure (Context, Meters_Per_Second * 2.2369362920544, "mph", "mile_per_hour",
                           Options.Number_Style);
       end if;
    end Format_Speed;
@@ -544,15 +575,14 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Abs_Value : constant Long_Float := abs Bytes_Per_Second;
    begin
       if Abs_Value >= 1_000_000.0 then
-         return Compound (Bytes_Per_Second / 1_000_000.0, "MB/s", Options);
+         return Measure (Context, Bytes_Per_Second / 1_000_000.0, "MB/s", "megabyte_per_second", Options);
       elsif Abs_Value >= 1_000.0 then
-         return Compound (Bytes_Per_Second / 1_000.0, "kB/s", Options);
+         return Measure (Context, Bytes_Per_Second / 1_000.0, "kB/s", "kilobyte_per_second", Options);
       else
-         return Compound (Bytes_Per_Second, "B/s", Options);
+         return Measure (Context, Bytes_Per_Second, "B/s", "byte_per_second", Options);
       end if;
    end Format_Data_Rate;
 
@@ -563,17 +593,16 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Abs_Value : constant Long_Float := abs Bits;
    begin
       if Abs_Value >= 1_000_000_000.0 then
-         return Compound (Bits / 1_000_000_000.0, "Gbit", Options);
+         return Measure (Context, Bits / 1_000_000_000.0, "Gbit", "gigabit", Options);
       elsif Abs_Value >= 1_000_000.0 then
-         return Compound (Bits / 1_000_000.0, "Mbit", Options);
+         return Measure (Context, Bits / 1_000_000.0, "Mbit", "megabit", Options);
       elsif Abs_Value >= 1_000.0 then
-         return Compound (Bits / 1_000.0, "kbit", Options);
+         return Measure (Context, Bits / 1_000.0, "kbit", "kilobit", Options);
       else
-         return Compound (Bits, "bit", Options);
+         return Measure (Context, Bits, "bit", "bit", Options);
       end if;
    end Format_Bits;
 
@@ -584,17 +613,16 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Abs_Value : constant Long_Float := abs Bits_Per_Second;
    begin
       if Abs_Value >= 1_000_000_000.0 then
-         return Compound (Bits_Per_Second / 1_000_000_000.0, "Gbit/s", Options);
+         return Measure (Context, Bits_Per_Second / 1_000_000_000.0, "Gbit/s", "gigabit_per_second", Options);
       elsif Abs_Value >= 1_000_000.0 then
-         return Compound (Bits_Per_Second / 1_000_000.0, "Mbit/s", Options);
+         return Measure (Context, Bits_Per_Second / 1_000_000.0, "Mbit/s", "megabit_per_second", Options);
       elsif Abs_Value >= 1_000.0 then
-         return Compound (Bits_Per_Second / 1_000.0, "kbit/s", Options);
+         return Measure (Context, Bits_Per_Second / 1_000.0, "kbit/s", "kilobit_per_second", Options);
       else
-         return Compound (Bits_Per_Second, "bit/s", Options);
+         return Measure (Context, Bits_Per_Second, "bit/s", "bit_per_second", Options);
       end if;
    end Format_Bit_Rate;
 
@@ -605,17 +633,16 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Abs_Value : constant Long_Float := abs Bytes_Per_Second;
    begin
       if Abs_Value >= 1_073_741_824.0 then
-         return Compound (Bytes_Per_Second / 1_073_741_824.0, "GiB/s", Options);
+         return SI_Symbol (Context, Bytes_Per_Second / 1_073_741_824.0, "GiB/s", "GiB/s", Options);
       elsif Abs_Value >= 1_048_576.0 then
-         return Compound (Bytes_Per_Second / 1_048_576.0, "MiB/s", Options);
+         return SI_Symbol (Context, Bytes_Per_Second / 1_048_576.0, "MiB/s", "MiB/s", Options);
       elsif Abs_Value >= 1_024.0 then
-         return Compound (Bytes_Per_Second / 1_024.0, "KiB/s", Options);
+         return SI_Symbol (Context, Bytes_Per_Second / 1_024.0, "KiB/s", "KiB/s", Options);
       else
-         return Compound (Bytes_Per_Second, "B/s", Options);
+         return Measure (Context, Bytes_Per_Second, "B/s", "byte_per_second", Options);
       end if;
    end Format_Binary_Data_Rate;
 
@@ -626,9 +653,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Kilograms_Per_Cubic_Meter, "kg/m3", Options);
+      return Measure (Context, Kilograms_Per_Cubic_Meter, "kg/m3", "kilogram_per_cubic_meter", Options);
    end Format_Density;
 
    function Format_Acceleration
@@ -638,9 +664,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Meters_Per_Second_Squared, "m/s2", Options);
+      return Measure (Context, Meters_Per_Second_Squared, "m/s2", "meter_per_square_second", Options);
    end Format_Acceleration;
 
    function Format_Torque
@@ -650,9 +675,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Newton_Meters, "N m", Options);
+      return Measure (Context, Newton_Meters, "N m", "newton_meter", Options);
    end Format_Torque;
 
    function Format_Fuel_Economy
@@ -662,9 +686,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Liters_Per_100_Km, "L/100 km", Options);
+      return Measure (Context, Liters_Per_100_Km, "L/100 km", "liter_per_100_kilometer", Options);
    end Format_Fuel_Economy;
 
    function Format_Fuel_Economy
@@ -692,12 +715,11 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
       if abs Liters_Per_Second < 1.0 then
-         return Compound (Liters_Per_Second * 1000.0, "mL/s", Options);
+         return Measure (Context, Liters_Per_Second * 1000.0, "mL/s", "milliliter_per_second", Options);
       else
-         return Compound (Liters_Per_Second, "L/s", Options);
+         return Measure (Context, Liters_Per_Second, "L/s", "liter_per_second", Options);
       end if;
    end Format_Flow_Rate;
 
@@ -708,12 +730,11 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
       if abs Amperes < 1.0 then
-         return Compound (Amperes * 1000.0, "mA", Options);
+         return Measure (Context, Amperes * 1000.0, "mA", "milliampere", Options);
       else
-         return Compound (Amperes, "A", Options);
+         return Measure (Context, Amperes, "A", "ampere", Options);
       end if;
    end Format_Electric_Current;
 
@@ -724,12 +745,11 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
       if abs Volts >= 1000.0 then
-         return Compound (Volts / 1000.0, "kV", Options);
+         return SI_Symbol (Context, Volts / 1000.0, "kV", "kV", Options);
       else
-         return Compound (Volts, "V", Options);
+         return Measure (Context, Volts, "V", "volt", Options);
       end if;
    end Format_Voltage;
 
@@ -752,9 +772,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Pixels_Per_Inch, "ppi", Options);
+      return Measure (Context, Pixels_Per_Inch, "ppi", "pixel_per_inch", Options);
    end Format_Pixel_Density;
 
    function Format_CSS_Length
@@ -780,14 +799,13 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
       if abs Ohms >= 1_000_000.0 then
-         return Compound (Ohms / 1_000_000.0, "Mohm", Options);
+         return SI_Symbol (Context, Ohms / 1_000_000.0, "Mohm", "M" & Omega, Options);
       elsif abs Ohms >= 1_000.0 then
-         return Compound (Ohms / 1_000.0, "kohm", Options);
+         return SI_Symbol (Context, Ohms / 1_000.0, "kohm", "k" & Omega, Options);
       else
-         return Compound (Ohms, "ohm", Options);
+         return Measure (Context, Ohms, "ohm", "ohm", Options);
       end if;
    end Format_Electric_Resistance;
 
@@ -831,14 +849,13 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
       if abs Farads < 0.000_001 then
-         return Compound (Farads * 1_000_000_000.0, "nF", Options);
+         return SI_Symbol (Context, Farads * 1_000_000_000.0, "nF", "nF", Options);
       elsif abs Farads < 1.0 then
-         return Compound (Farads * 1_000_000.0, "uF", Options);
+         return SI_Symbol (Context, Farads * 1_000_000.0, "uF", Micro & "F", Options);
       else
-         return Compound (Farads, "F", Options);
+         return Measure (Context, Farads, "F", "farad", Options);
       end if;
    end Format_Electric_Capacitance;
 
@@ -849,12 +866,11 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
       if abs Henries < 1.0 then
-         return Compound (Henries * 1_000.0, "mH", Options);
+         return SI_Symbol (Context, Henries * 1_000.0, "mH", "mH", Options);
       else
-         return Compound (Henries, "H", Options);
+         return Measure (Context, Henries, "H", "henry", Options);
       end if;
    end Format_Electric_Inductance;
 
@@ -865,9 +881,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Moles_Per_Liter, "mol/L", Options);
+      return Measure (Context, Moles_Per_Liter, "mol/L", "mole_per_liter", Options);
    end Format_Concentration;
 
    function Format_Fuel_Efficiency_MPG
@@ -877,9 +892,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Miles_Per_Gallon, "mpg", Options);
+      return Measure (Context, Miles_Per_Gallon, "mpg", "mile_per_gallon", Options);
    end Format_Fuel_Efficiency_MPG;
 
    function Format_Cooking_Temperature
@@ -918,16 +932,15 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
       if abs Bytes_Per_Second >= 1_000_000_000.0 then
-         return Compound (Bytes_Per_Second / 1_000_000_000.0, "GB/s", Options);
+         return Measure (Context, Bytes_Per_Second / 1_000_000_000.0, "GB/s", "gigabyte_per_second", Options);
       elsif abs Bytes_Per_Second >= 1_000_000.0 then
-         return Compound (Bytes_Per_Second / 1_000_000.0, "MB/s", Options);
+         return Measure (Context, Bytes_Per_Second / 1_000_000.0, "MB/s", "megabyte_per_second", Options);
       elsif abs Bytes_Per_Second >= 1_000.0 then
-         return Compound (Bytes_Per_Second / 1_000.0, "kB/s", Options);
+         return Measure (Context, Bytes_Per_Second / 1_000.0, "kB/s", "kilobyte_per_second", Options);
       else
-         return Compound (Bytes_Per_Second, "B/s", Options);
+         return Measure (Context, Bytes_Per_Second, "B/s", "byte_per_second", Options);
       end if;
    end Format_Memory_Bandwidth;
 
@@ -938,14 +951,13 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
       if abs Microseconds >= 1_000_000.0 then
-         return Compound (Microseconds / 1_000_000.0, "s", Options);
+         return Measure (Context, Microseconds / 1_000_000.0, "s", "second", Options);
       elsif abs Microseconds >= 1_000.0 then
-         return Compound (Microseconds / 1_000.0, "ms", Options);
+         return Measure (Context, Microseconds / 1_000.0, "ms", "millisecond", Options);
       else
-         return Compound (Microseconds, "us", Options);
+         return Measure (Context, Microseconds, "us", "microsecond", Options);
       end if;
    end Format_Latency;
 
@@ -1012,9 +1024,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Points, "pt", Options);
+      return Measure (Context, Points, "pt", "point", Options);
    end Format_Typography_Size;
 
    function Format_IOPS
@@ -1042,9 +1053,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Decibels, "dB", Options);
+      return SI_Symbol (Context, Decibels, "dB", "dB", Options);
    end Format_Audio_Level;
 
    function Format_Signal_Strength
@@ -1054,9 +1064,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (DBm, "dBm", Options);
+      return SI_Symbol (Context, DBm, "dBm", "dBm", Options);
    end Format_Signal_Strength;
 
    function Format_Storage_Endurance
@@ -1090,9 +1099,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Nits, "nits", Options);
+      return Measure (Context, Nits, "nits", "candela_per_square_meter", Options);
    end Format_Luminance;
 
    function Format_Print_Resolution
@@ -1102,9 +1110,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (DPI, "dpi", Options);
+      return Measure (Context, DPI, "dpi", "dot_per_inch", Options);
    end Format_Print_Resolution;
 
    function Format_Geographic_Distance

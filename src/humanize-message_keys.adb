@@ -95,6 +95,19 @@ package body Humanize.Message_Keys is
          when Bytes_TiB =>
             return "humanize.bytes.tib";
 
+         when Unit_Measure =>
+            return "humanize.unit.measure";
+         when Unit_Symbol =>
+            return "humanize.unit.symbol";
+         when Number_Spellout =>
+            return "humanize.number.spellout";
+         when Lists_Count =>
+            return "humanize.lists.count";
+         when Duration_Narrow =>
+            return "humanize.duration.narrow";
+         when List_Unit_Narrow =>
+            return "humanize.list.unit_narrow";
+
          when Number_Ordinal =>
             return "humanize.number.ordinal";
          when Number_Ordinal_Feminine =>

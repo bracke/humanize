@@ -310,4 +310,18 @@ separate (Humanize.Tests.Numbers.Test_Cardinal_Fractional)
         (French_Billions.Status = Ok
          and then Support.Text (French_Billions) = "deux milliards un",
          "locale cardinal expands through billions");
+      --  Outside English: CLDR's spell-out rules, as ICU renders them.
+      AUnit.Assertions.Assert
+        (Support.Text (Cardinal (Support.De, 1234))
+         = "ein" & Support.U (16#AD#) & "tausend" & Support.U (16#AD#) & "zwei" & Support.U (16#AD#)
+           & "hundert" & Support.U (16#AD#) & "vier" & Support.U (16#AD#) & "und"
+           & Support.U (16#AD#) & "drei" & Support.U (16#DF#) & "ig",
+         "German cardinal with CLDR's soft hyphens");
+      AUnit.Assertions.Assert
+        (Support.Text (Signed_Cardinal (Support.Locale ("ru"), -42))
+         = Support.U (16#43C#) & Support.U (16#438#) & Support.U (16#43D#) & Support.U (16#443#)
+           & Support.U (16#441#) & " " & Support.U (16#441#) & Support.U (16#43E#)
+           & Support.U (16#440#) & Support.U (16#43E#) & Support.U (16#43A#) & " "
+           & Support.U (16#434#) & Support.U (16#432#) & Support.U (16#430#),
+         "Russian negative by CLDR's rule");
    end Check_Cardinal_And_Scientific_Words;

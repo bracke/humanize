@@ -489,4 +489,22 @@ separate (Humanize.Tests.Rendering)
          and then Support.Text (Less_Custom)
            = "less than once heartbeat per week",
          "rate less-than custom noun threshold");
+      --  Outside English: the locale's digits, and its plural category picks
+      --  the caller's noun (Russian 21 takes the singular).
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Lists.Count (Support.Locale ("ru"), 21, "file", "files"))
+         = "21 file",
+         "Russian 21 takes the singular noun");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Lists.Count (Support.Locale ("ar"), 21, "file", "files"))
+         = Support.U (16#662#) & Support.U (16#661#) & " files",
+         "Arabic count in Arabic digits");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Lists.Counted_Noun (Support.De, 2, "Datei", "Dateien"))
+         = "2 Dateien",
+         "German counted noun");
+      AUnit.Assertions.Assert
+        (Support.Text (Humanize.Lists.Count (Support.De, 0, "Datei", "Dateien"))
+         = "0 Dateien",
+         "German zero is a number, not English ""no""");
    end Test_Lists_Frequencies_Rates;

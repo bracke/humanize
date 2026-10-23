@@ -43,6 +43,22 @@ package body Humanize.Selections is
          Suffix    => Null_Unbounded_String);
    end Text_Value;
 
+   function Count_Value_Suffix
+     (Key    : Humanize.Message_Keys.Message_Id;
+      Count  : Count_Value;
+      Value  : String;
+      Suffix : String)
+      return Message_Selection
+   is
+   begin
+      return
+        (Key       => Key,
+         Arguments => Count_Value_Suffix_Argument,
+         Count     => Count,
+         Value     => To_Unbounded_String (Value),
+         Suffix    => To_Unbounded_String (Suffix));
+   end Count_Value_Suffix;
+
    function Value_Suffix
      (Key    : Humanize.Message_Keys.Message_Id;
       Value  : String;

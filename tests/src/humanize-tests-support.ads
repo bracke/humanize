@@ -22,6 +22,9 @@ package Humanize.Tests.Support is
    --  Rendered text of a convenience result.
    function Text (Item : Humanize.Status.Text_Result) return String;
 
+   --  The UTF-8 bytes of one code point, for expected non-ASCII text.
+   function U (Code : Natural) return String;
+
    --  A rendered duration the locale-free parser cannot read back as the
    --  locale meant it, because CLDR gives another shipped locale the same
    --  words for something else: Malay's second is "saat", Turkish's hour.

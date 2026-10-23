@@ -675,6 +675,41 @@ package body Humanize.Durations.Formatting is
       end case;
    end Unit_Suffix;
 
+   --  Outside English, the parts in CLDR's narrow units joined by its narrow
+   --  unit list -- "1 Std., 30 Min.", Japanese "1時間30分"; not Ok where a
+   --  part cannot render. English keeps its own "1h 30m".
+   function CLDR_Compact
+     (Context : Humanize.Contexts.Context;
+      Outcome : Humanize.Duration_Classification.Multi_Outcome)
+      return Humanize.Status.Text_Result
+   is
+      Parts : Unbounded_String;
+   begin
+      for Index in 1 .. Outcome.Length loop
+         declare
+            Unit : constant String := Duration_Unit'Image (Outcome.Items (Index).Unit);
+            Part : constant Humanize.Status.Text_Result :=
+              Humanize.I18N_Rendering.Render
+                (Context,
+                 Humanize.Selections.Value_Suffix
+                   (Humanize.Message_Keys.Duration_Narrow,
+                    No_Space (Long_Long_Integer'Image (Outcome.Items (Index).Count)),
+                    Humanize.Bounded_Text.Lower_Text (Unit)));
+         begin
+            if Part.Status /= Humanize.Status.Ok or else Length (Part.Text) = 0 then
+               return (Status => Humanize.Status.Missing_Message, others => <>);
+            end if;
+            if Index > 1 then
+               Append (Parts, "|");
+            end if;
+            Append (Parts, Part.Text);
+         end;
+      end loop;
+      return Humanize.I18N_Rendering.Render
+        (Context,
+         Humanize.Selections.Text_Value (Humanize.Message_Keys.List_Unit_Narrow, To_String (Parts)));
+   end CLDR_Compact;
+
    function Format_Compact
      (Context        : Humanize.Contexts.Context;
       Seconds        : Duration_Seconds;
@@ -682,7 +717,6 @@ package body Humanize.Durations.Formatting is
       Options        : Duration_Options := Default_Duration_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Outcome : constant Humanize.Duration_Classification.Multi_Outcome :=
         Humanize.Duration_Classification.Classify_Multi
           (Seconds, Options, Max_Components);
@@ -696,6 +730,16 @@ package body Humanize.Durations.Formatting is
          when Humanize.Duration_Classification.Ok_Selection =>
             null;
       end case;
+
+      if Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) not in "en" | "" then
+         declare
+            Localized : constant Humanize.Status.Text_Result := CLDR_Compact (Context, Outcome);
+         begin
+            if Localized.Status = Humanize.Status.Ok then
+               return Localized;
+            end if;
+         end;
+      end if;
 
       for Index in 1 .. Outcome.Length loop
          if Index > 1 then

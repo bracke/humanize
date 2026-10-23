@@ -55,6 +55,16 @@ package Humanize.Message_Keys is
       Bytes_GiB,
       Bytes_TiB,
 
+      --  Locale-neutral entries over CLDR: a measurement unit, an SI symbol
+      --  after a localized number, a spelled-out number, a counted noun, a
+      --  narrow duration part and the narrow list that joins such parts.
+      Unit_Measure,
+      Unit_Symbol,
+      Number_Spellout,
+      Lists_Count,
+      Duration_Narrow,
+      List_Unit_Narrow,
+
       Number_Ordinal,
       Number_Ordinal_Feminine,
       Number_Compact_Plain,

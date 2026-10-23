@@ -78,7 +78,7 @@ usecase = "Phrase support backend dispatcher and shared helpers; new phrase fami
 
 [[body]]
 path = "src/humanize-units-support.adb"
-target_lines = 1996
+target_lines = 2000
 max_lines = 2150
 min_headroom_lines = 120
 max_bytes = 75000
@@ -168,7 +168,7 @@ usecase = "Color parser text helpers; new color parsing families should be split
 
 [[body]]
 path = "src/humanize-numbers-spellout.adb"
-target_lines = 934
+target_lines = 953
 max_lines = 1050
 min_headroom_lines = 80
 max_bytes = 43000
@@ -338,12 +338,12 @@ usecase = "Scalar parser text helpers shared by parser families; new parse domai
 
 [[body]]
 path = "src/humanize-lists.adb"
-target_lines = 1284
+target_lines = 1294
 max_lines = 1430
 min_headroom_lines = 120
 max_bytes = 50000
-split_prefix = ""
-min_split_bodies = 0
+split_prefix = "src/humanize-lists-"
+min_split_bodies = 1
 usecase = "List joining, collection display, selection, pagination, and counted-noun helpers; new collection families should move to child packages."
 
 [[body]]

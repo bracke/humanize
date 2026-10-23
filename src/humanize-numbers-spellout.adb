@@ -3,7 +3,10 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Humanize.Bounded_Text;
 with Humanize.Contexts;
 with Humanize.Decimal_Images;
+with Humanize.I18N_Rendering;
 with Humanize.Locales;
+with Humanize.Message_Keys;
+with Humanize.Selections;
 with Humanize.Numbers.Spellout_Data;
 
 package body Humanize.Numbers.Spellout is
@@ -197,15 +200,34 @@ package body Humanize.Numbers.Spellout is
       return To_String (Result);
    end Cardinal_Long_Text;
 
+   --  Value in words by CLDR's spell-out rules outside English
+   --  ("dreiundzwanzig", "минус сорок два"); not Ok in English, which keeps
+   --  its own words, or where the locale cannot render.
+   function CLDR_Words
+     (Context : Humanize.Contexts.Context;
+      Value   : Long_Long_Integer)
+      return Humanize.Status.Text_Result
+   is
+      Words : constant Humanize.Status.Text_Result :=
+        (if Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | ""
+         then (Status => Humanize.Status.Missing_Message, others => <>)
+         else Humanize.I18N_Rendering.Render
+                (Context,
+                 Humanize.Selections.Text_Value
+                   (Humanize.Message_Keys.Number_Spellout, Humanize.Bounded_Text.Image (Value))));
+   begin
+      return (if Length (Words.Text) = 0 then (Status => Humanize.Status.Missing_Message, others => <>)
+              else Words);
+   end CLDR_Words;
+
+   function Either (Preferred, Fallback : Humanize.Status.Text_Result) return Humanize.Status.Text_Result is
+     (if Preferred.Status = Humanize.Status.Ok then Preferred else Fallback);
+
    function Cardinal
      (Context : Humanize.Contexts.Context;
       Value   : Natural)
       return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-   begin
-      return Ok_Text (Cardinal_Text (Value));
-   end Cardinal;
+   is (Either (CLDR_Words (Context, Long_Long_Integer (Value)), Ok_Text (Cardinal_Text (Value))));
 
    procedure Cardinal_Into
      (Context : Humanize.Contexts.Context;
@@ -224,13 +246,12 @@ package body Humanize.Numbers.Spellout is
       Value   : Long_Long_Integer)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
       if Value = Long_Long_Integer'First then
          return (Status => Humanize.Status.Invalid_Value, others => <>);
       end if;
 
-      return Ok_Text (Cardinal_Long_Text (Value));
+      return Either (CLDR_Words (Context, Value), Ok_Text (Cardinal_Long_Text (Value)));
    end Signed_Cardinal;
 
    procedure Signed_Cardinal_Into

@@ -175,6 +175,29 @@ package body Humanize.Tests.Units is
         (Support.Text (Format_Bit_Rate (Support.En, 1_500_000.0))
          = "1.5 Mbit/s",
          "bit transfer rate selector");
+      --  Outside English: CLDR's unit, or the SI symbol after the locale's number.
+      AUnit.Assertions.Assert
+        (Support.Text (Format_Bit_Rate (Support.Locale ("ru"), 25_000_000.0))
+         = "25 " & Support.U (16#41C#) & Support.U (16#431#) & Support.U (16#438#)
+           & Support.U (16#442#) & "/c",
+         "Russian bit rate in CLDR's unit and per pattern");
+      AUnit.Assertions.Assert
+        (Support.Text (Format_Voltage (Support.Locale ("ar"), 3.3))
+         = Support.U (16#663#) & Support.U (16#66B#) & Support.U (16#663#) & " "
+           & Support.U (16#641#) & Support.U (16#648#) & Support.U (16#644#) & Support.U (16#62A#),
+         "Arabic volts in CLDR's unit and digits");
+      AUnit.Assertions.Assert
+        (Support.Text (Format_Voltage (Support.Locale ("ar"), 11_000.0))
+         = Support.U (16#661#) & Support.U (16#661#) & " kV",
+         "Arabic kilovolts keep the SI symbol after Arabic digits");
+      AUnit.Assertions.Assert
+        (Support.Text (Format_Torque (Support.De, 12.5))
+         = "12,5 N" & Support.U (16#22C5#) & "m",
+         "German torque in CLDR's newton-metre");
+      AUnit.Assertions.Assert
+        (Support.Text (Format_Electric_Resistance (Support.De, 4_700.0))
+         = "4,7 k" & Support.U (16#3A9#),
+         "German kilo-ohms as the SI symbol");
       AUnit.Assertions.Assert
         (Support.Text (Format_Binary_Data_Rate (Support.En, 1_572_864.0))
          = "1.5 MiB/s",
