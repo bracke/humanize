@@ -142,8 +142,8 @@ source = "Humanize spellout tables"
 coverage = "locale spellout words"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize spellout tables"
-line_count = 351
-sha256 = "ee16abc8bacb1400c2371d6098290cff90058ad4e8dec52b4c614200bc427680"
+line_count = 373
+sha256 = "16ca38746d4aff9805b6938d3944b7cf6892412f7799794ef85f97addb2cd467"
 
 [[artifact]]
 path = "src/humanize-numbers-spellout_data-small_locale_word.adb"
@@ -175,8 +175,8 @@ source = "Humanize spellout tables"
 coverage = "locale ordinal spellout words"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize spellout tables"
-line_count = 826
-sha256 = "86eb40a24f191c095ef25d7f79683b731372565bc7730517719ad7eb8ea3dd3a"
+line_count = 839
+sha256 = "6ba2dd65f9820a82a0dd979351dbe4fea28b3b9d4ff6485aab5eb497df496d18"
 
 [[artifact]]
 path = "src/humanize-numbers-spellout_data-locale_word_99.adb"

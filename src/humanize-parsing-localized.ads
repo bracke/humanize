@@ -160,9 +160,9 @@ package Humanize.Parsing.Localized is
    function Parse_Ordinal_Words (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result;
    --  @param Context Context whose locale wrote Text.
    --  @param Text An ordinal in words as Humanize.Numbers.Spellout.Ordinal_Words
-   --  writes it ("dreiundzwanzigste", "vingt-troisième"). In a locale without
-   --  CLDR ordinal rules (Czech) humanize's own words are read below 1000,
-   --  and larger ones where they compose ("dvacet tisící").
+   --  writes it ("dreiundzwanzigste", "vingt-troisième"), humanize's own words
+   --  where CLDR has no ordinal rules ("tisíc dvě stě třicet čtvrtý"), and
+   --  the numeric ordinal it writes beyond them ("2.345.").
    --  @return The number.
 
    type Calendar_Difference_Parse_Result is record

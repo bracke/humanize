@@ -42,6 +42,15 @@ private package Humanize.Numbers.Spellout_Data is
       Value  : Long_Long_Integer)
       return String;
 
+   --  Whether humanize's own table writes Value's ordinal word right for
+   --  Locale, one of the locales CLDR spells no ordinals for: not a round
+   --  hundred or thousand, and in Romanian and Slovenian only the words to
+   --  ten and the round tens. The rest are written as numbers.
+   function Locale_Ordinal_Word_Known
+     (Locale : String;
+      Value  : Natural)
+      return Boolean;
+
    function Locale_Ordinal_Words_Text
      (Locale : String;
       Value  : Natural)

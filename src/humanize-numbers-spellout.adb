@@ -724,6 +724,14 @@ package body Humanize.Numbers.Spellout is
       Locale : constant String :=
         Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context));
    begin
+      if Locale /= "en"
+        and then not Humanize.Parsing.Implementation.CLDR_Vocabulary.Has_Ordinal_Rules (Locale)
+        and then not Humanize.Numbers.Spellout_Data.Locale_Ordinal_Word_Known (Locale, Value)
+      then
+         --  No CLDR ordinal rules and no word of humanize's own: the
+         --  locale's numeric ordinal ("234.", "1000-й") over made-up words.
+         return Humanize.Numbers.Ordinal (Context, Value);
+      end if;
       return Either
         ((if Humanize.Parsing.Implementation.CLDR_Vocabulary.Has_Ordinal_Rules (Locale)
           then CLDR_Text (Context, Humanize.Message_Keys.Number_Ordinal_Words, Humanize.Bounded_Text.Image (Value))

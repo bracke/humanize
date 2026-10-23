@@ -330,6 +330,28 @@ package body Humanize.Numbers.Spellout_Data is
       return String
       is separate;
 
+   function Locale_Ordinal_Word_Known
+     (Locale : String;
+      Value  : Natural)
+      return Boolean
+   is
+      Round_Tens : constant Boolean := Value < 100 and then Value mod 10 = 0;
+   begin
+      if Value >= 100 and then Value mod 100 = 0 then
+         --  A round hundred or thousand would be the cardinal with an ending
+         --  glued on ("dvě stěý", "двадцять тисяч-й").
+         return False;
+      elsif Locale = "ro" or else Locale = "sl" then
+         --  Compounds follow other rules ("al douăzeci și unulea",
+         --  "enaindvajseti"): the words to ten and the round tens only.
+         return Value <= 10 or else Round_Tens;
+      else
+         --  Cardinal parts before an ordinal last part, as these languages
+         --  write compounds ("dwa tysiące trzysta czterdziesty piąty").
+         return True;
+      end if;
+   end Locale_Ordinal_Word_Known;
+
    function Scale_Value (Scale : Positive) return Long_Long_Integer is
       Result : Long_Long_Integer := 1;
    begin

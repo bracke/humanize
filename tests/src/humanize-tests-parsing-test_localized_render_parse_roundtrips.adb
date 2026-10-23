@@ -42,15 +42,15 @@ separate (Humanize.Tests.Parsing)
            Humanize.Numbers.Ordinal_Words
              (Humanize.Tests.Support.Locale (Locale), Value);
          Text : constant String := Humanize.Tests.Support.Text (Rendered);
-         Parsed : constant Humanize.Parsing.Number_Parse_Result :=
-           Humanize.Parsing.Parse_Ordinal (Text);
+         Parsed : constant Humanize.Parsing.Float_Parse_Result :=
+           Humanize.Parsing.Localized.Parse_Ordinal_Words (Humanize.Tests.Support.Locale (Locale), Text);
       begin
          AUnit.Assertions.Assert
            (Rendered.Status = Humanize.Status.Ok,
             Locale & " ordinal render status");
          AUnit.Assertions.Assert
            (Parsed.Status = Humanize.Status.Ok
-            and then Parsed.Value = Long_Long_Integer (Value)
+            and then Parsed.Value = Long_Float (Value)
             and then Parsed.Consumed = Text'Length,
             Locale & " localized ordinal round trip: " & Text);
       end Check_Ordinal;

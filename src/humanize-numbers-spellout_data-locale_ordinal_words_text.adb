@@ -400,10 +400,10 @@ function Locale_Ordinal_Words_Text
                when 3 => return "al treilea";
                when 4 => return "al patrulea";
                when 5 => return "al cincilea";
-               when 6 => return "al saselea";
-               when 7 => return "al saptelea";
+               when 6 => return "al " & U (16#219#) & "aselea";
+               when 7 => return "al " & U (16#219#) & "aptelea";
                when 8 => return "al optulea";
-               when 9 => return "al noualea";
+               when 9 => return "al nou" & U (16#103#) & "lea";
                when 10 => return "al zecelea";
                when others => return "";
             end case;
@@ -412,25 +412,25 @@ function Locale_Ordinal_Words_Text
                when 0 => return "nulinis";
                when 1 => return "pirmas";
                when 2 => return "antras";
-               when 3 => return "trecias";
+               when 3 => return "tre" & U (16#10D#) & "ias";
                when 4 => return "ketvirtas";
                when 5 => return "penktas";
-               when 6 => return "sestas";
+               when 6 => return U (16#161#) & "e" & U (16#161#) & "tas";
                when 7 => return "septintas";
-               when 8 => return "astuntas";
+               when 8 => return "a" & U (16#161#) & "tuntas";
                when 9 => return "devintas";
-               when 10 => return "desimtas";
+               when 10 => return "de" & U (16#161#) & "imtas";
                when others => return "";
             end case;
          elsif Locale = "sl" then
             case Value is
-               when 0 => return "nicelni";
+               when 0 => return "ni" & U (16#10D#) & "elni";
                when 1 => return "prvi";
                when 2 => return "drugi";
                when 3 => return "tretji";
-               when 4 => return "cetrti";
+               when 4 => return U (16#10D#) & "etrti";
                when 5 => return "peti";
-               when 6 => return "sesti";
+               when 6 => return U (16#161#) & "esti";
                when 7 => return "sedmi";
                when 8 => return "osmi";
                when 9 => return "deveti";
@@ -529,15 +529,15 @@ function Locale_Ordinal_Words_Text
             end case;
          elsif Locale = "sk" then
             case Value is
-               when 0 => return "nulty";
-               when 1 => return "prvy";
-               when 2 => return "druhy";
-               when 3 => return "treti";
-               when 4 => return "stvrty";
+               when 0 => return "nult" & U (16#FD#);
+               when 1 => return "prv" & U (16#FD#);
+               when 2 => return "druh" & U (16#FD#);
+               when 3 => return "tret" & U (16#ED#);
+               when 4 => return U (16#161#) & "tvrt" & U (16#FD#);
                when 5 => return "piaty";
-               when 6 => return "siesty";
+               when 6 => return U (16#161#) & "iesty";
                when 7 => return "siedmy";
-               when 8 => return "osmy";
+               when 8 => return U (16#F4#) & "smy";
                when 9 => return "deviaty";
                when 10 => return "desiaty";
                when others => return "";
@@ -617,34 +617,35 @@ function Locale_Ordinal_Words_Text
             end case;
          elsif Locale = "ro" then
             case Value mod 100 is
+               when 20 => return "al dou" & U (16#103#) & "zecilea";
                when 30 => return "al treizecilea";
                when 40 => return "al patruzecilea";
                when 50 => return "al cincizecilea";
-               when 60 => return "al saizecilea";
-               when 70 => return "al saptezecilea";
+               when 60 => return "al " & U (16#219#) & "aizecilea";
+               when 70 => return "al " & U (16#219#) & "aptezecilea";
                when 80 => return "al optzecilea";
-               when 90 => return "al nouazecilea";
+               when 90 => return "al nou" & U (16#103#) & "zecilea";
                when others => return "";
             end case;
          elsif Locale = "lt" then
             case Value mod 100 is
-               when 20 => return "dvidesimtas";
-               when 30 => return "trisdesimtas";
-               when 40 => return "keturiasdesimtas";
-               when 50 => return "penkiasdesimtas";
-               when 60 => return "sesiasdesimtas";
-               when 70 => return "septyniasdesimtas";
-               when 80 => return "astuoniasdesimtas";
-               when 90 => return "devyniasdesimtas";
+               when 20 => return "dvide" & U (16#161#) & "imtas";
+               when 30 => return "trisde" & U (16#161#) & "imtas";
+               when 40 => return "keturiasde" & U (16#161#) & "imtas";
+               when 50 => return "penkiasde" & U (16#161#) & "imtas";
+               when 60 => return U (16#161#) & "e" & U (16#161#) & "iasde" & U (16#161#) & "imtas";
+               when 70 => return "septyniasde" & U (16#161#) & "imtas";
+               when 80 => return "a" & U (16#161#) & "tuoniasde" & U (16#161#) & "imtas";
+               when 90 => return "devyniasde" & U (16#161#) & "imtas";
                when others => return "";
             end case;
          elsif Locale = "sl" then
             case Value mod 100 is
                when 20 => return "dvajseti";
                when 30 => return "trideseti";
-               when 40 => return "stirideseti";
+               when 40 => return U (16#161#) & "tirideseti";
                when 50 => return "petdeseti";
-               when 60 => return "sestdeseti";
+               when 60 => return U (16#161#) & "estdeseti";
                when 70 => return "sedemdeseti";
                when 80 => return "osemdeseti";
                when 90 => return "devetdeseti";
@@ -722,16 +723,28 @@ function Locale_Ordinal_Words_Text
                when 90 => return "kilencvenedik";
                when others => return "";
             end case;
+         elsif Locale = "uk" then
+            case Value mod 100 is
+               when 20 => return U (16#434#) & U (16#432#) & U (16#430#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#438#) & U (16#439#);
+               when 30 => return U (16#442#) & U (16#440#) & U (16#438#) & U (16#434#) & U (16#446#) & U (16#44F#) & U (16#442#) & U (16#438#) & U (16#439#);
+               when 40 => return U (16#441#) & U (16#43E#) & U (16#440#) & U (16#43E#) & U (16#43A#) & U (16#43E#) & U (16#432#) & U (16#438#) & U (16#439#);
+               when 50 => return U (16#43F#) & U (16#2019#) & U (16#44F#) & U (16#442#) & U (16#434#) & U (16#435#) & U (16#441#) & U (16#44F#) & U (16#442#) & U (16#438#) & U (16#439#);
+               when 60 => return U (16#448#) & U (16#456#) & U (16#441#) & U (16#442#) & U (16#434#) & U (16#435#) & U (16#441#) & U (16#44F#) & U (16#442#) & U (16#438#) & U (16#439#);
+               when 70 => return U (16#441#) & U (16#456#) & U (16#43C#) & U (16#434#) & U (16#435#) & U (16#441#) & U (16#44F#) & U (16#442#) & U (16#438#) & U (16#439#);
+               when 80 => return U (16#432#) & U (16#456#) & U (16#441#) & U (16#456#) & U (16#43C#) & U (16#434#) & U (16#435#) & U (16#441#) & U (16#44F#) & U (16#442#) & U (16#438#) & U (16#439#);
+               when 90 => return U (16#434#) & U (16#435#) & U (16#432#) & U (16#2019#) & U (16#44F#) & U (16#43D#) & U (16#43E#) & U (16#441#) & U (16#442#) & U (16#438#) & U (16#439#);
+               when others => return "";
+            end case;
          elsif Locale = "sk" then
             case Value mod 100 is
-               when 20 => return "dvadsaty";
+               when 20 => return "dvadsiaty";
                when 30 => return "tridsiaty";
-               when 40 => return "styridsiaty";
-               when 50 => return "patdesiaty";
-               when 60 => return "sestdesiaty";
+               when 40 => return U (16#161#) & "tyridsiaty";
+               when 50 => return "p" & U (16#E4#) & U (16#165#) & "desiaty";
+               when 60 => return U (16#161#) & "es" & U (16#165#) & "desiaty";
                when 70 => return "sedemdesiaty";
                when 80 => return "osemdesiaty";
-               when 90 => return "devatdesiaty";
+               when 90 => return "dev" & U (16#E4#) & U (16#165#) & "desiaty";
                when others => return "";
             end case;
          else

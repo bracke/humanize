@@ -1,6 +1,4 @@
 with Humanize.Contexts;
-with I18N.Spellout;
-
 with Humanize.Numbers.Spellout;
 
 separate (Humanize.Tests.Parsing)
@@ -48,8 +46,6 @@ separate (Humanize.Tests.Parsing)
             Locale & " spelled" & Value'Image & " read back: " & Cardinal);
          AUnit.Assertions.Assert
            (Value = 0
-            --  Without CLDR ordinal rules, humanize's own words read below 1000.
-            or else (Value >= 1_000 and then I18N.Spellout.Ordinal_Ruleset (Locale) = "")
             or else (Nth.Status = Humanize.Status.Ok and then Nth.Value = Long_Float (Value)),
             Locale & " ordinal" & Value'Image & " read back: " & Ordinal);
       end Check_Words;

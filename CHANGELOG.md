@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+* `Numbers.Spellout.Ordinal_Words` in the locales CLDR spells no ordinals
+  for (Czech, Polish, Slovak, Slovenian, Lithuanian, Romanian, Ukrainian)
+  writes the numeric ordinal where humanize's own words went wrong: round
+  hundreds and thousands ("dvě stěý", "двадцять тисяч-й", "jedna milioný")
+  and Romanian and Slovenian compounds. Romanian, Lithuanian, Slovenian and
+  Slovak ordinal words have their diacritics back ("al șaselea", "trečias",
+  "četrti", "štvrtý"), and Ukrainian has its round tens.
+
 * `Lists.Format` outside English uses CLDR's list patterns, "or" lists
   included: Japanese "a、b、c", Arabic "a وb وc", German "a, b oder c", where
   it joined with ", " and a translated "and" (and always English "or").

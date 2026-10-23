@@ -62,6 +62,8 @@ is
    --  before it ("tisíc dvě stě" "třicet čtvrtý"): the value that renders
    --  Item.
    function Read_Table return Float_Parse_Result is
+      type Step_List is array (Positive range <>) of Natural;
+      Steps : constant Step_List := [10, 100, 1_000];
       Small : constant Integer := Small_Ordinal (Item);
    begin
       if Small >= 0 then
@@ -87,6 +89,19 @@ is
                              Consumed => Text'Length, others => <>);
                   end if;
                end loop;
+               --  humanize's own words for a round head ("tisíc" before
+               --  "dvě stě třicet čtvrtý"): each multiple of ten, a hundred
+               --  or a thousand in turn.
+               if Rest in 0 .. 999 then
+                  for Step of Steps loop
+                     for K in 1 .. (if Step = 1_000 then 999 else 9) loop
+                        if Ordinal_Text (K * Step + Rest) = Item then
+                           return (Status => Humanize.Status.Ok, Value => Long_Float (K * Step + Rest),
+                                   Exact => True, Consumed => Text'Length, others => <>);
+                        end if;
+                     end loop;
+                  end loop;
+               end if;
             end;
          end if;
       end loop;
