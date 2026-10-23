@@ -1,5 +1,8 @@
+with Ada.Strings.Unbounded;
+
 with Humanize.Contexts;
 with Humanize.Datetimes;
+with Humanize.Lists;
 
 --  Reading back, in a context's locale, what humanize's localized formatters
 --  write: numbers ("1.234,5", Arabic-Indic digits), durations ("2 Stunden,
@@ -126,5 +129,75 @@ package Humanize.Parsing.Localized is
    --  in the locale ("heute 14:47", "Montag 2:47 PM", "09.10.2026 14:47").
    --  @param Reference Today, as the label was written against.
    --  @return The day and time; a weekday reads as the past one.
+
+   Max_List_Items : constant := 32;
+
+   type List_Item_Array is array (1 .. Max_List_Items) of Ada.Strings.Unbounded.Unbounded_String;
+
+   type List_Read_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Count  : Natural := 0;
+      Items  : List_Item_Array;
+   end record;
+
+   function Parse_List
+     (Context : Humanize.Contexts.Context;
+      Text    : String;
+      Style   : Humanize.Lists.List_Style := Humanize.Lists.Conjunction)
+      return List_Read_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A list as Humanize.Lists.Format writes it in the locale
+   --  ("a, b und c", "a、b、c", "a وb وc").
+   --  @param Style The list's style: "and" or "or".
+   --  @return Its items in order; one item for a text with no connector.
+
+   function Parse_Spellout (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A number in words as Humanize.Numbers.Spellout writes it in
+   --  the locale ("vierunddreißig", "mille deux cent", "千二百三十四").
+   --  @return The number.
+
+   function Parse_Ordinal_Words (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text An ordinal in words as Humanize.Numbers.Spellout.Ordinal_Words
+   --  writes it ("dreiundzwanzigste", "vingt-troisième"). In a locale without
+   --  CLDR ordinal rules (Czech) humanize's own words are read below 1000,
+   --  and larger ones where they compose ("dvacet tisící").
+   --  @return The number.
+
+   type Calendar_Difference_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Years  : Natural := 0;
+      Months : Natural := 0;
+      Days   : Natural := 0;
+   end record;
+
+   function Parse_Calendar_Difference
+     (Context : Humanize.Contexts.Context;
+      Text    : String)
+      return Calendar_Difference_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A difference as Humanize.Datetimes.Calendar_Difference_Label
+   --  writes it ("2 Jahre, 2 Monate und 4 Tage", Arabic "سنتان، وشهران").
+   --  @return Its years, months and days.
+
+   type Calendar_Period is (Week_Period, Month_Period, Year_Period);
+   subtype Period_Offset is Integer range -1 .. 1;
+
+   type Calendar_Relation_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Period : Calendar_Period := Week_Period;
+      Offset : Period_Offset := 0;
+   end record;
+
+   function Parse_Calendar_Relation
+     (Context : Humanize.Contexts.Context;
+      Text    : String)
+      return Calendar_Relation_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A label as Humanize.Datetimes.Calendar_Relation writes it
+   --  ("letzten Monat", "来週", "cette année").
+   --  @return The period and its offset from the current one (-1 last, 0
+   --  this, 1 next).
 
 end Humanize.Parsing.Localized;

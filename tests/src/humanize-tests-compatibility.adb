@@ -234,11 +234,12 @@ package body Humanize.Tests.Compatibility is
       Text : constant String :=
         Rendered (Humanize.Lists.Format (Context, Items),
                   Locale & " list render");
-      Parsed : constant Humanize.Parsing.List_Parse_Result :=
-        Humanize.Parsing.Parse_List (Text);
+      Parsed : constant Humanize.Parsing.Localized.List_Read_Result :=
+        Humanize.Parsing.Localized.Parse_List (Context, Text);
    begin
       AUnit.Assertions.Assert
-        (Parsed.Status = Ok and then Parsed.Count = 3,
+        (Parsed.Status = Ok and then Parsed.Count = 3
+         and then To_String (Parsed.Items (3)) = "gamma",
          Locale & " list roundtrip [" & Text & "]");
    end Check_List_Roundtrip;
 

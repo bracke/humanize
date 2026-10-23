@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+* `Lists.Format` outside English uses CLDR's list patterns, "or" lists
+  included: Japanese "a、b、c", Arabic "a وb وc", German "a, b oder c", where
+  it joined with ", " and a translated "and" (and always English "or").
+* `Datetimes.Calendar_Relation` counts ISO weeks (Monday to Sunday), as the
+  parser's "last week" does: weeks started on Thursday, so a Thursday was
+  "next week" from the Wednesday before.
+* `Parsing.Localized` reads more back in any shipped locale: `Parse_List`
+  (the items), `Parse_Spellout`, `Parse_Ordinal_Words`,
+  `Parse_Calendar_Difference` and `Parse_Calendar_Relation`. Its number
+  readers (`Parse_Number`, `Parse_Percent`, `Parse_Compact`, `Parse_Ordinal`,
+  `Parse_Currency`) take the locale's digit grouping out first, so "1.234,5"
+  and "99 999" read; joined durations read where the locale writes the parts
+  together ("2小时30分钟").
+
 * The technical cross-domain labels are localized
   (`Cross_Domain.Localized`: structured diffs and diff nodes, validation
   results, file metadata and signatures, network sessions, product codes,

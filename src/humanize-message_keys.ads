@@ -64,6 +64,8 @@ package Humanize.Message_Keys is
       Lists_Count,
       Duration_Narrow,
       List_Unit_Narrow,
+      List_Joined_And,
+      List_Joined_Or,
       Number_Ordinal_Words,
       Number_Percent_Unit,
       Number_Plain,

@@ -497,4 +497,38 @@ package body Humanize.Parsing.Implementation.CLDR_Vocabulary is
    function Has_Ordinal_Rules (Locale : String) return Boolean is
      (I18N.Spellout.Ordinal_Ruleset (Locale) /= "");
 
+   procedure Spelled_Number_In
+     (Locale   : String;
+      Text     : String;
+      Ordinal  : Boolean;
+      Value    : out Long_Long_Integer;
+      Consumed : out Natural)
+   is
+      type Name_Access is access constant String;
+      Numbering : aliased constant String := "";
+      Masculine : aliased constant String := "%spellout-cardinal-masculine";
+      Feminine  : aliased constant String := "%spellout-cardinal-feminine";
+      Neuter    : aliased constant String := "%spellout-cardinal-neuter";
+      Rulesets  : constant array (Positive range <>) of Name_Access :=
+        [Numbering'Access, Masculine'Access, Feminine'Access, Neuter'Access];
+      V : Long_Long_Integer;
+      C : Natural;
+   begin
+      Value := 0;
+      Consumed := 0;
+      if Ordinal then
+         if Has_Ordinal_Rules (Locale) then
+            I18N.Spellout.Parse (Locale, Text, Value, Consumed, I18N.Spellout.Ordinal_Ruleset (Locale));
+         end if;
+         return;
+      end if;
+      for Ruleset of Rulesets loop
+         I18N.Spellout.Parse (Locale, Text, V, C, Ruleset.all);
+         if C > Consumed then
+            Value := V;
+            Consumed := C;
+         end if;
+      end loop;
+   end Spelled_Number_In;
+
 end Humanize.Parsing.Implementation.CLDR_Vocabulary;

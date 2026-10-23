@@ -106,6 +106,9 @@ package body Humanize.Catalogs.Core_Data is
      & " year {{value, unit, year/unit-width-narrow}}"
      & " other {}}" & LF
      & "und.humanize.list.unit_narrow = {value, list, unit-narrow}" & LF
+     --  Lists.Format outside English: CLDR's "and" and "or" list patterns.
+     & "und.humanize.list.joined_and = {value, list}" & LF
+     & "und.humanize.list.joined_or = {value, list, or}" & LF
      --  Ordinal words, a percentage in words and a plain number, by CLDR.
      & "und.humanize.number.ordinal_words = {value, number, ::ordinal-words}" & LF
      & "und.humanize.number.percent_unit = {value, unit, percent/unit-width-full-name}" & LF

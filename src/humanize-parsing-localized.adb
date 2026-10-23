@@ -53,7 +53,7 @@ package body Humanize.Parsing.Localized is
 
    type Lexicon_Kind is
      (Durations_Kind, Relative_Kind, Bytes_Kind, Measure_Kind, Dates_Kind, Percent_Kind, Compact_Kind, Ordinal_Kind,
-      Currency_Kind);
+      Currency_Kind, Difference_Kind);
 
    package Lexicon_Maps is new Ada.Containers.Indefinite_Hashed_Maps
      (Key_Type => String, Element_Type => Lexicon, Hash => Ada.Strings.Hash, Equivalent_Keys => "=");
@@ -86,6 +86,11 @@ package body Humanize.Parsing.Localized is
 
    function Plain (Context : Humanize.Contexts.Context; Text : String) return String is
      (Humanize.Parsing.Locale_Digits.Normalize (Context, Text, Quantities => True));
+
+   --  Text as Plain, with the locale's digit grouping ("1.234", "99 999",
+   --  "12,34,567") taken out first, while it still differs from the decimal
+   --  separator: a number's text, not a date's.
+   function Plain_Number (Context : Humanize.Contexts.Context; Text : String) return String is separate;
 
    --  The number at Text (From ..): ASCII digits, optionally '.' and more.
    procedure Read_Number (Text : String; From : Positive; Last : out Natural; Value : out Long_Float) is
@@ -254,7 +259,7 @@ package body Humanize.Parsing.Localized is
                         declare
                            Join : constant String := To_String (J);
                         begin
-                           if Join'Length > 0 and then Stop + Join'Length < Text'Last
+                           if Stop + Join'Length < Text'Last
                              and then Text (Stop + 1 .. Stop + Join'Length) = Join
                              and then From (Stop + Join'Length + 1, Total + Part)
                            then
@@ -300,7 +305,7 @@ package body Humanize.Parsing.Localized is
       return Float_Parse_Result
    is
       Minus : constant String := [Character'Val (16#E2#), Character'Val (16#88#), Character'Val (16#92#)];
-      Item  : constant String := Trimmed (Plain (Context, Text));
+      Item  : constant String := Trimmed (Plain_Number (Context, Text));
       Sign  : Long_Float := 1.0;
       First : Positive := Item'First;
       Last  : Natural;
@@ -363,7 +368,8 @@ package body Humanize.Parsing.Localized is
                      Join : constant Unbounded_String :=
                        To_Unbounded_String (Whole (At_Index .. At_Index + Found - 2));
                   begin
-                     if Join /= Null_Unbounded_String and then not Result.Joins.Contains (Join) then
+                     --  An empty join: the locale writes the parts together ("2小时30分钟").
+                     if not Result.Joins.Contains (Join) then
                         Result.Joins.Append (Join);
                      end if;
                   end;
@@ -506,6 +512,9 @@ package body Humanize.Parsing.Localized is
    function Learn_Numbers (Context : Humanize.Contexts.Context; Kind : Lexicon_Kind; Code : String) return Lexicon
      is separate;
 
+   --  Calendar differences, valued years * 10_000 + months * 100 + days.
+   function Learn_Differences (Context : Humanize.Contexts.Context) return Lexicon is separate;
+
    function Learned
      (Context : Humanize.Contexts.Context;
       Kind    : Lexicon_Kind;
@@ -531,7 +540,8 @@ package body Humanize.Parsing.Localized is
                when Measure_Kind   => Learn_Measures (Context, Family),
                when Dates_Kind     => Learn_Dates (Context),
                when Percent_Kind | Compact_Kind | Ordinal_Kind | Currency_Kind =>
-                 Learn_Numbers (Context, Kind, Code));
+                 Learn_Numbers (Context, Kind, Code),
+               when Difference_Kind => Learn_Differences (Context));
          Cache.Store (Key, Item);
       end if;
       return Item;
@@ -653,69 +663,7 @@ package body Humanize.Parsing.Localized is
    Short_Marker : constant Character := Character'Val (4);
    Day_Word     : constant Long_Float := -1.0;
 
-   function Learn_Dates (Context : Humanize.Contexts.Context) return Lexicon is
-      package DT renames Humanize.Datetimes;
-      Result : Lexicon;
-      Styles : constant array (1 .. 4) of DT.Calendar_Date_Style :=
-        [DT.Calendar_Date_ISO, DT.Calendar_Date_Short, DT.Calendar_Date_Medium, DT.Calendar_Date_Long];
-
-      --  Text with the first From replaced by Marker; Text where it is absent.
-      function Mark (Text, From : String; Marker : Character) return String is
-         At_Index : constant Natural := Index (To_Unbounded_String (Text), From);
-      begin
-         return (if At_Index = 0 then Text
-                 else Text (Text'First .. At_Index - 1) & Marker & Text (At_Index + From'Length .. Text'Last));
-      end Mark;
-   begin
-      for Style of Styles loop
-         --  Seven days of each month, so a style that names the weekday has a
-         --  form for each.
-         for Month in Ada.Calendar.Month_Number loop
-            for Day in 22 .. 28 loop
-               declare
-                  Rendered : constant Humanize.Status.Text_Result :=
-                    DT.Calendar_Date_Label (Context, (Year => 2087, Month => Month, Day => Day, others => 0),
-                                            DT.Calendar_Date_Options'(Style => Style, Fiscal_Year_Start_Month => 1));
-                  Day_Text : constant String := Ada.Strings.Fixed.Trim (Natural'Image (Day), Ada.Strings.Left);
-               begin
-                  if Rendered.Status = Humanize.Status.Ok then
-                     declare
-                        Text  : constant String := Plain (Context, To_String (Rendered.Text));
-                        Years : constant String :=
-                          (if Index (To_Unbounded_String (Text), "2087") > 0 then Mark (Text, "2087", Year_Marker)
-                           else Mark (Text, "87", Short_Marker));
-                        Pattern : constant Unbounded_String := To_Unbounded_String (Mark (Years, Day_Text, Day_Marker));
-                     begin
-                        if not (for some F of Result.Forms => F.Pattern = Pattern) then
-                           Result.Forms.Append
-                             (Form'(Pattern => Pattern, Counted => False, Unit => Long_Float (Month), others => <>));
-                        end if;
-                     end;
-                  end if;
-               end;
-            end loop;
-         end loop;
-      end loop;
-      --  Day words around the reference ("gestern", "morgen").
-      for Offset in -2 .. 2 loop
-         declare
-            Reference : constant DT.Civil_Date_Time := (Year => 2087, Month => 6, Day => 15, others => 0);
-            Rendered  : constant Humanize.Status.Text_Result :=
-              DT.Natural_Day (Context, (Reference with delta Day => 15 + Offset), Reference);
-            Text      : constant String :=
-              (if Rendered.Status = Humanize.Status.Ok then Plain (Context, To_String (Rendered.Text)) else "");
-         begin
-            if Text /= "" and then (for all C of Text => C not in '0' .. '9')
-              and then not (for some F of Result.Forms => To_String (F.Pattern) = Text)
-            then
-               Result.Forms.Append
-                 (Form'(Pattern => To_Unbounded_String (Text), Counted => False, Unit => Day_Word,
-                        Offset => Long_Float (Offset), others => <>));
-            end if;
-         end;
-      end loop;
-      return Result;
-   end Learn_Dates;
+   function Learn_Dates (Context : Humanize.Contexts.Context) return Lexicon is separate;
 
    function Parse_Measure
      (Context : Humanize.Contexts.Context;
@@ -835,7 +783,8 @@ package body Humanize.Parsing.Localized is
       Value     : Long_Float;
       Ambiguous : Boolean;
    begin
-      if Read_Whole (Learned (Context, Kind, Code => Code).Forms, Trimmed (Plain (Context, Text)), Value, Ambiguous)
+      if Read_Whole
+        (Learned (Context, Kind, Code => Code).Forms, Trimmed (Plain_Number (Context, Text)), Value, Ambiguous)
       then
          return (Status => Humanize.Status.Ok, Value => Value, Exact => not Ambiguous, Consumed => Text'Length,
                  others => <>);
@@ -855,5 +804,33 @@ package body Humanize.Parsing.Localized is
    function Parse_Currency
      (Context : Humanize.Contexts.Context; Text : String; Code : String) return Float_Parse_Result is
      (Read_Number_Kind (Context, Currency_Kind, Text, Code));
+
+   function Parse_List
+     (Context : Humanize.Contexts.Context;
+      Text    : String;
+      Style   : Humanize.Lists.List_Style := Humanize.Lists.Conjunction)
+      return List_Read_Result is separate;
+
+   --  Text read by the locale's spell-out rules (Ordinal: its ordinal ones),
+   --  or English's where the locale has none, as Spellout writes then; past
+   --  the words it has, the number in digits.
+   function Read_Spelled (Context : Humanize.Contexts.Context; Text : String; Ordinal : Boolean)
+      return Float_Parse_Result is separate;
+
+   function Parse_Spellout (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result is
+     (Read_Spelled (Context, Text, Ordinal => False));
+
+   function Parse_Ordinal_Words (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result is
+     (Read_Spelled (Context, Text, Ordinal => True));
+
+   function Parse_Calendar_Difference
+     (Context : Humanize.Contexts.Context;
+      Text    : String)
+      return Calendar_Difference_Parse_Result is separate;
+
+   function Parse_Calendar_Relation
+     (Context : Humanize.Contexts.Context;
+      Text    : String)
+      return Calendar_Relation_Parse_Result is separate;
 
 end Humanize.Parsing.Localized;

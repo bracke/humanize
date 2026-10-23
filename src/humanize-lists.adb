@@ -1,6 +1,7 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Humanize.I18N_Rendering;
+with Humanize.Locales;
 with Humanize.Message_Keys;
 with Humanize.Selections;
 with Humanize.Bounded_Text;
@@ -299,6 +300,38 @@ package body Humanize.Lists is
       end case;
    end Connector;
 
+   --  Outside English, CLDR's list pattern for the locale ("a, b und c",
+   --  "a、b、c", "a وb وc"); not Ok in English, where the Oxford comma option
+   --  applies, or when an item holds the "|" that separates the items.
+   function CLDR_Format
+     (Context : Humanize.Contexts.Context;
+      Items   : Text_List;
+      Style   : List_Style)
+      return Humanize.Status.Text_Result
+   is
+      Parts : Unbounded_String;
+   begin
+      if Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | "" then
+         return (Status => Humanize.Status.Missing_Message, others => <>);
+      end if;
+      for Position in Items'Range loop
+         if Index (Items (Position), "|") > 0 then
+            return (Status => Humanize.Status.Invalid_Argument, others => <>);
+         end if;
+         if Position > Items'First then
+            Append (Parts, "|");
+         end if;
+         Append (Parts, Items (Position));
+      end loop;
+      return Humanize.I18N_Rendering.Render
+        (Context,
+         Humanize.Selections.Text_Value
+           ((case Style is
+               when Conjunction => Humanize.Message_Keys.List_Joined_And,
+               when Disjunction => Humanize.Message_Keys.List_Joined_Or),
+            To_String (Parts)));
+   end CLDR_Format;
+
    function Format
      (Context : Humanize.Contexts.Context;
       Items   : Text_List;
@@ -310,6 +343,15 @@ package body Humanize.Lists is
    begin
       if Items'Length = 0 then
          return Ok_Text ("");
+      end if;
+      if Items'Length > 1 then
+         declare
+            Localized : constant Humanize.Status.Text_Result := CLDR_Format (Context, Items, Options.Style);
+         begin
+            if Localized.Status = Humanize.Status.Ok and then Length (Localized.Text) > 0 then
+               return Ok_Text (To_String (Localized.Text));
+            end if;
+         end;
       end if;
 
       if Items'Length = 1 then

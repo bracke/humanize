@@ -8,7 +8,7 @@ function Learn_Numbers (Context : Humanize.Contexts.Context; Kind : Lexicon_Kind
    procedure Take (Rendered : Humanize.Status.Text_Result; Value : Long_Float) is
    begin
       if Rendered.Status = Humanize.Status.Ok then
-         Learn (Result.Forms, Plain (Context, To_String (Rendered.Text)), Value);
+         Learn (Result.Forms, Plain_Number (Context, To_String (Rendered.Text)), Value);
       end if;
    end Take;
 

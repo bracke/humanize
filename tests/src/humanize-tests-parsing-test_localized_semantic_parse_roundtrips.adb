@@ -90,12 +90,15 @@ separate (Humanize.Tests.Parsing)
                2 => To_Unbounded_String ("beta"),
                3 => To_Unbounded_String ("gamma")]);
          Text : constant String := Humanize.Tests.Support.Text (Rendered);
-         Parsed : constant Humanize.Parsing.List_Parse_Result :=
-           Humanize.Parsing.Parse_List (Text);
+         Parsed : constant Humanize.Parsing.Localized.List_Read_Result :=
+           Humanize.Parsing.Localized.Parse_List (Humanize.Tests.Support.Locale (Locale), Text);
       begin
          AUnit.Assertions.Assert
            (Parsed.Status = Humanize.Status.Ok
-            and then Parsed.Count = 3,
+            and then Parsed.Count = 3
+            and then To_String (Parsed.Items (1)) = "alpha"
+            and then To_String (Parsed.Items (2)) = "beta"
+            and then To_String (Parsed.Items (3)) = "gamma",
             Locale & " localized list round trip: " & Text);
       end Check_List;
 

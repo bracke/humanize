@@ -312,7 +312,7 @@ separate (Humanize.Tests.Rendering)
          & " " & B ("E0A4B8E0A58720E0A495E0A4AE"),
          "Hindi generated catalog renders less-than rate words");
       Check_Text
-        (Japanese_List, B ("616C70686120E381A82062657461"),
+        (Japanese_List, B ("616C706861E3808162657461"),
          "Japanese generated catalog renders list conjunction");
       Check_Text
         (Chinese_Compact, B ("312E3220E58D83"),

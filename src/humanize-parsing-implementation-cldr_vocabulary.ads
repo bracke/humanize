@@ -50,4 +50,15 @@ package Humanize.Parsing.Implementation.CLDR_Vocabulary is
    --  so humanize's own words, which this parser reads, stand).
    function Has_Ordinal_Rules (Locale : String) return Boolean;
 
+   --  Text read as a number spelled out by Locale's own CLDR rules: its
+   --  ordinal ones with Ordinal, else its cardinal ones, each gendered set in
+   --  turn (Czech "dvě stě" is feminine). Value and how many of Text's bytes
+   --  the longest reading took, 0 when none.
+   procedure Spelled_Number_In
+     (Locale   : String;
+      Text     : String;
+      Ordinal  : Boolean;
+      Value    : out Long_Long_Integer;
+      Consumed : out Natural);
+
 end Humanize.Parsing.Implementation.CLDR_Vocabulary;
