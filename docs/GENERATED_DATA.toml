@@ -142,8 +142,8 @@ source = "Humanize spellout tables"
 coverage = "locale spellout words"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize spellout tables"
-line_count = 374
-sha256 = "37fa2e23ab7d234e01bda8d0321f7955cda826d752e62935038e7155c7d8c992"
+line_count = 387
+sha256 = "640ffa1c54ca0c05cabb5447fb1225c7c6ef255abaf54ff7bafea7f17568fbb3"
 
 [[artifact]]
 path = "src/humanize-numbers-spellout_data-small_locale_word.adb"
@@ -175,8 +175,8 @@ source = "Humanize spellout tables"
 coverage = "locale ordinal spellout words"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize spellout tables"
-line_count = 857
-sha256 = "25b75145f4a5c0326bbf4042cd849a9bf9b899ae5fbaabc0ddcc2bbed1f802e3"
+line_count = 859
+sha256 = "9be83131254ed3dd2477d466c6fe12b56a456fa829884a6c5fb1453c86da0d33"
 
 [[artifact]]
 path = "src/humanize-numbers-spellout_data-locale_word_99.adb"
@@ -219,8 +219,8 @@ source = "Humanize spellout tables"
 coverage = "locale long-number spellout composition"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize spellout tables"
-line_count = 138
-sha256 = "8884f5710fd929ef849c157d1f68743abdb819db2b97713e65b58fadfc0c9b20"
+line_count = 182
+sha256 = "3dd2b0a51a5b9604486fee890069bcfe894595bdb939bc191c95de60f224ce5e"
 
 [[artifact]]
 path = "src/humanize-durations-schedule_data.adb"

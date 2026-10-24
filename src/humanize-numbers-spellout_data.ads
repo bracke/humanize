@@ -51,6 +51,20 @@ private package Humanize.Numbers.Spellout_Data is
       Value  : Natural)
       return Boolean;
 
+   --  Where CLDR 48's ordinal rules write wrong words: Lithuanian leaves a
+   --  round hundred's stem bare ("šimt", "tūkstant" for "šimtasis",
+   --  "tūkstantasis"), Polish splits a compound multiplier ("dwudziesto dwoma
+   --  tysięczny" for "dwudziestodwutysięczny"). The numeric ordinal is right.
+   function CLDR_Ordinal_Wrong (Locale : String; Value : Natural) return Boolean is
+     ((Locale = "lt" and then Value >= 100 and then Value mod 100 = 0)
+      or else (Locale = "pl" and then Value >= 21_000 and then Value mod 1_000 = 0
+               and then not (Value / 1_000 mod 10 = 0 and then Value / 1_000 < 100)
+               and then Value / 1_000 mod 100 /= 0));
+
+   --  The Russian ordinal of a round 200 .. 900 ("трехсотый"), which CLDR's
+   --  rules miss; "" otherwise.
+   function Ru_Round_Hundredth (Hundreds : Positive) return String;
+
    function Locale_Ordinal_Words_Text
      (Locale : String;
       Value  : Natural)

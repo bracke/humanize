@@ -324,6 +324,10 @@ package body Humanize.Numbers.Spellout_Data is
       end if;
    end Ordinal_Words_Text;
 
+   function Uk_Round_Ordinal (Value : Natural) return String is separate;
+
+   function Ru_Round_Hundredth (Hundreds : Positive) return String is separate;
+
    function Locale_Ordinal_Words_Text
      (Locale : String;
       Value  : Natural)
@@ -337,7 +341,16 @@ package body Humanize.Numbers.Spellout_Data is
    is
       Round_Tens : constant Boolean := Value < 100 and then Value mod 10 = 0;
    begin
-      if Value >= 100 and then Value mod 100 = 0 then
+      if Locale = "uk" and then Value >= 1_000_000 and then Uk_Round_Ordinal (Value) = "" then
+         --  A compound past a million ("два мільйони перший") is beyond the
+         --  words humanize composes.
+         return False;
+      elsif Locale = "uk" and then Value >= 100 and then Value mod 100 = 0 then
+         --  Ukrainian glues the multiplier's stem on ("двохсотий"), where
+         --  humanize has the stem; else as below.
+         return Uk_Round_Ordinal (Value) /= ""
+           or else (Value > 1_000 and then Value mod 1_000 /= 0 and then Value < 1_000_000);
+      elsif Value >= 100 and then Value mod 100 = 0 then
          --  A round hundred or thousand would be the cardinal with an ending
          --  glued on ("dvě stěý", "двадцять тисяч-й").
          return False;

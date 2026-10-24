@@ -774,6 +774,8 @@ function Locale_Ordinal_Words_Text
    begin
       if Locale = "en" then
          return Ordinal_Words_Text (Value);
+      elsif Locale = "uk" and then Uk_Round_Ordinal (Value) /= "" then
+         return Uk_Round_Ordinal (Value);
       elsif Direct_Text'Length > 0 then
          return Direct_Text;
       elsif Base'Length = 0 then

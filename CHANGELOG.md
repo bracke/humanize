@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+* Ordinal words: Ukrainian round hundreds, thousands and millions are words
+  ("трьохсотий", "п’ятитисячний", "двохмільйонний"), and their thousands agree
+  ("дві тисячі трьохсотий", "двадцять дві тисячі перший", was "два тисячі",
+  "двадцять два тисяч"); Russian 200 .. 900 are ordinals ("трехсотый", where
+  CLDR 48's rules give the cardinal "триста"); Polish compound round thousands
+  keep the numeral (CLDR 48 splits them: "dwudziesto dwoma tysięczny").
+
 * More localized labels: the rest of the domain families' labels (counts,
   states, thresholds, resources, forms, tables, …), their options overloads
   (the English "[surface severity tone]" prefix kept around the localized

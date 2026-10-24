@@ -6,6 +6,47 @@ function Locale_Long_Word
    Value  : Long_Long_Integer)
    return String
 is
+   --  A count standing for Count's plural form, as the scale words choose it
+   --  (1, 2 .. 4, more): Russian and Ukrainian 21 takes the singular and 22 the
+   --  2 .. 4 form ("двадцять дві тисячі"), Polish 22 the 2 .. 4 form only.
+   function Plural_Count (Locale : String; Count : Natural) return Natural is
+   begin
+      if Locale in "ru" | "uk" then
+         return
+           (if Count mod 10 = 1 and then Count mod 100 /= 11 then 1
+            elsif Count mod 10 in 2 .. 4 and then Count mod 100 not in 12 .. 14 then 2
+            else 5);
+      elsif Locale = "pl" then
+         return
+           (if Count = 1 then 1
+            elsif Count mod 10 in 2 .. 4 and then Count mod 100 not in 12 .. 14 then 2
+            else 5);
+      else
+         return Count;
+      end if;
+   end Plural_Count;
+
+   --  Words, Count's cardinal, with its last word feminine where thousands
+   --  need it: Ukrainian "одна", "дві", Russian "одна", "две".
+   function Feminine (Locale : String; Count : Natural; Words : String) return String is
+      function Ends_With (Tail : String) return Boolean is
+        (Words'Length >= Tail'Length and then Words (Words'Last - Tail'Length + 1 .. Words'Last) = Tail);
+      Odyn : constant String := U (16#43E#) & U (16#434#) & U (16#438#) & U (16#43D#);
+      Odna : constant String := U (16#43E#) & U (16#434#) & U (16#43D#) & U (16#430#);
+      Dva  : constant String := U (16#434#) & U (16#432#) & U (16#430#);
+   begin
+      if Locale not in "ru" | "uk" or else Count mod 100 in 11 .. 12 then
+         return Words;
+      elsif Count mod 10 = 1 and then Ends_With (Odyn) then
+         return Words (Words'First .. Words'Last - Odyn'Length) & Odna;
+      elsif Count mod 10 = 2 and then Ends_With (Dva) then
+         return Words (Words'First .. Words'Last - Dva'Length)
+           & (if Locale = "uk" then U (16#434#) & U (16#432#) & U (16#456#) else U (16#434#) & U (16#432#) & U (16#435#));
+      else
+         return Words;
+      end if;
+   end Feminine;
+
    type Segment_Array is array (Positive range <>) of Natural;
    Segments : Segment_Array (1 .. 6) := [others => 0];
    Length   : Natural := 0;
@@ -123,12 +164,15 @@ begin
          elsif Locale = "de" and then Index = 2 and then Segments (Index) = 1 then
             Append (Result, "eintausend");
          else
-            Append (Result, Locale_Hundred_Word (Locale, Segments (Index)));
+            Append
+              (Result,
+               (if Index = 2 then Feminine (Locale, Segments (Index), Locale_Hundred_Word (Locale, Segments (Index)))
+                else Locale_Hundred_Word (Locale, Segments (Index))));
             if Index > 1 then
                Append
                  (Result,
                   " " & Locale_Scale_Word
-                    (Locale, Index - 1, Segments (Index)));
+                    (Locale, Index - 1, Plural_Count (Locale, Segments (Index))));
             end if;
          end if;
       end if;
