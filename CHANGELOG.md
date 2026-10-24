@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+* Windows builds humanize as a plain static library, not a standalone one:
+  the partial link of a standalone library left its unwind table corrupt
+  (entries at wrong offsets, some spanning other code), so an exception
+  traceback could crash a Windows program with a bare segfault, depending on
+  link layout. files' test suite hit it at three different tests.
+
 * Duration labels speak the locale: Countdown, SLA_Window, Next_Window,
   Interval, Age, Stale_For, Backup_Age, ETA ("seit 2 Tagen veraltet",
   "в течение 3 дней"), and Expires_In, Retry_In, Modified_Ago, Synced_Ago
