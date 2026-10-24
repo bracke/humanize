@@ -6,6 +6,9 @@ procedure Locale_Zh (Target : in out Catalog_Text) is
    begin
       Add (Target, "zh", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count", "全部{total}个{other}");
    P ("filtered_count.none", "没有匹配的{other}");
@@ -715,4 +718,6 @@ begin
    P ("number.over", "超过{value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_Zh;

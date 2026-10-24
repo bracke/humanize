@@ -6,6 +6,9 @@ procedure Locale_Eo (Target : in out Catalog_Text) is
    begin
       Add (Target, "eo", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count", "ĉiuj {total} {total, plural, one {{one}} other {{other}}}");
    P ("filtered_count.none", "neniuj kongruaj {other}");
@@ -771,4 +774,6 @@ begin
    P ("number.over", "pli ol {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_Eo;

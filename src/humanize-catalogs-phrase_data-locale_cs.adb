@@ -6,6 +6,9 @@ procedure Locale_Cs (Target : in out Catalog_Text) is
    begin
       Add (Target, "cs", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count",
       "celkem {total} {total, plural, one {{one}} few {{few}} many "
@@ -899,4 +902,6 @@ begin
    P ("number.over", "přes {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_Cs;

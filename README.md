@@ -66,7 +66,9 @@ Focused runnable examples are also provided for
 [`examples/ui_labels_demo.adb`](examples/ui_labels_demo.adb),
 [`examples/security_data_demo.adb`](examples/security_data_demo.adb),
 [`examples/workflow_ops_demo.adb`](examples/workflow_ops_demo.adb), and
-[`examples/product_details_demo.adb`](examples/product_details_demo.adb), plus
+[`examples/product_details_demo.adb`](examples/product_details_demo.adb),
+[`examples/domain_labels_demo.adb`](examples/domain_labels_demo.adb) for one
+localized domain label per family, in German, plus
 [`examples/public_surface_demo.adb`](examples/public_surface_demo.adb) for
 focused child-package imports.
 [`examples/phrase_review_data.adb`](examples/phrase_review_data.adb) writes the

@@ -1359,23 +1359,7 @@ package body Humanize.Durations.Formatting is
       Total   : Positive;
       Width   : Positive := 10)
       return Humanize.Status.Text_Result
-   is
-      pragma Unreferenced (Context);
-      Filled : constant Standard.Natural := Standard.Natural'Min (Width, Done * Width / Total);
-      Percent : constant Standard.Natural := Standard.Natural'Min (100, Done * 100 / Total);
-      Text : Unbounded_String;
-   begin
-      Append (Text, "[");
-      for Index in 1 .. Width loop
-         Append (Text, (if Index <= Filled then "#" else "-"));
-      end loop;
-      Append
-        (Text, "] " & No_Space (Standard.Natural'Image (Percent)) & "%");
-      return
-        (Status => Humanize.Status.Ok,
-         Text => Text,
-         Key => Humanize.Message_Keys.No_Message);
-   end Progress_Bar;
+   is separate;
 
    function Accessible_Progress
      (Context : Humanize.Contexts.Context;

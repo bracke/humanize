@@ -204,6 +204,24 @@ parts wrap a rendered message `{text}`: `frame.detail` "({detail})",
 ", retry in {time}". The other `Cross_Domain` labels (diff trees, checksums,
 file metadata, terminal layouts) stay English, as their parsers read them.
 
+## Domain labels
+
+Thirty domain families (Accounts, Attachments, Badges, Builds, Changes,
+Comments, Comparisons, Data_Quality, Deployments, Diagnostics, Endpoints,
+Events, Forms, Markup, Media, Moderation, Navigation,
+Notification_Preferences, Notifications, Payments, Permissions, Resources,
+Schema, Search, Secrets, Tables, Tasks, Thresholds, Versions, Workflows) have
+a `Localized` child: each of its 320 functions is the parent's of the same
+name with a Context first, rendering `label.<family>.<function>` (e.g.
+`label.payments.invoice_label`). The arguments are the parent's, lowercased:
+text arguments verbatim (`{name}`), counts as numbers and plurals, and enum
+arguments as selects on the value's lowercase name, the last value in
+`other`. A locale without the key, and every input the parent rejects, gets
+the parent's English. The English templates were derived from the parent's
+own output, and a test checks that every one renders to exactly that output.
+Labels that compute a number from their counts (a net change, characters
+left) stay English, as a template could only see the inputs.
+
 ## Durations
 
 `Humanize.Durations`' labels around a length of time (Countdown,

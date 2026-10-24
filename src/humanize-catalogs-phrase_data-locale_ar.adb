@@ -6,6 +6,10 @@ procedure Locale_Ar (Target : in out Catalog_Text) is
    begin
       Add (Target, "ar", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
+   procedure Labels_3 is separate;
 begin
    P ("all_count",
       "الكل: {total} {total, plural, zero {{zero}} one {{one}} two "
@@ -973,4 +977,7 @@ begin
    P ("number.over", "أكثر من {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
+   Labels_3;
 end Locale_Ar;

@@ -6,6 +6,9 @@ procedure Locale_De (Target : in out Catalog_Text) is
    begin
       Add (Target, "de", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count", "alle {total} {total, plural, one {{one}} other {{other}}}");
    P ("filtered_count.none", "keine passenden {other}");
@@ -782,4 +785,6 @@ begin
    P ("number.over", "über {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_De;

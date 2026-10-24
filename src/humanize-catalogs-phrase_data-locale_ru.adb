@@ -6,6 +6,10 @@ procedure Locale_Ru (Target : in out Catalog_Text) is
    begin
       Add (Target, "ru", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
+   procedure Labels_3 is separate;
 begin
    P ("all_count",
       "всего {total} {total, plural, one {{one}} few {{few}} many "
@@ -950,4 +954,7 @@ begin
    P ("number.over", "более {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
+   Labels_3;
 end Locale_Ru;

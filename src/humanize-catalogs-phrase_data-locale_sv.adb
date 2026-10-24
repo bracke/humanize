@@ -6,6 +6,9 @@ procedure Locale_Sv (Target : in out Catalog_Text) is
    begin
       Add (Target, "sv", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count", "alla {total} {total, plural, one {{one}} other {{other}}}");
    P ("filtered_count.none", "inga {other} matchar");
@@ -777,4 +780,6 @@ begin
    P ("number.over", "över {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_Sv;

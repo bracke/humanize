@@ -223,6 +223,41 @@ service (de) : API: eingeschränkte Leistung
 network (de) : api.example.com: Zeitüberschreitung, neuer Versuch in 30 s
 ```
 
+For `./examples/bin/domain_labels_demo`:
+
+```domain-labels-demo-output
+accounts : plain: eingeladenes Konto
+attachments : Bildanhang
+badges : plain: neues Badge (Info)
+builds : Artefakt fehlt
+changes : plain unverändert, aktiviert
+comments : plain hat kommentiert
+comparisons : plain: verschlechtert
+data_quality : doppelter Datensatz
+deployments : Artefakt hochgeladen
+diagnostics : plain: fehlgeschlagen (3 Sekunden)
+endpoints : IPv4-Adresse
+events : zugesagt
+forms : plain (Pflichtfeld)
+markup : plain: geringer Kontrast
+media : Video
+moderation : plain: Einspruch, Meldung gesichtet
+navigation : Menüeintrag
+notification_preferences : wichtige Warnmeldungen
+notifications : plain hat geantwortet
+payments : Rechnung plain: offen
+permissions : plain: Rolle Administrator erteilt
+resources : geringe Auslastung
+schema : Array aus 3 Ganzzahlen
+search : plain, 3 Ergebnisse, ausgewählt
+secrets : Wert maskiert
+tables : Zeile 3, Spalte 3, bearbeitet
+tasks : zugewiesen an plain
+thresholds : Untergrenze
+versions : 3 Commits voraus, 3 Commits zurück
+workflows : wartet auf Genehmigung durch plain
+```
+
 For `./examples/bin/ui_labels_demo`:
 
 ```ui-labels-demo-output

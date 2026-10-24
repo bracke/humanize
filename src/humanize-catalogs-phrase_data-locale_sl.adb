@@ -6,6 +6,9 @@ procedure Locale_Sl (Target : in out Catalog_Text) is
    begin
       Add (Target, "sl", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count",
       "skupaj {total} {total, plural, one {{one}} two {{two}} few {{few}} "
@@ -852,4 +855,6 @@ begin
    P ("number.over", "več kot {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_Sl;

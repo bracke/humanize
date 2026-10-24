@@ -333,13 +333,28 @@ spec = "src/humanize-endpoints.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Endpoints.Localized"
+spec = "src/humanize-endpoints-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Resources"
 spec = "src/humanize-resources.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Resources.Localized"
+spec = "src/humanize-resources-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Versions"
 spec = "src/humanize-versions.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Versions.Localized"
+spec = "src/humanize-versions-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -358,8 +373,18 @@ spec = "src/humanize-markup.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Markup.Localized"
+spec = "src/humanize-markup-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Secrets"
 spec = "src/humanize-secrets.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Secrets.Localized"
+spec = "src/humanize-secrets-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -368,8 +393,18 @@ spec = "src/humanize-schema.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Schema.Localized"
+spec = "src/humanize-schema-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Diagnostics"
 spec = "src/humanize-diagnostics.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Diagnostics.Localized"
+spec = "src/humanize-diagnostics-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -378,8 +413,18 @@ spec = "src/humanize-thresholds.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Thresholds.Localized"
+spec = "src/humanize-thresholds-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Workflows"
 spec = "src/humanize-workflows.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Workflows.Localized"
+spec = "src/humanize-workflows-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -388,8 +433,18 @@ spec = "src/humanize-changes.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Changes.Localized"
+spec = "src/humanize-changes-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Tables"
 spec = "src/humanize-tables.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Tables.Localized"
+spec = "src/humanize-tables-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -398,8 +453,18 @@ spec = "src/humanize-forms.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Forms.Localized"
+spec = "src/humanize-forms-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Navigation"
 spec = "src/humanize-navigation.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Navigation.Localized"
+spec = "src/humanize-navigation-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -408,8 +473,18 @@ spec = "src/humanize-badges.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Badges.Localized"
+spec = "src/humanize-badges-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Notifications"
 spec = "src/humanize-notifications.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Notifications.Localized"
+spec = "src/humanize-notifications-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -418,8 +493,18 @@ spec = "src/humanize-search.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Search.Localized"
+spec = "src/humanize-search-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Comments"
 spec = "src/humanize-comments.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Comments.Localized"
+spec = "src/humanize-comments-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -428,8 +513,18 @@ spec = "src/humanize-tasks.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Tasks.Localized"
+spec = "src/humanize-tasks-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Attachments"
 spec = "src/humanize-attachments.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Attachments.Localized"
+spec = "src/humanize-attachments-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -438,8 +533,18 @@ spec = "src/humanize-events.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Events.Localized"
+spec = "src/humanize-events-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Payments"
 spec = "src/humanize-payments.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Payments.Localized"
+spec = "src/humanize-payments-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -468,6 +573,11 @@ spec = "src/humanize-comparisons.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Comparisons.Localized"
+spec = "src/humanize-comparisons-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Cross_Domain"
 spec = "src/humanize-cross_domain.ads"
 area = "domain"
@@ -478,8 +588,18 @@ spec = "src/humanize-moderation.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Moderation.Localized"
+spec = "src/humanize-moderation-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Accounts"
 spec = "src/humanize-accounts.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Accounts.Localized"
+spec = "src/humanize-accounts-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -488,8 +608,18 @@ spec = "src/humanize-deployments.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Deployments.Localized"
+spec = "src/humanize-deployments-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Data_Quality"
 spec = "src/humanize-data_quality.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Data_Quality.Localized"
+spec = "src/humanize-data_quality-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -498,8 +628,18 @@ spec = "src/humanize-media.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Media.Localized"
+spec = "src/humanize-media-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Notification_Preferences"
 spec = "src/humanize-notification_preferences.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Notification_Preferences.Localized"
+spec = "src/humanize-notification_preferences-localized.ads"
 area = "domain"
 
 [[unit]]
@@ -508,8 +648,18 @@ spec = "src/humanize-permissions.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Permissions.Localized"
+spec = "src/humanize-permissions-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Builds"
 spec = "src/humanize-builds.ads"
+area = "domain"
+
+[[unit]]
+name = "Humanize.Builds.Localized"
+spec = "src/humanize-builds-localized.ads"
 area = "domain"
 
 [[unit]]

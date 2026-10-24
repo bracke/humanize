@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+* Domain labels speak the locale: 320 labels across thirty families
+  (payments, builds, deployments, comments, tasks, schema, search, markup and
+  more) have `Humanize.<Family>.Localized` twins taking a context
+  ("Rechnung INV-7: überfällig"), translated in every shipped locale and falling
+  back to the English for unknown keys and rejected inputs. Phrase keys can
+  carry their own select choices (`kind=a/b/c`), so `Parsing.Phrases` reads
+  the labels back. Progress_Bar writes the locale's percentage ("30 %").
+
 * Ordinal words: Czech and Slovak compounds (both parts ordinal, which the
   tables cannot build) and Lithuanian round hundreds and thousands (CLDR 48
   leaves the stem bare: "šimt") are numerals now; Ukrainian teens are words

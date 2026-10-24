@@ -623,3 +623,183 @@ area = "localized-cross-domain"
 unit = "Humanize.Cross_Domain.Localized"
 example = "examples/system_status_demo.adb"
 usecase = "render a network diagnostic in German"
+
+[[coverage]]
+area = "localized-accounts"
+unit = "Humanize.Accounts.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a accounts label in German"
+
+[[coverage]]
+area = "localized-attachments"
+unit = "Humanize.Attachments.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a attachments label in German"
+
+[[coverage]]
+area = "localized-badges"
+unit = "Humanize.Badges.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a badges label in German"
+
+[[coverage]]
+area = "localized-builds"
+unit = "Humanize.Builds.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a builds label in German"
+
+[[coverage]]
+area = "localized-changes"
+unit = "Humanize.Changes.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a changes label in German"
+
+[[coverage]]
+area = "localized-comments"
+unit = "Humanize.Comments.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a comments label in German"
+
+[[coverage]]
+area = "localized-comparisons"
+unit = "Humanize.Comparisons.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a comparisons label in German"
+
+[[coverage]]
+area = "localized-data-quality"
+unit = "Humanize.Data_Quality.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a data quality label in German"
+
+[[coverage]]
+area = "localized-deployments"
+unit = "Humanize.Deployments.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a deployments label in German"
+
+[[coverage]]
+area = "localized-diagnostics"
+unit = "Humanize.Diagnostics.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a diagnostics label in German"
+
+[[coverage]]
+area = "localized-endpoints"
+unit = "Humanize.Endpoints.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a endpoints label in German"
+
+[[coverage]]
+area = "localized-events"
+unit = "Humanize.Events.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a events label in German"
+
+[[coverage]]
+area = "localized-forms"
+unit = "Humanize.Forms.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a forms label in German"
+
+[[coverage]]
+area = "localized-markup"
+unit = "Humanize.Markup.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a markup label in German"
+
+[[coverage]]
+area = "localized-media"
+unit = "Humanize.Media.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a media label in German"
+
+[[coverage]]
+area = "localized-moderation"
+unit = "Humanize.Moderation.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a moderation label in German"
+
+[[coverage]]
+area = "localized-navigation"
+unit = "Humanize.Navigation.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a navigation label in German"
+
+[[coverage]]
+area = "localized-notification-preferences"
+unit = "Humanize.Notification_Preferences.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a notification preferences label in German"
+
+[[coverage]]
+area = "localized-notifications"
+unit = "Humanize.Notifications.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a notifications label in German"
+
+[[coverage]]
+area = "localized-payments"
+unit = "Humanize.Payments.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a payments label in German"
+
+[[coverage]]
+area = "localized-permissions"
+unit = "Humanize.Permissions.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a permissions label in German"
+
+[[coverage]]
+area = "localized-resources"
+unit = "Humanize.Resources.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a resources label in German"
+
+[[coverage]]
+area = "localized-schema"
+unit = "Humanize.Schema.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a schema label in German"
+
+[[coverage]]
+area = "localized-search"
+unit = "Humanize.Search.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a search label in German"
+
+[[coverage]]
+area = "localized-secrets"
+unit = "Humanize.Secrets.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a secrets label in German"
+
+[[coverage]]
+area = "localized-tables"
+unit = "Humanize.Tables.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a tables label in German"
+
+[[coverage]]
+area = "localized-tasks"
+unit = "Humanize.Tasks.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a tasks label in German"
+
+[[coverage]]
+area = "localized-thresholds"
+unit = "Humanize.Thresholds.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a thresholds label in German"
+
+[[coverage]]
+area = "localized-versions"
+unit = "Humanize.Versions.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a versions label in German"
+
+[[coverage]]
+area = "localized-workflows"
+unit = "Humanize.Workflows.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a workflows label in German"

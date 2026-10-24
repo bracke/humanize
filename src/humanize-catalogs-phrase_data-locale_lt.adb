@@ -6,6 +6,9 @@ procedure Locale_Lt (Target : in out Catalog_Text) is
    begin
       Add (Target, "lt", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count",
       "iš viso {total} {total, plural, one {{one}} few {{other}} many "
@@ -853,4 +856,6 @@ begin
    P ("number.over", "daugiau nei {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_Lt;

@@ -6,6 +6,9 @@ procedure Locale_Sw (Target : in out Catalog_Text) is
    begin
       Add (Target, "sw", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count", "jumla: {total, plural, one {{one}} other {{other}}} {total}");
    P ("filtered_count.none", "hakuna {other} zinazolingana");
@@ -762,4 +765,6 @@ begin
    P ("number.over", "zaidi ya {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_Sw;

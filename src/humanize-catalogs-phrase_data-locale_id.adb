@@ -6,6 +6,9 @@ procedure Locale_Id (Target : in out Catalog_Text) is
    begin
       Add (Target, "id", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count", "semua {total} {other}");
    P ("filtered_count.none", "tidak ada {other} yang cocok");
@@ -718,4 +721,6 @@ begin
    P ("number.over", "lebih dari {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_Id;

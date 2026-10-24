@@ -35,5 +35,5 @@ usecase = "Support facades whose concrete backends carry representative performa
 
 [[category]]
 category = "trivial-label-facade"
-max_count = 25
+max_count = 35
 usecase = "Small deterministic label facades covered by broader domain smoke paths."

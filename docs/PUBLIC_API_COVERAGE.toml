@@ -63,7 +63,7 @@ usecase = "deterministic reusable phrase keys, severities, statuses, summaries, 
 
 [[area]]
 name = "domain"
-units = 38
+units = 68
 docs = 1
 tests = 1
 examples = 1

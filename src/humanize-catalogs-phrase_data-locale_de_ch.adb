@@ -6,6 +6,8 @@ procedure Locale_De_Ch (Target : in out Catalog_Text) is
    begin
       Add (Target, "de-CH", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
 begin
    P ("file_size_comparison.same", "{current} ist genauso gross wie {baseline}");
    P ("file_size_comparison.larger", "{current} ist {quantity} grösser als {baseline}");
@@ -26,4 +28,5 @@ begin
    P ("number.range_exclusive", "grösser als {low} und kleiner als {high}");
    P ("number.range_high_inclusive", "grösser als {low} und höchstens {high}");
    P ("geo.outside_box", "ausserhalb des Begrenzungsrahmens");
+   Labels_1;
 end Locale_De_Ch;

@@ -13,6 +13,7 @@ project Examples is
       "color_demo.adb",
       "domain_demo.adb",
       "system_status_demo.adb",
+      "domain_labels_demo.adb",
       "ui_labels_demo.adb",
       "security_data_demo.adb",
       "workflow_ops_demo.adb",

@@ -6,6 +6,9 @@ procedure Locale_Ro (Target : in out Catalog_Text) is
    begin
       Add (Target, "ro", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count",
       "{total} {total, plural, one {{one}} few {{few}} other {de {other}}} "
@@ -827,4 +830,6 @@ begin
    P ("number.over", "peste {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_Ro;

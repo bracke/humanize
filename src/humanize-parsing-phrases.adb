@@ -14,8 +14,17 @@ package body Humanize.Parsing.Phrases is
    --  is that text.
    Wildcard : constant Character := Character'Val (16#1A#);
 
+   --  A select argument of the key table is its name, or its name and own
+   --  choices ("kind=open_invoice/paid_invoice"); Select_Name is the name.
+   function Select_Name (Argument : String) return String is
+     (if Ada.Strings.Fixed.Index (Argument, "=") = 0 then Argument
+      else Argument (Argument'First .. Ada.Strings.Fixed.Index (Argument, "=") - 1));
+
+   function Named_Choices (Argument : String) return String;
+
    function Choices_For (Argument : String) return String is
-     (if Argument = "severity" then "error,warning,info"
+     (if Ada.Strings.Fixed.Index (Argument, "=") /= 0 then Named_Choices (Argument)
+      elsif Argument = "severity" then "error,warning,info"
       elsif Argument = "domain" then "queue,job,run,cache,sync,import,export"
       elsif Argument = "state" then "queued,running,waiting,paused,complete,failed,stale,skipped"
       elsif Argument = "phase" then "early,mid,late"
@@ -27,6 +36,17 @@ package body Humanize.Parsing.Phrases is
       then "nominative,accusative,dative,genitive,instrumental,locative,prepositional,elative,illative,"
            & "partitive,oblique,terminative,translative,vocative"
       else "");
+
+   function Named_Choices (Argument : String) return String is
+      Result : String := Argument (Ada.Strings.Fixed.Index (Argument, "=") + 1 .. Argument'Last);
+   begin
+      for C of Result loop
+         if C = '/' then
+            C := ',';
+         end if;
+      end loop;
+      return Result;
+   end Named_Choices;
 
    --  The Index-th comma-separated item of List (1-based), and their count.
    function Item_Count (List : String) return Natural is
@@ -215,7 +235,7 @@ package body Humanize.Parsing.Phrases is
             Selection := Humanize.Selections.With_Arg (Selection, Item (Numbers, I), Pool.Values (Picks (I)));
          end loop;
          for I in 1 .. S_Count loop
-            Selection := Humanize.Selections.With_Arg (Selection, Item (Selects, I), Choice (I));
+            Selection := Humanize.Selections.With_Arg (Selection, Select_Name (Item (Selects, I)), Choice (I));
          end loop;
          declare
             Rendered : constant Humanize.Status.Text_Result := Humanize.I18N_Rendering.Render (Context, Selection);
@@ -238,7 +258,7 @@ package body Humanize.Parsing.Phrases is
          end loop;
          Result.Choice_Count := S_Count;
          for I in 1 .. S_Count loop
-            Result.Choice_Names (I) := To_Unbounded_String (Item (Selects, I));
+            Result.Choice_Names (I) := To_Unbounded_String (Select_Name (Item (Selects, I)));
             Result.Choices (I) := To_Unbounded_String (Choice (I));
          end loop;
          if Decimal /= 0 and then Result.Text_Count < Max_Values then
@@ -302,7 +322,7 @@ package body Humanize.Parsing.Phrases is
               (Selection, Item (Numbers, I), Long_Long_Integer (9_000_000 + I * 1_111));
          end loop;
          for I in 1 .. S_Count loop
-            Selection := Humanize.Selections.With_Arg (Selection, Item (Selects, I), Choice (I));
+            Selection := Humanize.Selections.With_Arg (Selection, Select_Name (Item (Selects, I)), Choice (I));
          end loop;
          declare
             Rendered : constant Humanize.Status.Text_Result := Humanize.I18N_Rendering.Render (Context, Selection);

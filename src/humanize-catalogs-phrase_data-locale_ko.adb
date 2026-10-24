@@ -6,6 +6,9 @@ procedure Locale_Ko (Target : in out Catalog_Text) is
    begin
       Add (Target, "ko", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count", "전체 {other} {total}개");
    P ("filtered_count.none", "일치하는 {other} 없음");
@@ -722,4 +725,6 @@ begin
    P ("number.over", "{value} 이상");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_Ko;

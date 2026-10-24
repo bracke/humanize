@@ -4,8 +4,8 @@
 # unit_class rows classify every public package in the allowlist.
 
 [summary]
-total_units = 103
-primary_facades = 55
+total_units = 133
+primary_facades = 85
 specialized_child_facades = 42
 support_type_facades = 6
 
@@ -426,13 +426,31 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Endpoints.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Resources"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Resources.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Versions"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Versions.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -456,7 +474,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Markup.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Secrets"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Secrets.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -468,7 +498,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Schema.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Diagnostics"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Diagnostics.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -480,7 +522,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Thresholds.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Workflows"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Workflows.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -492,7 +546,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Changes.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Tables"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Tables.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -504,7 +570,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Forms.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Navigation"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Navigation.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -516,7 +594,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Badges.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Notifications"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Notifications.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -528,7 +618,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Search.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Comments"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Comments.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -540,7 +642,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Tasks.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Attachments"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Attachments.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -552,7 +666,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Events.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Payments"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Payments.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -588,6 +714,12 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Comparisons.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Cross_Domain"
 area = "domain"
 class = "primary-facade"
@@ -600,7 +732,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Moderation.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Accounts"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Accounts.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -612,7 +756,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Deployments.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Data_Quality"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Data_Quality.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -624,7 +780,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Media.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Notification_Preferences"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Notification_Preferences.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
@@ -636,7 +804,19 @@ class = "primary-facade"
 reason = "direct caller-facing Humanize facade"
 
 [[unit_class]]
+name = "Humanize.Permissions.Localized"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
 name = "Humanize.Builds"
+area = "domain"
+class = "primary-facade"
+reason = "direct caller-facing Humanize facade"
+
+[[unit_class]]
+name = "Humanize.Builds.Localized"
 area = "domain"
 class = "primary-facade"
 reason = "direct caller-facing Humanize facade"

@@ -6,6 +6,9 @@ procedure Locale_Vi (Target : in out Catalog_Text) is
    begin
       Add (Target, "vi", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("all_count", "tất cả {total} {other}");
    P ("filtered_count.none", "không có {other} nào khớp");
@@ -730,4 +733,6 @@ begin
    P ("number.over", "hơn {value}");
    P ("number.plus_minus", "{value} ± {delta}");
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
+   Labels_1;
+   Labels_2;
 end Locale_Vi;
