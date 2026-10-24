@@ -206,6 +206,10 @@ package body Humanize.I18N_Rendering is
       end case;
    end Render_Into;
 
+   --  Whether Key is a domain label's (humanize.phrase.label.*).
+   function Is_Label (Key : String) return Boolean is
+     (Key'Length > 22 and then Key (Key'First .. Key'First + 21) = "humanize.phrase.label.");
+
    function Phrase_Or
      (Context   : Humanize.Contexts.Context;
       Selection : Humanize.Selections.Message_Selection;
@@ -225,8 +229,13 @@ package body Humanize.I18N_Rendering is
                Plain    : constant Humanize.Status.Text_Result :=
                  Render (Humanize.Contexts.Create (Humanize.Contexts.Runtime (Context), "en"), Selection);
             begin
+               --  the regional template differs, or -- for a domain label, whose
+               --  English template is the formatter's English -- the arguments do
+               --  (a composed label's regional words, "greyish")
                if Regional.Status = Humanize.Status.Ok and then Plain.Status = Humanize.Status.Ok
-                 and then Regional.Text /= Plain.Text
+                 and then (Regional.Text /= Plain.Text
+                           or else (Is_Label (Humanize.Selections.Catalog_Key (Selection))
+                                    and then Plain.Text /= English.Text))
                then
                   return Regional;
                end if;

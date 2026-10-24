@@ -25,20 +25,21 @@ is
       return "";
    end Entry_Of;
 
-   --  The locale's separator between parts: label.parts with markers.
-   function Separator return String is
+   --  The locale's separator in Join (label.parts, label.groups), learnt by
+   --  rendering it with markers.
+   function Separator (Join : String := "label.parts") return String is
       Rendered : constant Humanize.Status.Text_Result :=
         Humanize.I18N_Rendering.Render
           (Context,
            Humanize.Selections.With_Arg
-             (Humanize.Selections.With_Arg (Humanize.Selections.Phrase ("label.parts"), "first", [ASCII.SOH]),
+             (Humanize.Selections.With_Arg (Humanize.Selections.Phrase (Join), "first", [ASCII.SOH]),
               "second", [ASCII.STX]));
       Shown : constant String := To_String (Rendered.Text);
       First : constant Natural := Ada.Strings.Fixed.Index (Shown, [ASCII.SOH]);
       Last  : constant Natural := Ada.Strings.Fixed.Index (Shown, [ASCII.STX]);
    begin
       return (if Rendered.Status = Humanize.Status.Ok and then First > 0 and then Last > First + 1
-              then Shown (First + 1 .. Last - 1) else ", ");
+              then Shown (First + 1 .. Last - 1) elsif Join = "label.parts" then ", " else "; ");
    end Separator;
 
    Result : Phrase_Parse_Result := (Status => Humanize.Status.Ok, Name => To_Unbounded_String (Name), others => <>);
@@ -80,9 +81,10 @@ is
       return False;
    end Read_Piece;
 
-   --  Every piece of Pieces (joined by the separator) read; False at the first that is not.
-   function Read_Pieces (Pieces : String) return Boolean is
-      Join  : constant String := Separator;
+   --  Every piece of Pieces (joined by the separator of Joiner) read; False at
+   --  the first that is not.
+   function Read_Pieces (Pieces : String; Joiner : String := "label.parts") return Boolean is
+      Join  : constant String := Separator (Joiner);
       Start : Positive := Pieces'First;
       Stop  : Natural;
    begin
@@ -139,5 +141,11 @@ begin
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
       end;
    end if;
-   return (if Read_Pieces (Text) then Result else (Status => Humanize.Status.Invalid_Argument, others => <>));
+   if Read_Pieces (Text) then
+      return Result;
+   end if;
+   --  groups of segments (a shape-keyed summary: "4.5:1 normal-text contrast; Lc 65, …")
+   Result := (Status => Humanize.Status.Ok, Name => To_Unbounded_String (Name), others => <>);
+   return (if Read_Pieces (Text, "label.groups") then Result
+           else (Status => Humanize.Status.Invalid_Argument, others => <>));
 end Parse_Parts;

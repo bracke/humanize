@@ -19,6 +19,10 @@ procedure Perf_Smoke is
    Max_Parse_Seconds : constant Duration := 18.0;
    Max_Text_Seconds : constant Duration := 10.0;
    Max_Domain_Seconds : constant Duration := 10.0;
+   --  Loading the catalogs: every locale (0.3 s here), and one language,
+   --  as an application loads them (0.02 s).
+   Max_All_Catalog_Seconds : constant Duration := 3.0;
+   Max_Language_Catalog_Seconds : constant Duration := 0.5;
 
    procedure Error (Message : String) is
    begin
@@ -35,6 +39,9 @@ procedure Perf_Smoke is
          Error (Label & " returned non-OK status");
       end if;
    end Check_Status;
+
+   --  Loading the catalogs, every locale and one language, against loose baselines.
+   procedure Run_Catalog_Check is separate;
 
    procedure Run_Format_Bucket
      (Context : Humanize.Contexts.Context;
@@ -72,6 +79,8 @@ begin
       Run_Text_Bucket (Text_Start, Text_Stop);
       Run_Domain_Bucket (Context, Domain_Start, Domain_Stop);
    end;
+
+   Run_Catalog_Check;
 
    if Total < Iterations * 36 then
       Error ("performance smoke total was unexpectedly small");

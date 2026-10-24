@@ -1,14 +1,15 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Fr)
 procedure Labels_4 is
 begin
+   P ("label.contrast.color_accessibility_summary.d_n_enhanced_contrast", "{v1}:{v2, number}, contraste renforcé");
    P ("label.models.perceptual_difference_label.oklab_delta_n_subtle_perceptual_difference",
       "OKLab delta {v1, number}, différence perceptuelle subtile");
-   P ("label.contrast.color_accessibility_summary.tritanopia_distinct", "tritanopie : couleurs distinctes");
+   P ("label.contrast.color_accessibility_summary.tritanopia_distinct", "tritanopie : couleurs distinctes");
    P ("label.contrast.alpha_contrast_label.n_n_normal_text_contrast_after_alpha_compositing",
       "{v1, number}:{v2, number}, contraste pour texte normal après "
       & "composition alpha");
    P ("label.contrast.color_accessibility_summary.protanopia_moderate_confusion_risk",
-      "protanopie : risque de confusion modéré");
+      "protanopie : risque de confusion modéré");
    P ("label.contrast.alpha_contrast_label.d_n_normal_text_contrast_after_alpha_compositing",
       "{v1}:{v2, number}, contraste pour texte normal après composition "
       & "alpha");
@@ -30,15 +31,15 @@ begin
       "{v1, number}:{v2, number}, contraste renforcé");
    P ("label.contrast.color_accessibility_summary.lc_n_excellent_light_text_on_dark_background",
       "Lc {v1, number}, excellent, texte clair sur fond foncé");
-   P ("label.contrast.color_accessibility_summary.deuteranopia_distinct", "deutéranopie : couleurs distinctes");
+   P ("label.contrast.color_accessibility_summary.deuteranopia_distinct", "deutéranopie : couleurs distinctes");
    P ("label.contrast.alpha_contrast_label.d_n_enhanced_contrast_after_alpha_compositing",
       "{v1}:{v2, number}, contraste renforcé après composition alpha");
    P ("label.models.perceptual_difference_label.oklab_delta_n_barely_perceptible",
       "OKLab delta {v1, number}, à peine perceptible");
    P ("label.models.color_difference_label.n_nearly_identical", "{v1, number} %, presque identique");
    P ("label.contrast.color_accessibility_summary.protanopia_low_confusion_risk",
-      "protanopie : risque de confusion faible");
-   P ("label.contrast.color_accessibility_summary.achromatopsia_distinct", "achromatopsie : couleurs distinctes");
+      "protanopie : risque de confusion faible");
+   P ("label.contrast.color_accessibility_summary.achromatopsia_distinct", "achromatopsie : couleurs distinctes");
    P ("label.palettes.palette_summary.n_colors",
       "{v1, plural, one {{v1, number} couleur} many {{v1, number} de "
       & "couleurs} other {{v1, number} couleurs}}");
@@ -47,7 +48,7 @@ begin
    P ("label.palettes.palette_roles.background_c_text_c_accent_c", "arrière-plan {v1}, texte {v2}, accent {v3}");
    P ("label.palettes.palette_harmony_label.triadic_palette", "palette triadique");
    P ("label.palettes.palette_contrast_suggestion.best_contrast_c_on_c_at_d_n",
-      "meilleur contraste : {v1} sur {v2} ({v3}:{v4, number})");
+      "meilleur contraste : {v1} sur {v2} ({v3}:{v4, number})");
    P ("label.palettes.palette_accessibility_label.n_of_n_pairs_pass_normal_text_contrast",
       "{v1, number} sur {v2, plural, one {{v2, number} paire} many {{v2, "
       & "number} de paires} other {{v2, number} paires}} {v1, plural, one "
@@ -60,7 +61,7 @@ begin
       "{v1, plural, one {{v1, number} couleur} many {{v1, number} de "
       & "couleurs} other {{v1, number} couleurs}}, {v2, plural, one {{v2, "
       & "number} paire} many {{v2, number} de paires} other {{v2, number} "
-      & "paires}} : renforcé {v3, number}, normal {v4, number}, grand texte "
+      & "paires}} : renforcé {v3, number}, normal {v4, number}, grand texte "
       & "uniquement {v5, number}, échec {v6, number}");
    P ("label.palettes.palette_mood_label.balanced", "équilibrée");
    P ("label.palettes.palette_mood_label.vibrant", "éclatante");
@@ -75,7 +76,7 @@ begin
    P ("label.palettes.palette_mood_label.subtle", "subtile");
    P ("label.palettes.palette_summary.high_contrast_spread", "écart de contraste élevé");
    P ("label.palettes.palette_contrast_suggestion.best_contrast_c_on_c_at_n_n",
-      "meilleur contraste : {v1} sur {v2} ({v3, number}:{v4, number})");
+      "meilleur contraste : {v1} sur {v2} ({v3, number}:{v4, number})");
    P ("label.palettes.palette_mood_label.neutral_mood", "ambiance neutre");
    P ("label.palettes.palette_summary.mostly_purple", "majoritairement violet");
    P ("label.palettes.palette_harmony_label.complementary_palette", "palette complémentaire");
@@ -188,7 +189,7 @@ begin
       "{state, select, none {symbole de code} other {symbole de code "
       & "{symbol}}}");
    P ("label.privacy.address_metadata_label",
-      "métadonnées d’adresse : {present, plural, =0 {aucun champ "
+      "métadonnées d’adresse : {present, plural, =0 {aucun champ "
       & "présent} one {{present, number} champ présent} many {{present, "
       & "number} de champs présents} other {{present, number} champs "
       & "présents}}, {missing, plural, =0 {aucun champ manquant} one "
@@ -201,23 +202,24 @@ begin
    P ("label.endpoints.url_component_summary",
       "{state, select, empty {URL vide} none {URL sans composant reconnu} "
       & "other {URL avec {count, plural, one {{count, number} composant} many "
-      & "{{count, number} de composants} other {{count, number} composants}} : "
+      & "{{count, number} de composants} other {{count, number} composants}} : "
       & "{components}}}");
    P ("label.endpoints.query_summary",
       "{count, plural, =0 {aucun paramètre de requête} one {{count, number} "
       & "paramètre de requête} many {{count, number} de paramètres de "
       & "requête} other {{count, number} paramètres de requête}}");
    P ("label.endpoints.ip_address_label",
-      "{address} : {kind, select, ipv4_host {adresse IPv4 publique} ipv6_host "
-      & "{adresse IPv6 publique} private_network_host {adresse de réseau "
-      & "privé} localhost_host {hôte local} other {pas une adresse IP}}");
+      "{address} : {kind, select, ipv4_host {adresse IPv4 publique} "
+      & "ipv6_host {adresse IPv6 publique} private_network_host {adresse de "
+      & "réseau privé} localhost_host {hôte local} other {pas une adresse "
+      & "IP}}");
    P ("label.endpoints.cidr_label",
-      "{state, select, invalid {{cidr} : CIDR non valide} other {{cidr} : "
+      "{state, select, invalid {{cidr} : CIDR non valide} other {{cidr} : "
       & "{kind}, préfixe réseau {prefix}}}");
    P ("label.resources.utilization_label",
       "{used, number} sur {total, number} {unit} utilisés ({percent}, "
       & "{band})");
-   P ("label.resources.saturation_label", "{named, select, no {ressource} other {{name}}} : {percent}, {band}");
+   P ("label.resources.saturation_label", "{named, select, no {ressource} other {{name}}} : {percent}, {band}");
    P ("label.versions.version_label",
       "{state, select, both {version {version}, préversion {prerelease}, "
       & "build {build}} prerelease {version {version}, préversion "
@@ -229,7 +231,7 @@ begin
       & "{mise à niveau corrective} prerelease_change {changement de "
       & "préversion} build_metadata_change {changement des métadonnées de "
       & "build} downgrade {rétrogradation} other {changement de version "
-      & "inconnu}} : {from} -> {to}");
+      & "inconnu}} : {from} -> {to}");
    P ("label.versions.compatibility_range_label",
       "{kind, select, exact_range {exactement la version {version}} "
       & "minimum_range {version {version} ou plus récente} maximum_range "
@@ -254,8 +256,8 @@ begin
       & "{balise {name}}}");
    P ("label.markup.attribute_label",
       "{state, select, bare {attribut {name}} event {attribut de gestionnaire "
-      & "d’événement {name}} other {attribut {name} défini sur « {value} "
-      & "»}}");
+      & "d’événement {name}} other {attribut {name} défini sur "
+      & "« {value} »}}");
    P ("label.markup.content_type_label",
       "{kind, select, text_content {contenu texte} html_content {document "
       & "HTML} json_content {document JSON} xml_content {document XML} "
@@ -264,19 +266,19 @@ begin
       & "archive_content {contenu d’archive} binary_content {contenu binaire} "
       & "form_content {envoi de formulaire} other {contenu inconnu}} ({base})");
    P ("label.secrets.secret_label",
-      "{state, select, unset {{kind} : aucune valeur} hidden_value {{kind} : "
-      & "valeur cachée} masked_value {{kind} {shown}} fingerprint_only "
-      & "{{kind}, empreinte se terminant par {shown}} other {{kind} se "
-      & "terminant par {shown}}}");
+      "{state, select, unset {{kind} : aucune valeur} hidden_value "
+      & "{{kind} : valeur cachée} masked_value {{kind} {shown}} "
+      & "fingerprint_only {{kind}, empreinte se terminant par {shown}} other "
+      & "{{kind} se terminant par {shown}}}");
    P ("label.secrets.environment_secret_label",
-      "{state, select, unset {{name} ({kind}) : aucune valeur} other {{name} "
+      "{state, select, unset {{name} ({kind}) : aucune valeur} other {{name} "
       & "({kind}) se terminant par {shown}}}");
    P ("label.secrets.header_credential_label",
-      "{state, select, unset {en-tête d’identification {name} : aucune "
+      "{state, select, unset {en-tête d’identification {name} : aucune "
       & "valeur} other {{name} ({kind}) se terminant par {shown}}}");
    P ("label.secrets.fingerprint_label", "empreinte {algorithm} se terminant par {shown}");
    P ("label.secrets.safe_display_label",
-      "{state, select, not_set {{label} : non défini} redacted {{label} : "
+      "{state, select, not_set {{label} : non défini} redacted {{label} : "
       & "masqué} url_redacted {URL masquée} ip_redacted {adresse IP masquée} "
       & "path_ending {chemin de fichier se terminant par {shown}} at {{label} "
       & "sur {shown}} audit {{label} de longueur {length, number}, se terminant "
@@ -287,7 +289,7 @@ begin
       & "integer_field {entier} decimal_field {décimal} boolean_field "
       & "{booléen} date_field {date} date_time_field {date-heure} object_field "
       & "{objet} array_field {tableau} enum_field {énumération} binary_field "
-      & "{binaire} null_field {null} any_field {quelconque} other {inconnu}} : "
+      & "{binaire} null_field {null} any_field {quelconque} other {inconnu}} : "
       & "{state, select, deprecated_field {obsolète, } unknown_field {inconnu, "
       & "} read_only_field {lecture seule, } write_only_field {écriture seule, "
       & "} computed_field {calculé, } other {}}{presence, select, "

@@ -104,60 +104,60 @@ begin
           Humanize.Secrets.Localized.Sensitive_Value_Kind_Label (C, Kind =>
             Humanize.Secrets.Unknown_Sensitive_Value),
           Humanize.Secrets.Sensitive_Value_Kind_Label (Kind => Humanize.Secrets.Unknown_Sensitive_Value));
-   Check (Locale, "label.metrics.paragraph_count_summary", Plain,
+   Check (Locale, "label.metrics.paragraph_count_summary", Phrase,
           Humanize.Strings.Metrics.Localized.Paragraph_Count_Summary (C,
             "The quick brown fox jumps. It runs far away!" & ASCII.LF & ASCII.LF & "A second paragraph."),
           Humanize.Strings.Metrics.Paragraph_Count_Summary ("The quick brown fox jumps. It runs far away!" &
             ASCII.LF & ASCII.LF & "A second paragraph."));
-   Check (Locale, "label.metrics.paragraph_count_summary", Plain,
+   Check (Locale, "label.metrics.paragraph_count_summary", Phrase,
           Humanize.Strings.Metrics.Localized.Paragraph_Count_Summary (C, "One word."),
           Humanize.Strings.Metrics.Paragraph_Count_Summary ("One word."));
-   Check (Locale, "label.metrics.reading_time", Plain,
+   Check (Locale, "label.metrics.reading_time", Phrase,
           Humanize.Strings.Metrics.Localized.Reading_Time (C, "The quick brown fox jumps. It runs far away!" &
             ASCII.LF & ASCII.LF & "A second paragraph."),
           Humanize.Strings.Metrics.Reading_Time ("The quick brown fox jumps. It runs far away!" & ASCII.LF &
             ASCII.LF & "A second paragraph."));
-   Check (Locale, "label.metrics.reading_time", Plain,
+   Check (Locale, "label.metrics.reading_time", Phrase,
           Humanize.Strings.Metrics.Localized.Reading_Time (C, "One word."),
           Humanize.Strings.Metrics.Reading_Time ("One word."));
-   Check (Locale, "label.metrics.sentence_count_summary", Plain,
+   Check (Locale, "label.metrics.sentence_count_summary", Phrase,
           Humanize.Strings.Metrics.Localized.Sentence_Count_Summary (C,
             "The quick brown fox jumps. It runs far away!" & ASCII.LF & ASCII.LF & "A second paragraph."),
           Humanize.Strings.Metrics.Sentence_Count_Summary ("The quick brown fox jumps. It runs far away!" & ASCII.LF
             & ASCII.LF & "A second paragraph."));
-   Check (Locale, "label.metrics.sentence_count_summary", Plain,
+   Check (Locale, "label.metrics.sentence_count_summary", Phrase,
           Humanize.Strings.Metrics.Localized.Sentence_Count_Summary (C, "One word."),
           Humanize.Strings.Metrics.Sentence_Count_Summary ("One word."));
-   Check (Locale, "label.metrics.speaking_time", Plain,
+   Check (Locale, "label.metrics.speaking_time", Phrase,
           Humanize.Strings.Metrics.Localized.Speaking_Time (C, "The quick brown fox jumps. It runs far away!" &
             ASCII.LF & ASCII.LF & "A second paragraph."),
           Humanize.Strings.Metrics.Speaking_Time ("The quick brown fox jumps. It runs far away!" & ASCII.LF &
             ASCII.LF & "A second paragraph."));
-   Check (Locale, "label.metrics.speaking_time", Plain,
+   Check (Locale, "label.metrics.speaking_time", Phrase,
           Humanize.Strings.Metrics.Localized.Speaking_Time (C, "One word."),
           Humanize.Strings.Metrics.Speaking_Time ("One word."));
-   Check (Locale, "label.metrics.text_summary", Plain,
+   Check (Locale, "label.metrics.text_summary", Phrase,
           Humanize.Strings.Metrics.Localized.Text_Summary (C, "The quick brown fox jumps. It runs far away!" &
             ASCII.LF & ASCII.LF & "A second paragraph."),
           Humanize.Strings.Metrics.Text_Summary ("The quick brown fox jumps. It runs far away!" & ASCII.LF &
             ASCII.LF & "A second paragraph."));
-   Check (Locale, "label.metrics.text_summary", Plain,
+   Check (Locale, "label.metrics.text_summary", Phrase,
           Humanize.Strings.Metrics.Localized.Text_Summary (C, "One word."),
           Humanize.Strings.Metrics.Text_Summary ("One word."));
-   Check (Locale, "label.metrics.text_summary_with_options", Plain,
+   Check (Locale, "label.metrics.text_summary_with_options", Phrase,
           Humanize.Strings.Metrics.Localized.Text_Summary_With_Options (C,
             "The quick brown fox jumps. It runs far away!" & ASCII.LF & ASCII.LF & "A second paragraph."),
           Humanize.Strings.Metrics.Text_Summary_With_Options ("The quick brown fox jumps. It runs far away!" &
             ASCII.LF & ASCII.LF & "A second paragraph."));
-   Check (Locale, "label.metrics.text_summary_with_options", Plain,
+   Check (Locale, "label.metrics.text_summary_with_options", Phrase,
           Humanize.Strings.Metrics.Localized.Text_Summary_With_Options (C, "One word."),
           Humanize.Strings.Metrics.Text_Summary_With_Options ("One word."));
-   Check (Locale, "label.metrics.word_count_summary", Plain,
+   Check (Locale, "label.metrics.word_count_summary", Phrase,
           Humanize.Strings.Metrics.Localized.Word_Count_Summary (C, "The quick brown fox jumps. It runs far away!" &
             ASCII.LF & ASCII.LF & "A second paragraph."),
           Humanize.Strings.Metrics.Word_Count_Summary ("The quick brown fox jumps. It runs far away!" & ASCII.LF &
             ASCII.LF & "A second paragraph."));
-   Check (Locale, "label.metrics.word_count_summary", Plain,
+   Check (Locale, "label.metrics.word_count_summary", Phrase,
           Humanize.Strings.Metrics.Localized.Word_Count_Summary (C, "One word."),
           Humanize.Strings.Metrics.Word_Count_Summary ("One word."));
    Check (Locale, "label.privacy.address_metadata_label", Phrase,

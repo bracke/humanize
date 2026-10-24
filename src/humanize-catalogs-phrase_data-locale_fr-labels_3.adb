@@ -5,7 +5,7 @@ begin
       "{count, plural, =0 {aucune tâche} one {{count, number} tâche} many "
       & "{{count, number} de tâches} other {{count, number} tâches}}");
    P ("label.tasks.task_label",
-      "{name} : {state, select, open_task {tâche ouverte} in_progress_task "
+      "{name} : {state, select, open_task {tâche ouverte} in_progress_task "
       & "{tâche en cours} blocked_task {tâche bloquée} done_task {tâche "
       & "terminée} canceled_task {tâche annulée} deferred_task {tâche "
       & "reportée} other {tâche en retard}}{priority, select, no_priority {} "
@@ -49,7 +49,7 @@ begin
       & "number} sur {limit, number}} other {tentative {attempt, number} sur "
       & "{limit, number} (limite dépassée)}}} other {tentative {attempt, "
       & "number} sur {limit, number}}}");
-   P ("label.workflows.blocker_label", "blocage : {reason}");
+   P ("label.workflows.blocker_label", "blocage : {reason}");
    P ("label.workflows.dependency_label",
       "{count, plural, =0 {aucune dépendance bloquante} one {{count, number} "
       & "dépendance bloquante} many {{count, number} de dépendances "
@@ -60,23 +60,23 @@ begin
       & "{jalon en cours} complete_milestone {jalon atteint} missed_milestone "
       & "{jalon manqué} other {jalon bloqué}}");
    P ("label.workflows.milestone_status_label",
-      "{name} : {state, select, upcoming_milestone {à venir} "
+      "{name} : {state, select, upcoming_milestone {à venir} "
       & "current_milestone {en cours} complete_milestone {atteint} "
       & "missed_milestone {manqué} other {bloqué}}");
-   P ("label.workflows.next_action_label", "prochaine action : {action}");
-   P ("label.workflows.owner_label", "responsable : {owner}");
+   P ("label.workflows.next_action_label", "prochaine action : {action}");
+   P ("label.workflows.owner_label", "responsable : {owner}");
    P ("label.workflows.resume_label", "reprendre {name}");
    P ("label.workflows.step_state_label",
       "{state, select, pending_step {en attente} active_step {active} "
       & "waiting_step {en suspens} blocked_step {bloquée} done_step "
       & "{terminée} failed_step {en échec} other {ignorée}}");
    P ("label.workflows.step_status_label",
-      "{name} : {state, select, pending_step {en attente} active_step "
+      "{name} : {state, select, pending_step {en attente} active_step "
       & "{active} waiting_step {en suspens} blocked_step {bloquée} done_step "
       & "{terminée} failed_step {en échec} other {ignorée}}");
    P ("label.workflows.waiting_label", "en attente de {reason}");
    P ("label.workflows.workflow_result_label",
-      "{name} : {state, select, not_started_state {non démarré} "
+      "{name} : {state, select, not_started_state {non démarré} "
       & "in_progress_state {en cours} waiting_state {en attente} "
       & "waiting_approval_state {en attente d’approbation} blocked_state "
       & "{bloqué} completed_state {terminé} failed_state {en échec} "
@@ -114,13 +114,13 @@ begin
       & "other {il reste {count, number} {unit} sur {total, number}}}");
    P ("label.resources.quota_label",
       "{state, select, exceeded {quota dépassé de {count, number} {unit} "
-      & "({percent} d’utilisation)} near {quota presque atteint : il reste "
+      & "({percent} d’utilisation)} near {quota presque atteint : il reste "
       & "{count, number} {unit} ({percent} d’utilisation)} other {quota "
-      & "disponible : il reste {count, number} {unit} ({percent} "
+      & "disponible : il reste {count, number} {unit} ({percent} "
       & "d’utilisation)}}");
    P ("label.resources.cache_hit_rate_label",
-      "{state, select, none {taux de succès du cache indisponible : aucune "
-      & "requête} other {taux de succès du cache {percent} : {hits, number} "
+      "{state, select, none {taux de succès du cache indisponible : aucune "
+      & "requête} other {taux de succès du cache {percent} : {hits, number} "
       & "succès, {misses, plural, one {{misses, number} échec} many {{misses, "
       & "number} d’échecs} other {{misses, number} échecs}}}}");
    P ("label.markup.attribute_count_label.total",
@@ -181,7 +181,7 @@ begin
       "{count, plural, one {{count, number} empreinte} many {{count, number} "
       & "d’empreintes} other {{count, number} empreintes}}");
    P ("label.schema.type_mismatch_label",
-      "champ {field_name} : type attendu {expected, select, string_field "
+      "champ {field_name} : type attendu {expected, select, string_field "
       & "{chaîne} integer_field {entier} decimal_field {décimal} "
       & "boolean_field {booléen} date_field {date} date_time_field "
       & "{date-heure} object_field {objet} array_field {tableau} enum_field "
@@ -237,12 +237,12 @@ begin
    P ("label.thresholds.remaining_to_limit_label",
       "{state, select, exceeded {limite dépassée de {amount}} other {il "
       & "reste {amount}}}");
-   P ("label.thresholds.budget_used_label", "utilisation : {used} sur {budget}");
-   P ("label.workflows.step_label", "étape {current, number} sur {total, number} : {name}");
+   P ("label.thresholds.budget_used_label", "utilisation : {used} sur {budget}");
+   P ("label.workflows.step_label", "étape {current, number} sur {total, number} : {name}");
    P ("label.workflows.milestone_label",
       "{current, number} sur {total, plural, one {{total, number} jalon "
       & "atteint} many {{total, number} de jalons atteints} other {{total, "
-      & "number} jalons atteints}} : {name}");
+      & "number} jalons atteints}} : {name}");
    P ("label.workflows.workflow_progress_label",
       "{state, select, none {aucun élément de workflow} half {workflow à "
       & "mi-parcours} other {{completed, number} sur {total, number} "
@@ -277,11 +277,11 @@ begin
       "{count, plural, one {{count, number} conflit} many {{count, number} de "
       & "conflits} other {{count, number} conflits}}");
    P ("label.changes.net_change_label",
-      "{state, select, none {aucune variation nette} up {variation nette : "
+      "{state, select, none {aucune variation nette} up {variation nette : "
       & "+{count, plural, one {{count, number} élément} many {{count, number} "
       & "d’éléments} other {{count, number} éléments}}} other {variation "
-      & "nette : -{count, plural, one {{count, number} élément} many {{count, "
-      & "number} d’éléments} other {{count, number} éléments}}}}");
+      & "nette : -{count, plural, one {{count, number} élément} many "
+      & "{{count, number} d’éléments} other {{count, number} éléments}}}}");
    P ("label.changes.review_progress_label",
       "{state, select, none {aucune modification à relire} all {toutes les "
       & "modifications relues} other {{reviewed, number} sur {total, number} "
@@ -294,9 +294,10 @@ begin
       "{state, select, no_rows {aucune ligne sélectionnable} none {aucune "
       & "ligne sélectionnée} all {{total, plural, one {{total, number} ligne "
       & "sélectionnée} many {les {total, number} de lignes sélectionnées} "
-      & "other {les {total, number} lignes sélectionnées}}} other {sélection "
-      & ": {selected, number} sur {total, plural, one {{total, number} ligne} "
-      & "many {{total, number} de lignes} other {{total, number} lignes}}}}");
+      & "other {les {total, number} lignes sélectionnées}}} other "
+      & "{sélection : {selected, number} sur {total, plural, one {{total, "
+      & "number} ligne} many {{total, number} de lignes} other {{total, number} "
+      & "lignes}}}}");
    P ("label.tables.page_label",
       "{page, plural, =0 {aucune page} other {{pages, plural, =0 {aucune "
       & "page} other {{rows, plural, =0 {page {page, number} sur {pages, "
@@ -326,28 +327,29 @@ begin
       "{total, plural, =0 {aucun champ obligatoire} one {{missing, plural, =0 "
       & "{tous les champs obligatoires remplis} other {1 champ obligatoire "
       & "manquant sur 1}}} other {{missing, plural, =0 {tous les champs "
-      & "obligatoires remplis} other {champs obligatoires manquants : {missing, "
-      & "number} sur {total, number}}}}}");
+      & "obligatoires remplis} other {champs obligatoires manquants : "
+      & "{missing, number} sur {total, number}}}}}");
    P ("label.forms.form_progress_label",
       "{state, select, none {aucun champ} all {tous les champs remplis} other "
       & "{{completed, number} sur {total, plural, one {{total, number} champ "
       & "rempli} many {{total, number} de champs remplis} other {{total, "
       & "number} champs remplis}}}}");
    P ("label.forms.section_progress_label",
-      "{state, select, none {{name} : aucun champ} all {{name} : tous les "
-      & "champs remplis} other {{name} : {completed, number} sur {total, "
+      "{state, select, none {{name} : aucun champ} all {{name} : tous les "
+      & "champs remplis} other {{name} : {completed, number} sur {total, "
       & "plural, one {{total, number} champ rempli} many {{total, number} de "
       & "champs remplis} other {{total, number} champs remplis}}}}");
    P ("label.forms.form_step_label",
-      "{total, plural, =0 {aucune étape de formulaire} one {étape 1 sur 1 : "
-      & "{name}} other {étape {current, number} sur {total, number} : {name}}}");
+      "{total, plural, =0 {aucune étape de formulaire} one {étape 1 sur "
+      & "1 : {name}} other {étape {current, number} sur {total, number} : "
+      & "{name}}}");
    P ("label.navigation.breadcrumb_position_label",
       "{total, plural, =0 {aucun fil d’Ariane} one {fil d’Ariane, "
-      & "élément 1 sur 1 : {name}} other {fil d’Ariane, élément {current, "
-      & "number} sur {total, number} : {name}}}");
+      & "élément 1 sur 1 : {name}} other {fil d’Ariane, élément "
+      & "{current, number} sur {total, number} : {name}}}");
    P ("label.navigation.tab_label",
-      "{total, plural, =0 {aucun onglet} one {onglet 1 sur 1 : {name}} other "
-      & "{onglet {current, number} sur {total, number} : {name}}}");
+      "{total, plural, =0 {aucun onglet} one {onglet 1 sur 1 : {name}} other "
+      & "{onglet {current, number} sur {total, number} : {name}}}");
    P ("label.notifications.inbox_label",
       "{total, plural, =0 {boîte de réception vide} one {{unread, plural, "
       & "=0 {toutes les notifications lues} other {1 notification non lue sur "
@@ -370,18 +372,18 @@ begin
       & "1 place réservée} other {1 sur 1 place réservée}}} other "
       & "{{reserved, number} sur {capacity, number} places réservées}}");
    P ("label.events.waitlist_label",
-      "{total, plural, =0 {liste d’attente : position {position, number}} "
-      & "other {liste d’attente : position {position, number} sur {total, "
+      "{total, plural, =0 {liste d’attente : position {position, number}} "
+      & "other {liste d’attente : position {position, number} sur {total, "
       & "number}}}");
    P ("label.comparisons.multi_value_summary",
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
-      & "number} modifiés} other {{name} : {changed, plural, one {{changed, "
+      & "number} modifiés} other {{name} : {changed, plural, one {{changed, "
       & "number} modifié} many {{changed, number} modifiés} other {{changed, "
       & "number} modifiés}}, {unchanged, plural, one {{unchanged, number} "
       & "inchangé} many {{unchanged, number} inchangés} other {{unchanged, "
       & "number} inchangés}}, {total, number} au total}}");
-   P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility} ; {roles}");
-   P ("label.groups", "{first} ; {second}");
+   P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility} ; {roles}");
+   P ("label.groups", "{first} ; {second}");
    P ("label.parts", "{first}, {second}");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
       "le premier plan actuel respecte le contraste de {v1}:{v2, number} "
@@ -415,13 +417,13 @@ begin
       "le premier plan actuel respecte le contraste de {v1, number}:{v2, "
       & "number} (niveau renforcé)");
    P ("label.contrast.color_vision_deficiency_label.protanopia_low_confusion_risk_delta_n",
-      "protanopie : risque de confusion faible, delta {v1, number}");
+      "protanopie : risque de confusion faible, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.deuteranopia_moderate_confusion_risk_delta_n",
-      "deutéranopie : risque de confusion modéré, delta {v1, number}");
+      "deutéranopie : risque de confusion modéré, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.tritanopia_moderate_confusion_risk_delta_n",
-      "tritanopie : risque de confusion modéré, delta {v1, number}");
+      "tritanopie : risque de confusion modéré, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.achromatopsia_high_confusion_risk_delta_n",
-      "achromatopsie : risque de confusion élevé, delta {v1, number}");
+      "achromatopsie : risque de confusion élevé, delta {v1, number}");
    P ("label.models.perceptual_difference_label.cie76_delta_d_dramatic_perceptual_difference",
       "CIE76 delta {v1}, différence perceptuelle considérable");
    P ("label.models.perceptual_difference_label.cie94_delta_d_dramatic_perceptual_difference",
@@ -433,7 +435,7 @@ begin
    P ("label.models.perceptual_difference_label.oklab_delta_d_large_perceptual_difference",
       "OKLab delta {v1}, différence perceptuelle importante");
    P ("label.contrast.color_vision_deficiency_label.protanopia_moderate_confusion_risk_delta_n",
-      "protanopie : risque de confusion modéré, delta {v1, number}");
+      "protanopie : risque de confusion modéré, delta {v1, number}");
    P ("label.models.perceptual_difference_label.cie94_delta_n_dramatic_perceptual_difference",
       "CIE94 delta {v1, number}, différence perceptuelle considérable");
    P ("label.models.perceptual_difference_label.ciede2000_delta_d_dramatic_perceptual_difference",
@@ -441,17 +443,17 @@ begin
    P ("label.models.perceptual_difference_label.oklab_delta_d_dramatic_perceptual_difference",
       "OKLab delta {v1}, différence perceptuelle considérable");
    P ("label.contrast.color_vision_deficiency_label.achromatopsia_low_confusion_risk_delta_n",
-      "achromatopsie : risque de confusion faible, delta {v1, number}");
+      "achromatopsie : risque de confusion faible, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.protanopia_distinct_delta_n",
-      "protanopie : couleurs distinctes, delta {v1, number}");
+      "protanopie : couleurs distinctes, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.deuteranopia_distinct_delta_n",
-      "deutéranopie : couleurs distinctes, delta {v1, number}");
+      "deutéranopie : couleurs distinctes, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.tritanopia_distinct_delta_n",
-      "tritanopie : couleurs distinctes, delta {v1, number}");
+      "tritanopie : couleurs distinctes, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.achromatopsia_distinct_delta_n",
-      "achromatopsie : couleurs distinctes, delta {v1, number}");
+      "achromatopsie : couleurs distinctes, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.achromatopsia_moderate_confusion_risk_delta_n",
-      "achromatopsie : risque de confusion modéré, delta {v1, number}");
+      "achromatopsie : risque de confusion modéré, delta {v1, number}");
    P ("label.models.perceptual_difference_label.cie76_delta_d_large_perceptual_difference",
       "CIE76 delta {v1}, différence perceptuelle importante");
    P ("label.models.perceptual_difference_label.cie94_delta_d_large_perceptual_difference",
@@ -463,9 +465,9 @@ begin
    P ("label.models.perceptual_difference_label.oklab_delta_d_noticeable_perceptual_difference",
       "OKLab delta {v1}, différence perceptuelle notable");
    P ("label.contrast.color_vision_deficiency_label.protanopia_high_confusion_risk_delta_n",
-      "protanopie : risque de confusion élevé, delta {v1, number}");
+      "protanopie : risque de confusion élevé, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.tritanopia_high_confusion_risk_delta_n",
-      "tritanopie : risque de confusion élevé, delta {v1, number}");
+      "tritanopie : risque de confusion élevé, delta {v1, number}");
    P ("label.models.perceptual_difference_label.cie94_delta_d_noticeable_perceptual_difference",
       "CIE94 delta {v1}, différence perceptuelle notable");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_d_noticeable_perceptual_difference",
@@ -475,13 +477,13 @@ begin
    P ("label.models.perceptual_difference_label.oklab_delta_n_noticeable_perceptual_difference",
       "OKLab delta {v1, number}, différence perceptuelle notable");
    P ("label.contrast.color_vision_deficiency_label.tritanopia_low_confusion_risk_delta_n",
-      "tritanopie : risque de confusion faible, delta {v1, number}");
+      "tritanopie : risque de confusion faible, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.deuteranopia_low_confusion_risk_delta_n",
-      "deutéranopie : risque de confusion faible, delta {v1, number}");
+      "deutéranopie : risque de confusion faible, delta {v1, number}");
    P ("label.models.perceptual_difference_label.oklab_delta_n_large_perceptual_difference",
       "OKLab delta {v1, number}, différence perceptuelle importante");
    P ("label.contrast.color_vision_deficiency_label.deuteranopia_high_confusion_risk_delta_n",
-      "deutéranopie : risque de confusion élevé, delta {v1, number}");
+      "deutéranopie : risque de confusion élevé, delta {v1, number}");
    P ("label.models.perceptual_difference_label.cie76_delta_n_dramatic_perceptual_difference",
       "CIE76 delta {v1, number}, différence perceptuelle considérable");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_n_dramatic_perceptual_difference",
@@ -618,7 +620,7 @@ begin
    P ("label.contrast.color_accessibility_summary.lc_n_insufficient_dark_text_on_light_background",
       "Lc {v1, number}, insuffisant, texte foncé sur fond clair");
    P ("label.contrast.color_accessibility_summary.achromatopsia_moderate_confusion_risk",
-      "achromatopsie : risque de confusion modéré");
+      "achromatopsie : risque de confusion modéré");
    P ("label.models.color_difference_label.n_strong_difference", "{v1, number} %, différence forte");
    P ("label.contrast.alpha_contrast_label.d_n_low_contrast_after_alpha_compositing",
       "{v1}:{v2, number}, contraste faible après composition alpha");
@@ -627,7 +629,7 @@ begin
    P ("label.contrast.color_accessibility_summary.lc_n_insufficient_light_text_on_dark_background",
       "Lc {v1, number}, insuffisant, texte clair sur fond foncé");
    P ("label.contrast.color_accessibility_summary.deuteranopia_high_confusion_risk",
-      "deutéranopie : risque de confusion élevé");
+      "deutéranopie : risque de confusion élevé");
    P ("label.contrast.contrast_label.d_n_large_text_contrast", "{v1}:{v2, number}, contraste pour grand texte");
    P ("label.contrast.readability_label.readable_for_large_text_only", "lisible uniquement en grand texte");
    P ("label.contrast.apca_contrast_label.lc_n_large_text_light_text_on_dark_background",
@@ -637,7 +639,7 @@ begin
    P ("label.contrast.color_accessibility_summary.lc_n_large_text_light_text_on_dark_background",
       "Lc {v1, number}, grand texte, texte clair sur fond foncé");
    P ("label.contrast.color_accessibility_summary.tritanopia_high_confusion_risk",
-      "tritanopie : risque de confusion élevé");
+      "tritanopie : risque de confusion élevé");
    P ("label.contrast.alpha_contrast_label.d_n_large_text_contrast_after_alpha_compositing",
       "{v1}:{v2, number}, contraste pour grand texte après composition alpha");
    P ("label.contrast.apca_contrast_label.lc_n_non_text_only_light_text_on_dark_background",
@@ -647,7 +649,7 @@ begin
       "Lc {v1, number}, éléments non textuels uniquement, texte clair sur "
       & "fond foncé");
    P ("label.contrast.color_accessibility_summary.tritanopia_moderate_confusion_risk",
-      "tritanopie : risque de confusion modéré");
+      "tritanopie : risque de confusion modéré");
    P ("label.contrast.contrast_label.n_n_low_contrast", "{v1, number}:{v2, number}, contraste faible");
    P ("label.contrast.color_accessibility_summary.n_n_low_contrast", "{v1, number}:{v2, number}, contraste faible");
    P ("label.contrast.apca_contrast_label.lc_n_non_text_only_dark_text_on_light_background",
@@ -657,14 +659,14 @@ begin
       "Lc {v1, number}, éléments non textuels uniquement, texte foncé sur "
       & "fond clair");
    P ("label.contrast.color_accessibility_summary.deuteranopia_moderate_confusion_risk",
-      "deutéranopie : risque de confusion modéré");
+      "deutéranopie : risque de confusion modéré");
    P ("label.contrast.color_accessibility_summary.protanopia_high_confusion_risk",
-      "protanopie : risque de confusion élevé");
+      "protanopie : risque de confusion élevé");
    P ("label.models.color_difference_label.n_very_different", "{v1, number} %, très différent");
    P ("label.contrast.color_accessibility_summary.achromatopsia_high_confusion_risk",
-      "achromatopsie : risque de confusion élevé");
+      "achromatopsie : risque de confusion élevé");
    P ("label.contrast.color_accessibility_summary.achromatopsia_low_confusion_risk",
-      "achromatopsie : risque de confusion faible");
+      "achromatopsie : risque de confusion faible");
    P ("label.contrast.alpha_contrast_label.n_n_low_contrast_after_alpha_compositing",
       "{v1, number}:{v2, number}, contraste faible après composition alpha");
    P ("label.contrast.contrast_label.d_n_normal_text_contrast", "{v1}:{v2, number}, contraste pour texte normal");
@@ -685,15 +687,14 @@ begin
    P ("label.contrast.color_accessibility_summary.lc_n_body_text_dark_text_on_light_background",
       "Lc {v1, number}, texte courant, texte foncé sur fond clair");
    P ("label.contrast.color_accessibility_summary.tritanopia_low_confusion_risk",
-      "tritanopie : risque de confusion faible");
+      "tritanopie : risque de confusion faible");
    P ("label.models.color_difference_label.n_noticeable_difference", "{v1, number} %, différence notable");
    P ("label.contrast.contrast_label.n_n_large_text_contrast",
       "{v1, number}:{v2, number}, contraste pour grand texte");
    P ("label.contrast.color_accessibility_summary.n_n_large_text_contrast",
       "{v1, number}:{v2, number}, contraste pour grand texte");
    P ("label.contrast.color_accessibility_summary.deuteranopia_low_confusion_risk",
-      "deutéranopie : risque de confusion faible");
+      "deutéranopie : risque de confusion faible");
    P ("label.contrast.contrast_label.d_n_enhanced_contrast", "{v1}:{v2, number}, contraste renforcé");
    P ("label.contrast.readability_label.readable_for_enhanced_text", "lisible avec contraste renforcé");
-   P ("label.contrast.color_accessibility_summary.d_n_enhanced_contrast", "{v1}:{v2, number}, contraste renforcé");
 end Labels_3;

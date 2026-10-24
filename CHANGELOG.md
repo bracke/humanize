@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+* Colour, contrast, palette and text-metric labels read back too
+  (`Parsing.Phrases.Parse` walks their shape keys, joined by `label.parts` or
+  `label.groups`). French labels set their punctuation with no-break spaces
+  (Canadian and Swiss French with none before ; ! ?), Swiss French has its own
+  overrides, and international and Canadian English write "grey" -- also
+  inside composed colour names. The performance smoke now times loading the
+  catalogs (every locale 0.3 s, one language 0.02 s here).
+
 * Regional labels: European Portuguese ("ficheiro", "separador", "a enviar"),
   Latin American Spanish, Canadian French ("courriel", "téléverser") and Hong
   Kong Chinese ("電郵", "網絡") override the domain labels where they differ.

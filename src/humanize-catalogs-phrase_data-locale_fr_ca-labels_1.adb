@@ -2,7 +2,7 @@ separate (Humanize.Catalogs.Phrase_Data.Locale_Fr_Ca)
 procedure Labels_1 is
 begin
    P ("label.attachments.attachment_label",
-      "{name} : {kind, select, file_attachment {fichier} image_attachment "
+      "{name} : {kind, select, file_attachment {fichier} image_attachment "
       & "{image} video_attachment {vidéo} audio_attachment {fichier audio} "
       & "document_attachment {document} archive_attachment {archive} other "
       & "{lien}} {state, select, pending_attachment {en attente} "
@@ -20,7 +20,7 @@ begin
       & "uploaded_attachment {pièce jointe téléversée} failed_attachment "
       & "{pièce jointe en échec} removed_attachment {pièce jointe retirée} "
       & "other {pièce jointe bloquée}}");
-   P ("label.attachments.upload_error_label", "échec du téléversement de {name} : {reason}");
+   P ("label.attachments.upload_error_label", "échec du téléversement de {name} : {reason}");
    P ("label.builds.artifact_state_label",
       "{state, select, artifact_uploaded {artefact téléversé} "
       & "artifact_missing {artefact manquant} artifact_expired {artefact "
@@ -51,56 +51,56 @@ begin
       & "position {position, number}}}; utilisez {suggestion}}}");
    P ("label.diagnostics.parser_diagnostic_explanation_label",
       "{position, plural, =0 {{family, select, byte_parser {syntaxe non prise "
-      & "en charge (analyseur de tailles) : {error}; utilisez B, kB, MB, GB, "
+      & "en charge (analyseur de tailles) : {error}; utilisez B, kB, MB, GB, "
       & "KiB, MiB, GiB ou TiB} duration_parser {syntaxe non prise en charge "
-      & "(analyseur de durées) : {error}; utilisez ms, s, min, h, d, w, month "
+      & "(analyseur de durées) : {error}; utilisez ms, s, min, h, d, w, month "
       & "ou year} date_time_parser {syntaxe non prise en charge (analyseur de "
-      & "dates et heures) : {error}; utilisez une date ISO, un jour en langage "
+      & "dates et heures) : {error}; utilisez une date ISO, un jour en langage "
       & "naturel ou une heure} color_parser {syntaxe non prise en charge "
-      & "(analyseur de couleurs) : {error}; utilisez hex, rgb(), hsl(), lab(), "
+      & "(analyseur de couleurs) : {error}; utilisez hex, rgb(), hsl(), lab(), "
       & "lch() ou un nom de couleur} url_parser {syntaxe non prise en charge "
-      & "(analyseur d’URL) : {error}; utilisez schéma, hôte, chemin, "
+      & "(analyseur d’URL) : {error}; utilisez schéma, hôte, chemin, "
       & "requête ou fragment} unit_parser {syntaxe non prise en charge "
-      & "(analyseur d’unités) : {error}; utilisez une unité prise en charge "
-      & "par Humanize} recurrence_parser {syntaxe non prise en charge "
-      & "(analyseur de récurrences) : {error}; utilisez cron ou une "
+      & "(analyseur d’unités) : {error}; utilisez une unité prise en "
+      & "charge par Humanize} recurrence_parser {syntaxe non prise en charge "
+      & "(analyseur de récurrences) : {error}; utilisez cron ou une "
       & "récurrence every/weekday} domain_label_parser {syntaxe non prise en "
-      & "charge (analyseur de libellés de domaine) : {error}; utilisez un "
+      & "charge (analyseur de libellés de domaine) : {error}; utilisez un "
       & "libellé de domaine Humanize déterministe} other {syntaxe non prise "
-      & "en charge (analyseur) : {error}; utilisez une forme de saisie prise en "
-      & "charge}}} other {{family, select, byte_parser {syntaxe non prise en "
-      & "charge (analyseur de tailles) : {error} à la position {position, "
+      & "en charge (analyseur) : {error}; utilisez une forme de saisie prise "
+      & "en charge}}} other {{family, select, byte_parser {syntaxe non prise en "
+      & "charge (analyseur de tailles) : {error} à la position {position, "
       & "number}; utilisez B, kB, MB, GB, KiB, MiB, GiB ou TiB} duration_parser "
-      & "{syntaxe non prise en charge (analyseur de durées) : {error} à la "
+      & "{syntaxe non prise en charge (analyseur de durées) : {error} à la "
       & "position {position, number}; utilisez ms, s, min, h, d, w, month ou "
       & "year} date_time_parser {syntaxe non prise en charge (analyseur de "
-      & "dates et heures) : {error} à la position {position, number}; utilisez "
-      & "une date ISO, un jour en langage naturel ou une heure} color_parser "
-      & "{syntaxe non prise en charge (analyseur de couleurs) : {error} à la "
-      & "position {position, number}; utilisez hex, rgb(), hsl(), lab(), lch() "
-      & "ou un nom de couleur} url_parser {syntaxe non prise en charge "
-      & "(analyseur d’URL) : {error} à la position {position, number}; "
-      & "utilisez schéma, hôte, chemin, requête ou fragment} unit_parser "
-      & "{syntaxe non prise en charge (analyseur d’unités) : {error} à la "
-      & "position {position, number}; utilisez une unité prise en charge par "
-      & "Humanize} recurrence_parser {syntaxe non prise en charge (analyseur de "
-      & "récurrences) : {error} à la position {position, number}; utilisez "
-      & "cron ou une récurrence every/weekday} domain_label_parser {syntaxe "
-      & "non prise en charge (analyseur de libellés de domaine) : {error} à "
-      & "la position {position, number}; utilisez un libellé de domaine "
-      & "Humanize déterministe} other {syntaxe non prise en charge (analyseur) "
-      & ": {error} à la position {position, number}; utilisez une forme de "
-      & "saisie prise en charge}}}}");
+      & "dates et heures) : {error} à la position {position, number}; "
+      & "utilisez une date ISO, un jour en langage naturel ou une heure} "
+      & "color_parser {syntaxe non prise en charge (analyseur de couleurs) : "
+      & "{error} à la position {position, number}; utilisez hex, rgb(), hsl(), "
+      & "lab(), lch() ou un nom de couleur} url_parser {syntaxe non prise en "
+      & "charge (analyseur d’URL) : {error} à la position {position, "
+      & "number}; utilisez schéma, hôte, chemin, requête ou fragment} "
+      & "unit_parser {syntaxe non prise en charge (analyseur d’unités) : "
+      & "{error} à la position {position, number}; utilisez une unité prise "
+      & "en charge par Humanize} recurrence_parser {syntaxe non prise en charge "
+      & "(analyseur de récurrences) : {error} à la position {position, "
+      & "number}; utilisez cron ou une récurrence every/weekday} "
+      & "domain_label_parser {syntaxe non prise en charge (analyseur de "
+      & "libellés de domaine) : {error} à la position {position, number}; "
+      & "utilisez un libellé de domaine Humanize déterministe} other {syntaxe "
+      & "non prise en charge (analyseur) : {error} à la position {position, "
+      & "number}; utilisez une forme de saisie prise en charge}}}}");
    P ("label.moderation.moderation_action_label",
       "{action, select, no_action {aucune action de modération} flagged "
       & "{signalé} hidden {masqué par un modérateur} restored {restauré} "
       & "marked_spam {marqué comme pourriel} removed {supprimé} other "
       & "{escaladé}}");
    P ("label.moderation.moderation_label",
-      "{action, select, no_action {{item} : aucune action de modération} "
-      & "flagged {{item} : signalé} hidden {{item} : masqué par un "
-      & "modérateur} restored {{item} : restauré} marked_spam {{item} : "
-      & "marqué comme pourriel} removed {{item} : supprimé} other {{item} : "
+      "{action, select, no_action {{item} : aucune action de modération} "
+      & "flagged {{item} : signalé} hidden {{item} : masqué par un "
+      & "modérateur} restored {{item} : restauré} marked_spam {{item} : "
+      & "marqué comme pourriel} removed {{item} : supprimé} other {{item} : "
       & "escaladé}}");
    P ("label.notifications.delivery_label",
       "notification {channel, select, in_app_channel {dans l’application} "
@@ -114,7 +114,7 @@ begin
       & "email_channel {notifications par courriel} sms_channel {notifications "
       & "par SMS} push_channel {notifications push} webhook_channel "
       & "{notifications par webhook} other {notifications de récapitulatif}}");
-   P ("label.search.suggestion_label", "vouliez-vous dire « {query} »?");
+   P ("label.search.suggestion_label", "vouliez-vous dire « {query} »?");
    P ("label.secrets.sensitive_value_kind_label",
       "{kind, select, email_value {courriel} phone_value {téléphone} "
       & "url_value {URL} ip_address_value {adresse IP} token_value {jeton} "

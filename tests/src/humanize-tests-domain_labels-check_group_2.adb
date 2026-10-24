@@ -18,86 +18,86 @@ separate (Humanize.Tests.Domain_Labels)
 procedure Check_Group_2 (Locale : String; C : Humanize.Contexts.Context) is
    use Humanize.Colors;
 begin
-   Check (Locale, "label.contrast.apca_contrast_label", Plain,
+   Check (Locale, "label.contrast.apca_contrast_label", Phrase,
           Humanize.Colors.Contrast.Localized.APCA_Contrast_Label (C, (0, 204, 0), (162, 228, 116)),
           Humanize.Colors.Contrast.APCA_Contrast_Label ((0, 204, 0), (162, 228, 116)));
-   Check (Locale, "label.contrast.apca_contrast_label", Plain,
+   Check (Locale, "label.contrast.apca_contrast_label", Phrase,
           Humanize.Colors.Contrast.Localized.APCA_Contrast_Label (C, (66, 182, 223), (127, 31, 253)),
           Humanize.Colors.Contrast.APCA_Contrast_Label ((66, 182, 223), (127, 31, 253)));
-   Check (Locale, "label.contrast.alpha_contrast_label", Plain,
+   Check (Locale, "label.contrast.alpha_contrast_label", Phrase,
           Humanize.Colors.Contrast.Localized.Alpha_Contrast_Label (C, (0, 204, 0), (162, 228, 116), 0.77),
           Humanize.Colors.Contrast.Alpha_Contrast_Label ((0, 204, 0), (162, 228, 116), 0.77));
-   Check (Locale, "label.contrast.alpha_contrast_label", Plain,
+   Check (Locale, "label.contrast.alpha_contrast_label", Phrase,
           Humanize.Colors.Contrast.Localized.Alpha_Contrast_Label (C, (66, 182, 223), (127, 31, 253), 0.92),
           Humanize.Colors.Contrast.Alpha_Contrast_Label ((66, 182, 223), (127, 31, 253), 0.92));
-   Check (Locale, "label.contrast.color_accessibility_summary", Plain,
+   Check (Locale, "label.contrast.color_accessibility_summary", Phrase,
           Humanize.Colors.Contrast.Localized.Color_Accessibility_Summary (C, (0, 204, 0), (162, 228, 116)),
           Humanize.Colors.Contrast.Color_Accessibility_Summary ((0, 204, 0), (162, 228, 116)));
-   Check (Locale, "label.contrast.color_accessibility_summary", Plain,
+   Check (Locale, "label.contrast.color_accessibility_summary", Phrase,
           Humanize.Colors.Contrast.Localized.Color_Accessibility_Summary (C, (66, 182, 223), (127, 31, 253)),
           Humanize.Colors.Contrast.Color_Accessibility_Summary ((66, 182, 223), (127, 31, 253)));
-   Check (Locale, "label.contrast.color_vision_deficiency_label", Plain,
+   Check (Locale, "label.contrast.color_vision_deficiency_label", Phrase,
           Humanize.Colors.Contrast.Localized.Color_Vision_Deficiency_Label (C, (153, 51, 204), (204, 102, 0),
             Protanopia),
           Humanize.Colors.Contrast.Color_Vision_Deficiency_Label ((153, 51, 204), (204, 102, 0), Protanopia));
-   Check (Locale, "label.contrast.color_vision_deficiency_label", Plain,
+   Check (Locale, "label.contrast.color_vision_deficiency_label", Phrase,
           Humanize.Colors.Contrast.Localized.Color_Vision_Deficiency_Label (C, (153, 51, 204), (204, 102, 0),
             Deuteranopia),
           Humanize.Colors.Contrast.Color_Vision_Deficiency_Label ((153, 51, 204), (204, 102, 0), Deuteranopia));
-   Check (Locale, "label.contrast.contrast_label", Plain,
+   Check (Locale, "label.contrast.contrast_label", Phrase,
           Humanize.Colors.Contrast.Localized.Contrast_Label (C, (0, 204, 0), (162, 228, 116)),
           Humanize.Colors.Contrast.Contrast_Label ((0, 204, 0), (162, 228, 116)));
-   Check (Locale, "label.contrast.contrast_label", Plain,
+   Check (Locale, "label.contrast.contrast_label", Phrase,
           Humanize.Colors.Contrast.Localized.Contrast_Label (C, (66, 182, 223), (127, 31, 253)),
           Humanize.Colors.Contrast.Contrast_Label ((66, 182, 223), (127, 31, 253)));
-   Check (Locale, "label.contrast.contrast_remediation_label", Plain,
+   Check (Locale, "label.contrast.contrast_remediation_label", Phrase,
           Humanize.Colors.Contrast.Localized.Contrast_Remediation_Label (C, (153, 51, 51), (153, 255, 255),
             Target_Large_Text),
           Humanize.Colors.Contrast.Contrast_Remediation_Label ((153, 51, 51), (153, 255, 255), Target_Large_Text));
-   Check (Locale, "label.contrast.contrast_remediation_label", Plain,
+   Check (Locale, "label.contrast.contrast_remediation_label", Phrase,
           Humanize.Colors.Contrast.Localized.Contrast_Remediation_Label (C, (153, 51, 51), (153, 255, 255),
             Target_Normal_Text),
           Humanize.Colors.Contrast.Contrast_Remediation_Label ((153, 51, 51), (153, 255, 255), Target_Normal_Text));
    Check (Locale, "label.contrast.opacity_label", Phrase,
           Humanize.Colors.Contrast.Localized.Opacity_Label (C, Opacity => 7.25),
           Humanize.Colors.Contrast.Opacity_Label (Opacity => 7.25));
-   Check (Locale, "label.contrast.readability_label", Plain,
+   Check (Locale, "label.contrast.readability_label", Phrase,
           Humanize.Colors.Contrast.Localized.Readability_Label (C, (0, 204, 0), (162, 228, 116)),
           Humanize.Colors.Contrast.Readability_Label ((0, 204, 0), (162, 228, 116)));
-   Check (Locale, "label.contrast.readability_label", Plain,
+   Check (Locale, "label.contrast.readability_label", Phrase,
           Humanize.Colors.Contrast.Localized.Readability_Label (C, (66, 182, 223), (127, 31, 253)),
           Humanize.Colors.Contrast.Readability_Label ((66, 182, 223), (127, 31, 253)));
-   Check (Locale, "label.models.brightness_label", Plain,
+   Check (Locale, "label.models.brightness_label", Phrase,
           Humanize.Colors.Models.Localized.Brightness_Label (C, (0, 0, 0)),
           Humanize.Colors.Models.Brightness_Label ((0, 0, 0)));
-   Check (Locale, "label.models.brightness_label", Plain,
+   Check (Locale, "label.models.brightness_label", Phrase,
           Humanize.Colors.Models.Localized.Brightness_Label (C, (0, 0, 51)),
           Humanize.Colors.Models.Brightness_Label ((0, 0, 51)));
-   Check (Locale, "label.models.color_difference_label", Plain,
+   Check (Locale, "label.models.color_difference_label", Phrase,
           Humanize.Colors.Models.Localized.Color_Difference_Label (C, (0, 204, 0), (162, 228, 116)),
           Humanize.Colors.Models.Color_Difference_Label ((0, 204, 0), (162, 228, 116)));
-   Check (Locale, "label.models.color_difference_label", Plain,
+   Check (Locale, "label.models.color_difference_label", Phrase,
           Humanize.Colors.Models.Localized.Color_Difference_Label (C, (66, 182, 223), (127, 31, 253)),
           Humanize.Colors.Models.Color_Difference_Label ((66, 182, 223), (127, 31, 253)));
-   Check (Locale, "label.models.perceptual_difference_label", Plain,
+   Check (Locale, "label.models.perceptual_difference_label", Phrase,
           Humanize.Colors.Models.Localized.Perceptual_Difference_Label (C, (0, 204, 0), (162, 228, 116)),
           Humanize.Colors.Models.Perceptual_Difference_Label ((0, 204, 0), (162, 228, 116)));
-   Check (Locale, "label.models.perceptual_difference_label", Plain,
+   Check (Locale, "label.models.perceptual_difference_label", Phrase,
           Humanize.Colors.Models.Localized.Perceptual_Difference_Label (C, (66, 182, 223), (127, 31, 253)),
           Humanize.Colors.Models.Perceptual_Difference_Label ((66, 182, 223), (127, 31, 253)));
-   Check (Locale, "label.models.perceptual_difference_label", Plain,
+   Check (Locale, "label.models.perceptual_difference_label", Phrase,
           Humanize.Colors.Models.Localized.Perceptual_Difference_Label (C, (153, 51, 204), (204, 102, 0),
             Perceptual_CIE76),
           Humanize.Colors.Models.Perceptual_Difference_Label ((153, 51, 204), (204, 102, 0), Perceptual_CIE76));
-   Check (Locale, "label.models.perceptual_difference_label", Plain,
+   Check (Locale, "label.models.perceptual_difference_label", Phrase,
           Humanize.Colors.Models.Localized.Perceptual_Difference_Label (C, (153, 51, 204), (204, 102, 0),
             Perceptual_CIE94_Graphic_Arts),
           Humanize.Colors.Models.Perceptual_Difference_Label ((153, 51, 204), (204, 102, 0),
             Perceptual_CIE94_Graphic_Arts));
-   Check (Locale, "label.names.chroma_label", Plain,
+   Check (Locale, "label.names.chroma_label", Phrase,
           Humanize.Colors.Names.Localized.Chroma_Label (C, (0, 0, 0)),
           Humanize.Colors.Names.Chroma_Label ((0, 0, 0)));
-   Check (Locale, "label.names.chroma_label", Plain,
+   Check (Locale, "label.names.chroma_label", Phrase,
           Humanize.Colors.Names.Localized.Chroma_Label (C, (0, 0, 51)),
           Humanize.Colors.Names.Chroma_Label ((0, 0, 51)));
    Check (Locale, "label.names.color_description", Phrase,
@@ -112,28 +112,28 @@ begin
    Check (Locale, "label.names.descriptive_color_name", Phrase,
           Humanize.Colors.Names.Localized.Descriptive_Color_Name (C, (0, 0, 51)),
           Humanize.Colors.Names.Descriptive_Color_Name ((0, 0, 51)));
-   Check (Locale, "label.names.hue_family_label", Plain,
+   Check (Locale, "label.names.hue_family_label", Phrase,
           Humanize.Colors.Names.Localized.Hue_Family_Label (C, (0, 0, 0)),
           Humanize.Colors.Names.Hue_Family_Label ((0, 0, 0)));
-   Check (Locale, "label.names.hue_family_label", Plain,
+   Check (Locale, "label.names.hue_family_label", Phrase,
           Humanize.Colors.Names.Localized.Hue_Family_Label (C, (0, 0, 51)),
           Humanize.Colors.Names.Hue_Family_Label ((0, 0, 51)));
-   Check (Locale, "label.names.nearest_color_name", Plain,
+   Check (Locale, "label.names.nearest_color_name", Phrase,
           Humanize.Colors.Names.Localized.Nearest_Color_Name (C, (0, 0, 0)),
           Humanize.Colors.Names.Nearest_Color_Name ((0, 0, 0)));
-   Check (Locale, "label.names.nearest_color_name", Plain,
+   Check (Locale, "label.names.nearest_color_name", Phrase,
           Humanize.Colors.Names.Localized.Nearest_Color_Name (C, (0, 0, 51)),
           Humanize.Colors.Names.Nearest_Color_Name ((0, 0, 51)));
-   Check (Locale, "label.names.saturation_label", Plain,
+   Check (Locale, "label.names.saturation_label", Phrase,
           Humanize.Colors.Names.Localized.Saturation_Label (C, (0, 0, 0)),
           Humanize.Colors.Names.Saturation_Label ((0, 0, 0)));
-   Check (Locale, "label.names.saturation_label", Plain,
+   Check (Locale, "label.names.saturation_label", Phrase,
           Humanize.Colors.Names.Localized.Saturation_Label (C, (0, 0, 51)),
           Humanize.Colors.Names.Saturation_Label ((0, 0, 51)));
-   Check (Locale, "label.names.temperature_label", Plain,
+   Check (Locale, "label.names.temperature_label", Phrase,
           Humanize.Colors.Names.Localized.Temperature_Label (C, (0, 0, 0)),
           Humanize.Colors.Names.Temperature_Label ((0, 0, 0)));
-   Check (Locale, "label.names.temperature_label", Plain,
+   Check (Locale, "label.names.temperature_label", Phrase,
           Humanize.Colors.Names.Localized.Temperature_Label (C, (0, 0, 51)),
           Humanize.Colors.Names.Temperature_Label ((0, 0, 51)));
    Check (Locale, "label.palettes.advanced_palette_summary", Phrase,
@@ -146,82 +146,82 @@ begin
             24), (191, 28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))),
           Humanize.Colors.Palettes.Advanced_Palette_Summary (Color_List'((121, 176, 128), (252, 127, 24), (191, 28,
             70), (51, 51, 255), (51, 0, 153), (162, 245, 140))));
-   Check (Locale, "label.palettes.palette_accessibility_label", Plain,
+   Check (Locale, "label.palettes.palette_accessibility_label", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Accessibility_Label (C, Color_List'((33, 155, 1), (195, 244,
             101), (79, 146, 150), (225, 165, 93), (102, 102, 0))),
           Humanize.Colors.Palettes.Palette_Accessibility_Label (Color_List'((33, 155, 1), (195, 244, 101), (79, 146,
             150), (225, 165, 93), (102, 102, 0))));
-   Check (Locale, "label.palettes.palette_accessibility_label", Plain,
+   Check (Locale, "label.palettes.palette_accessibility_label", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Accessibility_Label (C, Color_List'((121, 176, 128), (252, 127,
             24), (191, 28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))),
           Humanize.Colors.Palettes.Palette_Accessibility_Label (Color_List'((121, 176, 128), (252, 127, 24), (191,
             28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))));
-   Check (Locale, "label.palettes.palette_contrast_matrix_label", Plain,
+   Check (Locale, "label.palettes.palette_contrast_matrix_label", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Contrast_Matrix_Label (C, Color_List'((33, 155, 1), (195, 244,
             101), (79, 146, 150), (225, 165, 93), (102, 102, 0))),
           Humanize.Colors.Palettes.Palette_Contrast_Matrix_Label (Color_List'((33, 155, 1), (195, 244, 101), (79,
             146, 150), (225, 165, 93), (102, 102, 0))));
-   Check (Locale, "label.palettes.palette_contrast_matrix_label", Plain,
+   Check (Locale, "label.palettes.palette_contrast_matrix_label", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Contrast_Matrix_Label (C, Color_List'((121, 176, 128), (252,
             127, 24), (191, 28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))),
           Humanize.Colors.Palettes.Palette_Contrast_Matrix_Label (Color_List'((121, 176, 128), (252, 127, 24), (191,
             28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))));
-   Check (Locale, "label.palettes.palette_contrast_suggestion", Plain,
+   Check (Locale, "label.palettes.palette_contrast_suggestion", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Contrast_Suggestion (C, Color_List'((33, 155, 1), (195, 244,
             101), (79, 146, 150), (225, 165, 93), (102, 102, 0))),
           Humanize.Colors.Palettes.Palette_Contrast_Suggestion (Color_List'((33, 155, 1), (195, 244, 101), (79, 146,
             150), (225, 165, 93), (102, 102, 0))));
-   Check (Locale, "label.palettes.palette_contrast_suggestion", Plain,
+   Check (Locale, "label.palettes.palette_contrast_suggestion", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Contrast_Suggestion (C, Color_List'((121, 176, 128), (252, 127,
             24), (191, 28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))),
           Humanize.Colors.Palettes.Palette_Contrast_Suggestion (Color_List'((121, 176, 128), (252, 127, 24), (191,
             28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))));
-   Check (Locale, "label.palettes.palette_harmony_label", Plain,
+   Check (Locale, "label.palettes.palette_harmony_label", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Harmony_Label (C, Color_List'((33, 155, 1), (195, 244, 101),
             (79, 146, 150), (225, 165, 93), (102, 102, 0))),
           Humanize.Colors.Palettes.Palette_Harmony_Label (Color_List'((33, 155, 1), (195, 244, 101), (79, 146, 150),
             (225, 165, 93), (102, 102, 0))));
-   Check (Locale, "label.palettes.palette_harmony_label", Plain,
+   Check (Locale, "label.palettes.palette_harmony_label", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Harmony_Label (C, Color_List'((121, 176, 128), (252, 127, 24),
             (191, 28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))),
           Humanize.Colors.Palettes.Palette_Harmony_Label (Color_List'((121, 176, 128), (252, 127, 24), (191, 28,
             70), (51, 51, 255), (51, 0, 153), (162, 245, 140))));
-   Check (Locale, "label.palettes.palette_metadata_label", Plain,
+   Check (Locale, "label.palettes.palette_metadata_label", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Metadata_Label (C, Color_List'((33, 155, 1), (195, 244, 101),
             (79, 146, 150), (225, 165, 93), (102, 102, 0))),
           Humanize.Colors.Palettes.Palette_Metadata_Label (Color_List'((33, 155, 1), (195, 244, 101), (79, 146,
             150), (225, 165, 93), (102, 102, 0))));
-   Check (Locale, "label.palettes.palette_metadata_label", Plain,
+   Check (Locale, "label.palettes.palette_metadata_label", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Metadata_Label (C, Color_List'((121, 176, 128), (252, 127, 24),
             (191, 28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))),
           Humanize.Colors.Palettes.Palette_Metadata_Label (Color_List'((121, 176, 128), (252, 127, 24), (191, 28,
             70), (51, 51, 255), (51, 0, 153), (162, 245, 140))));
-   Check (Locale, "label.palettes.palette_mood_label", Plain,
+   Check (Locale, "label.palettes.palette_mood_label", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Mood_Label (C, Color_List'((33, 155, 1), (195, 244, 101), (79,
             146, 150), (225, 165, 93), (102, 102, 0))),
           Humanize.Colors.Palettes.Palette_Mood_Label (Color_List'((33, 155, 1), (195, 244, 101), (79, 146, 150),
             (225, 165, 93), (102, 102, 0))));
-   Check (Locale, "label.palettes.palette_mood_label", Plain,
+   Check (Locale, "label.palettes.palette_mood_label", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Mood_Label (C, Color_List'((121, 176, 128), (252, 127, 24),
             (191, 28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))),
           Humanize.Colors.Palettes.Palette_Mood_Label (Color_List'((121, 176, 128), (252, 127, 24), (191, 28, 70),
             (51, 51, 255), (51, 0, 153), (162, 245, 140))));
-   Check (Locale, "label.palettes.palette_roles", Plain,
+   Check (Locale, "label.palettes.palette_roles", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Roles (C, Color_List'((33, 155, 1), (195, 244, 101), (79, 146,
             150), (225, 165, 93), (102, 102, 0))),
           Humanize.Colors.Palettes.Palette_Roles (Color_List'((33, 155, 1), (195, 244, 101), (79, 146, 150), (225,
             165, 93), (102, 102, 0))));
-   Check (Locale, "label.palettes.palette_roles", Plain,
+   Check (Locale, "label.palettes.palette_roles", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Roles (C, Color_List'((121, 176, 128), (252, 127, 24), (191,
             28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))),
           Humanize.Colors.Palettes.Palette_Roles (Color_List'((121, 176, 128), (252, 127, 24), (191, 28, 70), (51,
             51, 255), (51, 0, 153), (162, 245, 140))));
-   Check (Locale, "label.palettes.palette_summary", Plain,
+   Check (Locale, "label.palettes.palette_summary", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Summary (C, Color_List'((33, 155, 1), (195, 244, 101), (79,
             146, 150), (225, 165, 93), (102, 102, 0))),
           Humanize.Colors.Palettes.Palette_Summary (Color_List'((33, 155, 1), (195, 244, 101), (79, 146, 150), (225,
             165, 93), (102, 102, 0))));
-   Check (Locale, "label.palettes.palette_summary", Plain,
+   Check (Locale, "label.palettes.palette_summary", Phrase,
           Humanize.Colors.Palettes.Localized.Palette_Summary (C, Color_List'((121, 176, 128), (252, 127, 24), (191,
             28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))),
           Humanize.Colors.Palettes.Palette_Summary (Color_List'((121, 176, 128), (252, 127, 24), (191, 28, 70), (51,

@@ -141,7 +141,10 @@ begin
       "{state, select, open_task {open task} in_progress_task {in progress "
       & "task} blocked_task {blocked task} done_task {done task} canceled_task "
       & "{cancelled task} deferred_task {deferred task} other {overdue task}}");
+   P ("label.names.chroma_label.grayish", "greyish");
+   P ("label.names.nearest_color_name.gray", "grey");
    P ("label.palettes.palette_summary.n_colors", "{v1, number} colours");
+   P ("label.palettes.palette_summary.mostly_gray", "mostly grey");
    P ("label.palettes.palette_metadata_label.n_colors_n_pairs_n_enhanced_n_normal_n_large_only_n_fail",
       "{v1, number} colours, {v2, number} pairs: {v3, number} enhanced, {v4, "
       & "number} normal, {v5, number} large-only, {v6, number} fail");

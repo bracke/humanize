@@ -7,13 +7,13 @@ begin
       & "modifications non enregistrées} other {{count, number} modifications "
       & "non enregistrées}}");
    P ("label.markup.accessibility_issue_label",
-      "{target} : {issue, select, missing_accessible_name {nom accessible "
+      "{target} : {issue, select, missing_accessible_name {nom accessible "
       & "manquant} low_contrast {contraste insuffisant} skipped_heading_level "
       & "{niveau de titre sauté} missing_form_label {étiquette de formulaire "
       & "manquante} invalid_aria {ARIA non valide} keyboard_trap {piège au "
       & "clavier} other {problème d’accessibilité inconnu}}");
    P ("label.markup.accessibility_page_summary_label",
-      "résumé d’accessibilité de {title} : {landmarks, plural, one "
+      "résumé d’accessibilité de {title} : {landmarks, plural, one "
       & "{{landmarks, number} repère} many {{landmarks, number} de repères} "
       & "other {{landmarks, number} repères}}, {headings, plural, one "
       & "{{headings, number} titre} many {{headings, number} de titres} other "
@@ -29,7 +29,7 @@ begin
       & "{permettre au focus clavier de quitter le composant} other {vérifier "
       & "le problème d’accessibilité}}");
    P ("label.markup.accessibility_summary_label",
-      "{target} : {issues, plural, =0 {aucun problème d’accessibilité} "
+      "{target} : {issues, plural, =0 {aucun problème d’accessibilité} "
       & "one {{issues, number} problème d’accessibilité} many {{issues, "
       & "number} de problèmes d’accessibilité} other {{issues, number} "
       & "problèmes d’accessibilité}}");
@@ -41,7 +41,7 @@ begin
       & "formulaire} boolean_attribute {attribut booléen} event_attribute "
       & "{attribut de gestionnaire d’événement} other {attribut inconnu}}");
    P ("label.markup.form_error_summary_label",
-      "{form_name} : {errors, plural, =0 {{warnings, plural, =0 {aucun "
+      "{form_name} : {errors, plural, =0 {{warnings, plural, =0 {aucun "
       & "problème dans le formulaire} other {{warnings, plural, one "
       & "{{warnings, number} avertissement} many {{warnings, number} "
       & "d’avertissements} other {{warnings, number} avertissements}}}}} "
@@ -61,8 +61,8 @@ begin
       & "dialog_role {boîte de dialogue} alert_role {région live d’alerte} "
       & "status_role {région live d’état} other {repère inconnu}}");
    P ("label.markup.live_region_update_label",
-      "{polite, select, false {{region}, mise à jour assertive : {update}} "
-      & "other {{region}, mise à jour polie : {update}}}");
+      "{polite, select, false {{region}, mise à jour assertive : {update}} "
+      & "other {{region}, mise à jour polie : {update}}}");
    P ("label.markup.mime_kind_label",
       "{kind, select, text_content {contenu texte} html_content {contenu "
       & "HTML} json_content {contenu JSON} xml_content {contenu XML} "
@@ -77,7 +77,7 @@ begin
       & "form_tag {balise de formulaire} table_tag {balise de tableau} "
       & "interactive_tag {balise interactive} scripting_tag {balise de script} "
       & "other {balise inconnue}}");
-   P ("label.media.duration_label", "durée : {duration_text}");
+   P ("label.media.duration_label", "durée : {duration_text}");
    P ("label.media.media_kind_label",
       "{kind, select, image_media {image} video_media {vidéo} audio_media "
       & "{audio} pdf_document {document PDF} text_document {document texte} "
@@ -89,7 +89,7 @@ begin
       & "{métadonnées manquantes} locked_document {document verrouillé} "
       & "other {indisponible}}");
    P ("label.media.media_summary",
-      "{name} : {kind, select, image_media {{state, select, ready_media "
+      "{name} : {kind, select, image_media {{state, select, ready_media "
       & "{image prête} processing_media {image en cours de traitement} "
       & "transcoding_media {image en cours de transcodage} thumbnail_missing "
       & "{image, miniature indisponible} metadata_missing {image, métadonnées "
@@ -132,20 +132,20 @@ begin
       & "{{pages, number} de pages} other {{pages, number} pages}}");
    P ("label.media.resolution_label", "{width, number} × {height, number}");
    P ("label.moderation.appeal_label",
-      "{state, select, open_report {{item} : recours ouvert} triaged_report "
-      & "{{item} : recours trié} actioned_report {{item} : recours, mesure "
-      & "prise} dismissed_report {{item} : recours rejeté} appealed_report "
-      & "{{item} : recours contesté} other {{item} : recours clos}}");
+      "{state, select, open_report {{item} : recours ouvert} triaged_report "
+      & "{{item} : recours trié} actioned_report {{item} : recours, mesure "
+      & "prise} dismissed_report {{item} : recours rejeté} appealed_report "
+      & "{{item} : recours contesté} other {{item} : recours clos}}");
    P ("label.moderation.moderation_action_label",
       "{action, select, no_action {aucune action de modération} flagged "
       & "{signalé} hidden {masqué par un modérateur} restored {restauré} "
       & "marked_spam {marqué comme spam} removed {supprimé} other "
       & "{escaladé}}");
    P ("label.moderation.moderation_label",
-      "{action, select, no_action {{item} : aucune action de modération} "
-      & "flagged {{item} : signalé} hidden {{item} : masqué par un "
-      & "modérateur} restored {{item} : restauré} marked_spam {{item} : "
-      & "marqué comme spam} removed {{item} : supprimé} other {{item} : "
+      "{action, select, no_action {{item} : aucune action de modération} "
+      & "flagged {{item} : signalé} hidden {{item} : masqué par un "
+      & "modérateur} restored {{item} : restauré} marked_spam {{item} : "
+      & "marqué comme spam} removed {{item} : supprimé} other {{item} : "
       & "escaladé}}");
    P ("label.moderation.moderation_queue_label",
       "{escalated, plural, =0 {{pending, plural, =0 {file de modération "
@@ -153,34 +153,34 @@ begin
       & "number} en attente d’examen, 1 escaladé} other {{pending, number} "
       & "en attente d’examen, {escalated, number} escaladés}}");
    P ("label.moderation.report_label",
-      "{state, select, open_report {{item} : signalement ouvert} "
-      & "triaged_report {{item} : signalement trié} actioned_report {{item} : "
-      & "mesure prise} dismissed_report {{item} : signalement rejeté} "
-      & "appealed_report {{item} : signalement contesté} other {{item} : "
-      & "signalement clos}}");
+      "{state, select, open_report {{item} : signalement ouvert} "
+      & "triaged_report {{item} : signalement trié} actioned_report "
+      & "{{item} : mesure prise} dismissed_report {{item} : signalement "
+      & "rejeté} appealed_report {{item} : signalement contesté} other "
+      & "{{item} : signalement clos}}");
    P ("label.moderation.report_state_label",
       "{state, select, open_report {signalement ouvert} triaged_report "
       & "{signalement trié} actioned_report {mesure prise} dismissed_report "
       & "{signalement rejeté} appealed_report {signalement contesté} other "
       & "{signalement clos}}");
    P ("label.moderation.review_label",
-      "{state, select, pending_review {{item} : en attente d’examen} "
-      & "approved {{item} : approuvé} rejected {{item} : refusé} "
-      & "needs_changes {{item} : modifications requises} other {{item} : examen "
-      & "escaladé}}");
+      "{state, select, pending_review {{item} : en attente d’examen} "
+      & "approved {{item} : approuvé} rejected {{item} : refusé} "
+      & "needs_changes {{item} : modifications requises} other {{item} : "
+      & "examen escaladé}}");
    P ("label.moderation.review_state_label",
       "{state, select, pending_review {en attente d’examen} approved "
       & "{approuvé} rejected {refusé} needs_changes {modifications requises} "
       & "other {examen escaladé}}");
    P ("label.navigation.back_label", "retour à {target}");
    P ("label.navigation.breadcrumb_trail_label",
-      "{depth, plural, =0 {fil d’Ariane vide} one {fil d’Ariane : 1 "
-      & "niveau} many {fil d’Ariane : {depth, number} de niveaux} other {fil "
-      & "d’Ariane : {depth, number} niveaux}}");
-   P ("label.navigation.current_page_label", "page actuelle : {name}");
+      "{depth, plural, =0 {fil d’Ariane vide} one {fil d’Ariane : 1 "
+      & "niveau} many {fil d’Ariane : {depth, number} de niveaux} other {fil "
+      & "d’Ariane : {depth, number} niveaux}}");
+   P ("label.navigation.current_page_label", "page actuelle : {name}");
    P ("label.navigation.external_link_label", "{name} (lien externe)");
-   P ("label.navigation.first_label", "premier : {target}");
-   P ("label.navigation.last_label", "dernier : {target}");
+   P ("label.navigation.first_label", "premier : {target}");
+   P ("label.navigation.last_label", "dernier : {target}");
    P ("label.navigation.menu_count_label",
       "{count, plural, =0 {aucun élément de menu} one {1 élément de menu} "
       & "many {{count, number} d’éléments de menu} other {{count, number} "
@@ -190,8 +190,8 @@ begin
       & "{onglet} breadcrumb_item {élément du fil d’Ariane} section_item "
       & "{section} other {séparateur}}");
    P ("label.navigation.navigation_item_label",
-      "{name} : {kind, select, link_item {lien} menu_item {élément de menu} "
-      & "tab_item {onglet} breadcrumb_item {élément du fil d’Ariane} "
+      "{name} : {kind, select, link_item {lien} menu_item {élément de "
+      & "menu} tab_item {onglet} breadcrumb_item {élément du fil d’Ariane} "
       & "section_item {section} other {séparateur}} {state, select, "
       & "current_item {{kind, select, section_item {actuelle} other {actuel}}} "
       & "active_item {{kind, select, section_item {active} other {actif}}} "
@@ -206,16 +206,16 @@ begin
       & "inactive_item {inactif} disabled_item {désactivé} expanded_item "
       & "{développé} collapsed_item {réduit} visited_item {visité} other "
       & "{externe}}");
-   P ("label.navigation.next_label", "suivant : {target}");
+   P ("label.navigation.next_label", "suivant : {target}");
    P ("label.navigation.section_state_label",
-      "{name} : section {expanded, select, false {réduite} other "
+      "{name} : section {expanded, select, false {réduite} other "
       & "{développée}}{count, plural, =0 {} one {, 1 élément} many {, "
       & "{count, number} d’éléments} other {, {count, number} éléments}}");
    P ("label.navigation.skip_link_label", "aller à {target}");
    P ("label.navigation.submenu_label",
-      "{count, plural, one {{name} : sous-menu, {count, number} élément} "
-      & "many {{name} : sous-menu, {count, number} d’éléments} other "
-      & "{{name} : sous-menu, {count, number} éléments}}");
+      "{count, plural, one {{name} : sous-menu, {count, number} élément} "
+      & "many {{name} : sous-menu, {count, number} d’éléments} other "
+      & "{{name} : sous-menu, {count, number} éléments}}");
    P ("label.notification_preferences.alert_level_label",
       "{level, select, all_alerts {toutes les alertes} important_alerts "
       & "{alertes importantes} critical_alerts_only {alertes critiques "
@@ -231,9 +231,9 @@ begin
    P ("label.notification_preferences.preference_state_label",
       "{state, select, preference_enabled {activé} preference_disabled "
       & "{désactivé} preference_inherited {hérité} other {obligatoire}}");
-   P ("label.notification_preferences.quiet_hours_label", "heures silencieuses : {time_text}");
+   P ("label.notification_preferences.quiet_hours_label", "heures silencieuses : {time_text}");
    P ("label.notification_preferences.subscription_label",
-      "{name} : abonnement {scope, select, thread_subscription {à la "
+      "{name} : abonnement {scope, select, thread_subscription {à la "
       & "discussion} project_subscription {au projet} team_subscription {à "
       & "l’équipe} other {au compte}} {state, select, preference_enabled "
       & "{activé} preference_disabled {désactivé} preference_inherited "
@@ -267,10 +267,10 @@ begin
       & "{time_text}} failed_delivery {échec {time_text}} retrying_delivery "
       & "{nouvelle tentative {time_text}} other {annulée {time_text}}}");
    P ("label.notifications.digest_label",
-      "{count, plural, =0 {récapitulatif {name} : aucune notification} one "
-      & "{récapitulatif {name} : 1 notification} many {récapitulatif {name} : "
-      & "{count, number} de notifications} other {récapitulatif {name} : "
-      & "{count, number} notifications}}");
+      "{count, plural, =0 {récapitulatif {name} : aucune notification} one "
+      & "{récapitulatif {name} : 1 notification} many {récapitulatif "
+      & "{name} : {count, number} de notifications} other {récapitulatif "
+      & "{name} : {count, number} notifications}}");
    P ("label.notifications.event_count_label",
       "{event, select, mention_event {{count, plural, =0 {aucune mention} one "
       & "{1 mention} many {{count, number} de mentions} other {{count, number} "
@@ -299,7 +299,7 @@ begin
       "{count, plural, one {marquer la notification comme non lue} many "
       & "{marquer {count, number} de notifications comme non lues} other "
       & "{marquer {count, number} notifications comme non lues}}");
-   P ("label.notifications.muted_label", "{name} : notifications en sourdine");
+   P ("label.notifications.muted_label", "{name} : notifications en sourdine");
    P ("label.notifications.new_event_label",
       "{event, select, mention_event {nouvelle mention} reply_event {nouvelle "
       & "réponse} assignment_event {nouvelle attribution} approval_event "
@@ -321,11 +321,11 @@ begin
       & "d’approbation} alert_event {alerte} digest_event {récapitulatif} "
       & "reminder_event {rappel} other {notification système}}");
    P ("label.notifications.notification_group_label",
-      "{count, plural, =0 {{name} : aucune notification} one {{name} : 1 "
-      & "notification} many {{name} : {count, number} de notifications} other "
-      & "{{name} : {count, number} notifications}}");
+      "{count, plural, =0 {{name} : aucune notification} one {{name} : 1 "
+      & "notification} many {{name} : {count, number} de notifications} other "
+      & "{{name} : {count, number} notifications}}");
    P ("label.notifications.notification_label",
-      "{subject} : {event, select, mention_event {mention} reply_event "
+      "{subject} : {event, select, mention_event {mention} reply_event "
       & "{réponse} assignment_event {attribution} approval_event {demande "
       & "d’approbation} alert_event {alerte} digest_event {récapitulatif} "
       & "reminder_event {rappel} other {notification système}} {state, select, "
@@ -342,7 +342,7 @@ begin
       & "{notification lue} archived_state {notification archivée} muted_state "
       & "{notification en sourdine} snoozed_state {notification reportée} "
       & "other {notification masquée}}");
-   P ("label.notifications.snoozed_label", "{name} : notifications reportées");
+   P ("label.notifications.snoozed_label", "{name} : notifications reportées");
    P ("label.notifications.suppressed_label",
       "{count, plural, =0 {aucune notification masquée} one {1 notification "
       & "masquée} many {{count, number} de notifications masquées} other "
@@ -351,39 +351,39 @@ begin
       "{count, plural, =0 {aucune notification non lue} one {1 notification "
       & "non lue} many {{count, number} de notifications non lues} other "
       & "{{count, number} notifications non lues}}");
-   P ("label.payments.amount_label", "montant : {amount_text}");
-   P ("label.payments.balance_label", "solde : {amount_text}");
-   P ("label.payments.chargeback_label", "rétrofacturation : {amount_text}");
-   P ("label.payments.discount_label", "remise : {amount_text}");
+   P ("label.payments.amount_label", "montant : {amount_text}");
+   P ("label.payments.balance_label", "solde : {amount_text}");
+   P ("label.payments.chargeback_label", "rétrofacturation : {amount_text}");
+   P ("label.payments.discount_label", "remise : {amount_text}");
    P ("label.payments.due_label", "{amount_text}, échéance {due_text}");
    P ("label.payments.invoice_count_label",
       "{count, plural, =0 {aucune facture} one {1 facture} many {{count, "
       & "number} de factures} other {{count, number} factures}}");
    P ("label.payments.invoice_label",
-      "{state, select, draft_invoice {facture {number} : brouillon} "
-      & "open_invoice {facture {number} : ouverte} paid_invoice {facture "
-      & "{number} : payée} overdue_invoice {facture {number} : en retard} "
-      & "other {facture {number} : annulée}}");
+      "{state, select, draft_invoice {facture {number} : brouillon} "
+      & "open_invoice {facture {number} : ouverte} paid_invoice {facture "
+      & "{number} : payée} overdue_invoice {facture {number} : en retard} "
+      & "other {facture {number} : annulée}}");
    P ("label.payments.invoice_state_label",
       "{state, select, draft_invoice {brouillon de facture} open_invoice "
       & "{facture ouverte} paid_invoice {facture payée} overdue_invoice "
       & "{facture en retard} other {facture annulée}}");
    P ("label.payments.method_label",
-      "{method, select, card_method {payé par carte : {detail}} "
-      & "bank_transfer_method {payé par virement bancaire : {detail}} "
-      & "cash_method {payé en espèces : {detail}} wallet_method {payé par "
-      & "portefeuille électronique : {detail}} check_method {payé par chèque "
-      & ": {detail}} other {payé par un autre moyen : {detail}}}");
+      "{method, select, card_method {payé par carte : {detail}} "
+      & "bank_transfer_method {payé par virement bancaire : {detail}} "
+      & "cash_method {payé en espèces : {detail}} wallet_method {payé par "
+      & "portefeuille électronique : {detail}} check_method {payé par "
+      & "chèque : {detail}} other {payé par un autre moyen : {detail}}}");
    P ("label.payments.paid_label", "{amount_text} payé {paid_text}");
    P ("label.payments.payment_count_label",
       "{count, plural, =0 {aucun paiement} one {1 paiement} many {{count, "
       & "number} de paiements} other {{count, number} paiements}}");
    P ("label.payments.payment_label",
-      "{state, select, pending_payment {{amount_text} : paiement en attente} "
-      & "authorized_payment {{amount_text} : paiement autorisé} paid_payment "
-      & "{{amount_text} : paiement effectué} failed_payment {{amount_text} : "
-      & "échec du paiement} refunded_payment {{amount_text} : paiement "
-      & "remboursé} other {{amount_text} : paiement annulé}}");
+      "{state, select, pending_payment {{amount_text} : paiement en attente} "
+      & "authorized_payment {{amount_text} : paiement autorisé} paid_payment "
+      & "{{amount_text} : paiement effectué} failed_payment {{amount_text} : "
+      & "échec du paiement} refunded_payment {{amount_text} : paiement "
+      & "remboursé} other {{amount_text} : paiement annulé}}");
    P ("label.payments.payment_link_label", "lien de paiement {name}");
    P ("label.payments.payment_method_label",
       "{method, select, card_method {carte} bank_transfer_method {virement "
@@ -396,22 +396,22 @@ begin
       & "{paiement remboursé} other {paiement annulé}}");
    P ("label.payments.receipt_label", "reçu {number}");
    P ("label.payments.refund_label",
-      "{state, select, pending_payment {{amount_text} : remboursement en "
-      & "attente} authorized_payment {{amount_text} : remboursement autorisé} "
-      & "paid_payment {{amount_text} : remboursement versé} failed_payment "
-      & "{{amount_text} : échec du remboursement} refunded_payment "
-      & "{{amount_text} : remboursement effectué} other {{amount_text} : "
+      "{state, select, pending_payment {{amount_text} : remboursement en "
+      & "attente} authorized_payment {{amount_text} : remboursement autorisé} "
+      & "paid_payment {{amount_text} : remboursement versé} failed_payment "
+      & "{{amount_text} : échec du remboursement} refunded_payment "
+      & "{{amount_text} : remboursement effectué} other {{amount_text} : "
       & "remboursement annulé}}");
-   P ("label.payments.subtotal_label", "sous-total : {amount_text}");
-   P ("label.payments.tax_label", "taxes : {amount_text}");
-   P ("label.payments.total_label", "total : {amount_text}");
-   P ("label.permissions.access_expiry_label", "{subject} : l’accès expire {time_text}");
+   P ("label.payments.subtotal_label", "sous-total : {amount_text}");
+   P ("label.payments.tax_label", "taxes : {amount_text}");
+   P ("label.payments.total_label", "total : {amount_text}");
+   P ("label.permissions.access_expiry_label", "{subject} : l’accès expire {time_text}");
    P ("label.permissions.grant_label",
-      "{subject} : rôle {role, select, owner_role {de propriétaire} "
+      "{subject} : rôle {role, select, owner_role {de propriétaire} "
       & "admin_role {d’administrateur} editor_role {d’éditeur} viewer_role "
       & "{de lecteur} other {personnalisé}} accordé");
    P ("label.permissions.permission_label",
-      "{subject}, {action} : {state, select, granted {autorisé} denied "
+      "{subject}, {action} : {state, select, granted {autorisé} denied "
       & "{refusé} inherited {hérité} temporary {accès temporaire} expired "
       & "{expiré} other {approbation requise}}");
    P ("label.permissions.permission_state_label",
@@ -423,7 +423,7 @@ begin
       & "policy_denied {refusé par la politique} policy_warning {avertissement "
       & "de la politique} other {politique non applicable}}");
    P ("label.permissions.revoke_label",
-      "{subject} : rôle {role, select, owner_role {de propriétaire} "
+      "{subject} : rôle {role, select, owner_role {de propriétaire} "
       & "admin_role {d’administrateur} editor_role {d’éditeur} viewer_role "
       & "{de lecteur} other {personnalisé}} révoqué");
    P ("label.permissions.role_label",
@@ -464,14 +464,14 @@ begin
       & "{tableaux} enum_field {énumérations} binary_field {valeurs binaires} "
       & "null_field {valeurs nulles} any_field {valeurs quelconques} other "
       & "{éléments inconnus}}}}}}");
-   P ("label.schema.constraint_label", "contrainte {name} : {value}");
-   P ("label.schema.default_value_label", "champ {field_name} : valeur par défaut {value}");
+   P ("label.schema.constraint_label", "contrainte {name} : {value}");
+   P ("label.schema.default_value_label", "champ {field_name} : valeur par défaut {value}");
    P ("label.schema.deprecated_field_label", "champ obsolète {name}, utilisez {replacement}");
    P ("label.schema.enum_options_label",
       "{count, plural, one {{count, number} option d’énumération} many "
       & "{{count, number} d’options d’énumération} other {{count, number} "
       & "options d’énumération}}");
-   P ("label.schema.example_value_label", "champ {field_name} : exemple {value}");
+   P ("label.schema.example_value_label", "champ {field_name} : exemple {value}");
    P ("label.schema.field_state_label",
       "{state, select, normal_field {champ normal} deprecated_field {champ "
       & "obsolète} unknown_field {champ inconnu} read_only_field {champ en "
@@ -532,32 +532,32 @@ begin
       & "{count, number} de résultats, sélectionné} other {{name}, {count, "
       & "number} résultats, sélectionné}}}}");
    P ("label.search.filter_label",
-      "{name} : {value}, {state, select, active_filter {filtre actif} "
+      "{name} : {value}, {state, select, active_filter {filtre actif} "
       & "inactive_filter {filtre inactif} other {filtre d’exclusion}}");
    P ("label.search.filter_state_label",
       "{state, select, active_filter {filtre actif} inactive_filter {filtre "
       & "inactif} other {filtre d’exclusion}}");
-   P ("label.search.no_results_label", "aucun résultat pour « {query} »");
-   P ("label.search.recent_search_label", "recherche récente : « {query} »");
+   P ("label.search.no_results_label", "aucun résultat pour « {query} »");
+   P ("label.search.recent_search_label", "recherche récente : « {query} »");
    P ("label.search.saved_search_label",
-      "{count, plural, =0 {recherche enregistrée : {name}} one {recherche "
-      & "enregistrée : {name}, {count, number} résultat} many {recherche "
-      & "enregistrée : {name}, {count, number} de résultats} other {recherche "
-      & "enregistrée : {name}, {count, number} résultats}}");
+      "{count, plural, =0 {recherche enregistrée : {name}} one {recherche "
+      & "enregistrée : {name}, {count, number} résultat} many {recherche "
+      & "enregistrée : {name}, {count, number} de résultats} other "
+      & "{recherche enregistrée : {name}, {count, number} résultats}}");
    P ("label.search.search_history_count_label",
       "{count, plural, =0 {aucune recherche récente} one {{count, number} "
       & "recherche récente} many {{count, number} de recherches récentes} "
       & "other {{count, number} recherches récentes}}");
-   P ("label.search.search_query_label", "rechercher « {query} »");
+   P ("label.search.search_query_label", "rechercher « {query} »");
    P ("label.search.search_result_count_label",
       "{count, plural, =0 {aucun résultat} one {{count, number} résultat} "
       & "many {{count, number} de résultats} other {{count, number} "
       & "résultats}}");
    P ("label.search.search_result_summary_label",
-      "{count, plural, =0 {aucun résultat pour « {query} »} one {{count, "
-      & "number} résultat pour « {query} »} many {{count, number} de "
-      & "résultats pour « {query} »} other {{count, number} résultats pour "
-      & "« {query} »}}");
+      "{count, plural, =0 {aucun résultat pour « {query} »} one {{count, "
+      & "number} résultat pour « {query} »} many {{count, number} de "
+      & "résultats pour « {query} »} other {{count, number} résultats "
+      & "pour « {query} »}}");
    P ("label.search.search_scope_label",
       "{count, plural, =0 {portée {name}, aucun résultat} one {portée "
       & "{name}, {count, number} résultat} many {portée {name}, {count, "
@@ -577,7 +577,7 @@ begin
       "{mode, select, relevance_sort {pertinence} ascending_sort {croissant} "
       & "descending_sort {décroissant} newest_first_sort {plus récents "
       & "d’abord} other {plus anciens d’abord}}");
-   P ("label.search.suggestion_label", "vouliez-vous dire « {query} » ?");
+   P ("label.search.suggestion_label", "vouliez-vous dire « {query} » ?");
    P ("label.secrets.credential_source_label",
       "{count, plural, one {{count, number} identifiant provenant de "
       & "{source}} many {{count, number} d’identifiants provenant de "
@@ -591,13 +591,13 @@ begin
       & "audit_profile {audit} other {débogage}}");
    P ("label.secrets.rotation_status_label",
       "{needs_rotation, select, false {{days_old, plural, =0 {rotation non "
-      & "requise} one {rotation non requise, ancienneté : {days_old, number} "
-      & "jour} many {rotation non requise, ancienneté : {days_old, number} de "
-      & "jours} other {rotation non requise, ancienneté : {days_old, number} "
+      & "requise} one {rotation non requise, ancienneté : {days_old, number} "
+      & "jour} many {rotation non requise, ancienneté : {days_old, number} de "
+      & "jours} other {rotation non requise, ancienneté : {days_old, number} "
       & "jours}}} other {{days_old, plural, =0 {rotation requise} one {rotation "
-      & "requise, ancienneté : {days_old, number} jour} many {rotation "
-      & "requise, ancienneté : {days_old, number} de jours} other {rotation "
-      & "requise, ancienneté : {days_old, number} jours}}}}");
+      & "requise, ancienneté : {days_old, number} jour} many {rotation "
+      & "requise, ancienneté : {days_old, number} de jours} other {rotation "
+      & "requise, ancienneté : {days_old, number} jours}}}}");
    P ("label.secrets.secret_kind_label",
       "{kind, select, api_key {clé API} live_api_key {clé API de "
       & "production} test_api_key {clé API de test} github_token {jeton "
@@ -617,7 +617,7 @@ begin
       & "payment_reference_value {référence de paiement} log_field_value "
       & "{champ de journal} other {valeur sensible}}");
    P ("label.tables.cell_label",
-      "ligne {row, number}, colonne {column, number} : {state, select, "
+      "ligne {row, number}, colonne {column, number} : {state, select, "
       & "empty_cell {vide} edited_cell {modifiée} invalid_cell {non valide} "
       & "highlighted_cell {mise en évidence} other {en lecture seule}}");
    P ("label.tables.cell_position_label", "ligne {row, number}, colonne {column, number}");
@@ -629,7 +629,7 @@ begin
       "{count, plural, =0 {aucune colonne} one {{count, number} colonne} many "
       & "{{count, number} de colonnes} other {{count, number} colonnes}}");
    P ("label.tables.column_label",
-      "{name} : {role, select, text_column {colonne de texte} number_column "
+      "{name} : {role, select, text_column {colonne de texte} number_column "
       & "{colonne numérique} date_column {colonne de date} status_column "
       & "{colonne d’état} action_column {colonne d’actions} other {colonne "
       & "masquée}}");
@@ -639,8 +639,8 @@ begin
       & "d’état} action_column {colonne d’actions} other {colonne "
       & "masquée}}");
    P ("label.tables.group_label",
-      "{count, plural, one {{name} : {count, number} ligne} many {{name} : "
-      & "{count, number} de lignes} other {{name} : {count, number} lignes}}");
+      "{count, plural, one {{name} : {count, number} ligne} many {{name} : "
+      & "{count, number} de lignes} other {{name} : {count, number} lignes}}");
    P ("label.tables.row_count_label",
       "{count, plural, =0 {aucune ligne} one {{count, number} ligne} many "
       & "{{count, number} de lignes} other {{count, number} lignes}}");
@@ -651,7 +651,7 @@ begin
       "{direction, select, unsorted {non trié} ascending_sort {trié par "
       & "{column_name}, ordre croissant} other {trié par {column_name}, ordre "
       & "décroissant}}");
-   P ("label.tables.subtotal_label", "sous-total {name} : {value}");
+   P ("label.tables.subtotal_label", "sous-total {name} : {value}");
    P ("label.tables.table_size_label",
       "{rows, plural, one {{rows, number} ligne} many {{rows, number} de "
       & "lignes} other {{rows, number} lignes}} × {columns, plural, one "
@@ -667,8 +667,8 @@ begin
       & "reassigned {réattribuée} watching {suivie} other {propriétaire de "
       & "la tâche}}");
    P ("label.tasks.backlog_label",
-      "{count, plural, =0 {backlog vide} one {backlog : {count, number} "
-      & "tâche} many {backlog : {count, number} de tâches} other {backlog : "
+      "{count, plural, =0 {backlog vide} one {backlog : {count, number} "
+      & "tâche} many {backlog : {count, number} de tâches} other {backlog : "
       & "{count, number} tâches}}");
    P ("label.tasks.blocker_label", "bloquée par {name}");
    P ("label.tasks.complete_action_label",
@@ -678,8 +678,8 @@ begin
       "{count, plural, =0 {aucune tâche terminée} one {{count, number} "
       & "tâche terminée} many {{count, number} de tâches terminées} other "
       & "{{count, number} tâches terminées}}");
-   P ("label.tasks.due_label", "échéance : {due_text}");
-   P ("label.tasks.estimate_label", "estimation : {estimate_text}");
+   P ("label.tasks.due_label", "échéance : {due_text}");
+   P ("label.tasks.estimate_label", "estimation : {estimate_text}");
    P ("label.tasks.open_task_count_label",
       "{count, plural, =0 {aucune tâche ouverte} one {{count, number} tâche "
       & "ouverte} many {{count, number} de tâches ouvertes} other {{count, "
@@ -690,10 +690,10 @@ begin
       "{count, plural, one {rouvrir la tâche} many {rouvrir {count, number} "
       & "de tâches} other {rouvrir {count, number} tâches}}");
    P ("label.tasks.sprint_label",
-      "{count, plural, one {{name} : {count, number} tâche} many {{name} : "
-      & "{count, number} de tâches} other {{name} : {count, number} tâches}}");
+      "{count, plural, one {{name} : {count, number} tâche} many {{name} : "
+      & "{count, number} de tâches} other {{name} : {count, number} tâches}}");
    P ("label.tasks.subtask_label",
-      "{count, plural, one {{name} : {count, number} sous-tâche} many "
-      & "{{name} : {count, number} de sous-tâches} other {{name} : {count, "
+      "{count, plural, one {{name} : {count, number} sous-tâche} many "
+      & "{{name} : {count, number} de sous-tâches} other {{name} : {count, "
       & "number} sous-tâches}}");
 end Labels_2;
