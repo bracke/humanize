@@ -74,10 +74,6 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} zimebadilika} other {{name}: zilizobadilika {changed, number}, "
       & "zisizobadilika {unchanged, number}, jumla {total, number}}}");
-   P ("label.names.color_description", "{brightness}, {hue} {saturation}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{base, select, pink {waridi} other {{hue}}} {brightness} {chroma} "
-      & "{temperature}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -536,4 +532,169 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "hakuna aya");
    P ("label.metrics.word_count_summary.n_word", "{v1, plural, one {neno 1} other {maneno {v1, number}}}");
    P ("label.metrics.text_summary_with_options.n_word", "{v1, plural, one {neno 1} other {maneno {v1, number}}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {hakuna vipimo} "
+      & "sample_too_small_shape {sampuli ni ndogo mno kuelezea umbo, {count, "
+      & "plural, one {kipimo 1} other {vipimo {count, number}}}} flat_shape "
+      & "{mgawanyo bapa kwenye {median}} outlier_heavy_shape {mgawanyo wenye "
+      & "thamani nyingi za nje karibu na {median}} volatile_shape {mgawanyo "
+      & "usio thabiti karibu na {median}} clustered_shape {mgawanyo "
+      & "uliokusanyika karibu na {median}} wide_spread_shape {mgawanyo "
+      & "uliotawanyika sana} wide_spread_range {mgawanyo uliotawanyika sana "
+      & "kutoka {minimum} hadi {maximum}} right_skewed_shape {mgawanyo "
+      & "ulioegemea kulia, wastani wa kati {median}} left_skewed_shape "
+      & "{mgawanyo ulioegemea kushoto, wastani wa kati {median}} other "
+      & "{mgawanyo uliosawazika kwa kiasi kikubwa karibu na {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {barua pepe tupu} address {anwani ya barua pepe} "
+      & "other {barua pepe kwenye {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {nambari ya simu} redacted {nambari ya simu "
+      & "imefichwa} other {simu inayoishia na {digits}}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {jina la mtumiaji} other {jina la mtumiaji "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label",
+      "{state, select, none {alama ya msimbo} other {alama ya msimbo "
+      & "{symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "metadata ya anwani: {present, plural, one {sehemu 1 ipo} other {sehemu "
+      & "{present, number} zipo}}, {missing, plural, one {sehemu 1 haipo} other "
+      & "{sehemu {missing, number} hazipo}}");
+   P ("label.endpoints.host_label", "{state, select, none {seva isiyojulikana} other {{host} {kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {kituo cha mwisho kisichojulikana} other {kituo "
+      & "cha mwisho cha {kind} {scheme}{host}{port}}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {URL tupu} none {URL bila vipengele "
+      & "vinavyotambulika} other {URL yenye {count, plural, one {kipengele 1} "
+      & "other {vipengele {count, number}}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {hakuna vigezo vya hoja} one {kigezo 1 cha hoja} "
+      & "other {vigezo {count, number} vya hoja}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {anwani ya IPv4 ya umma} ipv6_host "
+      & "{anwani ya IPv6 ya umma} private_network_host {anwani ya mtandao wa "
+      & "faragha} localhost_host {seva ya ndani} other {si anwani ya IP}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} CIDR batili} other {{cidr} kiambishi "
+      & "awali cha mtandao cha {kind} {prefix}}}");
+   P ("label.resources.utilization_label",
+      "{used, number} kati ya {total, number} {unit} zimetumika ({percent}, "
+      & "{band})");
+   P ("label.resources.saturation_label", "{named, select, no {rasilimali} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {toleo {version} toleo la awali {prerelease} "
+      & "muundo {build}} prerelease {toleo {version} toleo la awali "
+      & "{prerelease}} build {toleo {version} muundo {build}} other {toleo "
+      & "{version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {toleo lilelile} major_upgrade "
+      & "{uboreshaji mkubwa} minor_upgrade {uboreshaji mdogo} patch_upgrade "
+      & "{uboreshaji wa kiraka} prerelease_change {mabadiliko ya toleo la "
+      & "awali} build_metadata_change {mabadiliko ya metadata ya muundo} "
+      & "downgrade {kushusha toleo} other {mabadiliko ya toleo "
+      & "yasiyojulikana}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {toleo {version} hasa} minimum_range {toleo "
+      & "{version} au jipya zaidi} maximum_range {toleo {version} au la zamani "
+      & "zaidi} major_compatible_range {linaoana na toleo kuu {version}} "
+      & "minor_compatible_range {linaoana na toleo dogo {version}} other "
+      & "{masafa ya toleo {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {toleo la awali la uundaji {version}} "
+      & "prerelease {toleo la awali {version}} major {toleo kuu {version}} "
+      & "minor {toleo dogo {version}} other {toleo la kiraka {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {tagi ya kiungo} image {tagi ya picha} paragraph "
+      & "{tagi ya aya} ordered_list {tagi ya orodha yenye nambari} "
+      & "unordered_list {tagi ya orodha ya vitone} list_item {tagi ya kipengee "
+      & "cha orodha} table_header_cell {tagi ya kisanduku cha kichwa cha "
+      & "jedwali} table_cell {tagi ya kisanduku cha jedwali} table_row {tagi ya "
+      & "safu ya jedwali} line_break {tagi ya kukatika kwa mstari} "
+      & "thematic_break {tagi ya kigawanyo cha mada} heading_level_n {tagi ya "
+      & "kichwa cha kiwango {level, number}} other {tagi ya {name}}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {sifa ya {name}} event {sifa ya kishughulikia "
+      & "tukio {name}} other {sifa ya {name} imewekwa kuwa “{value}”}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {maudhui ya maandishi} html_content {hati "
+      & "ya HTML} json_content {hati ya JSON} xml_content {hati ya XML} "
+      & "image_content {maudhui ya picha} audio_content {maudhui ya sauti} "
+      & "video_content {maudhui ya video} font_content {maudhui ya fonti} "
+      & "archive_content {maudhui ya kumbukumbu} binary_content {maudhui ya "
+      & "binary} form_content {uwasilishaji wa fomu} other {maudhui "
+      & "yasiyojulikana}} ({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} haijawekwa} hidden_value {{kind} "
+      & "imefichwa} masked_value {{kind} {shown}} fingerprint_only {alama ya "
+      & "kidole ya {kind} inayoishia na {shown}} other {{kind} inayoishia na "
+      & "{shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} haijawekwa} other {{name} {kind} "
+      & "inayoishia na {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {kichwa cha kitambulisho {name} hakijawekwa} "
+      & "other {{name} {kind} inayoishia na {shown}}}");
+   P ("label.secrets.fingerprint_label", "alama ya kidole ya {algorithm} inayoishia na {shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} haijawekwa} redacted {{label} "
+      & "imefichwa} url_redacted {URL imefichwa} ip_redacted {anwani ya IP "
+      & "imefichwa} path_ending {njia ya faili inayoishia na {shown}} at "
+      & "{{label} kwenye {shown}} audit {{label} urefu {length, number}, "
+      & "inayoishia na {shown}} debug {{label} {shown}} other {{label} "
+      & "inayoishia na {shown}}}");
+   P ("label.schema.field_label",
+      "sehemu ya {kind, select, string_field {mfuatano} integer_field "
+      & "{nambari kamili} decimal_field {desimali} boolean_field {boolean} "
+      & "date_field {tarehe} date_time_field {tarehe na saa} object_field "
+      & "{kitu} array_field {safu} enum_field {enum} binary_field {binary} "
+      & "null_field {null} any_field {aina yoyote} other {aina isiyojulikana}} "
+      & "{name} {presence, select, required_field {inayohitajika} "
+      & "optional_field {ya hiari} conditional_field {ya masharti} other {uwepo "
+      & "haujulikani}}{nullable, select, non_nullable {, isiyo null} nullable "
+      & "{, inaweza kuwa null} other {}}{state, select, deprecated_field {, "
+      & "iliyoacha kutumika} unknown_field {, isiyojulikana} read_only_field {, "
+      & "ya kusoma tu} write_only_field {, ya kuandika tu} computed_field {, "
+      & "iliyokokotolewa} other {}}");
+   P ("label.schema.schema_summary_label.fields", "{count, plural, one {sehemu 1} other {sehemu {count, number}}}");
+   P ("label.schema.schema_summary_label.required", "zinazohitajika {count, number}");
+   P ("label.schema.schema_summary_label.optional", "za hiari {count, number}");
+   P ("label.schema.schema_summary_label.deprecated", "zilizoacha kutumika {count, number}");
+   P ("label.schema.schema_summary_label.unknown", "zisizojulikana {count, number}");
+   P ("label.diagnostics.check_run_summary_label.none", "hakuna ukaguzi ulioendeshwa");
+   P ("label.diagnostics.check_run_summary_label.passed", "zilizofaulu {count, number}");
+   P ("label.diagnostics.check_run_summary_label.failed", "zilizoshindwa {count, number}");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {onyo 1} other {maonyo {count, number}}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "zilizorukwa {count, number}");
+   P ("label.diagnostics.check_run_summary_label.pending", "zinazosubiri {count, number}");
+   P ("label.workflows.workflow_summary_label.total",
+      "{count, plural, one {kipengee 1} other {vipengee {count, number}}}");
+   P ("label.workflows.workflow_summary_label.completed", "vilivyokamilika {count, number}");
+   P ("label.workflows.workflow_summary_label.active", "vinavyoendelea {count, number}");
+   P ("label.workflows.workflow_summary_label.blocked", "vilivyozuiwa {count, number}");
+   P ("label.workflows.workflow_summary_label.failed", "vilivyoshindwa {count, number}");
+   P ("label.workflows.workflow_summary_label.skipped", "vilivyorukwa {count, number}");
+   P ("label.changes.change_summary_label.total",
+      "{count, plural, one {kipengee 1} other {vipengee {count, number}}}");
+   P ("label.changes.change_summary_label.added", "zilizoongezwa {count, number}");
+   P ("label.changes.change_summary_label.removed", "zilizoondolewa {count, number}");
+   P ("label.changes.change_summary_label.modified", "zilizobadilishwa {count, number}");
+   P ("label.changes.change_summary_label.renamed", "zilizobadilishwa jina {count, number}");
+   P ("label.changes.change_summary_label.unchanged", "zisizobadilika {count, number}");
+   P ("label.markup.accessible_control_label.control",
+      "{role, select, button_control {kitufe} link_control {kiungo} "
+      & "tab_control {kichupo} menu_item_control {kipengee cha menyu} "
+      & "checkbox_control {kisanduku cha kuteua} radio_control {kitufe cha "
+      & "redio} text_field_control {sehemu ya maandishi} progress_control "
+      & "{kiashiria cha maendeleo} table_cell_control {kisanduku cha jedwali} "
+      & "region_control {eneo} other {kidhibiti}} {named, select, no {kisicho "
+      & "na jina} other {{name}}}");
+   P ("label.markup.accessible_control_label.selected", "kimechaguliwa");
+   P ("label.markup.accessible_control_label.expanded", "kimepanuliwa");
+   P ("label.markup.accessible_control_label.current", "cha sasa");
+   P ("label.markup.accessible_control_label.disabled", "kimezimwa");
+   P ("label.markup.accessible_control_label.required", "kinahitajika");
+   P ("label.markup.accessible_control_label.invalid", "si sahihi");
 end Labels_3;

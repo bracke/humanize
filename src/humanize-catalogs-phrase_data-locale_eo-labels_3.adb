@@ -63,10 +63,6 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} ŝanĝitaj} other {{name}: {changed, number} ŝanĝitaj, "
       & "{unchanged, number} senŝanĝaj, {total, number} entute}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {rozkoloro} "
-      & "other {{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -499,4 +495,206 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "neniuj alineoj");
    P ("label.metrics.word_count_summary.n_word", "{v1, plural, one {1 vorto} other {{v1, number} vortoj}}");
    P ("label.metrics.text_summary_with_options.n_word", "{v1, plural, one {1 vorto} other {{v1, number} vortoj}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {neniuj observoj} "
+      & "sample_too_small_shape {specimeno tro malgranda por priskribi la "
+      & "formon, {count, plural, one {1 observo} other {{count, number} "
+      & "observoj}}} flat_shape {plata distribuo ĉe {median}} "
+      & "outlier_heavy_shape {distribuo kun multaj ekstremaĵoj ĉirkaŭ "
+      & "{median}} volatile_shape {volatila distribuo ĉirkaŭ {median}} "
+      & "clustered_shape {grupiĝinta distribuo ĉirkaŭ {median}} "
+      & "wide_spread_shape {vaste disa distribuo} wide_spread_range {vaste disa "
+      & "distribuo de {minimum} ĝis {maximum}} right_skewed_shape {dekstre "
+      & "malsimetria distribuo, mediano {median}} left_skewed_shape {maldekstre "
+      & "malsimetria distribuo, mediano {median}} other {plejparte ekvilibra "
+      & "distribuo ĉirkaŭ {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {malplena retpoŝtadreso} address "
+      & "{retpoŝtadreso} other {retpoŝto ĉe {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {telefonnumero} redacted {telefonnumero kaŝita} "
+      & "other {telefonnumero finiĝanta per {digits}}}");
+   P ("label.privacy.safe_handle_label", "{state, select, none {uzantnomo} other {uzantnomo {shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {kodsimbolo} other {kodsimbolo {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "adresaj metadatumoj: {present, plural, one {1 kampo ĉeestas} other "
+      & "{{present, number} kampoj ĉeestas}}, {missing, plural, one {1 kampo "
+      & "mankas} other {{missing, number} kampoj mankas}}");
+   P ("label.endpoints.host_label", "{state, select, none {nekonata gastiganto} other {{kind} {host}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {nekonata finpunkto} other {finpunkto "
+      & "{scheme}{host}{port} ({kind})}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {malplena URL} none {URL sen rekonitaj eroj} "
+      & "other {URL kun {count, plural, one {1 ero} other {{count, number} "
+      & "eroj}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {neniuj demandparametroj} one {1 demandparametro} "
+      & "other {{count, number} demandparametroj}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} ({kind, select, ipv4_host {publika IPv4-adreso} ipv6_host "
+      & "{publika IPv6-adreso} private_network_host {privatreta adreso} "
+      & "localhost_host {loka gastiganto} other {ne IP-adreso}})");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr}: nevalida CIDR} other {{cidr}: {kind}, "
+      & "retprefikso {prefix}}}");
+   P ("label.resources.utilization_label", "{used, number} el {total, number} {unit} uzataj ({percent}, {band})");
+   P ("label.resources.saturation_label", "{named, select, no {rimedo} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {versio {version}, antaŭeldono {prerelease}, "
+      & "kompilo {build}} prerelease {versio {version}, antaŭeldono "
+      & "{prerelease}} build {versio {version}, kompilo {build}} other {versio "
+      & "{version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {sama versio} major_upgrade {ĉefa "
+      & "ĝisdatigo} minor_upgrade {malĉefa ĝisdatigo} patch_upgrade {flika "
+      & "ĝisdatigo} prerelease_change {ŝanĝo de antaŭeldono} "
+      & "build_metadata_change {ŝanĝo de kompilaj metadatumoj} downgrade "
+      & "{malaltigo de versio} other {nekonata versiŝanĝo}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {ekzakte versio {version}} minimum_range "
+      & "{versio {version} aŭ pli nova} maximum_range {versio {version} aŭ "
+      & "pli malnova} major_compatible_range {kongrua kun ĉefa versio "
+      & "{version}} minor_compatible_range {kongrua kun malĉefa versio "
+      & "{version}} other {versiintervalo {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {komenca evolua eldono {version}} prerelease "
+      & "{antaŭeldono {version}} major {ĉefa eldono {version}} minor "
+      & "{malĉefa eldono {version}} other {flika eldono {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {ligila etikedo} image {bilda etikedo} paragraph "
+      & "{paragrafa etikedo} ordered_list {etikedo de numerita listo} "
+      & "unordered_list {etikedo de nenumerita listo} list_item {etikedo de "
+      & "listero} table_header_cell {etikedo de tabela kapĉelo} table_cell "
+      & "{etikedo de tabelĉelo} table_row {etikedo de tabelvico} line_break "
+      & "{etikedo de linisalto} thematic_break {etikedo de tema paŭzo} "
+      & "heading_level_n {etikedo de titolnivelo {level, number}} other "
+      & "{etikedo {name}}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {atributo {name}} event {eventtraktila atributo "
+      & "{name}} other {atributo {name} agordita al “{value}”}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {teksta enhavo} html_content "
+      & "{HTML-dokumento} json_content {JSON-dokumento} xml_content "
+      & "{XML-dokumento} image_content {bilda enhavo} audio_content {sona "
+      & "enhavo} video_content {videa enhavo} font_content {tipara enhavo} "
+      & "archive_content {arkiva enhavo} binary_content {binara enhavo} "
+      & "form_content {formulara sendo} other {nekonata enhavo}} ({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} ne agordita} hidden_value {{kind} "
+      & "kaŝita} masked_value {{kind} {shown}} fingerprint_only {{kind}, "
+      & "fingrospuro finiĝanta per {shown}} other {{kind} finiĝanta per "
+      & "{shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} ne agordita} other {{name} {kind} "
+      & "finiĝanta per {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {aŭtentiga kaplinio {name} ne agordita} other "
+      & "{{name} {kind} finiĝanta per {shown}}}");
+   P ("label.secrets.fingerprint_label", "{algorithm}-fingrospuro finiĝanta per {shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} ne agordita} redacted {{label} "
+      & "kaŝita} url_redacted {URL kaŝita} ip_redacted {IP-adreso kaŝita} "
+      & "path_ending {dosiervojo finiĝanta per {shown}} at {{label} ĉe "
+      & "{shown}} audit {{label}, longo {length, number}, finiĝanta per "
+      & "{shown}} debug {{label} {shown}} other {{label} finiĝanta per "
+      & "{shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {malrekomendita } unknown_field "
+      & "{nekonata } read_only_field {nurlega } write_only_field {nurskriba } "
+      & "computed_field {kalkulita } other {}}{presence, select, required_field "
+      & "{deviga} optional_field {nedeviga} conditional_field {kondiĉa} other "
+      & "{eventuale ĉeestanta}}{nullable, select, non_nullable { ne-nulebla} "
+      & "nullable { nulebla} other {}} kampo {name} de tipo {kind, select, "
+      & "string_field {ĉeno} integer_field {entjero} decimal_field {dekuma "
+      & "nombro} boolean_field {bulea} date_field {dato} date_time_field "
+      & "{dato-horo} object_field {objekto} array_field {tabelo} enum_field "
+      & "{listigo} binary_field {binara} null_field {nulo} any_field {ajna} "
+      & "other {nekonata}}");
+   P ("label.schema.schema_summary_label.fields", "{count, plural, one {1 kampo} other {{count, number} kampoj}}");
+   P ("label.schema.schema_summary_label.required",
+      "{count, plural, one {1 deviga} other {{count, number} devigaj}}");
+   P ("label.schema.schema_summary_label.optional",
+      "{count, plural, one {1 nedeviga} other {{count, number} nedevigaj}}");
+   P ("label.schema.schema_summary_label.deprecated",
+      "{count, plural, one {1 malrekomendita} other {{count, number} "
+      & "malrekomenditaj}}");
+   P ("label.schema.schema_summary_label.unknown",
+      "{count, plural, one {1 nekonata} other {{count, number} nekonataj}}");
+   P ("label.diagnostics.check_run_summary_label.none", "neniuj kontroloj rulitaj");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} sukcesis");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} malsukcesis");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 averto} other {{count, number} avertoj}}");
+   P ("label.diagnostics.check_run_summary_label.skipped",
+      "{count, plural, one {1 preterlasita} other {{count, number} "
+      & "preterlasitaj}}");
+   P ("label.diagnostics.check_run_summary_label.pending",
+      "{count, plural, one {1 atendanta} other {{count, number} atendantaj}}");
+   P ("label.workflows.workflow_summary_label.total", "{count, plural, one {1 ero} other {{count, number} eroj}}");
+   P ("label.workflows.workflow_summary_label.completed",
+      "{count, plural, one {1 finita} other {{count, number} finitaj}}");
+   P ("label.workflows.workflow_summary_label.active",
+      "{count, plural, one {1 aktiva} other {{count, number} aktivaj}}");
+   P ("label.workflows.workflow_summary_label.blocked",
+      "{count, plural, one {1 blokita} other {{count, number} blokitaj}}");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} malsukcesis");
+   P ("label.workflows.workflow_summary_label.skipped",
+      "{count, plural, one {1 preterlasita} other {{count, number} "
+      & "preterlasitaj}}");
+   P ("label.changes.change_summary_label.total", "{count, plural, one {1 ero} other {{count, number} eroj}}");
+   P ("label.changes.change_summary_label.added",
+      "{count, plural, one {1 aldonita} other {{count, number} aldonitaj}}");
+   P ("label.changes.change_summary_label.removed",
+      "{count, plural, one {1 forigita} other {{count, number} forigitaj}}");
+   P ("label.changes.change_summary_label.modified",
+      "{count, plural, one {1 ŝanĝita} other {{count, number} ŝanĝitaj}}");
+   P ("label.changes.change_summary_label.renamed",
+      "{count, plural, one {1 renomita} other {{count, number} renomitaj}}");
+   P ("label.changes.change_summary_label.unchanged",
+      "{count, plural, one {1 senŝanĝa} other {{count, number} "
+      & "senŝanĝaj}}");
+   P ("label.markup.accessible_control_label.control",
+      "{named, select, no {sennoma {role, select, button_control {butono} "
+      & "link_control {ligilo} tab_control {langeto} menu_item_control "
+      & "{menuero} checkbox_control {markobutono} radio_control {radiobutono} "
+      & "text_field_control {tekstokampo} progress_control {progresindikilo} "
+      & "table_cell_control {tabelĉelo} region_control {regiono} other "
+      & "{regilo}}} other {{role, select, button_control {butono} link_control "
+      & "{ligilo} tab_control {langeto} menu_item_control {menuero} "
+      & "checkbox_control {markobutono} radio_control {radiobutono} "
+      & "text_field_control {tekstokampo} progress_control {progresindikilo} "
+      & "table_cell_control {tabelĉelo} region_control {regiono} other "
+      & "{regilo}} {name}}}");
+   P ("label.markup.accessible_control_label.selected", "elektita");
+   P ("label.markup.accessible_control_label.expanded", "etendita");
+   P ("label.markup.accessible_control_label.current", "aktuala");
+   P ("label.markup.accessible_control_label.disabled", "malŝaltita");
+   P ("label.markup.accessible_control_label.required", "deviga");
+   P ("label.markup.accessible_control_label.invalid", "nevalida");
+   P ("label.markup.accessible_control_label.count", "{count, plural, one {1 ero} other {{count, number} eroj}}");
+   P ("label.markup.accessible_control_label.position", "ero {position} el {total}");
+   P ("label.markup.accessible_control_label.issues",
+      "{count, plural, one {1 problemo} other {{count, number} problemoj}}");
+   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
+   P ("label.endpoints.url_component.scheme", "skemo");
+   P ("label.endpoints.url_component.host", "gastiganto");
+   P ("label.endpoints.url_component.path", "vojo");
+   P ("label.endpoints.url_component.query", "demando");
+   P ("label.endpoints.url_component.fragment", "fragmento");
+   P ("label.names.hue_noun.red", "ruĝo");
+   P ("label.names.hue_noun.orange", "oranĝo");
+   P ("label.names.hue_noun.yellow", "flavo");
+   P ("label.names.hue_noun.green", "verdo");
+   P ("label.names.hue_noun.cyan", "cejano");
+   P ("label.names.hue_noun.blue", "bluo");
+   P ("label.names.hue_noun.purple", "purpuro");
+   P ("label.names.hue_noun.magenta", "magento");
+   P ("label.names.hue_noun.neutral", "neŭtrala koloro");
+   P ("label.names.hue_noun.pink", "rozkoloro");
+   P ("label.names.hue_gender.red", "other");
+   P ("label.names.hue_gender.orange", "other");
+   P ("label.names.hue_gender.yellow", "other");
+   P ("label.names.hue_gender.green", "other");
+   P ("label.names.hue_gender.cyan", "other");
 end Labels_3;

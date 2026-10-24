@@ -11,6 +11,7 @@ procedure Locale_Hi (Target : in out Catalog_Text) is
    procedure Labels_2 is separate;
    procedure Labels_3 is separate;
    procedure Labels_4 is separate;
+   procedure Labels_5 is separate;
 begin
    P ("all_count", "सभी {total} {total, plural, one {{one}} other {{other}}}");
    P ("filtered_count.none",
@@ -1000,4 +1001,5 @@ begin
    Labels_2;
    Labels_3;
    Labels_4;
+   Labels_5;
 end Locale_Hi;

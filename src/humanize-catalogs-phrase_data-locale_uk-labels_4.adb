@@ -1,10 +1,6 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Uk)
 procedure Labels_4 is
 begin
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_n_n",
-      "поточний колір переднього плану "
-      & "відповідає контрасту для звичайного "
-      & "тексту при {v1, number}:{v2, number}");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_d_n",
       "поточний колір переднього плану "
       & "відповідає підвищеному контрасту "
@@ -567,4 +563,136 @@ begin
       "{v1, plural, one {{v1, number} слово} few {{v1, number} "
       & "слова} many {{v1, number} слів} other {{v1, number} "
       & "слова}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {немає "
+      & "спостережень} sample_too_small_shape {вибірка "
+      & "замала для опису форми, спостережень: "
+      & "{count, number}} flat_shape {плоский розподіл на "
+      & "рівні {median}} outlier_heavy_shape {розподіл із "
+      & "багатьма викидами близько {median}} "
+      & "volatile_shape {нестабільний розподіл "
+      & "близько {median}} clustered_shape "
+      & "{кластеризований розподіл близько "
+      & "{median}} wide_spread_shape {розподіл із великим "
+      & "розкидом} wide_spread_range {розподіл із "
+      & "великим розкидом від {minimum} до {maximum}} "
+      & "right_skewed_shape {розподіл зі скосом "
+      & "праворуч, медіана {median}} left_skewed_shape "
+      & "{розподіл зі скосом ліворуч, медіана "
+      & "{median}} other {здебільшого збалансований "
+      & "розподіл близько {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {порожня адреса ел. пошти} "
+      & "address {адреса ел. пошти} other {адреса ел. "
+      & "пошти в домені {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {номер телефону} redacted "
+      & "{номер телефону приховано} other {номер "
+      & "телефону, що закінчується на {digits}}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {ім’я користувача} other "
+      & "{ім’я користувача {shown}}}");
+   P ("label.privacy.code_symbol_label",
+      "{state, select, none {символ коду} other {символ "
+      & "коду {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "метадані адреси: {present, plural, one {{present, "
+      & "number} поле заповнено} few {{present, number} поля "
+      & "заповнено} many {{present, number} полів "
+      & "заповнено} other {{present, number} поля "
+      & "заповнено}}, {missing, plural, one {{missing, number} "
+      & "поле відсутнє} few {{missing, number} поля "
+      & "відсутні} many {{missing, number} полів відсутні} "
+      & "other {{missing, number} поля відсутні}}");
+   P ("label.endpoints.host_label",
+      "{state, select, none {невідомий хост} other {{kind} "
+      & "{host}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {невідома кінцева точка} "
+      & "other {кінцева точка {scheme}{host}{port} ({kind})}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {порожня URL-адреса} none "
+      & "{URL-адреса без розпізнаних "
+      & "компонентів} other {URL-адреса, {count, plural, one "
+      & "{{count, number} компонент} few {{count, number} "
+      & "компоненти} many {{count, number} компонентів} "
+      & "other {{count, number} компонента}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {немає параметрів запиту} one "
+      & "{{count, number} параметр запиту} few {{count, number} "
+      & "параметри запиту} many {{count, number} "
+      & "параметрів запиту} other {{count, number} "
+      & "параметра запиту}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} — {kind, select, ipv4_host {публічна адреса "
+      & "IPv4} ipv6_host {публічна адреса IPv6} "
+      & "private_network_host {адреса приватної мережі} "
+      & "localhost_host {локальний хост} other {не "
+      & "IP-адреса}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr}: недійсний CIDR} other "
+      & "{{cidr}: {kind}, префікс мережі {prefix}}}");
+   P ("label.resources.utilization_label",
+      "використано {used, number} з {total, number} {unit} "
+      & "({percent}, {band})");
+   P ("label.resources.saturation_label", "{named, select, no {ресурс} other {{name}}}: {percent}, {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {версія {version}, попередній "
+      & "випуск {prerelease}, збірка {build}} prerelease "
+      & "{версія {version}, попередній випуск "
+      & "{prerelease}} build {версія {version}, збірка {build}} "
+      & "other {версія {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {та сама версія} "
+      & "major_upgrade {мажорне оновлення} minor_upgrade "
+      & "{мінорне оновлення} patch_upgrade "
+      & "{патч-оновлення} prerelease_change {зміна "
+      & "попереднього випуску} build_metadata_change "
+      & "{зміна метаданих збірки} downgrade "
+      & "{пониження версії} other {невідома зміна "
+      & "версії}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {точно версія {version}} "
+      & "minimum_range {версія {version} або новіша} "
+      & "maximum_range {версія {version} або старіша} "
+      & "major_compatible_range {сумісно з мажорною "
+      & "версією {version}} minor_compatible_range {сумісно з "
+      & "мінорною версією {version}} other {діапазон "
+      & "версій {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {початковий випуск "
+      & "розробки {version}} prerelease {попередній "
+      & "випуск {version}} major {мажорний випуск "
+      & "{version}} minor {мінорний випуск {version}} other "
+      & "{патч-випуск {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {тег посилання} image {тег "
+      & "зображення} paragraph {тег абзацу} ordered_list "
+      & "{тег нумерованого списку} unordered_list {тег "
+      & "маркованого списку} list_item {тег "
+      & "елемента списку} table_header_cell {тег "
+      & "клітинки заголовка таблиці} table_cell {тег "
+      & "клітинки таблиці} table_row {тег рядка "
+      & "таблиці} line_break {тег розриву рядка} "
+      & "thematic_break {тег тематичного розриву} "
+      & "heading_level_n {тег заголовка рівня {level, number}} "
+      & "other {тег {name}}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {атрибут {name}} event "
+      & "{атрибут-обробник подій {name}} other "
+      & "{атрибут {name} зі значенням «{value}»}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {текстовий вміст} "
+      & "html_content {документ HTML} json_content {документ "
+      & "JSON} xml_content {документ XML} image_content "
+      & "{зображення} audio_content {аудіо} video_content "
+      & "{відео} font_content {шрифт} archive_content {архів} "
+      & "binary_content {двійкові дані} form_content "
+      & "{надсилання форми} other {невідомий "
+      & "вміст}} ({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind}: не задано} hidden_value "
+      & "{{kind}: приховано} masked_value {{kind} {shown}} "
+      & "fingerprint_only {{kind}: відбиток, закінчення "
+      & "{shown}} other {{kind}: закінчення {shown}}}");
 end Labels_4;

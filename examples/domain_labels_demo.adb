@@ -11,6 +11,7 @@ with Humanize.Colors.Names.Localized;
 with Humanize.Colors.Palettes.Localized;
 with Humanize.Numbers.Statistics.Localized;
 with Humanize.Strings.Metrics.Localized;
+with Humanize.Strings.Privacy.Localized;
 with Humanize.Contexts;
 with Humanize.Status;
 with Humanize.Accounts.Localized;
@@ -249,5 +250,6 @@ begin
       Put_Result
         ("metrics",
          Humanize.Strings.Metrics.Localized.Reading_Time (De, Text => "The quick brown fox jumps over the lazy dog."));
+      Put_Result ("privacy", Humanize.Strings.Privacy.Localized.Safe_Email_Label (De, Email => "jane@example.com"));
    end;
 end Domain_Labels_Demo;

@@ -586,10 +586,6 @@ begin
       & "number} बदले} other {{name}: {changed, number} बदले, "
       & "{unchanged, number} अपरिवर्तित, कुल {total, "
       & "number}}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink "
-      & "{गुलाबी} other {{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -696,5 +692,8 @@ begin
       & "मध्यम जोखिम, डेल्टा {v1, number}");
    P ("label.models.perceptual_difference_label.cie76_delta_d_large_perceptual_difference",
       "CIE76 डेल्टा {v1}, बड़ा दृश्य "
+      & "अंतर");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_large_perceptual_difference",
+      "CIE94 डेल्टा {v1}, बड़ा दृश्य "
       & "अंतर");
 end Labels_3;

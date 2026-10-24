@@ -1,15 +1,310 @@
+with Humanize.Secrets;
+with Humanize.Strings.Metrics;
+with Humanize.Strings.Privacy;
+with Humanize.Tables;
 with Humanize.Tasks;
-with Humanize.Thresholds;
-with Humanize.Versions;
-with Humanize.Workflows;
+with Humanize.Secrets.Localized;
+with Humanize.Strings.Metrics.Localized;
+with Humanize.Strings.Privacy.Localized;
+with Humanize.Tables.Localized;
 with Humanize.Tasks.Localized;
-with Humanize.Thresholds.Localized;
-with Humanize.Versions.Localized;
-with Humanize.Workflows.Localized;
 
 separate (Humanize.Tests.Domain_Labels)
 procedure Check_Group_7 (Locale : String; C : Humanize.Contexts.Context) is
 begin
+   Check (Locale, "label.secrets.credential_source_label", Phrase,
+          Humanize.Secrets.Localized.Credential_Source_Label (C, Source => "plain", Count => 3),
+          Humanize.Secrets.Credential_Source_Label (Source => "plain", Count => 3));
+   Check (Locale, "label.secrets.credential_source_label", Phrase,
+          Humanize.Secrets.Localized.Credential_Source_Label (C, Source => "plain", Count => 1),
+          Humanize.Secrets.Credential_Source_Label (Source => "plain", Count => 1));
+   Check (Locale, "label.secrets.environment_secret_label", Phrase,
+          Humanize.Secrets.Localized.Environment_Secret_Label (C, Name => "GITHUB_TOKEN", Value =>
+            "ghp_1234567890abcdef"),
+          Humanize.Secrets.Environment_Secret_Label (Name => "GITHUB_TOKEN", Value => "ghp_1234567890abcdef"));
+   Check (Locale, "label.secrets.environment_secret_label", Phrase,
+          Humanize.Secrets.Localized.Environment_Secret_Label (C, Name => "DB_PASSWORD", Value => ""),
+          Humanize.Secrets.Environment_Secret_Label (Name => "DB_PASSWORD", Value => ""));
+   Check (Locale, "label.secrets.exposure_label", Phrase,
+          Humanize.Secrets.Localized.Exposure_Label (C, Exposure => Humanize.Secrets.Hidden_Value),
+          Humanize.Secrets.Exposure_Label (Exposure => Humanize.Secrets.Hidden_Value));
+   Check (Locale, "label.secrets.exposure_label", Phrase,
+          Humanize.Secrets.Localized.Exposure_Label (C, Exposure => Humanize.Secrets.Fingerprint_Only),
+          Humanize.Secrets.Exposure_Label (Exposure => Humanize.Secrets.Fingerprint_Only));
+   Check (Locale, "label.secrets.fingerprint_label", Phrase,
+          Humanize.Secrets.Localized.Fingerprint_Label (C, Algorithm => "SHA256", Value =>
+            "AB:CD:EF:01:23:45:67:89:AB"),
+          Humanize.Secrets.Fingerprint_Label (Algorithm => "SHA256", Value => "AB:CD:EF:01:23:45:67:89:AB"));
+   Check (Locale, "label.secrets.header_credential_label", Phrase,
+          Humanize.Secrets.Localized.Header_Credential_Label (C, Name => "Authorization", Value =>
+            "Bearer abc.def.ghi"),
+          Humanize.Secrets.Header_Credential_Label (Name => "Authorization", Value => "Bearer abc.def.ghi"));
+   Check (Locale, "label.secrets.header_credential_label", Phrase,
+          Humanize.Secrets.Localized.Header_Credential_Label (C, Name => "X-Api-Key", Value => ""),
+          Humanize.Secrets.Header_Credential_Label (Name => "X-Api-Key", Value => ""));
+   Check (Locale, "label.secrets.privacy_profile_label", Phrase,
+          Humanize.Secrets.Localized.Privacy_Profile_Label (C, Profile => Humanize.Secrets.Public_Profile),
+          Humanize.Secrets.Privacy_Profile_Label (Profile => Humanize.Secrets.Public_Profile));
+   Check (Locale, "label.secrets.privacy_profile_label", Phrase,
+          Humanize.Secrets.Localized.Privacy_Profile_Label (C, Profile => Humanize.Secrets.Debug_Profile),
+          Humanize.Secrets.Privacy_Profile_Label (Profile => Humanize.Secrets.Debug_Profile));
+   Check (Locale, "label.secrets.rotation_status_label", Phrase,
+          Humanize.Secrets.Localized.Rotation_Status_Label (C, Needs_Rotation => False, Days_Old => 3),
+          Humanize.Secrets.Rotation_Status_Label (Needs_Rotation => False, Days_Old => 3));
+   Check (Locale, "label.secrets.rotation_status_label", Phrase,
+          Humanize.Secrets.Localized.Rotation_Status_Label (C, Needs_Rotation => True, Days_Old => 1),
+          Humanize.Secrets.Rotation_Status_Label (Needs_Rotation => True, Days_Old => 1));
+   Check (Locale, "label.secrets.safe_display_label", Phrase,
+          Humanize.Secrets.Localized.Safe_Display_Label (C, Kind => Humanize.Secrets.Email_Value, Value =>
+            "jane.doe@example.com/12345678", Profile => Humanize.Secrets.Public_Profile),
+          Humanize.Secrets.Safe_Display_Label (Kind => Humanize.Secrets.Email_Value, Value =>
+            "jane.doe@example.com/12345678", Profile => Humanize.Secrets.Public_Profile));
+   Check (Locale, "label.secrets.safe_display_label", Phrase,
+          Humanize.Secrets.Localized.Safe_Display_Label (C, Kind => Humanize.Secrets.Email_Value, Value =>
+            "jane.doe@example.com/12345678", Profile => Humanize.Secrets.Support_Profile),
+          Humanize.Secrets.Safe_Display_Label (Kind => Humanize.Secrets.Email_Value, Value =>
+            "jane.doe@example.com/12345678", Profile => Humanize.Secrets.Support_Profile));
+   Check (Locale, "label.secrets.safe_display_label", Phrase,
+          Humanize.Secrets.Localized.Safe_Display_Label (C, Kind => Humanize.Secrets.Email_Value, Value =>
+            "jane.doe@example.com/12345678", Profile => Humanize.Secrets.Audit_Profile),
+          Humanize.Secrets.Safe_Display_Label (Kind => Humanize.Secrets.Email_Value, Value =>
+            "jane.doe@example.com/12345678", Profile => Humanize.Secrets.Audit_Profile));
+   Check (Locale, "label.secrets.secret_count_label", Plain,
+          Humanize.Secrets.Localized.Secret_Count_Label (C, Total => 7, Masked => 9, Unset => 4, Fingerprints => 6),
+          Humanize.Secrets.Secret_Count_Label (Total => 7, Masked => 9, Unset => 4, Fingerprints => 6));
+   Check (Locale, "label.secrets.secret_count_label", Plain,
+          Humanize.Secrets.Localized.Secret_Count_Label (C, Total => 2, Masked => 0, Unset => 0, Fingerprints => 0),
+          Humanize.Secrets.Secret_Count_Label (Total => 2, Masked => 0, Unset => 0, Fingerprints => 0));
+   Check (Locale, "label.secrets.secret_kind_label", Phrase,
+          Humanize.Secrets.Localized.Secret_Kind_Label (C, Kind => Humanize.Secrets.Api_Key),
+          Humanize.Secrets.Secret_Kind_Label (Kind => Humanize.Secrets.Api_Key));
+   Check (Locale, "label.secrets.secret_kind_label", Phrase,
+          Humanize.Secrets.Localized.Secret_Kind_Label (C, Kind => Humanize.Secrets.Unknown_Secret),
+          Humanize.Secrets.Secret_Kind_Label (Kind => Humanize.Secrets.Unknown_Secret));
+   Check (Locale, "label.secrets.secret_label", Phrase,
+          Humanize.Secrets.Localized.Secret_Label (C, Name => "API_KEY", Value => "sk_live_abcdef123456"),
+          Humanize.Secrets.Secret_Label (Name => "API_KEY", Value => "sk_live_abcdef123456"));
+   Check (Locale, "label.secrets.secret_label", Phrase,
+          Humanize.Secrets.Localized.Secret_Label (C, Name => "API_KEY", Value => ""),
+          Humanize.Secrets.Secret_Label (Name => "API_KEY", Value => ""));
+   Check (Locale, "label.secrets.secret_label", Phrase,
+          Humanize.Secrets.Localized.Secret_Label (C, Name => "TOKEN", Value => "abcdef123456", Exposure =>
+            Humanize.Secrets.Hidden_Value),
+          Humanize.Secrets.Secret_Label (Name => "TOKEN", Value => "abcdef123456", Exposure =>
+            Humanize.Secrets.Hidden_Value));
+   Check (Locale, "label.secrets.secret_label", Prefix,
+          Humanize.Secrets.Localized.Secret_Label (C, Name => "API_KEY", Value => "sk_live_abcdef123456", Options =>
+            (Humanize.Secrets.Default_Secret_Label_Options with delta Include_Surface => True)),
+          Humanize.Secrets.Secret_Label (Name => "API_KEY", Value => "sk_live_abcdef123456", Options =>
+            (Humanize.Secrets.Default_Secret_Label_Options with delta Include_Surface => True)));
+   Check (Locale, "label.secrets.sensitive_value_kind_label", Phrase,
+          Humanize.Secrets.Localized.Sensitive_Value_Kind_Label (C, Kind => Humanize.Secrets.Email_Value),
+          Humanize.Secrets.Sensitive_Value_Kind_Label (Kind => Humanize.Secrets.Email_Value));
+   Check (Locale, "label.secrets.sensitive_value_kind_label", Phrase,
+          Humanize.Secrets.Localized.Sensitive_Value_Kind_Label (C, Kind =>
+            Humanize.Secrets.Unknown_Sensitive_Value),
+          Humanize.Secrets.Sensitive_Value_Kind_Label (Kind => Humanize.Secrets.Unknown_Sensitive_Value));
+   Check (Locale, "label.metrics.paragraph_count_summary", Plain,
+          Humanize.Strings.Metrics.Localized.Paragraph_Count_Summary (C,
+            "The quick brown fox jumps. It runs far away!" & ASCII.LF & ASCII.LF & "A second paragraph."),
+          Humanize.Strings.Metrics.Paragraph_Count_Summary ("The quick brown fox jumps. It runs far away!" &
+            ASCII.LF & ASCII.LF & "A second paragraph."));
+   Check (Locale, "label.metrics.paragraph_count_summary", Plain,
+          Humanize.Strings.Metrics.Localized.Paragraph_Count_Summary (C, "One word."),
+          Humanize.Strings.Metrics.Paragraph_Count_Summary ("One word."));
+   Check (Locale, "label.metrics.reading_time", Plain,
+          Humanize.Strings.Metrics.Localized.Reading_Time (C, "The quick brown fox jumps. It runs far away!" &
+            ASCII.LF & ASCII.LF & "A second paragraph."),
+          Humanize.Strings.Metrics.Reading_Time ("The quick brown fox jumps. It runs far away!" & ASCII.LF &
+            ASCII.LF & "A second paragraph."));
+   Check (Locale, "label.metrics.reading_time", Plain,
+          Humanize.Strings.Metrics.Localized.Reading_Time (C, "One word."),
+          Humanize.Strings.Metrics.Reading_Time ("One word."));
+   Check (Locale, "label.metrics.sentence_count_summary", Plain,
+          Humanize.Strings.Metrics.Localized.Sentence_Count_Summary (C,
+            "The quick brown fox jumps. It runs far away!" & ASCII.LF & ASCII.LF & "A second paragraph."),
+          Humanize.Strings.Metrics.Sentence_Count_Summary ("The quick brown fox jumps. It runs far away!" & ASCII.LF
+            & ASCII.LF & "A second paragraph."));
+   Check (Locale, "label.metrics.sentence_count_summary", Plain,
+          Humanize.Strings.Metrics.Localized.Sentence_Count_Summary (C, "One word."),
+          Humanize.Strings.Metrics.Sentence_Count_Summary ("One word."));
+   Check (Locale, "label.metrics.speaking_time", Plain,
+          Humanize.Strings.Metrics.Localized.Speaking_Time (C, "The quick brown fox jumps. It runs far away!" &
+            ASCII.LF & ASCII.LF & "A second paragraph."),
+          Humanize.Strings.Metrics.Speaking_Time ("The quick brown fox jumps. It runs far away!" & ASCII.LF &
+            ASCII.LF & "A second paragraph."));
+   Check (Locale, "label.metrics.speaking_time", Plain,
+          Humanize.Strings.Metrics.Localized.Speaking_Time (C, "One word."),
+          Humanize.Strings.Metrics.Speaking_Time ("One word."));
+   Check (Locale, "label.metrics.text_summary", Plain,
+          Humanize.Strings.Metrics.Localized.Text_Summary (C, "The quick brown fox jumps. It runs far away!" &
+            ASCII.LF & ASCII.LF & "A second paragraph."),
+          Humanize.Strings.Metrics.Text_Summary ("The quick brown fox jumps. It runs far away!" & ASCII.LF &
+            ASCII.LF & "A second paragraph."));
+   Check (Locale, "label.metrics.text_summary", Plain,
+          Humanize.Strings.Metrics.Localized.Text_Summary (C, "One word."),
+          Humanize.Strings.Metrics.Text_Summary ("One word."));
+   Check (Locale, "label.metrics.text_summary_with_options", Plain,
+          Humanize.Strings.Metrics.Localized.Text_Summary_With_Options (C,
+            "The quick brown fox jumps. It runs far away!" & ASCII.LF & ASCII.LF & "A second paragraph."),
+          Humanize.Strings.Metrics.Text_Summary_With_Options ("The quick brown fox jumps. It runs far away!" &
+            ASCII.LF & ASCII.LF & "A second paragraph."));
+   Check (Locale, "label.metrics.text_summary_with_options", Plain,
+          Humanize.Strings.Metrics.Localized.Text_Summary_With_Options (C, "One word."),
+          Humanize.Strings.Metrics.Text_Summary_With_Options ("One word."));
+   Check (Locale, "label.metrics.word_count_summary", Plain,
+          Humanize.Strings.Metrics.Localized.Word_Count_Summary (C, "The quick brown fox jumps. It runs far away!" &
+            ASCII.LF & ASCII.LF & "A second paragraph."),
+          Humanize.Strings.Metrics.Word_Count_Summary ("The quick brown fox jumps. It runs far away!" & ASCII.LF &
+            ASCII.LF & "A second paragraph."));
+   Check (Locale, "label.metrics.word_count_summary", Plain,
+          Humanize.Strings.Metrics.Localized.Word_Count_Summary (C, "One word."),
+          Humanize.Strings.Metrics.Word_Count_Summary ("One word."));
+   Check (Locale, "label.privacy.address_metadata_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Address_Metadata_Label (C, Address => (others => <>)),
+          Humanize.Strings.Privacy.Address_Metadata_Label (Address => (others => <>)));
+   Check (Locale, "label.privacy.address_metadata_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Address_Metadata_Label (C, Address => (Name => [others => 'J'],
+            Name_Length => 4, City => [others => 'O'], City_Length => 4, others => <>)),
+          Humanize.Strings.Privacy.Address_Metadata_Label (Address => (Name => [others => 'J'], Name_Length => 4,
+            City => [others => 'O'], City_Length => 4, others => <>)));
+   Check (Locale, "label.privacy.code_symbol_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Code_Symbol_Label (C, "Foo.Bar_Baz"),
+          Humanize.Strings.Privacy.Code_Symbol_Label ("Foo.Bar_Baz"));
+   Check (Locale, "label.privacy.code_symbol_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Code_Symbol_Label (C, ""),
+          Humanize.Strings.Privacy.Code_Symbol_Label (""));
+   Check (Locale, "label.privacy.safe_email_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Safe_Email_Label (C, "jane@example.com"),
+          Humanize.Strings.Privacy.Safe_Email_Label ("jane@example.com"));
+   Check (Locale, "label.privacy.safe_email_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Safe_Email_Label (C, ""),
+          Humanize.Strings.Privacy.Safe_Email_Label (""));
+   Check (Locale, "label.privacy.safe_email_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Safe_Email_Label (C, "jane"),
+          Humanize.Strings.Privacy.Safe_Email_Label ("jane"));
+   Check (Locale, "label.privacy.safe_handle_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Safe_Handle_Label (C, "@janedoe"),
+          Humanize.Strings.Privacy.Safe_Handle_Label ("@janedoe"));
+   Check (Locale, "label.privacy.safe_handle_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Safe_Handle_Label (C, ""),
+          Humanize.Strings.Privacy.Safe_Handle_Label (""));
+   Check (Locale, "label.privacy.safe_handle_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Safe_Handle_Label (C, "@ab"),
+          Humanize.Strings.Privacy.Safe_Handle_Label ("@ab"));
+   Check (Locale, "label.privacy.safe_phone_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Safe_Phone_Label (C, "+45 12 34 56 78"),
+          Humanize.Strings.Privacy.Safe_Phone_Label ("+45 12 34 56 78"));
+   Check (Locale, "label.privacy.safe_phone_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Safe_Phone_Label (C, "none"),
+          Humanize.Strings.Privacy.Safe_Phone_Label ("none"));
+   Check (Locale, "label.privacy.safe_phone_label", Phrase,
+          Humanize.Strings.Privacy.Localized.Safe_Phone_Label (C, Phone => "12345678", Visible_Digits => 0),
+          Humanize.Strings.Privacy.Safe_Phone_Label (Phone => "12345678", Visible_Digits => 0));
+   Check (Locale, "label.tables.cell_label", Phrase,
+          Humanize.Tables.Localized.Cell_Label (C, Row => 3, Column => 3, State => Humanize.Tables.Empty_Cell),
+          Humanize.Tables.Cell_Label (Row => 3, Column => 3, State => Humanize.Tables.Empty_Cell));
+   Check (Locale, "label.tables.cell_label", Phrase,
+          Humanize.Tables.Localized.Cell_Label (C, Row => 1, Column => 1, State => Humanize.Tables.Read_Only_Cell),
+          Humanize.Tables.Cell_Label (Row => 1, Column => 1, State => Humanize.Tables.Read_Only_Cell));
+   Check (Locale, "label.tables.cell_label", Prefix,
+          Humanize.Tables.Localized.Cell_Label (C, Row => 3, Column => 3, State => Humanize.Tables.Empty_Cell,
+            Options => (Humanize.Tables.Default_Table_Label_Options with delta Include_Surface => True)),
+          Humanize.Tables.Cell_Label (Row => 3, Column => 3, State => Humanize.Tables.Empty_Cell, Options =>
+            (Humanize.Tables.Default_Table_Label_Options with delta Include_Surface => True)));
+   Check (Locale, "label.tables.cell_position_label", Phrase,
+          Humanize.Tables.Localized.Cell_Position_Label (C, Row => 3, Column => 3),
+          Humanize.Tables.Cell_Position_Label (Row => 3, Column => 3));
+   Check (Locale, "label.tables.cell_position_label", Phrase,
+          Humanize.Tables.Localized.Cell_Position_Label (C, Row => 1, Column => 1),
+          Humanize.Tables.Cell_Position_Label (Row => 1, Column => 1));
+   Check (Locale, "label.tables.cell_state_label", Phrase,
+          Humanize.Tables.Localized.Cell_State_Label (C, State => Humanize.Tables.Empty_Cell),
+          Humanize.Tables.Cell_State_Label (State => Humanize.Tables.Empty_Cell));
+   Check (Locale, "label.tables.cell_state_label", Phrase,
+          Humanize.Tables.Localized.Cell_State_Label (C, State => Humanize.Tables.Read_Only_Cell),
+          Humanize.Tables.Cell_State_Label (State => Humanize.Tables.Read_Only_Cell));
+   Check (Locale, "label.tables.column_count_label", Phrase,
+          Humanize.Tables.Localized.Column_Count_Label (C, Count => 3),
+          Humanize.Tables.Column_Count_Label (Count => 3));
+   Check (Locale, "label.tables.column_count_label", Phrase,
+          Humanize.Tables.Localized.Column_Count_Label (C, Count => 1),
+          Humanize.Tables.Column_Count_Label (Count => 1));
+   Check (Locale, "label.tables.column_label", Phrase,
+          Humanize.Tables.Localized.Column_Label (C, Name => "plain", Role => Humanize.Tables.Text_Column),
+          Humanize.Tables.Column_Label (Name => "plain", Role => Humanize.Tables.Text_Column));
+   Check (Locale, "label.tables.column_label", Phrase,
+          Humanize.Tables.Localized.Column_Label (C, Name => "plain", Role => Humanize.Tables.Hidden_Column),
+          Humanize.Tables.Column_Label (Name => "plain", Role => Humanize.Tables.Hidden_Column));
+   Check (Locale, "label.tables.column_role_label", Phrase,
+          Humanize.Tables.Localized.Column_Role_Label (C, Role => Humanize.Tables.Text_Column),
+          Humanize.Tables.Column_Role_Label (Role => Humanize.Tables.Text_Column));
+   Check (Locale, "label.tables.column_role_label", Phrase,
+          Humanize.Tables.Localized.Column_Role_Label (C, Role => Humanize.Tables.Hidden_Column),
+          Humanize.Tables.Column_Role_Label (Role => Humanize.Tables.Hidden_Column));
+   Check (Locale, "label.tables.filter_label", Phrase,
+          Humanize.Tables.Localized.Filter_Label (C, Visible => 7, Total => 9),
+          Humanize.Tables.Filter_Label (Visible => 7, Total => 9));
+   Check (Locale, "label.tables.filter_label", Phrase,
+          Humanize.Tables.Localized.Filter_Label (C, Visible => 1, Total => 2),
+          Humanize.Tables.Filter_Label (Visible => 1, Total => 2));
+   Check (Locale, "label.tables.group_label", Phrase,
+          Humanize.Tables.Localized.Group_Label (C, Name => "plain", Count => 3),
+          Humanize.Tables.Group_Label (Name => "plain", Count => 3));
+   Check (Locale, "label.tables.group_label", Phrase,
+          Humanize.Tables.Localized.Group_Label (C, Name => "plain", Count => 1),
+          Humanize.Tables.Group_Label (Name => "plain", Count => 1));
+   Check (Locale, "label.tables.page_label", Phrase,
+          Humanize.Tables.Localized.Page_Label (C, Page => 7, Pages => 9, Rows => 4),
+          Humanize.Tables.Page_Label (Page => 7, Pages => 9, Rows => 4));
+   Check (Locale, "label.tables.page_label", Phrase,
+          Humanize.Tables.Localized.Page_Label (C, Page => 2, Pages => 0, Rows => 0),
+          Humanize.Tables.Page_Label (Page => 2, Pages => 0, Rows => 0));
+   Check (Locale, "label.tables.row_count_label", Phrase,
+          Humanize.Tables.Localized.Row_Count_Label (C, Count => 3),
+          Humanize.Tables.Row_Count_Label (Count => 3));
+   Check (Locale, "label.tables.row_count_label", Phrase,
+          Humanize.Tables.Localized.Row_Count_Label (C, Count => 1),
+          Humanize.Tables.Row_Count_Label (Count => 1));
+   Check (Locale, "label.tables.row_range_label", Phrase,
+          Humanize.Tables.Localized.Row_Range_Label (C, First_Row => 2, Last_Row => 2, Total => 4),
+          Humanize.Tables.Row_Range_Label (First_Row => 2, Last_Row => 2, Total => 4));
+   Check (Locale, "label.tables.row_range_label", Phrase,
+          Humanize.Tables.Localized.Row_Range_Label (C, First_Row => 1, Last_Row => 2, Total => 2),
+          Humanize.Tables.Row_Range_Label (First_Row => 1, Last_Row => 2, Total => 2));
+   Check (Locale, "label.tables.selection_label", Phrase,
+          Humanize.Tables.Localized.Selection_Label (C, Selected => 7, Total => 9),
+          Humanize.Tables.Selection_Label (Selected => 7, Total => 9));
+   Check (Locale, "label.tables.selection_label", Phrase,
+          Humanize.Tables.Localized.Selection_Label (C, Selected => 1, Total => 2),
+          Humanize.Tables.Selection_Label (Selected => 1, Total => 2));
+   Check (Locale, "label.tables.sort_direction_label", Phrase,
+          Humanize.Tables.Localized.Sort_Direction_Label (C, Direction => Humanize.Tables.Unsorted),
+          Humanize.Tables.Sort_Direction_Label (Direction => Humanize.Tables.Unsorted));
+   Check (Locale, "label.tables.sort_direction_label", Phrase,
+          Humanize.Tables.Localized.Sort_Direction_Label (C, Direction => Humanize.Tables.Descending_Sort),
+          Humanize.Tables.Sort_Direction_Label (Direction => Humanize.Tables.Descending_Sort));
+   Check (Locale, "label.tables.sort_label", Phrase,
+          Humanize.Tables.Localized.Sort_Label (C, Column_Name => "plain", Direction => Humanize.Tables.Unsorted),
+          Humanize.Tables.Sort_Label (Column_Name => "plain", Direction => Humanize.Tables.Unsorted));
+   Check (Locale, "label.tables.sort_label", Phrase,
+          Humanize.Tables.Localized.Sort_Label (C, Column_Name => "plain", Direction =>
+            Humanize.Tables.Descending_Sort),
+          Humanize.Tables.Sort_Label (Column_Name => "plain", Direction => Humanize.Tables.Descending_Sort));
+   Check (Locale, "label.tables.sort_label", Prefix,
+          Humanize.Tables.Localized.Sort_Label (C, Column_Name => "plain", Direction => Humanize.Tables.Unsorted,
+            Options => (Humanize.Tables.Default_Table_Label_Options with delta Include_Surface => True)),
+          Humanize.Tables.Sort_Label (Column_Name => "plain", Direction => Humanize.Tables.Unsorted, Options =>
+            (Humanize.Tables.Default_Table_Label_Options with delta Include_Surface => True)));
+   Check (Locale, "label.tables.subtotal_label", Phrase,
+          Humanize.Tables.Localized.Subtotal_Label (C, Name => "plain", Value => "plain"),
+          Humanize.Tables.Subtotal_Label (Name => "plain", Value => "plain"));
+   Check (Locale, "label.tables.table_size_label", Phrase,
+          Humanize.Tables.Localized.Table_Size_Label (C, Rows => 3, Columns => 3),
+          Humanize.Tables.Table_Size_Label (Rows => 3, Columns => 3));
+   Check (Locale, "label.tables.table_size_label", Phrase,
+          Humanize.Tables.Localized.Table_Size_Label (C, Rows => 1, Columns => 1),
+          Humanize.Tables.Table_Size_Label (Rows => 1, Columns => 1));
    Check (Locale, "label.tasks.assignment_label", Phrase,
           Humanize.Tasks.Localized.Assignment_Label (C, Assignee => "plain", State => Humanize.Tasks.Unassigned),
           Humanize.Tasks.Assignment_Label (Assignee => "plain", State => Humanize.Tasks.Unassigned));
@@ -125,284 +420,4 @@ begin
    Check (Locale, "label.tasks.task_state_label", Phrase,
           Humanize.Tasks.Localized.Task_State_Label (C, State => Humanize.Tasks.Overdue_Task),
           Humanize.Tasks.Task_State_Label (State => Humanize.Tasks.Overdue_Task));
-   Check (Locale, "label.thresholds.breach_label", Phrase,
-          Humanize.Thresholds.Localized.Breach_Label (C, Value => 7.25, Limit => 9.75, Direction =>
-            Humanize.Thresholds.Lower_Limit, Unit => "plain", Decimals => 7),
-          Humanize.Thresholds.Breach_Label (Value => 7.25, Limit => 9.75, Direction =>
-            Humanize.Thresholds.Lower_Limit, Unit => "plain", Decimals => 7));
-   Check (Locale, "label.thresholds.breach_label", Phrase,
-          Humanize.Thresholds.Localized.Breach_Label (C, Value => 7.25, Limit => 0.0, Direction =>
-            Humanize.Thresholds.Upper_Limit, Unit => "plain", Decimals => 0),
-          Humanize.Thresholds.Breach_Label (Value => 7.25, Limit => 0.0, Direction =>
-            Humanize.Thresholds.Upper_Limit, Unit => "plain", Decimals => 0));
-   Check (Locale, "label.thresholds.budget_used_label", Phrase,
-          Humanize.Thresholds.Localized.Budget_Used_Label (C, Used => 7.25, Budget => 9.75, Unit => "plain",
-            Decimals => 7),
-          Humanize.Thresholds.Budget_Used_Label (Used => 7.25, Budget => 9.75, Unit => "plain", Decimals => 7));
-   Check (Locale, "label.thresholds.budget_used_label", Phrase,
-          Humanize.Thresholds.Localized.Budget_Used_Label (C, Used => 7.25, Budget => 0.0, Unit => "plain", Decimals
-            => 0),
-          Humanize.Thresholds.Budget_Used_Label (Used => 7.25, Budget => 0.0, Unit => "plain", Decimals => 0));
-   Check (Locale, "label.thresholds.metric_value_label", Phrase,
-          Humanize.Thresholds.Localized.Metric_Value_Label (C, Name => "plain", Value => 7.25, Unit => "plain",
-            Decimals => 7),
-          Humanize.Thresholds.Metric_Value_Label (Name => "plain", Value => 7.25, Unit => "plain", Decimals => 7));
-   Check (Locale, "label.thresholds.metric_value_label", Phrase,
-          Humanize.Thresholds.Localized.Metric_Value_Label (C, Name => "plain", Value => 7.25, Unit => "plain",
-            Decimals => 0),
-          Humanize.Thresholds.Metric_Value_Label (Name => "plain", Value => 7.25, Unit => "plain", Decimals => 0));
-   Check (Locale, "label.thresholds.near_limit_label", Phrase,
-          Humanize.Thresholds.Localized.Near_Limit_Label (C, Value => 7.25, Limit => 9.75, Margin => 4.5, Direction
-            => Humanize.Thresholds.Lower_Limit, Unit => "plain", Decimals => 7),
-          Humanize.Thresholds.Near_Limit_Label (Value => 7.25, Limit => 9.75, Margin => 4.5, Direction =>
-            Humanize.Thresholds.Lower_Limit, Unit => "plain", Decimals => 7));
-   Check (Locale, "label.thresholds.near_limit_label", Phrase,
-          Humanize.Thresholds.Localized.Near_Limit_Label (C, Value => 7.25, Limit => 0.0, Margin => 0.0, Direction
-            => Humanize.Thresholds.Upper_Limit, Unit => "plain", Decimals => 0),
-          Humanize.Thresholds.Near_Limit_Label (Value => 7.25, Limit => 0.0, Margin => 0.0, Direction =>
-            Humanize.Thresholds.Upper_Limit, Unit => "plain", Decimals => 0));
-   Check (Locale, "label.thresholds.percent_of_limit_label", Phrase,
-          Humanize.Thresholds.Localized.Percent_Of_Limit_Label (C, Value => 7.25, Limit => 9.75, Decimals => 7),
-          Humanize.Thresholds.Percent_Of_Limit_Label (Value => 7.25, Limit => 9.75, Decimals => 7));
-   Check (Locale, "label.thresholds.percent_of_limit_label", Phrase,
-          Humanize.Thresholds.Localized.Percent_Of_Limit_Label (C, Value => 7.25, Limit => 9.75, Decimals => 0),
-          Humanize.Thresholds.Percent_Of_Limit_Label (Value => 7.25, Limit => 9.75, Decimals => 0));
-   Check (Locale, "label.thresholds.range_label", Phrase,
-          Humanize.Thresholds.Localized.Range_Label (C, Low => 7.25, High => 9.75, Unit => "plain", Decimals => 7,
-            Inclusive => Humanize.Thresholds.Exclusive_Window),
-          Humanize.Thresholds.Range_Label (Low => 7.25, High => 9.75, Unit => "plain", Decimals => 7, Inclusive =>
-            Humanize.Thresholds.Exclusive_Window));
-   Check (Locale, "label.thresholds.range_label", Phrase,
-          Humanize.Thresholds.Localized.Range_Label (C, Low => 0.0, High => 9.75, Unit => "plain", Decimals => 2,
-            Inclusive => Humanize.Thresholds.Inclusive_Window),
-          Humanize.Thresholds.Range_Label (Low => 0.0, High => 9.75, Unit => "plain", Decimals => 2, Inclusive =>
-            Humanize.Thresholds.Inclusive_Window));
-   Check (Locale, "label.thresholds.remaining_to_limit_label", Phrase,
-          Humanize.Thresholds.Localized.Remaining_To_Limit_Label (C, Value => 7.25, Limit => 9.75, Direction =>
-            Humanize.Thresholds.Lower_Limit, Unit => "plain", Decimals => 7),
-          Humanize.Thresholds.Remaining_To_Limit_Label (Value => 7.25, Limit => 9.75, Direction =>
-            Humanize.Thresholds.Lower_Limit, Unit => "plain", Decimals => 7));
-   Check (Locale, "label.thresholds.remaining_to_limit_label", Phrase,
-          Humanize.Thresholds.Localized.Remaining_To_Limit_Label (C, Value => 7.25, Limit => 0.0, Direction =>
-            Humanize.Thresholds.Upper_Limit, Unit => "plain", Decimals => 0),
-          Humanize.Thresholds.Remaining_To_Limit_Label (Value => 7.25, Limit => 0.0, Direction =>
-            Humanize.Thresholds.Upper_Limit, Unit => "plain", Decimals => 0));
-   Check (Locale, "label.thresholds.target_delta_label", Phrase,
-          Humanize.Thresholds.Localized.Target_Delta_Label (C, Value => 7.25, Target => 9.75, Unit => "plain",
-            Decimals => 7),
-          Humanize.Thresholds.Target_Delta_Label (Value => 7.25, Target => 9.75, Unit => "plain", Decimals => 7));
-   Check (Locale, "label.thresholds.target_delta_label", Phrase,
-          Humanize.Thresholds.Localized.Target_Delta_Label (C, Value => 7.25, Target => 0.0, Unit => "plain",
-            Decimals => 0),
-          Humanize.Thresholds.Target_Delta_Label (Value => 7.25, Target => 0.0, Unit => "plain", Decimals => 0));
-   Check (Locale, "label.thresholds.target_window_label", Phrase,
-          Humanize.Thresholds.Localized.Target_Window_Label (C, Target => 7.25, Tolerance => 9.75, Unit => "plain",
-            Decimals => 7),
-          Humanize.Thresholds.Target_Window_Label (Target => 7.25, Tolerance => 9.75, Unit => "plain", Decimals =>
-            7));
-   Check (Locale, "label.thresholds.target_window_label", Phrase,
-          Humanize.Thresholds.Localized.Target_Window_Label (C, Target => 7.25, Tolerance => 0.0, Unit => "plain",
-            Decimals => 0),
-          Humanize.Thresholds.Target_Window_Label (Target => 7.25, Tolerance => 0.0, Unit => "plain", Decimals =>
-            0));
-   Check (Locale, "label.thresholds.threshold_direction_label", Phrase,
-          Humanize.Thresholds.Localized.Threshold_Direction_Label (C, Direction => Humanize.Thresholds.Upper_Limit),
-          Humanize.Thresholds.Threshold_Direction_Label (Direction => Humanize.Thresholds.Upper_Limit));
-   Check (Locale, "label.thresholds.threshold_direction_label", Phrase,
-          Humanize.Thresholds.Localized.Threshold_Direction_Label (C, Direction => Humanize.Thresholds.Lower_Limit),
-          Humanize.Thresholds.Threshold_Direction_Label (Direction => Humanize.Thresholds.Lower_Limit));
-   Check (Locale, "label.thresholds.threshold_state_label", Phrase,
-          Humanize.Thresholds.Localized.Threshold_State_Label (C, State => Humanize.Thresholds.Below_Range),
-          Humanize.Thresholds.Threshold_State_Label (State => Humanize.Thresholds.Below_Range));
-   Check (Locale, "label.thresholds.threshold_state_label", Phrase,
-          Humanize.Thresholds.Localized.Threshold_State_Label (C, State => Humanize.Thresholds.Unknown_State),
-          Humanize.Thresholds.Threshold_State_Label (State => Humanize.Thresholds.Unknown_State));
-   Check (Locale, "label.thresholds.threshold_state_label", Prefix,
-          Humanize.Thresholds.Localized.Threshold_State_Label (C, State => Humanize.Thresholds.Below_Range, Options
-            => (Humanize.Thresholds.Default_Threshold_Label_Options with delta Include_Surface => True)),
-          Humanize.Thresholds.Threshold_State_Label (State => Humanize.Thresholds.Below_Range, Options =>
-            (Humanize.Thresholds.Default_Threshold_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.thresholds.threshold_status_label", Phrase,
-          Humanize.Thresholds.Localized.Threshold_Status_Label (C, Value => 7.25, Warning => 9.75, Critical => 4.5,
-            Direction => Humanize.Thresholds.Lower_Limit, Unit => "plain", Decimals => 7),
-          Humanize.Thresholds.Threshold_Status_Label (Value => 7.25, Warning => 9.75, Critical => 4.5, Direction =>
-            Humanize.Thresholds.Lower_Limit, Unit => "plain", Decimals => 7));
-   Check (Locale, "label.thresholds.threshold_status_label", Phrase,
-          Humanize.Thresholds.Localized.Threshold_Status_Label (C, Value => 7.25, Warning => 0.0, Critical => 0.0,
-            Direction => Humanize.Thresholds.Upper_Limit, Unit => "plain", Decimals => 0),
-          Humanize.Thresholds.Threshold_Status_Label (Value => 7.25, Warning => 0.0, Critical => 0.0, Direction =>
-            Humanize.Thresholds.Upper_Limit, Unit => "plain", Decimals => 0));
-   Check (Locale, "label.thresholds.threshold_status_label", Prefix,
-          Humanize.Thresholds.Localized.Threshold_Status_Label (C, Value => 7.25, Warning => 9.75, Critical => 4.5,
-            Direction => Humanize.Thresholds.Lower_Limit, Unit => "plain", Decimals => 7, Options =>
-            (Humanize.Thresholds.Default_Threshold_Label_Options with delta Include_Surface => True)),
-          Humanize.Thresholds.Threshold_Status_Label (Value => 7.25, Warning => 9.75, Critical => 4.5, Direction =>
-            Humanize.Thresholds.Lower_Limit, Unit => "plain", Decimals => 7, Options =>
-            (Humanize.Thresholds.Default_Threshold_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.thresholds.threshold_summary_label", Plain,
-          Humanize.Thresholds.Localized.Threshold_Summary_Label (C, Normal => 7, Warnings => 9, Critical => 4,
-            Breaches => 6),
-          Humanize.Thresholds.Threshold_Summary_Label (Normal => 7, Warnings => 9, Critical => 4, Breaches => 6));
-   Check (Locale, "label.thresholds.threshold_summary_label", Plain,
-          Humanize.Thresholds.Localized.Threshold_Summary_Label (C, Normal => 2, Warnings => 0, Critical => 0,
-            Breaches => 0),
-          Humanize.Thresholds.Threshold_Summary_Label (Normal => 2, Warnings => 0, Critical => 0, Breaches => 0));
-   Check (Locale, "label.thresholds.tolerance_label", Phrase,
-          Humanize.Thresholds.Localized.Tolerance_Label (C, Tolerance => 7.25, Unit => "plain", Decimals => 7),
-          Humanize.Thresholds.Tolerance_Label (Tolerance => 7.25, Unit => "plain", Decimals => 7));
-   Check (Locale, "label.thresholds.tolerance_label", Phrase,
-          Humanize.Thresholds.Localized.Tolerance_Label (C, Tolerance => 7.25, Unit => "plain", Decimals => 0),
-          Humanize.Thresholds.Tolerance_Label (Tolerance => 7.25, Unit => "plain", Decimals => 0));
-   Check (Locale, "label.thresholds.window_status_label", Phrase,
-          Humanize.Thresholds.Localized.Window_Status_Label (C, Value => 7.25, Low => 0.0, High => 4.5, Unit =>
-            "plain", Decimals => 7, Inclusive => Humanize.Thresholds.Exclusive_Window),
-          Humanize.Thresholds.Window_Status_Label (Value => 7.25, Low => 0.0, High => 4.5, Unit => "plain", Decimals
-            => 7, Inclusive => Humanize.Thresholds.Exclusive_Window));
-   Check (Locale, "label.thresholds.window_status_label", Phrase,
-          Humanize.Thresholds.Localized.Window_Status_Label (C, Value => 7.25, Low => 0.0, High => 0.0, Unit =>
-            "plain", Decimals => 0, Inclusive => Humanize.Thresholds.Inclusive_Window),
-          Humanize.Thresholds.Window_Status_Label (Value => 7.25, Low => 0.0, High => 0.0, Unit => "plain", Decimals
-            => 0, Inclusive => Humanize.Thresholds.Inclusive_Window));
-   Check (Locale, "label.thresholds.window_status_label", Prefix,
-          Humanize.Thresholds.Localized.Window_Status_Label (C, Value => 7.25, Low => 0.0, High => 4.5, Unit =>
-            "plain", Decimals => 7, Inclusive => Humanize.Thresholds.Exclusive_Window, Options =>
-            (Humanize.Thresholds.Default_Threshold_Label_Options with delta Include_Surface => True)),
-          Humanize.Thresholds.Window_Status_Label (Value => 7.25, Low => 0.0, High => 4.5, Unit => "plain", Decimals
-            => 7, Inclusive => Humanize.Thresholds.Exclusive_Window, Options =>
-            (Humanize.Thresholds.Default_Threshold_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.versions.commit_distance_label", Phrase,
-          Humanize.Versions.Localized.Commit_Distance_Label (C, Ahead => 3, Behind => 3),
-          Humanize.Versions.Commit_Distance_Label (Ahead => 3, Behind => 3));
-   Check (Locale, "label.versions.commit_distance_label", Phrase,
-          Humanize.Versions.Localized.Commit_Distance_Label (C, Ahead => 1, Behind => 1),
-          Humanize.Versions.Commit_Distance_Label (Ahead => 1, Behind => 1));
-   Check (Locale, "label.versions.commit_distance_label", Prefix,
-          Humanize.Versions.Localized.Commit_Distance_Label (C, Ahead => 3, Behind => 3, Options =>
-            (Humanize.Versions.Default_Version_Label_Options with delta Include_Surface => True)),
-          Humanize.Versions.Commit_Distance_Label (Ahead => 3, Behind => 3, Options =>
-            (Humanize.Versions.Default_Version_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.workflows.approval_label", Phrase,
-          Humanize.Workflows.Localized.Approval_Label (C, Approver => "plain", Waiting => False),
-          Humanize.Workflows.Approval_Label (Approver => "plain", Waiting => False));
-   Check (Locale, "label.workflows.approval_label", Phrase,
-          Humanize.Workflows.Localized.Approval_Label (C, Approver => "plain", Waiting => True),
-          Humanize.Workflows.Approval_Label (Approver => "plain", Waiting => True));
-   Check (Locale, "label.workflows.attempt_label", Phrase,
-          Humanize.Workflows.Localized.Attempt_Label (C, Attempt => 3, Limit => 3),
-          Humanize.Workflows.Attempt_Label (Attempt => 3, Limit => 3));
-   Check (Locale, "label.workflows.attempt_label", Phrase,
-          Humanize.Workflows.Localized.Attempt_Label (C, Attempt => 1, Limit => 1),
-          Humanize.Workflows.Attempt_Label (Attempt => 1, Limit => 1));
-   Check (Locale, "label.workflows.blocker_label", Phrase,
-          Humanize.Workflows.Localized.Blocker_Label (C, Reason => "plain"),
-          Humanize.Workflows.Blocker_Label (Reason => "plain"));
-   Check (Locale, "label.workflows.dependency_label", Phrase,
-          Humanize.Workflows.Localized.Dependency_Label (C, Count => 3),
-          Humanize.Workflows.Dependency_Label (Count => 3));
-   Check (Locale, "label.workflows.dependency_label", Phrase,
-          Humanize.Workflows.Localized.Dependency_Label (C, Count => 1),
-          Humanize.Workflows.Dependency_Label (Count => 1));
-   Check (Locale, "label.workflows.handoff_label", Phrase,
-          Humanize.Workflows.Localized.Handoff_Label (C, From => "plain", To => "plain"),
-          Humanize.Workflows.Handoff_Label (From => "plain", To => "plain"));
-   Check (Locale, "label.workflows.milestone_label", Phrase,
-          Humanize.Workflows.Localized.Milestone_Label (C, Current => 7, Total => 9, Name => "plain"),
-          Humanize.Workflows.Milestone_Label (Current => 7, Total => 9, Name => "plain"));
-   Check (Locale, "label.workflows.milestone_label", Phrase,
-          Humanize.Workflows.Localized.Milestone_Label (C, Current => 1, Total => 2, Name => "plain"),
-          Humanize.Workflows.Milestone_Label (Current => 1, Total => 2, Name => "plain"));
-   Check (Locale, "label.workflows.milestone_state_label", Phrase,
-          Humanize.Workflows.Localized.Milestone_State_Label (C, State => Humanize.Workflows.Upcoming_Milestone),
-          Humanize.Workflows.Milestone_State_Label (State => Humanize.Workflows.Upcoming_Milestone));
-   Check (Locale, "label.workflows.milestone_state_label", Phrase,
-          Humanize.Workflows.Localized.Milestone_State_Label (C, State => Humanize.Workflows.Blocked_Milestone),
-          Humanize.Workflows.Milestone_State_Label (State => Humanize.Workflows.Blocked_Milestone));
-   Check (Locale, "label.workflows.milestone_status_label", Phrase,
-          Humanize.Workflows.Localized.Milestone_Status_Label (C, Name => "plain", State =>
-            Humanize.Workflows.Upcoming_Milestone),
-          Humanize.Workflows.Milestone_Status_Label (Name => "plain", State =>
-            Humanize.Workflows.Upcoming_Milestone));
-   Check (Locale, "label.workflows.milestone_status_label", Phrase,
-          Humanize.Workflows.Localized.Milestone_Status_Label (C, Name => "plain", State =>
-            Humanize.Workflows.Blocked_Milestone),
-          Humanize.Workflows.Milestone_Status_Label (Name => "plain", State =>
-            Humanize.Workflows.Blocked_Milestone));
-   Check (Locale, "label.workflows.milestone_status_label", Prefix,
-          Humanize.Workflows.Localized.Milestone_Status_Label (C, Name => "plain", State =>
-            Humanize.Workflows.Upcoming_Milestone, Options => (Humanize.Workflows.Default_Workflow_Label_Options
-            with delta Include_Surface => True)),
-          Humanize.Workflows.Milestone_Status_Label (Name => "plain", State =>
-            Humanize.Workflows.Upcoming_Milestone, Options => (Humanize.Workflows.Default_Workflow_Label_Options
-            with delta Include_Surface => True)));
-   Check (Locale, "label.workflows.next_action_label", Phrase,
-          Humanize.Workflows.Localized.Next_Action_Label (C, Action => "plain"),
-          Humanize.Workflows.Next_Action_Label (Action => "plain"));
-   Check (Locale, "label.workflows.owner_label", Phrase,
-          Humanize.Workflows.Localized.Owner_Label (C, Owner => "plain"),
-          Humanize.Workflows.Owner_Label (Owner => "plain"));
-   Check (Locale, "label.workflows.queue_position_label", Phrase,
-          Humanize.Workflows.Localized.Queue_Position_Label (C, Position => 7, Total => 9),
-          Humanize.Workflows.Queue_Position_Label (Position => 7, Total => 9));
-   Check (Locale, "label.workflows.queue_position_label", Phrase,
-          Humanize.Workflows.Localized.Queue_Position_Label (C, Position => 2, Total => 0),
-          Humanize.Workflows.Queue_Position_Label (Position => 2, Total => 0));
-   Check (Locale, "label.workflows.resume_label", Phrase,
-          Humanize.Workflows.Localized.Resume_Label (C, Name => "plain"),
-          Humanize.Workflows.Resume_Label (Name => "plain"));
-   Check (Locale, "label.workflows.step_label", Phrase,
-          Humanize.Workflows.Localized.Step_Label (C, Current => 7, Total => 9, Name => "plain"),
-          Humanize.Workflows.Step_Label (Current => 7, Total => 9, Name => "plain"));
-   Check (Locale, "label.workflows.step_label", Phrase,
-          Humanize.Workflows.Localized.Step_Label (C, Current => 2, Total => 2, Name => "plain"),
-          Humanize.Workflows.Step_Label (Current => 2, Total => 2, Name => "plain"));
-   Check (Locale, "label.workflows.step_state_label", Phrase,
-          Humanize.Workflows.Localized.Step_State_Label (C, State => Humanize.Workflows.Pending_Step),
-          Humanize.Workflows.Step_State_Label (State => Humanize.Workflows.Pending_Step));
-   Check (Locale, "label.workflows.step_state_label", Phrase,
-          Humanize.Workflows.Localized.Step_State_Label (C, State => Humanize.Workflows.Skipped_Step),
-          Humanize.Workflows.Step_State_Label (State => Humanize.Workflows.Skipped_Step));
-   Check (Locale, "label.workflows.step_status_label", Phrase,
-          Humanize.Workflows.Localized.Step_Status_Label (C, Name => "plain", State =>
-            Humanize.Workflows.Pending_Step),
-          Humanize.Workflows.Step_Status_Label (Name => "plain", State => Humanize.Workflows.Pending_Step));
-   Check (Locale, "label.workflows.step_status_label", Phrase,
-          Humanize.Workflows.Localized.Step_Status_Label (C, Name => "plain", State =>
-            Humanize.Workflows.Skipped_Step),
-          Humanize.Workflows.Step_Status_Label (Name => "plain", State => Humanize.Workflows.Skipped_Step));
-   Check (Locale, "label.workflows.step_status_label", Prefix,
-          Humanize.Workflows.Localized.Step_Status_Label (C, Name => "plain", State =>
-            Humanize.Workflows.Pending_Step, Options => (Humanize.Workflows.Default_Workflow_Label_Options with
-            delta Include_Surface => True)),
-          Humanize.Workflows.Step_Status_Label (Name => "plain", State => Humanize.Workflows.Pending_Step, Options
-            => (Humanize.Workflows.Default_Workflow_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.workflows.waiting_label", Phrase,
-          Humanize.Workflows.Localized.Waiting_Label (C, Reason => "plain"),
-          Humanize.Workflows.Waiting_Label (Reason => "plain"));
-   Check (Locale, "label.workflows.workflow_progress_label", Phrase,
-          Humanize.Workflows.Localized.Workflow_Progress_Label (C, Completed => 7, Total => 9),
-          Humanize.Workflows.Workflow_Progress_Label (Completed => 7, Total => 9));
-   Check (Locale, "label.workflows.workflow_progress_label", Phrase,
-          Humanize.Workflows.Localized.Workflow_Progress_Label (C, Completed => 1, Total => 2),
-          Humanize.Workflows.Workflow_Progress_Label (Completed => 1, Total => 2));
-   Check (Locale, "label.workflows.workflow_result_label", Phrase,
-          Humanize.Workflows.Localized.Workflow_Result_Label (C, State => Humanize.Workflows.Not_Started_State, Name
-            => "plain"),
-          Humanize.Workflows.Workflow_Result_Label (State => Humanize.Workflows.Not_Started_State, Name =>
-            "plain"));
-   Check (Locale, "label.workflows.workflow_result_label", Phrase,
-          Humanize.Workflows.Localized.Workflow_Result_Label (C, State => Humanize.Workflows.Paused_State, Name =>
-            "plain"),
-          Humanize.Workflows.Workflow_Result_Label (State => Humanize.Workflows.Paused_State, Name => "plain"));
-   Check (Locale, "label.workflows.workflow_result_label", Prefix,
-          Humanize.Workflows.Localized.Workflow_Result_Label (C, State => Humanize.Workflows.Not_Started_State, Name
-            => "plain", Options => (Humanize.Workflows.Default_Workflow_Label_Options with delta Include_Surface =>
-            True)),
-          Humanize.Workflows.Workflow_Result_Label (State => Humanize.Workflows.Not_Started_State, Name => "plain",
-            Options => (Humanize.Workflows.Default_Workflow_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.workflows.workflow_state_label", Phrase,
-          Humanize.Workflows.Localized.Workflow_State_Label (C, State => Humanize.Workflows.Not_Started_State),
-          Humanize.Workflows.Workflow_State_Label (State => Humanize.Workflows.Not_Started_State));
-   Check (Locale, "label.workflows.workflow_state_label", Phrase,
-          Humanize.Workflows.Localized.Workflow_State_Label (C, State => Humanize.Workflows.Paused_State),
-          Humanize.Workflows.Workflow_State_Label (State => Humanize.Workflows.Paused_State));
 end Check_Group_7;

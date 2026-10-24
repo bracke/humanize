@@ -263,10 +263,6 @@ begin
       "{mode, select, comparison_compact {{name}: změněno {changed, "
       & "number}/{total, number}} other {{name}: změněno {changed, number}, "
       & "beze změny {unchanged, number}, celkem {total, number}}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {růžová} "
-      & "other {{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -697,4 +693,8 @@ begin
       "{v1, plural, one {{v1, number} odstavec} few {{v1, number} odstavce} "
       & "many {{v1, number} odstavce} other {{v1, number} odstavců}}");
    P ("label.metrics.reading_time.less_than_n_minute_read", "méně než {v1, number} min čtení");
+   P ("label.metrics.speaking_time.less_than_n_minute_spoken", "méně než {v1, number} min mluvení");
+   P ("label.metrics.text_summary_with_options.n_paragraph",
+      "{v1, plural, one {{v1, number} odstavec} few {{v1, number} odstavce} "
+      & "many {{v1, number} odstavce} other {{v1, number} odstavců}}");
 end Labels_3;

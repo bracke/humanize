@@ -1,9 +1,6 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Hi)
 procedure Labels_4 is
 begin
-   P ("label.models.perceptual_difference_label.cie94_delta_d_large_perceptual_difference",
-      "CIE94 डेल्टा {v1}, बड़ा दृश्य "
-      & "अंतर");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_d_large_perceptual_difference",
       "CIE94 टेक्सटाइल डेल्टा {v1}, "
       & "बड़ा दृश्य अंतर");
@@ -484,4 +481,211 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "कोई अनुच्छेद नहीं");
    P ("label.metrics.word_count_summary.n_word", "{v1, number} शब्द");
    P ("label.metrics.text_summary_with_options.n_word", "{v1, number} शब्द");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {कोई "
+      & "प्रेक्षण नहीं} sample_too_small_shape "
+      & "{आकार बताने के लिए नमूना "
+      & "बहुत छोटा, {count, plural, one {{count, number} "
+      & "प्रेक्षण} other {{count, number} "
+      & "प्रेक्षण}}} flat_shape {{median} पर समतल "
+      & "वितरण} outlier_heavy_shape {{median} के आसपास "
+      & "अधिक बाहरी मानों वाला "
+      & "वितरण} volatile_shape {{median} के आसपास "
+      & "अस्थिर वितरण} clustered_shape {{median} के "
+      & "आसपास समूहित वितरण} wide_spread_shape "
+      & "{व्यापक रूप से फैला वितरण} "
+      & "wide_spread_range {{minimum} से {maximum} तक "
+      & "व्यापक रूप से फैला वितरण} "
+      & "right_skewed_shape {दाईं ओर विषम वितरण, "
+      & "माध्यिका {median}} left_skewed_shape {बाईं "
+      & "ओर विषम वितरण, माध्यिका "
+      & "{median}} other {{median} के आसपास अधिकतर "
+      & "संतुलित वितरण}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {खाली ईमेल} address "
+      & "{ईमेल पता} other {{domain} पर ईमेल}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {फ़ोन नंबर} redacted "
+      & "{फ़ोन नंबर छिपाया गया} other "
+      & "{{digits} पर समाप्त होने वाला "
+      & "फ़ोन}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {हैंडल} other {हैंडल "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label",
+      "{state, select, none {कोड प्रतीक} other {कोड "
+      & "प्रतीक {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "पता मेटाडेटा: {present, plural, one {{present, "
+      & "number} फ़ील्ड मौजूद} other {{present, number} "
+      & "फ़ील्ड मौजूद}}, {missing, plural, one {{missing, "
+      & "number} फ़ील्ड अनुपस्थित} other "
+      & "{{missing, number} फ़ील्ड अनुपस्थित}}");
+   P ("label.endpoints.host_label",
+      "{state, select, none {अज्ञात होस्ट} other "
+      & "{{host} {kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {अज्ञात एंडपॉइंट} "
+      & "other {{scheme}{host}{port} {kind} एंडपॉइंट}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {खाली URL} none {बिना "
+      & "पहचाने गए घटकों वाला URL} other "
+      & "{{count, plural, one {{count, number} घटक} other {{count, "
+      & "number} घटकों}} वाला URL: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {कोई क्वेरी "
+      & "पैरामीटर नहीं} one {{count, number} "
+      & "क्वेरी पैरामीटर} other {{count, number} "
+      & "क्वेरी पैरामीटर}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {सार्वजनिक IPv4 "
+      & "पता} ipv6_host {सार्वजनिक IPv6 पता} "
+      & "private_network_host {निजी नेटवर्क पता} "
+      & "localhost_host {लोकल होस्ट} other {IP पता "
+      & "नहीं}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} अमान्य CIDR} other {{cidr} "
+      & "{kind} नेटवर्क प्रीफ़िक्स {prefix}}}");
+   P ("label.resources.utilization_label",
+      "{total, number} {unit} में से {used, number} उपयोग "
+      & "में ({percent}, {band})");
+   P ("label.resources.saturation_label",
+      "{named, select, no {संसाधन} other {{name}}} {percent} "
+      & "{band}");
+   P ("label.versions.version_label",
+      "{state, select, both {संस्करण {version}, "
+      & "प्रीरिलीज़ {prerelease}, बिल्ड {build}} "
+      & "prerelease {संस्करण {version}, "
+      & "प्रीरिलीज़ {prerelease}} build "
+      & "{संस्करण {version}, बिल्ड {build}} other "
+      & "{संस्करण {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {समान संस्करण} "
+      & "major_upgrade {मेजर अपग्रेड} minor_upgrade "
+      & "{माइनर अपग्रेड} patch_upgrade {पैच "
+      & "अपग्रेड} prerelease_change "
+      & "{प्रीरिलीज़ परिवर्तन} "
+      & "build_metadata_change {बिल्ड मेटाडेटा "
+      & "परिवर्तन} downgrade {डाउनग्रेड} "
+      & "other {अज्ञात संस्करण "
+      & "परिवर्तन}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {ठीक संस्करण {version}} "
+      & "minimum_range {संस्करण {version} या नया} "
+      & "maximum_range {संस्करण {version} या "
+      & "पुराना} major_compatible_range {मेजर "
+      & "संस्करण {version} के साथ संगत} "
+      & "minor_compatible_range {माइनर संस्करण "
+      & "{version} के साथ संगत} other {संस्करण "
+      & "सीमा {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {प्रारंभिक विकास "
+      & "रिलीज़ {version}} prerelease "
+      & "{प्रीरिलीज़ {version}} major {मेजर "
+      & "रिलीज़ {version}} minor {माइनर "
+      & "रिलीज़ {version}} other {पैच रिलीज़ "
+      & "{version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {लिंक टैग} image {छवि "
+      & "टैग} paragraph {अनुच्छेद टैग} ordered_list "
+      & "{क्रमित सूची टैग} unordered_list "
+      & "{अक्रमित सूची टैग} list_item {सूची "
+      & "आइटम टैग} table_header_cell {तालिका "
+      & "शीर्ष सेल टैग} table_cell {तालिका "
+      & "सेल टैग} table_row {तालिका पंक्ति "
+      & "टैग} line_break {पंक्ति विराम टैग} "
+      & "thematic_break {विषयगत विराम टैग} "
+      & "heading_level_n {शीर्षक स्तर {level, number} "
+      & "टैग} other {{name} टैग}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {{name} एट्रिब्यूट} event "
+      & "{{name} इवेंट हैंडलर "
+      & "एट्रिब्यूट} other {{name} "
+      & "एट्रिब्यूट, मान “{value}”}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {टेक्स्ट "
+      & "सामग्री} html_content {HTML दस्तावेज़} "
+      & "json_content {JSON दस्तावेज़} xml_content {XML "
+      & "दस्तावेज़} image_content {छवि "
+      & "सामग्री} audio_content {ऑडियो "
+      & "सामग्री} video_content {वीडियो "
+      & "सामग्री} font_content {फ़ॉन्ट "
+      & "सामग्री} archive_content {आर्काइव "
+      & "सामग्री} binary_content {बाइनरी "
+      & "सामग्री} form_content {फ़ॉर्म "
+      & "सबमिशन} other {अज्ञात सामग्री}} "
+      & "({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} सेट नहीं} hidden_value "
+      & "{{kind} छिपा हुआ} masked_value {{kind} {shown}} "
+      & "fingerprint_only {{kind} फ़िंगरप्रिंट, "
+      & "अंत में {shown}} other {{kind}, अंत में "
+      & "{shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} सेट नहीं} other "
+      & "{{name} {kind}, अंत में {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {{name} क्रेडेंशियल "
+      & "हेडर सेट नहीं} other {{name} {kind}, अंत "
+      & "में {shown}}}");
+   P ("label.secrets.fingerprint_label",
+      "{algorithm} फ़िंगरप्रिंट, अंत में "
+      & "{shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} सेट नहीं} redacted "
+      & "{{label} छिपाया गया} url_redacted {URL "
+      & "छिपाया गया} ip_redacted {IP पता "
+      & "छिपाया गया} path_ending {फ़ाइल पथ, "
+      & "अंत में {shown}} at {{label} {shown} पर} audit "
+      & "{{label} लंबाई {length, number}, अंत में "
+      & "{shown}} debug {{label} {shown}} other {{label}, अंत में "
+      & "{shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {अप्रचलित } "
+      & "unknown_field {अज्ञात } read_only_field "
+      & "{केवल-पठन } write_only_field {केवल-लेखन "
+      & "} computed_field {परिकलित } other {}}{presence, select, "
+      & "required_field {आवश्यक} optional_field "
+      & "{वैकल्पिक} conditional_field {सशर्त} other "
+      & "{उपस्थिति अज्ञात}}{nullable, select, "
+      & "non_nullable {, गैर-null} nullable {, null-योग्य} "
+      & "other {}} {kind, select, string_field {स्ट्रिंग} "
+      & "integer_field {पूर्णांक} decimal_field "
+      & "{दशमलव} boolean_field {बूलियन} date_field "
+      & "{दिनांक} date_time_field {दिनांक-समय} "
+      & "object_field {ऑब्जेक्ट} array_field {ऐरे} "
+      & "enum_field {एनम} binary_field {बाइनरी} null_field "
+      & "{null} any_field {कोई भी} other {अज्ञात}} "
+      & "फ़ील्ड {name}");
+   P ("label.schema.schema_summary_label.fields",
+      "{count, plural, one {{count, number} फ़ील्ड} other "
+      & "{{count, number} फ़ील्ड}}");
+   P ("label.schema.schema_summary_label.required", "{count, number} आवश्यक");
+   P ("label.schema.schema_summary_label.optional", "{count, number} वैकल्पिक");
+   P ("label.schema.schema_summary_label.deprecated", "{count, number} अप्रचलित");
+   P ("label.schema.schema_summary_label.unknown", "{count, number} अज्ञात");
+   P ("label.diagnostics.check_run_summary_label.none", "कोई जाँच नहीं चली");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} सफल");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} विफल");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {{count, number} चेतावनी} other "
+      & "{{count, number} चेतावनियाँ}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} छोड़ी गईं");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} लंबित");
+   P ("label.workflows.workflow_summary_label.total",
+      "{count, plural, one {{count, number} आइटम} other {{count, "
+      & "number} आइटम}}");
+   P ("label.workflows.workflow_summary_label.completed", "{count, number} पूर्ण");
+   P ("label.workflows.workflow_summary_label.active", "{count, number} सक्रिय");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} अवरुद्ध");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} विफल");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} छोड़े गए");
+   P ("label.changes.change_summary_label.total",
+      "{count, plural, one {{count, number} आइटम} other {{count, "
+      & "number} आइटम}}");
+   P ("label.changes.change_summary_label.added", "{count, number} जोड़े गए");
+   P ("label.changes.change_summary_label.removed", "{count, number} हटाए गए");
+   P ("label.changes.change_summary_label.modified", "{count, number} बदले गए");
+   P ("label.changes.change_summary_label.renamed", "{count, number} के नाम बदले गए");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} अपरिवर्तित");
 end Labels_4;

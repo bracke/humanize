@@ -101,6 +101,49 @@ private package Humanize.Label_Values is
    --  An empty Ok text, to Join parts onto.
    function Nothing return Humanize.Status.Text_Result;
 
+   --  Word, an English modifier of a hue ("dark", "vivid"), in the form that
+   --  agrees with the hue Hue (English, "red"): the phrase Prefix & "." & its
+   --  slug with the hue's label.names.hue_gender as {gender}; Fallback where
+   --  the locale has no such phrase.
+   function Agreeing
+     (Context : Humanize.Contexts.Context;
+      Prefix  : String;
+      Word    : String;
+      Hue     : String;
+      Fallback : String)
+      return String;
+
+   --  The hue Hue (English, "red") as the noun the agreeing modifiers go
+   --  with (label.names.hue_noun); Fallback where the locale has none.
+   function Hue_Noun
+     (Context  : Humanize.Contexts.Context;
+      Hue      : String;
+      Fallback : String)
+      return String;
+
+   --  Text after the first Marker, or Text itself without one.
+   function Value_After (Text, Marker : String) return String;
+
+   --  Text before the first Marker, or Text itself without one.
+   function Before (Text, Marker : String) return String;
+
+   --  Whether Text starts or ends with Part.
+   function Starts (Text, Part : String) return Boolean is
+     (Text'Length >= Part'Length and then Text (Text'First .. Text'First + Part'Length - 1) = Part);
+   function Ends (Text, Part : String) return Boolean is
+     (Text'Length >= Part'Length and then Text (Text'Last - Part'Length + 1 .. Text'Last) = Part);
+
+   --  Text trimmed, without the brackets around an IPv6 address ("[::1]").
+   function Unbracketed (Text : String) return String;
+
+   --  The number Text starts with ("3 query params"); 0 where it starts with none.
+   function Leading_Count (Text : String) return Long_Long_Integer;
+
+   --  Words, English words joined by ", " ("scheme, host"), each as the
+   --  phrase Prefix & "." & its slug, joined through label.parts; Words
+   --  itself where one has no phrase.
+   function Word_List (Context : Humanize.Contexts.Context; Prefix, Words : String) return String;
+
    --  The text of a rendered label.
    function Text_Of (Result : Humanize.Status.Text_Result) return String;
 

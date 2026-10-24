@@ -257,11 +257,12 @@ thresholds : Untergrenze
 versions : 3 Commits voraus, 3 Commits zurück
 workflows : wartet auf Genehmigung durch plain
 contrast : 50 % durchscheinend
-names : dunkel, gesättigt rot, warm, hohes Chroma
+names : dunkles, gesättigtes Rot, warm, hohes Chroma
 models : dunkel
 palettes : ausgewogen, lebendig, warme Stimmung
 statistics : 3 Ausreißer bei 40 Beobachtungen
 metrics : weniger als 1 Minute Lesezeit
+privacy : E-Mail bei example.com
 ```
 
 For `./examples/bin/ui_labels_demo`:

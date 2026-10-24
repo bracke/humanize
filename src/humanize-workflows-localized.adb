@@ -390,6 +390,54 @@ package body Humanize.Workflows.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Workflow_State_Label;
 
+   function Workflow_Summary_Label
+      (Context   : Humanize.Contexts.Context;
+       Total     : Natural;
+       Completed : Natural := 0;
+       Active    : Natural := 0;
+       Blocked   : Natural := 0;
+       Failed    : Natural := 0;
+       Skipped   : Natural := 0)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Workflows.Workflow_Summary_Label
+          (Total => Total,
+           Completed => Completed,
+           Active => Active,
+           Blocked => Blocked,
+           Failed => Failed,
+           Skipped => Skipped);
+      Text : Humanize.Status.Text_Result := Humanize.Label_Values.Nothing;
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+        "label.workflows.workflow_summary_label.total", Long_Long_Integer (Total)));
+      if Completed > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.workflows.workflow_summary_label.completed", Long_Long_Integer (Completed)));
+      end if;
+      if Active > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.workflows.workflow_summary_label.active", Long_Long_Integer (Active)));
+      end if;
+      if Blocked > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.workflows.workflow_summary_label.blocked", Long_Long_Integer (Blocked)));
+      end if;
+      if Failed > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.workflows.workflow_summary_label.failed", Long_Long_Integer (Failed)));
+      end if;
+      if Skipped > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.workflows.workflow_summary_label.skipped", Long_Long_Integer (Skipped)));
+      end if;
+      return Humanize.Label_Values.Localized_Or (Context, Text, English);
+   end Workflow_Summary_Label;
+
    procedure Approval_Label_Into
       (Context  : Humanize.Contexts.Context;
        Approver : String := "";
@@ -673,5 +721,24 @@ package body Humanize.Workflows.Localized is
    begin
       Humanize.Bounded_Text.Copy_Text (Workflow_State_Label (Context, State => State), Target, Written, Status);
    end Workflow_State_Label_Into;
+
+   procedure Workflow_Summary_Label_Into
+      (Context   : Humanize.Contexts.Context;
+       Total     : Natural;
+       Completed : Natural := 0;
+       Active    : Natural := 0;
+       Blocked   : Natural := 0;
+       Failed    : Natural := 0;
+       Skipped   : Natural := 0;
+       Target    : in out String;
+       Written   : out Natural;
+       Status    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Workflow_Summary_Label (Context, Total => Total, Completed => Completed, Active => Active, Blocked =>
+         Blocked, Failed => Failed, Skipped => Skipped),
+         Target, Written, Status);
+   end Workflow_Summary_Label_Into;
 
 end Humanize.Workflows.Localized;

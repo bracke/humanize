@@ -52,6 +52,7 @@ package body Humanize.Tests.Domain_Labels is
    procedure Check_Group_5 (Locale : String; C : Humanize.Contexts.Context) is separate;
    procedure Check_Group_6 (Locale : String; C : Humanize.Contexts.Context) is separate;
    procedure Check_Group_7 (Locale : String; C : Humanize.Contexts.Context) is separate;
+   procedure Check_Group_8 (Locale : String; C : Humanize.Contexts.Context) is separate;
 
    procedure Test_Every_Locale (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
@@ -68,6 +69,7 @@ package body Humanize.Tests.Domain_Labels is
             Check_Group_5 (Locale, C);
             Check_Group_6 (Locale, C);
             Check_Group_7 (Locale, C);
+            Check_Group_8 (Locale, C);
          end;
       end loop;
    end Test_Every_Locale;

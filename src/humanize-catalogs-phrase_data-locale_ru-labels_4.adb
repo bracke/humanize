@@ -1,10 +1,6 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Ru)
 procedure Labels_4 is
 begin
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
-      "текущий цвет переднего плана "
-      & "соответствует контрасту для крупного "
-      & "текста при {v1}:{v2, number}");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_d_n",
       "текущий цвет переднего плана "
       & "соответствует контрасту для обычного "
@@ -591,4 +587,108 @@ begin
       "{v1, plural, one {{v1, number} слово} few {{v1, number} "
       & "слова} many {{v1, number} слов} other {{v1, number} "
       & "слова}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {нет наблюдений} "
+      & "sample_too_small_shape {выборка слишком мала для "
+      & "описания формы, наблюдений: {count, number}} "
+      & "flat_shape {плоское распределение на "
+      & "уровне {median}} outlier_heavy_shape {распределение "
+      & "с множеством выбросов около {median}} "
+      & "volatile_shape {нестабильное распределение "
+      & "около {median}} clustered_shape {кластеризованное "
+      & "распределение около {median}} wide_spread_shape "
+      & "{распределение с большим разбросом} "
+      & "wide_spread_range {распределение с большим "
+      & "разбросом от {minimum} до {maximum}} right_skewed_shape "
+      & "{распределение со скосом вправо, "
+      & "медиана {median}} left_skewed_shape {распределение "
+      & "со скосом влево, медиана {median}} other {в "
+      & "основном сбалансированное "
+      & "распределение около {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {пустой адрес эл. почты} "
+      & "address {адрес эл. почты} other {адрес эл. "
+      & "почты в домене {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {номер телефона} redacted "
+      & "{номер телефона скрыт} other {номер "
+      & "телефона, оканчивающийся на {digits}}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {имя пользователя} other {имя "
+      & "пользователя {shown}}}");
+   P ("label.privacy.code_symbol_label",
+      "{state, select, none {символ кода} other {символ "
+      & "кода {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "метаданные адреса: {present, plural, one {{present, "
+      & "number} поле заполнено} few {{present, number} поля "
+      & "заполнены} many {{present, number} полей "
+      & "заполнено} other {{present, number} поля "
+      & "заполнено}}, {missing, plural, one {{missing, number} "
+      & "поле отсутствует} few {{missing, number} поля "
+      & "отсутствуют} many {{missing, number} полей "
+      & "отсутствует} other {{missing, number} поля "
+      & "отсутствует}}");
+   P ("label.endpoints.host_label",
+      "{state, select, none {неизвестный хост} other {{kind} "
+      & "{host}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {неизвестная конечная "
+      & "точка} other {конечная точка {scheme}{host}{port} "
+      & "({kind})}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {пустой URL} none {URL без "
+      & "распознанных компонентов} other {URL, {count, "
+      & "plural, one {{count, number} компонент} few {{count, number} "
+      & "компонента} many {{count, number} компонентов} "
+      & "other {{count, number} компонента}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {нет параметров запроса} one "
+      & "{{count, number} параметр запроса} few {{count, number} "
+      & "параметра запроса} many {{count, number} "
+      & "параметров запроса} other {{count, number} "
+      & "параметра запроса}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} — {kind, select, ipv4_host {публичный адрес "
+      & "IPv4} ipv6_host {публичный адрес IPv6} "
+      & "private_network_host {адрес частной сети} "
+      & "localhost_host {локальный хост} other {не "
+      & "IP-адрес}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr}: недопустимый CIDR} other "
+      & "{{cidr}: {kind}, префикс сети {prefix}}}");
+   P ("label.resources.utilization_label",
+      "использовано {used, number} из {total, number} {unit} "
+      & "({percent}, {band})");
+   P ("label.resources.saturation_label", "{named, select, no {ресурс} other {{name}}}: {percent}, {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {версия {version}, "
+      & "предварительный выпуск {prerelease}, сборка "
+      & "{build}} prerelease {версия {version}, "
+      & "предварительный выпуск {prerelease}} build "
+      & "{версия {version}, сборка {build}} other {версия "
+      & "{version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {та же версия} major_upgrade "
+      & "{мажорное обновление} minor_upgrade "
+      & "{минорное обновление} patch_upgrade "
+      & "{патч-обновление} prerelease_change {изменение "
+      & "предварительного выпуска} build_metadata_change "
+      & "{изменение метаданных сборки} downgrade "
+      & "{понижение версии} other {неизвестное "
+      & "изменение версии}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {ровно версия {version}} "
+      & "minimum_range {версия {version} или новее} maximum_range "
+      & "{версия {version} или старше} major_compatible_range "
+      & "{совместимо с мажорной версией {version}} "
+      & "minor_compatible_range {совместимо с минорной "
+      & "версией {version}} other {диапазон версий "
+      & "{version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {начальный выпуск "
+      & "разработки {version}} prerelease "
+      & "{предварительный выпуск {version}} major "
+      & "{мажорный выпуск {version}} minor {минорный "
+      & "выпуск {version}} other {патч-выпуск {version}}}");
 end Labels_4;

@@ -1,10 +1,6 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Zh_Hant)
 procedure Labels_3 is
 begin
-   P ("label.models.perceptual_difference_label.oklab_delta_n_imperceptible",
-      "OKLab差值{v1, number}，無法察覺");
-   P ("label.models.perceptual_difference_label.oklab_delta_d_subtle_perceptual_difference",
-      "OKLab差值{v1}，感知差異細微");
    P ("label.models.perceptual_difference_label.cie94_delta_d_subtle_perceptual_difference",
       "CIE94差值{v1}，感知差異細微");
    P ("label.models.perceptual_difference_label.ciede2000_delta_d_subtle_perceptual_difference",
@@ -252,4 +248,207 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "沒有段落");
    P ("label.metrics.word_count_summary.n_word", "{v1, number}個字詞");
    P ("label.metrics.text_summary_with_options.n_word", "{v1, number}個字詞");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {沒有觀測值} "
+      & "sample_too_small_shape "
+      & "{樣本太少，無法描述分布形態，共{count, "
+      & "number}個觀測值} flat_shape {位於{median}的平坦分布} "
+      & "outlier_heavy_shape {以{median}為中心、離群值較多的分布} "
+      & "volatile_shape {以{median}為中心、波動較大的分布} "
+      & "clustered_shape {集中在{median}附近的分布} wide_spread_shape "
+      & "{分散較廣的分布} wide_spread_range "
+      & "{從{minimum}到{maximum}分散較廣的分布} right_skewed_shape "
+      & "{右偏分布，中位數{median}} left_skewed_shape "
+      & "{左偏分布，中位數{median}} other "
+      & "{以{median}為中心、大致對稱的分布}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {空白電子郵件} address "
+      & "{電子郵件地址} other {{domain}的電子郵件}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {電話號碼} redacted {電話號碼已遮蔽} "
+      & "other {末碼{digits}的電話號碼}}");
+   P ("label.privacy.safe_handle_label", "{state, select, none {帳號名稱} other {帳號名稱{shown}}}");
+   P ("label.privacy.code_symbol_label",
+      "{state, select, none {程式碼符號} other "
+      & "{程式碼符號{symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "地址中繼資料：{present, number}個欄位已填寫，{missing, "
+      & "number}個欄位缺少");
+   P ("label.endpoints.host_label", "{state, select, none {不明主機} other {{host}（{kind}）}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {不明端點} other "
+      & "{{scheme}{host}{port}（{kind}端點）}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {空白URL} none "
+      & "{沒有可辨識組成部分的URL} other {包含{count, "
+      & "number}個組成部分的URL：{components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {沒有查詢參數} other {{count, "
+      & "number}個查詢參數}}");
+   P ("label.endpoints.ip_address_label",
+      "{address}：{kind, select, ipv4_host {公用IPv4位址} ipv6_host "
+      & "{公用IPv6位址} private_network_host {私人網路位址} "
+      & "localhost_host {本機} other {不是IP位址}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr}：無效的CIDR} other "
+      & "{{cidr}：{kind}網路，前置碼{prefix}}}");
+   P ("label.resources.utilization_label", "已使用{used, number}/{total, number} {unit}（{percent}，{band}）");
+   P ("label.resources.saturation_label", "{named, select, no {資源} other {{name}}}：{percent}，{band}");
+   P ("label.versions.version_label",
+      "{state, select, both "
+      & "{版本{version}，預先發行{prerelease}，組建{build}} "
+      & "prerelease {版本{version}，預先發行{prerelease}} build "
+      & "{版本{version}，組建{build}} other {版本{version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {版本相同} major_upgrade "
+      & "{主要版本升級} minor_upgrade {次要版本升級} patch_upgrade "
+      & "{修補程式升級} prerelease_change {預先發行變更} "
+      & "build_metadata_change {組建中繼資料變更} downgrade {降級} "
+      & "other {不明的版本變更}}：{from} → {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {僅限版本{version}} minimum_range "
+      & "{版本{version}或更新} maximum_range {版本{version}或更舊} "
+      & "major_compatible_range {與主要版本{version}相容} "
+      & "minor_compatible_range {與次要版本{version}相容} other "
+      & "{版本範圍{version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {初始開發版本{version}} prerelease "
+      & "{預先發行版本{version}} major {主要版本{version}} minor "
+      & "{次要版本{version}} other {修補版本{version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {連結標籤} image {圖片標籤} paragraph "
+      & "{段落標籤} ordered_list {編號清單標籤} unordered_list "
+      & "{項目符號清單標籤} list_item {清單項目標籤} "
+      & "table_header_cell {表格標題儲存格標籤} table_cell "
+      & "{表格儲存格標籤} table_row {表格列標籤} line_break "
+      & "{換行標籤} thematic_break {分隔線標籤} heading_level_n "
+      & "{{level, number}級標題標籤} other {{name}標籤}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {{name}屬性} event "
+      & "{{name}事件處理常式屬性} other "
+      & "{{name}屬性，值為「{value}」}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {文字內容} html_content {HTML文件} "
+      & "json_content {JSON文件} xml_content {XML文件} image_content "
+      & "{影像內容} audio_content {音訊內容} video_content "
+      & "{視訊內容} font_content {字型內容} archive_content "
+      & "{封存內容} binary_content {二進位內容} form_content "
+      & "{表單提交} other {不明內容}}（{base}）");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind}未設定} hidden_value {{kind}已隱藏} "
+      & "masked_value {{kind} {shown}} fingerprint_only "
+      & "{{kind}指紋，結尾為{shown}} other {{kind}，結尾為{shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind}未設定} other {{name} "
+      & "{kind}，結尾為{shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {{name}憑證標頭未設定} other {{name} "
+      & "{kind}，結尾為{shown}}}");
+   P ("label.secrets.fingerprint_label", "{algorithm}指紋，結尾為{shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label}未設定} redacted {{label}已遮蔽} "
+      & "url_redacted {URL已遮蔽} ip_redacted {IP位址已遮蔽} "
+      & "path_ending {結尾為{shown}的檔案路徑} at {{shown}的{label}} "
+      & "audit {{label}長度{length, number}，結尾為{shown}} debug "
+      & "{{label} {shown}} other {{label}，結尾為{shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {已淘汰、} unknown_field "
+      & "{不明、} read_only_field {唯讀、} write_only_field {唯寫、} "
+      & "computed_field {計算、} other {}}{presence, select, required_field "
+      & "{必填} optional_field {選填} conditional_field {條件式必填} "
+      & "other {是否必填不明}}{nullable, select, non_nullable "
+      & "{、不可為null} nullable {、可為null} other {}}的{kind, select, "
+      & "string_field {字串} integer_field {整數} decimal_field {小數} "
+      & "boolean_field {布林} date_field {日期} date_time_field "
+      & "{日期時間} object_field {物件} array_field {陣列} enum_field "
+      & "{列舉} binary_field {二進位} null_field {null} any_field "
+      & "{任意型別} other {不明型別}}欄位{name}");
+   P ("label.schema.schema_summary_label.fields", "{count, number}個欄位");
+   P ("label.schema.schema_summary_label.required", "{count, number}個必填");
+   P ("label.schema.schema_summary_label.optional", "{count, number}個選填");
+   P ("label.schema.schema_summary_label.deprecated", "{count, number}個已淘汰");
+   P ("label.schema.schema_summary_label.unknown", "{count, number}個不明");
+   P ("label.diagnostics.check_run_summary_label.none", "未執行檢查");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number}項通過");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number}項失敗");
+   P ("label.diagnostics.check_run_summary_label.warnings", "{count, number}個警告");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number}項略過");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number}項待處理");
+   P ("label.workflows.workflow_summary_label.total", "{count, number}項");
+   P ("label.workflows.workflow_summary_label.completed", "{count, number}項已完成");
+   P ("label.workflows.workflow_summary_label.active", "{count, number}項進行中");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number}項受阻");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number}項失敗");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number}項已略過");
+   P ("label.changes.change_summary_label.total", "{count, number}項");
+   P ("label.changes.change_summary_label.added", "新增{count, number}項");
+   P ("label.changes.change_summary_label.removed", "移除{count, number}項");
+   P ("label.changes.change_summary_label.modified", "變更{count, number}項");
+   P ("label.changes.change_summary_label.renamed", "重新命名{count, number}項");
+   P ("label.changes.change_summary_label.unchanged", "{count, number}項未變");
+   P ("label.markup.accessible_control_label.control",
+      "{named, select, no {未命名} other {{name}}}{role, select, "
+      & "button_control {按鈕} link_control {連結} tab_control "
+      & "{索引標籤} menu_item_control {選單項目} checkbox_control "
+      & "{核取方塊} radio_control {選項按鈕} text_field_control "
+      & "{文字欄位} progress_control {進度列} table_cell_control "
+      & "{表格儲存格} region_control {區域} other {控制項}}");
+   P ("label.markup.accessible_control_label.selected", "已選取");
+   P ("label.markup.accessible_control_label.expanded", "已展開");
+   P ("label.markup.accessible_control_label.current", "目前項目");
+   P ("label.markup.accessible_control_label.disabled", "已停用");
+   P ("label.markup.accessible_control_label.required", "必填");
+   P ("label.markup.accessible_control_label.invalid", "無效");
+   P ("label.markup.accessible_control_label.count", "{count, number}項");
+   P ("label.markup.accessible_control_label.position", "第{position}項，共{total}項");
+   P ("label.markup.accessible_control_label.issues", "{count, number}個問題");
+   P ("label.markup.accessible_control_label.with_states", "{control}，{states}");
+   P ("label.endpoints.url_component.scheme", "協定");
+   P ("label.endpoints.url_component.host", "主機");
+   P ("label.endpoints.url_component.path", "路徑");
+   P ("label.endpoints.url_component.query", "查詢");
+   P ("label.endpoints.url_component.fragment", "片段");
+   P ("label.names.hue_noun.red", "紅色");
+   P ("label.names.hue_noun.orange", "橙色");
+   P ("label.names.hue_noun.yellow", "黃色");
+   P ("label.names.hue_noun.green", "綠色");
+   P ("label.names.hue_noun.cyan", "青色");
+   P ("label.names.hue_noun.blue", "藍色");
+   P ("label.names.hue_noun.purple", "紫色");
+   P ("label.names.hue_noun.magenta", "洋紅色");
+   P ("label.names.hue_noun.neutral", "中性色");
+   P ("label.names.hue_noun.pink", "粉紅色");
+   P ("label.names.hue_gender.red", "other");
+   P ("label.names.hue_gender.orange", "other");
+   P ("label.names.hue_gender.yellow", "other");
+   P ("label.names.hue_gender.green", "other");
+   P ("label.names.hue_gender.cyan", "other");
+   P ("label.names.hue_gender.blue", "other");
+   P ("label.names.hue_gender.purple", "other");
+   P ("label.names.hue_gender.magenta", "other");
+   P ("label.names.hue_gender.neutral", "other");
+   P ("label.names.hue_gender.pink", "other");
+   P ("label.names.agree.very_dark", "{gender, select, other {很暗}}");
+   P ("label.names.agree.dark", "{gender, select, other {較暗}}");
+   P ("label.names.agree.medium_brightness", "{gender, select, other {中等亮度}}");
+   P ("label.names.agree.light", "{gender, select, other {較亮}}");
+   P ("label.names.agree.very_light", "{gender, select, other {很亮}}");
+   P ("label.names.agree.desaturated", "{gender, select, other {低飽和}}");
+   P ("label.names.agree.muted", "{gender, select, other {暗淡}}");
+   P ("label.names.agree.neutral", "{gender, select, other {無彩}}");
+   P ("label.names.agree.saturated", "{gender, select, other {高飽和}}");
+   P ("label.names.agree.vivid", "{gender, select, other {鮮豔}}");
+   P ("label.names.agree.grayish", "{gender, select, other {偏灰}}");
+   P ("label.names.agree.soft", "{gender, select, other {柔和}}");
+   P ("label.names.agree.moderate_chroma", "{gender, select, other {中等彩度}}");
+   P ("label.names.agree.high_chroma", "{gender, select, other {高彩度}}");
+   P ("label.names.agree.pastel", "{gender, select, other {粉彩}}");
+   P ("label.names.agree.warm", "{gender, select, other {暖色調}}");
+   P ("label.names.agree.cool", "{gender, select, other {冷色調}}");
+   P ("label.names.agree.neutral_temperature", "{gender, select, other {中性色溫}}");
+   P ("label.names.agree.balanced_temperature", "{gender, select, other {均衡色溫}}");
+   P ("label.names.color_description", "{brightness}、{saturation}的{hue}，{temperature}，{chroma}");
+   P ("label.names.descriptive_color_name",
+      "{brightness}、{chroma}、{temperature}的{base, select, pink {{hue}} "
+      & "other {{hue}}}");
 end Labels_3;

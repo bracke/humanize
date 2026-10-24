@@ -61,6 +61,7 @@ class map and coverage scorecards.
 - `Humanize.Strings.Names` - `src/humanize-strings-names.ads`
 - `Humanize.Strings.Paths` - `src/humanize-strings-paths.ads`
 - `Humanize.Strings.Privacy` - `src/humanize-strings-privacy.ads`
+- `Humanize.Strings.Privacy.Localized` - `src/humanize-strings-privacy-localized.ads`
 - `Humanize.Strings.Prose` - `src/humanize-strings-prose.ads`
 - `Humanize.Strings.Terminal` - `src/humanize-strings-terminal.ads`
 - `Humanize.Strings.Types` - `src/humanize-strings-types.ads`

@@ -217,6 +217,24 @@ package Humanize.Workflows.Localized is
    --  @param State As for the parent's Workflow_State_Label.
    --  @return The label in Context's locale.
 
+   function Workflow_Summary_Label
+      (Context   : Humanize.Contexts.Context;
+       Total     : Natural;
+       Completed : Natural := 0;
+       Active    : Natural := 0;
+       Blocked   : Natural := 0;
+       Failed    : Natural := 0;
+       Skipped   : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Total As for the parent's Workflow_Summary_Label.
+   --  @param Completed As for the parent's Workflow_Summary_Label.
+   --  @param Active As for the parent's Workflow_Summary_Label.
+   --  @param Blocked As for the parent's Workflow_Summary_Label.
+   --  @param Failed As for the parent's Workflow_Summary_Label.
+   --  @param Skipped As for the parent's Workflow_Summary_Label.
+   --  @return The label in Context's locale.
+
    procedure Approval_Label_Into
       (Context  : Humanize.Contexts.Context;
        Approver : String := "";
@@ -513,6 +531,28 @@ package Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param State As for the parent's Workflow_State_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Workflow_Summary_Label_Into
+      (Context   : Humanize.Contexts.Context;
+       Total     : Natural;
+       Completed : Natural := 0;
+       Active    : Natural := 0;
+       Blocked   : Natural := 0;
+       Failed    : Natural := 0;
+       Skipped   : Natural := 0;
+       Target    : in out String;
+       Written   : out Natural;
+       Status    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Total As for the parent's Workflow_Summary_Label.
+   --  @param Completed As for the parent's Workflow_Summary_Label.
+   --  @param Active As for the parent's Workflow_Summary_Label.
+   --  @param Blocked As for the parent's Workflow_Summary_Label.
+   --  @param Failed As for the parent's Workflow_Summary_Label.
+   --  @param Skipped As for the parent's Workflow_Summary_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

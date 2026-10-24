@@ -269,10 +269,6 @@ begin
       "{mode, select, comparison_compact {{name}: pakeista {changed, "
       & "number}/{total, number}} other {{name}: pakeista {changed, number}, "
       & "nepakeista {unchanged, number}, iš viso {total, number}}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {rožinė} "
-      & "other {{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -697,4 +693,8 @@ begin
       & "pastraipos} many {{v1, number} pastraipos} other {{v1, number} "
       & "pastraipų}}");
    P ("label.metrics.text_summary_with_options.n_minutes_read", "{v1, number} min. skaitymo");
+   P ("label.metrics.paragraph_count_summary.n_paragraph",
+      "{v1, plural, one {{v1, number} pastraipa} few {{v1, number} "
+      & "pastraipos} many {{v1, number} pastraipos} other {{v1, number} "
+      & "pastraipų}}");
 end Labels_3;

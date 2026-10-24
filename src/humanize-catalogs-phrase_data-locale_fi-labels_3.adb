@@ -76,10 +76,6 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} muuttunut} other {{name}: {changed, number} muuttunut, "
       & "{unchanged, number} ennallaan, yhteensä {total, number}}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink "
-      & "{vaaleanpunainen} other {{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -519,4 +515,186 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "ei kappaleita");
    P ("label.metrics.word_count_summary.n_word", "{v1, plural, one {1 sana} other {{v1, number} sanaa}}");
    P ("label.metrics.text_summary_with_options.n_word", "{v1, plural, one {1 sana} other {{v1, number} sanaa}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {ei havaintoja} "
+      & "sample_too_small_shape {otos liian pieni muodon kuvaamiseen, {count, "
+      & "plural, one {1 havainto} other {{count, number} havaintoa}}} "
+      & "flat_shape {tasainen jakauma, arvo {median}} outlier_heavy_shape "
+      & "{jakauma, jossa paljon poikkeavia arvoja, mediaani {median}} "
+      & "volatile_shape {vaihteleva jakauma, mediaani {median}} clustered_shape "
+      & "{ryhmittynyt jakauma, mediaani {median}} wide_spread_shape {laajalle "
+      & "hajautunut jakauma} wide_spread_range {laajalle hajautunut jakauma, "
+      & "{minimum}–{maximum}} right_skewed_shape {oikealle vino jakauma, "
+      & "mediaani {median}} left_skewed_shape {vasemmalle vino jakauma, "
+      & "mediaani {median}} other {enimmäkseen tasapainoinen jakauma, mediaani "
+      & "{median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {tyhjä sähköpostiosoite} address "
+      & "{sähköpostiosoite} other {sähköposti, verkkotunnus {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {puhelinnumero} redacted {puhelinnumero "
+      & "piilotettu} other {puhelinnumero, loppuosa {digits}}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {käyttäjätunnus} other {käyttäjätunnus "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {koodisymboli} other {koodisymboli {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "osoitteen metatiedot: {present, plural, one {1 kenttä annettu} other "
+      & "{{present, number} kenttää annettu}}, {missing, plural, one {1 "
+      & "kenttä puuttuu} other {{missing, number} kenttää puuttuu}}");
+   P ("label.endpoints.host_label", "{state, select, none {tuntematon isäntä} other {{host} ({kind})}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {tuntematon päätepiste} other {päätepiste "
+      & "{scheme}{host}{port} ({kind})}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {tyhjä URL} none {URL ilman tunnistettuja osia} "
+      & "other {URL, {count, plural, one {1 osa} other {{count, number} osaa}}: "
+      & "{components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {ei kyselyparametreja} one {1 kyselyparametri} "
+      & "other {{count, number} kyselyparametria}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} ({kind, select, ipv4_host {julkinen IPv4-osoite} ipv6_host "
+      & "{julkinen IPv6-osoite} private_network_host {yksityisverkon osoite} "
+      & "localhost_host {paikallinen isäntä} other {ei IP-osoite}})");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr}: virheellinen CIDR} other {{cidr}: "
+      & "{kind}, verkkoetuliite {prefix}}}");
+   P ("label.resources.utilization_label", "käytössä {used, number}/{total, number} {unit} ({percent}, {band})");
+   P ("label.resources.saturation_label", "{named, select, no {resurssi} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {versio {version}, esijulkaisu {prerelease}, "
+      & "koontiversio {build}} prerelease {versio {version}, esijulkaisu "
+      & "{prerelease}} build {versio {version}, koontiversio {build}} other "
+      & "{versio {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {sama versio} major_upgrade {pääversion "
+      & "päivitys} minor_upgrade {aliversion päivitys} patch_upgrade "
+      & "{korjausversion päivitys} prerelease_change {esijulkaisun muutos} "
+      & "build_metadata_change {koontimetatietojen muutos} downgrade "
+      & "{siirtyminen vanhempaan versioon} other {tuntematon versiomuutos}}: "
+      & "{from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {täsmälleen versio {version}} "
+      & "minimum_range {versio {version} tai uudempi} maximum_range {versio "
+      & "{version} tai vanhempi} major_compatible_range {yhteensopiva "
+      & "pääversion {version} kanssa} minor_compatible_range {yhteensopiva "
+      & "aliversion {version} kanssa} other {versioalue {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {ensimmäinen kehitysjulkaisu {version}} "
+      & "prerelease {esijulkaisu {version}} major {pääjulkaisu {version}} "
+      & "minor {alijulkaisu {version}} other {korjausjulkaisu {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {linkkitagi} image {kuvatagi} paragraph "
+      & "{kappaletagi} ordered_list {numeroidun luettelon tagi} unordered_list "
+      & "{numeroimattoman luettelon tagi} list_item {luettelokohteen tagi} "
+      & "table_header_cell {taulukon otsikkosolun tagi} table_cell {taulukon "
+      & "solun tagi} table_row {taulukon rivin tagi} line_break "
+      & "{rivinvaihtotagi} thematic_break {teemanvaihdon tagi} heading_level_n "
+      & "{otsikkotason {level, number} tagi} other {tagi {name}}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {attribuutti {name}} event "
+      & "{tapahtumankäsittelijäattribuutti {name}} other {attribuutti {name}, "
+      & "arvo ”{value}”}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {tekstisisältö} html_content "
+      & "{HTML-dokumentti} json_content {JSON-dokumentti} xml_content "
+      & "{XML-dokumentti} image_content {kuvasisältö} audio_content "
+      & "{äänisisältö} video_content {videosisältö} font_content "
+      & "{fonttisisältö} archive_content {arkistosisältö} binary_content "
+      & "{binäärisisältö} form_content {lomakkeen lähetys} other "
+      & "{tuntematon sisältö}} ({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} ei asetettu} hidden_value {{kind} "
+      & "piilotettu} masked_value {{kind} {shown}} fingerprint_only {{kind}, "
+      & "sormenjäljen loppuosa {shown}} other {{kind}, loppuosa {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} ei asetettu} other {{name} "
+      & "{kind}, loppuosa {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {tunnistusotsake {name} ei asetettu} other "
+      & "{{name} {kind}, loppuosa {shown}}}");
+   P ("label.secrets.fingerprint_label", "{algorithm}-sormenjälki, loppuosa {shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} ei asetettu} redacted {{label} "
+      & "piilotettu} url_redacted {URL piilotettu} ip_redacted {IP-osoite "
+      & "piilotettu} path_ending {tiedostopolku, loppuosa {shown}} at {{label}, "
+      & "osoite {shown}} audit {{label}, pituus {length, number}, loppuosa "
+      & "{shown}} debug {{label} {shown}} other {{label}, loppuosa {shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {vanhentunut } unknown_field "
+      & "{tuntematon } read_only_field {vain luettava } write_only_field {vain "
+      & "kirjoitettava } computed_field {laskettu } other {}}{presence, select, "
+      & "required_field {pakollinen} optional_field {valinnainen} "
+      & "conditional_field {ehdollinen} other {läsnäololtaan tuntematon}} "
+      & "kenttä {name}, tyyppi {kind, select, string_field {merkkijono} "
+      & "integer_field {kokonaisluku} decimal_field {desimaaliluku} "
+      & "boolean_field {totuusarvo} date_field {päivämäärä} "
+      & "date_time_field {päivämäärä ja aika} object_field {objekti} "
+      & "array_field {taulukko} enum_field {enum} binary_field {binääri} "
+      & "null_field {null} any_field {mikä tahansa} other "
+      & "{tuntematon}}{nullable, select, non_nullable {, ei null} nullable {, "
+      & "null sallittu} other {}}");
+   P ("label.schema.schema_summary_label.fields",
+      "{count, plural, one {1 kenttä} other {{count, number} kenttää}}");
+   P ("label.schema.schema_summary_label.required",
+      "{count, plural, one {1 pakollinen} other {{count, number} pakollista}}");
+   P ("label.schema.schema_summary_label.optional",
+      "{count, plural, one {1 valinnainen} other {{count, number} "
+      & "valinnaista}}");
+   P ("label.schema.schema_summary_label.deprecated",
+      "{count, plural, one {1 vanhentunut} other {{count, number} "
+      & "vanhentunutta}}");
+   P ("label.schema.schema_summary_label.unknown",
+      "{count, plural, one {1 tuntematon} other {{count, number} "
+      & "tuntematonta}}");
+   P ("label.diagnostics.check_run_summary_label.none", "ei suoritettuja tarkistuksia");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} hyväksytty");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} epäonnistui");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 varoitus} other {{count, number} varoitusta}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} ohitettu");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} odottaa");
+   P ("label.workflows.workflow_summary_label.total",
+      "{count, plural, one {1 kohde} other {{count, number} kohdetta}}");
+   P ("label.workflows.workflow_summary_label.completed",
+      "{count, plural, one {1 valmis} other {{count, number} valmista}}");
+   P ("label.workflows.workflow_summary_label.active",
+      "{count, plural, one {1 aktiivinen} other {{count, number} aktiivista}}");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} estetty");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} epäonnistui");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} ohitettu");
+   P ("label.changes.change_summary_label.total", "{count, plural, one {1 kohde} other {{count, number} kohdetta}}");
+   P ("label.changes.change_summary_label.added", "{count, number} lisätty");
+   P ("label.changes.change_summary_label.removed", "{count, number} poistettu");
+   P ("label.changes.change_summary_label.modified", "{count, number} muutettu");
+   P ("label.changes.change_summary_label.renamed", "{count, number} nimetty uudelleen");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} ennallaan");
+   P ("label.markup.accessible_control_label.control",
+      "{named, select, no {nimetön {role, select, button_control {painike} "
+      & "link_control {linkki} tab_control {välilehti} menu_item_control "
+      & "{valikkokohde} checkbox_control {valintaruutu} radio_control "
+      & "{valintanappi} text_field_control {tekstikenttä} progress_control "
+      & "{edistymispalkki} table_cell_control {taulukon solu} region_control "
+      & "{alue} other {ohjausobjekti}}} other {{name}, {role, select, "
+      & "button_control {painike} link_control {linkki} tab_control "
+      & "{välilehti} menu_item_control {valikkokohde} checkbox_control "
+      & "{valintaruutu} radio_control {valintanappi} text_field_control "
+      & "{tekstikenttä} progress_control {edistymispalkki} table_cell_control "
+      & "{taulukon solu} region_control {alue} other {ohjausobjekti}}}}");
+   P ("label.markup.accessible_control_label.selected", "valittu");
+   P ("label.markup.accessible_control_label.expanded", "laajennettu");
+   P ("label.markup.accessible_control_label.current", "nykyinen");
+   P ("label.markup.accessible_control_label.disabled", "poissa käytöstä");
+   P ("label.markup.accessible_control_label.required", "pakollinen");
+   P ("label.markup.accessible_control_label.invalid", "virheellinen");
+   P ("label.markup.accessible_control_label.count",
+      "{count, plural, one {1 kohde} other {{count, number} kohdetta}}");
+   P ("label.markup.accessible_control_label.position", "kohde {position}/{total}");
+   P ("label.markup.accessible_control_label.issues",
+      "{count, plural, one {1 ongelma} other {{count, number} ongelmaa}}");
+   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
+   P ("label.endpoints.url_component.scheme", "skeema");
+   P ("label.endpoints.url_component.host", "isäntä");
+   P ("label.endpoints.url_component.path", "polku");
 end Labels_3;

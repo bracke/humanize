@@ -561,10 +561,6 @@ begin
       & "number}/{total, number}} other {{name}：{changed, "
       & "number}项已更改，{unchanged, number}项未变，共{total, "
       & "number}项}}");
-   P ("label.names.color_description", "{brightness}，{saturation}的{hue}，{temperature}，{chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness}、{chroma}、{temperature}的{base, select, pink {粉色} "
-      & "other {{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}，{mood}，{accessibility}；{roles}");
    P ("label.groups", "{first}；{second}");
    P ("label.parts", "{first}，{second}");
@@ -697,4 +693,8 @@ begin
       "CIE94差值{v1, number}，无法察觉");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_n_imperceptible",
       "CIE94（纺织）差值{v1, number}，无法察觉");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_n_imperceptible",
+      "CIEDE2000差值{v1, number}，无法察觉");
+   P ("label.models.perceptual_difference_label.oklab_delta_n_imperceptible",
+      "OKLab差值{v1, number}，无法察觉");
 end Labels_2;

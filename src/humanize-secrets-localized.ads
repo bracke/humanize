@@ -15,12 +15,42 @@ package Humanize.Secrets.Localized is
    --  @param Count As for the parent's Credential_Source_Label.
    --  @return The label in Context's locale.
 
+   function Environment_Secret_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Value   : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Environment_Secret_Label.
+   --  @param Value As for the parent's Environment_Secret_Label.
+   --  @return The label in Context's locale.
+
    function Exposure_Label
       (Context  : Humanize.Contexts.Context;
        Exposure : Secret_Exposure)
       return Humanize.Status.Text_Result;
    --  @param Context Formatting context.
    --  @param Exposure As for the parent's Exposure_Label.
+   --  @return The label in Context's locale.
+
+   function Fingerprint_Label
+      (Context   : Humanize.Contexts.Context;
+       Algorithm : String;
+       Value     : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Algorithm As for the parent's Fingerprint_Label.
+   --  @param Value As for the parent's Fingerprint_Label.
+   --  @return The label in Context's locale.
+
+   function Header_Credential_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Value   : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Header_Credential_Label.
+   --  @param Value As for the parent's Header_Credential_Label.
    --  @return The label in Context's locale.
 
    function Privacy_Profile_Label
@@ -39,6 +69,18 @@ package Humanize.Secrets.Localized is
    --  @param Context Formatting context.
    --  @param Needs_Rotation As for the parent's Rotation_Status_Label.
    --  @param Days_Old As for the parent's Rotation_Status_Label.
+   --  @return The label in Context's locale.
+
+   function Safe_Display_Label
+      (Context : Humanize.Contexts.Context;
+       Kind    : Sensitive_Value_Kind;
+       Value   : String;
+       Profile : Privacy_Profile := Support_Profile)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Kind As for the parent's Safe_Display_Label.
+   --  @param Value As for the parent's Safe_Display_Label.
+   --  @param Profile As for the parent's Safe_Display_Label.
    --  @return The label in Context's locale.
 
    function Secret_Count_Label
@@ -63,6 +105,36 @@ package Humanize.Secrets.Localized is
    --  @param Kind As for the parent's Secret_Kind_Label.
    --  @return The label in Context's locale.
 
+   function Secret_Label
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       Value    : String;
+       Kind     : Secret_Kind := Unknown_Secret;
+       Exposure : Secret_Exposure := Suffix_Only)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Secret_Label.
+   --  @param Value As for the parent's Secret_Label.
+   --  @param Kind As for the parent's Secret_Label.
+   --  @param Exposure As for the parent's Secret_Label.
+   --  @return The label in Context's locale.
+
+   function Secret_Label
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       Value    : String;
+       Options  : Secret_Label_Options;
+       Kind     : Secret_Kind := Unknown_Secret;
+       Exposure : Secret_Exposure := Suffix_Only)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Secret_Label.
+   --  @param Value As for the parent's Secret_Label.
+   --  @param Options As for the parent's Secret_Label.
+   --  @param Kind As for the parent's Secret_Label.
+   --  @param Exposure As for the parent's Secret_Label.
+   --  @return The label in Context's locale.
+
    function Sensitive_Value_Kind_Label
       (Context : Humanize.Contexts.Context;
        Kind    : Sensitive_Value_Kind)
@@ -85,6 +157,20 @@ package Humanize.Secrets.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Environment_Secret_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Value   : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Environment_Secret_Label.
+   --  @param Value As for the parent's Environment_Secret_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Exposure_Label_Into
       (Context  : Humanize.Contexts.Context;
        Exposure : Secret_Exposure;
@@ -93,6 +179,34 @@ package Humanize.Secrets.Localized is
        Status   : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Exposure As for the parent's Exposure_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Fingerprint_Label_Into
+      (Context   : Humanize.Contexts.Context;
+       Algorithm : String;
+       Value     : String;
+       Target    : in out String;
+       Written   : out Natural;
+       Status    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Algorithm As for the parent's Fingerprint_Label.
+   --  @param Value As for the parent's Fingerprint_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Header_Credential_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Value   : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Header_Credential_Label.
+   --  @param Value As for the parent's Header_Credential_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -123,6 +237,22 @@ package Humanize.Secrets.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Safe_Display_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Kind    : Sensitive_Value_Kind;
+       Value   : String;
+       Profile : Privacy_Profile := Support_Profile;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Kind As for the parent's Safe_Display_Label.
+   --  @param Value As for the parent's Safe_Display_Label.
+   --  @param Profile As for the parent's Safe_Display_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Secret_Count_Label_Into
       (Context      : Humanize.Contexts.Context;
        Total        : Natural;
@@ -149,6 +279,44 @@ package Humanize.Secrets.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Kind As for the parent's Secret_Kind_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Secret_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       Value    : String;
+       Kind     : Secret_Kind := Unknown_Secret;
+       Exposure : Secret_Exposure := Suffix_Only;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Secret_Label.
+   --  @param Value As for the parent's Secret_Label.
+   --  @param Kind As for the parent's Secret_Label.
+   --  @param Exposure As for the parent's Secret_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Secret_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       Value    : String;
+       Options  : Secret_Label_Options;
+       Kind     : Secret_Kind := Unknown_Secret;
+       Exposure : Secret_Exposure := Suffix_Only;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Secret_Label.
+   --  @param Value As for the parent's Secret_Label.
+   --  @param Options As for the parent's Secret_Label.
+   --  @param Kind As for the parent's Secret_Label.
+   --  @param Exposure As for the parent's Secret_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

@@ -1,3 +1,5 @@
+with Ada.Characters.Handling;
+
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
 with Humanize.Label_Values;
@@ -7,6 +9,75 @@ package body Humanize.Numbers.Statistics.Localized is
 
    use type Humanize.Status.Status_Code;
    package Sel renames Humanize.Selections;
+
+   function Lower (Text : String) return String renames Ada.Characters.Handling.To_Lower;
+
+   function Distribution_Shape_Label
+      (Context  : Humanize.Contexts.Context;
+       Metadata : Distribution_Shape_Metadata;
+       Median   : Long_Float := 0.0;
+       Unit     : String := "")
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Statistics.Distribution_Shape_Label (Metadata => Metadata, Median => Median, Unit => Unit);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.statistics.distribution_shape_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "shape", Lower (Distribution_Shape_Kind'Image (Metadata.Kind)));
+      Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Metadata.Count));
+      Selection := Sel.With_Arg (Selection, "median", Humanize.Label_Values.Plain_With_Unit (Context, Median, Unit));
+      Selection := Sel.With_Arg (Selection, "minimum", "");
+      Selection := Sel.With_Arg (Selection, "maximum", "");
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Distribution_Shape_Label;
+
+   function Distribution_Shape_Label
+      (Context  : Humanize.Contexts.Context;
+       Count    : Natural;
+       Minimum  : Long_Float;
+       Q1       : Long_Float;
+       Median   : Long_Float;
+       Q3       : Long_Float;
+       Maximum  : Long_Float;
+       Mean     : Long_Float := 0.0;
+       Stddev   : Long_Float := 0.0;
+       Outliers : Natural := 0;
+       Unit     : String := "")
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Statistics.Distribution_Shape_Label
+          (Count => Count,
+           Minimum => Minimum,
+           Q1 => Q1,
+           Median => Median,
+           Q3 => Q3,
+           Maximum => Maximum,
+           Mean => Mean,
+           Stddev => Stddev,
+           Outliers => Outliers,
+           Unit => Unit);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.statistics.distribution_shape_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "shape", (if Distribution_Shape_Metadata_For (Count, Minimum, Q1, Median,
+        Q3, Maximum, Mean, Stddev, Outliers).Kind = Wide_Spread_Shape then "wide_spread_range" else Lower
+        (Distribution_Shape_Kind'Image (Distribution_Shape_Metadata_For (Count, Minimum, Q1, Median, Q3, Maximum,
+        Mean, Stddev, Outliers).Kind))));
+      Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Distribution_Shape_Metadata_For (Count,
+        Minimum, Q1, Median, Q3, Maximum, Mean, Stddev, Outliers).Count));
+      Selection := Sel.With_Arg (Selection, "median", Humanize.Label_Values.Plain_With_Unit (Context, Median, Unit));
+      Selection := Sel.With_Arg (Selection, "minimum", Humanize.Label_Values.Plain_With_Unit (Context, Minimum,
+        Unit));
+      Selection := Sel.With_Arg (Selection, "maximum", Humanize.Label_Values.Plain_With_Unit (Context, Maximum,
+        Unit));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Distribution_Shape_Label;
 
    function Distribution_Summary_Label
       (Context : Humanize.Contexts.Context;
@@ -76,6 +147,44 @@ package body Humanize.Numbers.Statistics.Localized is
       Selection := Sel.With_Arg (Selection, "p99", Humanize.Label_Values.Plain (Context, P99));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Percentile_Summary_Label;
+
+   procedure Distribution_Shape_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Metadata : Distribution_Shape_Metadata;
+       Median   : Long_Float := 0.0;
+       Unit     : String := "";
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Distribution_Shape_Label (Context, Metadata => Metadata, Median => Median, Unit => Unit),
+         Target, Written, Status);
+   end Distribution_Shape_Label_Into;
+
+   procedure Distribution_Shape_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Count    : Natural;
+       Minimum  : Long_Float;
+       Q1       : Long_Float;
+       Median   : Long_Float;
+       Q3       : Long_Float;
+       Maximum  : Long_Float;
+       Mean     : Long_Float := 0.0;
+       Stddev   : Long_Float := 0.0;
+       Outliers : Natural := 0;
+       Unit     : String := "";
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Distribution_Shape_Label (Context, Count => Count, Minimum => Minimum, Q1 => Q1, Median => Median, Q3 => Q3,
+         Maximum => Maximum, Mean => Mean, Stddev => Stddev, Outliers => Outliers, Unit => Unit),
+         Target, Written, Status);
+   end Distribution_Shape_Label_Into;
 
    procedure Distribution_Summary_Label_Into
       (Context : Humanize.Contexts.Context;

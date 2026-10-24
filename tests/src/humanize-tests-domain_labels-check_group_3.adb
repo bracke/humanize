@@ -2,12 +2,10 @@ with Humanize.Deployments;
 with Humanize.Diagnostics;
 with Humanize.Endpoints;
 with Humanize.Events;
-with Humanize.Forms;
 with Humanize.Deployments.Localized;
 with Humanize.Diagnostics.Localized;
 with Humanize.Endpoints.Localized;
 with Humanize.Events.Localized;
-with Humanize.Forms.Localized;
 
 separate (Humanize.Tests.Domain_Labels)
 procedure Check_Group_3 (Locale : String; C : Humanize.Contexts.Context) is
@@ -98,6 +96,15 @@ begin
             with delta Include_Surface => True)),
           Humanize.Diagnostics.Check_Result_Label (Name => "plain", Status => Humanize.Diagnostics.Passed_Check,
             Options => (Humanize.Diagnostics.Default_Diagnostic_Label_Options with delta Include_Surface => True)));
+   Check (Locale, "label.diagnostics.check_run_summary_label", Plain,
+          Humanize.Diagnostics.Localized.Check_Run_Summary_Label (C, Passed => 3, Failed => 1, Warnings => 2),
+          Humanize.Diagnostics.Check_Run_Summary_Label (Passed => 3, Failed => 1, Warnings => 2));
+   Check (Locale, "label.diagnostics.check_run_summary_label", Plain,
+          Humanize.Diagnostics.Localized.Check_Run_Summary_Label (C),
+          Humanize.Diagnostics.Check_Run_Summary_Label);
+   Check (Locale, "label.diagnostics.check_run_summary_label", Plain,
+          Humanize.Diagnostics.Localized.Check_Run_Summary_Label (C, Pending => 1),
+          Humanize.Diagnostics.Check_Run_Summary_Label (Pending => 1));
    Check (Locale, "label.diagnostics.check_status_label", Phrase,
           Humanize.Diagnostics.Localized.Check_Status_Label (C, Status => Humanize.Diagnostics.Passed_Check),
           Humanize.Diagnostics.Check_Status_Label (Status => Humanize.Diagnostics.Passed_Check));
@@ -231,12 +238,76 @@ begin
    Check (Locale, "label.diagnostics.suggested_action_label", Phrase,
           Humanize.Diagnostics.Localized.Suggested_Action_Label (C, Action => "plain"),
           Humanize.Diagnostics.Suggested_Action_Label (Action => "plain"));
+   Check (Locale, "label.endpoints.cidr_label", Phrase,
+          Humanize.Endpoints.Localized.CIDR_Label (C, "10.0.0.0/8"),
+          Humanize.Endpoints.CIDR_Label ("10.0.0.0/8"));
+   Check (Locale, "label.endpoints.cidr_label", Phrase,
+          Humanize.Endpoints.Localized.CIDR_Label (C, "2001:db8::/32"),
+          Humanize.Endpoints.CIDR_Label ("2001:db8::/32"));
+   Check (Locale, "label.endpoints.cidr_label", Phrase,
+          Humanize.Endpoints.Localized.CIDR_Label (C, "bogus"),
+          Humanize.Endpoints.CIDR_Label ("bogus"));
+   Check (Locale, "label.endpoints.endpoint_label", Phrase,
+          Humanize.Endpoints.Localized.Endpoint_Label (C, Host => "example.com"),
+          Humanize.Endpoints.Endpoint_Label (Host => "example.com"));
+   Check (Locale, "label.endpoints.endpoint_label", Phrase,
+          Humanize.Endpoints.Localized.Endpoint_Label (C, Host => "example.com", Port => 8443, Scheme => "HTTPS"),
+          Humanize.Endpoints.Endpoint_Label (Host => "example.com", Port => 8443, Scheme => "HTTPS"));
+   Check (Locale, "label.endpoints.endpoint_label", Phrase,
+          Humanize.Endpoints.Localized.Endpoint_Label (C, Host => "[2001:db8::1]", Port => 80),
+          Humanize.Endpoints.Endpoint_Label (Host => "[2001:db8::1]", Port => 80));
+   Check (Locale, "label.endpoints.endpoint_label", Prefix,
+          Humanize.Endpoints.Localized.Endpoint_Label (C, Host => "example.com", Options =>
+            (Humanize.Endpoints.Default_Endpoint_Label_Options with delta Include_Surface => True)),
+          Humanize.Endpoints.Endpoint_Label (Host => "example.com", Options =>
+            (Humanize.Endpoints.Default_Endpoint_Label_Options with delta Include_Surface => True)));
    Check (Locale, "label.endpoints.host_kind_label", Phrase,
           Humanize.Endpoints.Localized.Host_Kind_Label (C, Kind => Humanize.Endpoints.Domain_Host),
           Humanize.Endpoints.Host_Kind_Label (Kind => Humanize.Endpoints.Domain_Host));
    Check (Locale, "label.endpoints.host_kind_label", Phrase,
           Humanize.Endpoints.Localized.Host_Kind_Label (C, Kind => Humanize.Endpoints.Unknown_Host),
           Humanize.Endpoints.Host_Kind_Label (Kind => Humanize.Endpoints.Unknown_Host));
+   Check (Locale, "label.endpoints.host_label", Phrase,
+          Humanize.Endpoints.Localized.Host_Label (C, "example.com"),
+          Humanize.Endpoints.Host_Label ("example.com"));
+   Check (Locale, "label.endpoints.host_label", Phrase,
+          Humanize.Endpoints.Localized.Host_Label (C, "[::1]"),
+          Humanize.Endpoints.Host_Label ("[::1]"));
+   Check (Locale, "label.endpoints.host_label", Phrase,
+          Humanize.Endpoints.Localized.Host_Label (C, "10.0.0.5"),
+          Humanize.Endpoints.Host_Label ("10.0.0.5"));
+   Check (Locale, "label.endpoints.host_label", Prefix,
+          Humanize.Endpoints.Localized.Host_Label (C, "example.com", Options =>
+            (Humanize.Endpoints.Default_Endpoint_Label_Options with delta Include_Surface => True)),
+          Humanize.Endpoints.Host_Label ("example.com", Options =>
+            (Humanize.Endpoints.Default_Endpoint_Label_Options with delta Include_Surface => True)));
+   Check (Locale, "label.endpoints.ip_address_label", Phrase,
+          Humanize.Endpoints.Localized.IP_Address_Label (C, "8.8.8.8"),
+          Humanize.Endpoints.IP_Address_Label ("8.8.8.8"));
+   Check (Locale, "label.endpoints.ip_address_label", Phrase,
+          Humanize.Endpoints.Localized.IP_Address_Label (C, "10.1.2.3"),
+          Humanize.Endpoints.IP_Address_Label ("10.1.2.3"));
+   Check (Locale, "label.endpoints.ip_address_label", Phrase,
+          Humanize.Endpoints.Localized.IP_Address_Label (C, "[::1]"),
+          Humanize.Endpoints.IP_Address_Label ("[::1]"));
+   Check (Locale, "label.endpoints.query_summary", Phrase,
+          Humanize.Endpoints.Localized.Query_Summary (C, "https://x/?a=1&b=2"),
+          Humanize.Endpoints.Query_Summary ("https://x/?a=1&b=2"));
+   Check (Locale, "label.endpoints.query_summary", Phrase,
+          Humanize.Endpoints.Localized.Query_Summary (C, "https://x/"),
+          Humanize.Endpoints.Query_Summary ("https://x/"));
+   Check (Locale, "label.endpoints.query_summary", Phrase,
+          Humanize.Endpoints.Localized.Query_Summary (C, "https://x/?a=1"),
+          Humanize.Endpoints.Query_Summary ("https://x/?a=1"));
+   Check (Locale, "label.endpoints.url_component_summary", Phrase,
+          Humanize.Endpoints.Localized.URL_Component_Summary (C, "https://example.com/a?b=1#c"),
+          Humanize.Endpoints.URL_Component_Summary ("https://example.com/a?b=1#c"));
+   Check (Locale, "label.endpoints.url_component_summary", Phrase,
+          Humanize.Endpoints.Localized.URL_Component_Summary (C, ""),
+          Humanize.Endpoints.URL_Component_Summary (""));
+   Check (Locale, "label.endpoints.url_component_summary", Phrase,
+          Humanize.Endpoints.Localized.URL_Component_Summary (C, "example"),
+          Humanize.Endpoints.URL_Component_Summary ("example"));
    Check (Locale, "label.events.all_day_label", Phrase,
           Humanize.Events.Localized.All_Day_Label (C, Name => "plain"),
           Humanize.Events.All_Day_Label (Name => "plain"));
@@ -328,109 +399,4 @@ begin
    Check (Locale, "label.events.waitlist_label", Phrase,
           Humanize.Events.Localized.Waitlist_Label (C, Position => 2, Total => 0),
           Humanize.Events.Waitlist_Label (Position => 2, Total => 0));
-   Check (Locale, "label.forms.character_count_label", Phrase,
-          Humanize.Forms.Localized.Character_Count_Label (C, Used => 3),
-          Humanize.Forms.Character_Count_Label (Used => 3));
-   Check (Locale, "label.forms.character_count_label", Phrase,
-          Humanize.Forms.Localized.Character_Count_Label (C, Used => 1),
-          Humanize.Forms.Character_Count_Label (Used => 1));
-   Check (Locale, "label.forms.character_limit_label", Phrase,
-          Humanize.Forms.Localized.Character_Limit_Label (C, Limit => 3),
-          Humanize.Forms.Character_Limit_Label (Limit => 3));
-   Check (Locale, "label.forms.character_limit_label", Phrase,
-          Humanize.Forms.Localized.Character_Limit_Label (C, Limit => 1),
-          Humanize.Forms.Character_Limit_Label (Limit => 1));
-   Check (Locale, "label.forms.character_usage_label", Phrase,
-          Humanize.Forms.Localized.Character_Usage_Label (C, Used => 3, Limit => 3),
-          Humanize.Forms.Character_Usage_Label (Used => 3, Limit => 3));
-   Check (Locale, "label.forms.character_usage_label", Phrase,
-          Humanize.Forms.Localized.Character_Usage_Label (C, Used => 1, Limit => 1),
-          Humanize.Forms.Character_Usage_Label (Used => 1, Limit => 1));
-   Check (Locale, "label.forms.field_label", Phrase,
-          Humanize.Forms.Localized.Field_Label (C, Name => "plain", Required => False),
-          Humanize.Forms.Field_Label (Name => "plain", Required => False));
-   Check (Locale, "label.forms.field_label", Phrase,
-          Humanize.Forms.Localized.Field_Label (C, Name => "plain", Required => True),
-          Humanize.Forms.Field_Label (Name => "plain", Required => True));
-   Check (Locale, "label.forms.field_label", Prefix,
-          Humanize.Forms.Localized.Field_Label (C, Name => "plain", Required => False, Options =>
-            (Humanize.Forms.Default_Form_Label_Options with delta Include_Surface => True)),
-          Humanize.Forms.Field_Label (Name => "plain", Required => False, Options =>
-            (Humanize.Forms.Default_Form_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.forms.field_state_label", Phrase,
-          Humanize.Forms.Localized.Field_State_Label (C, Name => "plain", State => Humanize.Forms.Valid_Input),
-          Humanize.Forms.Field_State_Label (Name => "plain", State => Humanize.Forms.Valid_Input));
-   Check (Locale, "label.forms.field_state_label", Phrase,
-          Humanize.Forms.Localized.Field_State_Label (C, Name => "plain", State => Humanize.Forms.Read_Only_Input),
-          Humanize.Forms.Field_State_Label (Name => "plain", State => Humanize.Forms.Read_Only_Input));
-   Check (Locale, "label.forms.field_state_label", Prefix,
-          Humanize.Forms.Localized.Field_State_Label (C, Name => "plain", State => Humanize.Forms.Valid_Input,
-            Options => (Humanize.Forms.Default_Form_Label_Options with delta Include_Surface => True)),
-          Humanize.Forms.Field_State_Label (Name => "plain", State => Humanize.Forms.Valid_Input, Options =>
-            (Humanize.Forms.Default_Form_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.forms.form_error_summary_label", Phrase,
-          Humanize.Forms.Localized.Form_Error_Summary_Label (C, Errors => 3, Warnings => 3),
-          Humanize.Forms.Form_Error_Summary_Label (Errors => 3, Warnings => 3));
-   Check (Locale, "label.forms.form_error_summary_label", Phrase,
-          Humanize.Forms.Localized.Form_Error_Summary_Label (C, Errors => 1, Warnings => 1),
-          Humanize.Forms.Form_Error_Summary_Label (Errors => 1, Warnings => 1));
-   Check (Locale, "label.forms.form_progress_label", Phrase,
-          Humanize.Forms.Localized.Form_Progress_Label (C, Completed => 7, Total => 9),
-          Humanize.Forms.Form_Progress_Label (Completed => 7, Total => 9));
-   Check (Locale, "label.forms.form_progress_label", Phrase,
-          Humanize.Forms.Localized.Form_Progress_Label (C, Completed => 1, Total => 2),
-          Humanize.Forms.Form_Progress_Label (Completed => 1, Total => 2));
-   Check (Locale, "label.forms.form_state_label", Phrase,
-          Humanize.Forms.Localized.Form_State_Label (C, State => Humanize.Forms.Pristine_Form),
-          Humanize.Forms.Form_State_Label (State => Humanize.Forms.Pristine_Form));
-   Check (Locale, "label.forms.form_state_label", Phrase,
-          Humanize.Forms.Localized.Form_State_Label (C, State => Humanize.Forms.Failed_Form),
-          Humanize.Forms.Form_State_Label (State => Humanize.Forms.Failed_Form));
-   Check (Locale, "label.forms.form_step_label", Phrase,
-          Humanize.Forms.Localized.Form_Step_Label (C, Current => 7, Total => 9, Name => "plain"),
-          Humanize.Forms.Form_Step_Label (Current => 7, Total => 9, Name => "plain"));
-   Check (Locale, "label.forms.form_step_label", Phrase,
-          Humanize.Forms.Localized.Form_Step_Label (C, Current => 2, Total => 0, Name => "plain"),
-          Humanize.Forms.Form_Step_Label (Current => 2, Total => 0, Name => "plain"));
-   Check (Locale, "label.forms.input_state_label", Phrase,
-          Humanize.Forms.Localized.Input_State_Label (C, State => Humanize.Forms.Valid_Input),
-          Humanize.Forms.Input_State_Label (State => Humanize.Forms.Valid_Input));
-   Check (Locale, "label.forms.input_state_label", Phrase,
-          Humanize.Forms.Localized.Input_State_Label (C, State => Humanize.Forms.Read_Only_Input),
-          Humanize.Forms.Input_State_Label (State => Humanize.Forms.Read_Only_Input));
-   Check (Locale, "label.forms.remaining_characters_label", Phrase,
-          Humanize.Forms.Localized.Remaining_Characters_Label (C, Used => 7, Limit => 9),
-          Humanize.Forms.Remaining_Characters_Label (Used => 7, Limit => 9));
-   Check (Locale, "label.forms.remaining_characters_label", Phrase,
-          Humanize.Forms.Localized.Remaining_Characters_Label (C, Used => 2, Limit => 0),
-          Humanize.Forms.Remaining_Characters_Label (Used => 2, Limit => 0));
-   Check (Locale, "label.forms.required_fields_label", Phrase,
-          Humanize.Forms.Localized.Required_Fields_Label (C, Missing => 7, Total => 9),
-          Humanize.Forms.Required_Fields_Label (Missing => 7, Total => 9));
-   Check (Locale, "label.forms.required_fields_label", Phrase,
-          Humanize.Forms.Localized.Required_Fields_Label (C, Missing => 1, Total => 2),
-          Humanize.Forms.Required_Fields_Label (Missing => 1, Total => 2));
-   Check (Locale, "label.forms.section_progress_label", Phrase,
-          Humanize.Forms.Localized.Section_Progress_Label (C, Name => "plain", Completed => 7, Total => 9),
-          Humanize.Forms.Section_Progress_Label (Name => "plain", Completed => 7, Total => 9));
-   Check (Locale, "label.forms.section_progress_label", Phrase,
-          Humanize.Forms.Localized.Section_Progress_Label (C, Name => "plain", Completed => 1, Total => 2),
-          Humanize.Forms.Section_Progress_Label (Name => "plain", Completed => 1, Total => 2));
-   Check (Locale, "label.forms.submission_label", Phrase,
-          Humanize.Forms.Localized.Submission_Label (C, State => Humanize.Forms.Pristine_Form, Errors => 3),
-          Humanize.Forms.Submission_Label (State => Humanize.Forms.Pristine_Form, Errors => 3));
-   Check (Locale, "label.forms.submission_label", Phrase,
-          Humanize.Forms.Localized.Submission_Label (C, State => Humanize.Forms.Failed_Form, Errors => 1),
-          Humanize.Forms.Submission_Label (State => Humanize.Forms.Failed_Form, Errors => 1));
-   Check (Locale, "label.forms.submission_label", Prefix,
-          Humanize.Forms.Localized.Submission_Label (C, State => Humanize.Forms.Pristine_Form, Errors => 3, Options
-            => (Humanize.Forms.Default_Form_Label_Options with delta Include_Surface => True)),
-          Humanize.Forms.Submission_Label (State => Humanize.Forms.Pristine_Form, Errors => 3, Options =>
-            (Humanize.Forms.Default_Form_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.forms.unsaved_changes_label", Phrase,
-          Humanize.Forms.Localized.Unsaved_Changes_Label (C, Count => 3),
-          Humanize.Forms.Unsaved_Changes_Label (Count => 3));
-   Check (Locale, "label.forms.unsaved_changes_label", Phrase,
-          Humanize.Forms.Localized.Unsaved_Changes_Label (C, Count => 1),
-          Humanize.Forms.Unsaved_Changes_Label (Count => 1));
 end Check_Group_3;

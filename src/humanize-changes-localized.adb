@@ -109,6 +109,54 @@ package body Humanize.Changes.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Change_Severity_Label;
 
+   function Change_Summary_Label
+      (Context   : Humanize.Contexts.Context;
+       Total     : Natural;
+       Added     : Natural := 0;
+       Removed   : Natural := 0;
+       Modified  : Natural := 0;
+       Renamed   : Natural := 0;
+       Unchanged : Natural := 0)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Changes.Change_Summary_Label
+          (Total => Total,
+           Added => Added,
+           Removed => Removed,
+           Modified => Modified,
+           Renamed => Renamed,
+           Unchanged => Unchanged);
+      Text : Humanize.Status.Text_Result := Humanize.Label_Values.Nothing;
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+        "label.changes.change_summary_label.total", Long_Long_Integer (Total)));
+      if Added > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.changes.change_summary_label.added", Long_Long_Integer (Added)));
+      end if;
+      if Removed > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.changes.change_summary_label.removed", Long_Long_Integer (Removed)));
+      end if;
+      if Modified > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.changes.change_summary_label.modified", Long_Long_Integer (Modified)));
+      end if;
+      if Renamed > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.changes.change_summary_label.renamed", Long_Long_Integer (Renamed)));
+      end if;
+      if Unchanged > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.changes.change_summary_label.unchanged", Long_Long_Integer (Unchanged)));
+      end if;
+      return Humanize.Label_Values.Localized_Or (Context, Text, English);
+   end Change_Summary_Label;
+
    function Collection_Field_Change_Label
       (Context    : Humanize.Contexts.Context;
        Field_Name : String;
@@ -520,6 +568,25 @@ package body Humanize.Changes.Localized is
         (Change_Severity_Label (Context, Severity => Severity),
          Target, Written, Status);
    end Change_Severity_Label_Into;
+
+   procedure Change_Summary_Label_Into
+      (Context   : Humanize.Contexts.Context;
+       Total     : Natural;
+       Added     : Natural := 0;
+       Removed   : Natural := 0;
+       Modified  : Natural := 0;
+       Renamed   : Natural := 0;
+       Unchanged : Natural := 0;
+       Target    : in out String;
+       Written   : out Natural;
+       Status    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Change_Summary_Label (Context, Total => Total, Added => Added, Removed => Removed, Modified => Modified,
+         Renamed => Renamed, Unchanged => Unchanged),
+         Target, Written, Status);
+   end Change_Summary_Label_Into;
 
    procedure Collection_Field_Change_Label_Into
       (Context    : Humanize.Contexts.Context;

@@ -1,10 +1,6 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Id)
 procedure Labels_3 is
 begin
-   P ("label.models.perceptual_difference_label.oklab_delta_n_large_perceptual_difference",
-      "OKLab delta {v1, number}, perbedaan perseptual besar");
-   P ("label.contrast.color_vision_deficiency_label.deuteranopia_high_confusion_risk_delta_n",
-      "deuteranopia: risiko kerancuan tinggi, delta {v1, number}");
    P ("label.models.perceptual_difference_label.cie76_delta_n_dramatic_perceptual_difference",
       "CIE76 delta {v1, number}, perbedaan perseptual dramatis");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_n_dramatic_perceptual_difference",
@@ -304,4 +300,204 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "tidak ada paragraf");
    P ("label.metrics.word_count_summary.n_word", "{v1, number} kata");
    P ("label.metrics.text_summary_with_options.n_word", "{v1, number} kata");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {tidak ada observasi} "
+      & "sample_too_small_shape {sampel terlalu kecil untuk menggambarkan "
+      & "bentuk, {count, number} observasi} flat_shape {distribusi datar pada "
+      & "{median}} outlier_heavy_shape {distribusi banyak pencilan di sekitar "
+      & "{median}} volatile_shape {distribusi fluktuatif di sekitar {median}} "
+      & "clustered_shape {distribusi mengelompok di sekitar {median}} "
+      & "wide_spread_shape {distribusi tersebar luas} wide_spread_range "
+      & "{distribusi tersebar luas dari {minimum} hingga {maximum}} "
+      & "right_skewed_shape {distribusi condong ke kanan, median {median}} "
+      & "left_skewed_shape {distribusi condong ke kiri, median {median}} other "
+      & "{distribusi cenderung seimbang di sekitar {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {email kosong} address {alamat email} other "
+      & "{email di {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {nomor telepon} redacted {nomor telepon "
+      & "disamarkan} other {telepon berakhiran {digits}}}");
+   P ("label.privacy.safe_handle_label", "{state, select, none {nama pengguna} other {nama pengguna {shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {simbol kode} other {simbol kode {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "metadata alamat: {present, number} bidang ada, {missing, number} "
+      & "bidang tidak ada");
+   P ("label.endpoints.host_label", "{state, select, none {host tidak dikenal} other {{host} {kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {endpoint tidak dikenal} other {endpoint {kind} "
+      & "{scheme}{host}{port}}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {URL kosong} none {URL tanpa komponen yang "
+      & "dikenali} other {URL dengan {count, number} komponen: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {tidak ada parameter kueri} other {{count, number} "
+      & "parameter kueri}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {alamat IPv4 publik} ipv6_host "
+      & "{alamat IPv6 publik} private_network_host {alamat jaringan privat} "
+      & "localhost_host {host lokal} other {bukan alamat IP}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} CIDR tidak valid} other {{cidr} "
+      & "prefiks jaringan {kind} {prefix}}}");
+   P ("label.resources.utilization_label",
+      "{used, number} dari {total, number} {unit} terpakai ({percent}, "
+      & "{band})");
+   P ("label.resources.saturation_label", "{named, select, no {sumber daya} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {versi {version} prarilis {prerelease} build "
+      & "{build}} prerelease {versi {version} prarilis {prerelease}} build "
+      & "{versi {version} build {build}} other {versi {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {versi sama} major_upgrade {peningkatan "
+      & "mayor} minor_upgrade {peningkatan minor} patch_upgrade {peningkatan "
+      & "patch} prerelease_change {perubahan prarilis} build_metadata_change "
+      & "{perubahan metadata build} downgrade {penurunan versi} other "
+      & "{perubahan versi tidak diketahui}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {tepat versi {version}} minimum_range "
+      & "{versi {version} atau lebih baru} maximum_range {versi {version} atau "
+      & "lebih lama} major_compatible_range {kompatibel dengan versi mayor "
+      & "{version}} minor_compatible_range {kompatibel dengan versi minor "
+      & "{version}} other {rentang versi {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {rilis pengembangan awal {version}} prerelease "
+      & "{prarilis {version}} major {rilis mayor {version}} minor {rilis minor "
+      & "{version}} other {rilis patch {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {tag tautan} image {tag gambar} paragraph {tag "
+      & "paragraf} ordered_list {tag daftar bernomor} unordered_list {tag "
+      & "daftar berpoin} list_item {tag item daftar} table_header_cell {tag sel "
+      & "header tabel} table_cell {tag sel tabel} table_row {tag baris tabel} "
+      & "line_break {tag pemisah baris} thematic_break {tag pemisah tematik} "
+      & "heading_level_n {tag judul tingkat {level, number}} other {tag "
+      & "{name}}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {atribut {name}} event {atribut penangan "
+      & "peristiwa {name}} other {atribut {name} bernilai “{value}”}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {konten teks} html_content {dokumen HTML} "
+      & "json_content {dokumen JSON} xml_content {dokumen XML} image_content "
+      & "{konten gambar} audio_content {konten audio} video_content {konten "
+      & "video} font_content {konten font} archive_content {konten arsip} "
+      & "binary_content {konten biner} form_content {kiriman formulir} other "
+      & "{konten tidak dikenal}} ({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} belum disetel} hidden_value {{kind} "
+      & "disembunyikan} masked_value {{kind} {shown}} fingerprint_only {sidik "
+      & "jari {kind} berakhiran {shown}} other {{kind} berakhiran {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} belum disetel} other {{name} "
+      & "{kind} berakhiran {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {header kredensial {name} belum disetel} other "
+      & "{{name} {kind} berakhiran {shown}}}");
+   P ("label.secrets.fingerprint_label", "sidik jari {algorithm} berakhiran {shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} belum disetel} redacted {{label} "
+      & "disamarkan} url_redacted {URL disamarkan} ip_redacted {alamat IP "
+      & "disamarkan} path_ending {jalur file berakhiran {shown}} at {{label} di "
+      & "{shown}} audit {{label} panjang {length, number}, berakhiran {shown}} "
+      & "debug {{label} {shown}} other {{label} berakhiran {shown}}}");
+   P ("label.schema.field_label",
+      "bidang {kind, select, string_field {string} integer_field {bilangan "
+      & "bulat} decimal_field {desimal} boolean_field {boolean} date_field "
+      & "{tanggal} date_time_field {tanggal-waktu} object_field {objek} "
+      & "array_field {array} enum_field {enum} binary_field {biner} null_field "
+      & "{null} any_field {apa saja} other {tidak dikenal}} {name} {presence, "
+      & "select, required_field {wajib} optional_field {opsional} "
+      & "conditional_field {bersyarat} other {keberadaan tidak "
+      & "diketahui}}{nullable, select, non_nullable {, tidak boleh null} "
+      & "nullable {, boleh null} other {}}{state, select, deprecated_field {, "
+      & "usang} unknown_field {, tidak dikenal} read_only_field {, hanya baca} "
+      & "write_only_field {, hanya tulis} computed_field {, terhitung} other "
+      & "{}}");
+   P ("label.schema.schema_summary_label.fields", "{count, number} bidang");
+   P ("label.schema.schema_summary_label.required", "{count, number} wajib");
+   P ("label.schema.schema_summary_label.optional", "{count, number} opsional");
+   P ("label.schema.schema_summary_label.deprecated", "{count, number} usang");
+   P ("label.schema.schema_summary_label.unknown", "{count, number} tidak dikenal");
+   P ("label.diagnostics.check_run_summary_label.none", "tidak ada pemeriksaan yang dijalankan");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} lulus");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} gagal");
+   P ("label.diagnostics.check_run_summary_label.warnings", "{count, number} peringatan");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} dilewati");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} tertunda");
+   P ("label.workflows.workflow_summary_label.total", "{count, number} item");
+   P ("label.workflows.workflow_summary_label.completed", "{count, number} selesai");
+   P ("label.workflows.workflow_summary_label.active", "{count, number} aktif");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} diblokir");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} gagal");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} dilewati");
+   P ("label.changes.change_summary_label.total", "{count, number} item");
+   P ("label.changes.change_summary_label.added", "{count, number} ditambahkan");
+   P ("label.changes.change_summary_label.removed", "{count, number} dihapus");
+   P ("label.changes.change_summary_label.modified", "{count, number} diubah");
+   P ("label.changes.change_summary_label.renamed", "{count, number} diganti nama");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} tidak berubah");
+   P ("label.markup.accessible_control_label.control",
+      "{role, select, button_control {tombol} link_control {tautan} "
+      & "tab_control {tab} menu_item_control {item menu} checkbox_control "
+      & "{kotak centang} radio_control {tombol radio} text_field_control {kolom "
+      & "teks} progress_control {indikator kemajuan} table_cell_control {sel "
+      & "tabel} region_control {wilayah} other {kontrol}} {named, select, no "
+      & "{tanpa nama} other {{name}}}");
+   P ("label.markup.accessible_control_label.selected", "dipilih");
+   P ("label.markup.accessible_control_label.expanded", "diperluas");
+   P ("label.markup.accessible_control_label.current", "saat ini");
+   P ("label.markup.accessible_control_label.disabled", "dinonaktifkan");
+   P ("label.markup.accessible_control_label.required", "wajib");
+   P ("label.markup.accessible_control_label.invalid", "tidak valid");
+   P ("label.markup.accessible_control_label.count", "{count, number} item");
+   P ("label.markup.accessible_control_label.position", "item {position} dari {total}");
+   P ("label.markup.accessible_control_label.issues", "{count, number} masalah");
+   P ("label.markup.accessible_control_label.with_states", "{control} {states}");
+   P ("label.endpoints.url_component.scheme", "skema");
+   P ("label.endpoints.url_component.host", "host");
+   P ("label.endpoints.url_component.path", "jalur");
+   P ("label.endpoints.url_component.query", "kueri");
+   P ("label.endpoints.url_component.fragment", "fragmen");
+   P ("label.names.hue_noun.red", "merah");
+   P ("label.names.hue_noun.orange", "oranye");
+   P ("label.names.hue_noun.yellow", "kuning");
+   P ("label.names.hue_noun.green", "hijau");
+   P ("label.names.hue_noun.cyan", "sian");
+   P ("label.names.hue_noun.blue", "biru");
+   P ("label.names.hue_noun.purple", "ungu");
+   P ("label.names.hue_noun.magenta", "magenta");
+   P ("label.names.hue_noun.neutral", "netral");
+   P ("label.names.hue_noun.pink", "merah muda");
+   P ("label.names.hue_gender.red", "other");
+   P ("label.names.hue_gender.orange", "other");
+   P ("label.names.hue_gender.yellow", "other");
+   P ("label.names.hue_gender.green", "other");
+   P ("label.names.hue_gender.cyan", "other");
+   P ("label.names.hue_gender.blue", "other");
+   P ("label.names.hue_gender.purple", "other");
+   P ("label.names.hue_gender.magenta", "other");
+   P ("label.names.hue_gender.neutral", "other");
+   P ("label.names.hue_gender.pink", "other");
+   P ("label.names.agree.very_dark", "{gender, select, other {sangat gelap}}");
+   P ("label.names.agree.dark", "{gender, select, other {gelap}}");
+   P ("label.names.agree.medium_brightness", "{gender, select, other {kecerahan sedang}}");
+   P ("label.names.agree.light", "{gender, select, other {terang}}");
+   P ("label.names.agree.very_light", "{gender, select, other {sangat terang}}");
+   P ("label.names.agree.desaturated", "{gender, select, other {kurang jenuh}}");
+   P ("label.names.agree.muted", "{gender, select, other {redup}}");
+   P ("label.names.agree.neutral", "{gender, select, other {netral}}");
+   P ("label.names.agree.saturated", "{gender, select, other {jenuh}}");
+   P ("label.names.agree.vivid", "{gender, select, other {mencolok}}");
+   P ("label.names.agree.grayish", "{gender, select, other {keabu-abuan}}");
+   P ("label.names.agree.soft", "{gender, select, other {lembut}}");
+   P ("label.names.agree.moderate_chroma", "{gender, select, other {kroma sedang}}");
+   P ("label.names.agree.high_chroma", "{gender, select, other {kroma tinggi}}");
+   P ("label.names.agree.pastel", "{gender, select, other {pastel}}");
+   P ("label.names.agree.warm", "{gender, select, other {hangat}}");
+   P ("label.names.agree.cool", "{gender, select, other {sejuk}}");
+   P ("label.names.agree.neutral_temperature", "{gender, select, other {suhu netral}}");
+   P ("label.names.agree.balanced_temperature", "{gender, select, other {suhu seimbang}}");
+   P ("label.names.color_description", "{hue} {saturation}, {brightness}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{base, select, pink {{hue}} other {{hue}}} {brightness} {chroma} "
+      & "{temperature}");
 end Labels_3;

@@ -65,6 +65,22 @@ package Humanize.Schema.Localized is
    --  @param Value As for the parent's Example_Value_Label.
    --  @return The label in Context's locale.
 
+   function Field_Label
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       Kind     : Field_Type;
+       Presence : Field_Presence := Optional_Field;
+       Nullable : Nullability := Nullability_Unknown;
+       State    : Field_State := Normal_Field)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Field_Label.
+   --  @param Kind As for the parent's Field_Label.
+   --  @param Presence As for the parent's Field_Label.
+   --  @param Nullable As for the parent's Field_Label.
+   --  @param State As for the parent's Field_Label.
+   --  @return The label in Context's locale.
+
    function Field_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Field_State)
@@ -109,6 +125,22 @@ package Humanize.Schema.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Schema_Source_Label.
    --  @param Version As for the parent's Schema_Source_Label.
+   --  @return The label in Context's locale.
+
+   function Schema_Summary_Label
+      (Context    : Humanize.Contexts.Context;
+       Fields     : Natural;
+       Required   : Natural := 0;
+       Optional   : Natural := 0;
+       Deprecated : Natural := 0;
+       Unknown    : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Fields As for the parent's Schema_Summary_Label.
+   --  @param Required As for the parent's Schema_Summary_Label.
+   --  @param Optional As for the parent's Schema_Summary_Label.
+   --  @param Deprecated As for the parent's Schema_Summary_Label.
+   --  @param Unknown As for the parent's Schema_Summary_Label.
    --  @return The label in Context's locale.
 
    function Shape_Label
@@ -239,6 +271,26 @@ package Humanize.Schema.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Field_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       Kind     : Field_Type;
+       Presence : Field_Presence := Optional_Field;
+       Nullable : Nullability := Nullability_Unknown;
+       State    : Field_State := Normal_Field;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Field_Label.
+   --  @param Kind As for the parent's Field_Label.
+   --  @param Presence As for the parent's Field_Label.
+   --  @param Nullable As for the parent's Field_Label.
+   --  @param State As for the parent's Field_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Field_State_Label_Into
       (Context : Humanize.Contexts.Context;
        State   : Field_State;
@@ -301,6 +353,26 @@ package Humanize.Schema.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Schema_Source_Label.
    --  @param Version As for the parent's Schema_Source_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Schema_Summary_Label_Into
+      (Context    : Humanize.Contexts.Context;
+       Fields     : Natural;
+       Required   : Natural := 0;
+       Optional   : Natural := 0;
+       Deprecated : Natural := 0;
+       Unknown    : Natural := 0;
+       Target     : in out String;
+       Written    : out Natural;
+       Status     : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Fields As for the parent's Schema_Summary_Label.
+   --  @param Required As for the parent's Schema_Summary_Label.
+   --  @param Optional As for the parent's Schema_Summary_Label.
+   --  @param Deprecated As for the parent's Schema_Summary_Label.
+   --  @param Unknown As for the parent's Schema_Summary_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

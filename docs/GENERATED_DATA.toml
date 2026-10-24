@@ -263,5 +263,5 @@ source = "docs/PHRASE_TEMPLATES.md key list"
 coverage = "every phrase key's numeric, select and text arguments"
 currentness = "regenerated with the phrase catalogs"
 marker = "Provenance: generated from docs/PHRASE_TEMPLATES.md"
-line_count = 1627
-sha256 = "77123484cb9c4178a7936abec040ca8a09d602c5c8f04baa7c0712af61a4db0e"
+line_count = 1754
+sha256 = "960f6c00fbdc5df932102e469e9c16a0e8e32190db97599795adc93a40a01a4a"

@@ -47,6 +47,18 @@ package Humanize.Markup.Localized is
    --  @param Target As for the parent's Accessibility_Summary_Label.
    --  @return The label in Context's locale.
 
+   function Accessible_Control_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Role    : Accessible_Control_Role;
+       State   : Accessible_Control_State := (others => <>))
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Accessible_Control_Label.
+   --  @param Role As for the parent's Accessible_Control_Label.
+   --  @param State As for the parent's Accessible_Control_Label.
+   --  @return The label in Context's locale.
+
    function Attribute_Count_Label
       (Context : Humanize.Contexts.Context;
        Total   : Natural;
@@ -67,6 +79,46 @@ package Humanize.Markup.Localized is
       return Humanize.Status.Text_Result;
    --  @param Context Formatting context.
    --  @param Kind As for the parent's Attribute_Kind_Label.
+   --  @return The label in Context's locale.
+
+   function Attribute_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Value   : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Attribute_Label.
+   --  @param Value As for the parent's Attribute_Label.
+   --  @return The label in Context's locale.
+
+   function Attribute_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Options : Markup_Label_Options;
+       Value   : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Attribute_Label.
+   --  @param Options As for the parent's Attribute_Label.
+   --  @param Value As for the parent's Attribute_Label.
+   --  @return The label in Context's locale.
+
+   function Content_Type_Label
+      (Context      : Humanize.Contexts.Context;
+       Content_Type : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Content_Type As for the parent's Content_Type_Label.
+   --  @return The label in Context's locale.
+
+   function Content_Type_Label
+      (Context      : Humanize.Contexts.Context;
+       Content_Type : String;
+       Options      : Markup_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Content_Type As for the parent's Content_Type_Label.
+   --  @param Options As for the parent's Content_Type_Label.
    --  @return The label in Context's locale.
 
    function Document_Outline_Label
@@ -179,6 +231,24 @@ package Humanize.Markup.Localized is
    --  @param Kind As for the parent's Tag_Kind_Label.
    --  @return The label in Context's locale.
 
+   function Tag_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Tag_Label.
+   --  @return The label in Context's locale.
+
+   function Tag_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Options : Markup_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Tag_Label.
+   --  @param Options As for the parent's Tag_Label.
+   --  @return The label in Context's locale.
+
    procedure Accessibility_Page_Summary_Label_Into
       (Context   : Humanize.Contexts.Context;
        Title     : String;
@@ -209,6 +279,22 @@ package Humanize.Markup.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Accessible_Control_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Role    : Accessible_Control_Role;
+       State   : Accessible_Control_State := (others => <>);
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Accessible_Control_Label.
+   --  @param Role As for the parent's Accessible_Control_Label.
+   --  @param State As for the parent's Accessible_Control_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Attribute_Count_Label_Into
       (Context : Humanize.Contexts.Context;
        Total   : Natural;
@@ -235,6 +321,62 @@ package Humanize.Markup.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Kind As for the parent's Attribute_Kind_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Attribute_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Value   : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Attribute_Label.
+   --  @param Value As for the parent's Attribute_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Attribute_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Options : Markup_Label_Options;
+       Value   : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Attribute_Label.
+   --  @param Options As for the parent's Attribute_Label.
+   --  @param Value As for the parent's Attribute_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Content_Type_Label_Into
+      (Context      : Humanize.Contexts.Context;
+       Content_Type : String;
+       Target       : in out String;
+       Written      : out Natural;
+       Status       : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Content_Type As for the parent's Content_Type_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Content_Type_Label_Into
+      (Context      : Humanize.Contexts.Context;
+       Content_Type : String;
+       Options      : Markup_Label_Options;
+       Target       : in out String;
+       Written      : out Natural;
+       Status       : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Content_Type As for the parent's Content_Type_Label.
+   --  @param Options As for the parent's Content_Type_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -385,6 +527,32 @@ package Humanize.Markup.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Kind As for the parent's Tag_Kind_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Tag_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Tag_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Tag_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Options : Markup_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Tag_Label.
+   --  @param Options As for the parent's Tag_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

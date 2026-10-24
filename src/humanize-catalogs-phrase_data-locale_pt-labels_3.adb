@@ -371,10 +371,6 @@ begin
       & "number} alterados}}, {unchanged, plural, one {{unchanged, number} "
       & "inalterado} many {{unchanged, number} inalterados} other {{unchanged, "
       & "number} inalterados}}, {total, number} no total}}");
-   P ("label.names.color_description", "{brightness}, {hue} {saturation}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{base, select, pink {rosa} other {{hue}}} {brightness} {chroma} "
-      & "{temperature}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -697,4 +693,7 @@ begin
       & "composição alfa");
    P ("label.contrast.color_accessibility_summary.protanopia_moderate_confusion_risk",
       "protanopia: risco de confusão moderado");
+   P ("label.contrast.alpha_contrast_label.d_n_normal_text_contrast_after_alpha_compositing",
+      "{v1}:{v2, number}, contraste para texto normal após a composição "
+      & "alfa");
 end Labels_3;

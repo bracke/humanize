@@ -113,10 +113,6 @@ begin
       "{mode, select, comparison_compact {{name}: modificate {changed, "
       & "number}/{total, number}} other {{name}: modificate {changed, number}, "
       & "nemodificate {unchanged, number}, total {total, number}}}");
-   P ("label.names.color_description", "{brightness}, {hue} {saturation}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{base, select, pink {roz} other {{hue}}} {brightness} {chroma} "
-      & "{temperature}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -564,4 +560,141 @@ begin
    P ("label.metrics.text_summary_with_options.n_word",
       "{v1, plural, one {{v1, number} cuvânt} few {{v1, number} cuvinte} "
       & "other {{v1, number} de cuvinte}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {nicio observație} "
+      & "sample_too_small_shape {eșantion prea mic pentru a descrie forma, "
+      & "{count, plural, one {{count, number} observație} few {{count, number} "
+      & "observații} other {{count, number} de observații}}} flat_shape "
+      & "{distribuție plată la {median}} outlier_heavy_shape {distribuție cu "
+      & "multe valori aberante în jurul valorii {median}} volatile_shape "
+      & "{distribuție volatilă în jurul valorii {median}} clustered_shape "
+      & "{distribuție grupată în jurul valorii {median}} wide_spread_shape "
+      & "{distribuție larg dispersată} wide_spread_range {distribuție larg "
+      & "dispersată de la {minimum} la {maximum}} right_skewed_shape "
+      & "{distribuție asimetrică la dreapta, mediana {median}} "
+      & "left_skewed_shape {distribuție asimetrică la stânga, mediana "
+      & "{median}} other {distribuție în mare parte echilibrată în jurul "
+      & "valorii {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {e-mail gol} address {adresă de e-mail} other "
+      & "{e-mail la {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {număr de telefon} redacted {număr de telefon "
+      & "ascuns} other {telefon care se termină în {digits}}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {nume de utilizator} other {nume de utilizator "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {simbol de cod} other {simbol de cod {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "metadate adresă: {present, plural, one {{present, number} câmp "
+      & "prezent} few {{present, number} câmpuri prezente} other {{present, "
+      & "number} de câmpuri prezente}}, {missing, plural, one {{missing, "
+      & "number} câmp lipsă} few {{missing, number} câmpuri lipsă} other "
+      & "{{missing, number} de câmpuri lipsă}}");
+   P ("label.endpoints.host_label", "{state, select, none {gazdă necunoscută} other {{kind} {host}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {punct final necunoscut} other {punct final "
+      & "{scheme}{host}{port} ({kind})}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {URL gol} none {URL fără componente "
+      & "recunoscute} other {URL cu {count, plural, one {{count, number} "
+      & "componentă} few {{count, number} componente} other {{count, number} "
+      & "de componente}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {niciun parametru de interogare} one {{count, "
+      & "number} parametru de interogare} few {{count, number} parametri de "
+      & "interogare} other {{count, number} de parametri de interogare}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} – {kind, select, ipv4_host {adresă IPv4 publică} "
+      & "ipv6_host {adresă IPv6 publică} private_network_host {adresă de "
+      & "rețea privată} localhost_host {gazdă locală} other {nu este o "
+      & "adresă IP}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr}: CIDR nevalid} other {{cidr}: {kind}, "
+      & "prefix de rețea {prefix}}}");
+   P ("label.resources.utilization_label",
+      "utilizare: {used, number} din {total, number} {unit} ({percent}, "
+      & "{band})");
+   P ("label.resources.saturation_label", "{named, select, no {resursă} other {{name}}}: {percent}, {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {versiunea {version}, pre-lansare {prerelease}, "
+      & "build {build}} prerelease {versiunea {version}, pre-lansare "
+      & "{prerelease}} build {versiunea {version}, build {build}} other "
+      & "{versiunea {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {aceeași versiune} major_upgrade "
+      & "{actualizare majoră} minor_upgrade {actualizare minoră} "
+      & "patch_upgrade {actualizare de patch} prerelease_change {modificare de "
+      & "pre-lansare} build_metadata_change {modificare a metadatelor de build} "
+      & "downgrade {retrogradare} other {modificare de versiune necunoscută}}: "
+      & "{from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {exact versiunea {version}} minimum_range "
+      & "{versiunea {version} sau mai nouă} maximum_range {versiunea {version} "
+      & "sau mai veche} major_compatible_range {compatibil cu versiunea majoră "
+      & "{version}} minor_compatible_range {compatibil cu versiunea minoră "
+      & "{version}} other {interval de versiuni {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {lansare inițială de dezvoltare {version}} "
+      & "prerelease {pre-lansare {version}} major {lansare majoră {version}} "
+      & "minor {lansare minoră {version}} other {lansare de patch {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {etichetă de link} image {etichetă de imagine} "
+      & "paragraph {etichetă de paragraf} ordered_list {etichetă de listă "
+      & "ordonată} unordered_list {etichetă de listă neordonată} list_item "
+      & "{etichetă de element de listă} table_header_cell {etichetă de "
+      & "celulă de antet de tabel} table_cell {etichetă de celulă de tabel} "
+      & "table_row {etichetă de rând de tabel} line_break {etichetă de "
+      & "întrerupere de rând} thematic_break {etichetă de separator tematic} "
+      & "heading_level_n {etichetă de titlu de nivelul {level, number}} other "
+      & "{eticheta {name}}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {atributul {name}} event {atributul de gestionare "
+      & "a evenimentelor {name}} other {atributul {name} setat la "
+      & "„{value}”}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {conținut text} html_content {document "
+      & "HTML} json_content {document JSON} xml_content {document XML} "
+      & "image_content {imagine} audio_content {conținut audio} video_content "
+      & "{conținut video} font_content {font} archive_content {arhivă} "
+      & "binary_content {conținut binar} form_content {trimitere de formular} "
+      & "other {conținut necunoscut}} ({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind}: nesetat} hidden_value {{kind}: ascuns} "
+      & "masked_value {{kind} {shown}} fingerprint_only {{kind}: amprentă care "
+      & "se termină în {shown}} other {{kind} care se termină în {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind}: nesetat} other {{name} {kind} "
+      & "care se termină în {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {{name}: antet de acreditări nesetat} other "
+      & "{{name} {kind} care se termină în {shown}}}");
+   P ("label.secrets.fingerprint_label", "amprentă {algorithm} care se termină în {shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label}: nesetat} redacted {{label}: ascuns} "
+      & "url_redacted {URL ascuns} ip_redacted {adresă IP ascunsă} "
+      & "path_ending {cale de fișier care se termină în {shown}} at {{label} "
+      & "la {shown}} audit {{label}: lungime {length, number}, se termină în "
+      & "{shown}} debug {{label} {shown}} other {{label} care se termină în "
+      & "{shown}}}");
+   P ("label.schema.field_label",
+      "câmpul {name} ({kind, select, string_field {șir} integer_field "
+      & "{întreg} decimal_field {zecimal} boolean_field {boolean} date_field "
+      & "{dată} date_time_field {dată și oră} object_field {obiect} "
+      & "array_field {matrice} enum_field {enumerare} binary_field {binar} "
+      & "null_field {null} any_field {orice tip} other {tip necunoscut}}): "
+      & "{state, select, deprecated_field {învechit, } unknown_field "
+      & "{necunoscut, } read_only_field {doar citire, } write_only_field {doar "
+      & "scriere, } computed_field {calculat, } other {}}{presence, select, "
+      & "required_field {obligatoriu} optional_field {opțional} "
+      & "conditional_field {condițional} other {prezență "
+      & "necunoscută}}{nullable, select, non_nullable {, non-null} nullable {, "
+      & "poate fi null} other {}}");
+   P ("label.schema.schema_summary_label.fields",
+      "{count, plural, one {{count, number} câmp} few {{count, number} "
+      & "câmpuri} other {{count, number} de câmpuri}}");
+   P ("label.schema.schema_summary_label.required", "obligatorii: {count, number}");
+   P ("label.schema.schema_summary_label.optional", "opționale: {count, number}");
+   P ("label.schema.schema_summary_label.deprecated", "învechite: {count, number}");
+   P ("label.schema.schema_summary_label.unknown", "necunoscute: {count, number}");
 end Labels_3;

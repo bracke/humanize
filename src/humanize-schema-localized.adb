@@ -120,6 +120,35 @@ package body Humanize.Schema.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Example_Value_Label;
 
+   function Field_Label
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       Kind     : Field_Type;
+       Presence : Field_Presence := Optional_Field;
+       Nullable : Nullability := Nullability_Unknown;
+       State    : Field_State := Normal_Field)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Schema.Field_Label
+          (Name => Name,
+           Kind => Kind,
+           Presence => Presence,
+           Nullable => Nullable,
+           State => State);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.schema.field_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "state", Lower (Field_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "presence", Lower (Field_Presence'Image (Presence)));
+      Selection := Sel.With_Arg (Selection, "nullable", Lower (Nullability'Image (Nullable)));
+      Selection := Sel.With_Arg (Selection, "kind", Lower (Field_Type'Image (Kind)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Field_Label;
+
    function Field_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Field_State)
@@ -205,6 +234,48 @@ package body Humanize.Schema.Localized is
       Selection := Sel.With_Arg (Selection, "version", Humanize.Bounded_Text.Clean (Version));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Schema_Source_Label;
+
+   function Schema_Summary_Label
+      (Context    : Humanize.Contexts.Context;
+       Fields     : Natural;
+       Required   : Natural := 0;
+       Optional   : Natural := 0;
+       Deprecated : Natural := 0;
+       Unknown    : Natural := 0)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Schema.Schema_Summary_Label
+          (Fields => Fields,
+           Required => Required,
+           Optional => Optional,
+           Deprecated => Deprecated,
+           Unknown => Unknown);
+      Text : Humanize.Status.Text_Result := Humanize.Label_Values.Nothing;
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+        "label.schema.schema_summary_label.fields", Long_Long_Integer (Fields)));
+      if Required > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.schema.schema_summary_label.required", Long_Long_Integer (Required)));
+      end if;
+      if Optional > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.schema.schema_summary_label.optional", Long_Long_Integer (Optional)));
+      end if;
+      if Deprecated > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.schema.schema_summary_label.deprecated", Long_Long_Integer (Deprecated)));
+      end if;
+      if Unknown > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.schema.schema_summary_label.unknown", Long_Long_Integer (Unknown)));
+      end if;
+      return Humanize.Label_Values.Localized_Or (Context, Text, English);
+   end Schema_Summary_Label;
 
    function Shape_Label
       (Context : Humanize.Contexts.Context;
@@ -363,6 +434,24 @@ package body Humanize.Schema.Localized is
          Target, Written, Status);
    end Example_Value_Label_Into;
 
+   procedure Field_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       Kind     : Field_Type;
+       Presence : Field_Presence := Optional_Field;
+       Nullable : Nullability := Nullability_Unknown;
+       State    : Field_State := Normal_Field;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Field_Label (Context, Name => Name, Kind => Kind, Presence => Presence, Nullable => Nullable, State =>
+         State),
+         Target, Written, Status);
+   end Field_Label_Into;
+
    procedure Field_State_Label_Into
       (Context : Humanize.Contexts.Context;
        State   : Field_State;
@@ -424,6 +513,24 @@ package body Humanize.Schema.Localized is
         (Schema_Source_Label (Context, Name => Name, Version => Version),
          Target, Written, Status);
    end Schema_Source_Label_Into;
+
+   procedure Schema_Summary_Label_Into
+      (Context    : Humanize.Contexts.Context;
+       Fields     : Natural;
+       Required   : Natural := 0;
+       Optional   : Natural := 0;
+       Deprecated : Natural := 0;
+       Unknown    : Natural := 0;
+       Target     : in out String;
+       Written    : out Natural;
+       Status     : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Schema_Summary_Label (Context, Fields => Fields, Required => Required, Optional => Optional, Deprecated =>
+         Deprecated, Unknown => Unknown),
+         Target, Written, Status);
+   end Schema_Summary_Label_Into;
 
    procedure Shape_Label_Into
       (Context : Humanize.Contexts.Context;

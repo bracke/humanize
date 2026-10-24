@@ -17,6 +17,7 @@ package Humanize.Strings is
    --  * Humanize.Strings.Names: person/name helpers.
    --  * Humanize.Strings.Paths: path and filename helpers.
    --  * Humanize.Strings.Privacy: privacy-preserving labels.
+   --  * Humanize.Strings.Privacy.Localized: the privacy labels in a context's locale.
    --  * Humanize.Strings.Prose: prose/list helpers.
    --  * Humanize.Strings.Terminal: terminal formatting helpers.
    --  * Humanize.Strings.Types: shared string helper types.

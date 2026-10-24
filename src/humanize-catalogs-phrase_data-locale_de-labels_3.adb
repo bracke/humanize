@@ -66,10 +66,6 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} geändert} other {{name}: {changed, number} geändert, "
       & "{unchanged, number} unverändert, {total, number} gesamt}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {rosa} other "
-      & "{{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -503,4 +499,201 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "keine Absätze");
    P ("label.metrics.word_count_summary.n_word", "{v1, plural, one {1 Wort} other {{v1, number} Wörter}}");
    P ("label.metrics.text_summary_with_options.n_word", "{v1, plural, one {1 Wort} other {{v1, number} Wörter}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {keine Beobachtungen} "
+      & "sample_too_small_shape {Stichprobe zu klein, um die Form zu "
+      & "beschreiben, {count, plural, one {1 Beobachtung} other {{count, "
+      & "number} Beobachtungen}}} flat_shape {flache Verteilung bei {median}} "
+      & "outlier_heavy_shape {ausreißerreiche Verteilung um {median}} "
+      & "volatile_shape {schwankende Verteilung um {median}} clustered_shape "
+      & "{gehäufte Verteilung um {median}} wide_spread_shape {weit gestreute "
+      & "Verteilung} wide_spread_range {weit gestreute Verteilung von {minimum} "
+      & "bis {maximum}} right_skewed_shape {rechtsschiefe Verteilung, Median "
+      & "{median}} left_skewed_shape {linksschiefe Verteilung, Median {median}} "
+      & "other {weitgehend ausgeglichene Verteilung um {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {leere E-Mail} address {E-Mail-Adresse} other "
+      & "{E-Mail bei {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {Telefonnummer} redacted {Telefonnummer "
+      & "geschwärzt} other {Telefonnummer mit Endung {digits}}}");
+   P ("label.privacy.safe_handle_label", "{state, select, none {Handle} other {Handle {shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {Codesymbol} other {Codesymbol {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "Adressmetadaten: {present, plural, one {1 Feld vorhanden} other "
+      & "{{present, number} Felder vorhanden}}, {missing, plural, one {1 Feld "
+      & "fehlt} other {{missing, number} Felder fehlen}}");
+   P ("label.endpoints.host_label", "{state, select, none {unbekannter Host} other {{kind} {host}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {unbekannter Endpunkt} other {Endpunkt "
+      & "{scheme}{host}{port} ({kind})}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {leere URL} none {URL ohne erkannte "
+      & "Bestandteile} other {URL mit {count, plural, one {1 Bestandteil} other "
+      & "{{count, number} Bestandteilen}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {keine Abfrageparameter} one {1 Abfrageparameter} "
+      & "other {{count, number} Abfrageparameter}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} ({kind, select, ipv4_host {öffentliche IPv4-Adresse} "
+      & "ipv6_host {öffentliche IPv6-Adresse} private_network_host {Adresse im "
+      & "privaten Netz} localhost_host {lokaler Host} other {keine "
+      & "IP-Adresse}})");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} (ungültiges CIDR)} other {{cidr} "
+      & "({kind}, Netzpräfix {prefix})}}");
+   P ("label.resources.utilization_label", "{used, number} von {total, number} {unit} genutzt ({percent}, {band})");
+   P ("label.resources.saturation_label", "{named, select, no {Ressource} other {{name}}} {percent}, {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {Version {version}, Vorabversion {prerelease}, "
+      & "Build {build}} prerelease {Version {version}, Vorabversion "
+      & "{prerelease}} build {Version {version}, Build {build}} other {Version "
+      & "{version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {gleiche Version} major_upgrade "
+      & "{Hauptversions-Upgrade} minor_upgrade {Nebenversions-Upgrade} "
+      & "patch_upgrade {Patch-Upgrade} prerelease_change {Änderung der "
+      & "Vorabversion} build_metadata_change {Änderung der Build-Metadaten} "
+      & "downgrade {Downgrade} other {unbekannte Versionsänderung}}: {from} -> "
+      & "{to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {genau Version {version}} minimum_range "
+      & "{Version {version} oder neuer} maximum_range {Version {version} oder "
+      & "älter} major_compatible_range {kompatibel mit Hauptversion {version}} "
+      & "minor_compatible_range {kompatibel mit Nebenversion {version}} other "
+      & "{Versionsbereich {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {erste Entwicklungsversion {version}} "
+      & "prerelease {Vorabversion {version}} major {Hauptversion {version}} "
+      & "minor {Nebenversion {version}} other {Patch-Version {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {Link-Tag} image {Bild-Tag} paragraph {Absatz-Tag} "
+      & "ordered_list {Tag für nummerierte Liste} unordered_list {Tag für "
+      & "Aufzählungsliste} list_item {Listenelement-Tag} table_header_cell "
+      & "{Tabellenkopfzellen-Tag} table_cell {Tabellenzellen-Tag} table_row "
+      & "{Tabellenzeilen-Tag} line_break {Zeilenumbruch-Tag} thematic_break "
+      & "{Tag für thematischen Umbruch} heading_level_n {Tag für Überschrift "
+      & "der Ebene {level, number}} other {{name}-Tag}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {{name}-Attribut} event {Event-Handler-Attribut "
+      & "{name}} other {Attribut {name} mit Wert „{value}“}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {Textinhalt} html_content {HTML-Dokument} "
+      & "json_content {JSON-Dokument} xml_content {XML-Dokument} image_content "
+      & "{Bildinhalt} audio_content {Audioinhalt} video_content {Videoinhalt} "
+      & "font_content {Schriftinhalt} archive_content {Archivinhalt} "
+      & "binary_content {Binärinhalt} form_content {Formularübermittlung} "
+      & "other {unbekannter Inhalt}} ({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} nicht gesetzt} hidden_value {{kind} "
+      & "verborgen} masked_value {{kind} {shown}} fingerprint_only {{kind}, "
+      & "Fingerabdruck mit Endung {shown}} other {{kind} mit Endung {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name}: {kind} nicht gesetzt} other {{name}: "
+      & "{kind} mit Endung {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {Anmelde-Header {name} nicht gesetzt} other "
+      & "{{name}: {kind} mit Endung {shown}}}");
+   P ("label.secrets.fingerprint_label", "{algorithm}-Fingerabdruck mit Endung {shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} nicht gesetzt} redacted {{label} "
+      & "geschwärzt} url_redacted {URL geschwärzt} ip_redacted {IP-Adresse "
+      & "geschwärzt} path_ending {Dateipfad mit Endung {shown}} at {{label} "
+      & "bei {shown}} audit {{label}, Länge {length, number}, Endung {shown}} "
+      & "debug {{label} {shown}} other {{label} mit Endung {shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {veraltetes } unknown_field "
+      & "{unbekanntes } read_only_field {schreibgeschütztes } write_only_field "
+      & "{nur beschreibbares } computed_field {berechnetes } other {}}{kind, "
+      & "select, string_field {String-Feld} integer_field {Ganzzahlfeld} "
+      & "decimal_field {Dezimalfeld} boolean_field {boolesches Feld} date_field "
+      & "{Datumsfeld} date_time_field {Datum-Zeit-Feld} object_field "
+      & "{Objektfeld} array_field {Array-Feld} enum_field {Enum-Feld} "
+      & "binary_field {Binärfeld} null_field {Null-Feld} any_field {Feld "
+      & "beliebigen Typs} other {Feld unbekannten Typs}} {name} ({presence, "
+      & "select, required_field {erforderlich} optional_field {optional} "
+      & "conditional_field {bedingt} other {Vorhandensein unbekannt}}{nullable, "
+      & "select, non_nullable {, nicht null} nullable {, nullbar} other {}})");
+   P ("label.schema.schema_summary_label.fields", "{count, plural, one {1 Feld} other {{count, number} Felder}}");
+   P ("label.schema.schema_summary_label.required", "{count, number} erforderlich");
+   P ("label.schema.schema_summary_label.optional", "{count, number} optional");
+   P ("label.schema.schema_summary_label.deprecated", "{count, number} veraltet");
+   P ("label.schema.schema_summary_label.unknown", "{count, number} unbekannt");
+   P ("label.diagnostics.check_run_summary_label.none", "keine Prüfungen ausgeführt");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} bestanden");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} fehlgeschlagen");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 Warnung} other {{count, number} Warnungen}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} übersprungen");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} ausstehend");
+   P ("label.workflows.workflow_summary_label.total",
+      "{count, plural, one {1 Element} other {{count, number} Elemente}}");
+   P ("label.workflows.workflow_summary_label.completed", "{count, number} abgeschlossen");
+   P ("label.workflows.workflow_summary_label.active", "{count, number} aktiv");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} blockiert");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} fehlgeschlagen");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} übersprungen");
+   P ("label.changes.change_summary_label.total",
+      "{count, plural, one {1 Element} other {{count, number} Elemente}}");
+   P ("label.changes.change_summary_label.added", "{count, number} hinzugefügt");
+   P ("label.changes.change_summary_label.removed", "{count, number} entfernt");
+   P ("label.changes.change_summary_label.modified", "{count, number} geändert");
+   P ("label.changes.change_summary_label.renamed", "{count, number} umbenannt");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} unverändert");
+   P ("label.markup.accessible_control_label.control",
+      "{role, select, button_control {Schaltfläche} link_control {Link} "
+      & "tab_control {Registerkarte} menu_item_control {Menüeintrag} "
+      & "checkbox_control {Kontrollkästchen} radio_control {Optionsfeld} "
+      & "text_field_control {Textfeld} progress_control {Fortschrittsanzeige} "
+      & "table_cell_control {Tabellenzelle} region_control {Bereich} other "
+      & "{Steuerelement}} {named, select, no {ohne Namen} other {{name}}}");
+   P ("label.markup.accessible_control_label.selected", "ausgewählt");
+   P ("label.markup.accessible_control_label.expanded", "erweitert");
+   P ("label.markup.accessible_control_label.current", "aktuell");
+   P ("label.markup.accessible_control_label.disabled", "deaktiviert");
+   P ("label.markup.accessible_control_label.required", "erforderlich");
+   P ("label.markup.accessible_control_label.invalid", "ungültig");
+   P ("label.markup.accessible_control_label.count",
+      "{count, plural, one {1 Element} other {{count, number} Elemente}}");
+   P ("label.markup.accessible_control_label.position", "Element {position, number} von {total, number}");
+   P ("label.markup.accessible_control_label.issues",
+      "{count, plural, one {1 Problem} other {{count, number} Probleme}}");
+   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
+   P ("label.endpoints.url_component.scheme", "Schema");
+   P ("label.endpoints.url_component.host", "Host");
+   P ("label.endpoints.url_component.path", "Pfad");
+   P ("label.endpoints.url_component.query", "Abfrage");
+   P ("label.endpoints.url_component.fragment", "Fragment");
+   P ("label.names.hue_noun.red", "Rot");
+   P ("label.names.hue_noun.orange", "Orange");
+   P ("label.names.hue_noun.yellow", "Gelb");
+   P ("label.names.hue_noun.green", "Grün");
+   P ("label.names.hue_noun.cyan", "Cyan");
+   P ("label.names.hue_noun.blue", "Blau");
+   P ("label.names.hue_noun.purple", "Violett");
+   P ("label.names.hue_noun.magenta", "Magenta");
+   P ("label.names.hue_noun.neutral", "Neutralton");
+   P ("label.names.hue_noun.pink", "Rosa");
+   P ("label.names.hue_gender.red", "neuter");
+   P ("label.names.hue_gender.orange", "neuter");
+   P ("label.names.hue_gender.yellow", "neuter");
+   P ("label.names.hue_gender.green", "neuter");
+   P ("label.names.hue_gender.cyan", "neuter");
+   P ("label.names.hue_gender.blue", "neuter");
+   P ("label.names.hue_gender.purple", "neuter");
+   P ("label.names.hue_gender.magenta", "neuter");
+   P ("label.names.hue_gender.neutral", "masculine");
+   P ("label.names.hue_gender.pink", "neuter");
+   P ("label.names.agree.very_dark",
+      "{gender, select, neuter {sehr dunkles} masculine {sehr dunkler} "
+      & "feminine {sehr dunkle} other {sehr dunkel}}");
+   P ("label.names.agree.dark",
+      "{gender, select, neuter {dunkles} masculine {dunkler} feminine "
+      & "{dunkle} other {dunkel}}");
+   P ("label.names.agree.medium_brightness",
+      "{gender, select, neuter {mittelhelles} masculine {mittelheller} "
+      & "feminine {mittelhelle} other {mittelhell}}");
+   P ("label.names.agree.light",
+      "{gender, select, neuter {helles} masculine {heller} feminine {helle} "
+      & "other {hell}}");
 end Labels_3;

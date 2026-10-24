@@ -241,10 +241,6 @@ begin
       "{mode, select, comparison_compact {{name}: spremenjeno {changed, "
       & "number}/{total, number}} other {{name}: spremenjeno {changed, number}, "
       & "nespremenjeno {unchanged, number}, skupaj {total, number}}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {rožnata} "
-      & "other {{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");

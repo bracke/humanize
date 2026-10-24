@@ -572,10 +572,6 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} 변경} other {{name}: {changed, number}개 변경, "
       & "{unchanged, number}개 변경 없음, 총 {total, number}개}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {분홍} other "
-      & "{{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -696,4 +692,9 @@ begin
    P ("label.models.perceptual_difference_label.cie76_delta_d_barely_perceptible",
       "CIE76 델타 {v1}, 거의 인지 불가");
    P ("label.models.perceptual_difference_label.cie94_delta_d_imperceptible", "CIE94 델타 {v1}, 인지 불가");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_imperceptible",
+      "CIE94 섬유 델타 {v1}, 인지 불가");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_d_imperceptible",
+      "CIEDE2000 델타 {v1}, 인지 불가");
+   P ("label.models.perceptual_difference_label.oklab_delta_d_imperceptible", "OKLab 델타 {v1}, 인지 불가");
 end Labels_2;

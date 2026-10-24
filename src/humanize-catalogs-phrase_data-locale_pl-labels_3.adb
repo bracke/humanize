@@ -280,10 +280,6 @@ begin
       "{mode, select, comparison_compact {{name}: zmieniono {changed, "
       & "number}/{total, number}} other {{name}: zmieniono {changed, number}, "
       & "bez zmian {unchanged, number}, łącznie {total, number}}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {różowy} "
-      & "other {{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -695,4 +691,10 @@ begin
    P ("label.metrics.word_count_summary.n_words",
       "{v1, plural, one {{v1, number} słowo} few {{v1, number} słowa} many "
       & "{{v1, number} słów} other {{v1, number} słowa}}");
+   P ("label.metrics.sentence_count_summary.n_sentences",
+      "{v1, plural, one {{v1, number} zdanie} few {{v1, number} zdania} many "
+      & "{{v1, number} zdań} other {{v1, number} zdania}}");
+   P ("label.metrics.paragraph_count_summary.n_paragraphs",
+      "{v1, plural, one {{v1, number} akapit} few {{v1, number} akapity} many "
+      & "{{v1, number} akapitów} other {{v1, number} akapitu}}");
 end Labels_3;

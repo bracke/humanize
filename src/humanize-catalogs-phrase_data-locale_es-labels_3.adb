@@ -379,10 +379,6 @@ begin
       & "number} cambiado} many {{changed, number} cambiados} other {{changed, "
       & "number} cambiados}}, {unchanged, number} sin cambios, {total, number} "
       & "en total}}");
-   P ("label.names.color_description", "{brightness}, {hue} {saturation}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{base, select, pink {rosa} other {{hue}}} {brightness} {chroma} "
-      & "{temperature}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -697,4 +693,7 @@ begin
    P ("label.contrast.contrast_label.d_n_enhanced_contrast", "{v1}:{v2, number}, contraste mejorado");
    P ("label.contrast.readability_label.readable_for_enhanced_text", "legible con contraste mejorado");
    P ("label.contrast.color_accessibility_summary.d_n_enhanced_contrast", "{v1}:{v2, number}, contraste mejorado");
+   P ("label.models.perceptual_difference_label.oklab_delta_n_subtle_perceptual_difference",
+      "OKLab delta {v1, number}, diferencia perceptual sutil");
+   P ("label.contrast.color_accessibility_summary.tritanopia_distinct", "tritanopía: colores distinguibles");
 end Labels_3;

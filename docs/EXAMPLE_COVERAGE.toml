@@ -839,3 +839,9 @@ area = "localized-metrics"
 unit = "Humanize.Strings.Metrics.Localized"
 example = "examples/domain_labels_demo.adb"
 usecase = "render a metrics label in German"
+
+[[coverage]]
+area = "localized-privacy"
+unit = "Humanize.Strings.Privacy.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a privacy label in German"

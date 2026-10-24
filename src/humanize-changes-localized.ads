@@ -47,6 +47,24 @@ package Humanize.Changes.Localized is
    --  @param Severity As for the parent's Change_Severity_Label.
    --  @return The label in Context's locale.
 
+   function Change_Summary_Label
+      (Context   : Humanize.Contexts.Context;
+       Total     : Natural;
+       Added     : Natural := 0;
+       Removed   : Natural := 0;
+       Modified  : Natural := 0;
+       Renamed   : Natural := 0;
+       Unchanged : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Total As for the parent's Change_Summary_Label.
+   --  @param Added As for the parent's Change_Summary_Label.
+   --  @param Removed As for the parent's Change_Summary_Label.
+   --  @param Modified As for the parent's Change_Summary_Label.
+   --  @param Renamed As for the parent's Change_Summary_Label.
+   --  @param Unchanged As for the parent's Change_Summary_Label.
+   --  @return The label in Context's locale.
+
    function Collection_Field_Change_Label
       (Context    : Humanize.Contexts.Context;
        Field_Name : String;
@@ -287,6 +305,28 @@ package Humanize.Changes.Localized is
        Status   : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Severity As for the parent's Change_Severity_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Change_Summary_Label_Into
+      (Context   : Humanize.Contexts.Context;
+       Total     : Natural;
+       Added     : Natural := 0;
+       Removed   : Natural := 0;
+       Modified  : Natural := 0;
+       Renamed   : Natural := 0;
+       Unchanged : Natural := 0;
+       Target    : in out String;
+       Written   : out Natural;
+       Status    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Total As for the parent's Change_Summary_Label.
+   --  @param Added As for the parent's Change_Summary_Label.
+   --  @param Removed As for the parent's Change_Summary_Label.
+   --  @param Modified As for the parent's Change_Summary_Label.
+   --  @param Renamed As for the parent's Change_Summary_Label.
+   --  @param Unchanged As for the parent's Change_Summary_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

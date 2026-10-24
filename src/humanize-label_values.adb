@@ -340,6 +340,96 @@ package body Humanize.Label_Values is
      ((Status => Humanize.Status.Ok, Text => Ada.Strings.Unbounded.Null_Unbounded_String,
        Key => Humanize.Message_Keys.No_Message));
 
+   function Agreeing
+     (Context : Humanize.Contexts.Context;
+      Prefix  : String;
+      Word    : String;
+      Hue     : String;
+      Fallback : String)
+      return String
+   is
+      Gender : constant Humanize.Status.Text_Result :=
+        Humanize.I18N_Rendering.Render
+          (Context, Humanize.Selections.Phrase ("label.names.hue_gender." & Shape_Slug (Hue)));
+   begin
+      if Gender.Status /= Humanize.Status.Ok then
+         return Fallback;
+      end if;
+      declare
+         Form : constant Humanize.Status.Text_Result :=
+           Humanize.I18N_Rendering.Render
+             (Context,
+              Humanize.Selections.With_Arg
+                (Humanize.Selections.Phrase (Prefix & "." & Shape_Slug (Word)), "gender", Text_Of (Gender)));
+      begin
+         return (if Form.Status = Humanize.Status.Ok then Text_Of (Form) else Fallback);
+      end;
+   end Agreeing;
+
+   function Hue_Noun
+     (Context  : Humanize.Contexts.Context;
+      Hue      : String;
+      Fallback : String)
+      return String
+   is
+      Noun : constant Humanize.Status.Text_Result :=
+        Humanize.I18N_Rendering.Render
+          (Context, Humanize.Selections.Phrase ("label.names.hue_noun." & Shape_Slug (Hue)));
+   begin
+      return (if Noun.Status = Humanize.Status.Ok then Text_Of (Noun) else Fallback);
+   end Hue_Noun;
+
+   function Value_After (Text, Marker : String) return String is
+      At_Marker : constant Natural := Ada.Strings.Fixed.Index (Text, Marker);
+   begin
+      return (if At_Marker = 0 then Text else Text (At_Marker + Marker'Length .. Text'Last));
+   end Value_After;
+
+   function Before (Text, Marker : String) return String is
+      At_Marker : constant Natural := Ada.Strings.Fixed.Index (Text, Marker);
+   begin
+      return (if At_Marker = 0 then Text else Text (Text'First .. At_Marker - 1));
+   end Before;
+
+   function Unbracketed (Text : String) return String is
+      Item : constant String := Humanize.Bounded_Text.Clean (Text);
+   begin
+      return
+        (if Item'Length >= 2 and then Item (Item'First) = '[' and then Item (Item'Last) = ']'
+         then Item (Item'First + 1 .. Item'Last - 1) else Item);
+   end Unbracketed;
+
+   function Leading_Count (Text : String) return Long_Long_Integer is
+      Last : Natural := Text'First - 1;
+   begin
+      while Last < Text'Last and then Is_Digit (Text (Last + 1)) loop
+         Last := Last + 1;
+      end loop;
+      return (if Last < Text'First then 0 else Long_Long_Integer'Value (Text (Text'First .. Last)));
+   end Leading_Count;
+
+   function Word_List (Context : Humanize.Contexts.Context; Prefix, Words : String) return String is
+      Result : Humanize.Status.Text_Result := Nothing;
+      Start  : Positive := Words'First;
+      Stop   : Natural;
+   begin
+      loop
+         Stop := Ada.Strings.Fixed.Index (Words (Start .. Words'Last), ", ");
+         Result := Join
+           (Context, Result,
+            Humanize.I18N_Rendering.Render
+              (Context,
+               Humanize.Selections.Phrase
+                 (Prefix & "." & Shape_Slug (Words (Start .. (if Stop = 0 then Words'Last else Stop - 1))))));
+         if Result.Status /= Humanize.Status.Ok then
+            return Words;
+         end if;
+         exit when Stop = 0;
+         Start := Stop + 2;
+      end loop;
+      return Text_Of (Result);
+   end Word_List;
+
    function Text_Of (Result : Humanize.Status.Text_Result) return String is
      (Ada.Strings.Unbounded.To_String (Result.Text));
 

@@ -92,6 +92,7 @@ Formatting and parsing packages:
 * `src/humanize-strings-names.ads`
 * `src/humanize-strings-paths.ads`
 * `src/humanize-strings-privacy.ads`
+* `src/humanize-strings-privacy-localized.ads`
 * `src/humanize-strings-prose.ads`
 * `src/humanize-strings-terminal.ads`
 * `src/humanize-strings-types.ads`

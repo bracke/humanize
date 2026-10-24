@@ -10,6 +10,7 @@ procedure Locale_Sw (Target : in out Catalog_Text) is
    procedure Labels_1 is separate;
    procedure Labels_2 is separate;
    procedure Labels_3 is separate;
+   procedure Labels_4 is separate;
 begin
    P ("all_count", "jumla: {total, plural, one {{one}} other {{other}}} {total}");
    P ("filtered_count.none", "hakuna {other} zinazolingana");
@@ -769,4 +770,5 @@ begin
    Labels_1;
    Labels_2;
    Labels_3;
+   Labels_4;
 end Locale_Sw;

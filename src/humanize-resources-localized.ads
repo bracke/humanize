@@ -39,12 +39,38 @@ package Humanize.Resources.Localized is
    --  @param Unit As for the parent's Remaining_Label.
    --  @return The label in Context's locale.
 
+   function Saturation_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Percent : Percent_Value;
+       Options : Utilization_Options := Default_Utilization_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Saturation_Label.
+   --  @param Percent As for the parent's Saturation_Label.
+   --  @param Options As for the parent's Saturation_Label.
+   --  @return The label in Context's locale.
+
    function Utilization_Band_Label
       (Context : Humanize.Contexts.Context;
        Band    : Utilization_Band)
       return Humanize.Status.Text_Result;
    --  @param Context Formatting context.
    --  @param Band As for the parent's Utilization_Band_Label.
+   --  @return The label in Context's locale.
+
+   function Utilization_Label
+      (Context : Humanize.Contexts.Context;
+       Used    : Resource_Count;
+       Total   : Resource_Count;
+       Unit    : String := "units";
+       Options : Utilization_Options := Default_Utilization_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Used As for the parent's Utilization_Label.
+   --  @param Total As for the parent's Utilization_Label.
+   --  @param Unit As for the parent's Utilization_Label.
+   --  @param Options As for the parent's Utilization_Label.
    --  @return The label in Context's locale.
 
    procedure Cache_Hit_Rate_Label_Into
@@ -93,6 +119,22 @@ package Humanize.Resources.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Saturation_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Percent : Percent_Value;
+       Options : Utilization_Options := Default_Utilization_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Saturation_Label.
+   --  @param Percent As for the parent's Saturation_Label.
+   --  @param Options As for the parent's Saturation_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Utilization_Band_Label_Into
       (Context : Humanize.Contexts.Context;
        Band    : Utilization_Band;
@@ -101,6 +143,24 @@ package Humanize.Resources.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Band As for the parent's Utilization_Band_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Utilization_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Used    : Resource_Count;
+       Total   : Resource_Count;
+       Unit    : String := "units";
+       Options : Utilization_Options := Default_Utilization_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Used As for the parent's Utilization_Label.
+   --  @param Total As for the parent's Utilization_Label.
+   --  @param Unit As for the parent's Utilization_Label.
+   --  @param Options As for the parent's Utilization_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

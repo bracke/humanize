@@ -1,11 +1,6 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Ko)
 procedure Labels_3 is
 begin
-   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_imperceptible",
-      "CIE94 섬유 델타 {v1}, 인지 불가");
-   P ("label.models.perceptual_difference_label.ciede2000_delta_d_imperceptible",
-      "CIEDE2000 델타 {v1}, 인지 불가");
-   P ("label.models.perceptual_difference_label.oklab_delta_d_imperceptible", "OKLab 델타 {v1}, 인지 불가");
    P ("label.models.perceptual_difference_label.cie94_delta_n_large_perceptual_difference",
       "CIE94 델타 {v1, number}, 큰 지각 차이");
    P ("label.models.perceptual_difference_label.cie76_delta_n_imperceptible",
@@ -280,4 +275,209 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "문단 없음");
    P ("label.metrics.word_count_summary.n_word", "단어 {v1, number}개");
    P ("label.metrics.text_summary_with_options.n_word", "단어 {v1, number}개");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {관측값 없음} "
+      & "sample_too_small_shape {표본이 너무 적어 분포 형태를 "
+      & "판단할 수 없음, 관측값 {count, number}개} flat_shape "
+      & "{{median}에서 평평한 분포} outlier_heavy_shape {{median} "
+      & "부근의 이상값이 많은 분포} volatile_shape {{median} "
+      & "부근의 변동이 큰 분포} clustered_shape {{median} 부근에 "
+      & "몰린 분포} wide_spread_shape {넓게 퍼진 분포} "
+      & "wide_spread_range {{minimum}에서 {maximum}까지 넓게 퍼진 "
+      & "분포} right_skewed_shape {오른쪽 꼬리가 긴 분포, 중앙값 "
+      & "{median}} left_skewed_shape {왼쪽 꼬리가 긴 분포, 중앙값 "
+      & "{median}} other {{median} 부근에서 대체로 대칭인 분포}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {빈 이메일} address {이메일 주소} other "
+      & "{{domain}의 이메일}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {전화번호} redacted {전화번호 가려짐} "
+      & "other {끝자리 {digits} 전화번호}}");
+   P ("label.privacy.safe_handle_label", "{state, select, none {핸들} other {핸들 {shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {코드 심볼} other {코드 심볼 {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "주소 메타데이터: 필드 {present, number}개 있음, 필드 "
+      & "{missing, number}개 없음");
+   P ("label.endpoints.host_label", "{state, select, none {알 수 없는 호스트} other {{host} {kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {알 수 없는 엔드포인트} other "
+      & "{{scheme}{host}{port} {kind} 엔드포인트}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {빈 URL} none {인식된 구성 요소가 "
+      & "없는 URL} other {구성 요소 {count, number}개가 있는 URL: "
+      & "{components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {쿼리 매개변수 없음} other {쿼리 "
+      & "매개변수 {count, number}개}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {공용 IPv4 주소} ipv6_host "
+      & "{공용 IPv6 주소} private_network_host {사설 네트워크 주소} "
+      & "localhost_host {로컬 호스트} other {IP 주소 아님}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} 잘못된 CIDR} other {{cidr} {kind} "
+      & "네트워크 접두사 {prefix}}}");
+   P ("label.resources.utilization_label",
+      "{total, number} {unit} 중 {used, number} {unit} 사용 ({percent}, "
+      & "{band})");
+   P ("label.resources.saturation_label", "{named, select, no {리소스} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {버전 {version}, 프리릴리스 {prerelease}, "
+      & "빌드 {build}} prerelease {버전 {version}, 프리릴리스 "
+      & "{prerelease}} build {버전 {version}, 빌드 {build}} other {버전 "
+      & "{version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {동일 버전} major_upgrade {메이저 "
+      & "업그레이드} minor_upgrade {마이너 업그레이드} "
+      & "patch_upgrade {패치 업그레이드} prerelease_change "
+      & "{프리릴리스 변경} build_metadata_change {빌드 메타데이터 "
+      & "변경} downgrade {다운그레이드} other {알 수 없는 버전 "
+      & "변경}}: {from} → {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {정확히 버전 {version}} minimum_range "
+      & "{버전 {version} 이상} maximum_range {버전 {version} 이하} "
+      & "major_compatible_range {메이저 버전 {version} 호환} "
+      & "minor_compatible_range {마이너 버전 {version} 호환} other "
+      & "{버전 범위 {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {초기 개발 릴리스 {version}} prerelease "
+      & "{프리릴리스 {version}} major {메이저 릴리스 {version}} "
+      & "minor {마이너 릴리스 {version}} other {패치 릴리스 "
+      & "{version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {링크 태그} image {이미지 태그} paragraph "
+      & "{단락 태그} ordered_list {순서 있는 목록 태그} "
+      & "unordered_list {순서 없는 목록 태그} list_item {목록 항목 "
+      & "태그} table_header_cell {표 머리글 셀 태그} table_cell {표 "
+      & "셀 태그} table_row {표 행 태그} line_break {줄 바꿈 태그} "
+      & "thematic_break {구분선 태그} heading_level_n {제목 수준 "
+      & "{level, number} 태그} other {{name} 태그}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {{name} 속성} event {{name} 이벤트 핸들러 "
+      & "속성} other {{name} 속성, 값 “{value}”}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {텍스트 콘텐츠} html_content {HTML "
+      & "문서} json_content {JSON 문서} xml_content {XML 문서} "
+      & "image_content {이미지 콘텐츠} audio_content {오디오 "
+      & "콘텐츠} video_content {동영상 콘텐츠} font_content {글꼴 "
+      & "콘텐츠} archive_content {압축 파일 콘텐츠} binary_content "
+      & "{바이너리 콘텐츠} form_content {양식 제출} other {알 수 "
+      & "없는 콘텐츠}} ({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} 설정 안 됨} hidden_value {{kind} "
+      & "숨김} masked_value {{kind} {shown}} fingerprint_only {{kind} 지문 "
+      & "끝자리 {shown}} other {{kind} 끝자리 {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} 설정 안 됨} other {{name} "
+      & "{kind} 끝자리 {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {{name} 자격 증명 헤더 설정 안 됨} "
+      & "other {{name} {kind} 끝자리 {shown}}}");
+   P ("label.secrets.fingerprint_label", "{algorithm} 지문 끝자리 {shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} 설정 안 됨} redacted {{label} "
+      & "가려짐} url_redacted {URL 가려짐} ip_redacted {IP 주소 "
+      & "가려짐} path_ending {파일 경로 끝부분 {shown}} at "
+      & "{{shown}의 {label}} audit {{label} 길이 {length, number}, 끝자리 "
+      & "{shown}} debug {{label} {shown}} other {{label} 끝자리 {shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {지원 중단된 } unknown_field "
+      & "{알 수 없는 } read_only_field {읽기 전용 } write_only_field "
+      & "{쓰기 전용 } computed_field {계산된 } other {}}{presence, "
+      & "select, required_field {필수} optional_field {선택} "
+      & "conditional_field {조건부} other {필수 여부 알 수 "
+      & "없음}}{nullable, select, non_nullable {, null 불가} nullable {, "
+      & "null 허용} other {}} {kind, select, string_field {문자열} "
+      & "integer_field {정수} decimal_field {소수} boolean_field "
+      & "{불리언} date_field {날짜} date_time_field {날짜-시간} "
+      & "object_field {객체} array_field {배열} enum_field {열거형} "
+      & "binary_field {바이너리} null_field {null} any_field {임의 "
+      & "형식} other {알 수 없는 형식}} 필드 {name}");
+   P ("label.schema.schema_summary_label.fields", "필드 {count, number}개");
+   P ("label.schema.schema_summary_label.required", "필수 {count, number}개");
+   P ("label.schema.schema_summary_label.optional", "선택 {count, number}개");
+   P ("label.schema.schema_summary_label.deprecated", "지원 중단 {count, number}개");
+   P ("label.schema.schema_summary_label.unknown", "알 수 없음 {count, number}개");
+   P ("label.diagnostics.check_run_summary_label.none", "실행된 검사 없음");
+   P ("label.diagnostics.check_run_summary_label.passed", "통과 {count, number}개");
+   P ("label.diagnostics.check_run_summary_label.failed", "실패 {count, number}개");
+   P ("label.diagnostics.check_run_summary_label.warnings", "경고 {count, number}개");
+   P ("label.diagnostics.check_run_summary_label.skipped", "건너뜀 {count, number}개");
+   P ("label.diagnostics.check_run_summary_label.pending", "대기 중 {count, number}개");
+   P ("label.workflows.workflow_summary_label.total", "항목 {count, number}개");
+   P ("label.workflows.workflow_summary_label.completed", "완료 {count, number}개");
+   P ("label.workflows.workflow_summary_label.active", "진행 중 {count, number}개");
+   P ("label.workflows.workflow_summary_label.blocked", "차단됨 {count, number}개");
+   P ("label.workflows.workflow_summary_label.failed", "실패 {count, number}개");
+   P ("label.workflows.workflow_summary_label.skipped", "건너뜀 {count, number}개");
+   P ("label.changes.change_summary_label.total", "항목 {count, number}개");
+   P ("label.changes.change_summary_label.added", "{count, number}개 추가");
+   P ("label.changes.change_summary_label.removed", "{count, number}개 제거");
+   P ("label.changes.change_summary_label.modified", "{count, number}개 변경");
+   P ("label.changes.change_summary_label.renamed", "{count, number}개 이름 변경");
+   P ("label.changes.change_summary_label.unchanged", "{count, number}개 변경 없음");
+   P ("label.markup.accessible_control_label.control",
+      "{named, select, no {이름 없는} other {{name}}} {role, select, "
+      & "button_control {버튼} link_control {링크} tab_control {탭} "
+      & "menu_item_control {메뉴 항목} checkbox_control {체크박스} "
+      & "radio_control {라디오 버튼} text_field_control {텍스트 필드} "
+      & "progress_control {진행률 표시줄} table_cell_control {표 셀} "
+      & "region_control {영역} other {컨트롤}}");
+   P ("label.markup.accessible_control_label.selected", "선택됨");
+   P ("label.markup.accessible_control_label.expanded", "펼쳐짐");
+   P ("label.markup.accessible_control_label.current", "현재 항목");
+   P ("label.markup.accessible_control_label.disabled", "사용 안 함");
+   P ("label.markup.accessible_control_label.required", "필수");
+   P ("label.markup.accessible_control_label.invalid", "잘못됨");
+   P ("label.markup.accessible_control_label.count", "항목 {count, number}개");
+   P ("label.markup.accessible_control_label.position", "{total}개 중 {position}번째");
+   P ("label.markup.accessible_control_label.issues", "문제 {count, number}개");
+   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
+   P ("label.endpoints.url_component.scheme", "스킴");
+   P ("label.endpoints.url_component.host", "호스트");
+   P ("label.endpoints.url_component.path", "경로");
+   P ("label.endpoints.url_component.query", "쿼리");
+   P ("label.endpoints.url_component.fragment", "프래그먼트");
+   P ("label.names.hue_noun.red", "빨강");
+   P ("label.names.hue_noun.orange", "주황");
+   P ("label.names.hue_noun.yellow", "노랑");
+   P ("label.names.hue_noun.green", "초록");
+   P ("label.names.hue_noun.cyan", "시안");
+   P ("label.names.hue_noun.blue", "파랑");
+   P ("label.names.hue_noun.purple", "보라");
+   P ("label.names.hue_noun.magenta", "마젠타");
+   P ("label.names.hue_noun.neutral", "무채색");
+   P ("label.names.hue_noun.pink", "분홍");
+   P ("label.names.hue_gender.red", "other");
+   P ("label.names.hue_gender.orange", "other");
+   P ("label.names.hue_gender.yellow", "other");
+   P ("label.names.hue_gender.green", "other");
+   P ("label.names.hue_gender.cyan", "other");
+   P ("label.names.hue_gender.blue", "other");
+   P ("label.names.hue_gender.purple", "other");
+   P ("label.names.hue_gender.magenta", "other");
+   P ("label.names.hue_gender.neutral", "other");
+   P ("label.names.hue_gender.pink", "other");
+   P ("label.names.agree.very_dark", "{gender, select, other {아주 어두운}}");
+   P ("label.names.agree.dark", "{gender, select, other {어두운}}");
+   P ("label.names.agree.medium_brightness", "{gender, select, other {중간 밝기의}}");
+   P ("label.names.agree.light", "{gender, select, other {밝은}}");
+   P ("label.names.agree.very_light", "{gender, select, other {아주 밝은}}");
+   P ("label.names.agree.desaturated", "{gender, select, other {채도 낮은}}");
+   P ("label.names.agree.muted", "{gender, select, other {차분한}}");
+   P ("label.names.agree.neutral", "{gender, select, other {채도 없는}}");
+   P ("label.names.agree.saturated", "{gender, select, other {채도 높은}}");
+   P ("label.names.agree.vivid", "{gender, select, other {선명한}}");
+   P ("label.names.agree.grayish", "{gender, select, other {회색빛 도는}}");
+   P ("label.names.agree.soft", "{gender, select, other {부드러운}}");
+   P ("label.names.agree.moderate_chroma", "{gender, select, other {중간 채도의}}");
+   P ("label.names.agree.high_chroma", "{gender, select, other {고채도의}}");
+   P ("label.names.agree.pastel", "{gender, select, other {파스텔 톤의}}");
+   P ("label.names.agree.warm", "{gender, select, other {따뜻한}}");
+   P ("label.names.agree.cool", "{gender, select, other {차가운}}");
+   P ("label.names.agree.neutral_temperature", "{gender, select, other {중립 색온도의}}");
+   P ("label.names.agree.balanced_temperature", "{gender, select, other {균형 잡힌 색온도의}}");
+   P ("label.names.color_description", "{brightness}, {saturation}, {temperature}, {chroma} {hue}");
+   P ("label.names.descriptive_color_name",
+      "{brightness} {chroma} {temperature} {base, select, pink {{hue}} other "
+      & "{{hue}}}");
 end Labels_3;

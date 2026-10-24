@@ -86,10 +86,6 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} módosult} other {{name}: {changed, number} módosult, "
       & "{unchanged, number} változatlan, összesen {total, number}}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {rózsaszín} "
-      & "other {{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -500,4 +496,205 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "nincsenek bekezdések");
    P ("label.metrics.word_count_summary.n_word", "{v1, number} szó");
    P ("label.metrics.text_summary_with_options.n_word", "{v1, number} szó");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {nincs megfigyelés} "
+      & "sample_too_small_shape {a minta túl kicsi az alak leírásához, "
+      & "{count, plural, one {1 megfigyelés} other {{count, number} "
+      & "megfigyelés}}} flat_shape {lapos eloszlás {median} értéknél} "
+      & "outlier_heavy_shape {kiugró értékekben gazdag eloszlás {median} "
+      & "körül} volatile_shape {ingadozó eloszlás {median} körül} "
+      & "clustered_shape {csoportosuló eloszlás {median} körül} "
+      & "wide_spread_shape {széles szórású eloszlás} wide_spread_range "
+      & "{széles szórású eloszlás {minimum} és {maximum} között} "
+      & "right_skewed_shape {jobbra ferde eloszlás, medián: {median}} "
+      & "left_skewed_shape {balra ferde eloszlás, medián: {median}} other "
+      & "{nagyjából kiegyensúlyozott eloszlás {median} körül}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {üres e-mail} address {e-mail-cím} other "
+      & "{e-mail ezen a tartományon: {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {telefonszám} redacted {telefonszám kitakarva} "
+      & "other {telefonszám, vége: {digits}}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {felhasználónév} other {felhasználónév: "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label",
+      "{state, select, none {kódszimbólum} other {kódszimbólum: "
+      & "{symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "címmetaadatok: {present, plural, one {1 mező megvan} other "
+      & "{{present, number} mező megvan}}, {missing, plural, one {1 mező "
+      & "hiányzik} other {{missing, number} mező hiányzik}}");
+   P ("label.endpoints.host_label", "{state, select, none {ismeretlen gazdagép} other {{host} {kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {ismeretlen végpont} other {{scheme}{host}{port} "
+      & "{kind} végpont}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {üres URL} none {URL felismert összetevők "
+      & "nélkül} other {URL {count, plural, one {1 összetevővel} other "
+      & "{{count, number} összetevővel}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {nincs lekérdezési paraméter} one {1 "
+      & "lekérdezési paraméter} other {{count, number} lekérdezési "
+      & "paraméter}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {nyilvános IPv4-cím} ipv6_host "
+      & "{nyilvános IPv6-cím} private_network_host {magánhálózati cím} "
+      & "localhost_host {helyi gép} other {nem IP-cím}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} érvénytelen CIDR} other {{cidr} "
+      & "{kind} hálózati előtag: {prefix}}}");
+   P ("label.resources.utilization_label",
+      "{used, number}/{total, number} {unit} felhasználva ({percent}, "
+      & "{band})");
+   P ("label.resources.saturation_label", "{named, select, no {erőforrás} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {verzió: {version}, előzetes: {prerelease}, "
+      & "build: {build}} prerelease {verzió: {version}, előzetes: "
+      & "{prerelease}} build {verzió: {version}, build: {build}} other "
+      & "{verzió: {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {azonos verzió} major_upgrade "
+      & "{főverzió-frissítés} minor_upgrade {alverzió-frissítés} "
+      & "patch_upgrade {javítófrissítés} prerelease_change {előzetes "
+      & "verzió változása} build_metadata_change {build-metaadat "
+      & "változása} downgrade {visszaléptetés} other {ismeretlen "
+      & "verzióváltozás}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {pontosan ez a verzió: {version}} "
+      & "minimum_range {{version} vagy újabb verzió} maximum_range {{version} "
+      & "vagy régebbi verzió} major_compatible_range {kompatibilis ezzel a "
+      & "főverzióval: {version}} minor_compatible_range {kompatibilis ezzel "
+      & "az alverzióval: {version}} other {verziótartomány: {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {kezdeti fejlesztői kiadás: {version}} "
+      & "prerelease {előzetes kiadás: {version}} major {főkiadás: "
+      & "{version}} minor {alkiadás: {version}} other {javítókiadás: "
+      & "{version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {hivatkozáscímke} image {képcímke} paragraph "
+      & "{bekezdéscímke} ordered_list {rendezett lista címke} unordered_list "
+      & "{rendezetlen lista címke} list_item {listaelem-címke} "
+      & "table_header_cell {táblázatfejléc-cella címke} table_cell "
+      & "{táblázatcella-címke} table_row {táblázatsor-címke} line_break "
+      & "{sortörés-címke} thematic_break {tematikus elválasztó címke} "
+      & "heading_level_n {{level, number}. szintű címsor címke} other "
+      & "{{name} címke}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {{name} attribútum} event {{name} "
+      & "eseménykezelő attribútum} other {{name} attribútum, értéke: "
+      & "„{value}”}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {szöveges tartalom} html_content "
+      & "{HTML-dokumentum} json_content {JSON-dokumentum} xml_content "
+      & "{XML-dokumentum} image_content {képtartalom} audio_content "
+      & "{hangtartalom} video_content {videotartalom} font_content "
+      & "{betűtípus-tartalom} archive_content {archívumtartalom} "
+      & "binary_content {bináris tartalom} form_content {űrlapbeküldés} "
+      & "other {ismeretlen tartalom}} ({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} nincs beállítva} hidden_value {{kind} "
+      & "rejtve} masked_value {{kind} {shown}} fingerprint_only {{kind} "
+      & "ujjlenyomat, vége: {shown}} other {{kind}, vége: {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} nincs beállítva} other {{name} "
+      & "{kind}, vége: {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {{name} hitelesítőadat-fejléc nincs "
+      & "beállítva} other {{name} {kind}, vége: {shown}}}");
+   P ("label.secrets.fingerprint_label", "{algorithm} ujjlenyomat, vége: {shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} nincs beállítva} redacted {{label} "
+      & "kitakarva} url_redacted {URL kitakarva} ip_redacted {IP-cím "
+      & "kitakarva} path_ending {fájlútvonal, vége: {shown}} at {{label}: "
+      & "{shown}} audit {{label}, hossz: {length, number}, vége: {shown}} "
+      & "debug {{label} {shown}} other {{label}, vége: {shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {elavult } unknown_field {ismeretlen "
+      & "} read_only_field {csak olvasható } write_only_field {csak írható } "
+      & "computed_field {számított } other {}}{presence, select, "
+      & "required_field {kötelező} optional_field {opcionális} "
+      & "conditional_field {feltételes} other {ismeretlen "
+      & "jelenlétű}}{nullable, select, non_nullable {, nem nullázható} "
+      & "nullable {, nullázható} other {}} {kind, select, string_field "
+      & "{karakterlánc} integer_field {egész szám} decimal_field "
+      & "{decimális} boolean_field {logikai} date_field {dátum} "
+      & "date_time_field {dátum-idő} object_field {objektum} array_field "
+      & "{tömb} enum_field {felsorolás} binary_field {bináris} null_field "
+      & "{null} any_field {bármely} other {ismeretlen}} típusú mező: {name}");
+   P ("label.schema.schema_summary_label.fields", "{count, plural, one {1 mező} other {{count, number} mező}}");
+   P ("label.schema.schema_summary_label.required", "{count, number} kötelező");
+   P ("label.schema.schema_summary_label.optional", "{count, number} opcionális");
+   P ("label.schema.schema_summary_label.deprecated", "{count, number} elavult");
+   P ("label.schema.schema_summary_label.unknown", "{count, number} ismeretlen");
+   P ("label.diagnostics.check_run_summary_label.none", "nem futott ellenőrzés");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} sikeres");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} sikertelen");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 figyelmeztetés} other {{count, number} "
+      & "figyelmeztetés}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} kihagyva");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} függőben");
+   P ("label.workflows.workflow_summary_label.total", "{count, plural, one {1 elem} other {{count, number} elem}}");
+   P ("label.workflows.workflow_summary_label.completed", "{count, number} kész");
+   P ("label.workflows.workflow_summary_label.active", "{count, number} aktív");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} blokkolva");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} sikertelen");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} kihagyva");
+   P ("label.changes.change_summary_label.total", "{count, plural, one {1 elem} other {{count, number} elem}}");
+   P ("label.changes.change_summary_label.added", "{count, number} hozzáadva");
+   P ("label.changes.change_summary_label.removed", "{count, number} eltávolítva");
+   P ("label.changes.change_summary_label.modified", "{count, number} módosítva");
+   P ("label.changes.change_summary_label.renamed", "{count, number} átnevezve");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} változatlan");
+   P ("label.markup.accessible_control_label.control",
+      "{named, select, no {névtelen} other {{name}}} {role, select, "
+      & "button_control {gomb} link_control {hivatkozás} tab_control {lap} "
+      & "menu_item_control {menüelem} checkbox_control {jelölőnégyzet} "
+      & "radio_control {választógomb} text_field_control {szövegmező} "
+      & "progress_control {folyamatjelző} table_cell_control {táblázatcella} "
+      & "region_control {régió} other {vezérlő}}");
+   P ("label.markup.accessible_control_label.selected", "kijelölve");
+   P ("label.markup.accessible_control_label.expanded", "kibontva");
+   P ("label.markup.accessible_control_label.current", "aktuális");
+   P ("label.markup.accessible_control_label.disabled", "letiltva");
+   P ("label.markup.accessible_control_label.required", "kötelező");
+   P ("label.markup.accessible_control_label.invalid", "érvénytelen");
+   P ("label.markup.accessible_control_label.count", "{count, plural, one {1 elem} other {{count, number} elem}}");
+   P ("label.markup.accessible_control_label.position", "{position, number}/{total, number}. elem");
+   P ("label.markup.accessible_control_label.issues",
+      "{count, plural, one {1 probléma} other {{count, number} probléma}}");
+   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
+   P ("label.endpoints.url_component.scheme", "séma");
+   P ("label.endpoints.url_component.host", "gazdagép");
+   P ("label.endpoints.url_component.path", "útvonal");
+   P ("label.endpoints.url_component.query", "lekérdezés");
+   P ("label.endpoints.url_component.fragment", "töredék");
+   P ("label.names.hue_noun.red", "piros");
+   P ("label.names.hue_noun.orange", "narancs");
+   P ("label.names.hue_noun.yellow", "sárga");
+   P ("label.names.hue_noun.green", "zöld");
+   P ("label.names.hue_noun.cyan", "cián");
+   P ("label.names.hue_noun.blue", "kék");
+   P ("label.names.hue_noun.purple", "lila");
+   P ("label.names.hue_noun.magenta", "bíbor");
+   P ("label.names.hue_noun.neutral", "semleges");
+   P ("label.names.hue_noun.pink", "rózsaszín");
+   P ("label.names.hue_gender.red", "other");
+   P ("label.names.hue_gender.orange", "other");
+   P ("label.names.hue_gender.yellow", "other");
+   P ("label.names.hue_gender.green", "other");
+   P ("label.names.hue_gender.cyan", "other");
+   P ("label.names.hue_gender.blue", "other");
+   P ("label.names.hue_gender.purple", "other");
+   P ("label.names.hue_gender.magenta", "other");
+   P ("label.names.hue_gender.neutral", "other");
+   P ("label.names.hue_gender.pink", "other");
+   P ("label.names.agree.very_dark", "{gender, select, other {nagyon sötét}}");
+   P ("label.names.agree.dark", "{gender, select, other {sötét}}");
+   P ("label.names.agree.medium_brightness", "{gender, select, other {közepes világosságú}}");
+   P ("label.names.agree.light", "{gender, select, other {világos}}");
+   P ("label.names.agree.very_light", "{gender, select, other {nagyon világos}}");
+   P ("label.names.agree.desaturated", "{gender, select, other {telítetlen}}");
+   P ("label.names.agree.muted", "{gender, select, other {tompa}}");
 end Labels_3;

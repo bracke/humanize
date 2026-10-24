@@ -248,6 +248,11 @@ spec = "src/humanize-strings-privacy.ads"
 area = "formatting"
 
 [[unit]]
+name = "Humanize.Strings.Privacy.Localized"
+spec = "src/humanize-strings-privacy-localized.ads"
+area = "formatting"
+
+[[unit]]
 name = "Humanize.Strings.Prose"
 spec = "src/humanize-strings-prose.ads"
 area = "formatting"

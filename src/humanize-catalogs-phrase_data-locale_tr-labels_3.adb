@@ -1,9 +1,6 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Tr)
 procedure Labels_3 is
 begin
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_n_n",
-      "mevcut ön plan {v1, number}:{v2, number} oranında normal metin "
-      & "kontrastını karşılıyor");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_d_n",
       "mevcut ön plan {v1}:{v2, number} oranında gelişmiş metin "
       & "kontrastını karşılıyor");
@@ -388,4 +385,219 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "paragraf yok");
    P ("label.metrics.word_count_summary.n_word", "{v1, number} kelime");
    P ("label.metrics.text_summary_with_options.n_word", "{v1, number} kelime");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {gözlem yok} "
+      & "sample_too_small_shape {şekli tanımlamak için örneklem çok "
+      & "küçük, {count, plural, one {1 gözlem} other {{count, number} "
+      & "gözlem}}} flat_shape {{median} değerinde düz dağılım} "
+      & "outlier_heavy_shape {{median} civarında aykırı değerleri yoğun "
+      & "dağılım} volatile_shape {{median} civarında oynak dağılım} "
+      & "clustered_shape {{median} civarında kümelenmiş dağılım} "
+      & "wide_spread_shape {geniş yayılımlı dağılım} wide_spread_range "
+      & "{{minimum} ile {maximum} arasında geniş yayılımlı dağılım} "
+      & "right_skewed_shape {sağa çarpık dağılım, medyan {median}} "
+      & "left_skewed_shape {sola çarpık dağılım, medyan {median}} other "
+      & "{{median} civarında büyük ölçüde dengeli dağılım}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {boş e-posta} address {e-posta adresi} other "
+      & "{{domain} alan adında e-posta}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {telefon numarası} redacted {telefon numarası "
+      & "gizlendi} other {sonu {digits} olan telefon}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {kullanıcı adı} other {kullanıcı adı "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {kod sembolü} other {kod sembolü {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "adres meta verisi: {present, plural, one {1 alan mevcut} other "
+      & "{{present, number} alan mevcut}}, {missing, plural, one {1 alan eksik} "
+      & "other {{missing, number} alan eksik}}");
+   P ("label.endpoints.host_label", "{state, select, none {bilinmeyen ana makine} other {{host} {kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {bilinmeyen uç nokta} other "
+      & "{{scheme}{host}{port} {kind} uç noktası}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {boş URL} none {tanınan bileşeni olmayan URL} "
+      & "other {{count, plural, one {1 bileşenli} other {{count, number} "
+      & "bileşenli}} URL: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {sorgu parametresi yok} one {1 sorgu parametresi} "
+      & "other {{count, number} sorgu parametresi}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {genel IPv4 adresi} ipv6_host "
+      & "{genel IPv6 adresi} private_network_host {özel ağ adresi} "
+      & "localhost_host {yerel ana makine} other {IP adresi değil}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} geçersiz CIDR} other {{cidr} {kind} "
+      & "ağ öneki {prefix}}}");
+   P ("label.resources.utilization_label",
+      "{total, number} {unit} içinden {used, number} kullanıldı "
+      & "({percent}, {band})");
+   P ("label.resources.saturation_label", "{named, select, no {kaynak} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {sürüm {version}, ön sürüm {prerelease}, "
+      & "derleme {build}} prerelease {sürüm {version}, ön sürüm "
+      & "{prerelease}} build {sürüm {version}, derleme {build}} other "
+      & "{sürüm {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {aynı sürüm} major_upgrade {ana "
+      & "sürüm yükseltmesi} minor_upgrade {ara sürüm yükseltmesi} "
+      & "patch_upgrade {yama yükseltmesi} prerelease_change {ön sürüm "
+      & "değişikliği} build_metadata_change {derleme meta verisi "
+      & "değişikliği} downgrade {sürüm düşürme} other {bilinmeyen "
+      & "sürüm değişikliği}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {tam olarak sürüm {version}} "
+      & "minimum_range {sürüm {version} veya daha yeni} maximum_range "
+      & "{sürüm {version} veya daha eski} major_compatible_range {ana sürüm "
+      & "{version} ile uyumlu} minor_compatible_range {ara sürüm {version} "
+      & "ile uyumlu} other {sürüm aralığı {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {ilk geliştirme sürümü {version}} "
+      & "prerelease {ön sürüm {version}} major {ana sürüm {version}} minor "
+      & "{ara sürüm {version}} other {yama sürümü {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {bağlantı etiketi} image {görsel etiketi} "
+      & "paragraph {paragraf etiketi} ordered_list {sıralı liste etiketi} "
+      & "unordered_list {sırasız liste etiketi} list_item {liste öğesi "
+      & "etiketi} table_header_cell {tablo başlık hücresi etiketi} "
+      & "table_cell {tablo hücresi etiketi} table_row {tablo satırı etiketi} "
+      & "line_break {satır sonu etiketi} thematic_break {tematik ayırıcı "
+      & "etiketi} heading_level_n {{level, number}. düzey başlık etiketi} "
+      & "other {{name} etiketi}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {{name} özniteliği} event {{name} olay "
+      & "işleyici özniteliği} other {{name} özniteliği “{value}” "
+      & "olarak ayarlı}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {metin içeriği} html_content {HTML "
+      & "belgesi} json_content {JSON belgesi} xml_content {XML belgesi} "
+      & "image_content {görsel içeriği} audio_content {ses içeriği} "
+      & "video_content {video içeriği} font_content {yazı tipi içeriği} "
+      & "archive_content {arşiv içeriği} binary_content {ikili içerik} "
+      & "form_content {form gönderimi} other {bilinmeyen içerik}} ({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} ayarlanmamış} hidden_value {{kind} "
+      & "gizli} masked_value {{kind} {shown}} fingerprint_only {{kind} parmak "
+      & "izi, sonu {shown}} other {{kind}, sonu {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} ayarlanmamış} other {{name} "
+      & "{kind}, sonu {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {{name} kimlik bilgisi başlığı "
+      & "ayarlanmamış} other {{name} {kind}, sonu {shown}}}");
+   P ("label.secrets.fingerprint_label", "{algorithm} parmak izi, sonu {shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} ayarlanmamış} redacted {{label} "
+      & "gizlendi} url_redacted {URL gizlendi} ip_redacted {IP adresi gizlendi} "
+      & "path_ending {dosya yolu, sonu {shown}} at {{label}: {shown}} audit "
+      & "{{label}, uzunluk {length, number}, sonu {shown}} debug {{label} "
+      & "{shown}} other {{label}, sonu {shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {kullanımdan kaldırılmış } "
+      & "unknown_field {bilinmeyen } read_only_field {salt okunur } "
+      & "write_only_field {salt yazılır } computed_field {hesaplanan } other "
+      & "{}}{presence, select, required_field {zorunlu} optional_field {isteğe "
+      & "bağlı} conditional_field {koşullu} other {varlığı "
+      & "bilinmeyen}}{nullable, select, non_nullable {, null olamaz} nullable "
+      & "{, null olabilir} other {}} {kind, select, string_field {dize} "
+      & "integer_field {tamsayı} decimal_field {ondalık} boolean_field "
+      & "{mantıksal} date_field {tarih} date_time_field {tarih-saat} "
+      & "object_field {nesne} array_field {dizi} enum_field {numaralandırma} "
+      & "binary_field {ikili} null_field {null} any_field {herhangi} other "
+      & "{bilinmeyen}} alanı: {name}");
+   P ("label.schema.schema_summary_label.fields", "{count, plural, one {1 alan} other {{count, number} alan}}");
+   P ("label.schema.schema_summary_label.required", "{count, number} zorunlu");
+   P ("label.schema.schema_summary_label.optional", "{count, number} isteğe bağlı");
+   P ("label.schema.schema_summary_label.deprecated", "{count, number} kullanımdan kaldırılmış");
+   P ("label.schema.schema_summary_label.unknown", "{count, number} bilinmeyen");
+   P ("label.diagnostics.check_run_summary_label.none", "hiç denetim çalıştırılmadı");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} başarılı");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} başarısız");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 uyarı} other {{count, number} uyarı}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} atlandı");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} bekliyor");
+   P ("label.workflows.workflow_summary_label.total", "{count, plural, one {1 öğe} other {{count, number} öğe}}");
+   P ("label.workflows.workflow_summary_label.completed", "{count, number} tamamlandı");
+   P ("label.workflows.workflow_summary_label.active", "{count, number} etkin");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} engellendi");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} başarısız");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} atlandı");
+   P ("label.changes.change_summary_label.total", "{count, plural, one {1 öğe} other {{count, number} öğe}}");
+   P ("label.changes.change_summary_label.added", "{count, number} eklendi");
+   P ("label.changes.change_summary_label.removed", "{count, number} kaldırıldı");
+   P ("label.changes.change_summary_label.modified", "{count, number} değişti");
+   P ("label.changes.change_summary_label.renamed", "{count, number} yeniden adlandırıldı");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} değişmedi");
+   P ("label.markup.accessible_control_label.control",
+      "{named, select, no {adsız {role, select, button_control {düğme} "
+      & "link_control {bağlantı} tab_control {sekme} menu_item_control {menü "
+      & "öğesi} checkbox_control {onay kutusu} radio_control {radyo "
+      & "düğmesi} text_field_control {metin alanı} progress_control "
+      & "{ilerleme göstergesi} table_cell_control {tablo hücresi} "
+      & "region_control {bölge} other {denetim}}} other {{name} {role, select, "
+      & "button_control {düğmesi} link_control {bağlantısı} tab_control "
+      & "{sekmesi} menu_item_control {menü öğesi} checkbox_control {onay "
+      & "kutusu} radio_control {radyo düğmesi} text_field_control {metin "
+      & "alanı} progress_control {ilerleme göstergesi} table_cell_control "
+      & "{tablo hücresi} region_control {bölgesi} other {denetimi}}}}");
+   P ("label.markup.accessible_control_label.selected", "seçili");
+   P ("label.markup.accessible_control_label.expanded", "genişletilmiş");
+   P ("label.markup.accessible_control_label.current", "geçerli");
+   P ("label.markup.accessible_control_label.disabled", "devre dışı");
+   P ("label.markup.accessible_control_label.required", "zorunlu");
+   P ("label.markup.accessible_control_label.invalid", "geçersiz");
+   P ("label.markup.accessible_control_label.count", "{count, plural, one {1 öğe} other {{count, number} öğe}}");
+   P ("label.markup.accessible_control_label.position", "öğe {position, number}/{total, number}");
+   P ("label.markup.accessible_control_label.issues", "{count, plural, one {1 sorun} other {{count, number} sorun}}");
+   P ("label.markup.accessible_control_label.with_states", "{control} {states}");
+   P ("label.endpoints.url_component.scheme", "şema");
+   P ("label.endpoints.url_component.host", "ana makine");
+   P ("label.endpoints.url_component.path", "yol");
+   P ("label.endpoints.url_component.query", "sorgu");
+   P ("label.endpoints.url_component.fragment", "parça");
+   P ("label.names.hue_noun.red", "kırmızı");
+   P ("label.names.hue_noun.orange", "turuncu");
+   P ("label.names.hue_noun.yellow", "sarı");
+   P ("label.names.hue_noun.green", "yeşil");
+   P ("label.names.hue_noun.cyan", "camgöbeği");
+   P ("label.names.hue_noun.blue", "mavi");
+   P ("label.names.hue_noun.purple", "mor");
+   P ("label.names.hue_noun.magenta", "macenta");
+   P ("label.names.hue_noun.neutral", "nötr");
+   P ("label.names.hue_noun.pink", "pembe");
+   P ("label.names.hue_gender.red", "other");
+   P ("label.names.hue_gender.orange", "other");
+   P ("label.names.hue_gender.yellow", "other");
+   P ("label.names.hue_gender.green", "other");
+   P ("label.names.hue_gender.cyan", "other");
+   P ("label.names.hue_gender.blue", "other");
+   P ("label.names.hue_gender.purple", "other");
+   P ("label.names.hue_gender.magenta", "other");
+   P ("label.names.hue_gender.neutral", "other");
+   P ("label.names.hue_gender.pink", "other");
+   P ("label.names.agree.very_dark", "{gender, select, other {çok koyu}}");
+   P ("label.names.agree.dark", "{gender, select, other {koyu}}");
+   P ("label.names.agree.medium_brightness", "{gender, select, other {orta parlaklıkta}}");
+   P ("label.names.agree.light", "{gender, select, other {açık}}");
+   P ("label.names.agree.very_light", "{gender, select, other {çok açık}}");
+   P ("label.names.agree.desaturated", "{gender, select, other {doygunluğu düşük}}");
+   P ("label.names.agree.muted", "{gender, select, other {soluk}}");
+   P ("label.names.agree.neutral", "{gender, select, other {nötr}}");
+   P ("label.names.agree.saturated", "{gender, select, other {doygun}}");
+   P ("label.names.agree.vivid", "{gender, select, other {canlı}}");
+   P ("label.names.agree.grayish", "{gender, select, other {grimsi}}");
+   P ("label.names.agree.soft", "{gender, select, other {yumuşak}}");
+   P ("label.names.agree.moderate_chroma", "{gender, select, other {orta kromalı}}");
+   P ("label.names.agree.high_chroma", "{gender, select, other {yüksek kromalı}}");
+   P ("label.names.agree.pastel", "{gender, select, other {pastel}}");
+   P ("label.names.agree.warm", "{gender, select, other {sıcak}}");
+   P ("label.names.agree.cool", "{gender, select, other {soğuk}}");
+   P ("label.names.agree.neutral_temperature", "{gender, select, other {nötr sıcaklıkta}}");
+   P ("label.names.agree.balanced_temperature", "{gender, select, other {dengeli sıcaklıkta}}");
+   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{brightness} {chroma} {temperature} {base, select, pink {{hue}} other "
+      & "{{hue}}}");
 end Labels_3;

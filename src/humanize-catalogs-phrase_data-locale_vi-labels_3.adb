@@ -49,10 +49,6 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} thay đổi} other {{name}: {changed, number} thay đổi, "
       & "{unchanged, number} không đổi, tổng {total, number}}}");
-   P ("label.names.color_description", "{brightness}, {hue} {saturation}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{base, select, pink {hồng} other {{hue}}} {brightness} {chroma} "
-      & "{temperature}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -485,4 +481,218 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "không có đoạn nào");
    P ("label.metrics.word_count_summary.n_word", "{v1, number} từ");
    P ("label.metrics.text_summary_with_options.n_word", "{v1, number} từ");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {không có quan sát} "
+      & "sample_too_small_shape {mẫu quá nhỏ để mô tả hình dạng, "
+      & "{count, number} quan sát} flat_shape {phân phối phẳng tại "
+      & "{median}} outlier_heavy_shape {phân phối nhiều giá trị ngoại "
+      & "lai quanh {median}} volatile_shape {phân phối biến động quanh "
+      & "{median}} clustered_shape {phân phối tập trung theo cụm quanh "
+      & "{median}} wide_spread_shape {phân phối trải rộng} "
+      & "wide_spread_range {phân phối trải rộng từ {minimum} đến "
+      & "{maximum}} right_skewed_shape {phân phối lệch phải, trung vị "
+      & "{median}} left_skewed_shape {phân phối lệch trái, trung vị "
+      & "{median}} other {phân phối gần cân bằng quanh {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {email trống} address {địa chỉ email} "
+      & "other {email tại {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {số điện thoại} redacted {số điện "
+      & "thoại đã ẩn} other {số điện thoại kết thúc bằng "
+      & "{digits}}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {tên người dùng} other {tên người dùng "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {ký hiệu mã} other {ký hiệu mã {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "siêu dữ liệu địa chỉ: có {present, number} trường, "
+      & "thiếu {missing, number} trường");
+   P ("label.endpoints.host_label",
+      "{state, select, none {máy chủ không xác định} other {{host} "
+      & "{kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {điểm cuối không xác định} other "
+      & "{điểm cuối {kind} {scheme}{host}{port}}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {URL trống} none {URL không có thành phần "
+      & "nào được nhận dạng} other {URL có {count, number} thành "
+      & "phần: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {không có tham số truy vấn} other {{count, "
+      & "number} tham số truy vấn}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {địa chỉ IPv4 công khai} "
+      & "ipv6_host {địa chỉ IPv6 công khai} private_network_host {địa "
+      & "chỉ mạng riêng} localhost_host {máy chủ cục bộ} other "
+      & "{không phải địa chỉ IP}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} CIDR không hợp lệ} other {{cidr} "
+      & "tiền tố mạng {kind} {prefix}}}");
+   P ("label.resources.utilization_label", "đã dùng {used, number}/{total, number} {unit} ({percent}, {band})");
+   P ("label.resources.saturation_label", "{named, select, no {tài nguyên} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {phiên bản {version} tiền phát hành "
+      & "{prerelease} bản dựng {build}} prerelease {phiên bản {version} "
+      & "tiền phát hành {prerelease}} build {phiên bản {version} bản "
+      & "dựng {build}} other {phiên bản {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {cùng phiên bản} major_upgrade {nâng "
+      & "cấp lớn} minor_upgrade {nâng cấp nhỏ} patch_upgrade {nâng "
+      & "cấp bản vá} prerelease_change {thay đổi tiền phát hành} "
+      & "build_metadata_change {thay đổi siêu dữ liệu bản dựng} "
+      & "downgrade {hạ cấp} other {thay đổi phiên bản không xác "
+      & "định}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {đúng phiên bản {version}} "
+      & "minimum_range {phiên bản {version} trở lên} maximum_range "
+      & "{phiên bản {version} trở xuống} major_compatible_range {tương "
+      & "thích với phiên bản chính {version}} minor_compatible_range "
+      & "{tương thích với phiên bản phụ {version}} other {khoảng "
+      & "phiên bản {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {bản phát hành phát triển ban đầu "
+      & "{version}} prerelease {bản tiền phát hành {version}} major "
+      & "{bản phát hành chính {version}} minor {bản phát hành phụ "
+      & "{version}} other {bản vá {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {thẻ liên kết} image {thẻ hình ảnh} "
+      & "paragraph {thẻ đoạn văn} ordered_list {thẻ danh sách có "
+      & "thứ tự} unordered_list {thẻ danh sách không thứ tự} "
+      & "list_item {thẻ mục danh sách} table_header_cell {thẻ ô tiêu "
+      & "đề bảng} table_cell {thẻ ô bảng} table_row {thẻ hàng "
+      & "bảng} line_break {thẻ ngắt dòng} thematic_break {thẻ ngắt "
+      & "chủ đề} heading_level_n {thẻ tiêu đề cấp {level, number}} "
+      & "other {thẻ {name}}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {thuộc tính {name}} event {thuộc tính "
+      & "trình xử lý sự kiện {name}} other {thuộc tính {name} có "
+      & "giá trị “{value}”}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {nội dung văn bản} html_content {tài "
+      & "liệu HTML} json_content {tài liệu JSON} xml_content {tài liệu "
+      & "XML} image_content {nội dung hình ảnh} audio_content {nội dung "
+      & "âm thanh} video_content {nội dung video} font_content {nội dung "
+      & "phông chữ} archive_content {nội dung lưu trữ} binary_content "
+      & "{nội dung nhị phân} form_content {dữ liệu gửi biểu mẫu} "
+      & "other {nội dung không xác định}} ({base})");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} chưa đặt} hidden_value {{kind} đã "
+      & "ẩn} masked_value {{kind} {shown}} fingerprint_only {dấu vân tay "
+      & "{kind} kết thúc bằng {shown}} other {{kind} kết thúc bằng "
+      & "{shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} chưa đặt} other {{name} "
+      & "{kind} kết thúc bằng {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {tiêu đề thông tin xác thực {name} chưa "
+      & "đặt} other {{name} {kind} kết thúc bằng {shown}}}");
+   P ("label.secrets.fingerprint_label", "dấu vân tay {algorithm} kết thúc bằng {shown}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} chưa đặt} redacted {{label} đã "
+      & "ẩn} url_redacted {URL đã ẩn} ip_redacted {địa chỉ IP đã "
+      & "ẩn} path_ending {đường dẫn tệp kết thúc bằng {shown}} "
+      & "at {{label} tại {shown}} audit {{label} dài {length, number}, kết "
+      & "thúc bằng {shown}} debug {{label} {shown}} other {{label} kết "
+      & "thúc bằng {shown}}}");
+   P ("label.schema.field_label",
+      "trường {kind, select, string_field {chuỗi} integer_field {số "
+      & "nguyên} decimal_field {số thập phân} boolean_field {boolean} "
+      & "date_field {ngày} date_time_field {ngày giờ} object_field {đối "
+      & "tượng} array_field {mảng} enum_field {enum} binary_field {nhị "
+      & "phân} null_field {null} any_field {bất kỳ} other {không xác "
+      & "định}} {name} {presence, select, required_field {bắt buộc} "
+      & "optional_field {tùy chọn} conditional_field {có điều kiện} "
+      & "other {không rõ bắt buộc}}{nullable, select, non_nullable {, "
+      & "không null} nullable {, có thể null} other {}}{state, select, "
+      & "deprecated_field {, không còn dùng} unknown_field {, không xác "
+      & "định} read_only_field {, chỉ đọc} write_only_field {, chỉ "
+      & "ghi} computed_field {, được tính toán} other {}}");
+   P ("label.schema.schema_summary_label.fields", "{count, number} trường");
+   P ("label.schema.schema_summary_label.required", "{count, number} bắt buộc");
+   P ("label.schema.schema_summary_label.optional", "{count, number} tùy chọn");
+   P ("label.schema.schema_summary_label.deprecated", "{count, number} không còn dùng");
+   P ("label.schema.schema_summary_label.unknown", "{count, number} không xác định");
+   P ("label.diagnostics.check_run_summary_label.none", "không có kiểm tra nào được chạy");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} đạt");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} không đạt");
+   P ("label.diagnostics.check_run_summary_label.warnings", "{count, number} cảnh báo");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} đã bỏ qua");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} đang chờ");
+   P ("label.workflows.workflow_summary_label.total", "{count, number} mục");
+   P ("label.workflows.workflow_summary_label.completed", "{count, number} đã hoàn thành");
+   P ("label.workflows.workflow_summary_label.active", "{count, number} đang hoạt động");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} bị chặn");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} thất bại");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} đã bỏ qua");
+   P ("label.changes.change_summary_label.total", "{count, number} mục");
+   P ("label.changes.change_summary_label.added", "đã thêm {count, number}");
+   P ("label.changes.change_summary_label.removed", "đã xóa {count, number}");
+   P ("label.changes.change_summary_label.modified", "đã thay đổi {count, number}");
+   P ("label.changes.change_summary_label.renamed", "đã đổi tên {count, number}");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} không đổi");
+   P ("label.markup.accessible_control_label.control",
+      "{role, select, button_control {nút} link_control {liên kết} "
+      & "tab_control {thẻ} menu_item_control {mục menu} checkbox_control "
+      & "{hộp kiểm} radio_control {nút radio} text_field_control "
+      & "{trường văn bản} progress_control {thanh tiến trình} "
+      & "table_cell_control {ô bảng} region_control {vùng} other {điều "
+      & "khiển}} {named, select, no {không tên} other {{name}}}");
+   P ("label.markup.accessible_control_label.selected", "đã chọn");
+   P ("label.markup.accessible_control_label.expanded", "đã mở rộng");
+   P ("label.markup.accessible_control_label.current", "hiện tại");
+   P ("label.markup.accessible_control_label.disabled", "bị vô hiệu hóa");
+   P ("label.markup.accessible_control_label.required", "bắt buộc");
+   P ("label.markup.accessible_control_label.invalid", "không hợp lệ");
+   P ("label.markup.accessible_control_label.count", "{count, number} mục");
+   P ("label.markup.accessible_control_label.position", "mục {position}/{total}");
+   P ("label.markup.accessible_control_label.issues", "{count, number} vấn đề");
+   P ("label.markup.accessible_control_label.with_states", "{control} {states}");
+   P ("label.endpoints.url_component.scheme", "lược đồ");
+   P ("label.endpoints.url_component.host", "máy chủ");
+   P ("label.endpoints.url_component.path", "đường dẫn");
+   P ("label.endpoints.url_component.query", "truy vấn");
+   P ("label.endpoints.url_component.fragment", "phân đoạn");
+   P ("label.names.hue_noun.red", "đỏ");
+   P ("label.names.hue_noun.orange", "cam");
+   P ("label.names.hue_noun.yellow", "vàng");
+   P ("label.names.hue_noun.green", "xanh lục");
+   P ("label.names.hue_noun.cyan", "lục lam");
+   P ("label.names.hue_noun.blue", "xanh lam");
+   P ("label.names.hue_noun.purple", "tím");
+   P ("label.names.hue_noun.magenta", "hồng cánh sen");
+   P ("label.names.hue_noun.neutral", "trung tính");
+   P ("label.names.hue_noun.pink", "hồng");
+   P ("label.names.hue_gender.red", "other");
+   P ("label.names.hue_gender.orange", "other");
+   P ("label.names.hue_gender.yellow", "other");
+   P ("label.names.hue_gender.green", "other");
+   P ("label.names.hue_gender.cyan", "other");
+   P ("label.names.hue_gender.blue", "other");
+   P ("label.names.hue_gender.purple", "other");
+   P ("label.names.hue_gender.magenta", "other");
+   P ("label.names.hue_gender.neutral", "other");
+   P ("label.names.hue_gender.pink", "other");
+   P ("label.names.agree.very_dark", "{gender, select, other {rất tối}}");
+   P ("label.names.agree.dark", "{gender, select, other {tối}}");
+   P ("label.names.agree.medium_brightness", "{gender, select, other {độ sáng trung bình}}");
+   P ("label.names.agree.light", "{gender, select, other {sáng}}");
+   P ("label.names.agree.very_light", "{gender, select, other {rất sáng}}");
+   P ("label.names.agree.desaturated", "{gender, select, other {kém bão hòa}}");
+   P ("label.names.agree.muted", "{gender, select, other {trầm}}");
+   P ("label.names.agree.neutral", "{gender, select, other {trung tính}}");
+   P ("label.names.agree.saturated", "{gender, select, other {bão hòa}}");
+   P ("label.names.agree.vivid", "{gender, select, other {rực rỡ}}");
+   P ("label.names.agree.grayish", "{gender, select, other {ngả xám}}");
+   P ("label.names.agree.soft", "{gender, select, other {dịu}}");
+   P ("label.names.agree.moderate_chroma", "{gender, select, other {sắc độ vừa}}");
+   P ("label.names.agree.high_chroma", "{gender, select, other {sắc độ cao}}");
+   P ("label.names.agree.pastel", "{gender, select, other {pastel}}");
+   P ("label.names.agree.warm", "{gender, select, other {ấm}}");
+   P ("label.names.agree.cool", "{gender, select, other {lạnh}}");
+   P ("label.names.agree.neutral_temperature", "{gender, select, other {nhiệt độ màu trung tính}}");
+   P ("label.names.agree.balanced_temperature", "{gender, select, other {nhiệt độ màu cân bằng}}");
+   P ("label.names.color_description", "{hue} {saturation}, {brightness}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{base, select, pink {{hue}} other {{hue}}} {brightness} {chroma} "
+      & "{temperature}");
 end Labels_3;

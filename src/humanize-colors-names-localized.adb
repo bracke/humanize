@@ -33,11 +33,17 @@ package body Humanize.Colors.Names.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "brightness", Humanize.Label_Values.Text_Of
-        (Humanize.Colors.Models.Localized.Brightness_Label (Context, Color)));
-      Selection := Sel.With_Arg (Selection, "saturation", Humanize.Label_Values.Text_Of (Saturation_Label (Context,
-        Color)));
-      Selection := Sel.With_Arg (Selection, "hue", Humanize.Label_Values.Text_Of (Hue_Family_Label (Context, Color)));
+      Selection := Sel.With_Arg (Selection, "brightness", Humanize.Label_Values.Agreeing (Context,
+        "label.names.agree", Humanize.Label_Values.Text_Of (Humanize.Colors.Models.Brightness_Label (Color)),
+        Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color)), Humanize.Label_Values.Text_Of
+        (Humanize.Colors.Models.Localized.Brightness_Label (Context, Color))));
+      Selection := Sel.With_Arg (Selection, "saturation", Humanize.Label_Values.Agreeing (Context,
+        "label.names.agree", Humanize.Label_Values.Text_Of (Names.Saturation_Label (Color)),
+        Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color)), Humanize.Label_Values.Text_Of
+        (Saturation_Label (Context, Color))));
+      Selection := Sel.With_Arg (Selection, "hue", Humanize.Label_Values.Hue_Noun (Context,
+        Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color)), Humanize.Label_Values.Text_Of
+        (Hue_Family_Label (Context, Color))));
       Selection := Sel.With_Arg (Selection, "temperature", Humanize.Label_Values.Text_Of (Temperature_Label (Context,
         Color)));
       Selection := Sel.With_Arg (Selection, "chroma", Humanize.Label_Values.Text_Of (Chroma_Label (Context, Color)));
@@ -56,16 +62,41 @@ package body Humanize.Colors.Names.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "brightness", Humanize.Label_Values.Text_Of
-        (Humanize.Colors.Models.Localized.Brightness_Label (Context, Color)));
-      Selection := Sel.With_Arg (Selection, "chroma", Humanize.Label_Values.Text_Of (Chroma_Label (Context, Color)));
-      Selection := Sel.With_Arg (Selection, "temperature", Humanize.Label_Values.Text_Of (Temperature_Label (Context,
-        Color)));
-      Selection := Sel.With_Arg (Selection, "base", (if Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color))
-        = "red" and then Humanize.Label_Values.Text_Of (Humanize.Colors.Models.Brightness_Label (Color)) in "light" |
-        "very light" and then Humanize.Label_Values.Text_Of (Names.Chroma_Label (Color)) = "pastel" then "pink" else
-        "hue"));
-      Selection := Sel.With_Arg (Selection, "hue", Humanize.Label_Values.Text_Of (Hue_Family_Label (Context, Color)));
+      Selection := Sel.With_Arg (Selection, "brightness", Humanize.Label_Values.Agreeing (Context,
+        "label.names.agree", Humanize.Label_Values.Text_Of (Humanize.Colors.Models.Brightness_Label (Color)), (if
+        Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color)) = "red" and then Humanize.Label_Values.Text_Of
+        (Humanize.Colors.Models.Brightness_Label (Color)) in "light" | "very light" and then
+        Humanize.Label_Values.Text_Of (Names.Chroma_Label (Color)) = "pastel" then "pink" else
+        Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color))), Humanize.Label_Values.Text_Of
+        (Humanize.Colors.Models.Localized.Brightness_Label (Context, Color))));
+      Selection := Sel.With_Arg (Selection, "chroma", Humanize.Label_Values.Agreeing (Context, "label.names.agree",
+        Humanize.Label_Values.Text_Of (Names.Chroma_Label (Color)), (if Humanize.Label_Values.Text_Of
+        (Names.Hue_Family_Label (Color)) = "red" and then Humanize.Label_Values.Text_Of
+        (Humanize.Colors.Models.Brightness_Label (Color)) in "light" | "very light" and then
+        Humanize.Label_Values.Text_Of (Names.Chroma_Label (Color)) = "pastel" then "pink" else
+        Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color))), Humanize.Label_Values.Text_Of (Chroma_Label
+        (Context, Color))));
+      Selection := Sel.With_Arg (Selection, "temperature", Humanize.Label_Values.Agreeing (Context,
+        "label.names.agree", Humanize.Label_Values.Text_Of (Names.Temperature_Label (Color)), (if
+        Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color)) = "red" and then Humanize.Label_Values.Text_Of
+        (Humanize.Colors.Models.Brightness_Label (Color)) in "light" | "very light" and then
+        Humanize.Label_Values.Text_Of (Names.Chroma_Label (Color)) = "pastel" then "pink" else
+        Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color))), Humanize.Label_Values.Text_Of
+        (Temperature_Label (Context, Color))));
+      Selection := Sel.With_Arg (Selection, "base", (if (if Humanize.Label_Values.Text_Of (Names.Hue_Family_Label
+        (Color)) = "red" and then Humanize.Label_Values.Text_Of (Humanize.Colors.Models.Brightness_Label (Color)) in
+        "light" | "very light" and then Humanize.Label_Values.Text_Of (Names.Chroma_Label (Color)) = "pastel" then
+        "pink" else Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color))) = "pink" then "pink" else "hue"));
+      Selection := Sel.With_Arg (Selection, "hue", Humanize.Label_Values.Hue_Noun (Context, (if
+        Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color)) = "red" and then Humanize.Label_Values.Text_Of
+        (Humanize.Colors.Models.Brightness_Label (Color)) in "light" | "very light" and then
+        Humanize.Label_Values.Text_Of (Names.Chroma_Label (Color)) = "pastel" then "pink" else
+        Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color))), (if (if Humanize.Label_Values.Text_Of
+        (Names.Hue_Family_Label (Color)) = "red" and then Humanize.Label_Values.Text_Of
+        (Humanize.Colors.Models.Brightness_Label (Color)) in "light" | "very light" and then
+        Humanize.Label_Values.Text_Of (Names.Chroma_Label (Color)) = "pastel" then "pink" else
+        Humanize.Label_Values.Text_Of (Names.Hue_Family_Label (Color))) = "pink" then "pink" else
+        Humanize.Label_Values.Text_Of (Hue_Family_Label (Context, Color)))));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Descriptive_Color_Name;
 

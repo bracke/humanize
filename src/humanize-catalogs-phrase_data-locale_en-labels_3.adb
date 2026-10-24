@@ -312,10 +312,6 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} changed} other {{name}: {changed, number} changed, {unchanged, "
       & "number} unchanged, {total, number} total}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {pink} other "
-      & "{{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
       "current foreground meets large text contrast at {v1}:{v2, number}");
@@ -697,4 +693,8 @@ begin
    P ("label.metrics.sentence_count_summary.n_sentence", "{v1, number} sentence");
    P ("label.metrics.text_summary_with_options.n_sentence", "{v1, number} sentence");
    P ("label.metrics.word_count_summary.no_words", "no words");
+   P ("label.metrics.sentence_count_summary.no_sentences", "no sentences");
+   P ("label.metrics.paragraph_count_summary.no_paragraphs", "no paragraphs");
+   P ("label.metrics.text_summary_with_options.no_words", "no words");
+   P ("label.metrics.text_summary_with_options.no_sentences", "no sentences");
 end Labels_3;

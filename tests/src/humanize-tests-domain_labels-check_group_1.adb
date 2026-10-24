@@ -328,6 +328,15 @@ begin
    Check (Locale, "label.changes.change_severity_label", Phrase,
           Humanize.Changes.Localized.Change_Severity_Label (C, Severity => Humanize.Changes.Breaking_Change),
           Humanize.Changes.Change_Severity_Label (Severity => Humanize.Changes.Breaking_Change));
+   Check (Locale, "label.changes.change_summary_label", Plain,
+          Humanize.Changes.Localized.Change_Summary_Label (C, Total => 5, Added => 2, Renamed => 1),
+          Humanize.Changes.Change_Summary_Label (Total => 5, Added => 2, Renamed => 1));
+   Check (Locale, "label.changes.change_summary_label", Plain,
+          Humanize.Changes.Localized.Change_Summary_Label (C, Total => 1),
+          Humanize.Changes.Change_Summary_Label (Total => 1));
+   Check (Locale, "label.changes.change_summary_label", Plain,
+          Humanize.Changes.Localized.Change_Summary_Label (C, Total => 3, Unchanged => 3),
+          Humanize.Changes.Change_Summary_Label (Total => 3, Unchanged => 3));
    Check (Locale, "label.changes.collection_field_change_label", Phrase,
           Humanize.Changes.Localized.Collection_Field_Change_Label (C, Field_Name => "plain", Added => 3, Removed =>
             3, Unchanged => 3),

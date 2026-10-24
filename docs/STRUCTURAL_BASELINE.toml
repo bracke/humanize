@@ -558,7 +558,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_hi.adb"
-target_lines = 1003
+target_lines = 1005
 max_lines = 1294
 min_headroom_lines = 100
 max_bytes = 83000
@@ -578,7 +578,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_ru.adb"
-target_lines = 962
+target_lines = 964
 max_lines = 1267
 min_headroom_lines = 100
 max_bytes = 76000
@@ -598,7 +598,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_sl.adb"
-target_lines = 862
+target_lines = 864
 max_lines = 1187
 min_headroom_lines = 100
 max_bytes = 60000
@@ -608,7 +608,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_uk.adb"
-target_lines = 952
+target_lines = 954
 max_lines = 1248
 min_headroom_lines = 100
 max_bytes = 75000
@@ -618,7 +618,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_ro.adb"
-target_lines = 837
+target_lines = 839
 max_lines = 1230
 min_headroom_lines = 100
 max_bytes = 74000
@@ -675,3 +675,23 @@ max_bytes = 73000
 split_prefix = ""
 min_split_bodies = 0
 usecase = "Generated phrase translations for one locale (one statement an entry); grows with the phrase key list."
+
+[[body]]
+path = "src/humanize-markup-localized.adb"
+target_lines = 830
+max_lines = 1080
+min_headroom_lines = 120
+max_bytes = 47882
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Generated localized label twins (one function a parent label, its _Into form); grows with the family's labels."
+
+[[body]]
+path = "src/humanize-changes-localized.adb"
+target_lines = 836
+max_lines = 1086
+min_headroom_lines = 120
+max_bytes = 46739
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Generated localized label twins (one function a parent label, its _Into form); grows with the family's labels."

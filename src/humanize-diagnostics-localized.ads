@@ -47,6 +47,22 @@ package Humanize.Diagnostics.Localized is
    --  @param Options As for the parent's Check_Result_Label.
    --  @return The label in Context's locale.
 
+   function Check_Run_Summary_Label
+      (Context  : Humanize.Contexts.Context;
+       Passed   : Natural := 0;
+       Failed   : Natural := 0;
+       Warnings : Natural := 0;
+       Skipped  : Natural := 0;
+       Pending  : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Passed As for the parent's Check_Run_Summary_Label.
+   --  @param Failed As for the parent's Check_Run_Summary_Label.
+   --  @param Warnings As for the parent's Check_Run_Summary_Label.
+   --  @param Skipped As for the parent's Check_Run_Summary_Label.
+   --  @param Pending As for the parent's Check_Run_Summary_Label.
+   --  @return The label in Context's locale.
+
    function Check_Status_Label
       (Context : Humanize.Contexts.Context;
        Status  : Check_Status)
@@ -261,6 +277,26 @@ package Humanize.Diagnostics.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Count As for the parent's Affected_Items_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Check_Run_Summary_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Passed   : Natural := 0;
+       Failed   : Natural := 0;
+       Warnings : Natural := 0;
+       Skipped  : Natural := 0;
+       Pending  : Natural := 0;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Passed As for the parent's Check_Run_Summary_Label.
+   --  @param Failed As for the parent's Check_Run_Summary_Label.
+   --  @param Warnings As for the parent's Check_Run_Summary_Label.
+   --  @param Skipped As for the parent's Check_Run_Summary_Label.
+   --  @param Pending As for the parent's Check_Run_Summary_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

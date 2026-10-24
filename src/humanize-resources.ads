@@ -241,4 +241,13 @@ package Humanize.Resources is
    --  @param Options Output mode and metadata inclusion policy.
    --  @param Thresholds Threshold policy.
 
+private
+
+   --  The band a percentage falls in under Options (Saturation_Label's), for
+   --  Humanize.Resources.Localized.
+   function Band_For_Percent
+     (Percent : Long_Float;
+      Options : Utilization_Options)
+      return Utilization_Band;
+
 end Humanize.Resources;

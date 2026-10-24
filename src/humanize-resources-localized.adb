@@ -79,6 +79,29 @@ package body Humanize.Resources.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Remaining_Label;
 
+   function Saturation_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Percent : Percent_Value;
+       Options : Utilization_Options := Default_Utilization_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Resources.Saturation_Label (Name => Name, Percent => Percent, Options => Options);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.resources.saturation_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "named", (if Humanize.Bounded_Text.Clean (Name) = "" then "no" else
+        "yes"));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
+      Selection := Sel.With_Arg (Selection, "percent", Humanize.Label_Values.Percent (Context, Long_Float (Percent)));
+      Selection := Sel.With_Arg (Selection, "band", Humanize.Label_Values.Text_Of (Utilization_Band_Label (Context,
+        Band_For_Percent (Long_Float (Percent), Options))));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Saturation_Label;
+
    function Utilization_Band_Label
       (Context : Humanize.Contexts.Context;
        Band    : Utilization_Band)
@@ -94,6 +117,31 @@ package body Humanize.Resources.Localized is
       Selection := Sel.With_Arg (Selection, "band", Lower (Utilization_Band'Image (Band)));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Utilization_Band_Label;
+
+   function Utilization_Label
+      (Context : Humanize.Contexts.Context;
+       Used    : Resource_Count;
+       Total   : Resource_Count;
+       Unit    : String := "units";
+       Options : Utilization_Options := Default_Utilization_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Resources.Utilization_Label (Used => Used, Total => Total, Unit => Unit, Options => Options);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.resources.utilization_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "used", Long_Long_Integer (Used));
+      Selection := Sel.With_Arg (Selection, "total", Long_Long_Integer (Total));
+      Selection := Sel.With_Arg (Selection, "unit", Humanize.Label_Values.Unit_Or (Unit, "units"));
+      Selection := Sel.With_Arg (Selection, "percent", Humanize.Label_Values.Percent (Context, Long_Float (Used) *
+        100.0 / Long_Float (Total)));
+      Selection := Sel.With_Arg (Selection, "band", Humanize.Label_Values.Text_Of (Utilization_Band_Label (Context,
+        Utilization_Band_Of (Used, Total, Options))));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Utilization_Label;
 
    procedure Cache_Hit_Rate_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -139,6 +187,21 @@ package body Humanize.Resources.Localized is
          Target, Written, Status);
    end Remaining_Label_Into;
 
+   procedure Saturation_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Percent : Percent_Value;
+       Options : Utilization_Options := Default_Utilization_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Saturation_Label (Context, Name => Name, Percent => Percent, Options => Options),
+         Target, Written, Status);
+   end Saturation_Label_Into;
+
    procedure Utilization_Band_Label_Into
       (Context : Humanize.Contexts.Context;
        Band    : Utilization_Band;
@@ -149,5 +212,21 @@ package body Humanize.Resources.Localized is
    begin
       Humanize.Bounded_Text.Copy_Text (Utilization_Band_Label (Context, Band => Band), Target, Written, Status);
    end Utilization_Band_Label_Into;
+
+   procedure Utilization_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Used    : Resource_Count;
+       Total   : Resource_Count;
+       Unit    : String := "units";
+       Options : Utilization_Options := Default_Utilization_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Utilization_Label (Context, Used => Used, Total => Total, Unit => Unit, Options => Options),
+         Target, Written, Status);
+   end Utilization_Label_Into;
 
 end Humanize.Resources.Localized;

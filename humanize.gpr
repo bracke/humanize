@@ -143,6 +143,7 @@ project Humanize is
             "Humanize.Strings.Names",
             "Humanize.Strings.Paths",
             "Humanize.Strings.Privacy",
+            "Humanize.Strings.Privacy.Localized",
             "Humanize.Strings.Prose",
             "Humanize.Strings.Terminal",
             "Humanize.Strings.Types",

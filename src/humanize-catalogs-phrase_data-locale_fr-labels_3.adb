@@ -381,10 +381,6 @@ begin
       & "number} modifiés}}, {unchanged, plural, one {{unchanged, number} "
       & "inchangé} many {{unchanged, number} inchangés} other {{unchanged, "
       & "number} inchangés}}, {total, number} au total}}");
-   P ("label.names.color_description", "{brightness}, {hue} {saturation}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{base, select, pink {rose} other {{hue}}} {brightness} {chroma} "
-      & "{temperature}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility} ; {roles}");
    P ("label.groups", "{first} ; {second}");
    P ("label.parts", "{first}, {second}");
@@ -696,4 +692,9 @@ begin
       "{v1, number}:{v2, number}, contraste pour grand texte");
    P ("label.contrast.color_accessibility_summary.n_n_large_text_contrast",
       "{v1, number}:{v2, number}, contraste pour grand texte");
+   P ("label.contrast.color_accessibility_summary.deuteranopia_low_confusion_risk",
+      "deutéranopie : risque de confusion faible");
+   P ("label.contrast.contrast_label.d_n_enhanced_contrast", "{v1}:{v2, number}, contraste renforcé");
+   P ("label.contrast.readability_label.readable_for_enhanced_text", "lisible avec contraste renforcé");
+   P ("label.contrast.color_accessibility_summary.d_n_enhanced_contrast", "{v1}:{v2, number}, contraste renforcé");
 end Labels_3;

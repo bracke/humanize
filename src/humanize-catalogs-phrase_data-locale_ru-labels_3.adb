@@ -687,11 +687,11 @@ begin
       & "number}/{total, number}} other {{name}: изменено {changed, "
       & "number}, без изменений {unchanged, number}, всего "
       & "{total, number}}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink "
-      & "{розовый} other {{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
+      "текущий цвет переднего плана "
+      & "соответствует контрасту для крупного "
+      & "текста при {v1}:{v2, number}");
 end Labels_3;

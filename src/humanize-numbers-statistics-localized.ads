@@ -5,6 +5,44 @@ with Humanize.Contexts;
 --  the locale has no translation, and for every input the parent rejects.
 package Humanize.Numbers.Statistics.Localized is
 
+   function Distribution_Shape_Label
+      (Context  : Humanize.Contexts.Context;
+       Metadata : Distribution_Shape_Metadata;
+       Median   : Long_Float := 0.0;
+       Unit     : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Metadata As for the parent's Distribution_Shape_Label.
+   --  @param Median As for the parent's Distribution_Shape_Label.
+   --  @param Unit As for the parent's Distribution_Shape_Label.
+   --  @return The label in Context's locale.
+
+   function Distribution_Shape_Label
+      (Context  : Humanize.Contexts.Context;
+       Count    : Natural;
+       Minimum  : Long_Float;
+       Q1       : Long_Float;
+       Median   : Long_Float;
+       Q3       : Long_Float;
+       Maximum  : Long_Float;
+       Mean     : Long_Float := 0.0;
+       Stddev   : Long_Float := 0.0;
+       Outliers : Natural := 0;
+       Unit     : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Count As for the parent's Distribution_Shape_Label.
+   --  @param Minimum As for the parent's Distribution_Shape_Label.
+   --  @param Q1 As for the parent's Distribution_Shape_Label.
+   --  @param Median As for the parent's Distribution_Shape_Label.
+   --  @param Q3 As for the parent's Distribution_Shape_Label.
+   --  @param Maximum As for the parent's Distribution_Shape_Label.
+   --  @param Mean As for the parent's Distribution_Shape_Label.
+   --  @param Stddev As for the parent's Distribution_Shape_Label.
+   --  @param Outliers As for the parent's Distribution_Shape_Label.
+   --  @param Unit As for the parent's Distribution_Shape_Label.
+   --  @return The label in Context's locale.
+
    function Distribution_Summary_Label
       (Context : Humanize.Contexts.Context;
        Count   : Natural;
@@ -44,6 +82,52 @@ package Humanize.Numbers.Statistics.Localized is
    --  @param P99 As for the parent's Percentile_Summary_Label.
    --  @param Unit As for the parent's Percentile_Summary_Label.
    --  @return The label in Context's locale.
+
+   procedure Distribution_Shape_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Metadata : Distribution_Shape_Metadata;
+       Median   : Long_Float := 0.0;
+       Unit     : String := "";
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Metadata As for the parent's Distribution_Shape_Label.
+   --  @param Median As for the parent's Distribution_Shape_Label.
+   --  @param Unit As for the parent's Distribution_Shape_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Distribution_Shape_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Count    : Natural;
+       Minimum  : Long_Float;
+       Q1       : Long_Float;
+       Median   : Long_Float;
+       Q3       : Long_Float;
+       Maximum  : Long_Float;
+       Mean     : Long_Float := 0.0;
+       Stddev   : Long_Float := 0.0;
+       Outliers : Natural := 0;
+       Unit     : String := "";
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Count As for the parent's Distribution_Shape_Label.
+   --  @param Minimum As for the parent's Distribution_Shape_Label.
+   --  @param Q1 As for the parent's Distribution_Shape_Label.
+   --  @param Median As for the parent's Distribution_Shape_Label.
+   --  @param Q3 As for the parent's Distribution_Shape_Label.
+   --  @param Maximum As for the parent's Distribution_Shape_Label.
+   --  @param Mean As for the parent's Distribution_Shape_Label.
+   --  @param Stddev As for the parent's Distribution_Shape_Label.
+   --  @param Outliers As for the parent's Distribution_Shape_Label.
+   --  @param Unit As for the parent's Distribution_Shape_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
 
    procedure Distribution_Summary_Label_Into
       (Context : Humanize.Contexts.Context;

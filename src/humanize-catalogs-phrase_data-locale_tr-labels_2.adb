@@ -668,10 +668,6 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} değişti} other {{name}: {changed, number} değişti, "
       & "{unchanged, number} değişmedi, toplam {total, number}}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {pembe} other "
-      & "{{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -695,5 +691,8 @@ begin
       "{v2}:{v3, number} gelişmiş metin kontrastı için {v1} kullanın");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_n_n",
       "mevcut ön plan {v1, number}:{v2, number} oranında büyük metin "
+      & "kontrastını karşılıyor");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_n_n",
+      "mevcut ön plan {v1, number}:{v2, number} oranında normal metin "
       & "kontrastını karşılıyor");
 end Labels_2;

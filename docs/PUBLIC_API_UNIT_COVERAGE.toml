@@ -754,6 +754,22 @@ perf_covered_by = "Humanize.Strings.Privacy.Safe_Email_Label"
 score = 5
 
 [[unit]]
+name = "Humanize.Strings.Privacy.Localized"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/domain_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
+score = 4
+
+[[unit]]
 name = "Humanize.Strings.Prose"
 area = "formatting"
 docs = 1

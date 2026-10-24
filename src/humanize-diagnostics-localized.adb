@@ -82,6 +82,54 @@ package body Humanize.Diagnostics.Localized is
         Status => Status));
    end Check_Result_Label;
 
+   function Check_Run_Summary_Label
+      (Context  : Humanize.Contexts.Context;
+       Passed   : Natural := 0;
+       Failed   : Natural := 0;
+       Warnings : Natural := 0;
+       Skipped  : Natural := 0;
+       Pending  : Natural := 0)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Diagnostics.Check_Run_Summary_Label
+          (Passed => Passed,
+           Failed => Failed,
+           Warnings => Warnings,
+           Skipped => Skipped,
+           Pending => Pending);
+      Text : Humanize.Status.Text_Result := Humanize.Label_Values.Nothing;
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      if Passed = 0 and then Failed = 0 and then Warnings = 0 and then Skipped = 0 and then Pending = 0 then
+         return Humanize.I18N_Rendering.Phrase_Or
+           (Context, Sel.Phrase ("label.diagnostics.check_run_summary_label.none"), English);
+      end if;
+      if Passed > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.diagnostics.check_run_summary_label.passed", Long_Long_Integer (Passed)));
+      end if;
+      if Failed > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.diagnostics.check_run_summary_label.failed", Long_Long_Integer (Failed)));
+      end if;
+      if Warnings > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.diagnostics.check_run_summary_label.warnings", Long_Long_Integer (Warnings)));
+      end if;
+      if Skipped > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.diagnostics.check_run_summary_label.skipped", Long_Long_Integer (Skipped)));
+      end if;
+      if Pending > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.diagnostics.check_run_summary_label.pending", Long_Long_Integer (Pending)));
+      end if;
+      return Humanize.Label_Values.Localized_Or (Context, Text, English);
+   end Check_Run_Summary_Label;
+
    function Check_Status_Label
       (Context : Humanize.Contexts.Context;
        Status  : Check_Status)
@@ -450,6 +498,24 @@ package body Humanize.Diagnostics.Localized is
    begin
       Humanize.Bounded_Text.Copy_Text (Affected_Items_Label (Context, Count => Count), Target, Written, Status);
    end Affected_Items_Label_Into;
+
+   procedure Check_Run_Summary_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Passed   : Natural := 0;
+       Failed   : Natural := 0;
+       Warnings : Natural := 0;
+       Skipped  : Natural := 0;
+       Pending  : Natural := 0;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Check_Run_Summary_Label (Context, Passed => Passed, Failed => Failed, Warnings => Warnings, Skipped =>
+         Skipped, Pending => Pending),
+         Target, Written, Status);
+   end Check_Run_Summary_Label_Into;
 
    procedure Diagnostic_Explanation_Label_Into
       (Context    : Humanize.Contexts.Context;

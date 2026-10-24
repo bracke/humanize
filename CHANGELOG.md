@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+* Composed colour names agree: the hue is a noun and its modifiers take its
+  gender ("dunkles, gesättigtes Rot", "rose très clair pastel chaud"), through
+  per-locale hue nouns, hue genders and agreeing modifier forms; a locale
+  without them keeps the standalone words.
+
+* The last English domain labels speak the locale: workflow, change, check-run
+  and schema summaries and accessible control labels (localized parts), and the
+  labels that frame a value -- hosts, endpoints, IP and CIDR, URL components,
+  secrets, privacy-safe labels, versions and
+  releases, markup tags, attributes and content types, utilization, schema
+  fields ("schreibgeschütztes Ganzzahlfeld id (erforderlich, nicht null)") and
+  distribution shapes. URL labels, capability reports and
+  machine-format modes (log, metadata) stay English.
+
 * Ordinal words: Ukrainian round hundreds, thousands and millions are words
   ("трьохсотий", "п’ятитисячний", "двохмільйонний"), and their thousands agree
   ("дві тисячі трьохсотий", "двадцять дві тисячі перший", was "два тисячі",

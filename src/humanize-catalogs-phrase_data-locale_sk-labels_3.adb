@@ -268,10 +268,6 @@ begin
       "{mode, select, comparison_compact {{name}: zmenené {changed, "
       & "number}/{total, number}} other {{name}: zmenené {changed, number}, "
       & "bez zmeny {unchanged, number}, celkom {total, number}}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {ružová} "
-      & "other {{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
    P ("label.groups", "{first}; {second}");
    P ("label.parts", "{first}, {second}");
@@ -697,4 +693,8 @@ begin
       "{v1, plural, one {{v1, number} odsek} few {{v1, number} odseky} many "
       & "{{v1, number} odseku} other {{v1, number} odsekov}}");
    P ("label.metrics.text_summary_with_options.n_minutes_read", "{v1, number} min čítania");
+   P ("label.metrics.paragraph_count_summary.n_paragraph",
+      "{v1, plural, one {{v1, number} odsek} few {{v1, number} odseky} many "
+      & "{{v1, number} odseku} other {{v1, number} odsekov}}");
+   P ("label.metrics.reading_time.less_than_n_minute_read", "menej ako {v1, number} min čítania");
 end Labels_3;

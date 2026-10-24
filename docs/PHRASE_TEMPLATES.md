@@ -238,6 +238,15 @@ normal-text contrast"), the values passed as `v1`, `v2`, …; composite labels
 are split at ", " or "; " and their segments joined through `label.parts` or
 `label.groups` ("{first}; {second}"). A shape with no key keeps the English.
 
+Composed colour names agree: `label.names.hue_noun.<hue>` is the hue as a noun,
+`label.names.hue_gender.<hue>` its gender (a word the locale's agreement
+templates select on, e.g. `neuter`), and `label.names.agree.<modifier>` the
+modifier with a `{gender}` select ("{gender, select, neuter {dunkles} …}").
+Labels that frame a value (a host, a masked secret, a version) pass the value
+in as text and select on what the code derived about it (`state`, `kind`); a
+label whose state the code reads from its English output keeps that English
+where it cannot.
+
 ## Durations
 
 `Humanize.Durations`' labels around a length of time (Countdown,
