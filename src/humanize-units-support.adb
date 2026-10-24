@@ -1062,9 +1062,8 @@ package body Humanize.Units.Support is
         Humanize.Numbers.Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Compound (Terabytes, "TBW", Options);
+      return SI_Symbol (Context, Terabytes, "TBW", "TBW", Options);
    end Format_Storage_Endurance;
 
    function Format_Refresh_Rate

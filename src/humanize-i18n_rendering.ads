@@ -116,4 +116,11 @@ private package Humanize.I18N_Rendering is
       Value    : String)
       return String;
 
+   --  Image, an ASCII decimal ("1.5"), in the locale's digits and separators
+   --  ("1,5"); Image itself in English or where the locale cannot render it.
+   function Local_Decimal
+     (Context : Humanize.Contexts.Context;
+      Image   : String)
+      return String;
+
 end Humanize.I18N_Rendering;

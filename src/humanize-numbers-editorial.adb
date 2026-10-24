@@ -3,6 +3,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Humanize.Bounded_Text;
 with Humanize.Decimal_Images;
 with Humanize.I18N_Rendering;
+with Humanize.Locales;
 with Humanize.Selections;
 
 package body Humanize.Numbers.Editorial is
@@ -258,13 +259,13 @@ package body Humanize.Numbers.Editorial is
       Number_Style : Number_Options := Default_Number_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
       if Unit'Length = 0 then
          return (Status => Humanize.Status.Invalid_Argument, others => <>);
       end if;
 
-      return Ok_Text (Editorial_Decimal (Value, Number_Style) & " " & Unit);
+      return Ok_Text
+        (Humanize.I18N_Rendering.Local_Decimal (Context, Editorial_Decimal (Value, Number_Style)) & " " & Unit);
    end Editorial_Measurement;
 
    procedure Editorial_Measurement_Into
@@ -288,13 +289,30 @@ package body Humanize.Numbers.Editorial is
       Unit    : String := "years old")
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
+      Number : constant String := Humanize.I18N_Rendering.Local_Decimal (Context, Natural_Text (Value));
    begin
       if Unit'Length = 0 then
-         return Ok_Text (Natural_Text (Value));
-      else
-         return Ok_Text (Natural_Text (Value) & " " & Unit);
+         return Ok_Text (Number);
+      elsif Unit = "years old"
+        and then Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) not in "en" | ""
+      then
+         --  The default unit is English; outside English, the locale's age
+         --  phrase around CLDR's years, in the case it governs ("42 Jahre alt").
+         declare
+            Named : constant String := Humanize.I18N_Rendering.Phrase_Text (Context, "duration.case.age");
+            Years : constant String :=
+              Humanize.I18N_Rendering.Duration_Part
+                (Context, "year", Long_Long_Integer (Value), (if Named = "" then "nominative" else Named));
+            Text  : constant String :=
+              (if Years = "" then ""
+               else Humanize.I18N_Rendering.Phrase_Text_With (Context, "duration.age", "duration", Years));
+         begin
+            if Text /= "" then
+               return Ok_Text (Text);
+            end if;
+         end;
       end if;
+      return Ok_Text (Number & " " & Unit);
    end Editorial_Age;
 
    procedure Editorial_Age_Into

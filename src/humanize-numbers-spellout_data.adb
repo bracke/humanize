@@ -341,9 +341,10 @@ package body Humanize.Numbers.Spellout_Data is
          --  A round hundred or thousand would be the cardinal with an ending
          --  glued on ("dvě stěý", "двадцять тисяч-й").
          return False;
-      elsif Locale = "ro" or else Locale = "sl" then
+      elsif Locale in "ro" | "sl" | "cs" | "sk" then
          --  Compounds follow other rules ("al douăzeci și unulea",
-         --  "enaindvajseti"): the words to ten and the round tens only.
+         --  "enaindvajseti", Czech "dvacátý první" with both parts ordinal):
+         --  the words to ten and the round tens only.
          return Value <= 10 or else Round_Tens;
       else
          --  Cardinal parts before an ordinal last part, as these languages

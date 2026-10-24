@@ -40,6 +40,26 @@ package body Humanize.Catalogs.Native_Data is
         & "other {{value, number} " & Plural & "}}" & LF;
    end Unit_Line;
 
+   --  A numeric ordinal as the locale writes it: CLDR's digits-ordinal for
+   --  Ukrainian ("21-ий", "23-ій"), Romanian's and Lithuanian's endings,
+   --  else the number and a full stop ("21.").
+   function Ordinal_Pattern (Locale : String; Feminine : Boolean) return String is
+   begin
+      if Locale = "uk" then
+         return "{count, selectordinal, few {{value, number}-"
+           & (if Feminine then B ("D18F") else B ("D196D0B9"))
+           & "} other {{value, number}-" & (if Feminine then B ("D0B0") else B ("D0B8D0B9")) & "}}";
+      elsif Locale = "ro" then
+         --  Romanian writes the article and ending round the digits: "al
+         --  21-lea", "a 21-a".
+         return (if Feminine then "a {value, number}-a" else "al {value, number}-lea");
+      elsif Locale = "lt" then
+         return "{value, number}-" & (if Feminine then "oji" else "asis");
+      else
+         return "{value, number}.";
+      end if;
+   end Ordinal_Pattern;
+
    function Added_Keys (Locale : String) return String is
    begin
       return
@@ -392,8 +412,8 @@ package body Humanize.Catalogs.Native_Data is
         & Locale & ".humanize.bytes.mib = {value, number} MiB" & LF
         & Locale & ".humanize.bytes.gib = {value, number} GiB" & LF
         & Locale & ".humanize.bytes.tib = {value, number} TiB" & LF
-        & Locale & ".humanize.number.ordinal = {value, number}." & LF
-        & Locale & ".humanize.number.ordinal.feminine = {value, number}." & LF
+        & Locale & ".humanize.number.ordinal = " & Ordinal_Pattern (Locale, Feminine => False) & LF
+        & Locale & ".humanize.number.ordinal.feminine = " & Ordinal_Pattern (Locale, Feminine => True) & LF
         & Locale & ".humanize.number.compact.plain = {value, number}" & LF
         & Locale & ".humanize.number.compact.thousand = {value, number}"
         & Thousand_Short & LF

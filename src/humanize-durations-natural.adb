@@ -196,6 +196,18 @@ package body Humanize.Durations.Natural is
      (Preset : Natural_Duration_Threshold_Preset)
       return Natural_Duration_Approximation_Options;
 
+   --  Seconds' components (Format_Components') in the case the qualifier's
+   --  "duration.case.natural.<Qualifier>" names -- Russian "более 1 часа и 5
+   --  минут" -- joined as Format_Components joins them; Nominative where it
+   --  names none or a part cannot render.
+   function Cased_Components
+     (Context        : Humanize.Contexts.Context;
+      Seconds        : Duration_Seconds;
+      Max_Components : Positive;
+      Qualifier      : String;
+      Nominative     : String)
+      return String is separate;
+
    function Natural_Duration_Preset_Style
      (Seconds : Duration_Seconds;
       Preset  : Natural_Duration_Threshold_Preset)
@@ -534,7 +546,8 @@ package body Humanize.Durations.Natural is
                   when others => "about");
             Text : constant String :=
               Humanize.I18N_Rendering.Phrase_Text_With
-                (Context, "duration.natural." & Qualifier, "duration", To_String (Base.Text));
+                (Context, "duration.natural." & Qualifier, "duration",
+                 Cased_Components (Context, Abs_Seconds, Options.Max_Components, Qualifier, To_String (Base.Text)));
          begin
             if Text /= "" then
                return (Status => Humanize.Status.Ok, Text => To_Unbounded_String (Text),

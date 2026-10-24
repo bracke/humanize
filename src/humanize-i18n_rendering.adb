@@ -402,4 +402,22 @@ package body Humanize.I18N_Rendering is
       return (if Text.Status = Humanize.Status.Ok then To_String (Text.Text) else "");
    end Phrase_Text_With;
 
+   function Local_Decimal
+     (Context : Humanize.Contexts.Context;
+      Image   : String)
+      return String
+   is
+   begin
+      if Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | "" then
+         return Image;
+      end if;
+      declare
+         Text : constant Humanize.Status.Text_Result :=
+           Render (Context, Humanize.Selections.Text_Value (Humanize.Message_Keys.Number_Plain, Image));
+      begin
+         return (if Text.Status = Humanize.Status.Ok and then Length (Text.Text) > 0 then To_String (Text.Text)
+                 else Image);
+      end;
+   end Local_Decimal;
+
 end Humanize.I18N_Rendering;

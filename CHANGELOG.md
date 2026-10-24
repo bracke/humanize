@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+* Ordinal words: Czech and Slovak compounds (both parts ordinal, which the
+  tables cannot build) and Lithuanian round hundreds and thousands (CLDR 48
+  leaves the stem bare: "šimt") are numerals now; Ukrainian teens are words
+  ("тринадцятий", was "десять третій"); Ukrainian, Romanian and Lithuanian
+  numeric ordinals take their own endings ("100-ий", "al 21-lea",
+  "100-asis") instead of a full stop.
+
+* German "next" with one unit reads "in der nächsten Stunde"; duration frames
+  get the unit's `{count}` and `{unit}`. Natural_Duration_Detailed puts its
+  components in the case a qualifier names (Russian "более 1 часа и 5 минут").
+
+* Outside English, SI prefixes, storage endurance, IOPS, database throughput
+  and editorial measurements write the locale's decimals ("1,5 kW"), and
+  Editorial_Age's default unit is the locale's age phrase ("42 Jahre alt").
+  `Strings.Prose.Uncertainty_Label` takes a context ("12,5 ± 0,3 mm").
+
 * Windows builds humanize as a plain static library, not a standalone one:
   the partial link of a standalone library left its unwind table corrupt
   (entries at wrong offsets, some spanning other code), so an exception

@@ -76,8 +76,8 @@ source = "reviewed native catalog fragments"
 coverage = "native catalog additions"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from reviewed native catalog fragments"
-line_count = 695
-sha256 = "98871c34db6f61715dbd44149904848ace27a9f8eb50e06eb58a74156678556e"
+line_count = 715
+sha256 = "629f5f40dae80bb50253087fb6318861621494776c43410d10c5e80d31b685d5"
 
 [[artifact]]
 path = "src/humanize-catalogs-native_data-nordic_slavic_locale_catalogs.adb"
@@ -142,8 +142,8 @@ source = "Humanize spellout tables"
 coverage = "locale spellout words"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize spellout tables"
-line_count = 373
-sha256 = "16ca38746d4aff9805b6938d3944b7cf6892412f7799794ef85f97addb2cd467"
+line_count = 374
+sha256 = "37fa2e23ab7d234e01bda8d0321f7955cda826d752e62935038e7155c7d8c992"
 
 [[artifact]]
 path = "src/humanize-numbers-spellout_data-small_locale_word.adb"
@@ -175,8 +175,8 @@ source = "Humanize spellout tables"
 coverage = "locale ordinal spellout words"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize spellout tables"
-line_count = 839
-sha256 = "6ba2dd65f9820a82a0dd979351dbe4fea28b3b9d4ff6485aab5eb497df496d18"
+line_count = 857
+sha256 = "25b75145f4a5c0326bbf4042cd849a9bf9b899ae5fbaabc0ddcc2bbed1f802e3"
 
 [[artifact]]
 path = "src/humanize-numbers-spellout_data-locale_word_99.adb"

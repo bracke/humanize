@@ -1,3 +1,5 @@
+with Ada.Characters.Handling;
+
 separate (Humanize.Durations.Formatting)
 function Framed
   (Context : Humanize.Contexts.Context;
@@ -39,6 +41,17 @@ is
       return "";
    end Relative;
 
+   --  The unit Format chooses for Seconds, as the frame's {unit} names it.
+   function Chosen_Unit return Duration_Unit is
+   begin
+      for Unit in reverse Options.Smallest_Unit .. Options.Largest_Unit loop
+         if Seconds / Unit_Seconds (Unit) >= 1 then
+            return Unit;
+         end if;
+      end loop;
+      return Options.Smallest_Unit;
+   end Chosen_Unit;
+
    function Localized return String is
       Inside : constant String :=
         (case Shape is
@@ -49,14 +62,26 @@ is
    begin
       if Inside = "" and then Shape /= Framed_Now then
          return "";
+      elsif Shape /= Framed_Duration then
+         return Humanize.I18N_Rendering.Phrase_Text_With
+           (Context, "duration." & Frame, (if Shape = Framed_Now then "" else "relative"), Inside);
       end if;
-      return Humanize.I18N_Rendering.Phrase_Text_With
-        (Context, "duration." & Frame,
-         (case Shape is
-             when Framed_Duration => "duration",
-             when Framed_Past | Framed_Future => "relative",
-             when Framed_Now => ""),
-         Inside);
+      --  A duration's frame also hears its count and unit, so a locale can
+      --  word one unit apart: German "in der nächsten Stunde", not "in den
+      --  nächsten 1 Stunde".
+      declare
+         Unit : constant Duration_Unit := Chosen_Unit;
+         Text : constant Humanize.Status.Text_Result :=
+           Humanize.I18N_Rendering.Render
+             (Context,
+              Sel.With_Arg
+                (Sel.With_Arg
+                   (Sel.With_Arg (Sel.Phrase ("duration." & Frame), "duration", Inside),
+                    "count", Long_Long_Integer (Seconds / Unit_Seconds (Unit))),
+                 "unit", Ada.Characters.Handling.To_Lower (Duration_Unit'Image (Unit))));
+      begin
+         return (if Text.Status = Humanize.Status.Ok then To_String (Text.Text) else "");
+      end;
    end Localized;
 begin
    if English.Status /= Humanize.Status.Ok

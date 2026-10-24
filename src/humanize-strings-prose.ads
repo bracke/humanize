@@ -1,3 +1,4 @@
+with Humanize.Contexts;
 with Humanize.Status;
 
 --  Prose helpers for excerpts, sentence labels, quotes, and reading summaries.
@@ -20,6 +21,15 @@ package Humanize.Strings.Prose is
 
    function Uncertainty_Label
      (Value       : String;
+      Uncertainty : String;
+      Unit        : String := "")
+      return Humanize.Status.Text_Result;
+
+   --  The same in Context's locale: its tolerance phrase around the caller's
+   --  texts ("12,5 ± 0,3 mm"); English keeps "+/-".
+   function Uncertainty_Label
+     (Context     : Humanize.Contexts.Context;
+      Value       : String;
       Uncertainty : String;
       Unit        : String := "")
       return Humanize.Status.Text_Result;

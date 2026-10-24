@@ -217,7 +217,10 @@ backup_age, eta, natural.about, natural.almost, natural.over,
 natural.just_over, natural.little_under, distance.past, distance.future);
 inside a distance the qualifier's own case wins, else the distance's. The
 fixed natural phrases get the governing case as `{case}`. `{relative}` is
-CLDR's whole relative time ("vor 2 Stunden"). Brief durations are CLDR's
+CLDR's whole relative time ("vor 2 Stunden"). The frames around one
+duration (countdown, within, next, age, stale_for, backup_age, eta) also get
+its `{count}` and `{unit}` (second ... year), so one unit can be worded apart:
+German next is "in der nächsten Stunde", not "in den nächsten 1 Stunde". Brief durations are CLDR's
 short units joined by its unit list ("1 Std., 5 Min."). English keeps its
 own wording.
 

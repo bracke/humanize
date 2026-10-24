@@ -709,7 +709,12 @@ begin
    P ("duration.countdown", "noch {duration}");
    P ("duration.within", "innerhalb von {duration}");
    P ("duration.case.within", "dative");
-   P ("duration.next", "in den nächsten {duration}");
+   P ("duration.next",
+      "{count, plural, one {{unit, select, second {in der nächsten Sekunde} "
+      & "minute {in der nächsten Minute} hour {in der nächsten Stunde} day "
+      & "{am nächsten Tag} week {in der nächsten Woche} month {im nächsten "
+      & "Monat} year {im nächsten Jahr} other {in den nächsten {duration}}}} "
+      & "other {in den nächsten {duration}}}");
    P ("duration.case.next", "dative");
    P ("duration.between", "zwischen {low} und {high}");
    P ("duration.case.between", "dative");

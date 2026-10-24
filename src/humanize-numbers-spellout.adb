@@ -725,8 +725,12 @@ package body Humanize.Numbers.Spellout is
         Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context));
    begin
       if Locale /= "en"
-        and then not Humanize.Parsing.Implementation.CLDR_Vocabulary.Has_Ordinal_Rules (Locale)
-        and then not Humanize.Numbers.Spellout_Data.Locale_Ordinal_Word_Known (Locale, Value)
+        and then
+          ((not Humanize.Parsing.Implementation.CLDR_Vocabulary.Has_Ordinal_Rules (Locale)
+            and then not Humanize.Numbers.Spellout_Data.Locale_Ordinal_Word_Known (Locale, Value))
+           --  CLDR 48's Lithuanian rules leave a round hundred's stem bare
+           --  ("šimt", "tūkstant" for "šimtasis", "tūkstantasis").
+           or else (Locale = "lt" and then Value >= 100 and then Value mod 100 = 0))
       then
          --  No CLDR ordinal rules and no word of humanize's own: the
          --  locale's numeric ordinal ("234.", "1000-й") over made-up words.

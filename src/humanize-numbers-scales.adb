@@ -168,7 +168,6 @@ package body Humanize.Numbers.Scales is
       Options : SI_Prefix_Options := Default_SI_Prefix_Options)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
       Scaled   : Long_Float := Value;
       Exponent : Integer := 0;
    begin
@@ -186,10 +185,12 @@ package body Humanize.Numbers.Scales is
 
       declare
          Number : constant String :=
-           Humanize.Decimal_Images.Decimal_Image
-             (Scaled,
-              Options.Number_Style.Maximum_Fraction_Digits,
-              Options.Number_Style.Suppress_Trailing_Zero);
+           Humanize.I18N_Rendering.Local_Decimal
+             (Context,
+              Humanize.Decimal_Images.Decimal_Image
+                (Scaled,
+                 Options.Number_Style.Maximum_Fraction_Digits,
+                 Options.Number_Style.Suppress_Trailing_Zero));
          Prefix : constant String :=
            (if Options.Prefix_Style = SI_Symbol
             then SI_Prefix_Symbol (Exponent)

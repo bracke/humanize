@@ -6,15 +6,12 @@ function Format_Database_Throughput
      Humanize.Numbers.Default_Number_Options)
    return Humanize.Status.Text_Result
 is
-   pragma Unreferenced (Context);
 begin
    if abs Operations_Per_Second >= 1_000_000.0 then
-      return Compound
-        (Operations_Per_Second / 1_000_000.0, "M ops/s", Options);
+      return SI_Symbol (Context, Operations_Per_Second / 1_000_000.0, "M ops/s", "M ops/s", Options);
    elsif abs Operations_Per_Second >= 1_000.0 then
-      return Compound
-        (Operations_Per_Second / 1_000.0, "k ops/s", Options);
+      return SI_Symbol (Context, Operations_Per_Second / 1_000.0, "k ops/s", "k ops/s", Options);
    else
-      return Compound (Operations_Per_Second, "ops/s", Options);
+      return SI_Symbol (Context, Operations_Per_Second, "ops/s", "ops/s", Options);
    end if;
 end Format_Database_Throughput;
