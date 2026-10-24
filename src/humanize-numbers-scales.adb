@@ -265,6 +265,26 @@ package body Humanize.Numbers.Scales is
       Copy_Result (Result, Target, Written, Status);
    end Currency_Into;
 
+   --  Value_Text (in the locale's numbers) inside the locale's "about",
+   --  "almost", "over" or "under" phrase; English as written.
+   function Approximation_Phrase
+     (Context    : Humanize.Contexts.Context;
+      Kind       : Approximation_Kind;
+      Value_Text : String;
+      English    : String)
+      return Humanize.Status.Text_Result is
+     (Humanize.I18N_Rendering.Phrase_Or
+        (Context,
+         Humanize.Selections.With_Arg
+           (Humanize.Selections.Phrase
+              (case Kind is
+                  when About => "number.about",
+                  when Almost => "number.almost",
+                  when Over => "number.over",
+                  when Under => "number.under"),
+            "value", Value_Text),
+         Ok_Text (English)));
+
    function Approximate_Currency
      (Context : Humanize.Contexts.Context;
       Amount  : Long_Float;
@@ -285,7 +305,7 @@ package body Humanize.Numbers.Scales is
       if Base.Status /= Humanize.Status.Ok then
          return Base;
       end if;
-      return Ok_Text (Prefix & Result_Text (Base));
+      return Approximation_Phrase (Context, Kind, Result_Text (Base), Prefix & Result_Text (Base));
    end Approximate_Currency;
 
    procedure Approximate_Currency_Into
@@ -563,10 +583,13 @@ package body Humanize.Numbers.Scales is
       Kind    : Approximation_Kind := About)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
+      Plain : constant Humanize.Status.Text_Result :=
+        Humanize.I18N_Rendering.Render
+          (Context, Humanize.Selections.Text_Value (Humanize.Message_Keys.Number_Plain, Integer_Text (Value)));
    begin
-      return Ok_Text
-        (Prefix (Kind) & " " & Integer_Text (Value));
+      return Approximation_Phrase
+        (Context, Kind, (if Plain.Status = Humanize.Status.Ok then Result_Text (Plain) else Integer_Text (Value)),
+         Prefix (Kind) & " " & Integer_Text (Value));
    end Approximate;
 
    procedure Approximate_Into

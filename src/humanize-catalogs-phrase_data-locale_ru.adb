@@ -866,4 +866,88 @@ begin
    P ("number.change_more", "на {quantity} {tail} больше");
    P ("number.change_fewer", "на {quantity} {tail} меньше");
    P ("number.since", "{change} (начиная с: {since})");
+   P ("duration.countdown", "осталось: {duration}");
+   P ("duration.within", "в течение {duration}");
+   P ("duration.next", "на {duration} вперёд");
+   P ("duration.between", "от {low} до {high}");
+   P ("duration.age", "возраст {duration}");
+   P ("duration.stale_for", "не обновлялось {duration}");
+   P ("duration.backup_age", "резервной копии {duration}");
+   P ("duration.eta", "ожидается через {duration}");
+   P ("duration.expires", "истекает {relative}");
+   P ("duration.retrying", "повтор {relative}");
+   P ("duration.modified", "изменено {relative}");
+   P ("duration.synced", "синхронизировано {relative}");
+   P ("duration.modified_now", "изменено только что");
+   P ("duration.synced_now", "синхронизировано только что");
+   P ("duration.natural.less_than_minute", "меньше минуты");
+   P ("duration.natural.half_hour", "{case, select, genitive {получаса} other {полчаса}}");
+   P ("duration.natural.about_half_hour", "около получаса");
+   P ("duration.natural.about", "примерно {duration}");
+   P ("duration.natural.almost", "почти {duration}");
+   P ("duration.natural.over", "более {duration}");
+   P ("duration.natural.just_over", "чуть более {duration}");
+   P ("duration.natural.little_under", "чуть менее {duration}");
+   P ("duration.natural.few",
+      "{unit, select, second {{case, select, genitive {нескольких "
+      & "секунд} other {несколько секунд}}} minute {{case, "
+      & "select, genitive {нескольких минут} other "
+      & "{несколько минут}}} hour {{case, select, genitive "
+      & "{нескольких часов} other {несколько "
+      & "часов}}} day {{case, select, genitive {нескольких "
+      & "дней} other {несколько дней}}} week {{case, select, "
+      & "genitive {нескольких недель} other {несколько "
+      & "недель}}} month {{case, select, genitive {нескольких "
+      & "месяцев} other {несколько месяцев}}} year "
+      & "{{case, select, genitive {нескольких лет} other "
+      & "{несколько лет}}} other {несколько}}");
+   P ("duration.distance.past", "{duration} назад");
+   P ("duration.distance.future", "через {duration}");
+   P ("duration.case.within", "genitive");
+   P ("duration.case.next", "accusative");
+   P ("duration.case.between", "genitive");
+   P ("duration.case.stale_for", "accusative");
+   P ("duration.case.eta", "accusative");
+   P ("duration.case.distance.future", "accusative");
+   P ("duration.case.natural.over", "genitive");
+   P ("duration.case.natural.just_over", "genitive");
+   P ("duration.case.natural.little_under", "genitive");
+   P ("geo.direction.north", "{style, select, short {С} other {север}}");
+   P ("geo.direction.north_north_east",
+      "{style, select, short {ССВ} other "
+      & "{северо-северо-восток}}");
+   P ("geo.direction.north_east", "{style, select, short {СВ} other {северо-восток}}");
+   P ("geo.direction.east_north_east",
+      "{style, select, short {ВСВ} other "
+      & "{восток-северо-восток}}");
+   P ("geo.direction.east", "{style, select, short {В} other {восток}}");
+   P ("geo.direction.east_south_east",
+      "{style, select, short {ВЮВ} other "
+      & "{восток-юго-восток}}");
+   P ("geo.direction.south_east", "{style, select, short {ЮВ} other {юго-восток}}");
+   P ("geo.direction.south_south_east", "{style, select, short {ЮЮВ} other {юго-юго-восток}}");
+   P ("geo.direction.south", "{style, select, short {Ю} other {юг}}");
+   P ("geo.direction.south_south_west", "{style, select, short {ЮЮЗ} other {юго-юго-запад}}");
+   P ("geo.direction.south_west", "{style, select, short {ЮЗ} other {юго-запад}}");
+   P ("geo.direction.west_south_west", "{style, select, short {ЗЮЗ} other {запад-юго-запад}}");
+   P ("geo.direction.west", "{style, select, short {З} other {запад}}");
+   P ("geo.direction.west_north_west",
+      "{style, select, short {ЗСЗ} other "
+      & "{запад-северо-запад}}");
+   P ("geo.direction.north_west", "{style, select, short {СЗ} other {северо-запад}}");
+   P ("geo.direction.north_north_west",
+      "{style, select, short {ССЗ} other "
+      & "{северо-северо-запад}}");
+   P ("geo.bearing", "{degrees} {direction}");
+   P ("geo.distance_direction", "{distance} {direction}");
+   P ("geo.about_distance_direction", "примерно {distance} {direction}");
+   P ("geo.coordinate", "{latitude}, {longitude}");
+   P ("geo.bounding_box", "юго-запад: {southwest}; северо-восток: {northeast}");
+   P ("geo.inside_box", "внутри ограничивающей рамки");
+   P ("geo.outside_box", "вне ограничивающей рамки");
+   P ("number.about", "около {value}");
+   P ("number.almost", "почти {value}");
+   P ("number.over", "более {value}");
+   P ("number.plus_minus", "{value} ± {delta}");
+   P ("number.plus_minus_parenthesized", "{value} (± {delta})");
 end Locale_Ru;

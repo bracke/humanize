@@ -267,6 +267,7 @@ payment : invoice INV-42 open
 event : release review scheduled event
 endpoint : https api.example.test:443 domain host endpoint
 geo : 55.6761° N, 12.5683° E
+geo (de) : 55,6761° N, 12,5683° O
 version : minor upgrade: 1.2.0 -> 1.3.0
 resource : 82 of 100 CPU units used (82%, high utilization)
 moderation : comment 42 approved

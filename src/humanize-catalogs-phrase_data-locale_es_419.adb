@@ -35,4 +35,5 @@ begin
    P ("number.within", "{value} está dentro del rango {bounds}");
    P ("number.below", "{value} está por debajo del rango {bounds}");
    P ("number.above", "{value} está por encima del rango {bounds}");
+   P ("duration.expires", "vence {relative}");
 end Locale_Es_419;

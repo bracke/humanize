@@ -784,4 +784,72 @@ begin
    P ("number.change_more", "za {quantity} {tail} več");
    P ("number.change_fewer", "za {quantity} {tail} manj");
    P ("number.since", "{change} (od: {since})");
+   P ("duration.countdown", "še {duration}");
+   P ("duration.within", "v roku {duration}");
+   P ("duration.next", "za {duration} vnaprej");
+   P ("duration.between", "od {low} do {high}");
+   P ("duration.age", "starost: {duration}");
+   P ("duration.stale_for", "neposodobljeno že {duration}");
+   P ("duration.backup_age", "varnostna kopija je stara {duration}");
+   P ("duration.eta", "predviden čas: {duration}");
+   P ("duration.expires", "poteče {relative}");
+   P ("duration.retrying", "ponovni poskus {relative}");
+   P ("duration.modified", "spremenjeno {relative}");
+   P ("duration.synced", "sinhronizirano {relative}");
+   P ("duration.modified_now", "spremenjeno pravkar");
+   P ("duration.synced_now", "sinhronizirano pravkar");
+   P ("duration.natural.less_than_minute",
+      "{case, select, accusative {manj kot minuto} genitive {manj kot minute} "
+      & "instrumental {manj kot minuto} other {manj kot minuta}}");
+   P ("duration.natural.half_hour", "pol ure");
+   P ("duration.natural.about_half_hour", "približno pol ure");
+   P ("duration.natural.about", "približno {duration}");
+   P ("duration.natural.almost", "skoraj {duration}");
+   P ("duration.natural.over", "več kot {duration}");
+   P ("duration.natural.just_over", "nekaj več kot {duration}");
+   P ("duration.natural.little_under", "nekaj manj kot {duration}");
+   P ("duration.natural.few",
+      "{case, select, instrumental {{unit, select, second {nekaj sekundami} "
+      & "minute {nekaj minutami} hour {nekaj urami} day {nekaj dnevi} week "
+      & "{nekaj tedni} month {nekaj meseci} year {nekaj leti} other {nekaj}}} "
+      & "other {{unit, select, second {nekaj sekund} minute {nekaj minut} hour "
+      & "{nekaj ur} day {nekaj dni} week {nekaj tednov} month {nekaj mesecev} "
+      & "year {nekaj let} other {nekaj}}}}");
+   P ("duration.distance.past", "pred {duration}");
+   P ("duration.distance.future", "čez {duration}");
+   P ("duration.case.within", "genitive");
+   P ("duration.case.next", "accusative");
+   P ("duration.case.between", "genitive");
+   P ("duration.case.stale_for", "accusative");
+   P ("duration.case.backup_age", "accusative");
+   P ("duration.case.distance.past", "instrumental");
+   P ("duration.case.distance.future", "accusative");
+   P ("geo.direction.north", "{style, select, short {S} other {sever}}");
+   P ("geo.direction.north_north_east", "{style, select, short {SSV} other {sever-severovzhod}}");
+   P ("geo.direction.north_east", "{style, select, short {SV} other {severovzhod}}");
+   P ("geo.direction.east_north_east", "{style, select, short {VSV} other {vzhod-severovzhod}}");
+   P ("geo.direction.east", "{style, select, short {V} other {vzhod}}");
+   P ("geo.direction.east_south_east", "{style, select, short {VJV} other {vzhod-jugovzhod}}");
+   P ("geo.direction.south_east", "{style, select, short {JV} other {jugovzhod}}");
+   P ("geo.direction.south_south_east", "{style, select, short {JJV} other {jug-jugovzhod}}");
+   P ("geo.direction.south", "{style, select, short {J} other {jug}}");
+   P ("geo.direction.south_south_west", "{style, select, short {JJZ} other {jug-jugozahod}}");
+   P ("geo.direction.south_west", "{style, select, short {JZ} other {jugozahod}}");
+   P ("geo.direction.west_south_west", "{style, select, short {ZJZ} other {zahod-jugozahod}}");
+   P ("geo.direction.west", "{style, select, short {Z} other {zahod}}");
+   P ("geo.direction.west_north_west", "{style, select, short {ZSZ} other {zahod-severozahod}}");
+   P ("geo.direction.north_west", "{style, select, short {SZ} other {severozahod}}");
+   P ("geo.direction.north_north_west", "{style, select, short {SSZ} other {sever-severozahod}}");
+   P ("geo.bearing", "{degrees} {direction}");
+   P ("geo.distance_direction", "{distance} {direction}");
+   P ("geo.about_distance_direction", "približno {distance} {direction}");
+   P ("geo.coordinate", "{latitude}, {longitude}");
+   P ("geo.bounding_box", "jugozahod: {southwest}; severovzhod: {northeast}");
+   P ("geo.inside_box", "znotraj omejitvenega okvira");
+   P ("geo.outside_box", "zunaj omejitvenega okvira");
+   P ("number.about", "približno {value}");
+   P ("number.almost", "skoraj {value}");
+   P ("number.over", "več kot {value}");
+   P ("number.plus_minus", "{value} ± {delta}");
+   P ("number.plus_minus_parenthesized", "{value} (± {delta})");
 end Locale_Sl;

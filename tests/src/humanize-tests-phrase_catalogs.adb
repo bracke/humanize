@@ -200,7 +200,22 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"number.range_high_inclusive", +"number.at_least", +"number.more_than", +"number.at_most",
       +"number.less_than", +"number.exactly", +"number.within", +"number.below", +"number.above", +"number.per",
       +"number.one_in", +"number.out_of", +"number.unchanged", +"number.change_up", +"number.change_down",
-      +"number.change_more", +"number.change_fewer", +"number.since"];
+      +"number.change_more", +"number.change_fewer", +"number.since",
+      +"duration.countdown", +"duration.within", +"duration.next", +"duration.between", +"duration.age",
+      +"duration.stale_for", +"duration.backup_age", +"duration.eta", +"duration.expires", +"duration.retrying",
+      +"duration.modified", +"duration.synced", +"duration.modified_now", +"duration.synced_now",
+      +"duration.natural.less_than_minute", +"duration.natural.half_hour", +"duration.natural.about_half_hour",
+      +"duration.natural.about", +"duration.natural.almost", +"duration.natural.over",
+      +"duration.natural.just_over", +"duration.natural.little_under", +"duration.natural.few",
+      +"duration.distance.past", +"duration.distance.future", +"geo.direction.north",
+      +"geo.direction.north_north_east", +"geo.direction.north_east", +"geo.direction.east_north_east",
+      +"geo.direction.east", +"geo.direction.east_south_east", +"geo.direction.south_east",
+      +"geo.direction.south_south_east", +"geo.direction.south", +"geo.direction.south_south_west",
+      +"geo.direction.south_west", +"geo.direction.west_south_west", +"geo.direction.west",
+      +"geo.direction.west_north_west", +"geo.direction.north_west", +"geo.direction.north_north_west",
+      +"geo.bearing", +"geo.distance_direction", +"geo.about_distance_direction", +"geo.coordinate",
+      +"geo.bounding_box", +"geo.inside_box", +"geo.outside_box", +"number.about", +"number.almost",
+      +"number.over", +"number.plus_minus", +"number.plus_minus_parenthesized"];
 
    --  Every shipped locale besides English.
    Locales : constant array (Positive range <>) of Unbounded_String :=
@@ -300,6 +315,17 @@ package body Humanize.Tests.Phrase_Catalogs is
             Messages.Arguments.Set (Args, "last", "2026-10-15");
             Messages.Arguments.Set (Args, "available", Count);
             Messages.Arguments.Set (Args, "unavailable", Count);
+            Messages.Arguments.Set (Args, "duration", "3 h");
+            Messages.Arguments.Set (Args, "relative", "in 3 h");
+            Messages.Arguments.Set (Args, "case", "nominative");
+            Messages.Arguments.Set (Args, "style", (if Count = "1" then "short" else "long"));
+            Messages.Arguments.Set (Args, "degrees", "45");
+            Messages.Arguments.Set (Args, "direction", "NE");
+            Messages.Arguments.Set (Args, "distance", "5 km");
+            Messages.Arguments.Set (Args, "latitude", "52.52 N");
+            Messages.Arguments.Set (Args, "longitude", "13.4 E");
+            Messages.Arguments.Set (Args, "southwest", "52 N, 13 E");
+            Messages.Arguments.Set (Args, "northeast", "53 N, 14 E");
             for Locale of Locales loop
                for Key of Keys loop
                   declare
@@ -515,7 +541,8 @@ package body Humanize.Tests.Phrase_Catalogs is
       +"details", +"difference", +"measure", +"name", +"time", +"signal", +"choices", +"actual", +"endpoint",
       +"subject", +"text", +"detail", +"date", +"reason", +"path", +"kind", +"checksum", +"expected",
       +"offset", +"low", +"high", +"delta", +"bounds", +"numerator", +"denominator", +"whole", +"tail", +"change",
-      +"since"];
+      +"since", +"duration", +"relative", +"degrees", +"direction", +"distance", +"latitude", +"longitude",
+      +"southwest", +"northeast"];
 
    function Digits_Of (Value : Natural) return String is
      (Natural'Image (Value) (2 .. Natural'Image (Value)'Last));
@@ -664,6 +691,9 @@ package body Humanize.Tests.Phrase_Catalogs is
                Messages.Arguments.Set (Args, "domain", "sync");
                Messages.Arguments.Set (Args, "state", "running");
                Messages.Arguments.Set (Args, "phase", "mid");
+               Messages.Arguments.Set (Args, "case", "nominative");
+               Messages.Arguments.Set (Args, "style", "long");
+               Messages.Arguments.Set (Args, "unit", "hour");
                --  A gendered branch, where the locale has one, reads back too.
                Messages.Arguments.Set (Args, "gender", "feminine");
                declare

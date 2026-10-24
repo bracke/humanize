@@ -845,4 +845,99 @@ begin
    P ("number.change_more", "на {quantity} {tail} більше");
    P ("number.change_fewer", "на {quantity} {tail} менше");
    P ("number.since", "{change} (починаючи з: {since})");
+   P ("duration.countdown", "залишилося: {duration}");
+   P ("duration.within", "протягом {duration}");
+   P ("duration.next", "на {duration} уперед");
+   P ("duration.between", "від {low} до {high}");
+   P ("duration.age", "вік {duration}");
+   P ("duration.stale_for", "не оновлювалося {duration}");
+   P ("duration.backup_age", "резервній копії {duration}");
+   P ("duration.eta", "очікується через {duration}");
+   P ("duration.expires", "спливає {relative}");
+   P ("duration.retrying", "повтор {relative}");
+   P ("duration.modified", "змінено {relative}");
+   P ("duration.synced", "синхронізовано {relative}");
+   P ("duration.modified_now", "щойно змінено");
+   P ("duration.synced_now", "щойно синхронізовано");
+   P ("duration.natural.less_than_minute", "менше хвилини");
+   P ("duration.natural.half_hour", "пів години");
+   P ("duration.natural.about_half_hour", "близько пів години");
+   P ("duration.natural.about", "приблизно {duration}");
+   P ("duration.natural.almost", "майже {duration}");
+   P ("duration.natural.over", "понад {duration}");
+   P ("duration.natural.just_over", "трохи понад {duration}");
+   P ("duration.natural.little_under", "трохи менше {duration}");
+   P ("duration.natural.few",
+      "{unit, select, second {{case, select, genitive {кількох "
+      & "секунд} other {кілька секунд}}} minute {{case, "
+      & "select, genitive {кількох хвилин} other {кілька "
+      & "хвилин}}} hour {{case, select, genitive {кількох "
+      & "годин} other {кілька годин}}} day {{case, select, "
+      & "genitive {кількох днів} other {кілька днів}}} "
+      & "week {{case, select, genitive {кількох тижнів} other "
+      & "{кілька тижнів}}} month {{case, select, genitive "
+      & "{кількох місяців} other {кілька місяців}}} "
+      & "year {{case, select, genitive {кількох років} other "
+      & "{кілька років}}} other {кілька}}");
+   P ("duration.distance.past", "{duration} тому");
+   P ("duration.distance.future", "через {duration}");
+   P ("duration.case.within", "genitive");
+   P ("duration.case.next", "accusative");
+   P ("duration.case.between", "genitive");
+   P ("duration.case.stale_for", "accusative");
+   P ("duration.case.eta", "accusative");
+   P ("duration.case.distance.future", "accusative");
+   P ("duration.case.natural.over", "accusative");
+   P ("duration.case.natural.just_over", "accusative");
+   P ("duration.case.natural.little_under", "genitive");
+   P ("geo.direction.north", "{style, select, short {Пн} other {північ}}");
+   P ("geo.direction.north_north_east",
+      "{style, select, short {ПнПнСх} other "
+      & "{північно-північний схід}}");
+   P ("geo.direction.north_east", "{style, select, short {ПнСх} other {північний схід}}");
+   P ("geo.direction.east_north_east",
+      "{style, select, short {СхПнСх} other "
+      & "{східно-північний схід}}");
+   P ("geo.direction.east", "{style, select, short {Сх} other {схід}}");
+   P ("geo.direction.east_south_east",
+      "{style, select, short {СхПдСх} other "
+      & "{східно-південний схід}}");
+   P ("geo.direction.south_east", "{style, select, short {ПдСх} other {південний схід}}");
+   P ("geo.direction.south_south_east",
+      "{style, select, short {ПдПдСх} other "
+      & "{південно-південний схід}}");
+   P ("geo.direction.south", "{style, select, short {Пд} other {південь}}");
+   P ("geo.direction.south_south_west",
+      "{style, select, short {ПдПдЗх} other "
+      & "{південно-південний захід}}");
+   P ("geo.direction.south_west",
+      "{style, select, short {ПдЗх} other {південний "
+      & "захід}}");
+   P ("geo.direction.west_south_west",
+      "{style, select, short {ЗхПдЗх} other "
+      & "{західно-південний захід}}");
+   P ("geo.direction.west", "{style, select, short {Зх} other {захід}}");
+   P ("geo.direction.west_north_west",
+      "{style, select, short {ЗхПнЗх} other "
+      & "{західно-північний захід}}");
+   P ("geo.direction.north_west",
+      "{style, select, short {ПнЗх} other {північний "
+      & "захід}}");
+   P ("geo.direction.north_north_west",
+      "{style, select, short {ПнПнЗх} other "
+      & "{північно-північний захід}}");
+   P ("geo.bearing", "{degrees} {direction}");
+   P ("geo.distance_direction", "{distance} {direction}");
+   P ("geo.about_distance_direction", "приблизно {distance} {direction}");
+   P ("geo.coordinate", "{latitude}, {longitude}");
+   P ("geo.bounding_box",
+      "південний захід: {southwest}; північний "
+      & "схід: {northeast}");
+   P ("geo.inside_box", "у межах обмежувальної рамки");
+   P ("geo.outside_box", "поза обмежувальною рамкою");
+   P ("number.about", "близько {value}");
+   P ("number.almost", "майже {value}");
+   P ("number.over", "понад {value}");
+   P ("number.plus_minus", "{value} ± {delta}");
+   P ("number.plus_minus_parenthesized", "{value} (± {delta})");
 end Locale_Uk;

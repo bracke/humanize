@@ -19,6 +19,12 @@ package body Humanize.Durations.Formatting is
    function Num (S : Sel.Message_Selection; Name : String; Value : Standard.Natural) return Sel.Message_Selection is
      (Sel.With_Arg (S, Name, Long_Long_Integer (Value)));
 
+   function With_Base
+     (Base   : Humanize.Status.Text_Result;
+      Prefix : String := "";
+      Suffix : String := "")
+      return Humanize.Status.Text_Result;
+
    type Precise_Component is record
       Unit  : Precise_Duration_Unit := Millisecond;
       Count : Long_Long_Integer := 0;
@@ -1102,21 +1108,38 @@ package body Humanize.Durations.Formatting is
          Key    => Humanize.Message_Keys.No_Message);
    end Format_Range;
 
+   --  Outside English, a duration as phrase "duration.<Frame>" frames it:
+   --  in the case the locale's "duration.case.<Frame>" names, as CLDR's
+   --  relative time ("vor 3 Stunden"), or with no duration at all; English
+   --  -- or where the locale cannot render it -- as the caller wrote it.
+   type Frame_Shape is (Framed_Duration, Framed_Past, Framed_Future, Framed_Now);
+
+   function Cased_Duration
+     (Context : Humanize.Contexts.Context;
+      Seconds : Duration_Seconds;
+      Options : Duration_Options;
+      Frame   : String)
+      return String is separate;
+
+   function Framed
+     (Context : Humanize.Contexts.Context;
+      Seconds : Duration_Seconds;
+      Options : Duration_Options;
+      Frame   : String;
+      Shape   : Frame_Shape;
+      English : Humanize.Status.Text_Result)
+      return Humanize.Status.Text_Result is separate;
+
    function Countdown
      (Context : Humanize.Contexts.Context;
       Seconds : Duration_Seconds;
       Options : Duration_Options := Default_Duration_Options)
       return Humanize.Status.Text_Result
    is
-      Base : constant Humanize.Status.Text_Result := Format (Context, Seconds, Options);
    begin
-      if Base.Status /= Humanize.Status.Ok then
-         return Base;
-      end if;
-      return
-        (Status => Humanize.Status.Ok,
-         Text   => To_Unbounded_String (To_String (Base.Text) & " remaining"),
-         Key    => Humanize.Message_Keys.No_Message);
+      return Framed
+        (Context, Seconds, Options, "countdown", Framed_Duration,
+         With_Base (Format (Context, Seconds, Options), Suffix => " remaining"));
    end Countdown;
 
    function SLA_Window
@@ -1125,15 +1148,10 @@ package body Humanize.Durations.Formatting is
       Options : Duration_Options := Default_Duration_Options)
       return Humanize.Status.Text_Result
    is
-      Base : constant Humanize.Status.Text_Result := Format (Context, Seconds, Options);
    begin
-      if Base.Status /= Humanize.Status.Ok then
-         return Base;
-      end if;
-      return
-        (Status => Humanize.Status.Ok,
-         Text   => To_Unbounded_String ("within " & To_String (Base.Text)),
-         Key    => Humanize.Message_Keys.No_Message);
+      return Framed
+        (Context, Seconds, Options, "within", Framed_Duration,
+         With_Base (Format (Context, Seconds, Options), "within "));
    end SLA_Window;
 
    function Duration_Text
@@ -1174,32 +1192,7 @@ package body Humanize.Durations.Formatting is
       Options : Duration_Options := Default_Duration_Options;
       Phrase  : Duration_Phrase_Options := Default_Duration_Phrase_Options)
       return Humanize.Status.Text_Result
-   is
-      Left  : constant Humanize.Status.Text_Result := Format (Context, Low, Options);
-      Right : constant Humanize.Status.Text_Result := Format (Context, High, Options);
-      Prefix : constant String :=
-        (case Phrase.Style is
-            when Natural_Wording => "between ",
-            when Compact_Label => "");
-      Joiner : constant String :=
-        (case Phrase.Style is
-            when Natural_Wording => " and ",
-            when Compact_Label => "-");
-   begin
-      if Low < 0 or else High < 0 or else High < Low then
-         return (Status => Humanize.Status.Invalid_Value, others => <>);
-      elsif Left.Status /= Humanize.Status.Ok then
-         return Left;
-      elsif Right.Status /= Humanize.Status.Ok then
-         return Right;
-      else
-         return
-           (Status => Humanize.Status.Ok,
-            Text   => To_Unbounded_String
-              (Prefix & To_String (Left.Text) & Joiner & To_String (Right.Text)),
-            Key    => Humanize.Message_Keys.No_Message);
-      end if;
-   end Interval;
+   is separate;
 
    function Next_Window
      (Context : Humanize.Contexts.Context;
@@ -1208,11 +1201,14 @@ package body Humanize.Durations.Formatting is
       Phrase  : Duration_Phrase_Options := Default_Duration_Phrase_Options)
       return Humanize.Status.Text_Result is
    begin
-      return With_Base
-        (Format (Context, Seconds, Options),
-         (case Phrase.Style is
-             when Natural_Wording => "next ",
-             when Compact_Label => ""));
+      case Phrase.Style is
+         when Natural_Wording =>
+            return Framed
+              (Context, Seconds, Options, "next", Framed_Duration,
+               With_Base (Format (Context, Seconds, Options), "next "));
+         when Compact_Label =>
+            return Format (Context, Seconds, Options);
+      end case;
    end Next_Window;
 
    function Age
@@ -1221,7 +1217,9 @@ package body Humanize.Durations.Formatting is
       Options : Duration_Options := Default_Duration_Options)
       return Humanize.Status.Text_Result is
    begin
-      return With_Base (Format (Context, Seconds, Options), Suffix => " old");
+      return Framed
+        (Context, Seconds, Options, "age", Framed_Duration,
+         With_Base (Format (Context, Seconds, Options), Suffix => " old"));
    end Age;
 
    function Stale_For
@@ -1230,7 +1228,9 @@ package body Humanize.Durations.Formatting is
       Options : Duration_Options := Default_Duration_Options)
       return Humanize.Status.Text_Result is
    begin
-      return With_Base (Format (Context, Seconds, Options), "stale for ");
+      return Framed
+        (Context, Seconds, Options, "stale_for", Framed_Duration,
+         With_Base (Format (Context, Seconds, Options), "stale for "));
    end Stale_For;
 
    function Expires_In
@@ -1239,7 +1239,9 @@ package body Humanize.Durations.Formatting is
       Options : Duration_Options := Default_Duration_Options)
       return Humanize.Status.Text_Result is
    begin
-      return With_Base (Format (Context, Seconds, Options), "expires in ");
+      return Framed
+        (Context, Seconds, Options, "expires", Framed_Future,
+         With_Base (Format (Context, Seconds, Options), "expires in "));
    end Expires_In;
 
    function Modified_Ago
@@ -1248,8 +1250,10 @@ package body Humanize.Durations.Formatting is
       Options : Duration_Options := Default_Duration_Options)
       return Humanize.Status.Text_Result is
    begin
-      return With_Base (Duration_Text (Context, Seconds, Options), "modified ",
-                        (if Seconds = 0 then "" else " ago"));
+      return Framed
+        (Context, Seconds, Options, (if Seconds = 0 then "modified_now" else "modified"),
+         (if Seconds = 0 then Framed_Now else Framed_Past),
+         With_Base (Duration_Text (Context, Seconds, Options), "modified ", (if Seconds = 0 then "" else " ago")));
    end Modified_Ago;
 
    function Synced_Ago
@@ -1258,8 +1262,10 @@ package body Humanize.Durations.Formatting is
       Options : Duration_Options := Default_Duration_Options)
       return Humanize.Status.Text_Result is
    begin
-      return With_Base (Duration_Text (Context, Seconds, Options), "synced ",
-                        (if Seconds = 0 then "" else " ago"));
+      return Framed
+        (Context, Seconds, Options, (if Seconds = 0 then "synced_now" else "synced"),
+         (if Seconds = 0 then Framed_Now else Framed_Past),
+         With_Base (Duration_Text (Context, Seconds, Options), "synced ", (if Seconds = 0 then "" else " ago")));
    end Synced_Ago;
 
    function Backup_Age
@@ -1268,7 +1274,9 @@ package body Humanize.Durations.Formatting is
       Options : Duration_Options := Default_Duration_Options)
       return Humanize.Status.Text_Result is
    begin
-      return With_Base (Format (Context, Seconds, Options), "backup is ", " old");
+      return Framed
+        (Context, Seconds, Options, "backup_age", Framed_Duration,
+         With_Base (Format (Context, Seconds, Options), "backup is ", " old"));
    end Backup_Age;
 
    function Complete_Count
@@ -1288,7 +1296,9 @@ package body Humanize.Durations.Formatting is
       Options : Duration_Options := Default_Duration_Options)
       return Humanize.Status.Text_Result is
    begin
-      return With_Base (Format (Context, Seconds, Options), "retrying in ");
+      return Framed
+        (Context, Seconds, Options, "retrying", Framed_Future,
+         With_Base (Format (Context, Seconds, Options), "retrying in "));
    end Retry_In;
 
    function Step_Count
@@ -1309,7 +1319,8 @@ package body Humanize.Durations.Formatting is
       Options : Duration_Options := Default_Duration_Options)
       return Humanize.Status.Text_Result is
    begin
-      return With_Base (Format (Context, Seconds, Options), "ETA ");
+      return Framed
+        (Context, Seconds, Options, "eta", Framed_Duration, With_Base (Format (Context, Seconds, Options), "ETA "));
    end ETA;
 
    function Throughput_Remaining

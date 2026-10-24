@@ -891,4 +891,104 @@ begin
    P ("number.change_more", "{quantity} अधिक {tail}");
    P ("number.change_fewer", "{quantity} कम {tail}");
    P ("number.since", "{since} से {change}");
+   P ("duration.countdown", "{duration} शेष");
+   P ("duration.within", "{duration} के भीतर");
+   P ("duration.next", "अगले {duration}");
+   P ("duration.between", "{low} से {high} के बीच");
+   P ("duration.age", "{duration} पुराना");
+   P ("duration.stale_for", "{duration} से अपडेट नहीं हुआ");
+   P ("duration.backup_age", "बैकअप {duration} पुराना है");
+   P ("duration.eta", "अनुमानित समय {duration}");
+   P ("duration.expires", "{relative} समाप्त होगा");
+   P ("duration.retrying", "{relative} पुनः प्रयास");
+   P ("duration.modified", "{relative} संशोधित");
+   P ("duration.synced", "{relative} सिंक हुआ");
+   P ("duration.modified_now", "अभी-अभी संशोधित");
+   P ("duration.synced_now", "अभी-अभी सिंक हुआ");
+   P ("duration.natural.less_than_minute", "एक मिनट से कम");
+   P ("duration.natural.half_hour",
+      "{case, select, oblique {आधे घंटे} other {आधा "
+      & "घंटा}}");
+   P ("duration.natural.about_half_hour",
+      "{case, select, oblique {लगभग आधे घंटे} other "
+      & "{लगभग आधा घंटा}}");
+   P ("duration.natural.about", "लगभग {duration}");
+   P ("duration.natural.almost", "करीब-करीब {duration}");
+   P ("duration.natural.over", "{duration} से अधिक");
+   P ("duration.natural.just_over", "{duration} से थोड़ा अधिक");
+   P ("duration.natural.little_under", "{duration} से थोड़ा कम");
+   P ("duration.natural.few",
+      "{unit, select, second {{case, select, oblique {कुछ "
+      & "सेकंड} other {कुछ सेकंड}}} minute {{case, "
+      & "select, oblique {कुछ मिनट} other {कुछ "
+      & "मिनट}}} hour {{case, select, oblique {कुछ "
+      & "घंटों} other {कुछ घंटे}}} day {{case, select, "
+      & "oblique {कुछ दिनों} other {कुछ दिन}}} week "
+      & "{{case, select, oblique {कुछ सप्ताहों} other "
+      & "{कुछ सप्ताह}}} month {{case, select, oblique "
+      & "{कुछ महीनों} other {कुछ महीने}}} "
+      & "year {{case, select, oblique {कुछ सालों} other "
+      & "{कुछ साल}}} other {कुछ}}");
+   P ("duration.distance.past", "{duration} पहले");
+   P ("duration.distance.future", "{duration} में");
+   P ("duration.case.within", "oblique");
+   P ("duration.case.between", "oblique");
+   P ("duration.case.stale_for", "oblique");
+   P ("duration.case.natural.over", "oblique");
+   P ("duration.case.natural.just_over", "oblique");
+   P ("duration.case.natural.little_under", "oblique");
+   P ("geo.direction.north", "{style, select, short {उ} other {उत्तर}}");
+   P ("geo.direction.north_north_east",
+      "{style, select, short {उउपू} other "
+      & "{उत्तर-उत्तरपूर्व}}");
+   P ("geo.direction.north_east",
+      "{style, select, short {उपू} other "
+      & "{उत्तरपूर्व}}");
+   P ("geo.direction.east_north_east",
+      "{style, select, short {पूउपू} other "
+      & "{पूर्व-उत्तरपूर्व}}");
+   P ("geo.direction.east", "{style, select, short {पू} other {पूर्व}}");
+   P ("geo.direction.east_south_east",
+      "{style, select, short {पूदपू} other "
+      & "{पूर्व-दक्षिणपूर्व}}");
+   P ("geo.direction.south_east",
+      "{style, select, short {दपू} other "
+      & "{दक्षिणपूर्व}}");
+   P ("geo.direction.south_south_east",
+      "{style, select, short {ददपू} other "
+      & "{दक्षिण-दक्षिणपूर्व}}");
+   P ("geo.direction.south", "{style, select, short {द} other {दक्षिण}}");
+   P ("geo.direction.south_south_west",
+      "{style, select, short {ददप} other "
+      & "{दक्षिण-दक्षिणपश्चिम}}");
+   P ("geo.direction.south_west",
+      "{style, select, short {दप} other "
+      & "{दक्षिणपश्चिम}}");
+   P ("geo.direction.west_south_west",
+      "{style, select, short {पदप} other "
+      & "{पश्चिम-दक्षिणपश्चिम}}");
+   P ("geo.direction.west", "{style, select, short {प} other {पश्चिम}}");
+   P ("geo.direction.west_north_west",
+      "{style, select, short {पउप} other "
+      & "{पश्चिम-उत्तरपश्चिम}}");
+   P ("geo.direction.north_west",
+      "{style, select, short {उप} other "
+      & "{उत्तरपश्चिम}}");
+   P ("geo.direction.north_north_west",
+      "{style, select, short {उउप} other "
+      & "{उत्तर-उत्तरपश्चिम}}");
+   P ("geo.bearing", "{degrees} {direction}");
+   P ("geo.distance_direction", "{distance} {direction}");
+   P ("geo.about_distance_direction", "लगभग {distance} {direction}");
+   P ("geo.coordinate", "{latitude}, {longitude}");
+   P ("geo.bounding_box",
+      "दक्षिणपश्चिम {southwest}; "
+      & "उत्तरपूर्व {northeast}");
+   P ("geo.inside_box", "सीमा बॉक्स के अंदर");
+   P ("geo.outside_box", "सीमा बॉक्स के बाहर");
+   P ("number.about", "लगभग {value}");
+   P ("number.almost", "करीब-करीब {value}");
+   P ("number.over", "{value} से अधिक");
+   P ("number.plus_minus", "{value} ± {delta}");
+   P ("number.plus_minus_parenthesized", "{value} (± {delta})");
 end Locale_Hi;

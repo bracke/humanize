@@ -898,4 +898,79 @@ begin
    P ("number.change_more", "زيادة {quantity} {tail}");
    P ("number.change_fewer", "نقص {quantity} {tail}");
    P ("number.since", "{change} منذ {since}");
+   P ("duration.countdown", "يتبقى {duration}");
+   P ("duration.within", "خلال {duration}");
+   P ("duration.next", "خلال {duration} من الآن");
+   P ("duration.between", "بين {low} و{high}");
+   P ("duration.age", "العمر {duration}");
+   P ("duration.stale_for", "لم يُحدَّث منذ {duration}");
+   P ("duration.backup_age", "عمر النسخة الاحتياطية {duration}");
+   P ("duration.eta", "الوقت المقدَّر {duration}");
+   P ("duration.expires", "تنتهي الصلاحية {relative}");
+   P ("duration.retrying", "إعادة المحاولة {relative}");
+   P ("duration.modified", "عُدِّل {relative}");
+   P ("duration.synced", "تمت المزامنة {relative}");
+   P ("duration.modified_now", "عُدِّل للتو");
+   P ("duration.synced_now", "تمت المزامنة للتو");
+   P ("duration.natural.less_than_minute", "أقل من دقيقة");
+   P ("duration.natural.half_hour", "نصف ساعة");
+   P ("duration.natural.about_half_hour", "حوالي نصف ساعة");
+   P ("duration.natural.about", "حوالي {duration}");
+   P ("duration.natural.almost", "قرابة {duration}");
+   P ("duration.natural.over", "أكثر من {duration}");
+   P ("duration.natural.just_over", "أكثر بقليل من {duration}");
+   P ("duration.natural.little_under", "أقل بقليل من {duration}");
+   P ("duration.natural.few",
+      "{unit, select, second {بضع ثوانٍ} minute {بضع دقائق} "
+      & "hour {بضع ساعات} day {بضعة أيام} week {بضعة "
+      & "أسابيع} month {بضعة أشهر} year {بضع سنوات} other "
+      & "{بضعة}}");
+   P ("duration.distance.past", "قبل {duration}");
+   P ("duration.distance.future", "خلال {duration}");
+   P ("geo.direction.north", "{style, select, short {ش} other {شمال}}");
+   P ("geo.direction.north_north_east",
+      "{style, select, short {ش ش ق} other {شمال الشمال "
+      & "الشرقي}}");
+   P ("geo.direction.north_east", "{style, select, short {ش ق} other {شمال شرق}}");
+   P ("geo.direction.east_north_east",
+      "{style, select, short {ق ش ق} other {شرق الشمال "
+      & "الشرقي}}");
+   P ("geo.direction.east", "{style, select, short {ق} other {شرق}}");
+   P ("geo.direction.east_south_east",
+      "{style, select, short {ق ج ق} other {شرق الجنوب "
+      & "الشرقي}}");
+   P ("geo.direction.south_east", "{style, select, short {ج ق} other {جنوب شرق}}");
+   P ("geo.direction.south_south_east",
+      "{style, select, short {ج ج ق} other {جنوب الجنوب "
+      & "الشرقي}}");
+   P ("geo.direction.south", "{style, select, short {ج} other {جنوب}}");
+   P ("geo.direction.south_south_west",
+      "{style, select, short {ج ج غ} other {جنوب الجنوب "
+      & "الغربي}}");
+   P ("geo.direction.south_west", "{style, select, short {ج غ} other {جنوب غرب}}");
+   P ("geo.direction.west_south_west",
+      "{style, select, short {غ ج غ} other {غرب الجنوب "
+      & "الغربي}}");
+   P ("geo.direction.west", "{style, select, short {غ} other {غرب}}");
+   P ("geo.direction.west_north_west",
+      "{style, select, short {غ ش غ} other {غرب الشمال "
+      & "الغربي}}");
+   P ("geo.direction.north_west", "{style, select, short {ش غ} other {شمال غرب}}");
+   P ("geo.direction.north_north_west",
+      "{style, select, short {ش ش غ} other {شمال الشمال "
+      & "الغربي}}");
+   P ("geo.bearing", "{degrees} {direction}");
+   P ("geo.distance_direction", "{distance} {direction}");
+   P ("geo.about_distance_direction", "حوالي {distance} {direction}");
+   P ("geo.coordinate", "{latitude}، {longitude}");
+   P ("geo.bounding_box",
+      "الجنوب الغربي {southwest}؛ الشمال الشرقي "
+      & "{northeast}");
+   P ("geo.inside_box", "داخل المربع المحيط");
+   P ("geo.outside_box", "خارج المربع المحيط");
+   P ("number.about", "حوالي {value}");
+   P ("number.almost", "قرابة {value}");
+   P ("number.over", "أكثر من {value}");
+   P ("number.plus_minus", "{value} ± {delta}");
+   P ("number.plus_minus_parenthesized", "{value} (± {delta})");
 end Locale_Ar;

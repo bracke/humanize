@@ -1,17 +1,23 @@
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
+with Messages.Runtime;
+
 with Humanize.Accounts;
+with Humanize.Catalogs;
+with Humanize.Contexts;
 with Humanize.Domain_Details;
 with Humanize.Endpoints;
 with Humanize.Events;
 with Humanize.Geo;
+with Humanize.Geo.Localized;
 with Humanize.Moderation;
 with Humanize.Notification_Preferences;
 with Humanize.Payments;
 with Humanize.Resources;
 with Humanize.Status;
 with Humanize.Versions;
+with Humanize_Demo_Runtime;
 
 procedure Product_Details_Demo is
    use Ada.Strings.Unbounded;
@@ -20,6 +26,8 @@ procedure Product_Details_Demo is
    begin
       Ada.Text_IO.Put_Line (Label & " : " & To_String (Result.Text));
    end Put_Result;
+
+   Loaded : Messages.Runtime.Load_Result;
 begin
    Put_Result
      ("account",
@@ -38,6 +46,12 @@ begin
       Humanize.Endpoints.Endpoint_Label
         ("api.example.test", Port => 443, Scheme => "https"));
    Put_Result ("geo", Humanize.Geo.Coordinate_Label (55.6761, 12.5683));
+   --  The same coordinate in German: CLDR's hemispheres, German digits.
+   Humanize.Catalogs.Load_Defaults (Humanize_Demo_Runtime.Runtime, Loaded, Locale => "de");
+   Put_Result
+     ("geo (de)",
+      Humanize.Geo.Localized.Coordinate_Label
+        (Humanize.Contexts.Create (Humanize_Demo_Runtime.Runtime'Access, "de"), 55.6761, 12.5683));
    Put_Result
      ("version",
       Humanize.Versions.Version_Delta_Label

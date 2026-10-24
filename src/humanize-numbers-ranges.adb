@@ -254,24 +254,7 @@ package body Humanize.Numbers.Ranges is
       Options     : Number_Options := Default_Number_Options;
       Style       : Uncertainty_Style := Plus_Minus_Uncertainty)
       return Humanize.Status.Text_Result
-   is
-      Center : constant String := Decimal_Text (Value, Options);
-      Delta_Text  : constant String := Decimal_Text (Uncertainty, Options);
-   begin
-      if Uncertainty < 0.0 then
-         return (Status => Humanize.Status.Invalid_Value, others => <>);
-      end if;
-
-      case Style is
-         when Plus_Minus_Uncertainty =>
-            return Ok_Text (Center & " +/- " & Delta_Text);
-         when Parenthesized_Uncertainty =>
-            return Ok_Text (Center & " (+/- " & Delta_Text & ")");
-         when Interval_Uncertainty =>
-            return Decimal_Range
-              (Context, Value - Uncertainty, Value + Uncertainty, Options);
-      end case;
-   end Uncertainty_Label;
+   is separate;
 
    function Decimal_Range_Words
      (Context         : Humanize.Contexts.Context;
@@ -454,9 +437,10 @@ package body Humanize.Numbers.Ranges is
       Tolerance : Natural)
       return Humanize.Status.Text_Result
    is
-      pragma Unreferenced (Context);
    begin
-      return Ok_Text (Plain (Center) & " +/- " & Natural_Text (Tolerance));
+      return Say (Context, Plain (Center) & " +/- " & Natural_Text (Tolerance), "number.plus_minus",
+                  "value", Number_Text (Context, Center),
+                  "delta", Number_Text (Context, Long_Long_Integer (Tolerance)));
    end Tolerance_Range;
 
    function Threshold

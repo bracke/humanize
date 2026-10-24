@@ -1,6 +1,8 @@
 with Ada.Strings.Unbounded;
 
 with Humanize.Bounded_Text;
+with Humanize.I18N_Rendering;
+with Humanize.Locales;
 with Humanize.Message_Keys;
 
 package body Humanize.Durations.Natural is
@@ -130,6 +132,36 @@ package body Humanize.Durations.Natural is
       end if;
    end Natural_Unit_Seconds;
 
+   --  The unit an approximation names and its count, rounded up past the
+   --  threshold where Round_Up.
+   procedure Approximate_Count
+     (Seconds       : Duration_Seconds;
+      Round_Up      : Boolean;
+      Options       : Natural_Duration_Approximation_Options;
+      Prefer_Larger : Boolean;
+      Unit_Seconds  : out Duration_Seconds;
+      Count         : out Duration_Seconds)
+   is
+      Unit : constant Duration_Seconds :=
+        Natural_Unit_Seconds
+          (Seconds, Prefer_Larger, Options.Larger_Unit_Threshold_Percent);
+      Raw_Count : constant Duration_Seconds := Seconds / Unit;
+      Base_Count : constant Duration_Seconds :=
+        Duration_Seconds'Max (1, Raw_Count);
+      Remainder : constant Duration_Seconds := Seconds mod Unit;
+      Should_Round_Up : constant Boolean :=
+        Round_Up
+        and then Remainder > 0
+        and then Remainder * 100
+          >= Unit * Duration_Seconds (Options.Round_Up_Threshold_Percent);
+   begin
+      Unit_Seconds := Unit;
+      Count :=
+        (if Should_Round_Up and then Raw_Count > 0
+         then Base_Count + 1
+         else Base_Count);
+   end Approximate_Count;
+
    function Natural_Approximation_Text
      (Prefix                    : String;
       Seconds                   : Duration_Seconds;
@@ -138,27 +170,31 @@ package body Humanize.Durations.Natural is
       Prefer_Larger             : Boolean := False)
       return String
    is
-      Unit_Seconds : constant Duration_Seconds :=
-        Natural_Unit_Seconds
-          (Seconds, Prefer_Larger, Options.Larger_Unit_Threshold_Percent);
-      Raw_Count : constant Duration_Seconds := Seconds / Unit_Seconds;
-      Base_Count : constant Duration_Seconds :=
-        Duration_Seconds'Max (1, Raw_Count);
-      Remainder : constant Duration_Seconds := Seconds mod Unit_Seconds;
-      Should_Round_Up : constant Boolean :=
-        Round_Up
-        and then Remainder > 0
-        and then Remainder * 100
-          >= Unit_Seconds
-             * Duration_Seconds (Options.Round_Up_Threshold_Percent);
-      Count : constant Duration_Seconds :=
-        (if Should_Round_Up and then Raw_Count > 0
-         then Base_Count + 1
-         else Base_Count);
+      Unit_Seconds : Duration_Seconds;
+      Count        : Duration_Seconds;
    begin
+      Approximate_Count (Seconds, Round_Up, Options, Prefer_Larger, Unit_Seconds, Count);
       return Prefix & " " & Integer_Text (Long_Long_Integer (Count))
         & " " & Natural_Unit_Name (Unit_Seconds, Count);
    end Natural_Approximation_Text;
+
+   function English (Context : Humanize.Contexts.Context) return Boolean is
+     (Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context)) in "en" | "");
+
+   --  Outside English, Seconds as Style words it, in Outer_Case where a
+   --  frame governs one ("nominative" for none); "" where the locale cannot
+   --  render it.
+   function Localized_Natural
+     (Context       : Humanize.Contexts.Context;
+      Seconds       : Duration_Seconds;
+      Style         : Natural_Duration_Style;
+      Approximation : Natural_Duration_Approximation_Options;
+      Outer_Case    : String)
+      return String is separate;
+
+   function Preset_Approximation
+     (Preset : Natural_Duration_Threshold_Preset)
+      return Natural_Duration_Approximation_Options;
 
    function Natural_Duration_Preset_Style
      (Seconds : Duration_Seconds;
@@ -237,6 +273,17 @@ package body Humanize.Durations.Natural is
       Minutes : constant Duration_Seconds := (Abs_Seconds mod 3_600) / 60;
       Seconds_Part : constant Duration_Seconds := Abs_Seconds mod 60;
    begin
+      if not English (Context) then
+         declare
+            Text : constant String :=
+              Localized_Natural (Context, Abs_Seconds, Options.Style, Approximation, "nominative");
+         begin
+            if Text /= "" then
+               return (Status => Humanize.Status.Ok, Text => To_Unbounded_String (Text),
+                       Key => Humanize.Message_Keys.No_Message);
+            end if;
+         end;
+      end if;
       if Options.Style = Brief_Duration
         or else Options.Style = Brief_Precise_Duration
       then
@@ -363,6 +410,18 @@ package body Humanize.Durations.Natural is
       Style : constant Natural_Duration_Style :=
         Natural_Duration_Preset_Style (Abs_Seconds, Preset);
       Approximation : constant Natural_Duration_Approximation_Options :=
+        Preset_Approximation (Preset);
+   begin
+      return Natural_Duration_Internal
+        (Context, Abs_Seconds, (Style => Style), Approximation);
+   end Natural_Duration;
+
+   function Preset_Approximation
+     (Preset : Natural_Duration_Threshold_Preset)
+      return Natural_Duration_Approximation_Options
+   is
+   begin
+      return
         (case Preset is
             when Threshold_Default =>
               Default_Natural_Duration_Approximation_Options,
@@ -375,10 +434,7 @@ package body Humanize.Durations.Natural is
             when Threshold_Conversational =>
               (Round_Up_Threshold_Percent => 25,
                Larger_Unit_Threshold_Percent => 70));
-   begin
-      return Natural_Duration_Internal
-        (Context, Abs_Seconds, (Style => Style), Approximation);
-   end Natural_Duration;
+   end Preset_Approximation;
 
    function Duration_Distance
      (Context   : Humanize.Contexts.Context;
@@ -392,6 +448,29 @@ package body Humanize.Durations.Natural is
    begin
       if Base.Status /= Humanize.Status.Ok then
          return Base;
+      end if;
+
+      --  Outside English, the locale's "ago"/"in" frame around the natural
+      --  duration, in the case the frame governs.
+      if Direction /= Duration_Distance_Plain and then not English (Context) then
+         declare
+            Abs_Seconds : constant Duration_Seconds := Duration_Seconds'Max (0, Seconds);
+            Frame : constant String :=
+              (if Direction = Duration_Distance_Past then "distance.past" else "distance.future");
+            Named : constant String := Humanize.I18N_Rendering.Phrase_Text (Context, "duration.case." & Frame);
+            Inside : constant String :=
+              Localized_Natural
+                (Context, Abs_Seconds, Natural_Duration_Preset_Style (Abs_Seconds, Preset),
+                 Preset_Approximation (Preset), (if Named = "" then "nominative" else Named));
+            Text : constant String :=
+              (if Inside = "" then ""
+               else Humanize.I18N_Rendering.Phrase_Text_With (Context, "duration." & Frame, "duration", Inside));
+         begin
+            if Text /= "" then
+               return (Status => Humanize.Status.Ok, Text => To_Unbounded_String (Text),
+                       Key => Humanize.Message_Keys.No_Message);
+            end if;
+         end;
       end if;
 
       case Direction is
@@ -440,6 +519,28 @@ package body Humanize.Durations.Natural is
 
       if Base.Status /= Humanize.Status.Ok then
          return Base;
+      end if;
+
+      --  Outside English, the components inside the locale's qualifier ("a
+      --  few" reads as "about": its phrase names a single unit).
+      if Prefix /= "" and then not English (Context) then
+         declare
+            Qualifier : constant String :=
+              (case Options.Prefix is
+                  when Almost_Duration => "almost",
+                  when Over_Duration => "over",
+                  when Just_Over_Duration => "just_over",
+                  when Little_Under_Duration => "little_under",
+                  when others => "about");
+            Text : constant String :=
+              Humanize.I18N_Rendering.Phrase_Text_With
+                (Context, "duration.natural." & Qualifier, "duration", To_String (Base.Text));
+         begin
+            if Text /= "" then
+               return (Status => Humanize.Status.Ok, Text => To_Unbounded_String (Text),
+                       Key => Humanize.Message_Keys.No_Message);
+            end if;
+         end;
       end if;
 
       return

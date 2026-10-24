@@ -838,4 +838,78 @@ begin
    P ("number.change_more", "o {quantity} {tail} viac");
    P ("number.change_fewer", "o {quantity} {tail} menej");
    P ("number.since", "{change} (od: {since})");
+   P ("duration.countdown", "{duration} do konca");
+   P ("duration.within", "v priebehu {duration}");
+   P ("duration.next", "na {duration} dopredu");
+   P ("duration.between", "od {low} do {high}");
+   P ("duration.age", "vek {duration}");
+   P ("duration.stale_for", "neaktuálne už {duration}");
+   P ("duration.backup_age", "záloha je stará {duration}");
+   P ("duration.eta", "odhadovaný čas: {duration}");
+   P ("duration.expires", "vyprší {relative}");
+   P ("duration.retrying", "ďalší pokus {relative}");
+   P ("duration.modified", "zmenené {relative}");
+   P ("duration.synced", "synchronizované {relative}");
+   P ("duration.modified_now", "zmenené práve teraz");
+   P ("duration.synced_now", "synchronizované práve teraz");
+   P ("duration.natural.less_than_minute",
+      "{case, select, accusative {menej ako minútu} genitive {menej ako "
+      & "minúty} instrumental {menej ako minútou} other {menej ako minúta}}");
+   P ("duration.natural.half_hour", "{case, select, instrumental {pol hodinou} other {pol hodiny}}");
+   P ("duration.natural.about_half_hour", "{case, select, instrumental {asi pol hodinou} other {asi pol hodiny}}");
+   P ("duration.natural.about", "asi {duration}");
+   P ("duration.natural.almost", "takmer {duration}");
+   P ("duration.natural.over", "viac ako {duration}");
+   P ("duration.natural.just_over", "o niečo viac ako {duration}");
+   P ("duration.natural.little_under", "o niečo menej ako {duration}");
+   P ("duration.natural.few",
+      "{case, select, genitive {{unit, select, second {niekoľkých sekúnd} "
+      & "minute {niekoľkých minút} hour {niekoľkých hodín} day "
+      & "{niekoľkých dní} week {niekoľkých týždňov} month {niekoľkých "
+      & "mesiacov} year {niekoľkých rokov} other {niekoľkých}}} "
+      & "instrumental {{unit, select, second {niekoľkými sekundami} minute "
+      & "{niekoľkými minútami} hour {niekoľkými hodinami} day "
+      & "{niekoľkými dňami} week {niekoľkými týždňami} month "
+      & "{niekoľkými mesiacmi} year {niekoľkými rokmi} other "
+      & "{niekoľkými}}} other {{unit, select, second {niekoľko sekúnd} "
+      & "minute {niekoľko minút} hour {niekoľko hodín} day {niekoľko dní} "
+      & "week {niekoľko týždňov} month {niekoľko mesiacov} year {niekoľko "
+      & "rokov} other {niekoľko}}}}");
+   P ("duration.distance.past", "pred {duration}");
+   P ("duration.distance.future", "o {duration}");
+   P ("duration.case.within", "genitive");
+   P ("duration.case.next", "accusative");
+   P ("duration.case.between", "genitive");
+   P ("duration.case.stale_for", "accusative");
+   P ("duration.case.backup_age", "accusative");
+   P ("duration.case.distance.past", "instrumental");
+   P ("duration.case.distance.future", "accusative");
+   P ("geo.direction.north", "{style, select, short {S} other {sever}}");
+   P ("geo.direction.north_north_east", "{style, select, short {SSV} other {severoseverovýchod}}");
+   P ("geo.direction.north_east", "{style, select, short {SV} other {severovýchod}}");
+   P ("geo.direction.east_north_east", "{style, select, short {VSV} other {východoseverovýchod}}");
+   P ("geo.direction.east", "{style, select, short {V} other {východ}}");
+   P ("geo.direction.east_south_east", "{style, select, short {VJV} other {východojuhovýchod}}");
+   P ("geo.direction.south_east", "{style, select, short {JV} other {juhovýchod}}");
+   P ("geo.direction.south_south_east", "{style, select, short {JJV} other {juhojuhovýchod}}");
+   P ("geo.direction.south", "{style, select, short {J} other {juh}}");
+   P ("geo.direction.south_south_west", "{style, select, short {JJZ} other {juhojuhozápad}}");
+   P ("geo.direction.south_west", "{style, select, short {JZ} other {juhozápad}}");
+   P ("geo.direction.west_south_west", "{style, select, short {ZJZ} other {západojuhozápad}}");
+   P ("geo.direction.west", "{style, select, short {Z} other {západ}}");
+   P ("geo.direction.west_north_west", "{style, select, short {ZSZ} other {západoseverozápad}}");
+   P ("geo.direction.north_west", "{style, select, short {SZ} other {severozápad}}");
+   P ("geo.direction.north_north_west", "{style, select, short {SSZ} other {severoseverozápad}}");
+   P ("geo.bearing", "{degrees} {direction}");
+   P ("geo.distance_direction", "{distance} na {direction}");
+   P ("geo.about_distance_direction", "asi {distance} na {direction}");
+   P ("geo.coordinate", "{latitude}, {longitude}");
+   P ("geo.bounding_box", "juhozápad: {southwest}; severovýchod: {northeast}");
+   P ("geo.inside_box", "vnútri ohraničujúcej oblasti");
+   P ("geo.outside_box", "mimo ohraničujúcej oblasti");
+   P ("number.about", "približne {value}");
+   P ("number.almost", "takmer {value}");
+   P ("number.over", "vyše {value}");
+   P ("number.plus_minus", "{value} ± {delta}");
+   P ("number.plus_minus_parenthesized", "{value} (± {delta})");
 end Locale_Sk;

@@ -90,6 +90,7 @@ class map and coverage scorecards.
 - `Humanize.Resources` - `src/humanize-resources.ads`
 - `Humanize.Versions` - `src/humanize-versions.ads`
 - `Humanize.Geo` - `src/humanize-geo.ads`
+- `Humanize.Geo.Localized` - `src/humanize-geo-localized.ads`
 - `Humanize.Markup` - `src/humanize-markup.ads`
 - `Humanize.Secrets` - `src/humanize-secrets.ads`
 - `Humanize.Schema` - `src/humanize-schema.ads`

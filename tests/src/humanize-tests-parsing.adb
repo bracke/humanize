@@ -316,6 +316,10 @@ package body Humanize.Tests.Parsing is
      (T : in out AUnit.Test_Cases.Test_Case'Class)
    is separate;
 
+   procedure Test_Duration_Geo_Readers
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is separate;
+
    procedure Test_Diagnostics (T : in out AUnit.Test_Cases.Test_Case'Class)
    is separate;
 
@@ -357,6 +361,8 @@ package body Humanize.Tests.Parsing is
         "parse localized semantic round trips");
       Register_Routine (T, Test_Localized_Readers'Access,
         "localized lists, spell-out and calendar labels read back");
+      Register_Routine (T, Test_Duration_Geo_Readers'Access,
+        "localized duration labels, natural durations, geo labels and tolerances read back");
       Register_Routine (T, Test_Diagnostics'Access, "parser diagnostics");
       Register_Routine (T, Test_Frequency_Rate_List'Access,
         "parse frequencies rates and lists");

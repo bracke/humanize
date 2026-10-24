@@ -90,4 +90,30 @@ private package Humanize.I18N_Rendering is
       Case_Name      : String)
       return String;
 
+   --  Count Units ("hour") in CLDR's long unit and grammatical case Case_Name
+   --  ("nominative" for none): German dative "3 Tagen". "" where it cannot
+   --  render.
+   function Duration_Part
+     (Context   : Humanize.Contexts.Context;
+      Unit      : String;
+      Count     : Long_Long_Integer;
+      Case_Name : String)
+      return String;
+
+   --  Phrase Name's text without arguments ("duration.case.stale_for"); ""
+   --  where the locale has none.
+   function Phrase_Text
+     (Context : Humanize.Contexts.Context;
+      Name    : String)
+      return String;
+
+   --  Phrase Name's text with the one argument Argument = Value (none where
+   --  Argument is ""); "" where the locale cannot render it.
+   function Phrase_Text_With
+     (Context  : Humanize.Contexts.Context;
+      Name     : String;
+      Argument : String;
+      Value    : String)
+      return String;
+
 end Humanize.I18N_Rendering;

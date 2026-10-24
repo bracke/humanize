@@ -789,4 +789,75 @@ begin
    P ("number.change_more", "o {quantity} {tail} więcej");
    P ("number.change_fewer", "o {quantity} {tail} mniej");
    P ("number.since", "{change} (od: {since})");
+   P ("duration.countdown", "{duration} do końca");
+   P ("duration.within", "w ciągu {duration}");
+   P ("duration.next", "na {duration} naprzód");
+   P ("duration.between", "od {low} do {high}");
+   P ("duration.age", "wiek: {duration}");
+   P ("duration.stale_for", "nieaktualne od {duration}");
+   P ("duration.backup_age", "kopia zapasowa sprzed {duration}");
+   P ("duration.eta", "szacowany czas: {duration}");
+   P ("duration.expires", "wygasa {relative}");
+   P ("duration.retrying", "ponowna próba {relative}");
+   P ("duration.modified", "zmodyfikowano {relative}");
+   P ("duration.synced", "zsynchronizowano {relative}");
+   P ("duration.modified_now", "zmodyfikowano przed chwilą");
+   P ("duration.synced_now", "zsynchronizowano przed chwilą");
+   P ("duration.natural.less_than_minute",
+      "{case, select, accusative {mniej niż minutę} genitive {mniej niż "
+      & "minuty} other {mniej niż minuta}}");
+   P ("duration.natural.half_hour", "pół godziny");
+   P ("duration.natural.about_half_hour", "około pół godziny");
+   P ("duration.natural.about", "około {duration}");
+   P ("duration.natural.almost", "prawie {duration}");
+   P ("duration.natural.over", "ponad {duration}");
+   P ("duration.natural.just_over", "nieco ponad {duration}");
+   P ("duration.natural.little_under", "nieco mniej niż {duration}");
+   P ("duration.natural.few",
+      "{case, select, genitive {{unit, select, second {kilku sekund} minute "
+      & "{kilku minut} hour {kilku godzin} day {kilku dni} week {kilku tygodni} "
+      & "month {kilku miesięcy} year {kilku lat} other {kilku}}} other {{unit, "
+      & "select, second {kilka sekund} minute {kilka minut} hour {kilka godzin} "
+      & "day {kilka dni} week {kilka tygodni} month {kilka miesięcy} year "
+      & "{kilka lat} other {kilka}}}}");
+   P ("duration.distance.past", "{duration} temu");
+   P ("duration.distance.future", "za {duration}");
+   P ("duration.case.within", "genitive");
+   P ("duration.case.next", "accusative");
+   P ("duration.case.between", "genitive");
+   P ("duration.case.stale_for", "genitive");
+   P ("duration.case.backup_age", "genitive");
+   P ("duration.case.natural.about", "genitive");
+   P ("duration.case.natural.over", "accusative");
+   P ("duration.case.natural.just_over", "accusative");
+   P ("duration.case.distance.past", "accusative");
+   P ("duration.case.distance.future", "accusative");
+   P ("geo.direction.north", "{style, select, short {N} other {północ}}");
+   P ("geo.direction.north_north_east", "{style, select, short {NNE} other {północ-północny wschód}}");
+   P ("geo.direction.north_east", "{style, select, short {NE} other {północny wschód}}");
+   P ("geo.direction.east_north_east", "{style, select, short {ENE} other {wschód-północny wschód}}");
+   P ("geo.direction.east", "{style, select, short {E} other {wschód}}");
+   P ("geo.direction.east_south_east", "{style, select, short {ESE} other {wschód-południowy wschód}}");
+   P ("geo.direction.south_east", "{style, select, short {SE} other {południowy wschód}}");
+   P ("geo.direction.south_south_east", "{style, select, short {SSE} other {południe-południowy wschód}}");
+   P ("geo.direction.south", "{style, select, short {S} other {południe}}");
+   P ("geo.direction.south_south_west", "{style, select, short {SSW} other {południe-południowy zachód}}");
+   P ("geo.direction.south_west", "{style, select, short {SW} other {południowy zachód}}");
+   P ("geo.direction.west_south_west", "{style, select, short {WSW} other {zachód-południowy zachód}}");
+   P ("geo.direction.west", "{style, select, short {W} other {zachód}}");
+   P ("geo.direction.west_north_west", "{style, select, short {WNW} other {zachód-północny zachód}}");
+   P ("geo.direction.north_west", "{style, select, short {NW} other {północny zachód}}");
+   P ("geo.direction.north_north_west", "{style, select, short {NNW} other {północ-północny zachód}}");
+   P ("geo.bearing", "{degrees} {direction}");
+   P ("geo.distance_direction", "{distance} na {direction}");
+   P ("geo.about_distance_direction", "około {distance} na {direction}");
+   P ("geo.coordinate", "{latitude}, {longitude}");
+   P ("geo.bounding_box", "południowy zachód: {southwest}; północny wschód: {northeast}");
+   P ("geo.inside_box", "w obszarze granicznym");
+   P ("geo.outside_box", "poza obszarem granicznym");
+   P ("number.about", "około {value}");
+   P ("number.almost", "prawie {value}");
+   P ("number.over", "ponad {value}");
+   P ("number.plus_minus", "{value} ± {delta}");
+   P ("number.plus_minus_parenthesized", "{value} (± {delta})");
 end Locale_Pl;

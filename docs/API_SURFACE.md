@@ -115,6 +115,7 @@ Task/domain label packages:
 * `src/humanize-resources.ads`
 * `src/humanize-versions.ads`
 * `src/humanize-geo.ads`
+* `src/humanize-geo-localized.ads`
 * `src/humanize-markup.ads`
 * `src/humanize-secrets.ads`
 * `src/humanize-schema.ads`

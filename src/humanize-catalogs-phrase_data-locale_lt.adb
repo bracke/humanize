@@ -777,4 +777,80 @@ begin
    P ("number.change_more", "{quantity} {tail} daugiau");
    P ("number.change_fewer", "{quantity} {tail} mažiau");
    P ("number.since", "{change} (nuo: {since})");
+   P ("duration.countdown", "liko {duration}");
+   P ("duration.within", "per {duration}");
+   P ("duration.next", "per {duration} į priekį");
+   P ("duration.between", "nuo {low} iki {high}");
+   P ("duration.age", "amžius: {duration}");
+   P ("duration.stale_for", "neatnaujinta jau {duration}");
+   P ("duration.backup_age", "atsarginė kopija sukurta prieš {duration}");
+   P ("duration.eta", "numatomas laikas: {duration}");
+   P ("duration.expires", "baigs galioti {relative}");
+   P ("duration.retrying", "pakartotinis bandymas {relative}");
+   P ("duration.modified", "pakeista {relative}");
+   P ("duration.synced", "sinchronizuota {relative}");
+   P ("duration.modified_now", "pakeista ką tik");
+   P ("duration.synced_now", "sinchronizuota ką tik");
+   P ("duration.natural.less_than_minute",
+      "{case, select, accusative {mažiau nei minutę} genitive {mažiau nei "
+      & "minutės} other {mažiau nei minutė}}");
+   P ("duration.natural.half_hour",
+      "{case, select, accusative {pusvalandį} genitive {pusvalandžio} other "
+      & "{pusvalandis}}");
+   P ("duration.natural.about_half_hour",
+      "{case, select, accusative {maždaug pusvalandį} genitive {maždaug "
+      & "pusvalandžio} other {maždaug pusvalandis}}");
+   P ("duration.natural.about", "maždaug {duration}");
+   P ("duration.natural.almost", "beveik {duration}");
+   P ("duration.natural.over", "daugiau nei {duration}");
+   P ("duration.natural.just_over", "šiek tiek daugiau nei {duration}");
+   P ("duration.natural.little_under", "šiek tiek mažiau nei {duration}");
+   P ("duration.natural.few",
+      "{case, select, accusative {{unit, select, second {kelias sekundes} "
+      & "minute {kelias minutes} hour {kelias valandas} day {kelias dienas} "
+      & "week {kelias savaites} month {kelis mėnesius} year {kelerius metus} "
+      & "other {kelias}}} genitive {{unit, select, second {kelių sekundžių} "
+      & "minute {kelių minučių} hour {kelių valandų} day {kelių dienų} "
+      & "week {kelių savaičių} month {kelių mėnesių} year {kelerių "
+      & "metų} other {kelių}}} other {{unit, select, second {kelios "
+      & "sekundės} minute {kelios minutės} hour {kelios valandos} day {kelios "
+      & "dienos} week {kelios savaitės} month {keli mėnesiai} year {keleri "
+      & "metai} other {kelios}}}}");
+   P ("duration.distance.past", "prieš {duration}");
+   P ("duration.distance.future", "po {duration}");
+   P ("duration.case.within", "accusative");
+   P ("duration.case.next", "accusative");
+   P ("duration.case.between", "genitive");
+   P ("duration.case.stale_for", "accusative");
+   P ("duration.case.backup_age", "accusative");
+   P ("duration.case.distance.past", "accusative");
+   P ("duration.case.distance.future", "genitive");
+   P ("geo.direction.north", "{style, select, short {Š} other {šiaurė}}");
+   P ("geo.direction.north_north_east", "{style, select, short {ŠŠR} other {šiaurės šiaurės rytai}}");
+   P ("geo.direction.north_east", "{style, select, short {ŠR} other {šiaurės rytai}}");
+   P ("geo.direction.east_north_east", "{style, select, short {RŠR} other {rytų šiaurės rytai}}");
+   P ("geo.direction.east", "{style, select, short {R} other {rytai}}");
+   P ("geo.direction.east_south_east", "{style, select, short {RPR} other {rytų pietryčiai}}");
+   P ("geo.direction.south_east", "{style, select, short {PR} other {pietryčiai}}");
+   P ("geo.direction.south_south_east", "{style, select, short {PPR} other {pietų pietryčiai}}");
+   P ("geo.direction.south", "{style, select, short {P} other {pietūs}}");
+   P ("geo.direction.south_south_west", "{style, select, short {PPV} other {pietų pietvakariai}}");
+   P ("geo.direction.south_west", "{style, select, short {PV} other {pietvakariai}}");
+   P ("geo.direction.west_south_west", "{style, select, short {VPV} other {vakarų pietvakariai}}");
+   P ("geo.direction.west", "{style, select, short {V} other {vakarai}}");
+   P ("geo.direction.west_north_west", "{style, select, short {VŠV} other {vakarų šiaurės vakarai}}");
+   P ("geo.direction.north_west", "{style, select, short {ŠV} other {šiaurės vakarai}}");
+   P ("geo.direction.north_north_west", "{style, select, short {ŠŠV} other {šiaurės šiaurės vakarai}}");
+   P ("geo.bearing", "{degrees} {direction}");
+   P ("geo.distance_direction", "{distance} {direction}");
+   P ("geo.about_distance_direction", "apie {distance} {direction}");
+   P ("geo.coordinate", "{latitude}, {longitude}");
+   P ("geo.bounding_box", "pietvakariai: {southwest}; šiaurės rytai: {northeast}");
+   P ("geo.inside_box", "ribojančios srities viduje");
+   P ("geo.outside_box", "už ribojančios srities ribų");
+   P ("number.about", "apie {value}");
+   P ("number.almost", "beveik {value}");
+   P ("number.over", "daugiau nei {value}");
+   P ("number.plus_minus", "{value} ± {delta}");
+   P ("number.plus_minus_parenthesized", "{value} (± {delta})");
 end Locale_Lt;

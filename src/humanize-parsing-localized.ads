@@ -3,7 +3,9 @@ with Ada.Strings.Unbounded;
 with Humanize.Contexts;
 with Humanize.Datetimes;
 with Humanize.Durations;
+with Humanize.Geo;
 with Humanize.Lists;
+with Humanize.Numbers;
 
 --  Reading back, in a context's locale, what humanize's localized formatters
 --  write: numbers ("1.234,5", Arabic-Indic digits), durations ("2 Stunden,
@@ -256,5 +258,118 @@ package Humanize.Parsing.Localized is
    --  @param Text A count as Humanize.Frequencies.Times writes it ("3 Mal",
    --  Arabic "٣ مرات").
    --  @return The count.
+
+   --  The duration labels Humanize.Durations writes around a length of time.
+   type Duration_Label_Kind is
+     (Countdown_Label, Within_Label, Next_Label, Between_Label, Age_Label, Stale_Label, Backup_Age_Label,
+      ETA_Label, Expires_Label, Retry_Label, Modified_Label, Synced_Label);
+
+   type Duration_Label_Parse_Result is record
+      Status  : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Kind    : Duration_Label_Kind := Countdown_Label;
+      Seconds : Humanize.Durations.Duration_Seconds := 0;
+      High    : Humanize.Durations.Duration_Seconds := 0;
+   end record;
+
+   function Parse_Duration_Label
+     (Context : Humanize.Contexts.Context;
+      Text    : String)
+      return Duration_Label_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A label as Countdown, SLA_Window, Next_Window, Interval,
+   --  Age, Stale_For, Backup_Age, ETA, Expires_In, Retry_In, Modified_Ago or
+   --  Synced_Ago writes it ("seit 2 Tagen veraltet", "изменено 2 часа назад").
+   --  @return Which label, and its duration in seconds (Interval: Seconds
+   --  to High).
+
+   type Natural_Duration_Parse_Result is record
+      Status    : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Style     : Humanize.Durations.Natural_Duration_Style := Humanize.Durations.Plain_Duration;
+      Direction : Humanize.Durations.Duration_Distance_Direction := Humanize.Durations.Duration_Distance_Plain;
+      Seconds   : Humanize.Durations.Duration_Seconds := 0;
+   end record;
+
+   function Parse_Natural_Duration
+     (Context : Humanize.Contexts.Context;
+      Text    : String)
+      return Natural_Duration_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A duration as Natural_Duration or Duration_Distance writes
+   --  it ("etwa 2 Stunden", "vor weniger als einer Minute", "3日後").
+   --  @return Its wording style, direction, and a length of time it words
+   --  so (approximate by nature: "about 2 hours" reads as 7200).
+
+   type Coordinate_Parse_Result is record
+      Status    : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Latitude  : Long_Float := 0.0;
+      Longitude : Long_Float := 0.0;
+   end record;
+
+   function Parse_Latitude (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A latitude as Humanize.Geo.Localized writes it ("52,5200° N").
+   --  @return The latitude, negative south of the equator.
+
+   function Parse_Longitude (Context : Humanize.Contexts.Context; Text : String) return Float_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A longitude as Humanize.Geo.Localized writes it ("西経13.4050°").
+   --  @return The longitude, negative west of Greenwich.
+
+   function Parse_Coordinate (Context : Humanize.Contexts.Context; Text : String) return Coordinate_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A coordinate as Humanize.Geo.Localized.Coordinate_Label writes it.
+   --  @return Its latitude and longitude.
+
+   type Bounding_Box_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Box    : Humanize.Geo.Bounding_Box := (others => 0.0);
+   end record;
+
+   function Parse_Bounding_Box (Context : Humanize.Contexts.Context; Text : String) return Bounding_Box_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A box as Humanize.Geo.Localized.Bounding_Box_Label writes it.
+   --  @return Its corners.
+
+   type Direction_Parse_Result is record
+      Status  : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Point   : Humanize.Geo.Direction_Point := Humanize.Geo.North;
+      Bearing : Long_Float := 0.0;
+   end record;
+
+   function Parse_Direction (Context : Humanize.Contexts.Context; Text : String) return Direction_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A compass point as Humanize.Geo.Localized.Direction_Label
+   --  writes it, in full or abbreviated ("Nord-Nordost", "NNO").
+   --  @return The point and its bearing in degrees.
+
+   function Parse_Bearing (Context : Humanize.Contexts.Context; Text : String) return Direction_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A bearing as Humanize.Geo.Localized.Bearing_Label writes it
+   --  ("45° Nordost", "北東 45°").
+   --  @return Its degrees and compass point.
+
+   type Approximation_Parse_Result is record
+      Status : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Kind   : Humanize.Numbers.Approximation_Kind := Humanize.Numbers.About;
+      Value  : Long_Long_Integer := 0;
+   end record;
+
+   function Parse_Approximation (Context : Humanize.Contexts.Context; Text : String) return Approximation_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A number as Humanize.Numbers.Scales.Approximate writes it
+   --  ("fast 1.200", "около 300").
+   --  @return The approximation's kind and number.
+
+   type Uncertainty_Parse_Result is record
+      Status      : Humanize.Status.Status_Code := Humanize.Status.Invalid_Argument;
+      Value       : Long_Float := 0.0;
+      Uncertainty : Long_Float := 0.0;
+   end record;
+
+   function Parse_Uncertainty (Context : Humanize.Contexts.Context; Text : String) return Uncertainty_Parse_Result;
+   --  @param Context Context whose locale wrote Text.
+   --  @param Text A tolerance as Humanize.Numbers.Ranges.Uncertainty_Label or
+   --  Tolerance_Range writes it ("12,5 ± 0,25", "12.5 (+/- 0.25)").
+   --  @return Its value and the uncertainty either side.
 
 end Humanize.Parsing.Localized;

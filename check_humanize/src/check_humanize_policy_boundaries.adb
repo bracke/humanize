@@ -44,7 +44,8 @@ package body Check_Humanize_Policy_Boundaries is
          Allows_Result    : Boolean := False;
          Allows_Runtime   : Boolean := False;
          Allows_CLDR_Text : Boolean := False;
-         Allows_Week_Data : Boolean := False)
+         Allows_Week_Data : Boolean := False;
+         Allows_Unit_Format : Boolean := False)
       is
          Path : constant String := Root & "/src/" & Source_Name;
          Allowed_Count : constant Natural :=
@@ -53,7 +54,8 @@ package body Check_Humanize_Policy_Boundaries is
            + Boolean'Pos (Allows_Result)
            + Boolean'Pos (Allows_Runtime)
            + 3 * Boolean'Pos (Allows_CLDR_Text)
-           + Boolean'Pos (Allows_Week_Data);
+           + Boolean'Pos (Allows_Week_Data)
+           + Boolean'Pos (Allows_Unit_Format);
          Allowed : Project_Tools.Ada_Source.String_List (1 .. Allowed_Count);
          Next    : Positive := Allowed'First;
       begin
@@ -81,6 +83,10 @@ package body Check_Humanize_Policy_Boundaries is
          end if;
          if Allows_Week_Data then
             Allowed (Next) := To_Unbounded_String ("I18N.Week_Data");
+            Next := Next + 1;
+         end if;
+         if Allows_Unit_Format then
+            Allowed (Next) := To_Unbounded_String ("I18N.Unit_Format");
          end if;
 
          Project_Tools.Ada_Source.Require_Only_Allowed_With_Clauses
@@ -127,6 +133,10 @@ package body Check_Humanize_Policy_Boundaries is
                   --  Calendar_Relation counts weeks from the day the locale's
                   --  region starts them (CLDR's weekData).
                   Check_Allowed_I18N_Imports (Name, Allows_Week_Data => True);
+               elsif Name = "humanize-geo-localized.adb" then
+                  --  A coordinate's hemisphere is CLDR's coordinate-unit
+                  --  pattern ("{0} N", German east "{0} O").
+                  Check_Allowed_I18N_Imports (Name, Allows_Unit_Format => True);
                elsif Name = "humanize-i18n_rendering.adb" then
                   Check_Allowed_I18N_Imports
                     (Name,

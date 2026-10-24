@@ -20,6 +20,12 @@ package body Humanize.Parsing.Phrases is
       elsif Argument = "state" then "queued,running,waiting,paused,complete,failed,stale,skipped"
       elsif Argument = "phase" then "early,mid,late"
       elsif Argument = "gender" then "other,masculine,feminine,neuter,common,masculine_animate"
+      elsif Argument = "style" then "long,short"
+      --  A duration unit, where a phrase selects on it (duration.natural.few).
+      elsif Argument = "unit" then "second,minute,hour,day,week,month,year"
+      elsif Argument = "case"
+      then "nominative,accusative,dative,genitive,instrumental,locative,prepositional,elative,illative,"
+           & "partitive,oblique,terminative,translative,vocative"
       else "");
 
    --  The Index-th comma-separated item of List (1-based), and their count.

@@ -55,4 +55,7 @@ begin
    P ("checksum.valid", "檢查碼有效");
    P ("checksum.mismatch", "檢查碼不符");
    P ("checksum.missing", "缺少檢查碼");
+   P ("duration.natural.few",
+      "{unit, select, second {幾秒} minute {幾分鐘} hour {幾小時} day "
+      & "{幾日} week {幾星期} month {幾個月} year {幾年} other {幾}}");
 end Locale_Zh_Hant_Hk;

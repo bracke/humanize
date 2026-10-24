@@ -208,4 +208,9 @@ begin
    P ("zoned_time.named", "hora com fuso: {time} {name} ({offset})");
    P ("zoned_time.ambiguous", "{text}, hora local ambígua");
    P ("number.change_down", "desce {quantity}");
+   P ("duration.backup_age", "a cópia de segurança tem {duration}");
+   P ("duration.distance.future", "dentro de {duration}");
+   P ("geo.direction.east_north_east", "{style, select, short {ENE} other {és-nordeste}}");
+   P ("geo.direction.east", "{style, select, short {E} other {este}}");
+   P ("geo.direction.east_south_east", "{style, select, short {ESE} other {és-sudeste}}");
 end Locale_Pt_Pt;

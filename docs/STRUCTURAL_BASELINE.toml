@@ -218,7 +218,7 @@ usecase = "Business-calendar rule rendering and schedule semantics; new calendar
 
 [[body]]
 path = "src/humanize-durations-formatting.adb"
-target_lines = 1753
+target_lines = 1713
 max_lines = 1900
 min_headroom_lines = 120
 max_bytes = 67000
@@ -318,7 +318,7 @@ usecase = "Root parsing facade implementation; new parser bodies should remain i
 
 [[body]]
 path = "src/humanize-numbers-ranges.adb"
-target_lines = 1185
+target_lines = 1169
 max_lines = 1480
 min_headroom_lines = 120
 max_bytes = 56000
@@ -528,7 +528,7 @@ usecase = "Notification and delivery label facade body; new notification familie
 
 [[body]]
 path = "src/humanize-parsing-localized.adb"
-target_lines = 783
+target_lines = 737
 max_lines = 966
 min_headroom_lines = 100
 max_bytes = 45000
@@ -538,7 +538,7 @@ usecase = "Localized reading of numbers, durations, relative times, byte sizes, 
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_ar.adb"
-target_lines = 901
+target_lines = 976
 max_lines = 1301
 min_headroom_lines = 100
 max_bytes = 79000
@@ -548,7 +548,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_cs.adb"
-target_lines = 828
+target_lines = 902
 max_lines = 1228
 min_headroom_lines = 100
 max_bytes = 65000
@@ -558,7 +558,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_hi.adb"
-target_lines = 894
+target_lines = 994
 max_lines = 1294
 min_headroom_lines = 100
 max_bytes = 83000
@@ -568,7 +568,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_pl.adb"
-target_lines = 792
+target_lines = 863
 max_lines = 1192
 min_headroom_lines = 100
 max_bytes = 62000
@@ -578,7 +578,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_ru.adb"
-target_lines = 869
+target_lines = 953
 max_lines = 1267
 min_headroom_lines = 100
 max_bytes = 76000
@@ -588,7 +588,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_sk.adb"
-target_lines = 841
+target_lines = 915
 max_lines = 1241
 min_headroom_lines = 100
 max_bytes = 67000
@@ -598,7 +598,7 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_sl.adb"
-target_lines = 787
+target_lines = 855
 max_lines = 1187
 min_headroom_lines = 100
 max_bytes = 60000
@@ -608,10 +608,70 @@ usecase = "Generated phrase translations for one locale (one statement an entry)
 
 [[body]]
 path = "src/humanize-catalogs-phrase_data-locale_uk.adb"
-target_lines = 848
+target_lines = 943
 max_lines = 1248
 min_headroom_lines = 100
 max_bytes = 75000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Generated phrase translations for one locale (one statement an entry); grows with the phrase key list."
+
+[[body]]
+path = "src/humanize-catalogs-phrase_data-locale_ro.adb"
+target_lines = 830
+max_lines = 1230
+min_headroom_lines = 100
+max_bytes = 74000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Generated phrase translations for one locale (one statement an entry); grows with the phrase key list."
+
+[[body]]
+path = "src/humanize-catalogs-phrase_data-locale_fr.adb"
+target_lines = 837
+max_lines = 1237
+min_headroom_lines = 100
+max_bytes = 75000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Generated phrase translations for one locale (one statement an entry); grows with the phrase key list."
+
+[[body]]
+path = "src/humanize-catalogs-phrase_data-locale_lt.adb"
+target_lines = 856
+max_lines = 1256
+min_headroom_lines = 100
+max_bytes = 76000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Generated phrase translations for one locale (one statement an entry); grows with the phrase key list."
+
+[[body]]
+path = "src/humanize-catalogs-phrase_data-locale_it.adb"
+target_lines = 819
+max_lines = 1219
+min_headroom_lines = 100
+max_bytes = 74000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Generated phrase translations for one locale (one statement an entry); grows with the phrase key list."
+
+[[body]]
+path = "src/humanize-catalogs-phrase_data-locale_pt.adb"
+target_lines = 821
+max_lines = 1221
+min_headroom_lines = 100
+max_bytes = 73000
+split_prefix = ""
+min_split_bodies = 0
+usecase = "Generated phrase translations for one locale (one statement an entry); grows with the phrase key list."
+
+[[body]]
+path = "src/humanize-catalogs-phrase_data-locale_es.adb"
+target_lines = 818
+max_lines = 1218
+min_headroom_lines = 100
+max_bytes = 73000
 split_prefix = ""
 min_split_bodies = 0
 usecase = "Generated phrase translations for one locale (one statement an entry); grows with the phrase key list."

@@ -348,6 +348,11 @@ spec = "src/humanize-geo.ads"
 area = "domain"
 
 [[unit]]
+name = "Humanize.Geo.Localized"
+spec = "src/humanize-geo-localized.ads"
+area = "domain"
+
+[[unit]]
 name = "Humanize.Markup"
 spec = "src/humanize-markup.ads"
 area = "domain"

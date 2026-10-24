@@ -1050,6 +1050,22 @@ perf_covered_by = "Humanize.Geo.Coordinate_Label"
 score = 5
 
 [[unit]]
+name = "Humanize.Geo.Localized"
+area = "domain"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-domain_gaps.adb"
+examples = 1
+example_file = "examples/product_details_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_domain_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "trivial domain label facade; covered by tests, examples, and consumers"
+score = 4
+
+[[unit]]
 name = "Humanize.Markup"
 area = "domain"
 docs = 1

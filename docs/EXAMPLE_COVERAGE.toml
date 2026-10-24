@@ -247,6 +247,12 @@ example = "examples/product_details_demo.adb"
 usecase = "render latitude, longitude, bearings, distance-bearing, and bounding-box labels"
 
 [[coverage]]
+area = "localized-geo"
+unit = "Humanize.Geo.Localized"
+example = "examples/product_details_demo.adb"
+usecase = "render a coordinate in German"
+
+[[coverage]]
 area = "versions"
 unit = "Humanize.Versions"
 example = "examples/product_details_demo.adb"

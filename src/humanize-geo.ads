@@ -275,4 +275,14 @@ package Humanize.Geo is
    --  @param Status Humanize status for the operation.
    --  @param Options Domain-label output options.
 
+private
+
+   --  For Humanize.Geo.Localized.
+   function Latitude_Valid (Latitude : Long_Float) return Boolean;
+   function Longitude_Valid (Longitude : Long_Float) return Boolean;
+   function Box_Valid (Box : Bounding_Box) return Boolean;
+   function Fixed_Image (Value : Long_Float; Decimals : Natural) return String;
+   function Normalize_Bearing (Bearing : Long_Float) return Long_Float;
+   function Point_For_Bearing (Bearing : Long_Float; Style : Direction_Style) return Direction_Point;
+
 end Humanize.Geo;

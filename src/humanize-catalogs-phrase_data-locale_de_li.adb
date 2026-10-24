@@ -25,4 +25,5 @@ begin
    P ("number.range_inclusive", "{low} bis einschliesslich {high}");
    P ("number.range_exclusive", "grösser als {low} und kleiner als {high}");
    P ("number.range_high_inclusive", "grösser als {low} und höchstens {high}");
+   P ("geo.outside_box", "ausserhalb des Begrenzungsrahmens");
 end Locale_De_Li;

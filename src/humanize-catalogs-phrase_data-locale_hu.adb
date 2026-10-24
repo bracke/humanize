@@ -677,4 +677,69 @@ begin
    P ("number.change_more", "több: {quantity} {tail}");
    P ("number.change_fewer", "kevesebb: {quantity} {tail}");
    P ("number.since", "{change} {since} óta");
+   P ("duration.countdown", "még {duration}");
+   P ("duration.within", "{duration} alatt");
+   P ("duration.next", "a következő {duration}");
+   P ("duration.between", "{low} és {high} között");
+   P ("duration.age", "{duration} régi");
+   P ("duration.stale_for", "{duration} óta elavult");
+   P ("duration.backup_age", "a biztonsági mentés {duration} régi");
+   P ("duration.eta", "becsült hátralévő idő: {duration}");
+   P ("duration.expires", "lejár {relative}");
+   P ("duration.retrying", "újrapróbálkozás {relative}");
+   P ("duration.modified", "módosítva {relative}");
+   P ("duration.synced", "szinkronizálva {relative}");
+   P ("duration.modified_now", "módosítva épp most");
+   P ("duration.synced_now", "szinkronizálva épp most");
+   P ("duration.natural.less_than_minute",
+      "{case, select, instrumental {kevesebb mint egy perccel} other "
+      & "{kevesebb mint egy perc}}");
+   P ("duration.natural.half_hour", "{case, select, instrumental {fél órával} other {fél óra}}");
+   P ("duration.natural.about_half_hour",
+      "{case, select, instrumental {körülbelül fél órával} other "
+      & "{körülbelül fél óra}}");
+   P ("duration.natural.about", "körülbelül {duration}");
+   P ("duration.natural.almost", "majdnem {duration}");
+   P ("duration.natural.over", "több mint {duration}");
+   P ("duration.natural.just_over", "valamivel több mint {duration}");
+   P ("duration.natural.little_under", "valamivel kevesebb mint {duration}");
+   P ("duration.natural.few",
+      "{case, select, instrumental {{unit, select, second {néhány "
+      & "másodperccel} minute {néhány perccel} hour {néhány órával} day "
+      & "{néhány nappal} week {néhány héttel} month {néhány hónappal} "
+      & "year {néhány évvel} other {néhány}}} other {{unit, select, second "
+      & "{néhány másodperc} minute {néhány perc} hour {néhány óra} day "
+      & "{néhány nap} week {néhány hét} month {néhány hónap} year "
+      & "{néhány év} other {néhány}}}}");
+   P ("duration.distance.past", "{duration} ezelőtt");
+   P ("duration.case.distance.past", "instrumental");
+   P ("duration.distance.future", "{duration} múlva");
+   P ("geo.direction.north", "{style, select, short {É} other {észak}}");
+   P ("geo.direction.north_north_east", "{style, select, short {ÉÉK} other {észak-északkelet}}");
+   P ("geo.direction.north_east", "{style, select, short {ÉK} other {északkelet}}");
+   P ("geo.direction.east_north_east", "{style, select, short {KÉK} other {kelet-északkelet}}");
+   P ("geo.direction.east", "{style, select, short {K} other {kelet}}");
+   P ("geo.direction.east_south_east", "{style, select, short {KDK} other {kelet-délkelet}}");
+   P ("geo.direction.south_east", "{style, select, short {DK} other {délkelet}}");
+   P ("geo.direction.south_south_east", "{style, select, short {DDK} other {dél-délkelet}}");
+   P ("geo.direction.south", "{style, select, short {D} other {dél}}");
+   P ("geo.direction.south_south_west", "{style, select, short {DDNy} other {dél-délnyugat}}");
+   P ("geo.direction.south_west", "{style, select, short {DNy} other {délnyugat}}");
+   P ("geo.direction.west_south_west", "{style, select, short {NyDNy} other {nyugat-délnyugat}}");
+   P ("geo.direction.west", "{style, select, short {Ny} other {nyugat}}");
+   P ("geo.direction.west_north_west", "{style, select, short {NyÉNy} other {nyugat-északnyugat}}");
+   P ("geo.direction.north_west", "{style, select, short {ÉNy} other {északnyugat}}");
+   P ("geo.direction.north_north_west", "{style, select, short {ÉÉNy} other {észak-északnyugat}}");
+   P ("geo.bearing", "{degrees} {direction}");
+   P ("geo.distance_direction", "{distance}, irány: {direction}");
+   P ("geo.about_distance_direction", "körülbelül {distance}, irány: {direction}");
+   P ("geo.coordinate", "{latitude}, {longitude}");
+   P ("geo.bounding_box", "délnyugati sarok: {southwest}; északkeleti sarok: {northeast}");
+   P ("geo.inside_box", "a befoglaló téglalapon belül");
+   P ("geo.outside_box", "a befoglaló téglalapon kívül");
+   P ("number.about", "körülbelül {value}");
+   P ("number.almost", "majdnem {value}");
+   P ("number.over", "több mint {value}");
+   P ("number.plus_minus", "{value} ± {delta}");
+   P ("number.plus_minus_parenthesized", "{value} (± {delta})");
 end Locale_Hu;

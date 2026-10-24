@@ -93,7 +93,11 @@ procedure Phrase_Review_Data is
          (+"date", +"9 Oct 2026"), (+"first", +"9 Oct 2026"), (+"last", +"15 Oct 2026"),
          (+"time", +"2 hours ago"), (+"low", +"10"), (+"high", +"20"), (+"delta", +"0.5"),
          (+"bounds", +"1-10"), (+"numerator", +"3 errors"), (+"denominator", +"1,000 requests"),
-         (+"whole", +"20"), (+"tail", +"files"), (+"change", +"up 5"), (+"since", +"last week")];
+         (+"whole", +"20"), (+"tail", +"files"), (+"change", +"up 5"), (+"since", +"last week"),
+         (+"duration", +"3 hours"), (+"relative", +"in 3 hours"), (+"case", +"nominative"), (+"style", +"long"),
+         (+"degrees", +"45 deg"), (+"direction", +"northeast"), (+"distance", +"5 km"),
+         (+"latitude", +"52.52 deg N"), (+"longitude", +"13.40 deg E"), (+"southwest", +"52.3 deg N, 13.1 deg E"),
+         (+"northeast", +"52.7 deg N, 13.8 deg E")];
    begin
       for Name of Numbers loop
          Messages.Arguments.Set (Args, To_String (Name), Count);

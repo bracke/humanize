@@ -708,4 +708,68 @@ begin
    P ("number.change_more", "{quantity} {tail} enemmän");
    P ("number.change_fewer", "{quantity} {tail} vähemmän");
    P ("number.since", "{change} (vrt. {since})");
+   P ("duration.countdown", "{duration} jäljellä");
+   P ("duration.within", "{duration} kuluessa");
+   P ("duration.case.within", "genitive");
+   P ("duration.next", "seuraavat {duration}");
+   P ("duration.between", "välillä {low}–{high}");
+   P ("duration.age", "{duration} vanha");
+   P ("duration.stale_for", "vanhentuneena {duration}");
+   P ("duration.backup_age", "varmuuskopio on {duration} vanha");
+   P ("duration.eta", "arviolta {duration} jäljellä");
+   P ("duration.expires", "vanhenee {relative}");
+   P ("duration.retrying", "yritetään uudelleen {relative}");
+   P ("duration.modified", "muokattu {relative}");
+   P ("duration.synced", "synkronoitu {relative}");
+   P ("duration.modified_now", "muokattu juuri nyt");
+   P ("duration.synced_now", "synkronoitu juuri nyt");
+   P ("duration.natural.less_than_minute", "{case, select, genitive {alle minuutin} other {alle minuutti}}");
+   P ("duration.natural.half_hour", "{case, select, genitive {puolen tunnin} other {puoli tuntia}}");
+   P ("duration.natural.about_half_hour",
+      "{case, select, genitive {noin puolen tunnin} other {noin puoli "
+      & "tuntia}}");
+   P ("duration.natural.about", "noin {duration}");
+   P ("duration.natural.almost", "lähes {duration}");
+   P ("duration.natural.over", "yli {duration}");
+   P ("duration.natural.just_over", "hieman yli {duration}");
+   P ("duration.natural.little_under", "hieman alle {duration}");
+   P ("duration.natural.few",
+      "{case, select, genitive {{unit, select, second {muutaman sekunnin} "
+      & "minute {muutaman minuutin} hour {muutaman tunnin} day {muutaman "
+      & "päivän} week {muutaman viikon} month {muutaman kuukauden} year "
+      & "{muutaman vuoden} other {muutaman}}} other {{unit, select, second "
+      & "{muutama sekunti} minute {muutama minuutti} hour {muutama tunti} day "
+      & "{muutama päivä} week {muutama viikko} month {muutama kuukausi} year "
+      & "{muutama vuosi} other {muutama}}}}");
+   P ("duration.distance.past", "{duration} sitten");
+   P ("duration.distance.future", "{duration} kuluttua");
+   P ("duration.case.distance.future", "genitive");
+   P ("geo.direction.north", "{style, select, short {P} other {pohjoinen}}");
+   P ("geo.direction.north_north_east", "{style, select, short {PKO} other {pohjoiskoillinen}}");
+   P ("geo.direction.north_east", "{style, select, short {KO} other {koillinen}}");
+   P ("geo.direction.east_north_east", "{style, select, short {IKO} other {itäkoillinen}}");
+   P ("geo.direction.east", "{style, select, short {I} other {itä}}");
+   P ("geo.direction.east_south_east", "{style, select, short {IKA} other {itäkaakko}}");
+   P ("geo.direction.south_east", "{style, select, short {KA} other {kaakko}}");
+   P ("geo.direction.south_south_east", "{style, select, short {EKA} other {eteläkaakko}}");
+   P ("geo.direction.south", "{style, select, short {E} other {etelä}}");
+   P ("geo.direction.south_south_west", "{style, select, short {ELO} other {etelälounas}}");
+   P ("geo.direction.south_west", "{style, select, short {LO} other {lounas}}");
+   P ("geo.direction.west_south_west", "{style, select, short {LLO} other {länsilounas}}");
+   P ("geo.direction.west", "{style, select, short {L} other {länsi}}");
+   P ("geo.direction.west_north_west", "{style, select, short {LLU} other {länsiluode}}");
+   P ("geo.direction.north_west", "{style, select, short {LU} other {luode}}");
+   P ("geo.direction.north_north_west", "{style, select, short {PLU} other {pohjoisluode}}");
+   P ("geo.bearing", "{degrees} {direction}");
+   P ("geo.distance_direction", "{distance}, suunta {direction}");
+   P ("geo.about_distance_direction", "noin {distance}, suunta {direction}");
+   P ("geo.coordinate", "{latitude}, {longitude}");
+   P ("geo.bounding_box", "lounaiskulma {southwest}; koilliskulma {northeast}");
+   P ("geo.inside_box", "rajausalueen sisällä");
+   P ("geo.outside_box", "rajausalueen ulkopuolella");
+   P ("number.about", "noin {value}");
+   P ("number.almost", "lähes {value}");
+   P ("number.over", "yli {value}");
+   P ("number.plus_minus", "{value} ± {delta}");
+   P ("number.plus_minus_parenthesized", "{value} (± {delta})");
 end Locale_Fi;

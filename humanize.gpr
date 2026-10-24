@@ -43,6 +43,7 @@ project Humanize is
       "Humanize.Forms",
       "Humanize.Frequencies",
       "Humanize.Geo",
+      "Humanize.Geo.Localized",
       "Humanize.Lists",
       "Humanize.Locales",
       "Humanize.Markup",

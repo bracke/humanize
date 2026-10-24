@@ -2,6 +2,32 @@
 
 ## Unreleased
 
+* Duration labels speak the locale: Countdown, SLA_Window, Next_Window,
+  Interval, Age, Stale_For, Backup_Age, ETA ("seit 2 Tagen veraltet",
+  "в течение 3 дней"), and Expires_In, Retry_In, Modified_Ago, Synced_Ago
+  around CLDR's relative time ("geändert vor 2 Stunden"). A frame names the
+  grammatical case its duration takes (`duration.case.<frame>`); the unit is
+  then CLDR's in that case.
+
+* Natural durations and distances speak the locale: "etwa 2 Stunden", "vor
+  weniger als einer Minute", "через 3 дня", brief durations in CLDR's short
+  units ("1 Std., 5 Min."), and Natural_Duration_Detailed's qualifiers.
+
+* New `Humanize.Geo.Localized`: latitudes, longitudes, coordinates, compass
+  points, bearings, distance-bearings and bounding boxes in a locale, each
+  hemisphere by CLDR's coordinate unit ("52,5200° N", German east "O",
+  Japanese "北緯52.5200°").
+
+* `Numbers.Scales.Approximate`/`Approximate_Currency` ("fast 1.200", "около
+  5,00 €") and `Numbers.Ranges.Uncertainty_Label`/`Tolerance_Range` ("12,5 ±
+  0,25") speak the locale; English keeps "about" and "+/-".
+
+* 53 new phrase keys in every shipped locale (docs/PHRASE_TEMPLATES.md:
+  Durations, Geo, Number approximations), and readers for all of the above in
+  `Parsing.Localized`: Parse_Duration_Label, Parse_Natural_Duration,
+  Parse_Latitude, Parse_Longitude, Parse_Coordinate, Parse_Bounding_Box,
+  Parse_Direction, Parse_Bearing, Parse_Approximation, Parse_Uncertainty.
+
 * An independent review pass over the technical labels and number phrases
   (rounds 13 and 14, 72 keys in every locale) fixed 30 translations: missing
   articles (Dutch, Afrikaans, Danish, Swedish "volgens de extensie"), word

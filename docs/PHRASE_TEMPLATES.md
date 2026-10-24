@@ -204,6 +204,84 @@ parts wrap a rendered message `{text}`: `frame.detail` "({detail})",
 ", retry in {time}". The other `Cross_Domain` labels (diff trees, checksums,
 file metadata, terminal layouts) stay English, as their parsers read them.
 
+## Durations
+
+`Humanize.Durations`' labels around a length of time (Countdown,
+SLA_Window, Next_Window, Interval, Age, Stale_For, Backup_Age, ETA,
+Expires_In, Retry_In, Modified_Ago, Synced_Ago) and its natural wording
+(Natural_Duration, Duration_Distance, Natural_Duration_Detailed) speak the
+locale. `{duration}` is CLDR's long unit, in the case the optional key
+`duration.case.<frame>` names (German `stale_for` dative: "seit 2 Tagen
+veraltet"; frames countdown, within, next, between, age, stale_for,
+backup_age, eta, natural.about, natural.almost, natural.over,
+natural.just_over, natural.little_under, distance.past, distance.future);
+inside a distance the qualifier's own case wins, else the distance's. The
+fixed natural phrases get the governing case as `{case}`. `{relative}` is
+CLDR's whole relative time ("vor 2 Stunden"). Brief durations are CLDR's
+short units joined by its unit list ("1 Std., 5 Min."). English keeps its
+own wording.
+
+| Key | Arguments | English |
+|---|---|---|
+| `duration.countdown` | duration (a length of time, "3 hours") | `{duration} remaining` |
+| `duration.within` | duration | `within {duration}` |
+| `duration.next` | duration | `next {duration}` |
+| `duration.between` | low, high (lengths of time) | `between {low} and {high}` |
+| `duration.age` | duration | `{duration} old` |
+| `duration.stale_for` | duration | `stale for {duration}` |
+| `duration.backup_age` | duration | `backup is {duration} old` |
+| `duration.eta` | duration | `ETA {duration}` |
+| `duration.expires` | relative (a future relative time in the locale, "in 3 hours") | `expires {relative}` |
+| `duration.retrying` | relative (a future relative time, "in 3 hours") | `retrying {relative}` |
+| `duration.modified` | relative (a past relative time, "3 hours ago") | `modified {relative}` |
+| `duration.synced` | relative (a past relative time, "3 hours ago") | `synced {relative}` |
+| `duration.modified_now` |  | `modified just now` |
+| `duration.synced_now` |  | `synced just now` |
+| `duration.natural.less_than_minute` | case (the case a surrounding frame governs, "nominative" when none) | `less than a minute` |
+| `duration.natural.half_hour` | case | `half an hour` |
+| `duration.natural.about_half_hour` | case | `about half an hour` |
+| `duration.natural.about` | duration | `about {duration}` |
+| `duration.natural.almost` | duration | `almost {duration}` |
+| `duration.natural.over` | duration | `over {duration}` |
+| `duration.natural.just_over` | duration | `just over {duration}` |
+| `duration.natural.little_under` | duration | `a little under {duration}` |
+| `duration.natural.few` | unit (select: second, minute, hour, day, week, month, year), case | `{unit, select, second {a few seconds} minute {a few minutes} hour {a few hours} day {a few days} week {a few weeks} month {a few months} year {a few years} other {a few}}` |
+| `duration.distance.past` | duration (a natural length of time, "about 3 hours") | `{duration} ago` |
+| `duration.distance.future` | duration | `in {duration}` |
+
+## Geo
+
+`Humanize.Geo.Localized` writes the parent's labels in a locale: each
+hemisphere by CLDR's coordinate unit ("52,5200° N", German east "O",
+Japanese "北緯52.5200°", Russian "с. ш."), degrees in the locale's digits,
+and these phrases. `geo.direction.<point>` names the 16 compass points
+(north, north_north_east, ..., north_north_west), `{style, select, short
+{...} other {...}}`.
+
+| Key | Arguments | English |
+|---|---|---|
+| `geo.bearing` | degrees (an angle, "45°"), direction (a compass point) | `{degrees} {direction}` |
+| `geo.distance_direction` | distance (a distance, "5 km"), direction | `{distance} {direction}` |
+| `geo.about_distance_direction` | distance, direction | `about {distance} {direction}` |
+| `geo.coordinate` | latitude, longitude (each already written, "52.5200° N") | `{latitude}, {longitude}` |
+| `geo.bounding_box` | southwest, northeast (two coordinates) | `southwest {southwest}; northeast {northeast}` |
+| `geo.inside_box` |  | `inside bounding box` |
+| `geo.outside_box` |  | `outside bounding box` |
+
+## Number approximations and tolerances
+
+`Numbers.Scales.Approximate`/`Approximate_Currency` ("fast 1.200") and
+`Numbers.Ranges.Uncertainty_Label`/`Tolerance_Range` ("12,5 ± 0,25"); "under"
+is `number.under`.
+
+| Key | Arguments | English |
+|---|---|---|
+| `number.about` | value (a number or an amount, "1,200" or "€5.00") | `about {value}` |
+| `number.almost` | value | `almost {value}` |
+| `number.over` | value | `over {value}` |
+| `number.plus_minus` | value, delta (numbers) | `{value} +/- {delta}` |
+| `number.plus_minus_parenthesized` | value, delta | `{value} (+/- {delta})` |
+
 ## Review page
 
 The phrase review page (https://claude.ai/artifact/4gdexMdU8CmmxUaysWinzu) shows
@@ -234,7 +312,13 @@ Stunden, 30 Minuten", Swahili "dakika 5", Arabic "ساعتان"), `Parse_Relativ
 `Parse_Calendar_Difference` ("2 Jahre, 2 Monate und 4 Tage", "2年2个月4天") and
 `Parse_Calendar_Relation` ("letzten Monat", "来週"), `Parse_Number_Range`
 ("1.200–5.000", "≈10–20"), `Parse_Date_Range` ("9.–15. Okt. 2026"),
-`Parse_Duration_Range` ("1 Stunde-2 Stunden") and `Parse_Times` ("3 Mal"). It learns a
+`Parse_Duration_Range` ("1 Stunde-2 Stunden"), `Parse_Times` ("3 Mal"),
+`Parse_Duration_Label` ("seit 2 Tagen veraltet"), `Parse_Natural_Duration`
+("vor etwa 2 Stunden"), `Parse_Latitude`, `Parse_Longitude`,
+`Parse_Coordinate`, `Parse_Bounding_Box`, `Parse_Direction`, `Parse_Bearing`
+("45° Nordost"), `Parse_Approximation` ("fast 1.200") and `Parse_Uncertainty`
+("12,5 ± 0,25"); these last ones render the numbers the text shows (and 0,
+1, 2) with the formatters and compare, so every case form reads. It learns a
 locale's forms by rendering sample values with `Durations.Format_Components`,
 `Datetimes.Relative` and `Bytes.Format` (cached per runtime and locale, about
 70 ms the first time), so it reads exactly what those write. A text the locale

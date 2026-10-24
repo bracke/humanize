@@ -361,4 +361,45 @@ package body Humanize.I18N_Rendering is
       end;
    end Difference_Parts;
 
+   function Duration_Part
+     (Context   : Humanize.Contexts.Context;
+      Unit      : String;
+      Count     : Long_Long_Integer;
+      Case_Name : String)
+      return String
+   is
+      use Humanize.Selections;
+      Text : constant Humanize.Status.Text_Result :=
+        Render
+          (Context,
+           With_Arg (With_Arg (With_Arg (Phrase ("duration.part"), "unit", Unit), "case", Case_Name), "value", Count));
+   begin
+      return (if Text.Status = Humanize.Status.Ok then To_String (Text.Text) else "");
+   end Duration_Part;
+
+   function Phrase_Text
+     (Context : Humanize.Contexts.Context;
+      Name    : String)
+      return String
+   is
+      Text : constant Humanize.Status.Text_Result := Render (Context, Humanize.Selections.Phrase (Name));
+   begin
+      return (if Text.Status = Humanize.Status.Ok then To_String (Text.Text) else "");
+   end Phrase_Text;
+
+   function Phrase_Text_With
+     (Context  : Humanize.Contexts.Context;
+      Name     : String;
+      Argument : String;
+      Value    : String)
+      return String
+   is
+      Selection : constant Humanize.Selections.Message_Selection :=
+        (if Argument = "" then Humanize.Selections.Phrase (Name)
+         else Humanize.Selections.With_Arg (Humanize.Selections.Phrase (Name), Argument, Value));
+      Text : constant Humanize.Status.Text_Result := Render (Context, Selection);
+   begin
+      return (if Text.Status = Humanize.Status.Ok then To_String (Text.Text) else "");
+   end Phrase_Text_With;
+
 end Humanize.I18N_Rendering;

@@ -706,4 +706,75 @@ begin
    P ("number.change_more", "{quantity} {tail} mehr");
    P ("number.change_fewer", "{quantity} {tail} weniger");
    P ("number.since", "{change} seit {since}");
+   P ("duration.countdown", "noch {duration}");
+   P ("duration.within", "innerhalb von {duration}");
+   P ("duration.case.within", "dative");
+   P ("duration.next", "in den nächsten {duration}");
+   P ("duration.case.next", "dative");
+   P ("duration.between", "zwischen {low} und {high}");
+   P ("duration.case.between", "dative");
+   P ("duration.age", "{duration} alt");
+   P ("duration.case.age", "accusative");
+   P ("duration.stale_for", "seit {duration} veraltet");
+   P ("duration.case.stale_for", "dative");
+   P ("duration.backup_age", "Sicherung ist {duration} alt");
+   P ("duration.case.backup_age", "accusative");
+   P ("duration.eta", "voraussichtlich noch {duration}");
+   P ("duration.expires", "läuft {relative} ab");
+   P ("duration.retrying", "neuer Versuch {relative}");
+   P ("duration.modified", "geändert {relative}");
+   P ("duration.synced", "synchronisiert {relative}");
+   P ("duration.modified_now", "gerade eben geändert");
+   P ("duration.synced_now", "gerade eben synchronisiert");
+   P ("duration.natural.less_than_minute",
+      "{case, select, dative {weniger als einer Minute} other {weniger als "
+      & "eine Minute}}");
+   P ("duration.natural.half_hour", "{case, select, dative {einer halben Stunde} other {eine halbe Stunde}}");
+   P ("duration.natural.about_half_hour",
+      "{case, select, dative {etwa einer halben Stunde} other {etwa eine "
+      & "halbe Stunde}}");
+   P ("duration.natural.about", "etwa {duration}");
+   P ("duration.natural.almost", "fast {duration}");
+   P ("duration.natural.over", "über {duration}");
+   P ("duration.natural.just_over", "knapp über {duration}");
+   P ("duration.natural.little_under", "knapp unter {duration}");
+   P ("duration.natural.few",
+      "{unit, select, second {ein paar Sekunden} minute {ein paar Minuten} "
+      & "hour {ein paar Stunden} day {{case, select, dative {ein paar Tagen} "
+      & "other {ein paar Tage}}} week {ein paar Wochen} month {{case, select, "
+      & "dative {ein paar Monaten} other {ein paar Monate}}} year {{case, "
+      & "select, dative {ein paar Jahren} other {ein paar Jahre}}} other {ein "
+      & "paar}}");
+   P ("duration.distance.past", "vor {duration}");
+   P ("duration.case.distance.past", "dative");
+   P ("duration.distance.future", "in {duration}");
+   P ("duration.case.distance.future", "dative");
+   P ("geo.direction.north", "{style, select, short {N} other {Nord}}");
+   P ("geo.direction.north_north_east", "{style, select, short {NNO} other {Nord-Nordost}}");
+   P ("geo.direction.north_east", "{style, select, short {NO} other {Nordost}}");
+   P ("geo.direction.east_north_east", "{style, select, short {ONO} other {Ost-Nordost}}");
+   P ("geo.direction.east", "{style, select, short {O} other {Ost}}");
+   P ("geo.direction.east_south_east", "{style, select, short {OSO} other {Ost-Südost}}");
+   P ("geo.direction.south_east", "{style, select, short {SO} other {Südost}}");
+   P ("geo.direction.south_south_east", "{style, select, short {SSO} other {Süd-Südost}}");
+   P ("geo.direction.south", "{style, select, short {S} other {Süd}}");
+   P ("geo.direction.south_south_west", "{style, select, short {SSW} other {Süd-Südwest}}");
+   P ("geo.direction.south_west", "{style, select, short {SW} other {Südwest}}");
+   P ("geo.direction.west_south_west", "{style, select, short {WSW} other {West-Südwest}}");
+   P ("geo.direction.west", "{style, select, short {W} other {West}}");
+   P ("geo.direction.west_north_west", "{style, select, short {WNW} other {West-Nordwest}}");
+   P ("geo.direction.north_west", "{style, select, short {NW} other {Nordwest}}");
+   P ("geo.direction.north_north_west", "{style, select, short {NNW} other {Nord-Nordwest}}");
+   P ("geo.bearing", "{degrees} {direction}");
+   P ("geo.distance_direction", "{distance} Richtung {direction}");
+   P ("geo.about_distance_direction", "etwa {distance} Richtung {direction}");
+   P ("geo.coordinate", "{latitude}, {longitude}");
+   P ("geo.bounding_box", "Südwest {southwest}; Nordost {northeast}");
+   P ("geo.inside_box", "innerhalb des Begrenzungsrahmens");
+   P ("geo.outside_box", "außerhalb des Begrenzungsrahmens");
+   P ("number.about", "etwa {value}");
+   P ("number.almost", "fast {value}");
+   P ("number.over", "über {value}");
+   P ("number.plus_minus", "{value} ± {delta}");
+   P ("number.plus_minus_parenthesized", "{value} (± {delta})");
 end Locale_De;
