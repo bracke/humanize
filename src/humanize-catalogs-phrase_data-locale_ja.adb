@@ -9,6 +9,7 @@ procedure Locale_Ja (Target : in out Catalog_Text) is
    --  The domain labels (label.*), in nested subunits.
    procedure Labels_1 is separate;
    procedure Labels_2 is separate;
+   procedure Labels_3 is separate;
 begin
    P ("all_count", "全{total}件の{other}");
    P ("filtered_count.none", "一致する{other}はありません");
@@ -725,4 +726,5 @@ begin
    P ("number.plus_minus_parenthesized", "{value} (± {delta})");
    Labels_1;
    Labels_2;
+   Labels_3;
 end Locale_Ja;

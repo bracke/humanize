@@ -349,4 +349,349 @@ begin
       & "completed_state {завершено} failed_state {сбой} "
       & "cancelled_state {отменено} skipped_state {пропущено} "
       & "other {приостановлено}}");
+   P ("label.contrast.opacity_label",
+      "{percent}, {state, select, transparent {прозрачно} "
+      & "mostly_transparent {почти прозрачно} translucent "
+      & "{полупрозрачно} mostly_opaque {почти "
+      & "непрозрачно} other {непрозрачно}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {нет наблюдений} one {{count, number} "
+      & "наблюдение, мин. {minimum} {unit}, медиана "
+      & "{median} {unit}, макс. {maximum} {unit}} few {{count, number} "
+      & "наблюдения, мин. {minimum} {unit}, медиана "
+      & "{median} {unit}, макс. {maximum} {unit}} many {{count, number} "
+      & "наблюдений, мин. {minimum} {unit}, медиана "
+      & "{median} {unit}, макс. {maximum} {unit}} other {{count, number} "
+      & "наблюдения, мин. {minimum} {unit}, медиана "
+      & "{median} {unit}, макс. {maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {нет "
+      & "наблюдений} other {0 выбросов из {total, plural, "
+      & "one {{total, number} наблюдения} few {{total, number} "
+      & "наблюдений} many {{total, number} наблюдений} "
+      & "other {{total, number} наблюдения}}}}} one {{outliers, "
+      & "number} выброс из {total, plural, one {{total, number} "
+      & "наблюдения} few {{total, number} наблюдений} many "
+      & "{{total, number} наблюдений} other {{total, number} "
+      & "наблюдения}}} few {{outliers, number} выброса из "
+      & "{total, plural, one {{total, number} наблюдения} few "
+      & "{{total, number} наблюдений} many {{total, number} "
+      & "наблюдений} other {{total, number} наблюдения}}} "
+      & "many {{outliers, number} выбросов из {total, plural, one "
+      & "{{total, number} наблюдения} few {{total, number} "
+      & "наблюдений} many {{total, number} наблюдений} "
+      & "other {{total, number} наблюдения}}} other {{outliers, "
+      & "number} выброса из {total, plural, one {{total, number} "
+      & "наблюдения} few {{total, number} наблюдений} many "
+      & "{{total, number} наблюдений} other {{total, number} "
+      & "наблюдения}}}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {превышение ёмкости: {count, "
+      & "number} {unit}} other {осталось {count, number} из {total, "
+      & "number} {unit}}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {квота превышена на {count, "
+      & "number} {unit} (использовано {percent})} near {квота "
+      & "почти исчерпана: осталось {count, number} {unit} "
+      & "(использовано {percent})} other {квота "
+      & "доступна: осталось {count, number} {unit} "
+      & "(использовано {percent})}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {доля попаданий в кэш "
+      & "недоступна: нет запросов} other {доля "
+      & "попаданий в кэш {percent}: попаданий {hits, "
+      & "number}, промахов {misses, number}}}");
+   P ("label.markup.attribute_count_label.total",
+      "{count, plural, one {{count, number} атрибут} few {{count, "
+      & "number} атрибута} many {{count, number} атрибутов} "
+      & "other {{count, number} атрибута}}");
+   P ("label.markup.attribute_count_label.data",
+      "{count, plural, one {{count, number} атрибут data} few {{count, "
+      & "number} атрибута data} many {{count, number} "
+      & "атрибутов data} other {{count, number} атрибута "
+      & "data}}");
+   P ("label.markup.attribute_count_label.aria",
+      "{count, plural, one {{count, number} атрибут ARIA} few {{count, "
+      & "number} атрибута ARIA} many {{count, number} "
+      & "атрибутов ARIA} other {{count, number} атрибута "
+      & "ARIA}}");
+   P ("label.markup.attribute_count_label.events",
+      "{count, plural, one {{count, number} обработчик "
+      & "событий} few {{count, number} обработчика "
+      & "событий} many {{count, number} обработчиков "
+      & "событий} other {{count, number} обработчика "
+      & "событий}}");
+   P ("label.markup.heading_label", "заголовок уровня {level, number}");
+   P ("label.markup.tag_count_label.total",
+      "{count, plural, one {{count, number} тег} few {{count, number} "
+      & "тега} many {{count, number} тегов} other {{count, number} "
+      & "тега}}");
+   P ("label.markup.tag_count_label.links",
+      "{count, plural, one {{count, number} ссылка} few {{count, "
+      & "number} ссылки} many {{count, number} ссылок} other "
+      & "{{count, number} ссылки}}");
+   P ("label.markup.tag_count_label.media",
+      "{count, plural, one {{count, number} медиаэлемент} few "
+      & "{{count, number} медиаэлемента} many {{count, number} "
+      & "медиаэлементов} other {{count, number} "
+      & "медиаэлемента}}");
+   P ("label.markup.tag_count_label.forms",
+      "{count, plural, one {{count, number} элемент формы} few "
+      & "{{count, number} элемента формы} many {{count, number} "
+      & "элементов формы} other {{count, number} элемента "
+      & "формы}}");
+   P ("label.markup.document_outline_label.headings",
+      "{count, plural, one {{count, number} заголовок} few {{count, "
+      & "number} заголовка} many {{count, number} "
+      & "заголовков} other {{count, number} заголовка}}");
+   P ("label.markup.document_outline_label.landmarks",
+      "{count, plural, one {{count, number} ориентир} few {{count, "
+      & "number} ориентира} many {{count, number} "
+      & "ориентиров} other {{count, number} ориентира}}");
+   P ("label.markup.document_outline_label.forms",
+      "{count, plural, one {{count, number} форма} few {{count, number} "
+      & "формы} many {{count, number} форм} other {{count, number} "
+      & "формы}}");
+   P ("label.markup.document_outline_label.media",
+      "{count, plural, one {{count, number} медиаэлемент} few "
+      & "{{count, number} медиаэлемента} many {{count, number} "
+      & "медиаэлементов} other {{count, number} "
+      & "медиаэлемента}}");
+   P ("label.markup.table_navigation_label",
+      "{caption}, строка {row, number} из {rows, number}, "
+      & "столбец {column, number} из {columns, number}");
+   P ("label.secrets.secret_count_label.total",
+      "{count, plural, one {{count, number} секрет} few {{count, "
+      & "number} секрета} many {{count, number} секретов} other "
+      & "{{count, number} секрета}}");
+   P ("label.secrets.secret_count_label.masked", "замаскировано: {count, number}");
+   P ("label.secrets.secret_count_label.unset", "не задано: {count, number}");
+   P ("label.secrets.secret_count_label.fingerprints",
+      "{count, plural, one {{count, number} отпечаток} few {{count, "
+      & "number} отпечатка} many {{count, number} "
+      & "отпечатков} other {{count, number} отпечатка}}");
+   P ("label.schema.type_mismatch_label",
+      "поле {field_name}: ожидалось {expected, select, "
+      & "string_field {строка} integer_field {целое число} "
+      & "decimal_field {десятичное число} boolean_field "
+      & "{логическое значение} date_field {дата} "
+      & "date_time_field {дата и время} object_field {объект} "
+      & "array_field {массив} enum_field {перечисление} "
+      & "binary_field {двоичные данные} null_field {null} "
+      & "any_field {любой тип} other {неизвестный тип}}, "
+      & "получено {actual, select, string_field {строка} "
+      & "integer_field {целое число} decimal_field "
+      & "{десятичное число} boolean_field {логическое "
+      & "значение} date_field {дата} date_time_field {дата и "
+      & "время} object_field {объект} array_field {массив} "
+      & "enum_field {перечисление} binary_field {двоичные "
+      & "данные} null_field {null} any_field {любой тип} other "
+      & "{неизвестный тип}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {{blocking, "
+      & "number} блокирующая проблема} few {{blocking, "
+      & "number} блокирующие проблемы} many {{blocking, "
+      & "number} блокирующих проблем} other {{blocking, "
+      & "number} блокирующей проблемы}}} blocking {{base}, "
+      & "{blocking, plural, one {{blocking, number} блокирующая "
+      & "проблема} few {{blocking, number} блокирующие "
+      & "проблемы} many {{blocking, number} блокирующих "
+      & "проблем} other {{blocking, number} блокирующей "
+      & "проблемы}}} only {только {base}} other {{base}}}");
+   P ("label.thresholds.metric_value_label", "{name}: {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {целевой диапазон "
+      & "от {low} до {high}} other {целевое окно от {low} до "
+      & "{high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} в ожидаемом "
+      & "диапазоне} below {{value} ниже ожидаемого "
+      & "диапазона} other {{value} выше ожидаемого "
+      & "диапазона}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} на критическом "
+      & "пороге} warning {{value} на пороге "
+      & "предупреждения} other {{value} в пределах "
+      & "нормы}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {не превышено} other {превышено "
+      & "на {difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {на уровне цели} below {{difference} "
+      & "ниже цели} other {{difference} выше цели}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {предел превышен} near "
+      & "{близко к пределу, осталось {distance}} other "
+      & "{{distance} до предела}}");
+   P ("label.thresholds.threshold_summary_label.none", "нет метрик");
+   P ("label.thresholds.threshold_summary_label.normal", "в норме: {count, number}");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {{count, number} предупреждение} few "
+      & "{{count, number} предупреждения} many {{count, number} "
+      & "предупреждений} other {{count, number} "
+      & "предупреждения}}");
+   P ("label.thresholds.threshold_summary_label.critical", "критично: {count, number}");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {{count, number} превышение} few "
+      & "{{count, number} превышения} many {{count, number} "
+      & "превышений} other {{count, number} превышения}}");
+   P ("label.thresholds.target_window_label", "цель {target} ± {tolerance}");
+   P ("label.thresholds.tolerance_label", "допуск {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} от предела");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {предел превышен на {amount}} "
+      & "other {осталось {amount}}}");
+   P ("label.thresholds.budget_used_label", "использовано {used} из {budget}");
+   P ("label.workflows.step_label", "шаг {current, number} из {total, number}: {name}");
+   P ("label.workflows.milestone_label",
+      "завершено вех {current, number} из {total, number}: "
+      & "{name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {нет элементов процесса} half "
+      & "{процесс выполнен наполовину} other "
+      & "{завершено {completed, number} из {total, number}}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {позиция в очереди {position, "
+      & "number}} other {позиция в очереди {position, number} "
+      & "из {total, number}}}");
+   P ("label.changes.change_set_label.none", "нет изменений");
+   P ("label.changes.change_set_label.added", "добавлено: {count, number}");
+   P ("label.changes.change_set_label.removed", "удалено: {count, number}");
+   P ("label.changes.change_set_label.modified", "изменено: {count, number}");
+   P ("label.changes.change_set_label.unchanged", "без изменений: {count, number}");
+   P ("label.changes.sync_change_label.none", "нет изменений синхронизации");
+   P ("label.changes.sync_change_label.uploaded", "отправлено: {count, number}");
+   P ("label.changes.sync_change_label.downloaded", "загружено: {count, number}");
+   P ("label.changes.sync_change_label.deleted", "удалено: {count, number}");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {{count, number} конфликт} few {{count, "
+      & "number} конфликта} many {{count, number} "
+      & "конфликтов} other {{count, number} конфликта}}");
+   P ("label.changes.net_change_label",
+      "{state, select, none {нет итогового изменения} up "
+      & "{итого +{count, plural, one {{count, number} элемент} few "
+      & "{{count, number} элемента} many {{count, number} "
+      & "элементов} other {{count, number} элемента}}} other "
+      & "{итого -{count, plural, one {{count, number} элемент} few "
+      & "{{count, number} элемента} many {{count, number} "
+      & "элементов} other {{count, number} элемента}}}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {нет изменений для "
+      & "проверки} all {все изменения проверены} "
+      & "other {проверено изменений: {reviewed, number} из "
+      & "{total, number}}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name}: без изменений, "
+      & "{new_value}} up {{field_name}: увеличено с {old_value} до "
+      & "{new_value}} other {{field_name}: уменьшено с {old_value} "
+      & "до {new_value}}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {нет строк для выбора} none "
+      & "{строки не выбраны} all {{total, plural, one "
+      & "{выбрана {total, number} строка} few {выбраны "
+      & "все {total, number} строки} many {выбраны все "
+      & "{total, number} строк} other {выбраны все {total, "
+      & "number} строки}}} other {выбрано строк: {selected, "
+      & "number} из {total, number}}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {нет страниц} other {{pages, plural, =0 "
+      & "{нет страниц} other {{rows, plural, =0 {страница "
+      & "{page, number} из {pages, number}} one {страница {page, "
+      & "number} из {pages, number}, {rows, number} строка} few "
+      & "{страница {page, number} из {pages, number}, {rows, number} "
+      & "строки} many {страница {page, number} из {pages, "
+      & "number}, {rows, number} строк} other {страница {page, "
+      & "number} из {pages, number}, {rows, number} строки}}}}}}");
+   P ("label.tables.filter_label",
+      "{state, select, no_rows {нет строк} none {нет "
+      & "совпадающих строк} all {{total, plural, one "
+      & "{показана {total, number} строка} few {показаны "
+      & "все {total, number} строки} many {показаны все "
+      & "{total, number} строк} other {показаны все {total, "
+      & "number} строки}}} other {показано строк: {visible, "
+      & "number} из {total, number}}}");
+   P ("label.tables.row_range_label",
+      "{state, select, none {нет строк} single {строка "
+      & "{first_row, number} из {total, number}} other {строки "
+      & "{first_row, number}–{last_row, number} из {total, number}}}");
+   P ("label.forms.remaining_characters_label",
+      "{state, select, unlimited {без ограничения "
+      & "символов} none_left {символов не осталось} "
+      & "left {осталось символов: {count, number}} other "
+      & "{лимит превышен на {count, plural, one {{count, number} "
+      & "символ} few {{count, number} символа} many {{count, "
+      & "number} символов} other {{count, number} символа}}}}");
+   P ("label.forms.required_fields_label",
+      "{total, plural, =0 {нет обязательных полей} =1 "
+      & "{{missing, plural, =0 {все обязательные поля "
+      & "заполнены} other {не заполнено "
+      & "обязательное поле (1 из 1)}}} other {{missing, "
+      & "plural, =0 {все обязательные поля "
+      & "заполнены} other {не заполнено "
+      & "обязательных полей: {missing, number} из {total, "
+      & "number}}}}}");
+   P ("label.forms.form_progress_label",
+      "{state, select, none {нет полей} all {все поля "
+      & "заполнены} other {заполнено полей: {completed, "
+      & "number} из {total, number}}}");
+   P ("label.forms.section_progress_label",
+      "{state, select, none {{name}: нет полей} all {{name}: все "
+      & "поля заполнены} other {{name}: заполнено "
+      & "полей: {completed, number} из {total, number}}}");
+   P ("label.forms.form_step_label",
+      "{total, plural, =0 {нет шагов формы} =1 {шаг 1 из 1: "
+      & "{name}} other {шаг {current, number} из {total, number}: {name}}}");
+   P ("label.navigation.breadcrumb_position_label",
+      "{total, plural, =0 {нет навигационной цепочки} "
+      & "=1 {элемент цепочки 1 из 1: {name}} other "
+      & "{элемент цепочки {current, number} из {total, number}: "
+      & "{name}}}");
+   P ("label.navigation.tab_label",
+      "{total, plural, =0 {нет вкладок} =1 {вкладка 1 из "
+      & "1: {name}} other {вкладка {current, number} из {total, "
+      & "number}: {name}}}");
+   P ("label.notifications.inbox_label",
+      "{total, plural, =0 {входящие пусты} =1 {{unread, plural, "
+      & "=0 {все уведомления прочитаны} other "
+      & "{непрочитанных: 1 из 1}}} other {{unread, plural, =0 "
+      & "{все уведомления прочитаны} other "
+      & "{непрочитанных: {unread, number} из {total, number}}}}}");
+   P ("label.notifications.delivery_attempt_label",
+      "попытка доставки {attempt, number} из {max_attempts, "
+      & "number}");
+   P ("label.tasks.checklist_label",
+      "{total, plural, =0 {нет пунктов списка} =1 {{done, "
+      & "plural, =0 {выполнено пунктов: 0 из 1} other "
+      & "{выполнено пунктов: 1 из 1}}} other "
+      & "{выполнено пунктов: {done, number} из {total, "
+      & "number}}}");
+   P ("label.attachments.upload_progress_label",
+      "{total, plural, =0 {нет загрузок} =1 {{done, plural, =0 "
+      & "{завершено загрузок: 0 из 1} other "
+      & "{завершено загрузок: 1 из 1}}} other "
+      & "{завершено загрузок: {done, number} из {total, "
+      & "number}}}");
+   P ("label.events.capacity_label",
+      "{capacity, plural, =0 {нет мест} =1 {{reserved, plural, =0 "
+      & "{забронировано мест: 0 из 1} other "
+      & "{забронировано мест: 1 из 1}}} other "
+      & "{забронировано мест: {reserved, number} из "
+      & "{capacity, number}}}");
+   P ("label.events.waitlist_label",
+      "{total, plural, =0 {позиция в листе ожидания "
+      & "{position, number}} other {позиция в листе "
+      & "ожидания {position, number} из {total, number}}}");
+   P ("label.comparisons.multi_value_summary",
+      "{mode, select, comparison_compact {{name}: изменено {changed, "
+      & "number}/{total, number}} other {{name}: изменено {changed, "
+      & "number}, без изменений {unchanged, number}, всего "
+      & "{total, number}}}");
+   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{brightness} {chroma} {temperature} {base, select, pink "
+      & "{розовый} other {{hue}}}");
+   P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
+   P ("label.groups", "{first}; {second}");
+   P ("label.parts", "{first}, {second}");
 end Labels_3;

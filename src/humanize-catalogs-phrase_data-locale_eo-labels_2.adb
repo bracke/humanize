@@ -522,4 +522,176 @@ begin
       & "aprobon} blocked_state {blokita} completed_state {finita} failed_state "
       & "{malsukcesis} cancelled_state {nuligita} skipped_state {preterlasita} "
       & "other {paŭzigita}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {travidebla} mostly_transparent "
+      & "{plejparte travidebla} translucent {diafana} mostly_opaque {plejparte "
+      & "opaka} other {opaka}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {neniuj observoj} one {1 observo, min. {minimum} "
+      & "{unit}, mediano {median} {unit}, maks. {maximum} {unit}} other "
+      & "{{count, number} observoj, min. {minimum} {unit}, mediano {median} "
+      & "{unit}, maks. {maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {neniuj observoj} one {0 "
+      & "eksterordinaraj valoroj el 1 observo} other {0 eksterordinaraj valoroj "
+      & "el {total, number} observoj}}} one {{total, plural, one {1 "
+      & "eksterordinara valoro el 1 observo} other {1 eksterordinara valoro el "
+      & "{total, number} observoj}}} other {{outliers, number} eksterordinaraj "
+      & "valoroj el {total, number} observoj}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {{count, number} {unit} super la kapacito} other "
+      & "{restas {count, number} el {total, number} {unit}}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {kvoto superita je {count, number} {unit} "
+      & "({percent} uzita)} near {kvoto preskaŭ atingita: restas {count, "
+      & "number} {unit} ({percent} uzita)} other {kvoto disponebla: restas "
+      & "{count, number} {unit} ({percent} uzita)}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {kaŝmemora trafoproporcio ne disponebla: neniuj "
+      & "petoj} other {kaŝmemora trafoproporcio {percent}: {hits, plural, one "
+      & "{1 trafo} other {{hits, number} trafoj}}, {misses, plural, one {1 "
+      & "maltrafo} other {{misses, number} maltrafoj}}}}");
+   P ("label.markup.attribute_count_label.total",
+      "{count, plural, one {1 atributo} other {{count, number} atributoj}}");
+   P ("label.markup.attribute_count_label.data",
+      "{count, plural, one {1 data-atributo} other {{count, number} "
+      & "data-atributoj}}");
+   P ("label.markup.attribute_count_label.aria",
+      "{count, plural, one {1 ARIA-atributo} other {{count, number} "
+      & "ARIA-atributoj}}");
+   P ("label.markup.attribute_count_label.events",
+      "{count, plural, one {1 eventotraktilo} other {{count, number} "
+      & "eventotraktiloj}}");
+   P ("label.markup.heading_label", "titola nivelo {level, number}");
+   P ("label.markup.tag_count_label.total", "{count, plural, one {1 etikedo} other {{count, number} etikedoj}}");
+   P ("label.markup.tag_count_label.links", "{count, plural, one {1 ligilo} other {{count, number} ligiloj}}");
+   P ("label.markup.tag_count_label.media",
+      "{count, plural, one {1 aŭdvida elemento} other {{count, number} "
+      & "aŭdvidaj elementoj}}");
+   P ("label.markup.tag_count_label.forms",
+      "{count, plural, one {1 formulara regilo} other {{count, number} "
+      & "formularaj regiloj}}");
+   P ("label.markup.document_outline_label.headings",
+      "{count, plural, one {1 titolo} other {{count, number} titoloj}}");
+   P ("label.markup.document_outline_label.landmarks",
+      "{count, plural, one {1 orientilo} other {{count, number} orientiloj}}");
+   P ("label.markup.document_outline_label.forms",
+      "{count, plural, one {1 formularo} other {{count, number} formularoj}}");
+   P ("label.markup.document_outline_label.media",
+      "{count, plural, one {1 aŭdvida elemento} other {{count, number} "
+      & "aŭdvidaj elementoj}}");
+   P ("label.markup.table_navigation_label",
+      "{caption} vico {row, number} el {rows, number}, kolumno {column, "
+      & "number} el {columns, number}");
+   P ("label.secrets.secret_count_label.total", "{count, plural, one {1 sekreto} other {{count, number} sekretoj}}");
+   P ("label.secrets.secret_count_label.masked", "{count, plural, one {1 maskita} other {{count, number} maskitaj}}");
+   P ("label.secrets.secret_count_label.unset",
+      "{count, plural, one {1 neagordita} other {{count, number} "
+      & "neagorditaj}}");
+   P ("label.secrets.secret_count_label.fingerprints",
+      "{count, plural, one {1 fingrospuro} other {{count, number} "
+      & "fingrospuroj}}");
+   P ("label.schema.type_mismatch_label",
+      "kampo {field_name}: atendita {expected, select, string_field {ĉeno} "
+      & "integer_field {entjero} decimal_field {dekuma nombro} boolean_field "
+      & "{bulea valoro} date_field {dato} date_time_field {dato-horo} "
+      & "object_field {objekto} array_field {tabelo} enum_field {listigo} "
+      & "binary_field {duuma valoro} null_field {nulo} any_field {ajna} other "
+      & "{nekonata}}, ricevita {actual, select, string_field {ĉeno} "
+      & "integer_field {entjero} decimal_field {dekuma nombro} boolean_field "
+      & "{bulea valoro} date_field {dato} date_time_field {dato-horo} "
+      & "object_field {objekto} array_field {tabelo} enum_field {listigo} "
+      & "binary_field {duuma valoro} null_field {nulo} any_field {ajna} other "
+      & "{nekonata}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {1 bloka "
+      & "problemo} other {{blocking, number} blokaj problemoj}}} blocking "
+      & "{{base}, {blocking, plural, one {1 bloka problemo} other {{blocking, "
+      & "number} blokaj problemoj}}} only {nur {base}} other {{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {cela intervalo de {low} ĝis "
+      & "{high} inkluzive} other {cela fenestro de {low} ĝis {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} en la atendata intervalo} below "
+      & "{{value} sub la atendata intervalo} other {{value} super la atendata "
+      & "intervalo}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} ĉe la kritika sojlo} warning "
+      & "{{value} ĉe la avertosojlo} other {{value} en la normala intervalo}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {ne transpasita} other {transpasita je "
+      & "{difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {ĉe la celo} below {{difference} sub la celo} "
+      & "other {{difference} super la celo}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {limo transpasita} near {proksime al la limo, "
+      & "restas {distance}} other {{distance} ĝis la limo}}");
+   P ("label.thresholds.threshold_summary_label.none", "neniuj metrikoj");
+   P ("label.thresholds.threshold_summary_label.normal",
+      "{count, plural, one {1 normala} other {{count, number} normalaj}}");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {1 averto} other {{count, number} avertoj}}");
+   P ("label.thresholds.threshold_summary_label.critical",
+      "{count, plural, one {1 kritika} other {{count, number} kritikaj}}");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {1 transpaso} other {{count, number} transpasoj}}");
+   P ("label.thresholds.target_window_label", "celo {target} plus/minus {tolerance}");
+   P ("label.thresholds.tolerance_label", "toleremo {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} de la limo");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {limo transpasita je {amount}} other {restas "
+      & "{amount}}}");
+   P ("label.thresholds.budget_used_label", "{used} uzita el {budget}");
+   P ("label.workflows.step_label", "paŝo {current, number} el {total, number}: {name}");
+   P ("label.workflows.milestone_label", "{current, number} el {total, number} mejloŝtonoj atingitaj: {name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {neniuj laborfluaj eroj} half {duonvoje tra la "
+      & "laborfluo} other {{completed, number} el {total, number} faritaj}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {vicposicio {position, number}} other {vicposicio "
+      & "{position, number} el {total, number}}}");
+   P ("label.changes.change_set_label.none", "neniuj ŝanĝoj");
+   P ("label.changes.change_set_label.added", "{count, plural, one {1 aldonita} other {{count, number} aldonitaj}}");
+   P ("label.changes.change_set_label.removed",
+      "{count, plural, one {1 forigita} other {{count, number} forigitaj}}");
+   P ("label.changes.change_set_label.modified",
+      "{count, plural, one {1 ŝanĝita} other {{count, number} ŝanĝitaj}}");
+   P ("label.changes.change_set_label.unchanged",
+      "{count, plural, one {1 senŝanĝa} other {{count, number} "
+      & "senŝanĝaj}}");
+   P ("label.changes.sync_change_label.none", "neniuj sinkronigaj ŝanĝoj");
+   P ("label.changes.sync_change_label.uploaded",
+      "{count, plural, one {1 alŝutita} other {{count, number} alŝutitaj}}");
+   P ("label.changes.sync_change_label.downloaded",
+      "{count, plural, one {1 elŝutita} other {{count, number} elŝutitaj}}");
+   P ("label.changes.sync_change_label.deleted",
+      "{count, plural, one {1 forigita} other {{count, number} forigitaj}}");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {1 konflikto} other {{count, number} konfliktoj}}");
+   P ("label.changes.net_change_label",
+      "{state, select, none {neniu neta ŝanĝo} up {nete +{count, plural, "
+      & "one {1 ero} other {{count, number} eroj}}} other {nete -{count, "
+      & "plural, one {1 ero} other {{count, number} eroj}}}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {neniuj ŝanĝoj por kontroli} all {ĉiuj "
+      & "ŝanĝoj kontrolitaj} other {{reviewed, number} el {total, number} "
+      & "ŝanĝoj kontrolitaj}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} senŝanĝa je {new_value}} up "
+      & "{{field_name} kreskis de {old_value} al {new_value}} other "
+      & "{{field_name} malkreskis de {old_value} al {new_value}}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {neniuj elekteblaj vicoj} none {neniuj vicoj "
+      & "elektitaj} all {{total, plural, one {1 vico elektita} other {ĉiuj "
+      & "{total, number} vicoj elektitaj}}} other {{selected, number} el "
+      & "{total, plural, one {1 vico} other {{total, number} vicoj}} "
+      & "elektitaj}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {neniuj paĝoj} other {{pages, plural, =0 {neniuj "
+      & "paĝoj} other {{rows, plural, =0 {paĝo {page, number} el {pages, "
+      & "number}} one {paĝo {page, number} el {pages, number}, 1 vico} other "
+      & "{paĝo {page, number} el {pages, number}, {rows, number} vicoj}}}}}}");
 end Labels_2;

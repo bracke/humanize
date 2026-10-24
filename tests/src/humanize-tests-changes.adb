@@ -189,7 +189,7 @@ package body Humanize.Tests.Changes is
          "complete review");
       Check
         (Numeric_Field_Change_Label ("timeout", 30.0, 45.0, "s"),
-         "timeout increased from 3.00000000000000E+01 s to 4.50000000000000E+01 s",
+         "timeout increased from 30 s to 45 s",
          "numeric field change label");
       Check
         (Duration_Field_Change_Label ("retry delay", "30 seconds", "1 minute"),

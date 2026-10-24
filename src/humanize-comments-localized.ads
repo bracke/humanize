@@ -33,6 +33,18 @@ package Humanize.Comments.Localized is
    --  @param State As for the parent's Comment_Label.
    --  @return The label in Context's locale.
 
+   function Comment_Label
+      (Context : Humanize.Contexts.Context;
+       Author  : String;
+       State   : Comment_State;
+       Options : Comment_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Author As for the parent's Comment_Label.
+   --  @param State As for the parent's Comment_Label.
+   --  @param Options As for the parent's Comment_Label.
+   --  @return The label in Context's locale.
+
    function Comment_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Comment_State)
@@ -161,6 +173,20 @@ package Humanize.Comments.Localized is
    --  @param Count As for the parent's Thread_Label.
    --  @return The label in Context's locale.
 
+   function Thread_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Thread_State;
+       Count   : Natural;
+       Options : Comment_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Thread_Label.
+   --  @param State As for the parent's Thread_Label.
+   --  @param Count As for the parent's Thread_Label.
+   --  @param Options As for the parent's Thread_Label.
+   --  @return The label in Context's locale.
+
    function Thread_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Thread_State)
@@ -221,6 +247,22 @@ package Humanize.Comments.Localized is
    --  @param Context Formatting context.
    --  @param Author As for the parent's Comment_Label.
    --  @param State As for the parent's Comment_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Comment_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Author  : String;
+       State   : Comment_State;
+       Options : Comment_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Author As for the parent's Comment_Label.
+   --  @param State As for the parent's Comment_Label.
+   --  @param Options As for the parent's Comment_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -395,6 +437,24 @@ package Humanize.Comments.Localized is
    --  @param Name As for the parent's Thread_Label.
    --  @param State As for the parent's Thread_Label.
    --  @param Count As for the parent's Thread_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Thread_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Thread_State;
+       Count   : Natural;
+       Options : Comment_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Thread_Label.
+   --  @param State As for the parent's Thread_Label.
+   --  @param Count As for the parent's Thread_Label.
+   --  @param Options As for the parent's Thread_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

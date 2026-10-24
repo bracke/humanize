@@ -35,6 +35,18 @@ package Humanize.Diagnostics.Localized is
    --  @param Status As for the parent's Check_Result_Label.
    --  @return The label in Context's locale.
 
+   function Check_Result_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Status  : Check_Status;
+       Options : Diagnostic_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Check_Result_Label.
+   --  @param Status As for the parent's Check_Result_Label.
+   --  @param Options As for the parent's Check_Result_Label.
+   --  @return The label in Context's locale.
+
    function Check_Status_Label
       (Context : Humanize.Contexts.Context;
        Status  : Check_Status)
@@ -71,6 +83,22 @@ package Humanize.Diagnostics.Localized is
    --  @param Line As for the parent's Diagnostic_Label.
    --  @return The label in Context's locale.
 
+   function Diagnostic_Label
+      (Context  : Humanize.Contexts.Context;
+       Message  : String;
+       Severity : Issue_Severity;
+       Options  : Diagnostic_Label_Options;
+       Path     : String := "";
+       Line     : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Message As for the parent's Diagnostic_Label.
+   --  @param Severity As for the parent's Diagnostic_Label.
+   --  @param Options As for the parent's Diagnostic_Label.
+   --  @param Path As for the parent's Diagnostic_Label.
+   --  @param Line As for the parent's Diagnostic_Label.
+   --  @return The label in Context's locale.
+
    function Failed_At_Label
       (Context : Humanize.Contexts.Context;
        Path    : String;
@@ -95,6 +123,20 @@ package Humanize.Diagnostics.Localized is
    --  @param Severity As for the parent's Field_Problem_Label.
    --  @return The label in Context's locale.
 
+   function Field_Problem_Label
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Message    : String;
+       Severity   : Issue_Severity;
+       Options    : Diagnostic_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Field_Name As for the parent's Field_Problem_Label.
+   --  @param Message As for the parent's Field_Problem_Label.
+   --  @param Severity As for the parent's Field_Problem_Label.
+   --  @param Options As for the parent's Field_Problem_Label.
+   --  @return The label in Context's locale.
+
    function First_Failure_Label
       (Context    : Humanize.Contexts.Context;
        Check_Name : String;
@@ -117,6 +159,20 @@ package Humanize.Diagnostics.Localized is
    --  @param Errors As for the parent's Issue_Count_Label.
    --  @param Warnings As for the parent's Issue_Count_Label.
    --  @param Notices As for the parent's Issue_Count_Label.
+   --  @return The label in Context's locale.
+
+   function Issue_Summary_Label
+      (Context  : Humanize.Contexts.Context;
+       Errors   : Natural := 0;
+       Warnings : Natural := 0;
+       Notices  : Natural := 0;
+       Blocking : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Errors As for the parent's Issue_Summary_Label.
+   --  @param Warnings As for the parent's Issue_Summary_Label.
+   --  @param Notices As for the parent's Issue_Summary_Label.
+   --  @param Blocking As for the parent's Issue_Summary_Label.
    --  @return The label in Context's locale.
 
    function Location_Label
@@ -245,6 +301,26 @@ package Humanize.Diagnostics.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Diagnostic_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Message  : String;
+       Severity : Issue_Severity;
+       Options  : Diagnostic_Label_Options;
+       Path     : String := "";
+       Line     : Natural := 0;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Message As for the parent's Diagnostic_Label.
+   --  @param Severity As for the parent's Diagnostic_Label.
+   --  @param Options As for the parent's Diagnostic_Label.
+   --  @param Path As for the parent's Diagnostic_Label.
+   --  @param Line As for the parent's Diagnostic_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Failed_At_Label_Into
       (Context : Humanize.Contexts.Context;
        Path    : String;
@@ -277,6 +353,24 @@ package Humanize.Diagnostics.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Field_Problem_Label_Into
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Message    : String;
+       Severity   : Issue_Severity;
+       Options    : Diagnostic_Label_Options;
+       Target     : in out String;
+       Written    : out Natural;
+       Status     : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Field_Name As for the parent's Field_Problem_Label.
+   --  @param Message As for the parent's Field_Problem_Label.
+   --  @param Severity As for the parent's Field_Problem_Label.
+   --  @param Options As for the parent's Field_Problem_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure First_Failure_Label_Into
       (Context    : Humanize.Contexts.Context;
        Check_Name : String;
@@ -305,6 +399,24 @@ package Humanize.Diagnostics.Localized is
    --  @param Errors As for the parent's Issue_Count_Label.
    --  @param Warnings As for the parent's Issue_Count_Label.
    --  @param Notices As for the parent's Issue_Count_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Issue_Summary_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Errors   : Natural := 0;
+       Warnings : Natural := 0;
+       Notices  : Natural := 0;
+       Blocking : Natural := 0;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Errors As for the parent's Issue_Summary_Label.
+   --  @param Warnings As for the parent's Issue_Summary_Label.
+   --  @param Notices As for the parent's Issue_Summary_Label.
+   --  @param Blocking As for the parent's Issue_Summary_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

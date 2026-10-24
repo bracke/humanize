@@ -256,6 +256,12 @@ tasks : zugewiesen an plain
 thresholds : Untergrenze
 versions : 3 Commits voraus, 3 Commits zurück
 workflows : wartet auf Genehmigung durch plain
+contrast : 50 % durchscheinend
+names : dunkel, gesättigt rot, warm, hohes Chroma
+models : dunkel
+palettes : ausgewogen, lebendig, warme Stimmung
+statistics : 3 Ausreißer bei 40 Beobachtungen
+metrics : weniger als 1 Minute Lesezeit
 ```
 
 For `./examples/bin/ui_labels_demo`:
@@ -318,7 +324,7 @@ Public surface:
   number range : greater than 3 and up to 7
   number scale : 1.2e6
   number spellout : twelve dollars and fifty cents
-  number statistics : right-skewed distribution, median 3.00000000000000E+00 ms
+  number statistics : right-skewed distribution, median 3 ms
   color contrast : 8.2:1 enhanced contrast
   color model : dark
   string core : API Response URL

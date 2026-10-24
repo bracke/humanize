@@ -133,7 +133,7 @@ separate (Humanize.Tests.Parsing)
       AUnit.Assertions.Assert
         (Unit_Success.Status = Humanize.Status.Ok
          and then Support.Text (Unit_Success) =
-           "parse success unit: input=""3 m"" normalized=""3.00000000000000E+00 METER"" consumed=3 exact=yes",
+           "parse success unit: input=""3 m"" normalized=""3 METER"" consumed=3 exact=yes",
          "unit parse success explanation label");
       AUnit.Assertions.Assert
         (Schedule_Success.Status = Humanize.Status.Ok

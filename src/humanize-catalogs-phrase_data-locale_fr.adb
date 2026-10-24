@@ -10,6 +10,7 @@ procedure Locale_Fr (Target : in out Catalog_Text) is
    procedure Labels_1 is separate;
    procedure Labels_2 is separate;
    procedure Labels_3 is separate;
+   procedure Labels_4 is separate;
 begin
    P ("all_count",
       "{total, plural, one {{total} {one}} many {les {total} {many}} other "
@@ -841,4 +842,5 @@ begin
    Labels_1;
    Labels_2;
    Labels_3;
+   Labels_4;
 end Locale_Fr;

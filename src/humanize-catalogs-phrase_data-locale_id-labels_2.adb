@@ -410,4 +410,291 @@ begin
       & "{menunggu persetujuan} blocked_state {diblokir} completed_state "
       & "{selesai} failed_state {gagal} cancelled_state {dibatalkan} "
       & "skipped_state {dilewati} other {dijeda}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {transparan} mostly_transparent "
+      & "{sebagian besar transparan} translucent {tembus cahaya} mostly_opaque "
+      & "{sebagian besar buram} other {buram}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {tidak ada observasi} other {{count, number} "
+      & "observasi, min {minimum} {unit}, median {median} {unit}, maks "
+      & "{maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {tidak ada observasi} other "
+      & "{0 pencilan dari {total, number} observasi}}} other {{outliers, "
+      & "number} pencilan dari {total, number} observasi}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {{count, number} {unit} melebihi kapasitas} other "
+      & "{tersisa {count, number} dari {total, number} {unit}}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {kuota terlampaui {count, number} {unit} "
+      & "({percent} terpakai)} near {kuota hampir habis: tersisa {count, "
+      & "number} {unit} ({percent} terpakai)} other {kuota tersedia: tersisa "
+      & "{count, number} {unit} ({percent} terpakai)}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {rasio cache hit tidak tersedia: tidak ada "
+      & "permintaan} other {rasio cache hit {percent}: {hits, number} hit, "
+      & "{misses, number} miss}}");
+   P ("label.markup.attribute_count_label.total", "{count, number} atribut");
+   P ("label.markup.attribute_count_label.data", "{count, number} atribut data");
+   P ("label.markup.attribute_count_label.aria", "{count, number} atribut ARIA");
+   P ("label.markup.attribute_count_label.events", "{count, number} penangan event");
+   P ("label.markup.heading_label", "judul tingkat {level, number}");
+   P ("label.markup.tag_count_label.total", "{count, number} tag");
+   P ("label.markup.tag_count_label.links", "{count, number} tautan");
+   P ("label.markup.tag_count_label.media", "{count, number} elemen media");
+   P ("label.markup.tag_count_label.forms", "{count, number} kontrol formulir");
+   P ("label.markup.document_outline_label.headings", "{count, number} judul");
+   P ("label.markup.document_outline_label.landmarks", "{count, number} landmark");
+   P ("label.markup.document_outline_label.forms", "{count, number} formulir");
+   P ("label.markup.document_outline_label.media", "{count, number} elemen media");
+   P ("label.markup.table_navigation_label",
+      "{caption} baris {row, number} dari {rows, number}, kolom {column, "
+      & "number} dari {columns, number}");
+   P ("label.secrets.secret_count_label.total", "{count, number} rahasia");
+   P ("label.secrets.secret_count_label.masked", "{count, number} disamarkan");
+   P ("label.secrets.secret_count_label.unset", "{count, number} belum disetel");
+   P ("label.secrets.secret_count_label.fingerprints", "{count, number} sidik jari");
+   P ("label.schema.type_mismatch_label",
+      "bidang {field_name} mengharapkan {expected, select, string_field "
+      & "{string} integer_field {bilangan bulat} decimal_field {desimal} "
+      & "boolean_field {boolean} date_field {tanggal} date_time_field "
+      & "{tanggal-waktu} object_field {objek} array_field {array} enum_field "
+      & "{enum} binary_field {biner} null_field {null} any_field {apa saja} "
+      & "other {tidak diketahui}}, didapat {actual, select, string_field "
+      & "{string} integer_field {bilangan bulat} decimal_field {desimal} "
+      & "boolean_field {boolean} date_field {tanggal} date_time_field "
+      & "{tanggal-waktu} object_field {objek} array_field {array} enum_field "
+      & "{enum} binary_field {biner} null_field {null} any_field {apa saja} "
+      & "other {tidak diketahui}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, number} masalah pemblokir} "
+      & "blocking {{base}, {blocking, number} masalah pemblokir} only {{base} "
+      & "saja} other {{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {rentang target {low} hingga "
+      & "{high}} other {jendela target {low} hingga {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} dalam rentang yang diharapkan} below "
+      & "{{value} di bawah rentang yang diharapkan} other {{value} di atas "
+      & "rentang yang diharapkan}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} pada ambang kritis} warning {{value} "
+      & "pada ambang peringatan} other {{value} dalam rentang normal}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {tidak terlampaui} other {terlampaui sebesar "
+      & "{difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {sesuai target} below {{difference} di bawah "
+      & "target} other {{difference} di atas target}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {batas terlampaui} near {mendekati batas, "
+      & "tersisa {distance}} other {{distance} dari batas}}");
+   P ("label.thresholds.threshold_summary_label.none", "tidak ada metrik");
+   P ("label.thresholds.threshold_summary_label.normal", "{count, number} normal");
+   P ("label.thresholds.threshold_summary_label.warnings", "{count, number} peringatan");
+   P ("label.thresholds.threshold_summary_label.critical", "{count, number} kritis");
+   P ("label.thresholds.threshold_summary_label.breaches", "{count, number} pelanggaran");
+   P ("label.thresholds.target_window_label", "target {target} plus-minus {tolerance}");
+   P ("label.thresholds.tolerance_label", "toleransi {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} dari batas");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {batas terlampaui sebesar {amount}} other "
+      & "{tersisa {amount}}}");
+   P ("label.thresholds.budget_used_label", "{used} terpakai dari {budget}");
+   P ("label.workflows.step_label", "langkah {current, number} dari {total, number}: {name}");
+   P ("label.workflows.milestone_label", "{current, number} dari {total, number} tonggak selesai: {name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {tidak ada item alur kerja} half {setengah alur "
+      & "kerja selesai} other {{completed, number} dari {total, number} "
+      & "selesai}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {posisi antrean {position, number}} other {posisi "
+      & "antrean {position, number} dari {total, number}}}");
+   P ("label.changes.change_set_label.none", "tidak ada perubahan");
+   P ("label.changes.change_set_label.added", "{count, number} ditambahkan");
+   P ("label.changes.change_set_label.removed", "{count, number} dihapus");
+   P ("label.changes.change_set_label.modified", "{count, number} diubah");
+   P ("label.changes.change_set_label.unchanged", "{count, number} tidak berubah");
+   P ("label.changes.sync_change_label.none", "tidak ada perubahan sinkronisasi");
+   P ("label.changes.sync_change_label.uploaded", "{count, number} diunggah");
+   P ("label.changes.sync_change_label.downloaded", "{count, number} diunduh");
+   P ("label.changes.sync_change_label.deleted", "{count, number} dihapus");
+   P ("label.changes.sync_change_label.conflicts", "{count, number} konflik");
+   P ("label.changes.net_change_label",
+      "{state, select, none {tidak ada perubahan bersih} up {bersih +{count, "
+      & "number} item} other {bersih -{count, number} item}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {tidak ada perubahan untuk ditinjau} all {semua "
+      & "perubahan sudah ditinjau} other {{reviewed, number} dari {total, "
+      & "number} perubahan sudah ditinjau}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} tetap {new_value}} up {{field_name} "
+      & "naik dari {old_value} menjadi {new_value}} other {{field_name} turun "
+      & "dari {old_value} menjadi {new_value}}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {tidak ada baris yang dapat dipilih} none "
+      & "{tidak ada baris yang dipilih} all {semua {total, number} baris "
+      & "dipilih} other {{selected, number} dari {total, number} baris "
+      & "dipilih}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {tidak ada halaman} other {{pages, plural, =0 {tidak "
+      & "ada halaman} other {{rows, plural, =0 {halaman {page, number} dari "
+      & "{pages, number}} other {halaman {page, number} dari {pages, number}, "
+      & "{rows, number} baris}}}}}}");
+   P ("label.tables.filter_label",
+      "{state, select, no_rows {tidak ada baris} none {tidak ada baris yang "
+      & "cocok} all {semua {total, number} baris terlihat} other {{visible, "
+      & "number} dari {total, number} baris terlihat}}");
+   P ("label.tables.row_range_label",
+      "{state, select, none {tidak ada baris} single {baris {first_row, "
+      & "number} dari {total, number}} other {baris {first_row, "
+      & "number}-{last_row, number} dari {total, number}}}");
+   P ("label.forms.remaining_characters_label",
+      "{state, select, unlimited {tanpa batas karakter} none_left {tidak ada "
+      & "karakter tersisa} left {tersisa {count, number} karakter} other "
+      & "{{count, number} karakter melebihi batas}}");
+   P ("label.forms.required_fields_label",
+      "{total, plural, =0 {tidak ada bidang wajib} other {{missing, plural, "
+      & "=0 {semua bidang wajib sudah lengkap} other {{missing, number} dari "
+      & "{total, number} bidang wajib belum diisi}}}}");
+   P ("label.forms.form_progress_label",
+      "{state, select, none {tidak ada bidang} all {semua bidang lengkap} "
+      & "other {{completed, number} dari {total, number} bidang lengkap}}");
+   P ("label.forms.section_progress_label",
+      "{state, select, none {{name}: tidak ada bidang} all {{name}: semua "
+      & "bidang lengkap} other {{name}: {completed, number} dari {total, "
+      & "number} bidang lengkap}}");
+   P ("label.forms.form_step_label",
+      "{total, plural, =0 {tidak ada langkah formulir} other {langkah "
+      & "{current, number} dari {total, number}: {name}}}");
+   P ("label.navigation.breadcrumb_position_label",
+      "{total, plural, =0 {tidak ada jejak navigasi} other {jejak navigasi "
+      & "{current, number} dari {total, number}: {name}}}");
+   P ("label.navigation.tab_label",
+      "{total, plural, =0 {tidak ada tab} other {tab {current, number} dari "
+      & "{total, number}: {name}}}");
+   P ("label.notifications.inbox_label",
+      "{total, plural, =0 {kotak masuk kosong} other {{unread, plural, =0 "
+      & "{semua notifikasi sudah dibaca} other {{unread, number} belum dibaca "
+      & "dari {total, number} notifikasi}}}}");
+   P ("label.notifications.delivery_attempt_label",
+      "percobaan pengiriman {attempt, number} dari {max_attempts, number}");
+   P ("label.tasks.checklist_label",
+      "{total, plural, =0 {tidak ada item daftar periksa} other {{done, "
+      & "number} dari {total, number} item selesai}}");
+   P ("label.attachments.upload_progress_label",
+      "{total, plural, =0 {tidak ada unggahan} other {{done, number} dari "
+      & "{total, number} unggahan selesai}}");
+   P ("label.events.capacity_label",
+      "{capacity, plural, =0 {tidak ada kapasitas} other {{reserved, number} "
+      & "dari {capacity, number} kursi dipesan}}");
+   P ("label.events.waitlist_label",
+      "{total, plural, =0 {posisi daftar tunggu {position, number}} other "
+      & "{posisi daftar tunggu {position, number} dari {total, number}}}");
+   P ("label.comparisons.multi_value_summary",
+      "{mode, select, comparison_compact {{name} {changed, number}/{total, "
+      & "number} berubah} other {{name}: {changed, number} berubah, {unchanged, "
+      & "number} tidak berubah, {total, number} total}}");
+   P ("label.names.color_description", "{brightness}, {hue} {saturation}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{base, select, pink {merah muda} other {{hue}}} {brightness} {chroma} "
+      & "{temperature}");
+   P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
+   P ("label.groups", "{first}; {second}");
+   P ("label.parts", "{first}, {second}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
+      "warna latar depan saat ini memenuhi kontras teks besar pada {v1}:{v2, "
+      & "number}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_d_n",
+      "warna latar depan saat ini memenuhi kontras teks normal pada {v1}:{v2, "
+      & "number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_enhanced_text_contrast",
+      "gunakan {v1} untuk kontras teks yang ditingkatkan {v2, number}:{v3, "
+      & "number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_large_text_contrast",
+      "gunakan {v1} untuk kontras teks besar {v2, number}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_normal_text_contrast",
+      "gunakan {v1} untuk kontras teks normal {v2}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_large_text_contrast",
+      "gunakan {v1} untuk kontras teks besar {v2}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_enhanced_text_contrast",
+      "gunakan {v1} untuk kontras teks yang ditingkatkan {v2}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_n_n",
+      "warna latar depan saat ini memenuhi kontras teks besar pada {v1, "
+      & "number}:{v2, number}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_n_n",
+      "warna latar depan saat ini memenuhi kontras teks normal pada {v1, "
+      & "number}:{v2, number}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_d_n",
+      "warna latar depan saat ini memenuhi kontras teks yang ditingkatkan "
+      & "pada {v1}:{v2, number}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_n_n",
+      "warna latar depan saat ini memenuhi kontras teks yang ditingkatkan "
+      & "pada {v1, number}:{v2, number}");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_low_confusion_risk_delta_n",
+      "protanopia: risiko kerancuan rendah, delta {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.deuteranopia_moderate_confusion_risk_delta_n",
+      "deuteranopia: risiko kerancuan sedang, delta {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_moderate_confusion_risk_delta_n",
+      "tritanopia: risiko kerancuan sedang, delta {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_high_confusion_risk_delta_n",
+      "akromatopsia: risiko kerancuan tinggi, delta {v1, number}");
+   P ("label.models.perceptual_difference_label.cie76_delta_d_dramatic_perceptual_difference",
+      "CIE76 delta {v1}, perbedaan perseptual dramatis");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_dramatic_perceptual_difference",
+      "CIE94 delta {v1}, perbedaan perseptual dramatis");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_dramatic_perceptual_difference",
+      "CIE94 tekstil delta {v1}, perbedaan perseptual dramatis");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_n_dramatic_perceptual_difference",
+      "CIEDE2000 delta {v1, number}, perbedaan perseptual dramatis");
+   P ("label.models.perceptual_difference_label.oklab_delta_d_large_perceptual_difference",
+      "OKLab delta {v1}, perbedaan perseptual besar");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_moderate_confusion_risk_delta_n",
+      "protanopia: risiko kerancuan sedang, delta {v1, number}");
+   P ("label.models.perceptual_difference_label.cie94_delta_n_dramatic_perceptual_difference",
+      "CIE94 delta {v1, number}, perbedaan perseptual dramatis");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_d_dramatic_perceptual_difference",
+      "CIEDE2000 delta {v1}, perbedaan perseptual dramatis");
+   P ("label.models.perceptual_difference_label.oklab_delta_d_dramatic_perceptual_difference",
+      "OKLab delta {v1}, perbedaan perseptual dramatis");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_low_confusion_risk_delta_n",
+      "akromatopsia: risiko kerancuan rendah, delta {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_distinct_delta_n",
+      "protanopia: dapat dibedakan, delta {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.deuteranopia_distinct_delta_n",
+      "deuteranopia: dapat dibedakan, delta {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_distinct_delta_n",
+      "tritanopia: dapat dibedakan, delta {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_distinct_delta_n",
+      "akromatopsia: dapat dibedakan, delta {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_moderate_confusion_risk_delta_n",
+      "akromatopsia: risiko kerancuan sedang, delta {v1, number}");
+   P ("label.models.perceptual_difference_label.cie76_delta_d_large_perceptual_difference",
+      "CIE76 delta {v1}, perbedaan perseptual besar");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_large_perceptual_difference",
+      "CIE94 delta {v1}, perbedaan perseptual besar");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_large_perceptual_difference",
+      "CIE94 tekstil delta {v1}, perbedaan perseptual besar");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_d_large_perceptual_difference",
+      "CIEDE2000 delta {v1}, perbedaan perseptual besar");
+   P ("label.models.perceptual_difference_label.oklab_delta_d_noticeable_perceptual_difference",
+      "OKLab delta {v1}, perbedaan perseptual nyata");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_high_confusion_risk_delta_n",
+      "protanopia: risiko kerancuan tinggi, delta {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_high_confusion_risk_delta_n",
+      "tritanopia: risiko kerancuan tinggi, delta {v1, number}");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_noticeable_perceptual_difference",
+      "CIE94 delta {v1}, perbedaan perseptual nyata");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_noticeable_perceptual_difference",
+      "CIE94 tekstil delta {v1}, perbedaan perseptual nyata");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_d_noticeable_perceptual_difference",
+      "CIEDE2000 delta {v1}, perbedaan perseptual nyata");
+   P ("label.models.perceptual_difference_label.oklab_delta_n_noticeable_perceptual_difference",
+      "OKLab delta {v1, number}, perbedaan perseptual nyata");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_low_confusion_risk_delta_n",
+      "tritanopia: risiko kerancuan rendah, delta {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.deuteranopia_low_confusion_risk_delta_n",
+      "deuteranopia: risiko kerancuan rendah, delta {v1, number}");
 end Labels_2;

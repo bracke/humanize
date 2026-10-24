@@ -93,8 +93,18 @@ spec = "src/humanize-colors-contrast.ads"
 area = "formatting"
 
 [[unit]]
+name = "Humanize.Colors.Contrast.Localized"
+spec = "src/humanize-colors-contrast-localized.ads"
+area = "formatting"
+
+[[unit]]
 name = "Humanize.Colors.Models"
 spec = "src/humanize-colors-models.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Colors.Models.Localized"
+spec = "src/humanize-colors-models-localized.ads"
 area = "formatting"
 
 [[unit]]
@@ -103,8 +113,18 @@ spec = "src/humanize-colors-names.ads"
 area = "formatting"
 
 [[unit]]
+name = "Humanize.Colors.Names.Localized"
+spec = "src/humanize-colors-names-localized.ads"
+area = "formatting"
+
+[[unit]]
 name = "Humanize.Colors.Palettes"
 spec = "src/humanize-colors-palettes.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Colors.Palettes.Localized"
+spec = "src/humanize-colors-palettes-localized.ads"
 area = "formatting"
 
 [[unit]]
@@ -135,6 +155,11 @@ area = "formatting"
 [[unit]]
 name = "Humanize.Numbers.Statistics"
 spec = "src/humanize-numbers-statistics.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Numbers.Statistics.Localized"
+spec = "src/humanize-numbers-statistics-localized.ads"
 area = "formatting"
 
 [[unit]]
@@ -200,6 +225,11 @@ area = "formatting"
 [[unit]]
 name = "Humanize.Strings.Metrics"
 spec = "src/humanize-strings-metrics.ads"
+area = "formatting"
+
+[[unit]]
+name = "Humanize.Strings.Metrics.Localized"
+spec = "src/humanize-strings-metrics-localized.ads"
 area = "formatting"
 
 [[unit]]

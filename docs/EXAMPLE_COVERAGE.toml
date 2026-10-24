@@ -803,3 +803,39 @@ area = "localized-workflows"
 unit = "Humanize.Workflows.Localized"
 example = "examples/domain_labels_demo.adb"
 usecase = "render a workflows label in German"
+
+[[coverage]]
+area = "localized-contrast"
+unit = "Humanize.Colors.Contrast.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a contrast label in German"
+
+[[coverage]]
+area = "localized-models"
+unit = "Humanize.Colors.Models.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a models label in German"
+
+[[coverage]]
+area = "localized-names"
+unit = "Humanize.Colors.Names.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a names label in German"
+
+[[coverage]]
+area = "localized-palettes"
+unit = "Humanize.Colors.Palettes.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a palettes label in German"
+
+[[coverage]]
+area = "localized-statistics"
+unit = "Humanize.Numbers.Statistics.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a statistics label in German"
+
+[[coverage]]
+area = "localized-metrics"
+unit = "Humanize.Strings.Metrics.Localized"
+example = "examples/domain_labels_demo.adb"
+usecase = "render a metrics label in German"

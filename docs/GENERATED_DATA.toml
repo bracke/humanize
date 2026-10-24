@@ -254,3 +254,14 @@ currentness = "reviewed with release verification"
 marker = "Provenance: delegates to Humanize.Phrases.Support locale metadata"
 line_count = 32
 sha256 = "7c4caaeb8948ffe8a5046566cd7b54ae70efafd8c1f7c3be1847568db8033c77"
+
+[[artifact]]
+path = "src/humanize-parsing-phrase_keys.ads"
+kind = "generated-catalog"
+owner = "humanize"
+source = "docs/PHRASE_TEMPLATES.md key list"
+coverage = "every phrase key's numeric, select and text arguments"
+currentness = "regenerated with the phrase catalogs"
+marker = "Provenance: generated from docs/PHRASE_TEMPLATES.md"
+line_count = 1627
+sha256 = "77123484cb9c4178a7936abec040ca8a09d602c5c8f04baa7c0712af61a4db0e"

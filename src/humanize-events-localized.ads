@@ -37,6 +37,16 @@ package Humanize.Events.Localized is
    --  @param Name As for the parent's Canceled_Label.
    --  @return The label in Context's locale.
 
+   function Capacity_Label
+      (Context  : Humanize.Contexts.Context;
+       Reserved : Natural;
+       Capacity : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Reserved As for the parent's Capacity_Label.
+   --  @param Capacity As for the parent's Capacity_Label.
+   --  @return The label in Context's locale.
+
    function Check_In_Label
       (Context : Humanize.Contexts.Context;
        Name    : String := "")
@@ -69,6 +79,18 @@ package Humanize.Events.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Event_Label.
    --  @param State As for the parent's Event_Label.
+   --  @return The label in Context's locale.
+
+   function Event_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Event_State;
+       Options : Event_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Event_Label.
+   --  @param State As for the parent's Event_Label.
+   --  @param Options As for the parent's Event_Label.
    --  @return The label in Context's locale.
 
    function Event_Location_Label
@@ -123,6 +145,16 @@ package Humanize.Events.Localized is
    --  @param State As for the parent's RSVP_Label.
    --  @return The label in Context's locale.
 
+   function RSVP_Label
+      (Context : Humanize.Contexts.Context;
+       State   : Attendance_State;
+       Options : Event_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param State As for the parent's RSVP_Label.
+   --  @param Options As for the parent's RSVP_Label.
+   --  @return The label in Context's locale.
+
    function Reminder_Label
       (Context   : Humanize.Contexts.Context;
        Time_Text : String)
@@ -139,6 +171,16 @@ package Humanize.Events.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Rescheduled_Label.
    --  @param Time_Text As for the parent's Rescheduled_Label.
+   --  @return The label in Context's locale.
+
+   function Waitlist_Label
+      (Context  : Humanize.Contexts.Context;
+       Position : Positive;
+       Total    : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Position As for the parent's Waitlist_Label.
+   --  @param Total As for the parent's Waitlist_Label.
    --  @return The label in Context's locale.
 
    procedure All_Day_Label_Into
@@ -189,6 +231,20 @@ package Humanize.Events.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Capacity_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Reserved : Natural;
+       Capacity : Natural;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Reserved As for the parent's Capacity_Label.
+   --  @param Capacity As for the parent's Capacity_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Check_In_Label_Into
       (Context : Humanize.Contexts.Context;
        Name    : String := "";
@@ -235,6 +291,22 @@ package Humanize.Events.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Event_Label.
    --  @param State As for the parent's Event_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Event_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Event_State;
+       Options : Event_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Event_Label.
+   --  @param State As for the parent's Event_Label.
+   --  @param Options As for the parent's Event_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -315,6 +387,20 @@ package Humanize.Events.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure RSVP_Label_Into
+      (Context : Humanize.Contexts.Context;
+       State   : Attendance_State;
+       Options : Event_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param State As for the parent's RSVP_Label.
+   --  @param Options As for the parent's RSVP_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Reminder_Label_Into
       (Context   : Humanize.Contexts.Context;
        Time_Text : String;
@@ -337,6 +423,20 @@ package Humanize.Events.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Rescheduled_Label.
    --  @param Time_Text As for the parent's Rescheduled_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Waitlist_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Position : Positive;
+       Total    : Natural := 0;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Position As for the parent's Waitlist_Label.
+   --  @param Total As for the parent's Waitlist_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

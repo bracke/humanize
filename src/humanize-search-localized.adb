@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Search.Localized is
@@ -56,8 +57,8 @@ package body Humanize.Search.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Facet_Label;
 
@@ -75,9 +76,9 @@ package body Humanize.Search.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
-      Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
       Selection := Sel.With_Arg (Selection, "selected", Lower (Boolean'Image (Selected)));
+      Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Facet_Value_Label;
 
@@ -95,10 +96,27 @@ package body Humanize.Search.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
+      Selection := Sel.With_Arg (Selection, "state", Lower (Filter_State'Image (State)));
       Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "value", Humanize.Bounded_Text.Clean (Value));
-      Selection := Sel.With_Arg (Selection, "state", Lower (Filter_State'Image (State)));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Filter_Label;
+
+   function Filter_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Value   : String;
+       State   : Filter_State;
+       Options : Search_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Search.Filter_Label (Name => Name, Value => Value, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Search.Filter_Label (Name => Name, Value => Value, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Filter_Label (Context, Name => Name, Value =>
+        Value, State => State));
    end Filter_Label;
 
    function Filter_State_Label
@@ -162,8 +180,8 @@ package body Humanize.Search.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Saved_Search_Label;
 
@@ -228,8 +246,8 @@ package body Humanize.Search.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "query", Humanize.Bounded_Text.Clean (Query));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "query", Humanize.Bounded_Text.Clean (Query));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Search_Result_Summary_Label;
 
@@ -246,8 +264,8 @@ package body Humanize.Search.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Search_Scope_Label;
 
@@ -323,7 +341,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Active_Filter_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Active_Filter_Count_Label (Context, Count => Count), Target, Written, Status);
    end Active_Filter_Count_Label_Into;
 
    procedure Clear_Filters_Label_Into
@@ -334,7 +352,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Clear_Filters_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Clear_Filters_Label (Context, Count => Count), Target, Written, Status);
    end Clear_Filters_Label_Into;
 
    procedure Facet_Label_Into
@@ -346,7 +364,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Facet_Label (Context, Name, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Facet_Label (Context, Name => Name, Count => Count), Target, Written, Status);
    end Facet_Label_Into;
 
    procedure Facet_Value_Label_Into
@@ -359,7 +377,9 @@ package body Humanize.Search.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Facet_Value_Label (Context, Name, Count, Selected), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Facet_Value_Label (Context, Name => Name, Count => Count, Selected => Selected),
+         Target, Written, Status);
    end Facet_Value_Label_Into;
 
    procedure Filter_Label_Into
@@ -372,7 +392,25 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Filter_Label (Context, Name, Value, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Filter_Label (Context, Name => Name, Value => Value, State => State),
+         Target, Written, Status);
+   end Filter_Label_Into;
+
+   procedure Filter_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Value   : String;
+       State   : Filter_State;
+       Options : Search_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Filter_Label (Context, Name => Name, Value => Value, State => State, Options => Options),
+         Target, Written, Status);
    end Filter_Label_Into;
 
    procedure Filter_State_Label_Into
@@ -383,7 +421,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Filter_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Filter_State_Label (Context, State => State), Target, Written, Status);
    end Filter_State_Label_Into;
 
    procedure No_Results_Label_Into
@@ -394,7 +432,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (No_Results_Label (Context, Query), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (No_Results_Label (Context, Query => Query), Target, Written, Status);
    end No_Results_Label_Into;
 
    procedure Recent_Search_Label_Into
@@ -405,7 +443,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Recent_Search_Label (Context, Query), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Recent_Search_Label (Context, Query => Query), Target, Written, Status);
    end Recent_Search_Label_Into;
 
    procedure Saved_Search_Label_Into
@@ -417,7 +455,9 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Saved_Search_Label (Context, Name, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Saved_Search_Label (Context, Name => Name, Count => Count),
+         Target, Written, Status);
    end Saved_Search_Label_Into;
 
    procedure Search_History_Count_Label_Into
@@ -428,7 +468,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Search_History_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Search_History_Count_Label (Context, Count => Count), Target, Written, Status);
    end Search_History_Count_Label_Into;
 
    procedure Search_Query_Label_Into
@@ -439,7 +479,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Search_Query_Label (Context, Query), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Search_Query_Label (Context, Query => Query), Target, Written, Status);
    end Search_Query_Label_Into;
 
    procedure Search_Result_Count_Label_Into
@@ -450,7 +490,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Search_Result_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Search_Result_Count_Label (Context, Count => Count), Target, Written, Status);
    end Search_Result_Count_Label_Into;
 
    procedure Search_Result_Summary_Label_Into
@@ -462,7 +502,9 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Search_Result_Summary_Label (Context, Query, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Search_Result_Summary_Label (Context, Query => Query, Count => Count),
+         Target, Written, Status);
    end Search_Result_Summary_Label_Into;
 
    procedure Search_Scope_Label_Into
@@ -474,7 +516,9 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Search_Scope_Label (Context, Name, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Search_Scope_Label (Context, Name => Name, Count => Count),
+         Target, Written, Status);
    end Search_Scope_Label_Into;
 
    procedure Search_State_Label_Into
@@ -485,7 +529,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Search_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Search_State_Label (Context, State => State), Target, Written, Status);
    end Search_State_Label_Into;
 
    procedure Sort_Label_Into
@@ -496,7 +540,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Sort_Label (Context, Mode), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Sort_Label (Context, Mode => Mode), Target, Written, Status);
    end Sort_Label_Into;
 
    procedure Sort_Mode_Label_Into
@@ -507,7 +551,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Sort_Mode_Label (Context, Mode), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Sort_Mode_Label (Context, Mode => Mode), Target, Written, Status);
    end Sort_Mode_Label_Into;
 
    procedure Suggestion_Label_Into
@@ -518,7 +562,7 @@ package body Humanize.Search.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Suggestion_Label (Context, Query), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Suggestion_Label (Context, Query => Query), Target, Written, Status);
    end Suggestion_Label_Into;
 
 end Humanize.Search.Localized;

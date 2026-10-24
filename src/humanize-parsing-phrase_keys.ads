@@ -757,10 +757,10 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.attachments.attachment_kind_label||kind=file_attachment/image_attachment/"
                   & "video_attachment/audio_attachment/document_attachment/archive_attachment/"
                   & "link_attachment|"),
-      new String'("label.attachments.attachment_label||kind=file_attachment/image_attachment/"
-                  & "video_attachment/audio_attachment/document_attachment/archive_attachment/"
-                  & "link_attachment,state=pending_attachment/uploading_attachment/"
-                  & "uploaded_attachment/failed_attachment/removed_attachment/blocked_attachment|name"),
+      new String'("label.attachments.attachment_label||state=pending_attachment/"
+                  & "uploading_attachment/uploaded_attachment/failed_attachment/removed_attachment/"
+                  & "blocked_attachment,kind=file_attachment/image_attachment/video_attachment/"
+                  & "audio_attachment/document_attachment/archive_attachment/link_attachment|name"),
       new String'("label.attachments.attachment_size_label|||name,size"),
       new String'("label.attachments.attachment_state_label||state=pending_attachment/"
                   & "uploading_attachment/uploaded_attachment/failed_attachment/removed_attachment/"
@@ -773,9 +773,10 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.attachments.scan_result_label||state=not_scanned/scanning/safe/suspicious/infected|name"),
       new String'("label.attachments.scan_state_label||state=not_scanned/scanning/safe/suspicious/infected|"),
       new String'("label.attachments.upload_error_label|||name,reason"),
-      new String'("label.badges.badge_label||tone=neutral_tone/info_tone/success_tone/warning_tone/"
-                  & "danger_tone/muted_tone,state=default_badge/new_badge/updated_badge/"
-                  & "deprecated_badge/selected_badge/disabled_badge/dismissible_badge|name"),
+      new String'("label.badges.badge_label||state=default_badge/new_badge/updated_badge/"
+                  & "deprecated_badge/selected_badge/disabled_badge/dismissible_badge,"
+                  & "tone=neutral_tone/info_tone/success_tone/warning_tone/danger_tone/muted_tone|"
+                  & "name"),
       new String'("label.badges.badge_priority_label||priority=low_priority/medium_priority/"
                   & "high_priority/critical_priority|"),
       new String'("label.badges.badge_state_label||state=default_badge/new_badge/updated_badge/"
@@ -814,7 +815,7 @@ private package Humanize.Parsing.Phrase_Keys is
                   & "conflict_change/unknown_change|"),
       new String'("label.changes.change_severity_label||severity=informational_change/minor_change/"
                   & "major_change/breaking_change|"),
-      new String'("label.changes.collection_field_change_label|added,removed,unchanged||field_name"),
+      new String'("label.changes.collection_field_change_label|removed,added,unchanged||field_name"),
       new String'("label.changes.conflict_label|count||"),
       new String'("label.changes.date_field_change_label||earlier=false/true|field_name,old_label,new_label"),
       new String'("label.changes.duration_field_change_label|||field_name,old_label,new_label"),
@@ -825,7 +826,7 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.changes.metadata_only_label|count||"),
       new String'("label.changes.move_label|||name,from,to"),
       new String'("label.changes.no_changes_label|||"),
-      new String'("label.changes.patch_size_label|lines_added,lines_removed||"),
+      new String'("label.changes.patch_size_label|lines_removed,lines_added||"),
       new String'("label.changes.rename_label|||old_name,new_name"),
       new String'("label.comments.author_action_label||state=draft_comment/published_comment/"
                   & "edited_comment/deleted_comment/resolved_comment/unresolved_comment/"
@@ -910,20 +911,20 @@ private package Humanize.Parsing.Phrase_Keys is
                   & "unsafe_redacted_value/unsupported_syntax/unknown_diagnostic_explanation|subject,"
                   & "suggestion"),
       new String'("label.diagnostics.diagnostic_label|line|severity=info_severity/notice_severity/"
-                  & "warning_severity/error_severity/critical_severity/blocking_severity|message,path"),
+                  & "warning_severity/error_severity/critical_severity/blocking_severity|path,message"),
       new String'("label.diagnostics.failed_at_label|line,column||path"),
       new String'("label.diagnostics.field_problem_label||severity=info_severity/notice_severity/"
                   & "warning_severity/error_severity/critical_severity/blocking_severity|field_name,"
                   & "message"),
       new String'("label.diagnostics.first_failure_label|line||check_name,path"),
-      new String'("label.diagnostics.issue_count_label|errors,warnings,notices||"),
+      new String'("label.diagnostics.issue_count_label|warnings,notices,errors||"),
       new String'("label.diagnostics.location_label|line,column||path"),
       new String'("label.diagnostics.parser_diagnostic_explanation_label|position|"
                   & "family=byte_parser/duration_parser/date_time_parser/color_parser/url_parser/"
                   & "unit_parser/recurrence_parser/domain_label_parser/unknown_parser|error"),
       new String'("label.diagnostics.result_with_notices_label|notices|status=passed_check/"
                   & "failed_check/warning_check/skipped_check/pending_check/running_check|"),
-      new String'("label.diagnostics.retry_label|attempt,limit||"),
+      new String'("label.diagnostics.retry_label|limit,attempt||"),
       new String'("label.diagnostics.severity_label||severity=info_severity/notice_severity/"
                   & "warning_severity/error_severity/critical_severity/blocking_severity|"),
       new String'("label.diagnostics.source_label||source=build_source/test_source/lint_source/"
@@ -955,11 +956,11 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.events.rescheduled_label|||name,time_text"),
       new String'("label.forms.character_count_label|used||"),
       new String'("label.forms.character_limit_label|limit||"),
-      new String'("label.forms.character_usage_label|used,limit||"),
+      new String'("label.forms.character_usage_label|limit,used||"),
       new String'("label.forms.field_label||required=false/true|name"),
       new String'("label.forms.field_state_label||state=valid_input/invalid_input/required_input/"
                   & "optional_input/disabled_input/read_only_input|name"),
-      new String'("label.forms.form_error_summary_label|errors,warnings||"),
+      new String'("label.forms.form_error_summary_label|warnings,errors||"),
       new String'("label.forms.form_state_label||state=pristine_form/editing_form/dirty_form/"
                   & "saving_form/saved_form/submitted_form/failed_form|"),
       new String'("label.forms.input_state_label||state=valid_input/invalid_input/required_input/"
@@ -978,7 +979,7 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.markup.attribute_kind_label||kind=id_attribute/class_attribute/"
                   & "data_attribute/aria_attribute/role_attribute/link_attribute/media_attribute/"
                   & "form_attribute/boolean_attribute/event_attribute/unknown_attribute|"),
-      new String'("label.markup.form_error_summary_label|errors,warnings||form_name"),
+      new String'("label.markup.form_error_summary_label|warnings,errors||form_name"),
       new String'("label.markup.landmark_label||role=banner_role/navigation_role/main_role/"
                   & "complementary_role/contentinfo_role/search_role/form_role/region_role/"
                   & "dialog_role/alert_role/status_role/unknown_role|"),
@@ -995,10 +996,10 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.media.media_state_label||state=ready_media/processing_media/"
                   & "transcoding_media/thumbnail_missing/metadata_missing/locked_document/"
                   & "unavailable_media|"),
-      new String'("label.media.media_summary||kind=image_media/video_media/audio_media/"
-                  & "pdf_document/text_document/archive_media/other_media,state=ready_media/"
-                  & "processing_media/transcoding_media/thumbnail_missing/metadata_missing/"
-                  & "locked_document/unavailable_media|name"),
+      new String'("label.media.media_summary||state=ready_media/processing_media/transcoding_media/"
+                  & "thumbnail_missing/metadata_missing/locked_document/unavailable_media,"
+                  & "kind=image_media/video_media/audio_media/pdf_document/text_document/"
+                  & "archive_media/other_media|name"),
       new String'("label.media.page_count_label|pages||"),
       new String'("label.media.resolution_label|width,height||"),
       new String'("label.moderation.appeal_label||state=open_report/triaged_report/actioned_report/"
@@ -1007,7 +1008,7 @@ private package Humanize.Parsing.Phrase_Keys is
                   & "restored/marked_spam/removed/escalated|"),
       new String'("label.moderation.moderation_label||action=no_action/flagged/hidden/restored/"
                   & "marked_spam/removed/escalated|item"),
-      new String'("label.moderation.moderation_queue_label|pending,escalated||"),
+      new String'("label.moderation.moderation_queue_label|escalated,pending||"),
       new String'("label.moderation.report_label||state=open_report/triaged_report/actioned_report/"
                   & "dismissed_report/appealed_report/closed_report|item"),
       new String'("label.moderation.report_state_label||state=open_report/triaged_report/"
@@ -1025,10 +1026,10 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.navigation.menu_count_label|count||"),
       new String'("label.navigation.navigation_item_kind_label||kind=link_item/menu_item/tab_item/"
                   & "breadcrumb_item/section_item/separator_item|"),
-      new String'("label.navigation.navigation_item_label||kind=link_item/menu_item/tab_item/"
-                  & "breadcrumb_item/section_item/separator_item,state=current_item/active_item/"
+      new String'("label.navigation.navigation_item_label||state=current_item/active_item/"
                   & "inactive_item/disabled_item/expanded_item/collapsed_item/visited_item/"
-                  & "external_item|name"),
+                  & "external_item,kind=link_item/menu_item/tab_item/breadcrumb_item/section_item/"
+                  & "separator_item|name"),
       new String'("label.navigation.navigation_state_label||state=current_item/active_item/"
                   & "inactive_item/disabled_item/expanded_item/collapsed_item/visited_item/"
                   & "external_item|"),
@@ -1046,20 +1047,20 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.notification_preferences.preference_state_label||state=preference_enabled/"
                   & "preference_disabled/preference_inherited/preference_required|"),
       new String'("label.notification_preferences.quiet_hours_label|||time_text"),
-      new String'("label.notification_preferences.subscription_label||scope=thread_subscription/"
-                  & "project_subscription/team_subscription/account_subscription,"
-                  & "state=preference_enabled/preference_disabled/preference_inherited/"
-                  & "preference_required|name"),
+      new String'("label.notification_preferences.subscription_label||state=preference_enabled/"
+                  & "preference_disabled/preference_inherited/preference_required,"
+                  & "scope=thread_subscription/project_subscription/team_subscription/"
+                  & "account_subscription|name"),
       new String'("label.notification_preferences.subscription_scope_label||"
                   & "scope=thread_subscription/project_subscription/team_subscription/"
                   & "account_subscription|"),
       new String'("label.notifications.actor_event_label||event=mention_event/reply_event/"
                   & "assignment_event/approval_event/alert_event/digest_event/reminder_event/"
                   & "system_event|actor"),
-      new String'("label.notifications.delivery_label||channel=in_app_channel/email_channel/"
-                  & "sms_channel/push_channel/webhook_channel/digest_channel,state=pending_delivery/"
-                  & "sent_delivery/delivered_delivery/failed_delivery/retrying_delivery/"
-                  & "canceled_delivery|"),
+      new String'("label.notifications.delivery_label||state=pending_delivery/sent_delivery/"
+                  & "delivered_delivery/failed_delivery/retrying_delivery/canceled_delivery,"
+                  & "channel=in_app_channel/email_channel/sms_channel/push_channel/webhook_channel/"
+                  & "digest_channel|"),
       new String'("label.notifications.delivery_state_label||state=pending_delivery/sent_delivery/"
                   & "delivered_delivery/failed_delivery/retrying_delivery/canceled_delivery|"),
       new String'("label.notifications.delivery_time_label||state=pending_delivery/sent_delivery/"
@@ -1081,10 +1082,10 @@ private package Humanize.Parsing.Phrase_Keys is
                   & "assignment_event/approval_event/alert_event/digest_event/reminder_event/"
                   & "system_event|"),
       new String'("label.notifications.notification_group_label|count||name"),
-      new String'("label.notifications.notification_label||event=mention_event/reply_event/"
-                  & "assignment_event/approval_event/alert_event/digest_event/reminder_event/"
-                  & "system_event,state=unread_state/read_state/archived_state/muted_state/"
-                  & "snoozed_state/suppressed_state|subject"),
+      new String'("label.notifications.notification_label||state=unread_state/read_state/"
+                  & "archived_state/muted_state/snoozed_state/suppressed_state,event=mention_event/"
+                  & "reply_event/assignment_event/approval_event/alert_event/digest_event/"
+                  & "reminder_event/system_event|subject"),
       new String'("label.notifications.notification_state_label||state=unread_state/read_state/"
                   & "archived_state/muted_state/snoozed_state/suppressed_state|"),
       new String'("label.notifications.snoozed_label|||name"),
@@ -1132,10 +1133,10 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.resources.utilization_band_label||band=empty_utilization/low_utilization/"
                   & "normal_utilization/high_utilization/critical_utilization/full_utilization/"
                   & "over_limit_utilization|"),
-      new String'("label.schema.array_shape_label|count|element_type=string_field/integer_field/"
-                  & "decimal_field/boolean_field/date_field/date_time_field/object_field/array_field/"
-                  & "enum_field/binary_field/null_field/any_field/unknown_field_type,"
-                  & "count_known=false/true|"),
+      new String'("label.schema.array_shape_label|count|count_known=false/true,"
+                  & "element_type=string_field/integer_field/decimal_field/boolean_field/date_field/"
+                  & "date_time_field/object_field/array_field/enum_field/binary_field/null_field/"
+                  & "any_field/unknown_field_type|"),
       new String'("label.schema.constraint_label|||name,value"),
       new String'("label.schema.default_value_label|||field_name,value"),
       new String'("label.schema.deprecated_field_label|||name,replacement"),
@@ -1147,7 +1148,7 @@ private package Humanize.Parsing.Phrase_Keys is
                   & "boolean_field/date_field/date_time_field/object_field/array_field/enum_field/"
                   & "binary_field/null_field/any_field/unknown_field_type|"),
       new String'("label.schema.missing_required_label|count||"),
-      new String'("label.schema.object_shape_label|fields,required,optional||"),
+      new String'("label.schema.object_shape_label|required,optional,fields||"),
       new String'("label.schema.schema_source_label|||name,version"),
       new String'("label.schema.shape_label|count|kind=scalar_shape/object_shape/array_shape/"
                   & "map_shape/tuple_shape/union_shape/empty_shape/unknown_shape|"),
@@ -1201,7 +1202,7 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.tables.sort_direction_label||direction=unsorted/ascending_sort/descending_sort|"),
       new String'("label.tables.sort_label||direction=unsorted/ascending_sort/descending_sort|column_name"),
       new String'("label.tables.subtotal_label|||name,value"),
-      new String'("label.tables.table_size_label|rows,columns||"),
+      new String'("label.tables.table_size_label|columns,rows||"),
       new String'("label.tasks.assignment_label||state=unassigned/assigned/reassigned/watching/owned|assignee"),
       new String'("label.tasks.assignment_state_label||state=unassigned/assigned/reassigned/watching/owned|"),
       new String'("label.tasks.backlog_label|count||"),
@@ -1217,9 +1218,9 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.tasks.sprint_label|count||name"),
       new String'("label.tasks.subtask_label|count||name"),
       new String'("label.tasks.task_count_label|count||"),
-      new String'("label.tasks.task_label||state=open_task/in_progress_task/blocked_task/done_task/"
-                  & "canceled_task/deferred_task/overdue_task,priority=no_priority/low_priority/"
-                  & "medium_priority/high_priority/critical_priority|name"),
+      new String'("label.tasks.task_label||priority=no_priority/low_priority/medium_priority/"
+                  & "high_priority/critical_priority,state=open_task/in_progress_task/blocked_task/"
+                  & "done_task/canceled_task/deferred_task/overdue_task|name"),
       new String'("label.tasks.task_priority_label||priority=no_priority/low_priority/"
                   & "medium_priority/high_priority/critical_priority|"),
       new String'("label.tasks.task_state_label||state=open_task/in_progress_task/blocked_task/"
@@ -1228,9 +1229,9 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.thresholds.threshold_state_label||state=below_range/within_range/"
                   & "above_range/below_target/at_target/above_target/near_limit/warning_level/"
                   & "critical_level/breached/unknown_state|"),
-      new String'("label.versions.commit_distance_label|ahead,behind||"),
+      new String'("label.versions.commit_distance_label|behind,ahead||"),
       new String'("label.workflows.approval_label||waiting=false/true|approver"),
-      new String'("label.workflows.attempt_label|attempt,limit||"),
+      new String'("label.workflows.attempt_label|limit,attempt||"),
       new String'("label.workflows.blocker_label|||reason"),
       new String'("label.workflows.dependency_label|count||"),
       new String'("label.workflows.handoff_label|||from,to"),
@@ -1251,6 +1252,376 @@ private package Humanize.Parsing.Phrase_Keys is
                   & "completed_state/failed_state/cancelled_state/skipped_state/paused_state|name"),
       new String'("label.workflows.workflow_state_label||state=not_started_state/in_progress_state/"
                   & "waiting_state/waiting_approval_state/blocked_state/completed_state/failed_state/"
-                  & "cancelled_state/skipped_state/paused_state|")];
+                  & "cancelled_state/skipped_state/paused_state|"),
+      new String'("label.contrast.opacity_label||state=transparent/mostly_transparent/translucent/"
+                  & "mostly_opaque/opaque|percent"),
+      new String'("label.statistics.distribution_summary_label|count||minimum,unit,median,maximum"),
+      new String'("label.statistics.percentile_summary_label|||p50,unit,p95,p99"),
+      new String'("label.statistics.outlier_summary_label|outliers,total||"),
+      new String'("label.resources.remaining_label|count,total|state=over/left|unit"),
+      new String'("label.resources.quota_label|count|state=exceeded/near/available|unit,percent"),
+      new String'("label.resources.cache_hit_rate_label|hits,misses|state=none/some|percent"),
+      new String'("label.markup.attribute_count_label.total|count||"),
+      new String'("label.markup.attribute_count_label.data|count||"),
+      new String'("label.markup.attribute_count_label.aria|count||"),
+      new String'("label.markup.attribute_count_label.events|count||"),
+      new String'("label.markup.heading_label|level||"),
+      new String'("label.markup.tag_count_label.total|count||"),
+      new String'("label.markup.tag_count_label.links|count||"),
+      new String'("label.markup.tag_count_label.media|count||"),
+      new String'("label.markup.tag_count_label.forms|count||"),
+      new String'("label.markup.document_outline_label.headings|count||"),
+      new String'("label.markup.document_outline_label.landmarks|count||"),
+      new String'("label.markup.document_outline_label.forms|count||"),
+      new String'("label.markup.document_outline_label.media|count||"),
+      new String'("label.markup.table_navigation_label|row,rows,column,columns||caption"),
+      new String'("label.secrets.secret_count_label.total|count||"),
+      new String'("label.secrets.secret_count_label.masked|count||"),
+      new String'("label.secrets.secret_count_label.unset|count||"),
+      new String'("label.secrets.secret_count_label.fingerprints|count||"),
+      new String'("label.schema.type_mismatch_label||expected=string_field/integer_field/"
+                  & "decimal_field/boolean_field/date_field/date_time_field/object_field/array_field/"
+                  & "enum_field/binary_field/null_field/any_field/unknown_field_type,"
+                  & "actual=string_field/integer_field/decimal_field/boolean_field/date_field/"
+                  & "date_time_field/object_field/array_field/enum_field/binary_field/null_field/"
+                  & "any_field/unknown_field_type|field_name"),
+      new String'("label.diagnostics.issue_summary_label|blocking|state=blocking_only/blocking/only/plain|base"),
+      new String'("label.thresholds.metric_value_label|||name,value"),
+      new String'("label.thresholds.range_label||inclusive=inclusive_window/exclusive_window|low,high"),
+      new String'("label.thresholds.window_status_label||state=inside/below/above|value"),
+      new String'("label.thresholds.threshold_status_label||state=critical/warning/normal|value"),
+      new String'("label.thresholds.breach_label||state=ok/breached|difference"),
+      new String'("label.thresholds.target_delta_label||state=at/below/above|difference"),
+      new String'("label.thresholds.near_limit_label||state=breached/near/far|distance"),
+      new String'("label.thresholds.threshold_summary_label.none|||"),
+      new String'("label.thresholds.threshold_summary_label.normal|count||"),
+      new String'("label.thresholds.threshold_summary_label.warnings|count||"),
+      new String'("label.thresholds.threshold_summary_label.critical|count||"),
+      new String'("label.thresholds.threshold_summary_label.breaches|count||"),
+      new String'("label.thresholds.target_window_label|||target,tolerance"),
+      new String'("label.thresholds.tolerance_label|||tolerance"),
+      new String'("label.thresholds.percent_of_limit_label|||percent"),
+      new String'("label.thresholds.remaining_to_limit_label||state=exceeded/left|amount"),
+      new String'("label.thresholds.budget_used_label|||used,budget"),
+      new String'("label.workflows.step_label|current,total||name"),
+      new String'("label.workflows.milestone_label|current,total||name"),
+      new String'("label.workflows.workflow_progress_label|completed,total|state=none/half/some|"),
+      new String'("label.workflows.queue_position_label|total,position||"),
+      new String'("label.changes.change_set_label.none|||"),
+      new String'("label.changes.change_set_label.added|count||"),
+      new String'("label.changes.change_set_label.removed|count||"),
+      new String'("label.changes.change_set_label.modified|count||"),
+      new String'("label.changes.change_set_label.unchanged|count||"),
+      new String'("label.changes.sync_change_label.none|||"),
+      new String'("label.changes.sync_change_label.uploaded|count||"),
+      new String'("label.changes.sync_change_label.downloaded|count||"),
+      new String'("label.changes.sync_change_label.deleted|count||"),
+      new String'("label.changes.sync_change_label.conflicts|count||"),
+      new String'("label.changes.net_change_label|count|state=none/up/down|"),
+      new String'("label.changes.review_progress_label|reviewed,total|state=none/all/some|"),
+      new String'("label.changes.numeric_field_change_label||state=up/down/same|field_name,new_value,old_value"),
+      new String'("label.tables.selection_label|total,selected|state=no_rows/none/all/some|"),
+      new String'("label.tables.page_label|page,pages,rows||"),
+      new String'("label.tables.filter_label|total,visible|state=no_rows/none/all/some|"),
+      new String'("label.tables.row_range_label|first_row,total,last_row|state=none/single/range|"),
+      new String'("label.forms.remaining_characters_label|count|state=unlimited/none_left/left/over|"),
+      new String'("label.forms.required_fields_label|total,missing||"),
+      new String'("label.forms.form_progress_label|completed,total|state=none/all/some|"),
+      new String'("label.forms.section_progress_label|completed,total|state=none/all/some|name"),
+      new String'("label.forms.form_step_label|total,current||name"),
+      new String'("label.navigation.breadcrumb_position_label|total,current||name"),
+      new String'("label.navigation.tab_label|total,current||name"),
+      new String'("label.notifications.inbox_label|total,unread||"),
+      new String'("label.notifications.delivery_attempt_label|attempt,max_attempts||"),
+      new String'("label.tasks.checklist_label|total,done||"),
+      new String'("label.attachments.upload_progress_label|total,done||"),
+      new String'("label.events.capacity_label|capacity,reserved||"),
+      new String'("label.events.waitlist_label|total,position||"),
+      new String'("label.comparisons.multi_value_summary|changed,total,unchanged|"
+                  & "mode=comparison_detailed/comparison_compact/comparison_log|name"),
+      new String'("label.names.color_description|||brightness,saturation,hue,temperature,chroma"),
+      new String'("label.names.descriptive_color_name||base=pink/hue|brightness,chroma,temperature,hue"),
+      new String'("label.palettes.advanced_palette_summary|||harmony,mood,accessibility,roles"),
+      new String'("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_co"
+                  & "ntrast_at_d_n|v2||v1"),
+      new String'("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_c"
+                  & "ontrast_at_d_n|v2||v1"),
+      new String'("label.contrast.contrast_remediation_label.use_c_for_n_n_enhanced_text_contrast|v2,v3||v1"),
+      new String'("label.contrast.contrast_remediation_label.use_c_for_n_n_large_text_contrast|v2,v3||v1"),
+      new String'("label.contrast.contrast_remediation_label.use_c_for_d_n_normal_text_contrast|v3||v1,v2"),
+      new String'("label.contrast.contrast_remediation_label.use_c_for_d_n_large_text_contrast|v3||v1,v2"),
+      new String'("label.contrast.contrast_remediation_label.use_c_for_d_n_enhanced_text_contrast|v3||v1,v2"),
+      new String'("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_co"
+                  & "ntrast_at_n_n|v1,v2||"),
+      new String'("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_c"
+                  & "ontrast_at_n_n|v1,v2||"),
+      new String'("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text"
+                  & "_contrast_at_d_n|v2||v1"),
+      new String'("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text"
+                  & "_contrast_at_n_n|v1,v2||"),
+      new String'("label.contrast.color_vision_deficiency_label.protanopia_low_confusion_risk_delta_n|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.deuteranopia_moderate_confusion_risk_delta_n|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.tritanopia_moderate_confusion_risk_delta_n|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.achromatopsia_high_confusion_risk_delta_n|v1||"),
+      new String'("label.models.perceptual_difference_label.cie76_delta_d_dramatic_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.cie94_delta_d_dramatic_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.cie94_textile_delta_d_dramatic_perceptu"
+                  & "al_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.ciede2000_delta_n_dramatic_perceptual_difference|v1||"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_d_large_perceptual_difference|||v1"),
+      new String'("label.contrast.color_vision_deficiency_label.protanopia_moderate_confusion_risk_delta_n|v1||"),
+      new String'("label.models.perceptual_difference_label.cie94_delta_n_dramatic_perceptual_difference|v1||"),
+      new String'("label.models.perceptual_difference_label.ciede2000_delta_d_dramatic_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_d_dramatic_perceptual_difference|||v1"),
+      new String'("label.contrast.color_vision_deficiency_label.achromatopsia_low_confusion_risk_delta_n|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.protanopia_distinct_delta_n|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.deuteranopia_distinct_delta_n|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.tritanopia_distinct_delta_n|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.achromatopsia_distinct_delta_n|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.achromatopsia_moderate_confusion_risk_delta_n|v1||"),
+      new String'("label.models.perceptual_difference_label.cie76_delta_d_large_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.cie94_delta_d_large_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.cie94_textile_delta_d_large_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.ciede2000_delta_d_large_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_d_noticeable_perceptual_difference|||v1"),
+      new String'("label.contrast.color_vision_deficiency_label.protanopia_high_confusion_risk_delta_n|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.tritanopia_high_confusion_risk_delta_n|v1||"),
+      new String'("label.models.perceptual_difference_label.cie94_delta_d_noticeable_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.cie94_textile_delta_d_noticeable_percep"
+                  & "tual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.ciede2000_delta_d_noticeable_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_n_noticeable_perceptual_difference|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.tritanopia_low_confusion_risk_delta_n|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.deuteranopia_low_confusion_risk_delta_n|v1||"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_n_large_perceptual_difference|v1||"),
+      new String'("label.contrast.color_vision_deficiency_label.deuteranopia_high_confusion_risk_delta_n|v1||"),
+      new String'("label.models.perceptual_difference_label.cie76_delta_n_dramatic_perceptual_difference|v1||"),
+      new String'("label.models.perceptual_difference_label.cie94_textile_delta_n_dramatic_perceptu"
+                  & "al_difference|v1||"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_n_dramatic_perceptual_difference|v1||"),
+      new String'("label.models.perceptual_difference_label.cie76_delta_n_large_perceptual_difference|v1||"),
+      new String'("label.models.perceptual_difference_label.cie94_textile_delta_n_large_perceptual_difference|v1||"),
+      new String'("label.models.perceptual_difference_label.ciede2000_delta_n_large_perceptual_difference|v1||"),
+      new String'("label.models.perceptual_difference_label.cie76_delta_d_noticeable_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.cie94_textile_delta_d_subtle_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.ciede2000_delta_n_noticeable_perceptual_difference|v1||"),
+      new String'("label.models.perceptual_difference_label.cie94_textile_delta_n_noticeable_percep"
+                  & "tual_difference|v1||"),
+      new String'("label.models.perceptual_difference_label.cie76_delta_d_barely_perceptible|||v1"),
+      new String'("label.models.perceptual_difference_label.cie94_delta_d_imperceptible|||v1"),
+      new String'("label.models.perceptual_difference_label.cie94_textile_delta_d_imperceptible|||v1"),
+      new String'("label.models.perceptual_difference_label.ciede2000_delta_d_imperceptible|||v1"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_d_imperceptible|||v1"),
+      new String'("label.models.perceptual_difference_label.cie94_delta_n_large_perceptual_difference|v1||"),
+      new String'("label.models.perceptual_difference_label.cie76_delta_n_imperceptible|v1||"),
+      new String'("label.models.perceptual_difference_label.cie94_delta_n_imperceptible|v1||"),
+      new String'("label.models.perceptual_difference_label.cie94_textile_delta_n_imperceptible|v1||"),
+      new String'("label.models.perceptual_difference_label.ciede2000_delta_n_imperceptible|v1||"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_n_imperceptible|v1||"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_d_subtle_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.cie94_delta_d_subtle_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.ciede2000_delta_d_subtle_perceptual_difference|||v1"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_d_barely_perceptible|||v1"),
+      new String'("label.metrics.text_summary.n_words|v1||"),
+      new String'("label.metrics.text_summary.n_paragraphs|v1||"),
+      new String'("label.metrics.text_summary.n_minutes_spoken|v1||"),
+      new String'("label.metrics.text_summary.n_sentences|v1||"),
+      new String'("label.metrics.text_summary.n_minutes_read|v1||"),
+      new String'("label.metrics.text_summary.n_paragraph|v1||"),
+      new String'("label.metrics.text_summary.less_than_n_minute_spoken|v1||"),
+      new String'("label.metrics.text_summary.less_than_n_minute_read|v1||"),
+      new String'("label.metrics.text_summary.n_sentence|v1||"),
+      new String'("label.metrics.text_summary.no_words|||"),
+      new String'("label.metrics.text_summary.no_paragraphs|||"),
+      new String'("label.metrics.text_summary.no_sentences|||"),
+      new String'("label.metrics.text_summary.n_word|v1||"),
+      new String'("label.names.hue_family_label.neutral|||"),
+      new String'("label.names.saturation_label.neutral|||"),
+      new String'("label.names.temperature_label.neutral_temperature|||"),
+      new String'("label.names.chroma_label.grayish|||"),
+      new String'("label.names.nearest_color_name.black|||"),
+      new String'("label.models.brightness_label.very_dark|||"),
+      new String'("label.names.hue_family_label.blue|||"),
+      new String'("label.names.saturation_label.vivid|||"),
+      new String'("label.names.temperature_label.cool|||"),
+      new String'("label.names.chroma_label.moderate_chroma|||"),
+      new String'("label.names.nearest_color_name.navy|||"),
+      new String'("label.names.chroma_label.high_chroma|||"),
+      new String'("label.names.nearest_color_name.blue|||"),
+      new String'("label.names.hue_family_label.green|||"),
+      new String'("label.names.temperature_label.balanced_temperature|||"),
+      new String'("label.names.hue_family_label.cyan|||"),
+      new String'("label.names.chroma_label.soft|||"),
+      new String'("label.models.brightness_label.dark|||"),
+      new String'("label.names.nearest_color_name.green|||"),
+      new String'("label.names.nearest_color_name.teal|||"),
+      new String'("label.models.brightness_label.medium_brightness|||"),
+      new String'("label.names.nearest_color_name.aqua|||"),
+      new String'("label.names.nearest_color_name.lime|||"),
+      new String'("label.models.brightness_label.light|||"),
+      new String'("label.names.hue_family_label.red|||"),
+      new String'("label.names.temperature_label.warm|||"),
+      new String'("label.names.hue_family_label.magenta|||"),
+      new String'("label.names.hue_family_label.purple|||"),
+      new String'("label.names.hue_family_label.yellow|||"),
+      new String'("label.names.saturation_label.muted|||"),
+      new String'("label.names.nearest_color_name.rebeccapurple|||"),
+      new String'("label.names.saturation_label.saturated|||"),
+      new String'("label.names.nearest_color_name.maroon|||"),
+      new String'("label.names.nearest_color_name.purple|||"),
+      new String'("label.names.hue_family_label.orange|||"),
+      new String'("label.names.nearest_color_name.olive|||"),
+      new String'("label.names.nearest_color_name.gray|||"),
+      new String'("label.names.saturation_label.desaturated|||"),
+      new String'("label.names.nearest_color_name.silver|||"),
+      new String'("label.names.chroma_label.pastel|||"),
+      new String'("label.models.brightness_label.very_light|||"),
+      new String'("label.names.nearest_color_name.fuchsia|||"),
+      new String'("label.names.nearest_color_name.yellow|||"),
+      new String'("label.names.nearest_color_name.red|||"),
+      new String'("label.names.nearest_color_name.orange|||"),
+      new String'("label.names.nearest_color_name.white|||"),
+      new String'("label.contrast.contrast_label.d_n_low_contrast|v2||v1"),
+      new String'("label.contrast.readability_label.low_readability|||"),
+      new String'("label.contrast.apca_contrast_label.lc_n_insufficient_dark_text_on_light_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.d_n_low_contrast|v2||v1"),
+      new String'("label.contrast.color_accessibility_summary.lc_n_insufficient_dark_text_on_light_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.achromatopsia_moderate_confusion_risk|||"),
+      new String'("label.models.color_difference_label.n_strong_difference|v1||"),
+      new String'("label.contrast.alpha_contrast_label.d_n_low_contrast_after_alpha_compositing|v2||v1"),
+      new String'("label.contrast.apca_contrast_label.lc_n_insufficient_light_text_on_dark_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.lc_n_insufficient_light_text_on_dark_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.deuteranopia_high_confusion_risk|||"),
+      new String'("label.contrast.contrast_label.d_n_large_text_contrast|v2||v1"),
+      new String'("label.contrast.readability_label.readable_for_large_text_only|||"),
+      new String'("label.contrast.apca_contrast_label.lc_n_large_text_light_text_on_dark_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.d_n_large_text_contrast|v2||v1"),
+      new String'("label.contrast.color_accessibility_summary.lc_n_large_text_light_text_on_dark_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.tritanopia_high_confusion_risk|||"),
+      new String'("label.contrast.alpha_contrast_label.d_n_large_text_contrast_after_alpha_compositing|v2||v1"),
+      new String'("label.contrast.apca_contrast_label.lc_n_non_text_only_light_text_on_dark_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.lc_n_non_text_only_light_text_on_dark_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.tritanopia_moderate_confusion_risk|||"),
+      new String'("label.contrast.contrast_label.n_n_low_contrast|v1,v2||"),
+      new String'("label.contrast.color_accessibility_summary.n_n_low_contrast|v1,v2||"),
+      new String'("label.contrast.apca_contrast_label.lc_n_non_text_only_dark_text_on_light_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.lc_n_non_text_only_dark_text_on_light_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.deuteranopia_moderate_confusion_risk|||"),
+      new String'("label.contrast.color_accessibility_summary.protanopia_high_confusion_risk|||"),
+      new String'("label.models.color_difference_label.n_very_different|v1||"),
+      new String'("label.contrast.color_accessibility_summary.achromatopsia_high_confusion_risk|||"),
+      new String'("label.contrast.color_accessibility_summary.achromatopsia_low_confusion_risk|||"),
+      new String'("label.contrast.alpha_contrast_label.n_n_low_contrast_after_alpha_compositing|v1,v2||"),
+      new String'("label.contrast.contrast_label.d_n_normal_text_contrast|v2||v1"),
+      new String'("label.contrast.readability_label.readable_for_normal_text|||"),
+      new String'("label.contrast.apca_contrast_label.lc_n_body_text_light_text_on_dark_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.d_n_normal_text_contrast|v2||v1"),
+      new String'("label.contrast.color_accessibility_summary.lc_n_body_text_light_text_on_dark_background|v1||"),
+      new String'("label.contrast.apca_contrast_label.lc_n_large_text_dark_text_on_light_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.lc_n_large_text_dark_text_on_light_background|v1||"),
+      new String'("label.models.color_difference_label.n_subtle_difference|v1||"),
+      new String'("label.contrast.apca_contrast_label.lc_n_body_text_dark_text_on_light_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.lc_n_body_text_dark_text_on_light_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.tritanopia_low_confusion_risk|||"),
+      new String'("label.models.color_difference_label.n_noticeable_difference|v1||"),
+      new String'("label.contrast.contrast_label.n_n_large_text_contrast|v1,v2||"),
+      new String'("label.contrast.color_accessibility_summary.n_n_large_text_contrast|v1,v2||"),
+      new String'("label.contrast.color_accessibility_summary.deuteranopia_low_confusion_risk|||"),
+      new String'("label.contrast.contrast_label.d_n_enhanced_contrast|v2||v1"),
+      new String'("label.contrast.readability_label.readable_for_enhanced_text|||"),
+      new String'("label.contrast.color_accessibility_summary.d_n_enhanced_contrast|v2||v1"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_n_subtle_perceptual_difference|v1||"),
+      new String'("label.contrast.color_accessibility_summary.tritanopia_distinct|||"),
+      new String'("label.contrast.alpha_contrast_label.n_n_normal_text_contrast_after_alpha_compositing|v1,v2||"),
+      new String'("label.contrast.color_accessibility_summary.protanopia_moderate_confusion_risk|||"),
+      new String'("label.contrast.alpha_contrast_label.d_n_normal_text_contrast_after_alpha_compositing|v2||v1"),
+      new String'("label.contrast.alpha_contrast_label.n_n_large_text_contrast_after_alpha_compositing|v1,v2||"),
+      new String'("label.contrast.apca_contrast_label.lc_n_excellent_dark_text_on_light_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.lc_n_excellent_dark_text_on_light_background|v1||"),
+      new String'("label.contrast.contrast_label.n_n_normal_text_contrast|v1,v2||"),
+      new String'("label.contrast.color_accessibility_summary.n_n_normal_text_contrast|v1,v2||"),
+      new String'("label.contrast.contrast_label.n_n_enhanced_contrast|v1,v2||"),
+      new String'("label.contrast.apca_contrast_label.lc_n_excellent_light_text_on_dark_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.n_n_enhanced_contrast|v1,v2||"),
+      new String'("label.contrast.color_accessibility_summary.lc_n_excellent_light_text_on_dark_background|v1||"),
+      new String'("label.contrast.color_accessibility_summary.deuteranopia_distinct|||"),
+      new String'("label.contrast.alpha_contrast_label.d_n_enhanced_contrast_after_alpha_compositing|v2||v1"),
+      new String'("label.models.perceptual_difference_label.oklab_delta_n_barely_perceptible|v1||"),
+      new String'("label.models.color_difference_label.n_nearly_identical|v1||"),
+      new String'("label.contrast.color_accessibility_summary.protanopia_low_confusion_risk|||"),
+      new String'("label.contrast.color_accessibility_summary.achromatopsia_distinct|||"),
+      new String'("label.palettes.palette_summary.n_colors|v1||"),
+      new String'("label.palettes.palette_summary.mostly_gray|||"),
+      new String'("label.palettes.palette_summary.moderate_contrast_spread|||"),
+      new String'("label.palettes.palette_roles.background_c_text_c_accent_c|||v1,v2,v3"),
+      new String'("label.palettes.palette_harmony_label.triadic_palette|||"),
+      new String'("label.palettes.palette_contrast_suggestion.best_contrast_c_on_c_at_d_n|v4||v1,v2,v3"),
+      new String'("label.palettes.palette_accessibility_label.n_of_n_pairs_pass_normal_text_contrast|v1,v2||"),
+      new String'("label.palettes.palette_contrast_matrix_label.n_enhanced_n_normal_n_large_only_n_"
+                  & "fail_out_of_n_pairs|v1,v2,v3,v4,v5||"),
+      new String'("label.palettes.palette_metadata_label.n_colors_n_pairs_n_enhanced_n_normal_n_lar"
+                  & "ge_only_n_fail|v1,v2,v3,v4,v5,v6||"),
+      new String'("label.palettes.palette_mood_label.balanced|||"),
+      new String'("label.palettes.palette_mood_label.vibrant|||"),
+      new String'("label.palettes.palette_mood_label.warm_mood|||"),
+      new String'("label.palettes.palette_summary.mostly_blue|||"),
+      new String'("label.palettes.palette_summary.low_contrast_spread|||"),
+      new String'("label.palettes.palette_harmony_label.single_accent_palette|||"),
+      new String'("label.palettes.palette_mood_label.dark|||"),
+      new String'("label.palettes.palette_mood_label.cool_mood|||"),
+      new String'("label.palettes.palette_summary.mostly_rebeccapurple|||"),
+      new String'("label.palettes.palette_accessibility_label.no_accessible_text_pairs|||"),
+      new String'("label.palettes.palette_mood_label.subtle|||"),
+      new String'("label.palettes.palette_summary.high_contrast_spread|||"),
+      new String'("label.palettes.palette_contrast_suggestion.best_contrast_c_on_c_at_n_n|v3,v4||v1,v2"),
+      new String'("label.palettes.palette_mood_label.neutral_mood|||"),
+      new String'("label.palettes.palette_summary.mostly_purple|||"),
+      new String'("label.palettes.palette_harmony_label.complementary_palette|||"),
+      new String'("label.palettes.palette_summary.mostly_green|||"),
+      new String'("label.palettes.palette_mood_label.moderate|||"),
+      new String'("label.palettes.palette_summary.mostly_silver|||"),
+      new String'("label.palettes.palette_harmony_label.varied_palette|||"),
+      new String'("label.palettes.palette_summary.mostly_olive|||"),
+      new String'("label.palettes.palette_harmony_label.analogous_palette|||"),
+      new String'("label.palettes.palette_accessibility_label.n_of_n_pairs_pass_large_text_only|v1,v2||"),
+      new String'("label.palettes.palette_mood_label.light|||"),
+      new String'("label.palettes.palette_summary.mostly_teal|||"),
+      new String'("label.palettes.palette_summary.mostly_aqua|||"),
+      new String'("label.palettes.palette_summary.mostly_lime|||"),
+      new String'("label.palettes.palette_harmony_label.monochrome_palette|||"),
+      new String'("label.palettes.palette_summary.mostly_black|||"),
+      new String'("label.palettes.palette_summary.mostly_yellow|||"),
+      new String'("label.palettes.palette_summary.mostly_maroon|||"),
+      new String'("label.palettes.palette_summary.mostly_white|||"),
+      new String'("label.palettes.palette_summary.mostly_orange|||"),
+      new String'("label.palettes.palette_summary.mostly_fuchsia|||"),
+      new String'("label.palettes.palette_harmony_label.neutral_palette|||"),
+      new String'("label.palettes.palette_summary.mostly_red|||"),
+      new String'("label.metrics.word_count_summary.n_words|v1||"),
+      new String'("label.metrics.sentence_count_summary.n_sentences|v1||"),
+      new String'("label.metrics.paragraph_count_summary.n_paragraphs|v1||"),
+      new String'("label.metrics.reading_time.n_minutes_read|v1||"),
+      new String'("label.metrics.speaking_time.n_minutes_spoken|v1||"),
+      new String'("label.metrics.text_summary_with_options.n_words|v1||"),
+      new String'("label.metrics.text_summary_with_options.n_sentences|v1||"),
+      new String'("label.metrics.text_summary_with_options.n_paragraphs|v1||"),
+      new String'("label.metrics.text_summary_with_options.n_minutes_read|v1||"),
+      new String'("label.metrics.paragraph_count_summary.n_paragraph|v1||"),
+      new String'("label.metrics.reading_time.less_than_n_minute_read|v1||"),
+      new String'("label.metrics.speaking_time.less_than_n_minute_spoken|v1||"),
+      new String'("label.metrics.text_summary_with_options.n_paragraph|v1||"),
+      new String'("label.metrics.text_summary_with_options.less_than_n_minute_read|v1||"),
+      new String'("label.metrics.sentence_count_summary.n_sentence|v1||"),
+      new String'("label.metrics.text_summary_with_options.n_sentence|v1||"),
+      new String'("label.metrics.word_count_summary.no_words|||"),
+      new String'("label.metrics.sentence_count_summary.no_sentences|||"),
+      new String'("label.metrics.paragraph_count_summary.no_paragraphs|||"),
+      new String'("label.metrics.text_summary_with_options.no_words|||"),
+      new String'("label.metrics.text_summary_with_options.no_sentences|||"),
+      new String'("label.metrics.text_summary_with_options.no_paragraphs|||"),
+      new String'("label.metrics.word_count_summary.n_word|v1||"),
+      new String'("label.metrics.text_summary_with_options.n_word|v1||"),
+      new String'("label.groups|||first,second"),
+      new String'("label.parts|||first,second")];
 
 end Humanize.Parsing.Phrase_Keys;

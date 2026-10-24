@@ -15,6 +15,18 @@ package Humanize.Tasks.Localized is
    --  @param State As for the parent's Assignment_Label.
    --  @return The label in Context's locale.
 
+   function Assignment_Label
+      (Context  : Humanize.Contexts.Context;
+       Assignee : String;
+       State    : Assignment_State;
+       Options  : Task_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Assignee As for the parent's Assignment_Label.
+   --  @param State As for the parent's Assignment_Label.
+   --  @param Options As for the parent's Assignment_Label.
+   --  @return The label in Context's locale.
+
    function Assignment_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Assignment_State)
@@ -37,6 +49,16 @@ package Humanize.Tasks.Localized is
       return Humanize.Status.Text_Result;
    --  @param Context Formatting context.
    --  @param Name As for the parent's Blocker_Label.
+   --  @return The label in Context's locale.
+
+   function Checklist_Label
+      (Context : Humanize.Contexts.Context;
+       Done    : Natural;
+       Total   : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Done As for the parent's Checklist_Label.
+   --  @param Total As for the parent's Checklist_Label.
    --  @return The label in Context's locale.
 
    function Complete_Action_Label
@@ -143,6 +165,20 @@ package Humanize.Tasks.Localized is
    --  @param Priority As for the parent's Task_Label.
    --  @return The label in Context's locale.
 
+   function Task_Label
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       State    : Task_State;
+       Priority : Task_Priority;
+       Options  : Task_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Task_Label.
+   --  @param State As for the parent's Task_Label.
+   --  @param Priority As for the parent's Task_Label.
+   --  @param Options As for the parent's Task_Label.
+   --  @return The label in Context's locale.
+
    function Task_Priority_Label
       (Context  : Humanize.Contexts.Context;
        Priority : Task_Priority)
@@ -169,6 +205,22 @@ package Humanize.Tasks.Localized is
    --  @param Context Formatting context.
    --  @param Assignee As for the parent's Assignment_Label.
    --  @param State As for the parent's Assignment_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Assignment_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Assignee : String;
+       State    : Assignment_State;
+       Options  : Task_Label_Options;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Assignee As for the parent's Assignment_Label.
+   --  @param State As for the parent's Assignment_Label.
+   --  @param Options As for the parent's Assignment_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -205,6 +257,20 @@ package Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Name As for the parent's Blocker_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Checklist_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Done    : Natural;
+       Total   : Natural;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Done As for the parent's Checklist_Label.
+   --  @param Total As for the parent's Checklist_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -357,6 +423,24 @@ package Humanize.Tasks.Localized is
    --  @param Name As for the parent's Task_Label.
    --  @param State As for the parent's Task_Label.
    --  @param Priority As for the parent's Task_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Task_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       State    : Task_State;
+       Priority : Task_Priority;
+       Options  : Task_Label_Options;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Task_Label.
+   --  @param State As for the parent's Task_Label.
+   --  @param Priority As for the parent's Task_Label.
+   --  @param Options As for the parent's Task_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

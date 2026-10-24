@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Payments.Localized is
@@ -122,9 +123,25 @@ package body Humanize.Payments.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "number", Humanize.Bounded_Text.Clean (Number));
       Selection := Sel.With_Arg (Selection, "state", Lower (Invoice_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "number", Humanize.Bounded_Text.Clean (Number));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Invoice_Label;
+
+   function Invoice_Label
+      (Context : Humanize.Contexts.Context;
+       Number  : String;
+       State   : Invoice_State;
+       Options : Payment_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Payments.Invoice_Label (Number => Number, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Payments.Invoice_Label (Number => Number, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Invoice_Label (Context, Number => Number, State
+        => State));
    end Invoice_Label;
 
    function Invoice_State_Label
@@ -208,9 +225,25 @@ package body Humanize.Payments.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "amount_text", Humanize.Bounded_Text.Clean (Amount_Text));
       Selection := Sel.With_Arg (Selection, "state", Lower (Payment_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "amount_text", Humanize.Bounded_Text.Clean (Amount_Text));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Payment_Label;
+
+   function Payment_Label
+      (Context     : Humanize.Contexts.Context;
+       Amount_Text : String;
+       State       : Payment_State;
+       Options     : Payment_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Payments.Payment_Label (Amount_Text => Amount_Text, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Payments.Payment_Label (Amount_Text => Amount_Text, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Payment_Label (Context, Amount_Text =>
+        Amount_Text, State => State));
    end Payment_Label;
 
    function Payment_Link_Label
@@ -290,8 +323,8 @@ package body Humanize.Payments.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "amount_text", Humanize.Bounded_Text.Clean (Amount_Text));
       Selection := Sel.With_Arg (Selection, "state", Lower (Payment_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "amount_text", Humanize.Bounded_Text.Clean (Amount_Text));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Refund_Label;
 
@@ -351,7 +384,7 @@ package body Humanize.Payments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Amount_Label (Context, Amount_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Amount_Label (Context, Amount_Text => Amount_Text), Target, Written, Status);
    end Amount_Label_Into;
 
    procedure Balance_Label_Into
@@ -362,7 +395,7 @@ package body Humanize.Payments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Balance_Label (Context, Amount_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Balance_Label (Context, Amount_Text => Amount_Text), Target, Written, Status);
    end Balance_Label_Into;
 
    procedure Chargeback_Label_Into
@@ -373,7 +406,9 @@ package body Humanize.Payments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Chargeback_Label (Context, Amount_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Chargeback_Label (Context, Amount_Text => Amount_Text),
+         Target, Written, Status);
    end Chargeback_Label_Into;
 
    procedure Discount_Label_Into
@@ -384,7 +419,7 @@ package body Humanize.Payments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Discount_Label (Context, Amount_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Discount_Label (Context, Amount_Text => Amount_Text), Target, Written, Status);
    end Discount_Label_Into;
 
    procedure Due_Label_Into
@@ -396,7 +431,9 @@ package body Humanize.Payments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Due_Label (Context, Amount_Text, Due_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Due_Label (Context, Amount_Text => Amount_Text, Due_Text => Due_Text),
+         Target, Written, Status);
    end Due_Label_Into;
 
    procedure Invoice_Count_Label_Into
@@ -407,7 +444,7 @@ package body Humanize.Payments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Invoice_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Invoice_Count_Label (Context, Count => Count), Target, Written, Status);
    end Invoice_Count_Label_Into;
 
    procedure Invoice_Label_Into
@@ -419,7 +456,24 @@ package body Humanize.Payments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Invoice_Label (Context, Number, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Invoice_Label (Context, Number => Number, State => State),
+         Target, Written, Status);
+   end Invoice_Label_Into;
+
+   procedure Invoice_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Number  : String;
+       State   : Invoice_State;
+       Options : Payment_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Invoice_Label (Context, Number => Number, State => State, Options => Options),
+         Target, Written, Status);
    end Invoice_Label_Into;
 
    procedure Invoice_State_Label_Into
@@ -430,7 +484,7 @@ package body Humanize.Payments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Invoice_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Invoice_State_Label (Context, State => State), Target, Written, Status);
    end Invoice_State_Label_Into;
 
    procedure Method_Label_Into
@@ -442,7 +496,9 @@ package body Humanize.Payments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Method_Label (Context, Method, Detail), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Method_Label (Context, Method => Method, Detail => Detail),
+         Target, Written, Status);
    end Method_Label_Into;
 
    procedure Paid_Label_Into
@@ -454,7 +510,9 @@ package body Humanize.Payments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Paid_Label (Context, Amount_Text, Paid_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Paid_Label (Context, Amount_Text => Amount_Text, Paid_Text => Paid_Text),
+         Target, Written, Status);
    end Paid_Label_Into;
 
    procedure Payment_Count_Label_Into
@@ -465,7 +523,7 @@ package body Humanize.Payments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Payment_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Payment_Count_Label (Context, Count => Count), Target, Written, Status);
    end Payment_Count_Label_Into;
 
    procedure Payment_Label_Into
@@ -477,7 +535,24 @@ package body Humanize.Payments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Payment_Label (Context, Amount_Text, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Payment_Label (Context, Amount_Text => Amount_Text, State => State),
+         Target, Written, Status);
+   end Payment_Label_Into;
+
+   procedure Payment_Label_Into
+      (Context     : Humanize.Contexts.Context;
+       Amount_Text : String;
+       State       : Payment_State;
+       Options     : Payment_Label_Options;
+       Target      : in out String;
+       Written     : out Natural;
+       Status      : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Payment_Label (Context, Amount_Text => Amount_Text, State => State, Options => Options),
+         Target, Written, Status);
    end Payment_Label_Into;
 
    procedure Payment_Link_Label_Into
@@ -488,7 +563,7 @@ package body Humanize.Payments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Payment_Link_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Payment_Link_Label (Context, Name => Name), Target, Written, Status);
    end Payment_Link_Label_Into;
 
    procedure Payment_Method_Label_Into
@@ -499,7 +574,7 @@ package body Humanize.Payments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Payment_Method_Label (Context, Method), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Payment_Method_Label (Context, Method => Method), Target, Written, Status);
    end Payment_Method_Label_Into;
 
    procedure Payment_State_Label_Into
@@ -510,7 +585,7 @@ package body Humanize.Payments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Payment_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Payment_State_Label (Context, State => State), Target, Written, Status);
    end Payment_State_Label_Into;
 
    procedure Receipt_Label_Into
@@ -521,7 +596,7 @@ package body Humanize.Payments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Receipt_Label (Context, Number), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Receipt_Label (Context, Number => Number), Target, Written, Status);
    end Receipt_Label_Into;
 
    procedure Refund_Label_Into
@@ -533,7 +608,9 @@ package body Humanize.Payments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Refund_Label (Context, Amount_Text, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Refund_Label (Context, Amount_Text => Amount_Text, State => State),
+         Target, Written, Status);
    end Refund_Label_Into;
 
    procedure Subtotal_Label_Into
@@ -544,7 +621,7 @@ package body Humanize.Payments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Subtotal_Label (Context, Amount_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Subtotal_Label (Context, Amount_Text => Amount_Text), Target, Written, Status);
    end Subtotal_Label_Into;
 
    procedure Tax_Label_Into
@@ -555,7 +632,7 @@ package body Humanize.Payments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Tax_Label (Context, Amount_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Tax_Label (Context, Amount_Text => Amount_Text), Target, Written, Status);
    end Tax_Label_Into;
 
    procedure Total_Label_Into
@@ -566,7 +643,7 @@ package body Humanize.Payments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Total_Label (Context, Amount_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Total_Label (Context, Amount_Text => Amount_Text), Target, Written, Status);
    end Total_Label_Into;
 
 end Humanize.Payments.Localized;

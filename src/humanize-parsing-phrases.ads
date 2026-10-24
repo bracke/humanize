@@ -67,4 +67,10 @@ package Humanize.Parsing.Phrases is
    --  @param Index 1 .. Phrase_Count.
    --  @return That phrase's name ("page_count"), for listing every phrase.
 
+   function Phrase_Arguments (Index : Positive) return String;
+   --  @param Index 1 .. Phrase_Count.
+   --  @return That phrase's arguments, "<numeric>|<select>|<text>", each
+   --          comma-separated; a select with its own choices reads
+   --          "name=a/b/c" ("count||name" for "{count, number} of {name}").
+
 end Humanize.Parsing.Phrases;

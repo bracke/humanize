@@ -15,6 +15,18 @@ package Humanize.Versions.Localized is
    --  @param Behind As for the parent's Commit_Distance_Label.
    --  @return The label in Context's locale.
 
+   function Commit_Distance_Label
+      (Context : Humanize.Contexts.Context;
+       Ahead   : Natural;
+       Behind  : Natural;
+       Options : Version_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Ahead As for the parent's Commit_Distance_Label.
+   --  @param Behind As for the parent's Commit_Distance_Label.
+   --  @param Options As for the parent's Commit_Distance_Label.
+   --  @return The label in Context's locale.
+
    procedure Commit_Distance_Label_Into
       (Context : Humanize.Contexts.Context;
        Ahead   : Natural;
@@ -25,6 +37,22 @@ package Humanize.Versions.Localized is
    --  @param Context Formatting context.
    --  @param Ahead As for the parent's Commit_Distance_Label.
    --  @param Behind As for the parent's Commit_Distance_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Commit_Distance_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Ahead   : Natural;
+       Behind  : Natural;
+       Options : Version_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Ahead As for the parent's Commit_Distance_Label.
+   --  @param Behind As for the parent's Commit_Distance_Label.
+   --  @param Options As for the parent's Commit_Distance_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

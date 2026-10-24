@@ -17,6 +17,20 @@ package Humanize.Badges.Localized is
    --  @param State As for the parent's Badge_Label.
    --  @return The label in Context's locale.
 
+   function Badge_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Tone    : Badge_Tone;
+       State   : Badge_State;
+       Options : Badge_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Badge_Label.
+   --  @param Tone As for the parent's Badge_Label.
+   --  @param State As for the parent's Badge_Label.
+   --  @param Options As for the parent's Badge_Label.
+   --  @return The label in Context's locale.
+
    function Badge_Priority_Label
       (Context  : Humanize.Contexts.Context;
        Priority : Badge_Priority)
@@ -113,6 +127,18 @@ package Humanize.Badges.Localized is
    --  @param Tone As for the parent's Status_Badge_Label.
    --  @return The label in Context's locale.
 
+   function Status_Badge_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Tone    : Badge_Tone;
+       Options : Badge_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Status_Badge_Label.
+   --  @param Tone As for the parent's Status_Badge_Label.
+   --  @param Options As for the parent's Status_Badge_Label.
+   --  @return The label in Context's locale.
+
    function Tag_Count_Label
       (Context : Humanize.Contexts.Context;
        Count   : Natural)
@@ -149,6 +175,24 @@ package Humanize.Badges.Localized is
    --  @param Name As for the parent's Badge_Label.
    --  @param Tone As for the parent's Badge_Label.
    --  @param State As for the parent's Badge_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Badge_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Tone    : Badge_Tone;
+       State   : Badge_State;
+       Options : Badge_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Badge_Label.
+   --  @param Tone As for the parent's Badge_Label.
+   --  @param State As for the parent's Badge_Label.
+   --  @param Options As for the parent's Badge_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -289,6 +333,22 @@ package Humanize.Badges.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Status_Badge_Label.
    --  @param Tone As for the parent's Status_Badge_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Status_Badge_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Tone    : Badge_Tone;
+       Options : Badge_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Status_Badge_Label.
+   --  @param Tone As for the parent's Status_Badge_Label.
+   --  @param Options As for the parent's Status_Badge_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Builds.Localized is
@@ -58,9 +59,25 @@ package body Humanize.Builds.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "state", Lower (Build_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Build_Label;
+
+   function Build_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Build_State;
+       Options : Build_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Builds.Build_Label (Name => Name, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Builds.Build_Label (Name => Name, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Build_Label (Context, Name => Name, State =>
+        State));
    end Build_Label;
 
    function Build_State_Label
@@ -124,8 +141,8 @@ package body Humanize.Builds.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
       Selection := Sel.With_Arg (Selection, "state", Lower (Test_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Test_Count_Label;
 
@@ -153,7 +170,7 @@ package body Humanize.Builds.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Artifact_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Artifact_State_Label (Context, State => State), Target, Written, Status);
    end Artifact_State_Label_Into;
 
    procedure Benchmark_Label_Into
@@ -165,7 +182,9 @@ package body Humanize.Builds.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Benchmark_Label (Context, Name, Result_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Benchmark_Label (Context, Name => Name, Result_Text => Result_Text),
+         Target, Written, Status);
    end Benchmark_Label_Into;
 
    procedure Build_Label_Into
@@ -177,7 +196,22 @@ package body Humanize.Builds.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Build_Label (Context, Name, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Build_Label (Context, Name => Name, State => State), Target, Written, Status);
+   end Build_Label_Into;
+
+   procedure Build_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Build_State;
+       Options : Build_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Build_Label (Context, Name => Name, State => State, Options => Options),
+         Target, Written, Status);
    end Build_Label_Into;
 
    procedure Build_State_Label_Into
@@ -188,7 +222,7 @@ package body Humanize.Builds.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Build_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Build_State_Label (Context, State => State), Target, Written, Status);
    end Build_State_Label_Into;
 
    procedure Coverage_Label_Into
@@ -199,7 +233,9 @@ package body Humanize.Builds.Localized is
        Status       : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Coverage_Label (Context, Percent_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Coverage_Label (Context, Percent_Text => Percent_Text),
+         Target, Written, Status);
    end Coverage_Label_Into;
 
    procedure Gate_State_Label_Into
@@ -210,7 +246,7 @@ package body Humanize.Builds.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Gate_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Gate_State_Label (Context, State => State), Target, Written, Status);
    end Gate_State_Label_Into;
 
    procedure Test_Count_Label_Into
@@ -222,7 +258,9 @@ package body Humanize.Builds.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Test_Count_Label (Context, Count, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Test_Count_Label (Context, Count => Count, State => State),
+         Target, Written, Status);
    end Test_Count_Label_Into;
 
    procedure Test_State_Label_Into
@@ -233,7 +271,7 @@ package body Humanize.Builds.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Test_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Test_State_Label (Context, State => State), Target, Written, Status);
    end Test_State_Label_Into;
 
 end Humanize.Builds.Localized;

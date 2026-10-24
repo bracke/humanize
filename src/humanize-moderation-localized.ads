@@ -33,6 +33,18 @@ package Humanize.Moderation.Localized is
    --  @param Action As for the parent's Moderation_Label.
    --  @return The label in Context's locale.
 
+   function Moderation_Label
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       Action  : Moderation_Action;
+       Options : Moderation_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Item As for the parent's Moderation_Label.
+   --  @param Action As for the parent's Moderation_Label.
+   --  @param Options As for the parent's Moderation_Label.
+   --  @return The label in Context's locale.
+
    function Moderation_Queue_Label
       (Context   : Humanize.Contexts.Context;
        Pending   : Natural;
@@ -53,6 +65,18 @@ package Humanize.Moderation.Localized is
    --  @param State As for the parent's Report_Label.
    --  @return The label in Context's locale.
 
+   function Report_Label
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       State   : Report_State;
+       Options : Moderation_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Item As for the parent's Report_Label.
+   --  @param State As for the parent's Report_Label.
+   --  @param Options As for the parent's Report_Label.
+   --  @return The label in Context's locale.
+
    function Report_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Report_State)
@@ -69,6 +93,18 @@ package Humanize.Moderation.Localized is
    --  @param Context Formatting context.
    --  @param Item As for the parent's Review_Label.
    --  @param State As for the parent's Review_Label.
+   --  @return The label in Context's locale.
+
+   function Review_Label
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       State   : Review_State;
+       Options : Moderation_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Item As for the parent's Review_Label.
+   --  @param State As for the parent's Review_Label.
+   --  @param Options As for the parent's Review_Label.
    --  @return The label in Context's locale.
 
    function Review_State_Label
@@ -119,6 +155,22 @@ package Humanize.Moderation.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Moderation_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       Action  : Moderation_Action;
+       Options : Moderation_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Item As for the parent's Moderation_Label.
+   --  @param Action As for the parent's Moderation_Label.
+   --  @param Options As for the parent's Moderation_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Moderation_Queue_Label_Into
       (Context   : Humanize.Contexts.Context;
        Pending   : Natural;
@@ -147,6 +199,22 @@ package Humanize.Moderation.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Report_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       State   : Report_State;
+       Options : Moderation_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Item As for the parent's Report_Label.
+   --  @param State As for the parent's Report_Label.
+   --  @param Options As for the parent's Report_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Report_State_Label_Into
       (Context : Humanize.Contexts.Context;
        State   : Report_State;
@@ -169,6 +237,22 @@ package Humanize.Moderation.Localized is
    --  @param Context Formatting context.
    --  @param Item As for the parent's Review_Label.
    --  @param State As for the parent's Review_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Review_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       State   : Review_State;
+       Options : Moderation_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Item As for the parent's Review_Label.
+   --  @param State As for the parent's Review_Label.
+   --  @param Options As for the parent's Review_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

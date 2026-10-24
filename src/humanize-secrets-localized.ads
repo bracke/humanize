@@ -41,6 +41,20 @@ package Humanize.Secrets.Localized is
    --  @param Days_Old As for the parent's Rotation_Status_Label.
    --  @return The label in Context's locale.
 
+   function Secret_Count_Label
+      (Context      : Humanize.Contexts.Context;
+       Total        : Natural;
+       Masked       : Natural := 0;
+       Unset        : Natural := 0;
+       Fingerprints : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Total As for the parent's Secret_Count_Label.
+   --  @param Masked As for the parent's Secret_Count_Label.
+   --  @param Unset As for the parent's Secret_Count_Label.
+   --  @param Fingerprints As for the parent's Secret_Count_Label.
+   --  @return The label in Context's locale.
+
    function Secret_Kind_Label
       (Context : Humanize.Contexts.Context;
        Kind    : Secret_Kind)
@@ -105,6 +119,24 @@ package Humanize.Secrets.Localized is
    --  @param Context Formatting context.
    --  @param Needs_Rotation As for the parent's Rotation_Status_Label.
    --  @param Days_Old As for the parent's Rotation_Status_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Secret_Count_Label_Into
+      (Context      : Humanize.Contexts.Context;
+       Total        : Natural;
+       Masked       : Natural := 0;
+       Unset        : Natural := 0;
+       Fingerprints : Natural := 0;
+       Target       : in out String;
+       Written      : out Natural;
+       Status       : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Total As for the parent's Secret_Count_Label.
+   --  @param Masked As for the parent's Secret_Count_Label.
+   --  @param Unset As for the parent's Secret_Count_Label.
+   --  @param Fingerprints As for the parent's Secret_Count_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

@@ -514,4 +514,182 @@ begin
       & "goedkeuring} blocked_state {geblokkeerd} completed_state {voltooid} "
       & "failed_state {mislukt} cancelled_state {geannuleerd} skipped_state "
       & "{overgeslagen} other {gepauzeerd}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {transparant} mostly_transparent "
+      & "{grotendeels transparant} translucent {doorschijnend} mostly_opaque "
+      & "{grotendeels dekkend} other {dekkend}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {geen waarnemingen} one {1 waarneming, min. "
+      & "{minimum} {unit}, mediaan {median} {unit}, max. {maximum} {unit}} "
+      & "other {{count, number} waarnemingen, min. {minimum} {unit}, mediaan "
+      & "{median} {unit}, max. {maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {geen waarnemingen} one {0 "
+      & "uitschieters van 1 waarneming} other {0 uitschieters van {total, "
+      & "number} waarnemingen}}} one {{total, plural, one {1 uitschieter van 1 "
+      & "waarneming} other {1 uitschieter van {total, number} waarnemingen}}} "
+      & "other {{outliers, number} uitschieters van {total, number} "
+      & "waarnemingen}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {{count, number} {unit} boven capaciteit} other "
+      & "{{count, number} van {total, number} {unit} resterend}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {quotum overschreden met {count, number} "
+      & "{unit} ({percent} gebruikt)} near {quotum bijna bereikt: {count, "
+      & "number} {unit} resterend ({percent} gebruikt)} other {quotum "
+      & "beschikbaar: {count, number} {unit} resterend ({percent} gebruikt)}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {cachetrefferpercentage niet beschikbaar: geen "
+      & "verzoeken} other {cachetrefferpercentage {percent}: {hits, plural, one "
+      & "{1 treffer} other {{hits, number} treffers}}, {misses, plural, one {1 "
+      & "misser} other {{misses, number} missers}}}}");
+   P ("label.markup.attribute_count_label.total",
+      "{count, plural, one {1 attribuut} other {{count, number} attributen}}");
+   P ("label.markup.attribute_count_label.data",
+      "{count, plural, one {1 data-attribuut} other {{count, number} "
+      & "data-attributen}}");
+   P ("label.markup.attribute_count_label.aria",
+      "{count, plural, one {1 ARIA-attribuut} other {{count, number} "
+      & "ARIA-attributen}}");
+   P ("label.markup.attribute_count_label.events",
+      "{count, plural, one {1 eventhandler} other {{count, number} "
+      & "eventhandlers}}");
+   P ("label.markup.heading_label", "kopniveau {level, number}");
+   P ("label.markup.tag_count_label.total", "{count, plural, one {1 tag} other {{count, number} tags}}");
+   P ("label.markup.tag_count_label.links", "{count, plural, one {1 link} other {{count, number} links}}");
+   P ("label.markup.tag_count_label.media",
+      "{count, plural, one {1 media-element} other {{count, number} "
+      & "media-elementen}}");
+   P ("label.markup.tag_count_label.forms",
+      "{count, plural, one {1 formulierelement} other {{count, number} "
+      & "formulierelementen}}");
+   P ("label.markup.document_outline_label.headings", "{count, plural, one {1 kop} other {{count, number} koppen}}");
+   P ("label.markup.document_outline_label.landmarks",
+      "{count, plural, one {1 landmark} other {{count, number} landmarks}}");
+   P ("label.markup.document_outline_label.forms",
+      "{count, plural, one {1 formulier} other {{count, number} formulieren}}");
+   P ("label.markup.document_outline_label.media",
+      "{count, plural, one {1 media-element} other {{count, number} "
+      & "media-elementen}}");
+   P ("label.markup.table_navigation_label",
+      "{caption} rij {row, number} van {rows, number}, kolom {column, number} "
+      & "van {columns, number}");
+   P ("label.secrets.secret_count_label.total", "{count, plural, one {1 geheim} other {{count, number} geheimen}}");
+   P ("label.secrets.secret_count_label.masked", "{count, number} gemaskeerd");
+   P ("label.secrets.secret_count_label.unset", "{count, number} niet ingesteld");
+   P ("label.secrets.secret_count_label.fingerprints",
+      "{count, plural, one {1 vingerafdruk} other {{count, number} "
+      & "vingerafdrukken}}");
+   P ("label.schema.type_mismatch_label",
+      "veld {field_name}: {expected, select, string_field {string} "
+      & "integer_field {geheel getal} decimal_field {decimaal getal} "
+      & "boolean_field {boolean} date_field {datum} date_time_field "
+      & "{datum-tijd} object_field {object} array_field {array} enum_field "
+      & "{enum} binary_field {binair} null_field {null} any_field {willekeurig} "
+      & "other {onbekend}} verwacht, {actual, select, string_field {string} "
+      & "integer_field {geheel getal} decimal_field {decimaal getal} "
+      & "boolean_field {boolean} date_field {datum} date_time_field "
+      & "{datum-tijd} object_field {object} array_field {array} enum_field "
+      & "{enum} binary_field {binair} null_field {null} any_field {willekeurig} "
+      & "other {onbekend}} ontvangen");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {1 blokkerend "
+      & "probleem} other {{blocking, number} blokkerende problemen}}} blocking "
+      & "{{base}, {blocking, plural, one {1 blokkerend probleem} other "
+      & "{{blocking, number} blokkerende problemen}}} only {alleen {base}} "
+      & "other {{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {doelbereik {low} tot en met "
+      & "{high}} other {doelvenster {low} tot {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} binnen verwacht bereik} below {{value} "
+      & "onder verwacht bereik} other {{value} boven verwacht bereik}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} op kritieke drempel} warning "
+      & "{{value} op waarschuwingsdrempel} other {{value} binnen normaal "
+      & "bereik}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {niet overschreden} other {overschreden met "
+      & "{difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {op doelwaarde} below {{difference} onder "
+      & "doelwaarde} other {{difference} boven doelwaarde}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {limiet overschreden} near {dicht bij limiet, "
+      & "{distance} resterend} other {{distance} van limiet}}");
+   P ("label.thresholds.threshold_summary_label.none", "geen metrieken");
+   P ("label.thresholds.threshold_summary_label.normal", "{count, number} normaal");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {1 waarschuwing} other {{count, number} "
+      & "waarschuwingen}}");
+   P ("label.thresholds.threshold_summary_label.critical", "{count, number} kritiek");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {1 overschrijding} other {{count, number} "
+      & "overschrijdingen}}");
+   P ("label.thresholds.target_window_label", "doel {target} plus/min {tolerance}");
+   P ("label.thresholds.tolerance_label", "tolerantie {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} van limiet");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {limiet overschreden met {amount}} other "
+      & "{{amount} resterend}}");
+   P ("label.thresholds.budget_used_label", "{used} van {budget} gebruikt");
+   P ("label.workflows.step_label", "stap {current, number} van {total, number}: {name}");
+   P ("label.workflows.milestone_label", "{current, number} van {total, number} mijlpalen behaald: {name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {geen workflowitems} half {workflow halverwege} "
+      & "other {{completed, number} van {total, number} voltooid}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {positie {position, number} in wachtrij} other "
+      & "{positie {position, number} van {total, number} in wachtrij}}");
+   P ("label.changes.change_set_label.none", "geen wijzigingen");
+   P ("label.changes.change_set_label.added", "{count, number} toegevoegd");
+   P ("label.changes.change_set_label.removed", "{count, number} verwijderd");
+   P ("label.changes.change_set_label.modified", "{count, number} gewijzigd");
+   P ("label.changes.change_set_label.unchanged", "{count, number} ongewijzigd");
+   P ("label.changes.sync_change_label.none", "geen synchronisatiewijzigingen");
+   P ("label.changes.sync_change_label.uploaded", "{count, number} geüpload");
+   P ("label.changes.sync_change_label.downloaded", "{count, number} gedownload");
+   P ("label.changes.sync_change_label.deleted", "{count, number} verwijderd");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {1 conflict} other {{count, number} conflicten}}");
+   P ("label.changes.net_change_label",
+      "{state, select, none {geen nettowijziging} up {netto +{count, plural, "
+      & "one {1 item} other {{count, number} items}}} other {netto -{count, "
+      & "plural, one {1 item} other {{count, number} items}}}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {geen wijzigingen om te beoordelen} all {alle "
+      & "wijzigingen beoordeeld} other {{reviewed, number} van {total, number} "
+      & "wijzigingen beoordeeld}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} ongewijzigd op {new_value}} up "
+      & "{{field_name} gestegen van {old_value} naar {new_value}} other "
+      & "{{field_name} gedaald van {old_value} naar {new_value}}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {geen rijen selecteerbaar} none {geen rijen "
+      & "geselecteerd} all {{total, plural, one {1 rij geselecteerd} other "
+      & "{alle {total, number} rijen geselecteerd}}} other {{selected, number} "
+      & "van {total, plural, one {1 rij} other {{total, number} rijen}} "
+      & "geselecteerd}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {geen pagina’s} other {{pages, plural, =0 {geen "
+      & "pagina’s} other {{rows, plural, =0 {pagina {page, number} van "
+      & "{pages, number}} one {pagina {page, number} van {pages, number}, 1 "
+      & "rij} other {pagina {page, number} van {pages, number}, {rows, number} "
+      & "rijen}}}}}}");
+   P ("label.tables.filter_label",
+      "{state, select, no_rows {geen rijen} none {geen overeenkomende rijen} "
+      & "all {{total, plural, one {1 rij zichtbaar} other {alle {total, number} "
+      & "rijen zichtbaar}}} other {{visible, number} van {total, plural, one {1 "
+      & "rij} other {{total, number} rijen}} zichtbaar}}");
+   P ("label.tables.row_range_label",
+      "{state, select, none {geen rijen} single {rij {first_row, number} van "
+      & "{total, number}} other {rijen {first_row, number}-{last_row, number} "
+      & "van {total, number}}}");
+   P ("label.forms.remaining_characters_label",
+      "{state, select, unlimited {geen tekenlimiet} none_left {geen tekens "
+      & "over} left {{count, plural, one {1 teken} other {{count, number} "
+      & "tekens}} over} other {{count, plural, one {1 teken} other {{count, "
+      & "number} tekens}} boven limiet}}");
 end Labels_2;

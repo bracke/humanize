@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Notifications.Localized is
@@ -24,10 +25,28 @@ package body Humanize.Notifications.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "actor", Humanize.Bounded_Text.Clean (Actor));
       Selection := Sel.With_Arg (Selection, "event", Lower (Notification_Event'Image (Event)));
+      Selection := Sel.With_Arg (Selection, "actor", Humanize.Bounded_Text.Clean (Actor));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Actor_Event_Label;
+
+   function Delivery_Attempt_Label
+      (Context      : Humanize.Contexts.Context;
+       Attempt      : Positive;
+       Max_Attempts : Positive)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Notifications.Delivery_Attempt_Label (Attempt => Attempt, Max_Attempts => Max_Attempts);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.notifications.delivery_attempt_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "attempt", Long_Long_Integer (Attempt));
+      Selection := Sel.With_Arg (Selection, "max_attempts", Long_Long_Integer (Max_Attempts));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Delivery_Attempt_Label;
 
    function Delivery_Label
       (Context : Humanize.Contexts.Context;
@@ -42,9 +61,25 @@ package body Humanize.Notifications.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "channel", Lower (Notification_Channel'Image (Channel)));
       Selection := Sel.With_Arg (Selection, "state", Lower (Delivery_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "channel", Lower (Notification_Channel'Image (Channel)));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Delivery_Label;
+
+   function Delivery_Label
+      (Context : Humanize.Contexts.Context;
+       Channel : Notification_Channel;
+       State   : Delivery_State;
+       Options : Notification_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Notifications.Delivery_Label (Channel => Channel, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Notifications.Delivery_Label (Channel => Channel, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Delivery_Label (Context, Channel => Channel,
+        State => State));
    end Delivery_Label;
 
    function Delivery_State_Label
@@ -116,6 +151,24 @@ package body Humanize.Notifications.Localized is
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Event_Count_Label;
+
+   function Inbox_Label
+      (Context : Humanize.Contexts.Context;
+       Unread  : Natural;
+       Total   : Natural)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Notifications.Inbox_Label (Unread => Unread, Total => Total);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.notifications.inbox_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "total", Long_Long_Integer (Total));
+      Selection := Sel.With_Arg (Selection, "unread", Long_Long_Integer (Unread));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Inbox_Label;
 
    function Mark_Read_Label
       (Context : Humanize.Contexts.Context;
@@ -242,8 +295,8 @@ package body Humanize.Notifications.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Notification_Group_Label;
 
@@ -261,10 +314,31 @@ package body Humanize.Notifications.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "subject", Humanize.Bounded_Text.Clean (Subject));
-      Selection := Sel.With_Arg (Selection, "event", Lower (Notification_Event'Image (Event)));
       Selection := Sel.With_Arg (Selection, "state", Lower (Notification_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "event", Lower (Notification_Event'Image (Event)));
+      Selection := Sel.With_Arg (Selection, "subject", Humanize.Bounded_Text.Clean (Subject));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Notification_Label;
+
+   function Notification_Label
+      (Context : Humanize.Contexts.Context;
+       Subject : String;
+       Event   : Notification_Event;
+       State   : Notification_State;
+       Options : Notification_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Notifications.Notification_Label
+          (Subject => Subject,
+           Event => Event,
+           State => State,
+           Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Notifications.Notification_Label (Subject => Subject, Event => Event, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Notification_Label (Context, Subject => Subject,
+        Event => Event, State => State));
    end Notification_Label;
 
    function Notification_State_Label
@@ -340,8 +414,24 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Actor_Event_Label (Context, Actor, Event), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Actor_Event_Label (Context, Actor => Actor, Event => Event),
+         Target, Written, Status);
    end Actor_Event_Label_Into;
+
+   procedure Delivery_Attempt_Label_Into
+      (Context      : Humanize.Contexts.Context;
+       Attempt      : Positive;
+       Max_Attempts : Positive;
+       Target       : in out String;
+       Written      : out Natural;
+       Status       : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Delivery_Attempt_Label (Context, Attempt => Attempt, Max_Attempts => Max_Attempts),
+         Target, Written, Status);
+   end Delivery_Attempt_Label_Into;
 
    procedure Delivery_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -352,7 +442,24 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Delivery_Label (Context, Channel, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Delivery_Label (Context, Channel => Channel, State => State),
+         Target, Written, Status);
+   end Delivery_Label_Into;
+
+   procedure Delivery_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Channel : Notification_Channel;
+       State   : Delivery_State;
+       Options : Notification_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Delivery_Label (Context, Channel => Channel, State => State, Options => Options),
+         Target, Written, Status);
    end Delivery_Label_Into;
 
    procedure Delivery_State_Label_Into
@@ -363,7 +470,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Delivery_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Delivery_State_Label (Context, State => State), Target, Written, Status);
    end Delivery_State_Label_Into;
 
    procedure Delivery_Time_Label_Into
@@ -375,7 +482,9 @@ package body Humanize.Notifications.Localized is
        Status    : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Delivery_Time_Label (Context, State, Time_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Delivery_Time_Label (Context, State => State, Time_Text => Time_Text),
+         Target, Written, Status);
    end Delivery_Time_Label_Into;
 
    procedure Digest_Label_Into
@@ -387,7 +496,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Digest_Label (Context, Count, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Digest_Label (Context, Count => Count, Name => Name), Target, Written, Status);
    end Digest_Label_Into;
 
    procedure Event_Count_Label_Into
@@ -399,8 +508,24 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Event_Count_Label (Context, Event, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Event_Count_Label (Context, Event => Event, Count => Count),
+         Target, Written, Status);
    end Event_Count_Label_Into;
+
+   procedure Inbox_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Unread  : Natural;
+       Total   : Natural;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Inbox_Label (Context, Unread => Unread, Total => Total),
+         Target, Written, Status);
+   end Inbox_Label_Into;
 
    procedure Mark_Read_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -410,7 +535,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Mark_Read_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Mark_Read_Label (Context, Count => Count), Target, Written, Status);
    end Mark_Read_Label_Into;
 
    procedure Mark_Unread_Label_Into
@@ -421,7 +546,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Mark_Unread_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Mark_Unread_Label (Context, Count => Count), Target, Written, Status);
    end Mark_Unread_Label_Into;
 
    procedure Muted_Label_Into
@@ -432,7 +557,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Muted_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Muted_Label (Context, Name => Name), Target, Written, Status);
    end Muted_Label_Into;
 
    procedure New_Event_Label_Into
@@ -443,7 +568,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (New_Event_Label (Context, Event), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (New_Event_Label (Context, Event => Event), Target, Written, Status);
    end New_Event_Label_Into;
 
    procedure Notification_Channel_Label_Into
@@ -454,7 +579,9 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Notification_Channel_Label (Context, Channel), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Notification_Channel_Label (Context, Channel => Channel),
+         Target, Written, Status);
    end Notification_Channel_Label_Into;
 
    procedure Notification_Count_Label_Into
@@ -465,7 +592,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Notification_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Notification_Count_Label (Context, Count => Count), Target, Written, Status);
    end Notification_Count_Label_Into;
 
    procedure Notification_Event_Label_Into
@@ -476,7 +603,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Notification_Event_Label (Context, Event), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Notification_Event_Label (Context, Event => Event), Target, Written, Status);
    end Notification_Event_Label_Into;
 
    procedure Notification_Group_Label_Into
@@ -488,7 +615,9 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Notification_Group_Label (Context, Name, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Notification_Group_Label (Context, Name => Name, Count => Count),
+         Target, Written, Status);
    end Notification_Group_Label_Into;
 
    procedure Notification_Label_Into
@@ -501,7 +630,25 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Notification_Label (Context, Subject, Event, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Notification_Label (Context, Subject => Subject, Event => Event, State => State),
+         Target, Written, Status);
+   end Notification_Label_Into;
+
+   procedure Notification_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Subject : String;
+       Event   : Notification_Event;
+       State   : Notification_State;
+       Options : Notification_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Notification_Label (Context, Subject => Subject, Event => Event, State => State, Options => Options),
+         Target, Written, Status);
    end Notification_Label_Into;
 
    procedure Notification_State_Label_Into
@@ -512,7 +659,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Notification_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Notification_State_Label (Context, State => State), Target, Written, Status);
    end Notification_State_Label_Into;
 
    procedure Snoozed_Label_Into
@@ -523,7 +670,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Snoozed_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Snoozed_Label (Context, Name => Name), Target, Written, Status);
    end Snoozed_Label_Into;
 
    procedure Suppressed_Label_Into
@@ -534,7 +681,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Suppressed_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Suppressed_Label (Context, Count => Count), Target, Written, Status);
    end Suppressed_Label_Into;
 
    procedure Unread_Label_Into
@@ -545,7 +692,7 @@ package body Humanize.Notifications.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Unread_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Unread_Label (Context, Count => Count), Target, Written, Status);
    end Unread_Label_Into;
 
 end Humanize.Notifications.Localized;

@@ -15,6 +15,16 @@ package Humanize.Notifications.Localized is
    --  @param Event As for the parent's Actor_Event_Label.
    --  @return The label in Context's locale.
 
+   function Delivery_Attempt_Label
+      (Context      : Humanize.Contexts.Context;
+       Attempt      : Positive;
+       Max_Attempts : Positive)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Attempt As for the parent's Delivery_Attempt_Label.
+   --  @param Max_Attempts As for the parent's Delivery_Attempt_Label.
+   --  @return The label in Context's locale.
+
    function Delivery_Label
       (Context : Humanize.Contexts.Context;
        Channel : Notification_Channel;
@@ -23,6 +33,18 @@ package Humanize.Notifications.Localized is
    --  @param Context Formatting context.
    --  @param Channel As for the parent's Delivery_Label.
    --  @param State As for the parent's Delivery_Label.
+   --  @return The label in Context's locale.
+
+   function Delivery_Label
+      (Context : Humanize.Contexts.Context;
+       Channel : Notification_Channel;
+       State   : Delivery_State;
+       Options : Notification_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Channel As for the parent's Delivery_Label.
+   --  @param State As for the parent's Delivery_Label.
+   --  @param Options As for the parent's Delivery_Label.
    --  @return The label in Context's locale.
 
    function Delivery_State_Label
@@ -61,6 +83,16 @@ package Humanize.Notifications.Localized is
    --  @param Context Formatting context.
    --  @param Event As for the parent's Event_Count_Label.
    --  @param Count As for the parent's Event_Count_Label.
+   --  @return The label in Context's locale.
+
+   function Inbox_Label
+      (Context : Humanize.Contexts.Context;
+       Unread  : Natural;
+       Total   : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Unread As for the parent's Inbox_Label.
+   --  @param Total As for the parent's Inbox_Label.
    --  @return The label in Context's locale.
 
    function Mark_Read_Label
@@ -141,6 +173,20 @@ package Humanize.Notifications.Localized is
    --  @param State As for the parent's Notification_Label.
    --  @return The label in Context's locale.
 
+   function Notification_Label
+      (Context : Humanize.Contexts.Context;
+       Subject : String;
+       Event   : Notification_Event;
+       State   : Notification_State;
+       Options : Notification_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Subject As for the parent's Notification_Label.
+   --  @param Event As for the parent's Notification_Label.
+   --  @param State As for the parent's Notification_Label.
+   --  @param Options As for the parent's Notification_Label.
+   --  @return The label in Context's locale.
+
    function Notification_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Notification_State)
@@ -187,6 +233,20 @@ package Humanize.Notifications.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Delivery_Attempt_Label_Into
+      (Context      : Humanize.Contexts.Context;
+       Attempt      : Positive;
+       Max_Attempts : Positive;
+       Target       : in out String;
+       Written      : out Natural;
+       Status       : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Attempt As for the parent's Delivery_Attempt_Label.
+   --  @param Max_Attempts As for the parent's Delivery_Attempt_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Delivery_Label_Into
       (Context : Humanize.Contexts.Context;
        Channel : Notification_Channel;
@@ -197,6 +257,22 @@ package Humanize.Notifications.Localized is
    --  @param Context Formatting context.
    --  @param Channel As for the parent's Delivery_Label.
    --  @param State As for the parent's Delivery_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Delivery_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Channel : Notification_Channel;
+       State   : Delivery_State;
+       Options : Notification_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Channel As for the parent's Delivery_Label.
+   --  @param State As for the parent's Delivery_Label.
+   --  @param Options As for the parent's Delivery_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -251,6 +327,20 @@ package Humanize.Notifications.Localized is
    --  @param Context Formatting context.
    --  @param Event As for the parent's Event_Count_Label.
    --  @param Count As for the parent's Event_Count_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Inbox_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Unread  : Natural;
+       Total   : Natural;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Unread As for the parent's Inbox_Label.
+   --  @param Total As for the parent's Inbox_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -365,6 +455,24 @@ package Humanize.Notifications.Localized is
    --  @param Subject As for the parent's Notification_Label.
    --  @param Event As for the parent's Notification_Label.
    --  @param State As for the parent's Notification_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Notification_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Subject : String;
+       Event   : Notification_Event;
+       State   : Notification_State;
+       Options : Notification_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Subject As for the parent's Notification_Label.
+   --  @param Event As for the parent's Notification_Label.
+   --  @param State As for the parent's Notification_Label.
+   --  @param Options As for the parent's Notification_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Secrets.Localized is
@@ -24,8 +25,8 @@ package body Humanize.Secrets.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "source", Humanize.Bounded_Text.Clean (Source));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "source", Humanize.Bounded_Text.Clean (Source));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Credential_Source_Label;
 
@@ -79,6 +80,42 @@ package body Humanize.Secrets.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Rotation_Status_Label;
 
+   function Secret_Count_Label
+      (Context      : Humanize.Contexts.Context;
+       Total        : Natural;
+       Masked       : Natural := 0;
+       Unset        : Natural := 0;
+       Fingerprints : Natural := 0)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Secrets.Secret_Count_Label
+          (Total => Total,
+           Masked => Masked,
+           Unset => Unset,
+           Fingerprints => Fingerprints);
+      Text : Humanize.Status.Text_Result := Humanize.Label_Values.Nothing;
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+        "label.secrets.secret_count_label.total", Long_Long_Integer (Total)));
+      if Masked > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.secrets.secret_count_label.masked", Long_Long_Integer (Masked)));
+      end if;
+      if Unset > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.secrets.secret_count_label.unset", Long_Long_Integer (Unset)));
+      end if;
+      if Fingerprints > 0 then
+         Text := Humanize.Label_Values.Join (Context, Text, Humanize.Label_Values.Count_Part (Context,
+           "label.secrets.secret_count_label.fingerprints", Long_Long_Integer (Fingerprints)));
+      end if;
+      return Humanize.Label_Values.Localized_Or (Context, Text, English);
+   end Secret_Count_Label;
+
    function Secret_Kind_Label
       (Context : Humanize.Contexts.Context;
        Kind    : Secret_Kind)
@@ -120,7 +157,9 @@ package body Humanize.Secrets.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Credential_Source_Label (Context, Source, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Credential_Source_Label (Context, Source => Source, Count => Count),
+         Target, Written, Status);
    end Credential_Source_Label_Into;
 
    procedure Exposure_Label_Into
@@ -131,7 +170,7 @@ package body Humanize.Secrets.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Exposure_Label (Context, Exposure), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Exposure_Label (Context, Exposure => Exposure), Target, Written, Status);
    end Exposure_Label_Into;
 
    procedure Privacy_Profile_Label_Into
@@ -142,7 +181,7 @@ package body Humanize.Secrets.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Privacy_Profile_Label (Context, Profile), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Privacy_Profile_Label (Context, Profile => Profile), Target, Written, Status);
    end Privacy_Profile_Label_Into;
 
    procedure Rotation_Status_Label_Into
@@ -155,9 +194,25 @@ package body Humanize.Secrets.Localized is
    is
    begin
       Humanize.Bounded_Text.Copy_Text
-        (Rotation_Status_Label (Context, Needs_Rotation, Days_Old),
+        (Rotation_Status_Label (Context, Needs_Rotation => Needs_Rotation, Days_Old => Days_Old),
          Target, Written, Status);
    end Rotation_Status_Label_Into;
+
+   procedure Secret_Count_Label_Into
+      (Context      : Humanize.Contexts.Context;
+       Total        : Natural;
+       Masked       : Natural := 0;
+       Unset        : Natural := 0;
+       Fingerprints : Natural := 0;
+       Target       : in out String;
+       Written      : out Natural;
+       Status       : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Secret_Count_Label (Context, Total => Total, Masked => Masked, Unset => Unset, Fingerprints => Fingerprints),
+         Target, Written, Status);
+   end Secret_Count_Label_Into;
 
    procedure Secret_Kind_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -167,7 +222,7 @@ package body Humanize.Secrets.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Secret_Kind_Label (Context, Kind), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Secret_Kind_Label (Context, Kind => Kind), Target, Written, Status);
    end Secret_Kind_Label_Into;
 
    procedure Sensitive_Value_Kind_Label_Into
@@ -178,7 +233,7 @@ package body Humanize.Secrets.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Sensitive_Value_Kind_Label (Context, Kind), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Sensitive_Value_Kind_Label (Context, Kind => Kind), Target, Written, Status);
    end Sensitive_Value_Kind_Label_Into;
 
 end Humanize.Secrets.Localized;

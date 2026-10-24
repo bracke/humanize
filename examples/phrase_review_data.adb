@@ -1,12 +1,16 @@
 --  Writes the phrase review page's data (data.json) to standard output:
 --  every humanize phrase as each locale renders it, with the sample counts 1
---  and 5, and the translators' notes from a notes file.
+--  and 5, and the translators' notes from a notes file. A domain label
+--  (label.*) gets a row per choice of its first select, its text arguments
+--  shown as "[name]".
 --
 --     phrase_review_data docs/phrase_notes.tsv > data.json
 --
 --  The caller's noun appears as markers -- "file", "files", "files(gen)" --
 --  so a reviewer sees which of its forms each translation uses.
 with Ada.Command_Line;
+with Ada.Strings.Fixed;
+with Ada.Strings.Maps;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
@@ -21,8 +25,9 @@ procedure Phrase_Review_Data is
    use Ada.Strings.Unbounded;
    use Ada.Text_IO;
 
-   Runtime : Messages.Runtime.Instance;
-   Loaded  : Messages.Runtime.Load_Result;
+   Runtime   : Messages.Runtime.Instance;
+   Loaded    : Messages.Runtime.Load_Result;
+   First_Row : Boolean := True;
 
    type Locale_Row is record
       Code : Unbounded_String;
@@ -89,7 +94,8 @@ procedure Phrase_Review_Data is
          (+"signal", +"SIGKILL killed"), (+"choices", +"S, M, L"), (+"actual", +"XL"),
          (+"endpoint", +"api.example.com"), (+"subject", +"Import"), (+"text", +"[label]"),
          (+"detail", +"expired"), (+"reason", +"killed"), (+"path", +"user.email"),
-         (+"kind", +"archive"), (+"checksum", +"abc123"), (+"expected", +"image"), (+"offset", +"UTC+02:00"), (+"phase", +"mid"),
+         (+"kind", +"archive"), (+"checksum", +"abc123"), (+"expected", +"image"), (+"offset", +"UTC+02:00"),
+         (+"phase", +"mid"),
          (+"date", +"9 Oct 2026"), (+"first", +"9 Oct 2026"), (+"last", +"15 Oct 2026"),
          (+"time", +"2 hours ago"), (+"low", +"10"), (+"high", +"20"), (+"delta", +"0.5"),
          (+"bounds", +"1-10"), (+"numerator", +"3 errors"), (+"denominator", +"1,000 requests"),
@@ -107,10 +113,86 @@ procedure Phrase_Review_Data is
       end loop;
    end Fill;
 
-   function Rendered (Locale, Name, Count : String) return String is
+   --  The Index'th comma-separated item of List; "" past the end.
+   function Item (List : String; Index : Positive) return String is
+      Seen  : Positive := 1;
+      Start : Positive := List'First;
+   begin
+      for I in List'Range loop
+         if List (I) = ',' then
+            if Seen = Index then
+               return List (Start .. I - 1);
+            end if;
+            Seen := Seen + 1;
+            Start := I + 1;
+         end if;
+      end loop;
+      return (if Seen = Index then List (Start .. List'Last) else "");
+   end Item;
+
+   --  The Index'th '|'-separated field of a phrase's arguments (1 numeric, 2
+   --  select, 3 text).
+   function Field (Arguments : String; Index : Positive) return String is
+      Seen  : Positive := 1;
+      Start : Positive := Arguments'First;
+   begin
+      for I in Arguments'Range loop
+         if Arguments (I) = '|' then
+            if Seen = Index then
+               return Arguments (Start .. I - 1);
+            end if;
+            Seen := Seen + 1;
+            Start := I + 1;
+         end if;
+      end loop;
+      return (if Seen = Index then Arguments (Start .. Arguments'Last) else "");
+   end Field;
+
+   --  The first select argument with its own choices ("state=a/b/c"), or "".
+   function First_Choices (Arguments : String) return String is
+      Selects : constant String := Field (Arguments, 2);
+   begin
+      for I in 1 .. Selects'Length loop
+         exit when Item (Selects, I) = "";
+         if Ada.Strings.Fixed.Index (Item (Selects, I), "=") > 0 then
+            return Item (Selects, I);
+         end if;
+      end loop;
+      return "";
+   end First_Choices;
+
+   --  A domain label (label.*): its text arguments as "[name]" markers, its
+   --  counts Count, its first choice-carrying select Choice.
+   procedure Fill_Label
+     (Args      : in out Messages.Arguments.Arguments;
+      Arguments : String;
+      Count     : String;
+      Choice    : String)
+   is
+      Numbers : constant String := Field (Arguments, 1);
+      Texts   : constant String := Field (Arguments, 3);
+      Chosen  : constant String := First_Choices (Arguments);
+   begin
+      for I in 1 .. Numbers'Length loop
+         exit when Item (Numbers, I) = "";
+         Messages.Arguments.Set (Args, Item (Numbers, I), Count);
+      end loop;
+      for I in 1 .. Texts'Length loop
+         exit when Item (Texts, I) = "";
+         Messages.Arguments.Set (Args, Item (Texts, I), "[" & Item (Texts, I) & "]");
+      end loop;
+      if Chosen /= "" then
+         Messages.Arguments.Set (Args, Chosen (Chosen'First .. Ada.Strings.Fixed.Index (Chosen, "=") - 1), Choice);
+      end if;
+   end Fill_Label;
+
+   function Rendered (Locale, Name, Count : String; Arguments : String := ""; Choice : String := "") return String is
       Args : Messages.Arguments.Arguments;
    begin
       Fill (Args, Count);
+      if Name'Length > 6 and then Name (Name'First .. Name'First + 5) = "label." then
+         Fill_Label (Args, Arguments, Count, Choice);
+      end if;
       declare
          Result : constant Messages.Result.Render_Result :=
            Messages.Runtime.Render (Runtime, Locale, "humanize.phrase." & Name, Args);
@@ -158,18 +240,46 @@ begin
    Put ("],""keys"":[");
    for K in 1 .. Humanize.Parsing.Phrases.Phrase_Count loop
       declare
-         Name : constant String := Humanize.Parsing.Phrases.Phrase_Name (K);
+         Name      : constant String := Humanize.Parsing.Phrases.Phrase_Name (K);
+         Arguments : constant String := Humanize.Parsing.Phrases.Phrase_Arguments (K);
+         Chosen    : constant String := First_Choices (Arguments);
+         Equals    : constant Natural := Ada.Strings.Fixed.Index (Chosen, "=");
+         --  The choices comma-separated, as Item reads them.
+         Choices   : constant String :=
+           (if Chosen = "" then ""
+            else Ada.Strings.Fixed.Translate
+              (Chosen (Equals + 1 .. Chosen'Last), Ada.Strings.Maps.To_Mapping ("/", ",")));
+         Is_Label  : constant Boolean := Name'Length > 6 and then Name (Name'First .. Name'First + 5) = "label.";
+
+         --  One row: the phrase with Choice for its first select.
+         procedure Row (Choice : String) is
+         begin
+            Put ((if First_Row then "" else ",") & "{""key"":"
+                 & Quoted
+                     (Name & (if Choice = "" then "" else " " & Chosen (Chosen'First .. Equals - 1) & "=" & Choice))
+                 & ",""cells"":[");
+            First_Row := False;
+            for I in Locales'Range loop
+               declare
+                  Code : constant String := To_String (Locales (I).Code);
+               begin
+                  Put ((if I > Locales'First then "," else "")
+                       & "[" & Quoted (Rendered (Code, Name, "1", Arguments, Choice)) & ","
+                       & Quoted (Rendered (Code, Name, "5", Arguments, Choice)) & "]");
+               end;
+            end loop;
+            Put ("]}");
+         end Row;
       begin
-         Put ((if K > 1 then "," else "") & "{""key"":" & Quoted (Name) & ",""cells"":[");
-         for I in Locales'Range loop
-            declare
-               Code : constant String := To_String (Locales (I).Code);
-            begin
-               Put ((if I > Locales'First then "," else "")
-                    & "[" & Quoted (Rendered (Code, Name, "1")) & "," & Quoted (Rendered (Code, Name, "5")) & "]");
-            end;
-         end loop;
-         Put ("]}");
+         if Choices = "" or else not Is_Label then
+            Row ("");
+         else
+            --  a label row per choice of its first select, so each branch is reviewed
+            for I in 1 .. Choices'Length loop
+               exit when Item (Choices, I) = "";
+               Row (Item (Choices, I));
+            end loop;
+         end if;
       end;
    end loop;
    Put_Line ("]}");

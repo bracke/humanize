@@ -13,6 +13,7 @@ package Humanize.Strings is
    --  * Humanize.Strings.Markup: markup escaping and stripping.
    --  * Humanize.Strings.Metadata: text metadata labels.
    --  * Humanize.Strings.Metrics: word/count/reading-time helpers.
+   --  * Humanize.Strings.Metrics.Localized: the word-count and reading-time labels in a context's locale.
    --  * Humanize.Strings.Names: person/name helpers.
    --  * Humanize.Strings.Paths: path and filename helpers.
    --  * Humanize.Strings.Privacy: privacy-preserving labels.

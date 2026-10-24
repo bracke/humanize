@@ -675,4 +675,25 @@ begin
       & "odobritev} blocked_state {blokirano} completed_state {dokončano} "
       & "failed_state {neuspešno} cancelled_state {preklicano} skipped_state "
       & "{preskočeno} other {začasno ustavljeno}}");
+   P ("label.contrast.opacity_label",
+      "{percent}, {state, select, transparent {prosojna} mostly_transparent "
+      & "{večinoma prosojna} translucent {delno prosojna} mostly_opaque "
+      & "{večinoma neprosojna} other {neprosojna}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {ni opazovanj} one {{count, number} opazovanje, "
+      & "min. {minimum} {unit}, mediana {median} {unit}, maks. {maximum} "
+      & "{unit}} two {{count, number} opazovanji, min. {minimum} {unit}, "
+      & "mediana {median} {unit}, maks. {maximum} {unit}} few {{count, number} "
+      & "opazovanja, min. {minimum} {unit}, mediana {median} {unit}, maks. "
+      & "{maximum} {unit}} other {{count, number} opazovanj, min. {minimum} "
+      & "{unit}, mediana {median} {unit}, maks. {maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {ni opazovanj} other {0 "
+      & "izstopajočih vrednosti od {total, number} opazovanj}}} one "
+      & "{{outliers, number} izstopajoča vrednost od {total, number} "
+      & "opazovanj} two {{outliers, number} izstopajoči vrednosti od {total, "
+      & "number} opazovanj} few {{outliers, number} izstopajoče vrednosti od "
+      & "{total, number} opazovanj} other {{outliers, number} izstopajočih "
+      & "vrednosti od {total, number} opazovanj}}");
 end Labels_2;

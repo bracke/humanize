@@ -51,6 +51,18 @@ package Humanize.Workflows.Localized is
    --  @param To As for the parent's Handoff_Label.
    --  @return The label in Context's locale.
 
+   function Milestone_Label
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Current As for the parent's Milestone_Label.
+   --  @param Total As for the parent's Milestone_Label.
+   --  @param Name As for the parent's Milestone_Label.
+   --  @return The label in Context's locale.
+
    function Milestone_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Milestone_State)
@@ -69,6 +81,18 @@ package Humanize.Workflows.Localized is
    --  @param State As for the parent's Milestone_Status_Label.
    --  @return The label in Context's locale.
 
+   function Milestone_Status_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Milestone_State;
+       Options : Workflow_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Milestone_Status_Label.
+   --  @param State As for the parent's Milestone_Status_Label.
+   --  @param Options As for the parent's Milestone_Status_Label.
+   --  @return The label in Context's locale.
+
    function Next_Action_Label
       (Context : Humanize.Contexts.Context;
        Action  : String)
@@ -85,12 +109,34 @@ package Humanize.Workflows.Localized is
    --  @param Owner As for the parent's Owner_Label.
    --  @return The label in Context's locale.
 
+   function Queue_Position_Label
+      (Context  : Humanize.Contexts.Context;
+       Position : Positive;
+       Total    : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Position As for the parent's Queue_Position_Label.
+   --  @param Total As for the parent's Queue_Position_Label.
+   --  @return The label in Context's locale.
+
    function Resume_Label
       (Context : Humanize.Contexts.Context;
        Name    : String := "")
       return Humanize.Status.Text_Result;
    --  @param Context Formatting context.
    --  @param Name As for the parent's Resume_Label.
+   --  @return The label in Context's locale.
+
+   function Step_Label
+      (Context : Humanize.Contexts.Context;
+       Current : Positive;
+       Total   : Positive;
+       Name    : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Current As for the parent's Step_Label.
+   --  @param Total As for the parent's Step_Label.
+   --  @param Name As for the parent's Step_Label.
    --  @return The label in Context's locale.
 
    function Step_State_Label
@@ -111,12 +157,34 @@ package Humanize.Workflows.Localized is
    --  @param State As for the parent's Step_Status_Label.
    --  @return The label in Context's locale.
 
+   function Step_Status_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Step_State;
+       Options : Workflow_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Step_Status_Label.
+   --  @param State As for the parent's Step_Status_Label.
+   --  @param Options As for the parent's Step_Status_Label.
+   --  @return The label in Context's locale.
+
    function Waiting_Label
       (Context : Humanize.Contexts.Context;
        Reason  : String := "")
       return Humanize.Status.Text_Result;
    --  @param Context Formatting context.
    --  @param Reason As for the parent's Waiting_Label.
+   --  @return The label in Context's locale.
+
+   function Workflow_Progress_Label
+      (Context   : Humanize.Contexts.Context;
+       Completed : Natural;
+       Total     : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Completed As for the parent's Workflow_Progress_Label.
+   --  @param Total As for the parent's Workflow_Progress_Label.
    --  @return The label in Context's locale.
 
    function Workflow_Result_Label
@@ -126,6 +194,18 @@ package Humanize.Workflows.Localized is
       return Humanize.Status.Text_Result;
    --  @param Context Formatting context.
    --  @param State As for the parent's Workflow_Result_Label.
+   --  @param Name As for the parent's Workflow_Result_Label.
+   --  @return The label in Context's locale.
+
+   function Workflow_Result_Label
+      (Context : Humanize.Contexts.Context;
+       State   : Workflow_State;
+       Options : Workflow_Label_Options;
+       Name    : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param State As for the parent's Workflow_Result_Label.
+   --  @param Options As for the parent's Workflow_Result_Label.
    --  @param Name As for the parent's Workflow_Result_Label.
    --  @return The label in Context's locale.
 
@@ -203,6 +283,22 @@ package Humanize.Workflows.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Milestone_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Current As for the parent's Milestone_Label.
+   --  @param Total As for the parent's Milestone_Label.
+   --  @param Name As for the parent's Milestone_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Milestone_State_Label_Into
       (Context : Humanize.Contexts.Context;
        State   : Milestone_State;
@@ -225,6 +321,22 @@ package Humanize.Workflows.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Milestone_Status_Label.
    --  @param State As for the parent's Milestone_Status_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Milestone_Status_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Milestone_State;
+       Options : Workflow_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Milestone_Status_Label.
+   --  @param State As for the parent's Milestone_Status_Label.
+   --  @param Options As for the parent's Milestone_Status_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -253,6 +365,20 @@ package Humanize.Workflows.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Queue_Position_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Position : Positive;
+       Total    : Natural := 0;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Position As for the parent's Queue_Position_Label.
+   --  @param Total As for the parent's Queue_Position_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Resume_Label_Into
       (Context : Humanize.Contexts.Context;
        Name    : String := "";
@@ -261,6 +387,22 @@ package Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Name As for the parent's Resume_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Step_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Current : Positive;
+       Total   : Positive;
+       Name    : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Current As for the parent's Step_Label.
+   --  @param Total As for the parent's Step_Label.
+   --  @param Name As for the parent's Step_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -291,6 +433,22 @@ package Humanize.Workflows.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Step_Status_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Step_State;
+       Options : Workflow_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Step_Status_Label.
+   --  @param State As for the parent's Step_Status_Label.
+   --  @param Options As for the parent's Step_Status_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Waiting_Label_Into
       (Context : Humanize.Contexts.Context;
        Reason  : String := "";
@@ -299,6 +457,20 @@ package Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Reason As for the parent's Waiting_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Workflow_Progress_Label_Into
+      (Context   : Humanize.Contexts.Context;
+       Completed : Natural;
+       Total     : Natural;
+       Target    : in out String;
+       Written   : out Natural;
+       Status    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Completed As for the parent's Workflow_Progress_Label.
+   --  @param Total As for the parent's Workflow_Progress_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -312,6 +484,22 @@ package Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param State As for the parent's Workflow_Result_Label.
+   --  @param Name As for the parent's Workflow_Result_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Workflow_Result_Label_Into
+      (Context : Humanize.Contexts.Context;
+       State   : Workflow_State;
+       Options : Workflow_Label_Options;
+       Name    : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param State As for the parent's Workflow_Result_Label.
+   --  @param Options As for the parent's Workflow_Result_Label.
    --  @param Name As for the parent's Workflow_Result_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.

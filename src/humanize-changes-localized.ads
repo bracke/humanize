@@ -25,6 +25,20 @@ package Humanize.Changes.Localized is
    --  @param Kind As for the parent's Change_Kind_Label.
    --  @return The label in Context's locale.
 
+   function Change_Set_Label
+      (Context   : Humanize.Contexts.Context;
+       Added     : Natural := 0;
+       Removed   : Natural := 0;
+       Modified  : Natural := 0;
+       Unchanged : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Added As for the parent's Change_Set_Label.
+   --  @param Removed As for the parent's Change_Set_Label.
+   --  @param Modified As for the parent's Change_Set_Label.
+   --  @param Unchanged As for the parent's Change_Set_Label.
+   --  @return The label in Context's locale.
+
    function Change_Severity_Label
       (Context  : Humanize.Contexts.Context;
        Severity : Change_Severity)
@@ -53,6 +67,16 @@ package Humanize.Changes.Localized is
       return Humanize.Status.Text_Result;
    --  @param Context Formatting context.
    --  @param Count As for the parent's Conflict_Label.
+   --  @return The label in Context's locale.
+
+   function Conflict_Label
+      (Context : Humanize.Contexts.Context;
+       Count   : Natural;
+       Options : Change_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Count As for the parent's Conflict_Label.
+   --  @param Options As for the parent's Conflict_Label.
    --  @return The label in Context's locale.
 
    function Date_Field_Change_Label
@@ -103,6 +127,18 @@ package Humanize.Changes.Localized is
    --  @param Kind As for the parent's Item_Change_Label.
    --  @return The label in Context's locale.
 
+   function Item_Change_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Change_Kind;
+       Options : Change_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Item_Change_Label.
+   --  @param Kind As for the parent's Item_Change_Label.
+   --  @param Options As for the parent's Item_Change_Label.
+   --  @return The label in Context's locale.
+
    function Metadata_Only_Label
       (Context : Humanize.Contexts.Context;
        Count   : Natural := 0)
@@ -123,10 +159,34 @@ package Humanize.Changes.Localized is
    --  @param To As for the parent's Move_Label.
    --  @return The label in Context's locale.
 
+   function Net_Change_Label
+      (Context : Humanize.Contexts.Context;
+       Added   : Natural;
+       Removed : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Added As for the parent's Net_Change_Label.
+   --  @param Removed As for the parent's Net_Change_Label.
+   --  @return The label in Context's locale.
+
    function No_Changes_Label
       (Context : Humanize.Contexts.Context)
       return Humanize.Status.Text_Result;
    --  @param Context Formatting context.
+   --  @return The label in Context's locale.
+
+   function Numeric_Field_Change_Label
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Old_Value  : Long_Float;
+       New_Value  : Long_Float;
+       Unit       : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Field_Name As for the parent's Numeric_Field_Change_Label.
+   --  @param Old_Value As for the parent's Numeric_Field_Change_Label.
+   --  @param New_Value As for the parent's Numeric_Field_Change_Label.
+   --  @param Unit As for the parent's Numeric_Field_Change_Label.
    --  @return The label in Context's locale.
 
    function Patch_Size_Label
@@ -147,6 +207,30 @@ package Humanize.Changes.Localized is
    --  @param Context Formatting context.
    --  @param Old_Name As for the parent's Rename_Label.
    --  @param New_Name As for the parent's Rename_Label.
+   --  @return The label in Context's locale.
+
+   function Review_Progress_Label
+      (Context  : Humanize.Contexts.Context;
+       Reviewed : Natural;
+       Total    : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Reviewed As for the parent's Review_Progress_Label.
+   --  @param Total As for the parent's Review_Progress_Label.
+   --  @return The label in Context's locale.
+
+   function Sync_Change_Label
+      (Context    : Humanize.Contexts.Context;
+       Uploaded   : Natural := 0;
+       Downloaded : Natural := 0;
+       Deleted    : Natural := 0;
+       Conflicts  : Natural := 0)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Uploaded As for the parent's Sync_Change_Label.
+   --  @param Downloaded As for the parent's Sync_Change_Label.
+   --  @param Deleted As for the parent's Sync_Change_Label.
+   --  @param Conflicts As for the parent's Sync_Change_Label.
    --  @return The label in Context's locale.
 
    procedure Boolean_Field_Change_Label_Into
@@ -173,6 +257,24 @@ package Humanize.Changes.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Kind As for the parent's Change_Kind_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Change_Set_Label_Into
+      (Context   : Humanize.Contexts.Context;
+       Added     : Natural := 0;
+       Removed   : Natural := 0;
+       Modified  : Natural := 0;
+       Unchanged : Natural := 0;
+       Target    : in out String;
+       Written   : out Natural;
+       Status    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Added As for the parent's Change_Set_Label.
+   --  @param Removed As for the parent's Change_Set_Label.
+   --  @param Modified As for the parent's Change_Set_Label.
+   --  @param Unchanged As for the parent's Change_Set_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -215,6 +317,20 @@ package Humanize.Changes.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param Count As for the parent's Conflict_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Conflict_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Count   : Natural;
+       Options : Change_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Count As for the parent's Conflict_Label.
+   --  @param Options As for the parent's Conflict_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -283,6 +399,22 @@ package Humanize.Changes.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Item_Change_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Change_Kind;
+       Options : Change_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Item_Change_Label.
+   --  @param Kind As for the parent's Item_Change_Label.
+   --  @param Options As for the parent's Item_Change_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Metadata_Only_Label_Into
       (Context : Humanize.Contexts.Context;
        Count   : Natural := 0;
@@ -311,12 +443,44 @@ package Humanize.Changes.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Net_Change_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Added   : Natural;
+       Removed : Natural;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Added As for the parent's Net_Change_Label.
+   --  @param Removed As for the parent's Net_Change_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure No_Changes_Label_Into
       (Context : Humanize.Contexts.Context;
        Target  : in out String;
        Written : out Natural;
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Numeric_Field_Change_Label_Into
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Old_Value  : Long_Float;
+       New_Value  : Long_Float;
+       Unit       : String := "";
+       Target     : in out String;
+       Written    : out Natural;
+       Status     : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Field_Name As for the parent's Numeric_Field_Change_Label.
+   --  @param Old_Value As for the parent's Numeric_Field_Change_Label.
+   --  @param New_Value As for the parent's Numeric_Field_Change_Label.
+   --  @param Unit As for the parent's Numeric_Field_Change_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -345,6 +509,38 @@ package Humanize.Changes.Localized is
    --  @param Context Formatting context.
    --  @param Old_Name As for the parent's Rename_Label.
    --  @param New_Name As for the parent's Rename_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Review_Progress_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Reviewed : Natural;
+       Total    : Natural;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Reviewed As for the parent's Review_Progress_Label.
+   --  @param Total As for the parent's Review_Progress_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Sync_Change_Label_Into
+      (Context    : Humanize.Contexts.Context;
+       Uploaded   : Natural := 0;
+       Downloaded : Natural := 0;
+       Deleted    : Natural := 0;
+       Conflicts  : Natural := 0;
+       Target     : in out String;
+       Written    : out Natural;
+       Status     : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Uploaded As for the parent's Sync_Change_Label.
+   --  @param Downloaded As for the parent's Sync_Change_Label.
+   --  @param Deleted As for the parent's Sync_Change_Label.
+   --  @param Conflicts As for the parent's Sync_Change_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

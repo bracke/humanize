@@ -531,4 +531,168 @@ begin
       & "godkännande} blocked_state {blockerad} completed_state {slutförd} "
       & "failed_state {misslyckades} cancelled_state {avbruten} skipped_state "
       & "{överhoppad} other {pausad}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {genomskinlig} "
+      & "mostly_transparent {mestadels genomskinlig} translucent "
+      & "{halvgenomskinlig} mostly_opaque {mestadels ogenomskinlig} other "
+      & "{ogenomskinlig}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {inga observationer} one {1 observation, min "
+      & "{minimum} {unit}, median {median} {unit}, max {maximum} {unit}} other "
+      & "{{count, number} observationer, min {minimum} {unit}, median {median} "
+      & "{unit}, max {maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {inga observationer} one {0 "
+      & "avvikare av 1 observation} other {0 avvikare av {total, number} "
+      & "observationer}}} one {{total, plural, one {1 avvikare av 1 "
+      & "observation} other {1 avvikare av {total, number} observationer}}} "
+      & "other {{outliers, number} avvikare av {total, number} observationer}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {{count, number} {unit} över kapaciteten} other "
+      & "{{count, number} av {total, number} {unit} kvar}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {kvoten överskriden med {count, number} "
+      & "{unit} ({percent} använt)} near {kvoten nästan nådd: {count, "
+      & "number} {unit} kvar ({percent} använt)} other {kvot tillgänglig: "
+      & "{count, number} {unit} kvar ({percent} använt)}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {cacheträffrekvens ej tillgänglig: inga "
+      & "förfrågningar} other {cacheträffrekvens {percent}: {hits, plural, "
+      & "one {1 träff} other {{hits, number} träffar}}, {misses, plural, one "
+      & "{1 miss} other {{misses, number} missar}}}}");
+   P ("label.markup.attribute_count_label.total",
+      "{count, plural, one {1 attribut} other {{count, number} attribut}}");
+   P ("label.markup.attribute_count_label.data",
+      "{count, plural, one {1 data-attribut} other {{count, number} "
+      & "data-attribut}}");
+   P ("label.markup.attribute_count_label.aria",
+      "{count, plural, one {1 ARIA-attribut} other {{count, number} "
+      & "ARIA-attribut}}");
+   P ("label.markup.attribute_count_label.events",
+      "{count, plural, one {1 händelsehanterare} other {{count, number} "
+      & "händelsehanterare}}");
+   P ("label.markup.heading_label", "rubrik på nivå {level, number}");
+   P ("label.markup.tag_count_label.total", "{count, plural, one {1 tagg} other {{count, number} taggar}}");
+   P ("label.markup.tag_count_label.links", "{count, plural, one {1 länk} other {{count, number} länkar}}");
+   P ("label.markup.tag_count_label.media",
+      "{count, plural, one {1 mediaelement} other {{count, number} "
+      & "mediaelement}}");
+   P ("label.markup.tag_count_label.forms",
+      "{count, plural, one {1 formulärkontroll} other {{count, number} "
+      & "formulärkontroller}}");
+   P ("label.markup.document_outline_label.headings",
+      "{count, plural, one {1 rubrik} other {{count, number} rubriker}}");
+   P ("label.markup.document_outline_label.landmarks",
+      "{count, plural, one {1 landmärke} other {{count, number} "
+      & "landmärken}}");
+   P ("label.markup.document_outline_label.forms",
+      "{count, plural, one {1 formulär} other {{count, number} formulär}}");
+   P ("label.markup.document_outline_label.media",
+      "{count, plural, one {1 mediaelement} other {{count, number} "
+      & "mediaelement}}");
+   P ("label.markup.table_navigation_label",
+      "{caption} rad {row, number} av {rows, number}, kolumn {column, number} "
+      & "av {columns, number}");
+   P ("label.secrets.secret_count_label.total",
+      "{count, plural, one {1 hemlighet} other {{count, number} hemligheter}}");
+   P ("label.secrets.secret_count_label.masked", "{count, number} maskerade");
+   P ("label.secrets.secret_count_label.unset", "{count, number} ej angivna");
+   P ("label.secrets.secret_count_label.fingerprints",
+      "{count, plural, one {1 fingeravtryck} other {{count, number} "
+      & "fingeravtryck}}");
+   P ("label.schema.type_mismatch_label",
+      "fältet {field_name} förväntade {expected, select, string_field "
+      & "{sträng} integer_field {heltal} decimal_field {decimaltal} "
+      & "boolean_field {booleskt värde} date_field {datum} date_time_field "
+      & "{tidpunkt} object_field {objekt} array_field {array} enum_field "
+      & "{uppräkning} binary_field {binärt värde} null_field {null} "
+      & "any_field {valfritt värde} other {okänt}}, fick {actual, select, "
+      & "string_field {sträng} integer_field {heltal} decimal_field "
+      & "{decimaltal} boolean_field {booleskt värde} date_field {datum} "
+      & "date_time_field {tidpunkt} object_field {objekt} array_field {array} "
+      & "enum_field {uppräkning} binary_field {binärt värde} null_field "
+      & "{null} any_field {valfritt värde} other {okänt}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {1 blockerande "
+      & "problem} other {{blocking, number} blockerande problem}}} blocking "
+      & "{{base}, {blocking, plural, one {1 blockerande problem} other "
+      & "{{blocking, number} blockerande problem}}} only {endast {base}} other "
+      & "{{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {målintervall {low} till {high}} "
+      & "other {målfönster {low} till {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} inom förväntat intervall} below "
+      & "{{value} under förväntat intervall} other {{value} över förväntat "
+      & "intervall}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} vid kritisk tröskel} warning "
+      & "{{value} vid varningströskel} other {{value} inom normalintervallet}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {inte överskriden} other {överskriden med "
+      & "{difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {vid målet} below {{difference} under målet} "
+      & "other {{difference} över målet}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {gränsen överskriden} near {nära gränsen, "
+      & "{distance} kvar} other {{distance} från gränsen}}");
+   P ("label.thresholds.threshold_summary_label.none", "inga mätvärden");
+   P ("label.thresholds.threshold_summary_label.normal", "{count, number} normala");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {1 varning} other {{count, number} varningar}}");
+   P ("label.thresholds.threshold_summary_label.critical", "{count, number} kritiska");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {1 överskridning} other {{count, number} "
+      & "överskridningar}}");
+   P ("label.thresholds.target_window_label", "mål {target} ± {tolerance}");
+   P ("label.thresholds.tolerance_label", "tolerans {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} av gränsen");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {gränsen överskriden med {amount}} other "
+      & "{{amount} kvar}}");
+   P ("label.thresholds.budget_used_label", "{used} använt av {budget}");
+   P ("label.workflows.step_label", "steg {current, number} av {total, number}: {name}");
+   P ("label.workflows.milestone_label", "{current, number} av {total, number} milstolpar uppnådda: {name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {inga arbetsflödesobjekt} half {halvvägs genom "
+      & "arbetsflödet} other {{completed, number} av {total, number} klara}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {plats {position, number} i kön} other {plats "
+      & "{position, number} av {total, number} i kön}}");
+   P ("label.changes.change_set_label.none", "inga ändringar");
+   P ("label.changes.change_set_label.added", "{count, number} tillagda");
+   P ("label.changes.change_set_label.removed", "{count, number} borttagna");
+   P ("label.changes.change_set_label.modified", "{count, number} ändrade");
+   P ("label.changes.change_set_label.unchanged", "{count, number} oförändrade");
+   P ("label.changes.sync_change_label.none", "inga synkroniseringsändringar");
+   P ("label.changes.sync_change_label.uploaded", "{count, number} uppladdade");
+   P ("label.changes.sync_change_label.downloaded", "{count, number} nedladdade");
+   P ("label.changes.sync_change_label.deleted", "{count, number} raderade");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {1 konflikt} other {{count, number} konflikter}}");
+   P ("label.changes.net_change_label",
+      "{state, select, none {ingen nettoförändring} up {netto +{count, "
+      & "plural, one {1 objekt} other {{count, number} objekt}}} other {netto "
+      & "-{count, plural, one {1 objekt} other {{count, number} objekt}}}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {inga ändringar att granska} all {alla "
+      & "ändringar granskade} other {{reviewed, number} av {total, number} "
+      & "ändringar granskade}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} oförändrat på {new_value}} up "
+      & "{{field_name} ökade från {old_value} till {new_value}} other "
+      & "{{field_name} minskade från {old_value} till {new_value}}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {inga rader kan väljas} none {inga rader "
+      & "markerade} all {{total, plural, one {1 rad} other {alla {total, "
+      & "number} rader}} markerade} other {{selected, number} av {total, "
+      & "plural, one {1 rad} other {{total, number} rader}} markerade}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {inga sidor} other {{pages, plural, =0 {inga sidor} "
+      & "other {{rows, plural, =0 {sida {page, number} av {pages, number}} one "
+      & "{sida {page, number} av {pages, number}, 1 rad} other {sida {page, "
+      & "number} av {pages, number}, {rows, number} rader}}}}}}");
 end Labels_2;

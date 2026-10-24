@@ -564,14 +564,14 @@ package body Humanize.Tests.Numbers is
       AUnit.Assertions.Assert
         (Distribution.Status = Ok
          and then Support.Text (Distribution) =
-           "3 observations, min 1.00000000000000E+01 ms, median "
-           & "2.00000000000000E+01 ms, max 3.00000000000000E+01 ms",
+           "3 observations, min 10 ms, median "
+           & "20 ms, max 30 ms",
          "distribution summary");
       AUnit.Assertions.Assert
         (Percentiles.Status = Ok
          and then Support.Text (Percentiles) =
-           "p50 4.20000000000000E+01 ms, p95 "
-           & "1.20000000000000E+02 ms, p99 3.00000000000000E+02 ms",
+           "p50 42 ms, p95 "
+           & "120 ms, p99 300 ms",
          "percentile summary");
       AUnit.Assertions.Assert
         (Outliers.Status = Ok
@@ -581,7 +581,7 @@ package body Humanize.Tests.Numbers is
       AUnit.Assertions.Assert
         (Shape.Status = Ok
          and then Support.Text (Shape) =
-           "right-skewed distribution, median 2.00000000000000E+01 ms",
+           "right-skewed distribution, median 20 ms",
          "distribution shape summary");
       AUnit.Assertions.Assert
         (Shape_Metadata.Kind = Right_Skewed_Shape
@@ -590,8 +590,8 @@ package body Humanize.Tests.Numbers is
       AUnit.Assertions.Assert
         (Shape_Metadata_Label_Result.Status = Ok
          and then Support.Text (Shape_Metadata_Label_Result) =
-           "shape=right-skewed count=100 spread=3.00000000000000E+01 "
-           & "iqr=4.00000000000000E+00 outliers=0 confidence=strong",
+           "shape=right-skewed count=100 spread=30 "
+           & "iqr=4 outliers=0 confidence=strong",
          "distribution shape metadata label");
       Distribution_Summary_Label_Into
         (3, 10.0, 20.0, 30.0, Buffer, Written, Code, "ms");

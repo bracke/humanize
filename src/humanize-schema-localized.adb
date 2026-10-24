@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Schema.Localized is
@@ -25,9 +26,9 @@ package body Humanize.Schema.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
+      Selection := Sel.With_Arg (Selection, "count_known", Lower (Boolean'Image (Count_Known)));
       Selection := Sel.With_Arg (Selection, "element_type", Lower (Field_Type'Image (Element_Type)));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
-      Selection := Sel.With_Arg (Selection, "count_known", Lower (Boolean'Image (Count_Known)));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Array_Shape_Label;
 
@@ -181,9 +182,9 @@ package body Humanize.Schema.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "fields", Long_Long_Integer (Fields));
       Selection := Sel.With_Arg (Selection, "required", Long_Long_Integer (Required));
       Selection := Sel.With_Arg (Selection, "optional", Long_Long_Integer (Optional));
+      Selection := Sel.With_Arg (Selection, "fields", Long_Long_Integer (Fields));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Object_Shape_Label;
 
@@ -223,6 +224,47 @@ package body Humanize.Schema.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Shape_Label;
 
+   function Type_Mismatch_Label
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Expected   : Field_Type;
+       Actual     : Field_Type)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Schema.Type_Mismatch_Label (Field_Name => Field_Name, Expected => Expected, Actual => Actual);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.schema.type_mismatch_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "field_name", Humanize.Bounded_Text.Clean (Field_Name));
+      Selection := Sel.With_Arg (Selection, "expected", Lower (Field_Type'Image (Expected)));
+      Selection := Sel.With_Arg (Selection, "actual", Lower (Field_Type'Image (Actual)));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Type_Mismatch_Label;
+
+   function Type_Mismatch_Label
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Expected   : Field_Type;
+       Actual     : Field_Type;
+       Options    : Schema_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Schema.Type_Mismatch_Label
+          (Field_Name => Field_Name,
+           Expected => Expected,
+           Actual => Actual,
+           Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Schema.Type_Mismatch_Label (Field_Name => Field_Name, Expected => Expected, Actual => Actual);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Type_Mismatch_Label (Context, Field_Name =>
+        Field_Name, Expected => Expected, Actual => Actual));
+   end Type_Mismatch_Label;
+
    function Unknown_Field_Label
       (Context : Humanize.Contexts.Context;
        Name    : String)
@@ -250,7 +292,7 @@ package body Humanize.Schema.Localized is
    is
    begin
       Humanize.Bounded_Text.Copy_Text
-        (Array_Shape_Label (Context, Element_Type, Count, Count_Known),
+        (Array_Shape_Label (Context, Element_Type => Element_Type, Count => Count, Count_Known => Count_Known),
          Target, Written, Status);
    end Array_Shape_Label_Into;
 
@@ -263,7 +305,9 @@ package body Humanize.Schema.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Constraint_Label (Context, Name, Value), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Constraint_Label (Context, Name => Name, Value => Value),
+         Target, Written, Status);
    end Constraint_Label_Into;
 
    procedure Default_Value_Label_Into
@@ -275,7 +319,9 @@ package body Humanize.Schema.Localized is
        Status     : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Default_Value_Label (Context, Field_Name, Value), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Default_Value_Label (Context, Field_Name => Field_Name, Value => Value),
+         Target, Written, Status);
    end Default_Value_Label_Into;
 
    procedure Deprecated_Field_Label_Into
@@ -287,7 +333,9 @@ package body Humanize.Schema.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Deprecated_Field_Label (Context, Name, Replacement), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Deprecated_Field_Label (Context, Name => Name, Replacement => Replacement),
+         Target, Written, Status);
    end Deprecated_Field_Label_Into;
 
    procedure Enum_Options_Label_Into
@@ -298,7 +346,7 @@ package body Humanize.Schema.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Enum_Options_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Enum_Options_Label (Context, Count => Count), Target, Written, Status);
    end Enum_Options_Label_Into;
 
    procedure Example_Value_Label_Into
@@ -310,7 +358,9 @@ package body Humanize.Schema.Localized is
        Status     : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Example_Value_Label (Context, Field_Name, Value), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Example_Value_Label (Context, Field_Name => Field_Name, Value => Value),
+         Target, Written, Status);
    end Example_Value_Label_Into;
 
    procedure Field_State_Label_Into
@@ -321,7 +371,7 @@ package body Humanize.Schema.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Field_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Field_State_Label (Context, State => State), Target, Written, Status);
    end Field_State_Label_Into;
 
    procedure Field_Type_Label_Into
@@ -332,7 +382,7 @@ package body Humanize.Schema.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Field_Type_Label (Context, Kind), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Field_Type_Label (Context, Kind => Kind), Target, Written, Status);
    end Field_Type_Label_Into;
 
    procedure Missing_Required_Label_Into
@@ -343,7 +393,7 @@ package body Humanize.Schema.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Missing_Required_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Missing_Required_Label (Context, Count => Count), Target, Written, Status);
    end Missing_Required_Label_Into;
 
    procedure Object_Shape_Label_Into
@@ -357,7 +407,7 @@ package body Humanize.Schema.Localized is
    is
    begin
       Humanize.Bounded_Text.Copy_Text
-        (Object_Shape_Label (Context, Fields, Required, Optional),
+        (Object_Shape_Label (Context, Fields => Fields, Required => Required, Optional => Optional),
          Target, Written, Status);
    end Object_Shape_Label_Into;
 
@@ -370,7 +420,9 @@ package body Humanize.Schema.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Schema_Source_Label (Context, Name, Version), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Schema_Source_Label (Context, Name => Name, Version => Version),
+         Target, Written, Status);
    end Schema_Source_Label_Into;
 
    procedure Shape_Label_Into
@@ -382,8 +434,40 @@ package body Humanize.Schema.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Shape_Label (Context, Kind, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Shape_Label (Context, Kind => Kind, Count => Count), Target, Written, Status);
    end Shape_Label_Into;
+
+   procedure Type_Mismatch_Label_Into
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Expected   : Field_Type;
+       Actual     : Field_Type;
+       Target     : in out String;
+       Written    : out Natural;
+       Status     : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Type_Mismatch_Label (Context, Field_Name => Field_Name, Expected => Expected, Actual => Actual),
+         Target, Written, Status);
+   end Type_Mismatch_Label_Into;
+
+   procedure Type_Mismatch_Label_Into
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Expected   : Field_Type;
+       Actual     : Field_Type;
+       Options    : Schema_Label_Options;
+       Target     : in out String;
+       Written    : out Natural;
+       Status     : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Type_Mismatch_Label (Context, Field_Name => Field_Name, Expected => Expected, Actual => Actual, Options =>
+         Options),
+         Target, Written, Status);
+   end Type_Mismatch_Label_Into;
 
    procedure Unknown_Field_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -393,7 +477,7 @@ package body Humanize.Schema.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Unknown_Field_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Unknown_Field_Label (Context, Name => Name), Target, Written, Status);
    end Unknown_Field_Label_Into;
 
 end Humanize.Schema.Localized;

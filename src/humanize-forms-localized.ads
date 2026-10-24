@@ -41,6 +41,18 @@ package Humanize.Forms.Localized is
    --  @param Required As for the parent's Field_Label.
    --  @return The label in Context's locale.
 
+   function Field_Label
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       Required : Boolean;
+       Options  : Form_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Field_Label.
+   --  @param Required As for the parent's Field_Label.
+   --  @param Options As for the parent's Field_Label.
+   --  @return The label in Context's locale.
+
    function Field_State_Label
       (Context : Humanize.Contexts.Context;
        Name    : String;
@@ -49,6 +61,18 @@ package Humanize.Forms.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Field_State_Label.
    --  @param State As for the parent's Field_State_Label.
+   --  @return The label in Context's locale.
+
+   function Field_State_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Input_State;
+       Options : Form_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Field_State_Label.
+   --  @param State As for the parent's Field_State_Label.
+   --  @param Options As for the parent's Field_State_Label.
    --  @return The label in Context's locale.
 
    function Form_Error_Summary_Label
@@ -61,12 +85,34 @@ package Humanize.Forms.Localized is
    --  @param Warnings As for the parent's Form_Error_Summary_Label.
    --  @return The label in Context's locale.
 
+   function Form_Progress_Label
+      (Context   : Humanize.Contexts.Context;
+       Completed : Natural;
+       Total     : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Completed As for the parent's Form_Progress_Label.
+   --  @param Total As for the parent's Form_Progress_Label.
+   --  @return The label in Context's locale.
+
    function Form_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Form_State)
       return Humanize.Status.Text_Result;
    --  @param Context Formatting context.
    --  @param State As for the parent's Form_State_Label.
+   --  @return The label in Context's locale.
+
+   function Form_Step_Label
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Current As for the parent's Form_Step_Label.
+   --  @param Total As for the parent's Form_Step_Label.
+   --  @param Name As for the parent's Form_Step_Label.
    --  @return The label in Context's locale.
 
    function Input_State_Label
@@ -77,6 +123,38 @@ package Humanize.Forms.Localized is
    --  @param State As for the parent's Input_State_Label.
    --  @return The label in Context's locale.
 
+   function Remaining_Characters_Label
+      (Context : Humanize.Contexts.Context;
+       Used    : Natural;
+       Limit   : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Used As for the parent's Remaining_Characters_Label.
+   --  @param Limit As for the parent's Remaining_Characters_Label.
+   --  @return The label in Context's locale.
+
+   function Required_Fields_Label
+      (Context : Humanize.Contexts.Context;
+       Missing : Natural;
+       Total   : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Missing As for the parent's Required_Fields_Label.
+   --  @param Total As for the parent's Required_Fields_Label.
+   --  @return The label in Context's locale.
+
+   function Section_Progress_Label
+      (Context   : Humanize.Contexts.Context;
+       Name      : String;
+       Completed : Natural;
+       Total     : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Section_Progress_Label.
+   --  @param Completed As for the parent's Section_Progress_Label.
+   --  @param Total As for the parent's Section_Progress_Label.
+   --  @return The label in Context's locale.
+
    function Submission_Label
       (Context : Humanize.Contexts.Context;
        State   : Form_State;
@@ -85,6 +163,18 @@ package Humanize.Forms.Localized is
    --  @param Context Formatting context.
    --  @param State As for the parent's Submission_Label.
    --  @param Errors As for the parent's Submission_Label.
+   --  @return The label in Context's locale.
+
+   function Submission_Label
+      (Context : Humanize.Contexts.Context;
+       State   : Form_State;
+       Errors  : Natural;
+       Options : Form_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param State As for the parent's Submission_Label.
+   --  @param Errors As for the parent's Submission_Label.
+   --  @param Options As for the parent's Submission_Label.
    --  @return The label in Context's locale.
 
    function Unsaved_Changes_Label
@@ -147,6 +237,22 @@ package Humanize.Forms.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Field_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       Required : Boolean;
+       Options  : Form_Label_Options;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Field_Label.
+   --  @param Required As for the parent's Field_Label.
+   --  @param Options As for the parent's Field_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Field_State_Label_Into
       (Context : Humanize.Contexts.Context;
        Name    : String;
@@ -157,6 +263,22 @@ package Humanize.Forms.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Field_State_Label.
    --  @param State As for the parent's Field_State_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Field_State_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Input_State;
+       Options : Form_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Field_State_Label.
+   --  @param State As for the parent's Field_State_Label.
+   --  @param Options As for the parent's Field_State_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -175,6 +297,20 @@ package Humanize.Forms.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Form_Progress_Label_Into
+      (Context   : Humanize.Contexts.Context;
+       Completed : Natural;
+       Total     : Natural;
+       Target    : in out String;
+       Written   : out Natural;
+       Status    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Completed As for the parent's Form_Progress_Label.
+   --  @param Total As for the parent's Form_Progress_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Form_State_Label_Into
       (Context : Humanize.Contexts.Context;
        State   : Form_State;
@@ -183,6 +319,22 @@ package Humanize.Forms.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param State As for the parent's Form_State_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Form_Step_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Current As for the parent's Form_Step_Label.
+   --  @param Total As for the parent's Form_Step_Label.
+   --  @param Name As for the parent's Form_Step_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -199,6 +351,50 @@ package Humanize.Forms.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Remaining_Characters_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Used    : Natural;
+       Limit   : Natural;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Used As for the parent's Remaining_Characters_Label.
+   --  @param Limit As for the parent's Remaining_Characters_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Required_Fields_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Missing : Natural;
+       Total   : Natural;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Missing As for the parent's Required_Fields_Label.
+   --  @param Total As for the parent's Required_Fields_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Section_Progress_Label_Into
+      (Context   : Humanize.Contexts.Context;
+       Name      : String;
+       Completed : Natural;
+       Total     : Natural;
+       Target    : in out String;
+       Written   : out Natural;
+       Status    : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Section_Progress_Label.
+   --  @param Completed As for the parent's Section_Progress_Label.
+   --  @param Total As for the parent's Section_Progress_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Submission_Label_Into
       (Context : Humanize.Contexts.Context;
        State   : Form_State;
@@ -209,6 +405,22 @@ package Humanize.Forms.Localized is
    --  @param Context Formatting context.
    --  @param State As for the parent's Submission_Label.
    --  @param Errors As for the parent's Submission_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Submission_Label_Into
+      (Context : Humanize.Contexts.Context;
+       State   : Form_State;
+       Errors  : Natural;
+       Options : Form_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param State As for the parent's Submission_Label.
+   --  @param Errors As for the parent's Submission_Label.
+   --  @param Options As for the parent's Submission_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

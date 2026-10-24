@@ -557,4 +557,143 @@ begin
       & "{jóváhagyásra vár} blocked_state {blokkolva} completed_state "
       & "{befejeződött} failed_state {sikertelen} cancelled_state "
       & "{megszakítva} skipped_state {kihagyva} other {szüneteltetve}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {átlátszó} mostly_transparent "
+      & "{többnyire átlátszó} translucent {áttetsző} mostly_opaque "
+      & "{többnyire átlátszatlan} other {átlátszatlan}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {nincs megfigyelés} other {{count, number} "
+      & "megfigyelés, min. {minimum} {unit}, medián {median} {unit}, max. "
+      & "{maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {nincs megfigyelés} other "
+      & "{0 kiugró érték {total, number} megfigyelésből}}} one {1 kiugró "
+      & "érték {total, number} megfigyelésből} other {{outliers, number} "
+      & "kiugró érték {total, number} megfigyelésből}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {{count, number} {unit} a kapacitás felett} "
+      & "other {{count, number}/{total, number} {unit} maradt}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {kvóta túllépve {count, number} {unit} "
+      & "értékkel ({percent} felhasználva)} near {kvóta a korlát "
+      & "közelében: {count, number} {unit} maradt ({percent} felhasználva)} "
+      & "other {kvóta elérhető: {count, number} {unit} maradt ({percent} "
+      & "felhasználva)}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {gyorsítótár-találati arány nem érhető el: "
+      & "nincs kérés} other {gyorsítótár-találati arány {percent}: "
+      & "{hits, number} találat, {misses, number} tévesztés}}");
+   P ("label.markup.attribute_count_label.total",
+      "{count, plural, one {1 attribútum} other {{count, number} "
+      & "attribútum}}");
+   P ("label.markup.attribute_count_label.data",
+      "{count, plural, one {1 data-attribútum} other {{count, number} "
+      & "data-attribútum}}");
+   P ("label.markup.attribute_count_label.aria",
+      "{count, plural, one {1 ARIA-attribútum} other {{count, number} "
+      & "ARIA-attribútum}}");
+   P ("label.markup.attribute_count_label.events",
+      "{count, plural, one {1 eseménykezelő} other {{count, number} "
+      & "eseménykezelő}}");
+   P ("label.markup.heading_label", "{level, number}. szintű címsor");
+   P ("label.markup.tag_count_label.total", "{count, plural, one {1 címke} other {{count, number} címke}}");
+   P ("label.markup.tag_count_label.links",
+      "{count, plural, one {1 hivatkozás} other {{count, number} "
+      & "hivatkozás}}");
+   P ("label.markup.tag_count_label.media", "{count, plural, one {1 médiaelem} other {{count, number} médiaelem}}");
+   P ("label.markup.tag_count_label.forms",
+      "{count, plural, one {1 űrlapvezérlő} other {{count, number} "
+      & "űrlapvezérlő}}");
+   P ("label.markup.document_outline_label.headings",
+      "{count, plural, one {1 címsor} other {{count, number} címsor}}");
+   P ("label.markup.document_outline_label.landmarks",
+      "{count, plural, one {1 tájékozódási pont} other {{count, number} "
+      & "tájékozódási pont}}");
+   P ("label.markup.document_outline_label.forms", "{count, plural, one {1 űrlap} other {{count, number} űrlap}}");
+   P ("label.markup.document_outline_label.media",
+      "{count, plural, one {1 médiaelem} other {{count, number} médiaelem}}");
+   P ("label.markup.table_navigation_label",
+      "{caption}, sor: {row, number}/{rows, number}, oszlop: {column, "
+      & "number}/{columns, number}");
+   P ("label.secrets.secret_count_label.total", "{count, plural, one {1 titok} other {{count, number} titok}}");
+   P ("label.secrets.secret_count_label.masked", "{count, number} maszkolva");
+   P ("label.secrets.secret_count_label.unset", "{count, number} nincs beállítva");
+   P ("label.secrets.secret_count_label.fingerprints",
+      "{count, plural, one {1 ujjlenyomat} other {{count, number} "
+      & "ujjlenyomat}}");
+   P ("label.schema.type_mismatch_label",
+      "{field_name} mező: várt {expected, select, string_field "
+      & "{karakterlánc} integer_field {egész szám} decimal_field "
+      & "{decimális} boolean_field {logikai} date_field {dátum} "
+      & "date_time_field {dátum-idő} object_field {objektum} array_field "
+      & "{tömb} enum_field {felsorolás} binary_field {bináris} null_field "
+      & "{null} any_field {bármely} other {ismeretlen}}, kapott {actual, "
+      & "select, string_field {karakterlánc} integer_field {egész szám} "
+      & "decimal_field {decimális} boolean_field {logikai} date_field {dátum} "
+      & "date_time_field {dátum-idő} object_field {objektum} array_field "
+      & "{tömb} enum_field {felsorolás} binary_field {bináris} null_field "
+      & "{null} any_field {bármely} other {ismeretlen}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {1 blokkoló "
+      & "probléma} other {{blocking, number} blokkoló probléma}}} blocking "
+      & "{{base}, {blocking, plural, one {1 blokkoló probléma} other "
+      & "{{blocking, number} blokkoló probléma}}} only {csak {base}} other "
+      & "{{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {céltartomány: {low} – "
+      & "{high}} other {célablak: {low} – {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} a várt tartományon belül} below "
+      & "{{value} a várt tartomány alatt} other {{value} a várt tartomány "
+      & "felett}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} a kritikus küszöbön} warning "
+      & "{{value} a figyelmeztetési küszöbön} other {{value} a normál "
+      & "tartományban}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {nincs túllépés} other {túllépés: "
+      & "{difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {a célértéken} below {{difference} a cél alatt} "
+      & "other {{difference} a cél felett}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {korlát túllépve} near {korlát "
+      & "közelében, {distance} maradt} other {{distance} a korláttól}}");
+   P ("label.thresholds.threshold_summary_label.none", "nincs mérőszám");
+   P ("label.thresholds.threshold_summary_label.normal", "{count, number} normál");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {1 figyelmeztetés} other {{count, number} "
+      & "figyelmeztetés}}");
+   P ("label.thresholds.threshold_summary_label.critical", "{count, number} kritikus");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {1 túllépés} other {{count, number} "
+      & "túllépés}}");
+   P ("label.thresholds.target_window_label", "cél: {target} ± {tolerance}");
+   P ("label.thresholds.tolerance_label", "tűrés: {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "a korlát {percent}-a");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {korlát túllépve: {amount}} other "
+      & "{{amount} maradt}}");
+   P ("label.thresholds.budget_used_label", "{used} felhasználva ennyiből: {budget}");
+   P ("label.workflows.step_label", "{current, number}/{total, number}. lépés: {name}");
+   P ("label.workflows.milestone_label", "{current, number}/{total, number} mérföldkő teljesítve: {name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {nincs munkafolyamat-elem} half {a munkafolyamat "
+      & "félúton} other {{completed, number}/{total, number} kész}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {hely a sorban: {position, number}} other {hely a "
+      & "sorban: {position, number}/{total, number}}}");
+   P ("label.changes.change_set_label.none", "nincs változás");
+   P ("label.changes.change_set_label.added", "{count, number} hozzáadva");
+   P ("label.changes.change_set_label.removed", "{count, number} eltávolítva");
+   P ("label.changes.change_set_label.modified", "{count, number} módosítva");
+   P ("label.changes.change_set_label.unchanged", "{count, number} változatlan");
+   P ("label.changes.sync_change_label.none", "nincs szinkronizálási változás");
+   P ("label.changes.sync_change_label.uploaded", "{count, number} feltöltve");
+   P ("label.changes.sync_change_label.downloaded", "{count, number} letöltve");
+   P ("label.changes.sync_change_label.deleted", "{count, number} törölve");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {1 ütközés} other {{count, number} ütközés}}");
 end Labels_2;

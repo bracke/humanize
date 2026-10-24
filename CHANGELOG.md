@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+* More localized labels: the rest of the domain families' labels (counts,
+  states, thresholds, resources, forms, tables, …), their options overloads
+  (the English "[surface severity tone]" prefix kept around the localized
+  label), and new `Localized` twins for colour names, contrast, models and
+  palettes, number statistics and text metrics ("50 % durchscheinend",
+  "weniger als 1 Minute Lesezeit").
+  Labels whose wording comes from comparisons or counts the code computes get
+  derived arguments; summaries of optional counts join localized parts through
+  `label.parts`; colour and metrics labels are found by the shape of their
+  English text, falling back to it for any unknown shape.
+  `Parsing.Phrases.Phrase_Arguments` lists a phrase's arguments; the phrase
+  review data shows each choice of a label's select.
+
+* Statistics, numeric change and abbreviated unit labels write plain decimals
+  ("min 1.5 ms"), not the exponent form ("1.50000000000000E+00 ms").
+
 * Domain labels speak the locale: 320 labels across thirty families
   (payments, builds, deployments, comments, tasks, schema, search, markup and
   more) have `Humanize.<Family>.Localized` twins taking a context

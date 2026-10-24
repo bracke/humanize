@@ -35,7 +35,7 @@ package body Humanize.Endpoints.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Host_Kind_Label (Context, Kind), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Host_Kind_Label (Context, Kind => Kind), Target, Written, Status);
    end Host_Kind_Label_Into;
 
 end Humanize.Endpoints.Localized;

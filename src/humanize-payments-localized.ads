@@ -65,6 +65,18 @@ package Humanize.Payments.Localized is
    --  @param State As for the parent's Invoice_Label.
    --  @return The label in Context's locale.
 
+   function Invoice_Label
+      (Context : Humanize.Contexts.Context;
+       Number  : String;
+       State   : Invoice_State;
+       Options : Payment_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Number As for the parent's Invoice_Label.
+   --  @param State As for the parent's Invoice_Label.
+   --  @param Options As for the parent's Invoice_Label.
+   --  @return The label in Context's locale.
+
    function Invoice_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Invoice_State)
@@ -109,6 +121,18 @@ package Humanize.Payments.Localized is
    --  @param Context Formatting context.
    --  @param Amount_Text As for the parent's Payment_Label.
    --  @param State As for the parent's Payment_Label.
+   --  @return The label in Context's locale.
+
+   function Payment_Label
+      (Context     : Humanize.Contexts.Context;
+       Amount_Text : String;
+       State       : Payment_State;
+       Options     : Payment_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Amount_Text As for the parent's Payment_Label.
+   --  @param State As for the parent's Payment_Label.
+   --  @param Options As for the parent's Payment_Label.
    --  @return The label in Context's locale.
 
    function Payment_Link_Label
@@ -265,6 +289,22 @@ package Humanize.Payments.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Invoice_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Number  : String;
+       State   : Invoice_State;
+       Options : Payment_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Number As for the parent's Invoice_Label.
+   --  @param State As for the parent's Invoice_Label.
+   --  @param Options As for the parent's Invoice_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Invoice_State_Label_Into
       (Context : Humanize.Contexts.Context;
        State   : Invoice_State;
@@ -327,6 +367,22 @@ package Humanize.Payments.Localized is
    --  @param Context Formatting context.
    --  @param Amount_Text As for the parent's Payment_Label.
    --  @param State As for the parent's Payment_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Payment_Label_Into
+      (Context     : Humanize.Contexts.Context;
+       Amount_Text : String;
+       State       : Payment_State;
+       Options     : Payment_Label_Options;
+       Target      : in out String;
+       Written     : out Natural;
+       Status      : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Amount_Text As for the parent's Payment_Label.
+   --  @param State As for the parent's Payment_Label.
+   --  @param Options As for the parent's Payment_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

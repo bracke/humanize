@@ -378,4 +378,323 @@ begin
       & "{等待批准} blocked_state {受阻} completed_state {已完成} "
       & "failed_state {失败} cancelled_state {已取消} skipped_state "
       & "{已跳过} other {已暂停}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {透明} mostly_transparent "
+      & "{大部分透明} translucent {半透明} mostly_opaque "
+      & "{大部分不透明} other {不透明}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {没有观测值} other {{count, "
+      & "number}个观测值，最小值{minimum} {unit}，中位数{median} "
+      & "{unit}，最大值{maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}，p95 {p95} {unit}，p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {没有观测值} other "
+      & "{{total, number}个观测值中有0个离群值}}} other {{total, "
+      & "number}个观测值中有{outliers, number}个离群值}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {超出容量{count, number} {unit}} other "
+      & "{剩余{count, number}/{total, number} {unit}}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {配额超出{count, number} "
+      & "{unit}（已用{percent}）} near {配额接近上限：剩余{count, "
+      & "number} {unit}（已用{percent}）} other "
+      & "{配额可用：剩余{count, number} {unit}（已用{percent}）}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {缓存命中率不可用：没有请求} other "
+      & "{缓存命中率{percent}：命中{hits, "
+      & "number}次，未命中{misses, number}次}}");
+   P ("label.markup.attribute_count_label.total", "{count, number}个属性");
+   P ("label.markup.attribute_count_label.data", "{count, number}个data属性");
+   P ("label.markup.attribute_count_label.aria", "{count, number}个ARIA属性");
+   P ("label.markup.attribute_count_label.events", "{count, number}个事件处理程序");
+   P ("label.markup.heading_label", "{level, number}级标题");
+   P ("label.markup.tag_count_label.total", "{count, number}个标签");
+   P ("label.markup.tag_count_label.links", "{count, number}个链接");
+   P ("label.markup.tag_count_label.media", "{count, number}个媒体元素");
+   P ("label.markup.tag_count_label.forms", "{count, number}个表单控件");
+   P ("label.markup.document_outline_label.headings", "{count, number}个标题");
+   P ("label.markup.document_outline_label.landmarks", "{count, number}个地标");
+   P ("label.markup.document_outline_label.forms", "{count, number}个表单");
+   P ("label.markup.document_outline_label.media", "{count, number}个媒体元素");
+   P ("label.markup.table_navigation_label",
+      "{caption}，第{row, number}/{rows, number}行，第{column, "
+      & "number}/{columns, number}列");
+   P ("label.secrets.secret_count_label.total", "{count, number}项机密");
+   P ("label.secrets.secret_count_label.masked", "{count, number}项已掩码");
+   P ("label.secrets.secret_count_label.unset", "{count, number}项未设置");
+   P ("label.secrets.secret_count_label.fingerprints", "{count, number}个指纹");
+   P ("label.schema.type_mismatch_label",
+      "字段{field_name}应为{expected, select, string_field {字符串} "
+      & "integer_field {整数} decimal_field {小数} boolean_field "
+      & "{布尔值} date_field {日期} date_time_field {日期时间} "
+      & "object_field {对象} array_field {数组} enum_field {枚举} "
+      & "binary_field {二进制} null_field {null} any_field {任意值} other "
+      & "{未知}}，实际为{actual, select, string_field {字符串} "
+      & "integer_field {整数} decimal_field {小数} boolean_field "
+      & "{布尔值} date_field {日期} date_time_field {日期时间} "
+      & "object_field {对象} array_field {数组} enum_field {枚举} "
+      & "binary_field {二进制} null_field {null} any_field {任意值} other "
+      & "{未知}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, number}个阻塞问题} "
+      & "blocking {{base}，{blocking, number}个阻塞问题} only {仅{base}} "
+      & "other {{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {目标范围{low}至{high}} "
+      & "other {目标区间{low}至{high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value}，在预期范围内} below "
+      & "{{value}，低于预期范围} other {{value}，高于预期范围}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value}，达到严重阈值} warning "
+      & "{{value}，达到警告阈值} other {{value}，在正常范围内}}");
+   P ("label.thresholds.breach_label", "{state, select, ok {未突破} other {突破{difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {达到目标} below {低于目标{difference}} "
+      & "other {高于目标{difference}}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {已突破上限} near "
+      & "{接近上限，剩余{distance}} other {距上限{distance}}}");
+   P ("label.thresholds.threshold_summary_label.none", "没有指标");
+   P ("label.thresholds.threshold_summary_label.normal", "{count, number}个正常");
+   P ("label.thresholds.threshold_summary_label.warnings", "{count, number}个警告");
+   P ("label.thresholds.threshold_summary_label.critical", "{count, number}个严重");
+   P ("label.thresholds.threshold_summary_label.breaches", "{count, number}次突破");
+   P ("label.thresholds.target_window_label", "目标{target} ±{tolerance}");
+   P ("label.thresholds.tolerance_label", "容差{tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "上限的{percent}");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {超出上限{amount}} other "
+      & "{剩余{amount}}}");
+   P ("label.thresholds.budget_used_label", "已用{used}，预算{budget}");
+   P ("label.workflows.step_label", "第{current, number}/{total, number}步：{name}");
+   P ("label.workflows.milestone_label", "已完成{current, number}/{total, number}个里程碑：{name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {没有工作流项目} half "
+      & "{工作流已完成一半} other {已完成{completed, number}/{total, "
+      & "number}}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {队列位置{position, number}} other "
+      & "{队列位置{position, number}/{total, number}}}");
+   P ("label.changes.change_set_label.none", "没有更改");
+   P ("label.changes.change_set_label.added", "添加{count, number}项");
+   P ("label.changes.change_set_label.removed", "移除{count, number}项");
+   P ("label.changes.change_set_label.modified", "更改{count, number}项");
+   P ("label.changes.change_set_label.unchanged", "{count, number}项未变");
+   P ("label.changes.sync_change_label.none", "没有同步更改");
+   P ("label.changes.sync_change_label.uploaded", "上传{count, number}项");
+   P ("label.changes.sync_change_label.downloaded", "下载{count, number}项");
+   P ("label.changes.sync_change_label.deleted", "删除{count, number}项");
+   P ("label.changes.sync_change_label.conflicts", "{count, number}个冲突");
+   P ("label.changes.net_change_label",
+      "{state, select, none {没有净变化} up {净增{count, number}项} "
+      & "other {净减{count, number}项}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {没有要审阅的更改} all "
+      & "{所有更改均已审阅} other {已审阅{reviewed, number}/{total, "
+      & "number}项更改}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name}未变，仍为{new_value}} up "
+      & "{{field_name}从{old_value}增加到{new_value}} other "
+      & "{{field_name}从{old_value}减少到{new_value}}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {没有可选择的行} none "
+      & "{未选择任何行} all {已选择全部{total, number}行} other "
+      & "{已选择{selected, number}/{total, number}行}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {没有页面} other {{pages, plural, =0 "
+      & "{没有页面} other {{rows, plural, =0 {第{page, number}/{pages, "
+      & "number}页} other {第{page, number}/{pages, number}页，{rows, "
+      & "number}行}}}}}}");
+   P ("label.tables.filter_label",
+      "{state, select, no_rows {没有行} none {没有匹配的行} all "
+      & "{显示全部{total, number}行} other {显示{visible, "
+      & "number}/{total, number}行}}");
+   P ("label.tables.row_range_label",
+      "{state, select, none {没有行} single {第{first_row, "
+      & "number}行，共{total, number}行} other {第{first_row, "
+      & "number}-{last_row, number}行，共{total, number}行}}");
+   P ("label.forms.remaining_characters_label",
+      "{state, select, unlimited {没有字符限制} none_left "
+      & "{没有剩余字符} left {剩余{count, number}个字符} other "
+      & "{超出限制{count, number}个字符}}");
+   P ("label.forms.required_fields_label",
+      "{total, plural, =0 {没有必填字段} other {{missing, plural, =0 "
+      & "{所有必填字段均已完成} other {{total, "
+      & "number}个必填字段中缺少{missing, number}个}}}}");
+   P ("label.forms.form_progress_label",
+      "{state, select, none {没有字段} all {所有字段均已完成} "
+      & "other {已完成{completed, number}/{total, number}个字段}}");
+   P ("label.forms.section_progress_label",
+      "{state, select, none {{name}：没有字段} all "
+      & "{{name}：所有字段均已完成} other "
+      & "{{name}：已完成{completed, number}/{total, number}个字段}}");
+   P ("label.forms.form_step_label",
+      "{total, plural, =0 {没有表单步骤} =1 {第1/1步：{name}} other "
+      & "{第{current, number}/{total, number}步：{name}}}");
+   P ("label.navigation.breadcrumb_position_label",
+      "{total, plural, =0 {没有面包屑} =1 {面包屑1/1：{name}} other "
+      & "{面包屑{current, number}/{total, number}：{name}}}");
+   P ("label.navigation.tab_label",
+      "{total, plural, =0 {没有标签页} =1 {标签页1/1：{name}} other "
+      & "{标签页{current, number}/{total, number}：{name}}}");
+   P ("label.notifications.inbox_label",
+      "{total, plural, =0 {收件箱为空} other {{unread, plural, =0 "
+      & "{所有通知均已读} other {{total, number}条通知中有{unread, "
+      & "number}条未读}}}}");
+   P ("label.notifications.delivery_attempt_label", "第{attempt, number}/{max_attempts, number}次投递尝试");
+   P ("label.tasks.checklist_label",
+      "{total, plural, =0 {没有清单项目} other {已完成{done, "
+      & "number}/{total, number}项}}");
+   P ("label.attachments.upload_progress_label",
+      "{total, plural, =0 {没有上传} other {已完成{done, "
+      & "number}/{total, number}个上传}}");
+   P ("label.events.capacity_label",
+      "{capacity, plural, =0 {没有名额} other {已预订{reserved, "
+      & "number}/{capacity, number}个座位}}");
+   P ("label.events.waitlist_label",
+      "{total, plural, =0 {候补第{position, number}位} other "
+      & "{候补第{position, number}/{total, number}位}}");
+   P ("label.comparisons.multi_value_summary",
+      "{mode, select, comparison_compact {{name} 已更改{changed, "
+      & "number}/{total, number}} other {{name}：{changed, "
+      & "number}项已更改，{unchanged, number}项未变，共{total, "
+      & "number}项}}");
+   P ("label.names.color_description", "{brightness}，{saturation}的{hue}，{temperature}，{chroma}");
+   P ("label.names.descriptive_color_name",
+      "{brightness}、{chroma}、{temperature}的{base, select, pink {粉色} "
+      & "other {{hue}}}");
+   P ("label.palettes.advanced_palette_summary", "{harmony}，{mood}，{accessibility}；{roles}");
+   P ("label.groups", "{first}；{second}");
+   P ("label.parts", "{first}，{second}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
+      "当前前景色满足大号文本对比度（{v1}:{v2, number}）");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_d_n",
+      "当前前景色满足普通文本对比度（{v1}:{v2, number}）");
+   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_enhanced_text_contrast",
+      "使用{v1}以达到增强文本对比度 {v2, number}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_large_text_contrast",
+      "使用{v1}以达到大号文本对比度 {v2, number}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_normal_text_contrast",
+      "使用{v1}以达到普通文本对比度 {v2}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_large_text_contrast",
+      "使用{v1}以达到大号文本对比度 {v2}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_enhanced_text_contrast",
+      "使用{v1}以达到增强文本对比度 {v2}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_n_n",
+      "当前前景色满足大号文本对比度（{v1, number}:{v2, "
+      & "number}）");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_n_n",
+      "当前前景色满足普通文本对比度（{v1, number}:{v2, "
+      & "number}）");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_d_n",
+      "当前前景色满足增强文本对比度（{v1}:{v2, number}）");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_n_n",
+      "当前前景色满足增强文本对比度（{v1, number}:{v2, "
+      & "number}）");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_low_confusion_risk_delta_n",
+      "红色盲：混淆风险低，差值{v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.deuteranopia_moderate_confusion_risk_delta_n",
+      "绿色盲：混淆风险中等，差值{v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_moderate_confusion_risk_delta_n",
+      "蓝色盲：混淆风险中等，差值{v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_high_confusion_risk_delta_n",
+      "全色盲：混淆风险高，差值{v1, number}");
+   P ("label.models.perceptual_difference_label.cie76_delta_d_dramatic_perceptual_difference",
+      "CIE76差值{v1}，感知差异极大");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_dramatic_perceptual_difference",
+      "CIE94差值{v1}，感知差异极大");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_dramatic_perceptual_difference",
+      "CIE94（纺织）差值{v1}，感知差异极大");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_n_dramatic_perceptual_difference",
+      "CIEDE2000差值{v1, number}，感知差异极大");
+   P ("label.models.perceptual_difference_label.oklab_delta_d_large_perceptual_difference",
+      "OKLab差值{v1}，感知差异较大");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_moderate_confusion_risk_delta_n",
+      "红色盲：混淆风险中等，差值{v1, number}");
+   P ("label.models.perceptual_difference_label.cie94_delta_n_dramatic_perceptual_difference",
+      "CIE94差值{v1, number}，感知差异极大");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_d_dramatic_perceptual_difference",
+      "CIEDE2000差值{v1}，感知差异极大");
+   P ("label.models.perceptual_difference_label.oklab_delta_d_dramatic_perceptual_difference",
+      "OKLab差值{v1}，感知差异极大");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_low_confusion_risk_delta_n",
+      "全色盲：混淆风险低，差值{v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_distinct_delta_n",
+      "红色盲：可区分，差值{v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.deuteranopia_distinct_delta_n",
+      "绿色盲：可区分，差值{v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_distinct_delta_n",
+      "蓝色盲：可区分，差值{v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_distinct_delta_n",
+      "全色盲：可区分，差值{v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_moderate_confusion_risk_delta_n",
+      "全色盲：混淆风险中等，差值{v1, number}");
+   P ("label.models.perceptual_difference_label.cie76_delta_d_large_perceptual_difference",
+      "CIE76差值{v1}，感知差异较大");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_large_perceptual_difference",
+      "CIE94差值{v1}，感知差异较大");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_large_perceptual_difference",
+      "CIE94（纺织）差值{v1}，感知差异较大");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_d_large_perceptual_difference",
+      "CIEDE2000差值{v1}，感知差异较大");
+   P ("label.models.perceptual_difference_label.oklab_delta_d_noticeable_perceptual_difference",
+      "OKLab差值{v1}，感知差异明显");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_high_confusion_risk_delta_n",
+      "红色盲：混淆风险高，差值{v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_high_confusion_risk_delta_n",
+      "蓝色盲：混淆风险高，差值{v1, number}");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_noticeable_perceptual_difference",
+      "CIE94差值{v1}，感知差异明显");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_noticeable_perceptual_difference",
+      "CIE94（纺织）差值{v1}，感知差异明显");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_d_noticeable_perceptual_difference",
+      "CIEDE2000差值{v1}，感知差异明显");
+   P ("label.models.perceptual_difference_label.oklab_delta_n_noticeable_perceptual_difference",
+      "OKLab差值{v1, number}，感知差异明显");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_low_confusion_risk_delta_n",
+      "蓝色盲：混淆风险低，差值{v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.deuteranopia_low_confusion_risk_delta_n",
+      "绿色盲：混淆风险低，差值{v1, number}");
+   P ("label.models.perceptual_difference_label.oklab_delta_n_large_perceptual_difference",
+      "OKLab差值{v1, number}，感知差异较大");
+   P ("label.contrast.color_vision_deficiency_label.deuteranopia_high_confusion_risk_delta_n",
+      "绿色盲：混淆风险高，差值{v1, number}");
+   P ("label.models.perceptual_difference_label.cie76_delta_n_dramatic_perceptual_difference",
+      "CIE76差值{v1, number}，感知差异极大");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_n_dramatic_perceptual_difference",
+      "CIE94（纺织）差值{v1, number}，感知差异极大");
+   P ("label.models.perceptual_difference_label.oklab_delta_n_dramatic_perceptual_difference",
+      "OKLab差值{v1, number}，感知差异极大");
+   P ("label.models.perceptual_difference_label.cie76_delta_n_large_perceptual_difference",
+      "CIE76差值{v1, number}，感知差异较大");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_n_large_perceptual_difference",
+      "CIE94（纺织）差值{v1, number}，感知差异较大");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_n_large_perceptual_difference",
+      "CIEDE2000差值{v1, number}，感知差异较大");
+   P ("label.models.perceptual_difference_label.cie76_delta_d_noticeable_perceptual_difference",
+      "CIE76差值{v1}，感知差异明显");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_subtle_perceptual_difference",
+      "CIE94（纺织）差值{v1}，感知差异细微");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_n_noticeable_perceptual_difference",
+      "CIEDE2000差值{v1, number}，感知差异明显");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_n_noticeable_perceptual_difference",
+      "CIE94（纺织）差值{v1, number}，感知差异明显");
+   P ("label.models.perceptual_difference_label.cie76_delta_d_barely_perceptible",
+      "CIE76差值{v1}，几乎无法察觉");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_imperceptible", "CIE94差值{v1}，无法察觉");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_imperceptible",
+      "CIE94（纺织）差值{v1}，无法察觉");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_d_imperceptible",
+      "CIEDE2000差值{v1}，无法察觉");
+   P ("label.models.perceptual_difference_label.oklab_delta_d_imperceptible", "OKLab差值{v1}，无法察觉");
+   P ("label.models.perceptual_difference_label.cie94_delta_n_large_perceptual_difference",
+      "CIE94差值{v1, number}，感知差异较大");
+   P ("label.models.perceptual_difference_label.cie76_delta_n_imperceptible",
+      "CIE76差值{v1, number}，无法察觉");
+   P ("label.models.perceptual_difference_label.cie94_delta_n_imperceptible",
+      "CIE94差值{v1, number}，无法察觉");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_n_imperceptible",
+      "CIE94（纺织）差值{v1, number}，无法察觉");
 end Labels_2;

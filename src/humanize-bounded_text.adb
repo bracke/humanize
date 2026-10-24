@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
+with Humanize.Decimal_Images;
 with Humanize.Message_Keys;
 
 package body Humanize.Bounded_Text is
@@ -150,9 +151,11 @@ package body Humanize.Bounded_Text is
       return Zero_Padded (Image (Value), Width);
    end Padded_Image;
 
+   --  Plain decimal, up to six fraction digits ("1.5", "30"): never the
+   --  exponent form of Long_Float'Image.
    function Float_Image (Value : Long_Float) return String is
    begin
-      return No_Space (Long_Float'Image (Value));
+      return Humanize.Decimal_Images.Decimal_Image (Value, 6);
    end Float_Image;
 
    function Plural_Text

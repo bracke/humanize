@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Workflows.Localized is
@@ -24,8 +25,8 @@ package body Humanize.Workflows.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "approver", Humanize.Bounded_Text.Clean (Approver));
       Selection := Sel.With_Arg (Selection, "waiting", Lower (Boolean'Image (Waiting)));
+      Selection := Sel.With_Arg (Selection, "approver", Humanize.Bounded_Text.Clean (Approver));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Approval_Label;
 
@@ -42,8 +43,8 @@ package body Humanize.Workflows.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "attempt", Long_Long_Integer (Attempt));
       Selection := Sel.With_Arg (Selection, "limit", Long_Long_Integer (Limit));
+      Selection := Sel.With_Arg (Selection, "attempt", Long_Long_Integer (Attempt));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Attempt_Label;
 
@@ -97,6 +98,26 @@ package body Humanize.Workflows.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Handoff_Label;
 
+   function Milestone_Label
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "")
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Workflows.Milestone_Label (Current => Current, Total => Total, Name => Name);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.workflows.milestone_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "current", Long_Long_Integer (Current));
+      Selection := Sel.With_Arg (Selection, "total", Long_Long_Integer (Total));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Milestone_Label;
+
    function Milestone_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Milestone_State)
@@ -126,9 +147,25 @@ package body Humanize.Workflows.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "state", Lower (Milestone_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Milestone_Status_Label;
+
+   function Milestone_Status_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Milestone_State;
+       Options : Workflow_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Workflows.Milestone_Status_Label (Name => Name, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Workflows.Milestone_Status_Label (Name => Name, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Milestone_Status_Label (Context, Name => Name,
+        State => State));
    end Milestone_Status_Label;
 
    function Next_Action_Label
@@ -163,6 +200,24 @@ package body Humanize.Workflows.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Owner_Label;
 
+   function Queue_Position_Label
+      (Context  : Humanize.Contexts.Context;
+       Position : Positive;
+       Total    : Natural := 0)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Workflows.Queue_Position_Label (Position => Position, Total => Total);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.workflows.queue_position_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "total", Long_Long_Integer (Total));
+      Selection := Sel.With_Arg (Selection, "position", Long_Long_Integer (Position));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Queue_Position_Label;
+
    function Resume_Label
       (Context : Humanize.Contexts.Context;
        Name    : String := "")
@@ -178,6 +233,26 @@ package body Humanize.Workflows.Localized is
       Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Resume_Label;
+
+   function Step_Label
+      (Context : Humanize.Contexts.Context;
+       Current : Positive;
+       Total   : Positive;
+       Name    : String := "")
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Workflows.Step_Label (Current => Current, Total => Total, Name => Name);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.workflows.step_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "current", Long_Long_Integer (Current));
+      Selection := Sel.With_Arg (Selection, "total", Long_Long_Integer (Total));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Step_Label;
 
    function Step_State_Label
       (Context : Humanize.Contexts.Context;
@@ -208,9 +283,25 @@ package body Humanize.Workflows.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "state", Lower (Step_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Step_Status_Label;
+
+   function Step_Status_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Step_State;
+       Options : Workflow_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Workflows.Step_Status_Label (Name => Name, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Workflows.Step_Status_Label (Name => Name, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Step_Status_Label (Context, Name => Name, State
+        => State));
    end Step_Status_Label;
 
    function Waiting_Label
@@ -229,6 +320,26 @@ package body Humanize.Workflows.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Waiting_Label;
 
+   function Workflow_Progress_Label
+      (Context   : Humanize.Contexts.Context;
+       Completed : Natural;
+       Total     : Natural)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Workflows.Workflow_Progress_Label (Completed => Completed, Total => Total);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.workflows.workflow_progress_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "state", (if Total = 0 then "none" elsif Completed * 2 = Total then "half"
+        else "some"));
+      Selection := Sel.With_Arg (Selection, "completed", Long_Long_Integer (Completed));
+      Selection := Sel.With_Arg (Selection, "total", Long_Long_Integer (Total));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Workflow_Progress_Label;
+
    function Workflow_Result_Label
       (Context : Humanize.Contexts.Context;
        State   : Workflow_State;
@@ -245,6 +356,22 @@ package body Humanize.Workflows.Localized is
       Selection := Sel.With_Arg (Selection, "state", Lower (Workflow_State'Image (State)));
       Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Workflow_Result_Label;
+
+   function Workflow_Result_Label
+      (Context : Humanize.Contexts.Context;
+       State   : Workflow_State;
+       Options : Workflow_Label_Options;
+       Name    : String := "")
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Workflows.Workflow_Result_Label (State => State, Options => Options, Name => Name);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Workflows.Workflow_Result_Label (State => State, Name => Name);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Workflow_Result_Label (Context, State => State,
+        Name => Name));
    end Workflow_Result_Label;
 
    function Workflow_State_Label
@@ -272,7 +399,9 @@ package body Humanize.Workflows.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Approval_Label (Context, Approver, Waiting), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Approval_Label (Context, Approver => Approver, Waiting => Waiting),
+         Target, Written, Status);
    end Approval_Label_Into;
 
    procedure Attempt_Label_Into
@@ -284,7 +413,9 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Attempt_Label (Context, Attempt, Limit), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Attempt_Label (Context, Attempt => Attempt, Limit => Limit),
+         Target, Written, Status);
    end Attempt_Label_Into;
 
    procedure Blocker_Label_Into
@@ -295,7 +426,7 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Blocker_Label (Context, Reason), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Blocker_Label (Context, Reason => Reason), Target, Written, Status);
    end Blocker_Label_Into;
 
    procedure Dependency_Label_Into
@@ -306,7 +437,7 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Dependency_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Dependency_Label (Context, Count => Count), Target, Written, Status);
    end Dependency_Label_Into;
 
    procedure Handoff_Label_Into
@@ -318,8 +449,23 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Handoff_Label (Context, From, To), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Handoff_Label (Context, From => From, To => To), Target, Written, Status);
    end Handoff_Label_Into;
+
+   procedure Milestone_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Milestone_Label (Context, Current => Current, Total => Total, Name => Name),
+         Target, Written, Status);
+   end Milestone_Label_Into;
 
    procedure Milestone_State_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -329,7 +475,7 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Milestone_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Milestone_State_Label (Context, State => State), Target, Written, Status);
    end Milestone_State_Label_Into;
 
    procedure Milestone_Status_Label_Into
@@ -341,7 +487,24 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Milestone_Status_Label (Context, Name, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Milestone_Status_Label (Context, Name => Name, State => State),
+         Target, Written, Status);
+   end Milestone_Status_Label_Into;
+
+   procedure Milestone_Status_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Milestone_State;
+       Options : Workflow_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Milestone_Status_Label (Context, Name => Name, State => State, Options => Options),
+         Target, Written, Status);
    end Milestone_Status_Label_Into;
 
    procedure Next_Action_Label_Into
@@ -352,7 +515,7 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Next_Action_Label (Context, Action), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Next_Action_Label (Context, Action => Action), Target, Written, Status);
    end Next_Action_Label_Into;
 
    procedure Owner_Label_Into
@@ -363,8 +526,22 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Owner_Label (Context, Owner), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Owner_Label (Context, Owner => Owner), Target, Written, Status);
    end Owner_Label_Into;
+
+   procedure Queue_Position_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Position : Positive;
+       Total    : Natural := 0;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Queue_Position_Label (Context, Position => Position, Total => Total),
+         Target, Written, Status);
+   end Queue_Position_Label_Into;
 
    procedure Resume_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -374,8 +551,23 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Resume_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Resume_Label (Context, Name => Name), Target, Written, Status);
    end Resume_Label_Into;
+
+   procedure Step_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Current : Positive;
+       Total   : Positive;
+       Name    : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Step_Label (Context, Current => Current, Total => Total, Name => Name),
+         Target, Written, Status);
+   end Step_Label_Into;
 
    procedure Step_State_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -385,7 +577,7 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Step_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Step_State_Label (Context, State => State), Target, Written, Status);
    end Step_State_Label_Into;
 
    procedure Step_Status_Label_Into
@@ -397,7 +589,24 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Step_Status_Label (Context, Name, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Step_Status_Label (Context, Name => Name, State => State),
+         Target, Written, Status);
+   end Step_Status_Label_Into;
+
+   procedure Step_Status_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Step_State;
+       Options : Workflow_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Step_Status_Label (Context, Name => Name, State => State, Options => Options),
+         Target, Written, Status);
    end Step_Status_Label_Into;
 
    procedure Waiting_Label_Into
@@ -408,8 +617,22 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Waiting_Label (Context, Reason), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Waiting_Label (Context, Reason => Reason), Target, Written, Status);
    end Waiting_Label_Into;
+
+   procedure Workflow_Progress_Label_Into
+      (Context   : Humanize.Contexts.Context;
+       Completed : Natural;
+       Total     : Natural;
+       Target    : in out String;
+       Written   : out Natural;
+       Status    : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Workflow_Progress_Label (Context, Completed => Completed, Total => Total),
+         Target, Written, Status);
+   end Workflow_Progress_Label_Into;
 
    procedure Workflow_Result_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -420,7 +643,24 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Workflow_Result_Label (Context, State, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Workflow_Result_Label (Context, State => State, Name => Name),
+         Target, Written, Status);
+   end Workflow_Result_Label_Into;
+
+   procedure Workflow_Result_Label_Into
+      (Context : Humanize.Contexts.Context;
+       State   : Workflow_State;
+       Options : Workflow_Label_Options;
+       Name    : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Workflow_Result_Label (Context, State => State, Options => Options, Name => Name),
+         Target, Written, Status);
    end Workflow_Result_Label_Into;
 
    procedure Workflow_State_Label_Into
@@ -431,7 +671,7 @@ package body Humanize.Workflows.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Workflow_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Workflow_State_Label (Context, State => State), Target, Written, Status);
    end Workflow_State_Label_Into;
 
 end Humanize.Workflows.Localized;

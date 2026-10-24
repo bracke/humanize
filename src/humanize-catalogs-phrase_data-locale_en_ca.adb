@@ -6,9 +6,12 @@ procedure Locale_En_Ca (Target : in out Catalog_Text) is
    begin
       Add (Target, "en-CA", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
 begin
    P ("billing.canceled", "cancelled");
    P ("queue.canceled_job", "job cancelled");
    P ("operation.canceled", "cancelled");
    P ("summary.canceled", "{count} cancelled");
+   Labels_1;
 end Locale_En_Ca;

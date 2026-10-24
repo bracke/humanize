@@ -121,6 +121,32 @@ package Humanize.Schema.Localized is
    --  @param Count As for the parent's Shape_Label.
    --  @return The label in Context's locale.
 
+   function Type_Mismatch_Label
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Expected   : Field_Type;
+       Actual     : Field_Type)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Field_Name As for the parent's Type_Mismatch_Label.
+   --  @param Expected As for the parent's Type_Mismatch_Label.
+   --  @param Actual As for the parent's Type_Mismatch_Label.
+   --  @return The label in Context's locale.
+
+   function Type_Mismatch_Label
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Expected   : Field_Type;
+       Actual     : Field_Type;
+       Options    : Schema_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Field_Name As for the parent's Type_Mismatch_Label.
+   --  @param Expected As for the parent's Type_Mismatch_Label.
+   --  @param Actual As for the parent's Type_Mismatch_Label.
+   --  @param Options As for the parent's Type_Mismatch_Label.
+   --  @return The label in Context's locale.
+
    function Unknown_Field_Label
       (Context : Humanize.Contexts.Context;
        Name    : String)
@@ -289,6 +315,40 @@ package Humanize.Schema.Localized is
    --  @param Context Formatting context.
    --  @param Kind As for the parent's Shape_Label.
    --  @param Count As for the parent's Shape_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Type_Mismatch_Label_Into
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Expected   : Field_Type;
+       Actual     : Field_Type;
+       Target     : in out String;
+       Written    : out Natural;
+       Status     : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Field_Name As for the parent's Type_Mismatch_Label.
+   --  @param Expected As for the parent's Type_Mismatch_Label.
+   --  @param Actual As for the parent's Type_Mismatch_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Type_Mismatch_Label_Into
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Expected   : Field_Type;
+       Actual     : Field_Type;
+       Options    : Schema_Label_Options;
+       Target     : in out String;
+       Written    : out Natural;
+       Status     : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Field_Name As for the parent's Type_Mismatch_Label.
+   --  @param Expected As for the parent's Type_Mismatch_Label.
+   --  @param Actual As for the parent's Type_Mismatch_Label.
+   --  @param Options As for the parent's Type_Mismatch_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

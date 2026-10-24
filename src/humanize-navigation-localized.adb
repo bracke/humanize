@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Navigation.Localized is
@@ -26,6 +27,26 @@ package body Humanize.Navigation.Localized is
       Selection := Sel.With_Arg (Selection, "target", Humanize.Bounded_Text.Clean (Target));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Back_Label;
+
+   function Breadcrumb_Position_Label
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "")
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Navigation.Breadcrumb_Position_Label (Current => Current, Total => Total, Name => Name);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.navigation.breadcrumb_position_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "total", Long_Long_Integer (Total));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
+      Selection := Sel.With_Arg (Selection, "current", Long_Long_Integer (Current));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Breadcrumb_Position_Label;
 
    function Breadcrumb_Trail_Label
       (Context : Humanize.Contexts.Context;
@@ -153,10 +174,27 @@ package body Humanize.Navigation.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
-      Selection := Sel.With_Arg (Selection, "kind", Lower (Navigation_Item_Kind'Image (Kind)));
       Selection := Sel.With_Arg (Selection, "state", Lower (Navigation_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "kind", Lower (Navigation_Item_Kind'Image (Kind)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Navigation_Item_Label;
+
+   function Navigation_Item_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Navigation_Item_Kind;
+       State   : Navigation_State;
+       Options : Navigation_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Navigation.Navigation_Item_Label (Name => Name, Kind => Kind, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Navigation.Navigation_Item_Label (Name => Name, Kind => Kind, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Navigation_Item_Label (Context, Name => Name,
+        Kind => Kind, State => State));
    end Navigation_Item_Label;
 
    function Navigation_State_Label
@@ -205,9 +243,9 @@ package body Humanize.Navigation.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "expanded", Lower (Boolean'Image (Expanded)));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Section_State_Label;
 
@@ -240,10 +278,45 @@ package body Humanize.Navigation.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Submenu_Label;
+
+   function Tab_Label
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "")
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Navigation.Tab_Label (Current => Current, Total => Total, Name => Name);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.navigation.tab_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "total", Long_Long_Integer (Total));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
+      Selection := Sel.With_Arg (Selection, "current", Long_Long_Integer (Current));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Tab_Label;
+
+   procedure Breadcrumb_Position_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Breadcrumb_Position_Label (Context, Current => Current, Total => Total, Name => Name),
+         Target, Written, Status);
+   end Breadcrumb_Position_Label_Into;
 
    procedure Breadcrumb_Trail_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -253,7 +326,7 @@ package body Humanize.Navigation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Breadcrumb_Trail_Label (Context, Depth), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Breadcrumb_Trail_Label (Context, Depth => Depth), Target, Written, Status);
    end Breadcrumb_Trail_Label_Into;
 
    procedure Current_Page_Label_Into
@@ -264,7 +337,7 @@ package body Humanize.Navigation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Current_Page_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Current_Page_Label (Context, Name => Name), Target, Written, Status);
    end Current_Page_Label_Into;
 
    procedure External_Link_Label_Into
@@ -275,7 +348,7 @@ package body Humanize.Navigation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (External_Link_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (External_Link_Label (Context, Name => Name), Target, Written, Status);
    end External_Link_Label_Into;
 
    procedure Menu_Count_Label_Into
@@ -286,7 +359,7 @@ package body Humanize.Navigation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Menu_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Menu_Count_Label (Context, Count => Count), Target, Written, Status);
    end Menu_Count_Label_Into;
 
    procedure Navigation_Item_Kind_Label_Into
@@ -297,7 +370,7 @@ package body Humanize.Navigation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Navigation_Item_Kind_Label (Context, Kind), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Navigation_Item_Kind_Label (Context, Kind => Kind), Target, Written, Status);
    end Navigation_Item_Kind_Label_Into;
 
    procedure Navigation_Item_Label_Into
@@ -310,7 +383,25 @@ package body Humanize.Navigation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Navigation_Item_Label (Context, Name, Kind, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Navigation_Item_Label (Context, Name => Name, Kind => Kind, State => State),
+         Target, Written, Status);
+   end Navigation_Item_Label_Into;
+
+   procedure Navigation_Item_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Navigation_Item_Kind;
+       State   : Navigation_State;
+       Options : Navigation_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Navigation_Item_Label (Context, Name => Name, Kind => Kind, State => State, Options => Options),
+         Target, Written, Status);
    end Navigation_Item_Label_Into;
 
    procedure Navigation_State_Label_Into
@@ -321,7 +412,7 @@ package body Humanize.Navigation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Navigation_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Navigation_State_Label (Context, State => State), Target, Written, Status);
    end Navigation_State_Label_Into;
 
    procedure Section_State_Label_Into
@@ -334,7 +425,9 @@ package body Humanize.Navigation.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Section_State_Label (Context, Name, Expanded, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Section_State_Label (Context, Name => Name, Expanded => Expanded, Count => Count),
+         Target, Written, Status);
    end Section_State_Label_Into;
 
    procedure Submenu_Label_Into
@@ -346,7 +439,24 @@ package body Humanize.Navigation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Submenu_Label (Context, Name, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Submenu_Label (Context, Name => Name, Count => Count),
+         Target, Written, Status);
    end Submenu_Label_Into;
+
+   procedure Tab_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Tab_Label (Context, Current => Current, Total => Total, Name => Name),
+         Target, Written, Status);
+   end Tab_Label_Into;
 
 end Humanize.Navigation.Localized;

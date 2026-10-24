@@ -541,4 +541,160 @@ begin
       & "hyväksyntää} blocked_state {estetty} completed_state {valmis} "
       & "failed_state {epäonnistui} cancelled_state {peruttu} skipped_state "
       & "{ohitettu} other {keskeytetty}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {läpinäkyvä} "
+      & "mostly_transparent {enimmäkseen läpinäkyvä} translucent "
+      & "{läpikuultava} mostly_opaque {enimmäkseen peittävä} other "
+      & "{peittävä}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {ei havaintoja} one {1 havainto, min. {minimum} "
+      & "{unit}, mediaani {median} {unit}, maks. {maximum} {unit}} other "
+      & "{{count, number} havaintoa, min. {minimum} {unit}, mediaani {median} "
+      & "{unit}, maks. {maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {ei havaintoja} one {0 "
+      & "poikkeavaa arvoa / 1 havainto} other {0 poikkeavaa arvoa / {total, "
+      & "number} havaintoa}}} one {{total, plural, one {1 poikkeava arvo / 1 "
+      & "havainto} other {1 poikkeava arvo / {total, number} havaintoa}}} other "
+      & "{{outliers, number} poikkeavaa arvoa / {total, number} havaintoa}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {{count, number} {unit} yli kapasiteetin} other "
+      & "{jäljellä {count, number}/{total, number} {unit}}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {kiintiö ylitetty, {count, number} {unit} "
+      & "yli ({percent} käytetty)} near {kiintiö lähes täynnä: jäljellä "
+      & "{count, number} {unit} ({percent} käytetty)} other {kiintiötä "
+      & "jäljellä: {count, number} {unit} ({percent} käytetty)}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {välimuistin osumaprosentti ei saatavilla: ei "
+      & "pyyntöjä} other {välimuistin osumaprosentti {percent}: {hits, "
+      & "plural, one {1 osuma} other {{hits, number} osumaa}}, {misses, plural, "
+      & "one {1 huti} other {{misses, number} hutia}}}}");
+   P ("label.markup.attribute_count_label.total",
+      "{count, plural, one {1 attribuutti} other {{count, number} "
+      & "attribuuttia}}");
+   P ("label.markup.attribute_count_label.data",
+      "{count, plural, one {1 data-attribuutti} other {{count, number} "
+      & "data-attribuuttia}}");
+   P ("label.markup.attribute_count_label.aria",
+      "{count, plural, one {1 ARIA-attribuutti} other {{count, number} "
+      & "ARIA-attribuuttia}}");
+   P ("label.markup.attribute_count_label.events",
+      "{count, plural, one {1 tapahtumankäsittelijä} other {{count, number} "
+      & "tapahtumankäsittelijää}}");
+   P ("label.markup.heading_label", "otsikkotaso {level, number}");
+   P ("label.markup.tag_count_label.total", "{count, plural, one {1 tagi} other {{count, number} tagia}}");
+   P ("label.markup.tag_count_label.links", "{count, plural, one {1 linkki} other {{count, number} linkkiä}}");
+   P ("label.markup.tag_count_label.media",
+      "{count, plural, one {1 mediaelementti} other {{count, number} "
+      & "mediaelementtiä}}");
+   P ("label.markup.tag_count_label.forms",
+      "{count, plural, one {1 lomakkeen ohjausobjekti} other {{count, number} "
+      & "lomakkeen ohjausobjektia}}");
+   P ("label.markup.document_outline_label.headings",
+      "{count, plural, one {1 otsikko} other {{count, number} otsikkoa}}");
+   P ("label.markup.document_outline_label.landmarks",
+      "{count, plural, one {1 maamerkki} other {{count, number} maamerkkiä}}");
+   P ("label.markup.document_outline_label.forms",
+      "{count, plural, one {1 lomake} other {{count, number} lomaketta}}");
+   P ("label.markup.document_outline_label.media",
+      "{count, plural, one {1 mediaelementti} other {{count, number} "
+      & "mediaelementtiä}}");
+   P ("label.markup.table_navigation_label",
+      "{caption}, rivi {row, number}/{rows, number}, sarake {column, "
+      & "number}/{columns, number}");
+   P ("label.secrets.secret_count_label.total",
+      "{count, plural, one {1 salaisuus} other {{count, number} salaisuutta}}");
+   P ("label.secrets.secret_count_label.masked", "{count, number} peitetty");
+   P ("label.secrets.secret_count_label.unset", "{count, number} asettamatta");
+   P ("label.secrets.secret_count_label.fingerprints",
+      "{count, plural, one {1 sormenjälki} other {{count, number} "
+      & "sormenjälkeä}}");
+   P ("label.schema.type_mismatch_label",
+      "kenttä {field_name}: odotettiin {expected, select, string_field "
+      & "{merkkijonoa} integer_field {kokonaislukua} decimal_field "
+      & "{desimaalilukua} boolean_field {totuusarvoa} date_field "
+      & "{päivämäärää} date_time_field {aikaleimaa} object_field "
+      & "{objektia} array_field {taulukkoa} enum_field {enum-arvoa} "
+      & "binary_field {binääriarvoa} null_field {null-arvoa} any_field {mitä "
+      & "tahansa} other {tuntematonta}}, saatiin {actual, select, string_field "
+      & "{merkkijono} integer_field {kokonaisluku} decimal_field "
+      & "{desimaaliluku} boolean_field {totuusarvo} date_field "
+      & "{päivämäärä} date_time_field {aikaleima} object_field {objekti} "
+      & "array_field {taulukko} enum_field {enum-arvo} binary_field "
+      & "{binääriarvo} null_field {null-arvo} any_field {mikä tahansa} other "
+      & "{tuntematon}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {1 estävä "
+      & "ongelma} other {{blocking, number} estävää ongelmaa}}} blocking "
+      & "{{base}, {blocking, plural, one {1 estävä ongelma} other {{blocking, "
+      & "number} estävää ongelmaa}}} only {vain {base}} other {{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {tavoitealue {low}–{high} "
+      & "(päätepisteet mukaan lukien)} other {tavoiteikkuna {low}–{high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} odotetulla vaihteluvälillä} below "
+      & "{{value} alle odotetun vaihteluvälin} other {{value} yli odotetun "
+      & "vaihteluvälin}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} kriittisessä kynnyksessä} warning "
+      & "{{value} varoituskynnyksessä} other {{value} normaalilla alueella}}");
+   P ("label.thresholds.breach_label", "{state, select, ok {ei ylitetty} other {ylitetty {difference} verran}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {tavoitteessa} below {{difference} alle tavoitteen} "
+      & "other {{difference} yli tavoitteen}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {raja ylitetty} near {lähellä rajaa, "
+      & "{distance} jäljellä} other {{distance} rajaan}}");
+   P ("label.thresholds.threshold_summary_label.none", "ei mittareita");
+   P ("label.thresholds.threshold_summary_label.normal",
+      "{count, plural, one {1 normaali} other {{count, number} normaalia}}");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {1 varoitus} other {{count, number} varoitusta}}");
+   P ("label.thresholds.threshold_summary_label.critical",
+      "{count, plural, one {1 kriittinen} other {{count, number} "
+      & "kriittistä}}");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {1 ylitys} other {{count, number} ylitystä}}");
+   P ("label.thresholds.target_window_label", "tavoite {target} ± {tolerance}");
+   P ("label.thresholds.tolerance_label", "toleranssi {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} rajasta");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {raja ylitetty {amount} verran} other "
+      & "{{amount} jäljellä}}");
+   P ("label.thresholds.budget_used_label", "{used} / {budget} käytetty");
+   P ("label.workflows.step_label", "vaihe {current, number}/{total, number}: {name}");
+   P ("label.workflows.milestone_label", "{current, number}/{total, number} välitavoitetta saavutettu: {name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {ei työnkulun kohteita} half {työnkulku "
+      & "puolivälissä} other {{completed, number}/{total, number} valmiina}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {jonossa sijalla {position, number}} other {jonossa "
+      & "sijalla {position, number}/{total, number}}}");
+   P ("label.changes.change_set_label.none", "ei muutoksia");
+   P ("label.changes.change_set_label.added", "{count, number} lisätty");
+   P ("label.changes.change_set_label.removed", "{count, number} poistettu");
+   P ("label.changes.change_set_label.modified", "{count, number} muutettu");
+   P ("label.changes.change_set_label.unchanged", "{count, number} ennallaan");
+   P ("label.changes.sync_change_label.none", "ei synkronointimuutoksia");
+   P ("label.changes.sync_change_label.uploaded", "{count, number} lähetetty");
+   P ("label.changes.sync_change_label.downloaded", "{count, number} ladattu");
+   P ("label.changes.sync_change_label.deleted", "{count, number} poistettu");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {1 ristiriita} other {{count, number} "
+      & "ristiriitaa}}");
+   P ("label.changes.net_change_label",
+      "{state, select, none {ei nettomuutosta} up {netto +{count, plural, one "
+      & "{1 kohde} other {{count, number} kohdetta}}} other {netto -{count, "
+      & "plural, one {1 kohde} other {{count, number} kohdetta}}}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {ei tarkistettavia muutoksia} all {kaikki "
+      & "muutokset tarkistettu} other {{reviewed, number}/{total, number} "
+      & "muutosta tarkistettu}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} ennallaan: {new_value}} up "
+      & "{{field_name} kasvoi: {old_value} → {new_value}} other {{field_name} "
+      & "pieneni: {old_value} → {new_value}}}");
 end Labels_2;

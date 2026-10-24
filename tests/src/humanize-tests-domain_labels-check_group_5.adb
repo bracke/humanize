@@ -1,373 +1,385 @@
+with Humanize.Notifications;
+with Humanize.Numbers.Statistics;
+with Humanize.Payments;
 with Humanize.Permissions;
 with Humanize.Resources;
-with Humanize.Schema;
-with Humanize.Search;
-with Humanize.Secrets;
-with Humanize.Tables;
+with Humanize.Notifications.Localized;
+with Humanize.Numbers.Statistics.Localized;
+with Humanize.Payments.Localized;
 with Humanize.Permissions.Localized;
 with Humanize.Resources.Localized;
-with Humanize.Schema.Localized;
-with Humanize.Search.Localized;
-with Humanize.Secrets.Localized;
-with Humanize.Tables.Localized;
 
 separate (Humanize.Tests.Domain_Labels)
 procedure Check_Group_5 (Locale : String; C : Humanize.Contexts.Context) is
 begin
-   Check (Locale, "label.permissions.access_expiry_label",
+   Check (Locale, "label.notifications.actor_event_label", Phrase,
+          Humanize.Notifications.Localized.Actor_Event_Label (C, Actor => "plain", Event =>
+            Humanize.Notifications.Mention_Event),
+          Humanize.Notifications.Actor_Event_Label (Actor => "plain", Event =>
+            Humanize.Notifications.Mention_Event));
+   Check (Locale, "label.notifications.actor_event_label", Phrase,
+          Humanize.Notifications.Localized.Actor_Event_Label (C, Actor => "plain", Event =>
+            Humanize.Notifications.System_Event),
+          Humanize.Notifications.Actor_Event_Label (Actor => "plain", Event =>
+            Humanize.Notifications.System_Event));
+   Check (Locale, "label.notifications.delivery_attempt_label", Phrase,
+          Humanize.Notifications.Localized.Delivery_Attempt_Label (C, Attempt => 7, Max_Attempts => 9),
+          Humanize.Notifications.Delivery_Attempt_Label (Attempt => 7, Max_Attempts => 9));
+   Check (Locale, "label.notifications.delivery_attempt_label", Phrase,
+          Humanize.Notifications.Localized.Delivery_Attempt_Label (C, Attempt => 2, Max_Attempts => 2),
+          Humanize.Notifications.Delivery_Attempt_Label (Attempt => 2, Max_Attempts => 2));
+   Check (Locale, "label.notifications.delivery_label", Phrase,
+          Humanize.Notifications.Localized.Delivery_Label (C, Channel => Humanize.Notifications.In_App_Channel,
+            State => Humanize.Notifications.Pending_Delivery),
+          Humanize.Notifications.Delivery_Label (Channel => Humanize.Notifications.In_App_Channel, State =>
+            Humanize.Notifications.Pending_Delivery));
+   Check (Locale, "label.notifications.delivery_label", Phrase,
+          Humanize.Notifications.Localized.Delivery_Label (C, Channel => Humanize.Notifications.Digest_Channel,
+            State => Humanize.Notifications.Canceled_Delivery),
+          Humanize.Notifications.Delivery_Label (Channel => Humanize.Notifications.Digest_Channel, State =>
+            Humanize.Notifications.Canceled_Delivery));
+   Check (Locale, "label.notifications.delivery_label", Prefix,
+          Humanize.Notifications.Localized.Delivery_Label (C, Channel => Humanize.Notifications.In_App_Channel,
+            State => Humanize.Notifications.Pending_Delivery, Options =>
+            (Humanize.Notifications.Default_Notification_Label_Options with delta Include_Surface => True)),
+          Humanize.Notifications.Delivery_Label (Channel => Humanize.Notifications.In_App_Channel, State =>
+            Humanize.Notifications.Pending_Delivery, Options =>
+            (Humanize.Notifications.Default_Notification_Label_Options with delta Include_Surface => True)));
+   Check (Locale, "label.notifications.delivery_state_label", Phrase,
+          Humanize.Notifications.Localized.Delivery_State_Label (C, State =>
+            Humanize.Notifications.Pending_Delivery),
+          Humanize.Notifications.Delivery_State_Label (State => Humanize.Notifications.Pending_Delivery));
+   Check (Locale, "label.notifications.delivery_state_label", Phrase,
+          Humanize.Notifications.Localized.Delivery_State_Label (C, State =>
+            Humanize.Notifications.Canceled_Delivery),
+          Humanize.Notifications.Delivery_State_Label (State => Humanize.Notifications.Canceled_Delivery));
+   Check (Locale, "label.notifications.delivery_time_label", Phrase,
+          Humanize.Notifications.Localized.Delivery_Time_Label (C, State => Humanize.Notifications.Pending_Delivery,
+            Time_Text => "plain"),
+          Humanize.Notifications.Delivery_Time_Label (State => Humanize.Notifications.Pending_Delivery, Time_Text =>
+            "plain"));
+   Check (Locale, "label.notifications.delivery_time_label", Phrase,
+          Humanize.Notifications.Localized.Delivery_Time_Label (C, State =>
+            Humanize.Notifications.Canceled_Delivery, Time_Text => "plain"),
+          Humanize.Notifications.Delivery_Time_Label (State => Humanize.Notifications.Canceled_Delivery, Time_Text
+            => "plain"));
+   Check (Locale, "label.notifications.digest_label", Phrase,
+          Humanize.Notifications.Localized.Digest_Label (C, Count => 3, Name => "plain"),
+          Humanize.Notifications.Digest_Label (Count => 3, Name => "plain"));
+   Check (Locale, "label.notifications.digest_label", Phrase,
+          Humanize.Notifications.Localized.Digest_Label (C, Count => 1, Name => "plain"),
+          Humanize.Notifications.Digest_Label (Count => 1, Name => "plain"));
+   Check (Locale, "label.notifications.event_count_label", Phrase,
+          Humanize.Notifications.Localized.Event_Count_Label (C, Event => Humanize.Notifications.Mention_Event,
+            Count => 3),
+          Humanize.Notifications.Event_Count_Label (Event => Humanize.Notifications.Mention_Event, Count => 3));
+   Check (Locale, "label.notifications.event_count_label", Phrase,
+          Humanize.Notifications.Localized.Event_Count_Label (C, Event => Humanize.Notifications.System_Event, Count
+            => 1),
+          Humanize.Notifications.Event_Count_Label (Event => Humanize.Notifications.System_Event, Count => 1));
+   Check (Locale, "label.notifications.inbox_label", Phrase,
+          Humanize.Notifications.Localized.Inbox_Label (C, Unread => 7, Total => 9),
+          Humanize.Notifications.Inbox_Label (Unread => 7, Total => 9));
+   Check (Locale, "label.notifications.inbox_label", Phrase,
+          Humanize.Notifications.Localized.Inbox_Label (C, Unread => 1, Total => 2),
+          Humanize.Notifications.Inbox_Label (Unread => 1, Total => 2));
+   Check (Locale, "label.notifications.mark_read_label", Phrase,
+          Humanize.Notifications.Localized.Mark_Read_Label (C, Count => 3),
+          Humanize.Notifications.Mark_Read_Label (Count => 3));
+   Check (Locale, "label.notifications.mark_read_label", Phrase,
+          Humanize.Notifications.Localized.Mark_Read_Label (C, Count => 1),
+          Humanize.Notifications.Mark_Read_Label (Count => 1));
+   Check (Locale, "label.notifications.mark_unread_label", Phrase,
+          Humanize.Notifications.Localized.Mark_Unread_Label (C, Count => 3),
+          Humanize.Notifications.Mark_Unread_Label (Count => 3));
+   Check (Locale, "label.notifications.mark_unread_label", Phrase,
+          Humanize.Notifications.Localized.Mark_Unread_Label (C, Count => 1),
+          Humanize.Notifications.Mark_Unread_Label (Count => 1));
+   Check (Locale, "label.notifications.muted_label", Phrase,
+          Humanize.Notifications.Localized.Muted_Label (C, Name => "plain"),
+          Humanize.Notifications.Muted_Label (Name => "plain"));
+   Check (Locale, "label.notifications.new_event_label", Phrase,
+          Humanize.Notifications.Localized.New_Event_Label (C, Event => Humanize.Notifications.Mention_Event),
+          Humanize.Notifications.New_Event_Label (Event => Humanize.Notifications.Mention_Event));
+   Check (Locale, "label.notifications.new_event_label", Phrase,
+          Humanize.Notifications.Localized.New_Event_Label (C, Event => Humanize.Notifications.System_Event),
+          Humanize.Notifications.New_Event_Label (Event => Humanize.Notifications.System_Event));
+   Check (Locale, "label.notifications.notification_channel_label", Phrase,
+          Humanize.Notifications.Localized.Notification_Channel_Label (C, Channel =>
+            Humanize.Notifications.In_App_Channel),
+          Humanize.Notifications.Notification_Channel_Label (Channel => Humanize.Notifications.In_App_Channel));
+   Check (Locale, "label.notifications.notification_channel_label", Phrase,
+          Humanize.Notifications.Localized.Notification_Channel_Label (C, Channel =>
+            Humanize.Notifications.Digest_Channel),
+          Humanize.Notifications.Notification_Channel_Label (Channel => Humanize.Notifications.Digest_Channel));
+   Check (Locale, "label.notifications.notification_count_label", Phrase,
+          Humanize.Notifications.Localized.Notification_Count_Label (C, Count => 3),
+          Humanize.Notifications.Notification_Count_Label (Count => 3));
+   Check (Locale, "label.notifications.notification_count_label", Phrase,
+          Humanize.Notifications.Localized.Notification_Count_Label (C, Count => 1),
+          Humanize.Notifications.Notification_Count_Label (Count => 1));
+   Check (Locale, "label.notifications.notification_event_label", Phrase,
+          Humanize.Notifications.Localized.Notification_Event_Label (C, Event =>
+            Humanize.Notifications.Mention_Event),
+          Humanize.Notifications.Notification_Event_Label (Event => Humanize.Notifications.Mention_Event));
+   Check (Locale, "label.notifications.notification_event_label", Phrase,
+          Humanize.Notifications.Localized.Notification_Event_Label (C, Event =>
+            Humanize.Notifications.System_Event),
+          Humanize.Notifications.Notification_Event_Label (Event => Humanize.Notifications.System_Event));
+   Check (Locale, "label.notifications.notification_group_label", Phrase,
+          Humanize.Notifications.Localized.Notification_Group_Label (C, Name => "plain", Count => 3),
+          Humanize.Notifications.Notification_Group_Label (Name => "plain", Count => 3));
+   Check (Locale, "label.notifications.notification_group_label", Phrase,
+          Humanize.Notifications.Localized.Notification_Group_Label (C, Name => "plain", Count => 1),
+          Humanize.Notifications.Notification_Group_Label (Name => "plain", Count => 1));
+   Check (Locale, "label.notifications.notification_label", Phrase,
+          Humanize.Notifications.Localized.Notification_Label (C, Subject => "plain", Event =>
+            Humanize.Notifications.Mention_Event, State => Humanize.Notifications.Unread_State),
+          Humanize.Notifications.Notification_Label (Subject => "plain", Event =>
+            Humanize.Notifications.Mention_Event, State => Humanize.Notifications.Unread_State));
+   Check (Locale, "label.notifications.notification_label", Phrase,
+          Humanize.Notifications.Localized.Notification_Label (C, Subject => "plain", Event =>
+            Humanize.Notifications.System_Event, State => Humanize.Notifications.Suppressed_State),
+          Humanize.Notifications.Notification_Label (Subject => "plain", Event =>
+            Humanize.Notifications.System_Event, State => Humanize.Notifications.Suppressed_State));
+   Check (Locale, "label.notifications.notification_label", Prefix,
+          Humanize.Notifications.Localized.Notification_Label (C, Subject => "plain", Event =>
+            Humanize.Notifications.Mention_Event, State => Humanize.Notifications.Unread_State, Options =>
+            (Humanize.Notifications.Default_Notification_Label_Options with delta Include_Surface => True)),
+          Humanize.Notifications.Notification_Label (Subject => "plain", Event =>
+            Humanize.Notifications.Mention_Event, State => Humanize.Notifications.Unread_State, Options =>
+            (Humanize.Notifications.Default_Notification_Label_Options with delta Include_Surface => True)));
+   Check (Locale, "label.notifications.notification_state_label", Phrase,
+          Humanize.Notifications.Localized.Notification_State_Label (C, State =>
+            Humanize.Notifications.Unread_State),
+          Humanize.Notifications.Notification_State_Label (State => Humanize.Notifications.Unread_State));
+   Check (Locale, "label.notifications.notification_state_label", Phrase,
+          Humanize.Notifications.Localized.Notification_State_Label (C, State =>
+            Humanize.Notifications.Suppressed_State),
+          Humanize.Notifications.Notification_State_Label (State => Humanize.Notifications.Suppressed_State));
+   Check (Locale, "label.notifications.snoozed_label", Phrase,
+          Humanize.Notifications.Localized.Snoozed_Label (C, Name => "plain"),
+          Humanize.Notifications.Snoozed_Label (Name => "plain"));
+   Check (Locale, "label.notifications.suppressed_label", Phrase,
+          Humanize.Notifications.Localized.Suppressed_Label (C, Count => 3),
+          Humanize.Notifications.Suppressed_Label (Count => 3));
+   Check (Locale, "label.notifications.suppressed_label", Phrase,
+          Humanize.Notifications.Localized.Suppressed_Label (C, Count => 1),
+          Humanize.Notifications.Suppressed_Label (Count => 1));
+   Check (Locale, "label.notifications.unread_label", Phrase,
+          Humanize.Notifications.Localized.Unread_Label (C, Count => 3),
+          Humanize.Notifications.Unread_Label (Count => 3));
+   Check (Locale, "label.notifications.unread_label", Phrase,
+          Humanize.Notifications.Localized.Unread_Label (C, Count => 1),
+          Humanize.Notifications.Unread_Label (Count => 1));
+   Check (Locale, "label.statistics.distribution_summary_label", Phrase,
+          Humanize.Numbers.Statistics.Localized.Distribution_Summary_Label (C, Count => 7, Minimum => 7.25, Median
+            => 9.75, Maximum => 4.5, Unit => "plain"),
+          Humanize.Numbers.Statistics.Distribution_Summary_Label (Count => 7, Minimum => 7.25, Median => 9.75,
+            Maximum => 4.5, Unit => "plain"));
+   Check (Locale, "label.statistics.distribution_summary_label", Phrase,
+          Humanize.Numbers.Statistics.Localized.Distribution_Summary_Label (C, Count => 2, Minimum => 0.0, Median =>
+            0.0, Maximum => 0.0, Unit => "plain"),
+          Humanize.Numbers.Statistics.Distribution_Summary_Label (Count => 2, Minimum => 0.0, Median => 0.0, Maximum
+            => 0.0, Unit => "plain"));
+   Check (Locale, "label.statistics.outlier_summary_label", Phrase,
+          Humanize.Numbers.Statistics.Localized.Outlier_Summary_Label (C, Outliers => 7, Total => 9),
+          Humanize.Numbers.Statistics.Outlier_Summary_Label (Outliers => 7, Total => 9));
+   Check (Locale, "label.statistics.outlier_summary_label", Phrase,
+          Humanize.Numbers.Statistics.Localized.Outlier_Summary_Label (C, Outliers => 1, Total => 2),
+          Humanize.Numbers.Statistics.Outlier_Summary_Label (Outliers => 1, Total => 2));
+   Check (Locale, "label.statistics.percentile_summary_label", Phrase,
+          Humanize.Numbers.Statistics.Localized.Percentile_Summary_Label (C, P50 => 7.25, P95 => 9.75, P99 => 4.5,
+            Unit => "plain"),
+          Humanize.Numbers.Statistics.Percentile_Summary_Label (P50 => 7.25, P95 => 9.75, P99 => 4.5, Unit =>
+            "plain"));
+   Check (Locale, "label.statistics.percentile_summary_label", Phrase,
+          Humanize.Numbers.Statistics.Localized.Percentile_Summary_Label (C, P50 => 7.25, P95 => 0.0, P99 => 0.0,
+            Unit => "plain"),
+          Humanize.Numbers.Statistics.Percentile_Summary_Label (P50 => 7.25, P95 => 0.0, P99 => 0.0, Unit =>
+            "plain"));
+   Check (Locale, "label.payments.amount_label", Phrase,
+          Humanize.Payments.Localized.Amount_Label (C, Amount_Text => "plain"),
+          Humanize.Payments.Amount_Label (Amount_Text => "plain"));
+   Check (Locale, "label.payments.balance_label", Phrase,
+          Humanize.Payments.Localized.Balance_Label (C, Amount_Text => "plain"),
+          Humanize.Payments.Balance_Label (Amount_Text => "plain"));
+   Check (Locale, "label.payments.chargeback_label", Phrase,
+          Humanize.Payments.Localized.Chargeback_Label (C, Amount_Text => "plain"),
+          Humanize.Payments.Chargeback_Label (Amount_Text => "plain"));
+   Check (Locale, "label.payments.discount_label", Phrase,
+          Humanize.Payments.Localized.Discount_Label (C, Amount_Text => "plain"),
+          Humanize.Payments.Discount_Label (Amount_Text => "plain"));
+   Check (Locale, "label.payments.due_label", Phrase,
+          Humanize.Payments.Localized.Due_Label (C, Amount_Text => "plain", Due_Text => "plain"),
+          Humanize.Payments.Due_Label (Amount_Text => "plain", Due_Text => "plain"));
+   Check (Locale, "label.payments.invoice_count_label", Phrase,
+          Humanize.Payments.Localized.Invoice_Count_Label (C, Count => 3),
+          Humanize.Payments.Invoice_Count_Label (Count => 3));
+   Check (Locale, "label.payments.invoice_count_label", Phrase,
+          Humanize.Payments.Localized.Invoice_Count_Label (C, Count => 1),
+          Humanize.Payments.Invoice_Count_Label (Count => 1));
+   Check (Locale, "label.payments.invoice_label", Phrase,
+          Humanize.Payments.Localized.Invoice_Label (C, Number => "plain", State =>
+            Humanize.Payments.Draft_Invoice),
+          Humanize.Payments.Invoice_Label (Number => "plain", State => Humanize.Payments.Draft_Invoice));
+   Check (Locale, "label.payments.invoice_label", Phrase,
+          Humanize.Payments.Localized.Invoice_Label (C, Number => "plain", State => Humanize.Payments.Void_Invoice),
+          Humanize.Payments.Invoice_Label (Number => "plain", State => Humanize.Payments.Void_Invoice));
+   Check (Locale, "label.payments.invoice_label", Prefix,
+          Humanize.Payments.Localized.Invoice_Label (C, Number => "plain", State => Humanize.Payments.Draft_Invoice,
+            Options => (Humanize.Payments.Default_Payment_Label_Options with delta Include_Surface => True)),
+          Humanize.Payments.Invoice_Label (Number => "plain", State => Humanize.Payments.Draft_Invoice, Options =>
+            (Humanize.Payments.Default_Payment_Label_Options with delta Include_Surface => True)));
+   Check (Locale, "label.payments.invoice_state_label", Phrase,
+          Humanize.Payments.Localized.Invoice_State_Label (C, State => Humanize.Payments.Draft_Invoice),
+          Humanize.Payments.Invoice_State_Label (State => Humanize.Payments.Draft_Invoice));
+   Check (Locale, "label.payments.invoice_state_label", Phrase,
+          Humanize.Payments.Localized.Invoice_State_Label (C, State => Humanize.Payments.Void_Invoice),
+          Humanize.Payments.Invoice_State_Label (State => Humanize.Payments.Void_Invoice));
+   Check (Locale, "label.payments.method_label", Phrase,
+          Humanize.Payments.Localized.Method_Label (C, Method => Humanize.Payments.Card_Method, Detail => "plain"),
+          Humanize.Payments.Method_Label (Method => Humanize.Payments.Card_Method, Detail => "plain"));
+   Check (Locale, "label.payments.method_label", Phrase,
+          Humanize.Payments.Localized.Method_Label (C, Method => Humanize.Payments.Other_Method, Detail => "plain"),
+          Humanize.Payments.Method_Label (Method => Humanize.Payments.Other_Method, Detail => "plain"));
+   Check (Locale, "label.payments.paid_label", Phrase,
+          Humanize.Payments.Localized.Paid_Label (C, Amount_Text => "plain", Paid_Text => "plain"),
+          Humanize.Payments.Paid_Label (Amount_Text => "plain", Paid_Text => "plain"));
+   Check (Locale, "label.payments.payment_count_label", Phrase,
+          Humanize.Payments.Localized.Payment_Count_Label (C, Count => 3),
+          Humanize.Payments.Payment_Count_Label (Count => 3));
+   Check (Locale, "label.payments.payment_count_label", Phrase,
+          Humanize.Payments.Localized.Payment_Count_Label (C, Count => 1),
+          Humanize.Payments.Payment_Count_Label (Count => 1));
+   Check (Locale, "label.payments.payment_label", Phrase,
+          Humanize.Payments.Localized.Payment_Label (C, Amount_Text => "plain", State =>
+            Humanize.Payments.Pending_Payment),
+          Humanize.Payments.Payment_Label (Amount_Text => "plain", State => Humanize.Payments.Pending_Payment));
+   Check (Locale, "label.payments.payment_label", Phrase,
+          Humanize.Payments.Localized.Payment_Label (C, Amount_Text => "plain", State =>
+            Humanize.Payments.Canceled_Payment),
+          Humanize.Payments.Payment_Label (Amount_Text => "plain", State => Humanize.Payments.Canceled_Payment));
+   Check (Locale, "label.payments.payment_label", Prefix,
+          Humanize.Payments.Localized.Payment_Label (C, Amount_Text => "plain", State =>
+            Humanize.Payments.Pending_Payment, Options => (Humanize.Payments.Default_Payment_Label_Options with
+            delta Include_Surface => True)),
+          Humanize.Payments.Payment_Label (Amount_Text => "plain", State => Humanize.Payments.Pending_Payment,
+            Options => (Humanize.Payments.Default_Payment_Label_Options with delta Include_Surface => True)));
+   Check (Locale, "label.payments.payment_link_label", Phrase,
+          Humanize.Payments.Localized.Payment_Link_Label (C, Name => "plain"),
+          Humanize.Payments.Payment_Link_Label (Name => "plain"));
+   Check (Locale, "label.payments.payment_method_label", Phrase,
+          Humanize.Payments.Localized.Payment_Method_Label (C, Method => Humanize.Payments.Card_Method),
+          Humanize.Payments.Payment_Method_Label (Method => Humanize.Payments.Card_Method));
+   Check (Locale, "label.payments.payment_method_label", Phrase,
+          Humanize.Payments.Localized.Payment_Method_Label (C, Method => Humanize.Payments.Other_Method),
+          Humanize.Payments.Payment_Method_Label (Method => Humanize.Payments.Other_Method));
+   Check (Locale, "label.payments.payment_state_label", Phrase,
+          Humanize.Payments.Localized.Payment_State_Label (C, State => Humanize.Payments.Pending_Payment),
+          Humanize.Payments.Payment_State_Label (State => Humanize.Payments.Pending_Payment));
+   Check (Locale, "label.payments.payment_state_label", Phrase,
+          Humanize.Payments.Localized.Payment_State_Label (C, State => Humanize.Payments.Canceled_Payment),
+          Humanize.Payments.Payment_State_Label (State => Humanize.Payments.Canceled_Payment));
+   Check (Locale, "label.payments.receipt_label", Phrase,
+          Humanize.Payments.Localized.Receipt_Label (C, Number => "plain"),
+          Humanize.Payments.Receipt_Label (Number => "plain"));
+   Check (Locale, "label.payments.refund_label", Phrase,
+          Humanize.Payments.Localized.Refund_Label (C, Amount_Text => "plain", State =>
+            Humanize.Payments.Pending_Payment),
+          Humanize.Payments.Refund_Label (Amount_Text => "plain", State => Humanize.Payments.Pending_Payment));
+   Check (Locale, "label.payments.refund_label", Phrase,
+          Humanize.Payments.Localized.Refund_Label (C, Amount_Text => "plain", State =>
+            Humanize.Payments.Canceled_Payment),
+          Humanize.Payments.Refund_Label (Amount_Text => "plain", State => Humanize.Payments.Canceled_Payment));
+   Check (Locale, "label.payments.subtotal_label", Phrase,
+          Humanize.Payments.Localized.Subtotal_Label (C, Amount_Text => "plain"),
+          Humanize.Payments.Subtotal_Label (Amount_Text => "plain"));
+   Check (Locale, "label.payments.tax_label", Phrase,
+          Humanize.Payments.Localized.Tax_Label (C, Amount_Text => "plain"),
+          Humanize.Payments.Tax_Label (Amount_Text => "plain"));
+   Check (Locale, "label.payments.total_label", Phrase,
+          Humanize.Payments.Localized.Total_Label (C, Amount_Text => "plain"),
+          Humanize.Payments.Total_Label (Amount_Text => "plain"));
+   Check (Locale, "label.permissions.access_expiry_label", Phrase,
           Humanize.Permissions.Localized.Access_Expiry_Label (C, Subject => "plain", Time_Text => "plain"),
           Humanize.Permissions.Access_Expiry_Label (Subject => "plain", Time_Text => "plain"));
-   Check (Locale, "label.permissions.grant_label",
-          Humanize.Permissions.Localized.Grant_Label (C, Subject => "plain", Role => Humanize.Permissions.Owner_Role),
+   Check (Locale, "label.permissions.grant_label", Phrase,
+          Humanize.Permissions.Localized.Grant_Label (C, Subject => "plain", Role =>
+            Humanize.Permissions.Owner_Role),
           Humanize.Permissions.Grant_Label (Subject => "plain", Role => Humanize.Permissions.Owner_Role));
-   Check (Locale, "label.permissions.grant_label",
-          Humanize.Permissions.Localized.Grant_Label
-            (C,
-             Subject => "plain",
-             Role => Humanize.Permissions.Custom_Role),
+   Check (Locale, "label.permissions.grant_label", Phrase,
+          Humanize.Permissions.Localized.Grant_Label (C, Subject => "plain", Role =>
+            Humanize.Permissions.Custom_Role),
           Humanize.Permissions.Grant_Label (Subject => "plain", Role => Humanize.Permissions.Custom_Role));
-   Check (Locale, "label.permissions.permission_label",
-          Humanize.Permissions.Localized.Permission_Label
-            (C,
-             Subject => "plain",
-             Action => "plain",
-             State => Humanize.Permissions.Granted),
-          Humanize.Permissions.Permission_Label
-            (Subject => "plain",
-             Action => "plain",
-             State => Humanize.Permissions.Granted));
-   Check (Locale, "label.permissions.permission_label",
-          Humanize.Permissions.Localized.Permission_Label
-            (C,
-             Subject => "plain",
-             Action => "plain",
-             State => Humanize.Permissions.Requires_Approval),
-          Humanize.Permissions.Permission_Label
-            (Subject => "plain",
-             Action => "plain",
-             State => Humanize.Permissions.Requires_Approval));
-   Check (Locale, "label.permissions.permission_state_label",
+   Check (Locale, "label.permissions.permission_label", Phrase,
+          Humanize.Permissions.Localized.Permission_Label (C, Subject => "plain", Action => "plain", State =>
+            Humanize.Permissions.Granted),
+          Humanize.Permissions.Permission_Label (Subject => "plain", Action => "plain", State =>
+            Humanize.Permissions.Granted));
+   Check (Locale, "label.permissions.permission_label", Phrase,
+          Humanize.Permissions.Localized.Permission_Label (C, Subject => "plain", Action => "plain", State =>
+            Humanize.Permissions.Requires_Approval),
+          Humanize.Permissions.Permission_Label (Subject => "plain", Action => "plain", State =>
+            Humanize.Permissions.Requires_Approval));
+   Check (Locale, "label.permissions.permission_label", Prefix,
+          Humanize.Permissions.Localized.Permission_Label (C, Subject => "plain", Action => "plain", State =>
+            Humanize.Permissions.Granted, Options => (Humanize.Permissions.Default_Permission_Label_Options with
+            delta Include_Surface => True)),
+          Humanize.Permissions.Permission_Label (Subject => "plain", Action => "plain", State =>
+            Humanize.Permissions.Granted, Options => (Humanize.Permissions.Default_Permission_Label_Options with
+            delta Include_Surface => True)));
+   Check (Locale, "label.permissions.permission_state_label", Phrase,
           Humanize.Permissions.Localized.Permission_State_Label (C, State => Humanize.Permissions.Granted),
           Humanize.Permissions.Permission_State_Label (State => Humanize.Permissions.Granted));
-   Check (Locale, "label.permissions.permission_state_label",
-          Humanize.Permissions.Localized.Permission_State_Label (C, State => Humanize.Permissions.Requires_Approval),
+   Check (Locale, "label.permissions.permission_state_label", Phrase,
+          Humanize.Permissions.Localized.Permission_State_Label (C, State =>
+            Humanize.Permissions.Requires_Approval),
           Humanize.Permissions.Permission_State_Label (State => Humanize.Permissions.Requires_Approval));
-   Check (Locale, "label.permissions.policy_result_label",
+   Check (Locale, "label.permissions.policy_result_label", Phrase,
           Humanize.Permissions.Localized.Policy_Result_Label (C, Result => Humanize.Permissions.Policy_Allowed),
           Humanize.Permissions.Policy_Result_Label (Result => Humanize.Permissions.Policy_Allowed));
-   Check (Locale, "label.permissions.policy_result_label",
-          Humanize.Permissions.Localized.Policy_Result_Label
-            (C,
-             Result => Humanize.Permissions.Policy_Not_Applicable),
+   Check (Locale, "label.permissions.policy_result_label", Phrase,
+          Humanize.Permissions.Localized.Policy_Result_Label (C, Result =>
+            Humanize.Permissions.Policy_Not_Applicable),
           Humanize.Permissions.Policy_Result_Label (Result => Humanize.Permissions.Policy_Not_Applicable));
-   Check (Locale, "label.permissions.revoke_label",
-          Humanize.Permissions.Localized.Revoke_Label
-            (C,
-             Subject => "plain",
-             Role => Humanize.Permissions.Owner_Role),
+   Check (Locale, "label.permissions.revoke_label", Phrase,
+          Humanize.Permissions.Localized.Revoke_Label (C, Subject => "plain", Role =>
+            Humanize.Permissions.Owner_Role),
           Humanize.Permissions.Revoke_Label (Subject => "plain", Role => Humanize.Permissions.Owner_Role));
-   Check (Locale, "label.permissions.revoke_label",
-          Humanize.Permissions.Localized.Revoke_Label
-            (C,
-             Subject => "plain",
-             Role => Humanize.Permissions.Custom_Role),
+   Check (Locale, "label.permissions.revoke_label", Phrase,
+          Humanize.Permissions.Localized.Revoke_Label (C, Subject => "plain", Role =>
+            Humanize.Permissions.Custom_Role),
           Humanize.Permissions.Revoke_Label (Subject => "plain", Role => Humanize.Permissions.Custom_Role));
-   Check (Locale, "label.permissions.role_label",
+   Check (Locale, "label.permissions.role_label", Phrase,
           Humanize.Permissions.Localized.Role_Label (C, Role => Humanize.Permissions.Owner_Role),
           Humanize.Permissions.Role_Label (Role => Humanize.Permissions.Owner_Role));
-   Check (Locale, "label.permissions.role_label",
+   Check (Locale, "label.permissions.role_label", Phrase,
           Humanize.Permissions.Localized.Role_Label (C, Role => Humanize.Permissions.Custom_Role),
           Humanize.Permissions.Role_Label (Role => Humanize.Permissions.Custom_Role));
-   Check (Locale, "label.resources.utilization_band_label",
+   Check (Locale, "label.resources.cache_hit_rate_label", Phrase,
+          Humanize.Resources.Localized.Cache_Hit_Rate_Label (C, Hits => 7, Misses => 9),
+          Humanize.Resources.Cache_Hit_Rate_Label (Hits => 7, Misses => 9));
+   Check (Locale, "label.resources.cache_hit_rate_label", Phrase,
+          Humanize.Resources.Localized.Cache_Hit_Rate_Label (C, Hits => 2, Misses => 0),
+          Humanize.Resources.Cache_Hit_Rate_Label (Hits => 2, Misses => 0));
+   Check (Locale, "label.resources.quota_label", Phrase,
+          Humanize.Resources.Localized.Quota_Label (C, Used => 7, Limit => 9, Unit => "plain"),
+          Humanize.Resources.Quota_Label (Used => 7, Limit => 9, Unit => "plain"));
+   Check (Locale, "label.resources.quota_label", Phrase,
+          Humanize.Resources.Localized.Quota_Label (C, Used => 2, Limit => 1, Unit => "plain"),
+          Humanize.Resources.Quota_Label (Used => 2, Limit => 1, Unit => "plain"));
+   Check (Locale, "label.resources.remaining_label", Phrase,
+          Humanize.Resources.Localized.Remaining_Label (C, Used => 7, Total => 9, Unit => "plain"),
+          Humanize.Resources.Remaining_Label (Used => 7, Total => 9, Unit => "plain"));
+   Check (Locale, "label.resources.remaining_label", Phrase,
+          Humanize.Resources.Localized.Remaining_Label (C, Used => 2, Total => 1, Unit => "plain"),
+          Humanize.Resources.Remaining_Label (Used => 2, Total => 1, Unit => "plain"));
+   Check (Locale, "label.resources.utilization_band_label", Phrase,
           Humanize.Resources.Localized.Utilization_Band_Label (C, Band => Humanize.Resources.Empty_Utilization),
           Humanize.Resources.Utilization_Band_Label (Band => Humanize.Resources.Empty_Utilization));
-   Check (Locale, "label.resources.utilization_band_label",
-          Humanize.Resources.Localized.Utilization_Band_Label (C, Band => Humanize.Resources.Over_Limit_Utilization),
+   Check (Locale, "label.resources.utilization_band_label", Phrase,
+          Humanize.Resources.Localized.Utilization_Band_Label (C, Band =>
+            Humanize.Resources.Over_Limit_Utilization),
           Humanize.Resources.Utilization_Band_Label (Band => Humanize.Resources.Over_Limit_Utilization));
-   Check (Locale, "label.schema.array_shape_label",
-          Humanize.Schema.Localized.Array_Shape_Label
-            (C,
-             Element_Type => Humanize.Schema.String_Field,
-             Count => 3,
-             Count_Known => False),
-          Humanize.Schema.Array_Shape_Label
-            (Element_Type => Humanize.Schema.String_Field,
-             Count => 3,
-             Count_Known => False));
-   Check (Locale, "label.schema.array_shape_label",
-          Humanize.Schema.Localized.Array_Shape_Label
-            (C,
-             Element_Type => Humanize.Schema.Unknown_Field_Type,
-             Count => 1,
-             Count_Known => True),
-          Humanize.Schema.Array_Shape_Label
-            (Element_Type => Humanize.Schema.Unknown_Field_Type,
-             Count => 1,
-             Count_Known => True));
-   Check (Locale, "label.schema.constraint_label",
-          Humanize.Schema.Localized.Constraint_Label (C, Name => "plain", Value => "plain"),
-          Humanize.Schema.Constraint_Label (Name => "plain", Value => "plain"));
-   Check (Locale, "label.schema.default_value_label",
-          Humanize.Schema.Localized.Default_Value_Label (C, Field_Name => "plain", Value => "plain"),
-          Humanize.Schema.Default_Value_Label (Field_Name => "plain", Value => "plain"));
-   Check (Locale, "label.schema.deprecated_field_label",
-          Humanize.Schema.Localized.Deprecated_Field_Label (C, Name => "plain", Replacement => "plain"),
-          Humanize.Schema.Deprecated_Field_Label (Name => "plain", Replacement => "plain"));
-   Check (Locale, "label.schema.enum_options_label",
-          Humanize.Schema.Localized.Enum_Options_Label (C, Count => 3),
-          Humanize.Schema.Enum_Options_Label (Count => 3));
-   Check (Locale, "label.schema.enum_options_label",
-          Humanize.Schema.Localized.Enum_Options_Label (C, Count => 1),
-          Humanize.Schema.Enum_Options_Label (Count => 1));
-   Check (Locale, "label.schema.example_value_label",
-          Humanize.Schema.Localized.Example_Value_Label (C, Field_Name => "plain", Value => "plain"),
-          Humanize.Schema.Example_Value_Label (Field_Name => "plain", Value => "plain"));
-   Check (Locale, "label.schema.field_state_label",
-          Humanize.Schema.Localized.Field_State_Label (C, State => Humanize.Schema.Normal_Field),
-          Humanize.Schema.Field_State_Label (State => Humanize.Schema.Normal_Field));
-   Check (Locale, "label.schema.field_state_label",
-          Humanize.Schema.Localized.Field_State_Label (C, State => Humanize.Schema.Computed_Field),
-          Humanize.Schema.Field_State_Label (State => Humanize.Schema.Computed_Field));
-   Check (Locale, "label.schema.field_type_label",
-          Humanize.Schema.Localized.Field_Type_Label (C, Kind => Humanize.Schema.String_Field),
-          Humanize.Schema.Field_Type_Label (Kind => Humanize.Schema.String_Field));
-   Check (Locale, "label.schema.field_type_label",
-          Humanize.Schema.Localized.Field_Type_Label (C, Kind => Humanize.Schema.Unknown_Field_Type),
-          Humanize.Schema.Field_Type_Label (Kind => Humanize.Schema.Unknown_Field_Type));
-   Check (Locale, "label.schema.missing_required_label",
-          Humanize.Schema.Localized.Missing_Required_Label (C, Count => 3),
-          Humanize.Schema.Missing_Required_Label (Count => 3));
-   Check (Locale, "label.schema.missing_required_label",
-          Humanize.Schema.Localized.Missing_Required_Label (C, Count => 1),
-          Humanize.Schema.Missing_Required_Label (Count => 1));
-   Check (Locale, "label.schema.object_shape_label",
-          Humanize.Schema.Localized.Object_Shape_Label (C, Fields => 3, Required => 3, Optional => 3),
-          Humanize.Schema.Object_Shape_Label (Fields => 3, Required => 3, Optional => 3));
-   Check (Locale, "label.schema.object_shape_label",
-          Humanize.Schema.Localized.Object_Shape_Label (C, Fields => 1, Required => 1, Optional => 1),
-          Humanize.Schema.Object_Shape_Label (Fields => 1, Required => 1, Optional => 1));
-   Check (Locale, "label.schema.schema_source_label",
-          Humanize.Schema.Localized.Schema_Source_Label (C, Name => "plain", Version => "plain"),
-          Humanize.Schema.Schema_Source_Label (Name => "plain", Version => "plain"));
-   Check (Locale, "label.schema.shape_label",
-          Humanize.Schema.Localized.Shape_Label (C, Kind => Humanize.Schema.Scalar_Shape, Count => 3),
-          Humanize.Schema.Shape_Label (Kind => Humanize.Schema.Scalar_Shape, Count => 3));
-   Check (Locale, "label.schema.shape_label",
-          Humanize.Schema.Localized.Shape_Label (C, Kind => Humanize.Schema.Unknown_Shape, Count => 1),
-          Humanize.Schema.Shape_Label (Kind => Humanize.Schema.Unknown_Shape, Count => 1));
-   Check (Locale, "label.schema.unknown_field_label",
-          Humanize.Schema.Localized.Unknown_Field_Label (C, Name => "plain"),
-          Humanize.Schema.Unknown_Field_Label (Name => "plain"));
-   Check (Locale, "label.search.active_filter_count_label",
-          Humanize.Search.Localized.Active_Filter_Count_Label (C, Count => 3),
-          Humanize.Search.Active_Filter_Count_Label (Count => 3));
-   Check (Locale, "label.search.active_filter_count_label",
-          Humanize.Search.Localized.Active_Filter_Count_Label (C, Count => 1),
-          Humanize.Search.Active_Filter_Count_Label (Count => 1));
-   Check (Locale, "label.search.clear_filters_label",
-          Humanize.Search.Localized.Clear_Filters_Label (C, Count => 3),
-          Humanize.Search.Clear_Filters_Label (Count => 3));
-   Check (Locale, "label.search.clear_filters_label",
-          Humanize.Search.Localized.Clear_Filters_Label (C, Count => 1),
-          Humanize.Search.Clear_Filters_Label (Count => 1));
-   Check (Locale, "label.search.facet_label",
-          Humanize.Search.Localized.Facet_Label (C, Name => "plain", Count => 3),
-          Humanize.Search.Facet_Label (Name => "plain", Count => 3));
-   Check (Locale, "label.search.facet_label",
-          Humanize.Search.Localized.Facet_Label (C, Name => "plain", Count => 1),
-          Humanize.Search.Facet_Label (Name => "plain", Count => 1));
-   Check (Locale, "label.search.facet_value_label",
-          Humanize.Search.Localized.Facet_Value_Label (C, Name => "plain", Count => 3, Selected => False),
-          Humanize.Search.Facet_Value_Label (Name => "plain", Count => 3, Selected => False));
-   Check (Locale, "label.search.facet_value_label",
-          Humanize.Search.Localized.Facet_Value_Label (C, Name => "plain", Count => 1, Selected => True),
-          Humanize.Search.Facet_Value_Label (Name => "plain", Count => 1, Selected => True));
-   Check (Locale, "label.search.filter_label",
-          Humanize.Search.Localized.Filter_Label
-            (C,
-             Name => "plain",
-             Value => "plain",
-             State => Humanize.Search.Active_Filter),
-          Humanize.Search.Filter_Label (Name => "plain", Value => "plain", State => Humanize.Search.Active_Filter));
-   Check (Locale, "label.search.filter_label",
-          Humanize.Search.Localized.Filter_Label
-            (C,
-             Name => "plain",
-             Value => "plain",
-             State => Humanize.Search.Excluded_Filter),
-          Humanize.Search.Filter_Label (Name => "plain", Value => "plain", State => Humanize.Search.Excluded_Filter));
-   Check (Locale, "label.search.filter_state_label",
-          Humanize.Search.Localized.Filter_State_Label (C, State => Humanize.Search.Active_Filter),
-          Humanize.Search.Filter_State_Label (State => Humanize.Search.Active_Filter));
-   Check (Locale, "label.search.filter_state_label",
-          Humanize.Search.Localized.Filter_State_Label (C, State => Humanize.Search.Excluded_Filter),
-          Humanize.Search.Filter_State_Label (State => Humanize.Search.Excluded_Filter));
-   Check (Locale, "label.search.no_results_label",
-          Humanize.Search.Localized.No_Results_Label (C, Query => "plain"),
-          Humanize.Search.No_Results_Label (Query => "plain"));
-   Check (Locale, "label.search.recent_search_label",
-          Humanize.Search.Localized.Recent_Search_Label (C, Query => "plain"),
-          Humanize.Search.Recent_Search_Label (Query => "plain"));
-   Check (Locale, "label.search.saved_search_label",
-          Humanize.Search.Localized.Saved_Search_Label (C, Name => "plain", Count => 3),
-          Humanize.Search.Saved_Search_Label (Name => "plain", Count => 3));
-   Check (Locale, "label.search.saved_search_label",
-          Humanize.Search.Localized.Saved_Search_Label (C, Name => "plain", Count => 1),
-          Humanize.Search.Saved_Search_Label (Name => "plain", Count => 1));
-   Check (Locale, "label.search.search_history_count_label",
-          Humanize.Search.Localized.Search_History_Count_Label (C, Count => 3),
-          Humanize.Search.Search_History_Count_Label (Count => 3));
-   Check (Locale, "label.search.search_history_count_label",
-          Humanize.Search.Localized.Search_History_Count_Label (C, Count => 1),
-          Humanize.Search.Search_History_Count_Label (Count => 1));
-   Check (Locale, "label.search.search_query_label",
-          Humanize.Search.Localized.Search_Query_Label (C, Query => "plain"),
-          Humanize.Search.Search_Query_Label (Query => "plain"));
-   Check (Locale, "label.search.search_result_count_label",
-          Humanize.Search.Localized.Search_Result_Count_Label (C, Count => 3),
-          Humanize.Search.Search_Result_Count_Label (Count => 3));
-   Check (Locale, "label.search.search_result_count_label",
-          Humanize.Search.Localized.Search_Result_Count_Label (C, Count => 1),
-          Humanize.Search.Search_Result_Count_Label (Count => 1));
-   Check (Locale, "label.search.search_result_summary_label",
-          Humanize.Search.Localized.Search_Result_Summary_Label (C, Query => "plain", Count => 3),
-          Humanize.Search.Search_Result_Summary_Label (Query => "plain", Count => 3));
-   Check (Locale, "label.search.search_result_summary_label",
-          Humanize.Search.Localized.Search_Result_Summary_Label (C, Query => "plain", Count => 1),
-          Humanize.Search.Search_Result_Summary_Label (Query => "plain", Count => 1));
-   Check (Locale, "label.search.search_scope_label",
-          Humanize.Search.Localized.Search_Scope_Label (C, Name => "plain", Count => 3),
-          Humanize.Search.Search_Scope_Label (Name => "plain", Count => 3));
-   Check (Locale, "label.search.search_scope_label",
-          Humanize.Search.Localized.Search_Scope_Label (C, Name => "plain", Count => 1),
-          Humanize.Search.Search_Scope_Label (Name => "plain", Count => 1));
-   Check (Locale, "label.search.search_state_label",
-          Humanize.Search.Localized.Search_State_Label (C, State => Humanize.Search.Idle_Search),
-          Humanize.Search.Search_State_Label (State => Humanize.Search.Idle_Search));
-   Check (Locale, "label.search.search_state_label",
-          Humanize.Search.Localized.Search_State_Label (C, State => Humanize.Search.Failed_Search),
-          Humanize.Search.Search_State_Label (State => Humanize.Search.Failed_Search));
-   Check (Locale, "label.search.sort_label",
-          Humanize.Search.Localized.Sort_Label (C, Mode => Humanize.Search.Relevance_Sort),
-          Humanize.Search.Sort_Label (Mode => Humanize.Search.Relevance_Sort));
-   Check (Locale, "label.search.sort_label",
-          Humanize.Search.Localized.Sort_Label (C, Mode => Humanize.Search.Oldest_First_Sort),
-          Humanize.Search.Sort_Label (Mode => Humanize.Search.Oldest_First_Sort));
-   Check (Locale, "label.search.sort_mode_label",
-          Humanize.Search.Localized.Sort_Mode_Label (C, Mode => Humanize.Search.Relevance_Sort),
-          Humanize.Search.Sort_Mode_Label (Mode => Humanize.Search.Relevance_Sort));
-   Check (Locale, "label.search.sort_mode_label",
-          Humanize.Search.Localized.Sort_Mode_Label (C, Mode => Humanize.Search.Oldest_First_Sort),
-          Humanize.Search.Sort_Mode_Label (Mode => Humanize.Search.Oldest_First_Sort));
-   Check (Locale, "label.search.suggestion_label",
-          Humanize.Search.Localized.Suggestion_Label (C, Query => "plain"),
-          Humanize.Search.Suggestion_Label (Query => "plain"));
-   Check (Locale, "label.secrets.credential_source_label",
-          Humanize.Secrets.Localized.Credential_Source_Label (C, Source => "plain", Count => 3),
-          Humanize.Secrets.Credential_Source_Label (Source => "plain", Count => 3));
-   Check (Locale, "label.secrets.credential_source_label",
-          Humanize.Secrets.Localized.Credential_Source_Label (C, Source => "plain", Count => 1),
-          Humanize.Secrets.Credential_Source_Label (Source => "plain", Count => 1));
-   Check (Locale, "label.secrets.exposure_label",
-          Humanize.Secrets.Localized.Exposure_Label (C, Exposure => Humanize.Secrets.Hidden_Value),
-          Humanize.Secrets.Exposure_Label (Exposure => Humanize.Secrets.Hidden_Value));
-   Check (Locale, "label.secrets.exposure_label",
-          Humanize.Secrets.Localized.Exposure_Label (C, Exposure => Humanize.Secrets.Fingerprint_Only),
-          Humanize.Secrets.Exposure_Label (Exposure => Humanize.Secrets.Fingerprint_Only));
-   Check (Locale, "label.secrets.privacy_profile_label",
-          Humanize.Secrets.Localized.Privacy_Profile_Label (C, Profile => Humanize.Secrets.Public_Profile),
-          Humanize.Secrets.Privacy_Profile_Label (Profile => Humanize.Secrets.Public_Profile));
-   Check (Locale, "label.secrets.privacy_profile_label",
-          Humanize.Secrets.Localized.Privacy_Profile_Label (C, Profile => Humanize.Secrets.Debug_Profile),
-          Humanize.Secrets.Privacy_Profile_Label (Profile => Humanize.Secrets.Debug_Profile));
-   Check (Locale, "label.secrets.rotation_status_label",
-          Humanize.Secrets.Localized.Rotation_Status_Label (C, Needs_Rotation => False, Days_Old => 3),
-          Humanize.Secrets.Rotation_Status_Label (Needs_Rotation => False, Days_Old => 3));
-   Check (Locale, "label.secrets.rotation_status_label",
-          Humanize.Secrets.Localized.Rotation_Status_Label (C, Needs_Rotation => True, Days_Old => 1),
-          Humanize.Secrets.Rotation_Status_Label (Needs_Rotation => True, Days_Old => 1));
-   Check (Locale, "label.secrets.secret_kind_label",
-          Humanize.Secrets.Localized.Secret_Kind_Label (C, Kind => Humanize.Secrets.Api_Key),
-          Humanize.Secrets.Secret_Kind_Label (Kind => Humanize.Secrets.Api_Key));
-   Check (Locale, "label.secrets.secret_kind_label",
-          Humanize.Secrets.Localized.Secret_Kind_Label (C, Kind => Humanize.Secrets.Unknown_Secret),
-          Humanize.Secrets.Secret_Kind_Label (Kind => Humanize.Secrets.Unknown_Secret));
-   Check (Locale, "label.secrets.sensitive_value_kind_label",
-          Humanize.Secrets.Localized.Sensitive_Value_Kind_Label (C, Kind => Humanize.Secrets.Email_Value),
-          Humanize.Secrets.Sensitive_Value_Kind_Label (Kind => Humanize.Secrets.Email_Value));
-   Check (Locale, "label.secrets.sensitive_value_kind_label",
-          Humanize.Secrets.Localized.Sensitive_Value_Kind_Label (C, Kind => Humanize.Secrets.Unknown_Sensitive_Value),
-          Humanize.Secrets.Sensitive_Value_Kind_Label (Kind => Humanize.Secrets.Unknown_Sensitive_Value));
-   Check (Locale, "label.tables.cell_label",
-          Humanize.Tables.Localized.Cell_Label (C, Row => 3, Column => 3, State => Humanize.Tables.Empty_Cell),
-          Humanize.Tables.Cell_Label (Row => 3, Column => 3, State => Humanize.Tables.Empty_Cell));
-   Check (Locale, "label.tables.cell_label",
-          Humanize.Tables.Localized.Cell_Label (C, Row => 1, Column => 1, State => Humanize.Tables.Read_Only_Cell),
-          Humanize.Tables.Cell_Label (Row => 1, Column => 1, State => Humanize.Tables.Read_Only_Cell));
-   Check (Locale, "label.tables.cell_position_label",
-          Humanize.Tables.Localized.Cell_Position_Label (C, Row => 3, Column => 3),
-          Humanize.Tables.Cell_Position_Label (Row => 3, Column => 3));
-   Check (Locale, "label.tables.cell_position_label",
-          Humanize.Tables.Localized.Cell_Position_Label (C, Row => 1, Column => 1),
-          Humanize.Tables.Cell_Position_Label (Row => 1, Column => 1));
-   Check (Locale, "label.tables.cell_state_label",
-          Humanize.Tables.Localized.Cell_State_Label (C, State => Humanize.Tables.Empty_Cell),
-          Humanize.Tables.Cell_State_Label (State => Humanize.Tables.Empty_Cell));
-   Check (Locale, "label.tables.cell_state_label",
-          Humanize.Tables.Localized.Cell_State_Label (C, State => Humanize.Tables.Read_Only_Cell),
-          Humanize.Tables.Cell_State_Label (State => Humanize.Tables.Read_Only_Cell));
-   Check (Locale, "label.tables.column_count_label",
-          Humanize.Tables.Localized.Column_Count_Label (C, Count => 3),
-          Humanize.Tables.Column_Count_Label (Count => 3));
-   Check (Locale, "label.tables.column_count_label",
-          Humanize.Tables.Localized.Column_Count_Label (C, Count => 1),
-          Humanize.Tables.Column_Count_Label (Count => 1));
-   Check (Locale, "label.tables.column_label",
-          Humanize.Tables.Localized.Column_Label (C, Name => "plain", Role => Humanize.Tables.Text_Column),
-          Humanize.Tables.Column_Label (Name => "plain", Role => Humanize.Tables.Text_Column));
-   Check (Locale, "label.tables.column_label",
-          Humanize.Tables.Localized.Column_Label (C, Name => "plain", Role => Humanize.Tables.Hidden_Column),
-          Humanize.Tables.Column_Label (Name => "plain", Role => Humanize.Tables.Hidden_Column));
-   Check (Locale, "label.tables.column_role_label",
-          Humanize.Tables.Localized.Column_Role_Label (C, Role => Humanize.Tables.Text_Column),
-          Humanize.Tables.Column_Role_Label (Role => Humanize.Tables.Text_Column));
-   Check (Locale, "label.tables.column_role_label",
-          Humanize.Tables.Localized.Column_Role_Label (C, Role => Humanize.Tables.Hidden_Column),
-          Humanize.Tables.Column_Role_Label (Role => Humanize.Tables.Hidden_Column));
-   Check (Locale, "label.tables.group_label",
-          Humanize.Tables.Localized.Group_Label (C, Name => "plain", Count => 3),
-          Humanize.Tables.Group_Label (Name => "plain", Count => 3));
-   Check (Locale, "label.tables.group_label",
-          Humanize.Tables.Localized.Group_Label (C, Name => "plain", Count => 1),
-          Humanize.Tables.Group_Label (Name => "plain", Count => 1));
-   Check (Locale, "label.tables.row_count_label",
-          Humanize.Tables.Localized.Row_Count_Label (C, Count => 3),
-          Humanize.Tables.Row_Count_Label (Count => 3));
-   Check (Locale, "label.tables.row_count_label",
-          Humanize.Tables.Localized.Row_Count_Label (C, Count => 1),
-          Humanize.Tables.Row_Count_Label (Count => 1));
-   Check (Locale, "label.tables.sort_direction_label",
-          Humanize.Tables.Localized.Sort_Direction_Label (C, Direction => Humanize.Tables.Unsorted),
-          Humanize.Tables.Sort_Direction_Label (Direction => Humanize.Tables.Unsorted));
-   Check (Locale, "label.tables.sort_direction_label",
-          Humanize.Tables.Localized.Sort_Direction_Label (C, Direction => Humanize.Tables.Descending_Sort),
-          Humanize.Tables.Sort_Direction_Label (Direction => Humanize.Tables.Descending_Sort));
-   Check (Locale, "label.tables.sort_label",
-          Humanize.Tables.Localized.Sort_Label (C, Column_Name => "plain", Direction => Humanize.Tables.Unsorted),
-          Humanize.Tables.Sort_Label (Column_Name => "plain", Direction => Humanize.Tables.Unsorted));
-   Check (Locale, "label.tables.sort_label",
-          Humanize.Tables.Localized.Sort_Label
-            (C,
-             Column_Name => "plain",
-             Direction => Humanize.Tables.Descending_Sort),
-          Humanize.Tables.Sort_Label (Column_Name => "plain", Direction => Humanize.Tables.Descending_Sort));
-   Check (Locale, "label.tables.subtotal_label",
-          Humanize.Tables.Localized.Subtotal_Label (C, Name => "plain", Value => "plain"),
-          Humanize.Tables.Subtotal_Label (Name => "plain", Value => "plain"));
-   Check (Locale, "label.tables.table_size_label",
-          Humanize.Tables.Localized.Table_Size_Label (C, Rows => 3, Columns => 3),
-          Humanize.Tables.Table_Size_Label (Rows => 3, Columns => 3));
-   Check (Locale, "label.tables.table_size_label",
-          Humanize.Tables.Localized.Table_Size_Label (C, Rows => 1, Columns => 1),
-          Humanize.Tables.Table_Size_Label (Rows => 1, Columns => 1));
 end Check_Group_5;

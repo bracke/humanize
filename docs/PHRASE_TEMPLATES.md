@@ -219,8 +219,24 @@ arguments as selects on the value's lowercase name, the last value in
 `other`. A locale without the key, and every input the parent rejects, gets
 the parent's English. The English templates were derived from the parent's
 own output, and a test checks that every one renders to exactly that output.
-Labels that compute a number from their counts (a net change, characters
-left) stay English, as a template could only see the inputs.
+A label whose wording depends on a comparison or a computed number gets
+derived arguments: a `state` select the code works out (`all`, `none`,
+`some`; `inside`, `below`, `above`), the difference itself, values already
+formatted in the locale (`{value}` "7,5 ms", `{percent}` "50 %"). Summaries of
+optional counts ("3 added, 2 removed") are parts, `label.<family>.<fn>.<part>`
+with `{count}` (and `.none` for the empty case), joined through `label.parts`
+("{first}, {second}"). An options overload keeps the English
+`[surface severity tone] ` prefix (Humanize.Domain_Details) and localizes the
+label after it.
+
+Colour names, contrast, palette and text-metrics labels compute their wording
+from the colours or the text, so their keys are the shapes of the English
+output: `label.<family>.<fn>.<slug>`, the slug being the words joined by `_`
+with a whole number as `n`, a decimal as `d`, a `#RRGGBB` colour as `c`
+(`label.contrast.contrast_label.d_n_normal_text_contrast` for "4.5:1
+normal-text contrast"), the values passed as `v1`, `v2`, …; composite labels
+are split at ", " or "; " and their segments joined through `label.parts` or
+`label.groups` ("{first}; {second}"). A shape with no key keeps the English.
 
 ## Durations
 

@@ -4,6 +4,13 @@ with Ada.Text_IO;
 with Messages.Runtime;
 
 with Humanize.Catalogs;
+with Humanize.Colors;
+with Humanize.Colors.Contrast.Localized;
+with Humanize.Colors.Models.Localized;
+with Humanize.Colors.Names.Localized;
+with Humanize.Colors.Palettes.Localized;
+with Humanize.Numbers.Statistics.Localized;
+with Humanize.Strings.Metrics.Localized;
 with Humanize.Contexts;
 with Humanize.Status;
 with Humanize.Accounts.Localized;
@@ -229,5 +236,18 @@ begin
            (De,
             Approver => "plain",
             Waiting => True));
+      Put_Result ("contrast", Humanize.Colors.Contrast.Localized.Opacity_Label (De, Opacity => 0.5));
+      Put_Result ("names", Humanize.Colors.Names.Localized.Color_Description (De, Color => (200, 30, 40)));
+      Put_Result ("models", Humanize.Colors.Models.Localized.Brightness_Label (De, Color => (20, 120, 220)));
+      Put_Result
+        ("palettes",
+         Humanize.Colors.Palettes.Localized.Palette_Mood_Label
+           (De, Colors => [(200, 30, 40), (20, 120, 220), (250, 250, 240)]));
+      Put_Result
+        ("statistics",
+         Humanize.Numbers.Statistics.Localized.Outlier_Summary_Label (De, Outliers => 3, Total => 40));
+      Put_Result
+        ("metrics",
+         Humanize.Strings.Metrics.Localized.Reading_Time (De, Text => "The quick brown fox jumps over the lazy dog."));
    end;
 end Domain_Labels_Demo;

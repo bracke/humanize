@@ -500,4 +500,201 @@ begin
       & "{承認待ち} blocked_state {ブロック中} completed_state "
       & "{完了} failed_state {失敗} cancelled_state {キャンセル済み} "
       & "skipped_state {スキップ} other {一時停止中}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {透明} mostly_transparent "
+      & "{ほぼ透明} translucent {半透明} mostly_opaque {ほぼ不透明} "
+      & "other {不透明}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {観測値なし} other {観測値{count, "
+      & "number}件、最小{minimum} {unit}、中央値{median} "
+      & "{unit}、最大{maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}、p95 {p95} {unit}、p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {観測値なし} other "
+      & "{観測値{total, number}件中、外れ値0件}}} other "
+      & "{観測値{total, number}件中、外れ値{outliers, number}件}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {容量を{count, number} {unit}超過} other "
+      & "{残り{count, number}/{total, number} {unit}}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {クォータを{count, number} "
+      & "{unit}超過（{percent}使用）} near "
+      & "{クォータの上限間近：残り{count, number} "
+      & "{unit}（{percent}使用）} other "
+      & "{クォータに余裕あり：残り{count, number} "
+      & "{unit}（{percent}使用）}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none "
+      & "{キャッシュヒット率なし：リクエストなし} other "
+      & "{キャッシュヒット率{percent}：ヒット{hits, "
+      & "number}件、ミス{misses, number}件}}");
+   P ("label.markup.attribute_count_label.total", "属性{count, number}個");
+   P ("label.markup.attribute_count_label.data", "data属性{count, number}個");
+   P ("label.markup.attribute_count_label.aria", "ARIA属性{count, number}個");
+   P ("label.markup.attribute_count_label.events", "イベントハンドラー{count, number}個");
+   P ("label.markup.heading_label", "見出しレベル{level, number}");
+   P ("label.markup.tag_count_label.total", "タグ{count, number}個");
+   P ("label.markup.tag_count_label.links", "リンク{count, number}件");
+   P ("label.markup.tag_count_label.media", "メディア要素{count, number}個");
+   P ("label.markup.tag_count_label.forms", "フォームコントロール{count, number}個");
+   P ("label.markup.document_outline_label.headings", "見出し{count, number}件");
+   P ("label.markup.document_outline_label.landmarks", "ランドマーク{count, number}件");
+   P ("label.markup.document_outline_label.forms", "フォーム{count, number}件");
+   P ("label.markup.document_outline_label.media", "メディア要素{count, number}個");
+   P ("label.markup.table_navigation_label",
+      "{caption}、{rows, number}行中{row, number}行目、{columns, "
+      & "number}列中{column, number}列目");
+   P ("label.secrets.secret_count_label.total", "シークレット{count, number}件");
+   P ("label.secrets.secret_count_label.masked", "マスク済み{count, number}件");
+   P ("label.secrets.secret_count_label.unset", "未設定{count, number}件");
+   P ("label.secrets.secret_count_label.fingerprints", "フィンガープリント{count, number}件");
+   P ("label.schema.type_mismatch_label",
+      "フィールド{field_name}：{expected, select, string_field "
+      & "{文字列} integer_field {整数} decimal_field {小数} "
+      & "boolean_field {真偽値} date_field {日付} date_time_field {日時} "
+      & "object_field {オブジェクト} array_field {配列} enum_field "
+      & "{列挙値} binary_field {バイナリ} null_field {null} any_field "
+      & "{任意の値} other {不明な値}}を想定、実際は{actual, "
+      & "select, string_field {文字列} integer_field {整数} decimal_field "
+      & "{小数} boolean_field {真偽値} date_field {日付} date_time_field "
+      & "{日時} object_field {オブジェクト} array_field {配列} "
+      & "enum_field {列挙値} binary_field {バイナリ} null_field {null} "
+      & "any_field {任意の値} other {不明な値}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {ブロッキング問題{blocking, "
+      & "number}件} blocking {{base}、ブロッキング問題{blocking, "
+      & "number}件} only {{base}のみ} other {{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {目標範囲 {low}～{high}} "
+      & "other {目標ウィンドウ {low}～{high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value}：想定範囲内} below "
+      & "{{value}：想定範囲を下回る} other "
+      & "{{value}：想定範囲を上回る}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value}：危険しきい値} warning "
+      & "{{value}：警告しきい値} other {{value}：正常範囲内}}");
+   P ("label.thresholds.breach_label", "{state, select, ok {超過なし} other {{difference}超過}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {目標どおり} below "
+      & "{目標を{difference}下回る} other "
+      & "{目標を{difference}上回る}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {上限超過} near "
+      & "{上限間近、残り{distance}} other {上限まで{distance}}}");
+   P ("label.thresholds.threshold_summary_label.none", "指標なし");
+   P ("label.thresholds.threshold_summary_label.normal", "正常{count, number}件");
+   P ("label.thresholds.threshold_summary_label.warnings", "警告{count, number}件");
+   P ("label.thresholds.threshold_summary_label.critical", "危険{count, number}件");
+   P ("label.thresholds.threshold_summary_label.breaches", "超過{count, number}件");
+   P ("label.thresholds.target_window_label", "目標{target} ±{tolerance}");
+   P ("label.thresholds.tolerance_label", "許容差{tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "上限の{percent}");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {上限を{amount}超過} other "
+      & "{残り{amount}}}");
+   P ("label.thresholds.budget_used_label", "{budget}中{used}使用");
+   P ("label.workflows.step_label", "ステップ{current, number}/{total, number}：{name}");
+   P ("label.workflows.milestone_label",
+      "マイルストーン{total, number}件中{current, "
+      & "number}件完了：{name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {ワークフロー項目なし} half "
+      & "{ワークフローの半分が完了} other {{total, "
+      & "number}件中{completed, number}件完了}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {キュー順位{position, number}} other "
+      & "{キュー順位{position, number}/{total, number}}}");
+   P ("label.changes.change_set_label.none", "変更なし");
+   P ("label.changes.change_set_label.added", "{count, number}件追加");
+   P ("label.changes.change_set_label.removed", "{count, number}件削除");
+   P ("label.changes.change_set_label.modified", "{count, number}件変更");
+   P ("label.changes.change_set_label.unchanged", "{count, number}件変更なし");
+   P ("label.changes.sync_change_label.none", "同期の変更なし");
+   P ("label.changes.sync_change_label.uploaded", "{count, number}件アップロード");
+   P ("label.changes.sync_change_label.downloaded", "{count, number}件ダウンロード");
+   P ("label.changes.sync_change_label.deleted", "{count, number}件削除");
+   P ("label.changes.sync_change_label.conflicts", "競合{count, number}件");
+   P ("label.changes.net_change_label",
+      "{state, select, none {正味の変更なし} up {正味+{count, "
+      & "number}件} other {正味-{count, number}件}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {レビューする変更なし} all "
+      & "{すべての変更をレビュー済み} other {変更{total, "
+      & "number}件中{reviewed, number}件をレビュー済み}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name}：{new_value}のまま変更なし} "
+      & "up {{field_name}が{old_value}から{new_value}に増加} other "
+      & "{{field_name}が{old_value}から{new_value}に減少}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {選択できる行なし} none "
+      & "{行が選択されていません} all {全{total, "
+      & "number}行を選択済み} other {{total, number}行中{selected, "
+      & "number}行を選択済み}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {ページなし} other {{pages, plural, =0 "
+      & "{ページなし} other {{rows, plural, =0 {ページ{page, "
+      & "number}/{pages, number}} other {ページ{page, number}/{pages, "
+      & "number}、{rows, number}行}}}}}}");
+   P ("label.tables.filter_label",
+      "{state, select, no_rows {行なし} none {一致する行なし} all "
+      & "{全{total, number}行を表示} other {{total, number}行中{visible, "
+      & "number}行を表示}}");
+   P ("label.tables.row_range_label",
+      "{state, select, none {行なし} single {{total, "
+      & "number}行中{first_row, number}行目} other {{total, "
+      & "number}行中{first_row, number}～{last_row, number}行目}}");
+   P ("label.forms.remaining_characters_label",
+      "{state, select, unlimited {文字数制限なし} none_left "
+      & "{残り0文字} left {残り{count, number}文字} other {{count, "
+      & "number}文字超過}}");
+   P ("label.forms.required_fields_label",
+      "{total, plural, =0 {必須フィールドなし} other {{missing, "
+      & "plural, =0 {必須フィールドはすべて入力済み} other "
+      & "{必須フィールド{total, number}件中{missing, "
+      & "number}件が未入力}}}}");
+   P ("label.forms.form_progress_label",
+      "{state, select, none {フィールドなし} all "
+      & "{すべてのフィールドが完了} other {フィールド{total, "
+      & "number}件中{completed, number}件完了}}");
+   P ("label.forms.section_progress_label",
+      "{state, select, none {{name}：フィールドなし} all "
+      & "{{name}：すべてのフィールドが完了} other "
+      & "{{name}：フィールド{total, number}件中{completed, "
+      & "number}件完了}}");
+   P ("label.forms.form_step_label",
+      "{total, plural, =0 {フォームステップなし} =1 "
+      & "{ステップ1/1：{name}} other {ステップ{current, "
+      & "number}/{total, number}：{name}}}");
+   P ("label.navigation.breadcrumb_position_label",
+      "{total, plural, =0 {パンくずリストなし} =1 "
+      & "{パンくず1/1：{name}} other {パンくず{current, "
+      & "number}/{total, number}：{name}}}");
+   P ("label.navigation.tab_label",
+      "{total, plural, =0 {タブなし} =1 {タブ1/1：{name}} other "
+      & "{タブ{current, number}/{total, number}：{name}}}");
+   P ("label.notifications.inbox_label",
+      "{total, plural, =0 {受信トレイは空です} other {{unread, "
+      & "plural, =0 {すべての通知が既読} other {通知{total, "
+      & "number}件中{unread, number}件が未読}}}}");
+   P ("label.notifications.delivery_attempt_label", "配信試行{attempt, number}/{max_attempts, number}");
+   P ("label.tasks.checklist_label",
+      "{total, plural, =0 {チェックリスト項目なし} other {{total, "
+      & "number}項目中{done, number}項目完了}}");
+   P ("label.attachments.upload_progress_label",
+      "{total, plural, =0 {アップロードなし} other "
+      & "{アップロード{total, number}件中{done, number}件完了}}");
+   P ("label.events.capacity_label",
+      "{capacity, plural, =0 {定員なし} other {{capacity, "
+      & "number}席中{reserved, number}席予約済み}}");
+   P ("label.events.waitlist_label",
+      "{total, plural, =0 {キャンセル待ち{position, number}番目} "
+      & "other {キャンセル待ち{total, number}人中{position, "
+      & "number}番目}}");
+   P ("label.comparisons.multi_value_summary",
+      "{mode, select, comparison_compact {{name} {changed, number}/{total, "
+      & "number}件変更} other {{name}：変更{changed, "
+      & "number}件、変更なし{unchanged, number}件、合計{total, "
+      & "number}件}}");
 end Labels_2;

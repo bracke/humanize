@@ -283,6 +283,22 @@ perf_covered_by = "Humanize.Colors.Contrast.Contrast_Label"
 score = 5
 
 [[unit]]
+name = "Humanize.Colors.Contrast.Localized"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-colors.adb"
+examples = 1
+example_file = "examples/domain_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
+score = 4
+
+[[unit]]
 name = "Humanize.Colors.Models"
 area = "formatting"
 docs = 1
@@ -296,6 +312,22 @@ perf = 1
 perf_applicable = 1
 perf_covered_by = "Humanize.Colors.Models.Brightness_Label"
 score = 5
+
+[[unit]]
+name = "Humanize.Colors.Models.Localized"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-colors.adb"
+examples = 1
+example_file = "examples/domain_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
+score = 4
 
 [[unit]]
 name = "Humanize.Colors.Names"
@@ -313,6 +345,22 @@ perf_covered_by = "Humanize.Colors.Names.Color_Description"
 score = 5
 
 [[unit]]
+name = "Humanize.Colors.Names.Localized"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-colors.adb"
+examples = 1
+example_file = "examples/domain_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
+score = 4
+
+[[unit]]
 name = "Humanize.Colors.Palettes"
 area = "formatting"
 docs = 1
@@ -326,6 +374,22 @@ perf = 1
 perf_applicable = 1
 perf_covered_by = "Humanize.Colors.Palettes.Palette_Summary"
 score = 5
+
+[[unit]]
+name = "Humanize.Colors.Palettes.Localized"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-colors.adb"
+examples = 1
+example_file = "examples/domain_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_color_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
+score = 4
 
 [[unit]]
 name = "Humanize.Numbers"
@@ -416,6 +480,22 @@ perf = 1
 perf_applicable = 1
 perf_covered_by = "Humanize.Numbers.Statistics.Outlier_Summary_Label"
 score = 5
+
+[[unit]]
+name = "Humanize.Numbers.Statistics.Localized"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-numbers.adb"
+examples = 1
+example_file = "examples/domain_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
+score = 4
 
 [[unit]]
 name = "Humanize.Units"
@@ -611,6 +691,22 @@ perf = 1
 perf_applicable = 1
 perf_covered_by = "Humanize.Strings.Metrics.Text_Summary"
 score = 5
+
+[[unit]]
+name = "Humanize.Strings.Metrics.Localized"
+area = "formatting"
+docs = 1
+tests = 1
+test_file = "tests/src/humanize-tests-strings.adb"
+examples = 1
+example_file = "examples/domain_labels_demo.adb"
+consumers = 1
+consumer_file = "tests/public_api_consumer/public_api_formatting_consumer.adb"
+perf = 0
+perf_applicable = 0
+perf_exempt_category = "trivial-label-facade"
+perf_exempt_reason = "specialized child facade; representative parent/family smoke path is tracked"
+score = 4
 
 [[unit]]
 name = "Humanize.Strings.Names"

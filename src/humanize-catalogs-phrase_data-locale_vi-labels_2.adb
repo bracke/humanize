@@ -549,4 +549,149 @@ begin
       & "chặn} completed_state {đã hoàn thành} failed_state {thất "
       & "bại} cancelled_state {đã hủy} skipped_state {đã bỏ qua} "
       & "other {đã tạm dừng}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {trong suốt} "
+      & "mostly_transparent {gần như trong suốt} translucent {mờ} "
+      & "mostly_opaque {gần như đục} other {đục}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {không có quan sát nào} other {{count, number} "
+      & "quan sát, nhỏ nhất {minimum} {unit}, trung vị {median} {unit}, "
+      & "lớn nhất {maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {không có quan sát nào} "
+      & "other {0 giá trị ngoại lai trên {total, number} quan sát}}} "
+      & "other {{outliers, number} giá trị ngoại lai trên {total, number} "
+      & "quan sát}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {vượt dung lượng {count, number} {unit}} "
+      & "other {còn {count, number}/{total, number} {unit}}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {vượt hạn mức {count, number} {unit} "
+      & "(đã dùng {percent})} near {sắp hết hạn mức: còn {count, "
+      & "number} {unit} (đã dùng {percent})} other {hạn mức khả "
+      & "dụng: còn {count, number} {unit} (đã dùng {percent})}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {không có tỷ lệ truy cập bộ nhớ "
+      & "đệm: không có yêu cầu} other {tỷ lệ truy cập bộ nhớ "
+      & "đệm {percent}: {hits, number} lần trúng, {misses, number} lần "
+      & "trượt}}");
+   P ("label.markup.attribute_count_label.total", "{count, number} thuộc tính");
+   P ("label.markup.attribute_count_label.data", "{count, number} thuộc tính dữ liệu");
+   P ("label.markup.attribute_count_label.aria", "{count, number} thuộc tính ARIA");
+   P ("label.markup.attribute_count_label.events", "{count, number} trình xử lý sự kiện");
+   P ("label.markup.heading_label", "tiêu đề cấp {level, number}");
+   P ("label.markup.tag_count_label.total", "{count, number} thẻ");
+   P ("label.markup.tag_count_label.links", "{count, number} liên kết");
+   P ("label.markup.tag_count_label.media", "{count, number} phần tử đa phương tiện");
+   P ("label.markup.tag_count_label.forms", "{count, number} điều khiển biểu mẫu");
+   P ("label.markup.document_outline_label.headings", "{count, number} tiêu đề");
+   P ("label.markup.document_outline_label.landmarks", "{count, number} mốc");
+   P ("label.markup.document_outline_label.forms", "{count, number} biểu mẫu");
+   P ("label.markup.document_outline_label.media", "{count, number} phần tử đa phương tiện");
+   P ("label.markup.table_navigation_label",
+      "{caption} hàng {row, number}/{rows, number}, cột {column, "
+      & "number}/{columns, number}");
+   P ("label.secrets.secret_count_label.total", "{count, number} bí mật");
+   P ("label.secrets.secret_count_label.masked", "{count, number} đã che");
+   P ("label.secrets.secret_count_label.unset", "{count, number} chưa đặt");
+   P ("label.secrets.secret_count_label.fingerprints", "{count, number} dấu vân tay");
+   P ("label.schema.type_mismatch_label",
+      "trường {field_name} cần {expected, select, string_field {chuỗi} "
+      & "integer_field {số nguyên} decimal_field {số thập phân} "
+      & "boolean_field {boolean} date_field {ngày} date_time_field {ngày "
+      & "giờ} object_field {đối tượng} array_field {mảng} enum_field "
+      & "{enum} binary_field {nhị phân} null_field {null} any_field {bất "
+      & "kỳ} other {không xác định}}, nhận được {actual, select, "
+      & "string_field {chuỗi} integer_field {số nguyên} decimal_field "
+      & "{số thập phân} boolean_field {boolean} date_field {ngày} "
+      & "date_time_field {ngày giờ} object_field {đối tượng} "
+      & "array_field {mảng} enum_field {enum} binary_field {nhị phân} "
+      & "null_field {null} any_field {bất kỳ} other {không xác định}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, number} vấn đề chặn} "
+      & "blocking {{base}, {blocking, number} vấn đề chặn} only {chỉ "
+      & "{base}} other {{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {phạm vi mục tiêu từ {low} "
+      & "đến {high}} other {khoảng mục tiêu từ {low} đến {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} trong phạm vi dự kiến} below "
+      & "{{value} dưới phạm vi dự kiến} other {{value} trên phạm vi "
+      & "dự kiến}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} ở ngưỡng nghiêm trọng} "
+      & "warning {{value} ở ngưỡng cảnh báo} other {{value} trong "
+      & "phạm vi bình thường}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {chưa vượt ngưỡng} other {vượt ngưỡng "
+      & "{difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {đạt mục tiêu} below {thấp hơn mục tiêu "
+      & "{difference}} other {cao hơn mục tiêu {difference}}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {đã vượt giới hạn} near {gần "
+      & "giới hạn, còn {distance}} other {cách giới hạn {distance}}}");
+   P ("label.thresholds.threshold_summary_label.none", "không có chỉ số nào");
+   P ("label.thresholds.threshold_summary_label.normal", "{count, number} bình thường");
+   P ("label.thresholds.threshold_summary_label.warnings", "{count, number} cảnh báo");
+   P ("label.thresholds.threshold_summary_label.critical", "{count, number} nghiêm trọng");
+   P ("label.thresholds.threshold_summary_label.breaches", "{count, number} lần vượt ngưỡng");
+   P ("label.thresholds.target_window_label", "mục tiêu {target} cộng trừ {tolerance}");
+   P ("label.thresholds.tolerance_label", "dung sai {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} giới hạn");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {vượt giới hạn {amount}} other {còn "
+      & "{amount}}}");
+   P ("label.thresholds.budget_used_label", "đã dùng {used}/{budget}");
+   P ("label.workflows.step_label", "bước {current, number}/{total, number}: {name}");
+   P ("label.workflows.milestone_label",
+      "đã hoàn thành {current, number}/{total, number} cột mốc: "
+      & "{name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {không có mục quy trình nào} half {đã đi "
+      & "được nửa quy trình} other {đã hoàn thành {completed, "
+      & "number}/{total, number}}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {vị trí hàng đợi {position, number}} other "
+      & "{vị trí hàng đợi {position, number}/{total, number}}}");
+   P ("label.changes.change_set_label.none", "không có thay đổi");
+   P ("label.changes.change_set_label.added", "đã thêm {count, number}");
+   P ("label.changes.change_set_label.removed", "đã xóa {count, number}");
+   P ("label.changes.change_set_label.modified", "đã thay đổi {count, number}");
+   P ("label.changes.change_set_label.unchanged", "{count, number} không đổi");
+   P ("label.changes.sync_change_label.none", "không có thay đổi đồng bộ");
+   P ("label.changes.sync_change_label.uploaded", "đã tải lên {count, number}");
+   P ("label.changes.sync_change_label.downloaded", "đã tải xuống {count, number}");
+   P ("label.changes.sync_change_label.deleted", "đã xóa {count, number}");
+   P ("label.changes.sync_change_label.conflicts", "{count, number} xung đột");
+   P ("label.changes.net_change_label",
+      "{state, select, none {không có thay đổi ròng} up {ròng +{count, "
+      & "number} mục} other {ròng -{count, number} mục}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {không có thay đổi cần xem xét} all {đã "
+      & "xem xét mọi thay đổi} other {đã xem xét {reviewed, "
+      & "number}/{total, number} thay đổi}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} giữ nguyên ở {new_value}} up "
+      & "{{field_name} tăng từ {old_value} lên {new_value}} other "
+      & "{{field_name} giảm từ {old_value} xuống {new_value}}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {không có hàng nào để chọn} none "
+      & "{chưa chọn hàng nào} all {đã chọn tất cả {total, number} "
+      & "hàng} other {đã chọn {selected, number}/{total, number} hàng}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {không có trang nào} other {{pages, plural, =0 "
+      & "{không có trang nào} other {{rows, plural, =0 {trang {page, "
+      & "number}/{pages, number}} other {trang {page, number}/{pages, number}, "
+      & "{rows, number} hàng}}}}}}");
+   P ("label.tables.filter_label",
+      "{state, select, no_rows {không có hàng} none {không có hàng nào "
+      & "khớp} all {hiển thị tất cả {total, number} hàng} other "
+      & "{hiển thị {visible, number}/{total, number} hàng}}");
+   P ("label.tables.row_range_label",
+      "{state, select, none {không có hàng} single {hàng {first_row, "
+      & "number}/{total, number}} other {hàng {first_row, number}-{last_row, "
+      & "number}/{total, number}}}");
 end Labels_2;

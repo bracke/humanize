@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Accounts.Localized is
@@ -24,9 +25,25 @@ package body Humanize.Accounts.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "state", Lower (Account_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Account_Label;
+
+   function Account_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Account_State;
+       Options : Account_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Accounts.Account_Label (Name => Name, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Accounts.Account_Label (Name => Name, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Account_Label (Context, Name => Name, State =>
+        State));
    end Account_Label;
 
    function Account_State_Label
@@ -92,8 +109,8 @@ package body Humanize.Accounts.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "succeeded", Lower (Boolean'Image (Succeeded)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Login_Attempt_Label;
 
@@ -126,9 +143,25 @@ package body Humanize.Accounts.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "state", Lower (Session_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Session_Label;
+
+   function Session_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Session_State;
+       Options : Account_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Accounts.Session_Label (Name => Name, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Accounts.Session_Label (Name => Name, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Session_Label (Context, Name => Name, State =>
+        State));
    end Session_Label;
 
    function Session_State_Label
@@ -156,7 +189,24 @@ package body Humanize.Accounts.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Account_Label (Context, Name, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Account_Label (Context, Name => Name, State => State),
+         Target, Written, Status);
+   end Account_Label_Into;
+
+   procedure Account_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Account_State;
+       Options : Account_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Account_Label (Context, Name => Name, State => State, Options => Options),
+         Target, Written, Status);
    end Account_Label_Into;
 
    procedure Account_State_Label_Into
@@ -167,7 +217,7 @@ package body Humanize.Accounts.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Account_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Account_State_Label (Context, State => State), Target, Written, Status);
    end Account_State_Label_Into;
 
    procedure Device_Trust_Label_Into
@@ -178,7 +228,7 @@ package body Humanize.Accounts.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Device_Trust_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Device_Trust_Label (Context, State => State), Target, Written, Status);
    end Device_Trust_Label_Into;
 
    procedure Last_Active_Label_Into
@@ -190,7 +240,9 @@ package body Humanize.Accounts.Localized is
        Status    : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Last_Active_Label (Context, Name, Time_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Last_Active_Label (Context, Name => Name, Time_Text => Time_Text),
+         Target, Written, Status);
    end Last_Active_Label_Into;
 
    procedure Login_Attempt_Label_Into
@@ -202,7 +254,9 @@ package body Humanize.Accounts.Localized is
        Status    : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Login_Attempt_Label (Context, Name, Succeeded), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Login_Attempt_Label (Context, Name => Name, Succeeded => Succeeded),
+         Target, Written, Status);
    end Login_Attempt_Label_Into;
 
    procedure MFA_State_Label_Into
@@ -213,7 +267,7 @@ package body Humanize.Accounts.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (MFA_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (MFA_State_Label (Context, State => State), Target, Written, Status);
    end MFA_State_Label_Into;
 
    procedure Session_Label_Into
@@ -225,7 +279,24 @@ package body Humanize.Accounts.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Session_Label (Context, Name, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Session_Label (Context, Name => Name, State => State),
+         Target, Written, Status);
+   end Session_Label_Into;
+
+   procedure Session_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Session_State;
+       Options : Account_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Session_Label (Context, Name => Name, State => State, Options => Options),
+         Target, Written, Status);
    end Session_Label_Into;
 
    procedure Session_State_Label_Into
@@ -236,7 +307,7 @@ package body Humanize.Accounts.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Session_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Session_State_Label (Context, State => State), Target, Written, Status);
    end Session_State_Label_Into;
 
 end Humanize.Accounts.Localized;

@@ -662,6 +662,9 @@ package body Check_Humanize_Public_API_Generated is
             return "parser-wrapper";
          elsif Contains (Name, "Humanize.Phrases.") then
             return "phrase-wrapper";
+         elsif Name'Length > 10 and then Name (Name'Last - 9 .. Name'Last) = ".Localized" then
+            --  A localized label twin: its parent's paths carry the evidence.
+            return "trivial-label-facade";
          elsif Class_Name = "specialized-child-facade" then
             return "family-child-facade";
          elsif Name = "Humanize.Catalogs"

@@ -464,4 +464,12 @@ package body Humanize.Parsing.Phrases is
    function Phrase_Name (Index : Positive) return String is
      (Field (Humanize.Parsing.Phrase_Keys.Entries (Humanize.Parsing.Phrase_Keys.Entries'First + Index - 1).all, 1));
 
+   function Phrase_Arguments (Index : Positive) return String is
+      Entry_Text : constant String :=
+        Humanize.Parsing.Phrase_Keys.Entries (Humanize.Parsing.Phrase_Keys.Entries'First + Index - 1).all;
+      Name       : constant String := Field (Entry_Text, 1);
+   begin
+      return Entry_Text (Entry_Text'First + Name'Length + 1 .. Entry_Text'Last);
+   end Phrase_Arguments;
+
 end Humanize.Parsing.Phrases;

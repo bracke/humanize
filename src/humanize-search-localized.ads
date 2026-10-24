@@ -55,6 +55,20 @@ package Humanize.Search.Localized is
    --  @param State As for the parent's Filter_Label.
    --  @return The label in Context's locale.
 
+   function Filter_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Value   : String;
+       State   : Filter_State;
+       Options : Search_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Filter_Label.
+   --  @param Value As for the parent's Filter_Label.
+   --  @param State As for the parent's Filter_Label.
+   --  @param Options As for the parent's Filter_Label.
+   --  @return The label in Context's locale.
+
    function Filter_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Filter_State)
@@ -231,6 +245,24 @@ package Humanize.Search.Localized is
    --  @param Name As for the parent's Filter_Label.
    --  @param Value As for the parent's Filter_Label.
    --  @param State As for the parent's Filter_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Filter_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Value   : String;
+       State   : Filter_State;
+       Options : Search_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Filter_Label.
+   --  @param Value As for the parent's Filter_Label.
+   --  @param State As for the parent's Filter_Label.
+   --  @param Options As for the parent's Filter_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

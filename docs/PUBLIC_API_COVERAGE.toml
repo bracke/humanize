@@ -30,7 +30,7 @@ usecase = "shared context, status, catalog, locale, style, capability, and bound
 
 [[area]]
 name = "formatting"
-units = 38
+units = 44
 docs = 1
 tests = 1
 examples = 1

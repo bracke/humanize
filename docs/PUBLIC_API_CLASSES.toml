@@ -4,9 +4,9 @@
 # unit_class rows classify every public package in the allowlist.
 
 [summary]
-total_units = 133
+total_units = 139
 primary_facades = 85
-specialized_child_facades = 42
+specialized_child_facades = 48
 support_type_facades = 6
 
 [[class]]
@@ -138,7 +138,19 @@ class = "specialized-child-facade"
 reason = "focused public child package for a large Humanize feature family"
 
 [[unit_class]]
+name = "Humanize.Colors.Contrast.Localized"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
 name = "Humanize.Colors.Models"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Colors.Models.Localized"
 area = "formatting"
 class = "specialized-child-facade"
 reason = "focused public child package for a large Humanize feature family"
@@ -150,7 +162,19 @@ class = "specialized-child-facade"
 reason = "focused public child package for a large Humanize feature family"
 
 [[unit_class]]
+name = "Humanize.Colors.Names.Localized"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
 name = "Humanize.Colors.Palettes"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Colors.Palettes.Localized"
 area = "formatting"
 class = "specialized-child-facade"
 reason = "focused public child package for a large Humanize feature family"
@@ -187,6 +211,12 @@ reason = "focused public child package for a large Humanize feature family"
 
 [[unit_class]]
 name = "Humanize.Numbers.Statistics"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Numbers.Statistics.Localized"
 area = "formatting"
 class = "specialized-child-facade"
 reason = "focused public child package for a large Humanize feature family"
@@ -265,6 +295,12 @@ reason = "focused public child package for a large Humanize feature family"
 
 [[unit_class]]
 name = "Humanize.Strings.Metrics"
+area = "formatting"
+class = "specialized-child-facade"
+reason = "focused public child package for a large Humanize feature family"
+
+[[unit_class]]
+name = "Humanize.Strings.Metrics.Localized"
 area = "formatting"
 class = "specialized-child-facade"
 reason = "focused public child package for a large Humanize feature family"

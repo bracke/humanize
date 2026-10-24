@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Moderation.Localized is
@@ -24,8 +25,8 @@ package body Humanize.Moderation.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "item", Humanize.Bounded_Text.Clean (Item));
       Selection := Sel.With_Arg (Selection, "state", Lower (Report_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "item", Humanize.Bounded_Text.Clean (Item));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Appeal_Label;
 
@@ -58,9 +59,25 @@ package body Humanize.Moderation.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "item", Humanize.Bounded_Text.Clean (Item));
       Selection := Sel.With_Arg (Selection, "action", Lower (Moderation_Action'Image (Action)));
+      Selection := Sel.With_Arg (Selection, "item", Humanize.Bounded_Text.Clean (Item));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Moderation_Label;
+
+   function Moderation_Label
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       Action  : Moderation_Action;
+       Options : Moderation_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Moderation.Moderation_Label (Item => Item, Action => Action, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Moderation.Moderation_Label (Item => Item, Action => Action);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Moderation_Label (Context, Item => Item, Action
+        => Action));
    end Moderation_Label;
 
    function Moderation_Queue_Label
@@ -76,8 +93,8 @@ package body Humanize.Moderation.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "pending", Long_Long_Integer (Pending));
       Selection := Sel.With_Arg (Selection, "escalated", Long_Long_Integer (Escalated));
+      Selection := Sel.With_Arg (Selection, "pending", Long_Long_Integer (Pending));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Moderation_Queue_Label;
 
@@ -94,9 +111,25 @@ package body Humanize.Moderation.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "item", Humanize.Bounded_Text.Clean (Item));
       Selection := Sel.With_Arg (Selection, "state", Lower (Report_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "item", Humanize.Bounded_Text.Clean (Item));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Report_Label;
+
+   function Report_Label
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       State   : Report_State;
+       Options : Moderation_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Moderation.Report_Label (Item => Item, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Moderation.Report_Label (Item => Item, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Report_Label (Context, Item => Item, State =>
+        State));
    end Report_Label;
 
    function Report_State_Label
@@ -128,9 +161,25 @@ package body Humanize.Moderation.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "item", Humanize.Bounded_Text.Clean (Item));
       Selection := Sel.With_Arg (Selection, "state", Lower (Review_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "item", Humanize.Bounded_Text.Clean (Item));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Review_Label;
+
+   function Review_Label
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       State   : Review_State;
+       Options : Moderation_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Moderation.Review_Label (Item => Item, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Moderation.Review_Label (Item => Item, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Review_Label (Context, Item => Item, State =>
+        State));
    end Review_Label;
 
    function Review_State_Label
@@ -158,7 +207,7 @@ package body Humanize.Moderation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Appeal_Label (Context, Item, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Appeal_Label (Context, Item => Item, State => State), Target, Written, Status);
    end Appeal_Label_Into;
 
    procedure Moderation_Action_Label_Into
@@ -169,7 +218,7 @@ package body Humanize.Moderation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Moderation_Action_Label (Context, Action), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Moderation_Action_Label (Context, Action => Action), Target, Written, Status);
    end Moderation_Action_Label_Into;
 
    procedure Moderation_Label_Into
@@ -181,7 +230,24 @@ package body Humanize.Moderation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Moderation_Label (Context, Item, Action), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Moderation_Label (Context, Item => Item, Action => Action),
+         Target, Written, Status);
+   end Moderation_Label_Into;
+
+   procedure Moderation_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       Action  : Moderation_Action;
+       Options : Moderation_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Moderation_Label (Context, Item => Item, Action => Action, Options => Options),
+         Target, Written, Status);
    end Moderation_Label_Into;
 
    procedure Moderation_Queue_Label_Into
@@ -193,7 +259,9 @@ package body Humanize.Moderation.Localized is
        Status    : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Moderation_Queue_Label (Context, Pending, Escalated), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Moderation_Queue_Label (Context, Pending => Pending, Escalated => Escalated),
+         Target, Written, Status);
    end Moderation_Queue_Label_Into;
 
    procedure Report_Label_Into
@@ -205,7 +273,22 @@ package body Humanize.Moderation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Report_Label (Context, Item, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Report_Label (Context, Item => Item, State => State), Target, Written, Status);
+   end Report_Label_Into;
+
+   procedure Report_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       State   : Report_State;
+       Options : Moderation_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Report_Label (Context, Item => Item, State => State, Options => Options),
+         Target, Written, Status);
    end Report_Label_Into;
 
    procedure Report_State_Label_Into
@@ -216,7 +299,7 @@ package body Humanize.Moderation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Report_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Report_State_Label (Context, State => State), Target, Written, Status);
    end Report_State_Label_Into;
 
    procedure Review_Label_Into
@@ -228,7 +311,22 @@ package body Humanize.Moderation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Review_Label (Context, Item, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Review_Label (Context, Item => Item, State => State), Target, Written, Status);
+   end Review_Label_Into;
+
+   procedure Review_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Item    : String;
+       State   : Review_State;
+       Options : Moderation_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Review_Label (Context, Item => Item, State => State, Options => Options),
+         Target, Written, Status);
    end Review_Label_Into;
 
    procedure Review_State_Label_Into
@@ -239,7 +337,7 @@ package body Humanize.Moderation.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Review_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Review_State_Label (Context, State => State), Target, Written, Status);
    end Review_State_Label_Into;
 
 end Humanize.Moderation.Localized;

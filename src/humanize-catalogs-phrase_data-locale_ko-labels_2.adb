@@ -386,4 +386,314 @@ begin
       & "대기 중} blocked_state {차단됨} completed_state {완료됨} "
       & "failed_state {실패} cancelled_state {취소됨} skipped_state "
       & "{건너뜀} other {일시 중지됨}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {투명} mostly_transparent "
+      & "{거의 투명} translucent {반투명} mostly_opaque {거의 "
+      & "불투명} other {불투명}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {관측값 없음} other {관측값 {count, "
+      & "number}개, 최소 {minimum} {unit}, 중앙값 {median} {unit}, 최대 "
+      & "{maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {관측값 없음} other "
+      & "{관측값 {total, number}개 중 이상값 0개}}} other {관측값 "
+      & "{total, number}개 중 이상값 {outliers, number}개}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {용량 {count, number} {unit} 초과} other "
+      & "{{total, number} {unit} 중 {count, number} {unit} 남음}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {할당량 {count, number} {unit} "
+      & "초과({percent} 사용)} near {할당량 한도 임박: {count, "
+      & "number} {unit} 남음({percent} 사용)} other {할당량 여유: "
+      & "{count, number} {unit} 남음({percent} 사용)}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {캐시 적중률 없음: 요청 없음} other "
+      & "{캐시 적중률 {percent}: 적중 {hits, number}회, 실패 {misses, "
+      & "number}회}}");
+   P ("label.markup.attribute_count_label.total", "속성 {count, number}개");
+   P ("label.markup.attribute_count_label.data", "data 속성 {count, number}개");
+   P ("label.markup.attribute_count_label.aria", "ARIA 속성 {count, number}개");
+   P ("label.markup.attribute_count_label.events", "이벤트 핸들러 {count, number}개");
+   P ("label.markup.heading_label", "제목 수준 {level, number}");
+   P ("label.markup.tag_count_label.total", "태그 {count, number}개");
+   P ("label.markup.tag_count_label.links", "링크 {count, number}개");
+   P ("label.markup.tag_count_label.media", "미디어 요소 {count, number}개");
+   P ("label.markup.tag_count_label.forms", "양식 컨트롤 {count, number}개");
+   P ("label.markup.document_outline_label.headings", "제목 {count, number}개");
+   P ("label.markup.document_outline_label.landmarks", "랜드마크 {count, number}개");
+   P ("label.markup.document_outline_label.forms", "양식 {count, number}개");
+   P ("label.markup.document_outline_label.media", "미디어 요소 {count, number}개");
+   P ("label.markup.table_navigation_label",
+      "{caption}, {rows, number}행 중 {row, number}행, {columns, "
+      & "number}열 중 {column, number}열");
+   P ("label.secrets.secret_count_label.total", "시크릿 {count, number}개");
+   P ("label.secrets.secret_count_label.masked", "{count, number}개 마스킹됨");
+   P ("label.secrets.secret_count_label.unset", "{count, number}개 설정 안 됨");
+   P ("label.secrets.secret_count_label.fingerprints", "지문 {count, number}개");
+   P ("label.schema.type_mismatch_label",
+      "필드 {field_name}: 예상 {expected, select, string_field "
+      & "{문자열} integer_field {정수} decimal_field {소수} "
+      & "boolean_field {불리언} date_field {날짜} date_time_field "
+      & "{날짜/시간} object_field {객체} array_field {배열} enum_field "
+      & "{열거형} binary_field {바이너리} null_field {null} any_field "
+      & "{모든 값} other {알 수 없음}}, 실제 {actual, select, "
+      & "string_field {문자열} integer_field {정수} decimal_field {소수} "
+      & "boolean_field {불리언} date_field {날짜} date_time_field "
+      & "{날짜/시간} object_field {객체} array_field {배열} enum_field "
+      & "{열거형} binary_field {바이너리} null_field {null} any_field "
+      & "{모든 값} other {알 수 없음}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {차단 문제 {blocking, number}개} "
+      & "blocking {{base}, 차단 문제 {blocking, number}개} only "
+      & "{{base}만} other {{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {목표 범위 {low}~{high}} "
+      & "other {목표 구간 {low}~{high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value}, 예상 범위 내} below {{value}, "
+      & "예상 범위 미만} other {{value}, 예상 범위 초과}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value}, 위험 임계값 도달} warning "
+      & "{{value}, 경고 임계값 도달} other {{value}, 정상 범위 내}}");
+   P ("label.thresholds.breach_label", "{state, select, ok {위반 없음} other {{difference} 위반}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {목표 달성} below {목표보다 {difference} "
+      & "낮음} other {목표보다 {difference} 높음}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {한도 초과} near {한도 임박, "
+      & "{distance} 남음} other {한도까지 {distance}}}");
+   P ("label.thresholds.threshold_summary_label.none", "지표 없음");
+   P ("label.thresholds.threshold_summary_label.normal", "정상 {count, number}개");
+   P ("label.thresholds.threshold_summary_label.warnings", "경고 {count, number}개");
+   P ("label.thresholds.threshold_summary_label.critical", "위험 {count, number}개");
+   P ("label.thresholds.threshold_summary_label.breaches", "위반 {count, number}건");
+   P ("label.thresholds.target_window_label", "목표 {target} ±{tolerance}");
+   P ("label.thresholds.tolerance_label", "허용 오차 {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "한도의 {percent}");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {한도 {amount} 초과} other {{amount} "
+      & "남음}}");
+   P ("label.thresholds.budget_used_label", "{budget} 중 {used} 사용");
+   P ("label.workflows.step_label", "{total, number}단계 중 {current, number}단계: {name}");
+   P ("label.workflows.milestone_label",
+      "마일스톤 {total, number}개 중 {current, number}개 완료: "
+      & "{name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {워크플로 항목 없음} half {워크플로 "
+      & "절반 완료} other {{total, number}개 중 {completed, number}개 "
+      & "완료}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {대기열 {position, number}번째} other "
+      & "{대기열 {total, number}개 중 {position, number}번째}}");
+   P ("label.changes.change_set_label.none", "변경 없음");
+   P ("label.changes.change_set_label.added", "{count, number}개 추가");
+   P ("label.changes.change_set_label.removed", "{count, number}개 제거");
+   P ("label.changes.change_set_label.modified", "{count, number}개 변경");
+   P ("label.changes.change_set_label.unchanged", "{count, number}개 변경 없음");
+   P ("label.changes.sync_change_label.none", "동기화 변경 없음");
+   P ("label.changes.sync_change_label.uploaded", "{count, number}개 업로드");
+   P ("label.changes.sync_change_label.downloaded", "{count, number}개 다운로드");
+   P ("label.changes.sync_change_label.deleted", "{count, number}개 삭제");
+   P ("label.changes.sync_change_label.conflicts", "충돌 {count, number}개");
+   P ("label.changes.net_change_label",
+      "{state, select, none {순변경 없음} up {순증 +{count, "
+      & "number}개} other {순감 -{count, number}개}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {검토할 변경 없음} all {모든 변경 "
+      & "검토 완료} other {변경 {total, number}개 중 {reviewed, "
+      & "number}개 검토 완료}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name}: {new_value}(변경 없음)} up "
+      & "{{field_name}: {old_value}에서 {new_value}(으)로 증가} other "
+      & "{{field_name}: {old_value}에서 {new_value}(으)로 감소}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {선택할 수 있는 행 없음} none "
+      & "{선택된 행 없음} all {행 {total, number}개 모두 선택됨} "
+      & "other {행 {total, number}개 중 {selected, number}개 선택됨}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {페이지 없음} other {{pages, plural, =0 "
+      & "{페이지 없음} other {{rows, plural, =0 {{pages, number}페이지 "
+      & "중 {page, number}페이지} other {{pages, number}페이지 중 "
+      & "{page, number}페이지, 행 {rows, number}개}}}}}}");
+   P ("label.tables.filter_label",
+      "{state, select, no_rows {행 없음} none {일치하는 행 없음} "
+      & "all {행 {total, number}개 모두 표시됨} other {행 {total, "
+      & "number}개 중 {visible, number}개 표시됨}}");
+   P ("label.tables.row_range_label",
+      "{state, select, none {행 없음} single {{total, number}행 중 "
+      & "{first_row, number}행} other {{total, number}행 중 {first_row, "
+      & "number}~{last_row, number}행}}");
+   P ("label.forms.remaining_characters_label",
+      "{state, select, unlimited {글자 수 제한 없음} none_left {남은 "
+      & "글자 없음} left {{count, number}자 남음} other {{count, "
+      & "number}자 초과}}");
+   P ("label.forms.required_fields_label",
+      "{total, plural, =0 {필수 필드 없음} other {{missing, plural, =0 "
+      & "{필수 필드 모두 입력됨} other {필수 필드 {total, "
+      & "number}개 중 {missing, number}개 누락}}}}");
+   P ("label.forms.form_progress_label",
+      "{state, select, none {필드 없음} all {모든 필드 완료} other "
+      & "{필드 {total, number}개 중 {completed, number}개 완료}}");
+   P ("label.forms.section_progress_label",
+      "{state, select, none {{name}: 필드 없음} all {{name}: 모든 "
+      & "필드 완료} other {{name}: 필드 {total, number}개 중 "
+      & "{completed, number}개 완료}}");
+   P ("label.forms.form_step_label",
+      "{total, plural, =0 {양식 단계 없음} =1 {1단계 중 1단계: "
+      & "{name}} other {{total, number}단계 중 {current, number}단계: "
+      & "{name}}}");
+   P ("label.navigation.breadcrumb_position_label",
+      "{total, plural, =0 {이동 경로 없음} =1 {이동 경로 1/1: "
+      & "{name}} other {이동 경로 {current, number}/{total, number}: "
+      & "{name}}}");
+   P ("label.navigation.tab_label",
+      "{total, plural, =0 {탭 없음} =1 {탭 1/1: {name}} other {탭 "
+      & "{current, number}/{total, number}: {name}}}");
+   P ("label.notifications.inbox_label",
+      "{total, plural, =0 {받은편지함 비어 있음} other {{unread, "
+      & "plural, =0 {모든 알림 읽음} other {알림 {total, number}개 중 "
+      & "{unread, number}개 읽지 않음}}}}");
+   P ("label.notifications.delivery_attempt_label", "전송 시도 {attempt, number}/{max_attempts, number}");
+   P ("label.tasks.checklist_label",
+      "{total, plural, =0 {체크리스트 항목 없음} other {항목 "
+      & "{total, number}개 중 {done, number}개 완료}}");
+   P ("label.attachments.upload_progress_label",
+      "{total, plural, =0 {업로드 없음} other {업로드 {total, "
+      & "number}개 중 {done, number}개 완료}}");
+   P ("label.events.capacity_label",
+      "{capacity, plural, =0 {정원 없음} other {좌석 {capacity, "
+      & "number}개 중 {reserved, number}개 예약됨}}");
+   P ("label.events.waitlist_label",
+      "{total, plural, =0 {대기자 명단 {position, number}번째} other "
+      & "{대기자 명단 {total, number}명 중 {position, number}번째}}");
+   P ("label.comparisons.multi_value_summary",
+      "{mode, select, comparison_compact {{name} {changed, number}/{total, "
+      & "number} 변경} other {{name}: {changed, number}개 변경, "
+      & "{unchanged, number}개 변경 없음, 총 {total, number}개}}");
+   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{brightness} {chroma} {temperature} {base, select, pink {분홍} other "
+      & "{{hue}}}");
+   P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
+   P ("label.groups", "{first}; {second}");
+   P ("label.parts", "{first}, {second}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
+      "현재 전경색이 큰 텍스트 대비 충족({v1}:{v2, number})");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_d_n",
+      "현재 전경색이 일반 텍스트 대비 충족({v1}:{v2, number})");
+   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_enhanced_text_contrast",
+      "{v1} 사용 시 향상된 텍스트 대비 {v2, number}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_large_text_contrast",
+      "{v1} 사용 시 큰 텍스트 대비 {v2, number}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_normal_text_contrast",
+      "{v1} 사용 시 일반 텍스트 대비 {v2}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_large_text_contrast",
+      "{v1} 사용 시 큰 텍스트 대비 {v2}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_enhanced_text_contrast",
+      "{v1} 사용 시 향상된 텍스트 대비 {v2}:{v3, number}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_n_n",
+      "현재 전경색이 큰 텍스트 대비 충족({v1, number}:{v2, "
+      & "number})");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_n_n",
+      "현재 전경색이 일반 텍스트 대비 충족({v1, number}:{v2, "
+      & "number})");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_d_n",
+      "현재 전경색이 향상된 텍스트 대비 충족({v1}:{v2, "
+      & "number})");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_n_n",
+      "현재 전경색이 향상된 텍스트 대비 충족({v1, "
+      & "number}:{v2, number})");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_low_confusion_risk_delta_n",
+      "적색맹: 혼동 위험 낮음, 델타 {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.deuteranopia_moderate_confusion_risk_delta_n",
+      "녹색맹: 혼동 위험 보통, 델타 {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_moderate_confusion_risk_delta_n",
+      "청색맹: 혼동 위험 보통, 델타 {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_high_confusion_risk_delta_n",
+      "전색맹: 혼동 위험 높음, 델타 {v1, number}");
+   P ("label.models.perceptual_difference_label.cie76_delta_d_dramatic_perceptual_difference",
+      "CIE76 델타 {v1}, 극적인 지각 차이");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_dramatic_perceptual_difference",
+      "CIE94 델타 {v1}, 극적인 지각 차이");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_dramatic_perceptual_difference",
+      "CIE94 섬유 델타 {v1}, 극적인 지각 차이");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_n_dramatic_perceptual_difference",
+      "CIEDE2000 델타 {v1, number}, 극적인 지각 차이");
+   P ("label.models.perceptual_difference_label.oklab_delta_d_large_perceptual_difference",
+      "OKLab 델타 {v1}, 큰 지각 차이");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_moderate_confusion_risk_delta_n",
+      "적색맹: 혼동 위험 보통, 델타 {v1, number}");
+   P ("label.models.perceptual_difference_label.cie94_delta_n_dramatic_perceptual_difference",
+      "CIE94 델타 {v1, number}, 극적인 지각 차이");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_d_dramatic_perceptual_difference",
+      "CIEDE2000 델타 {v1}, 극적인 지각 차이");
+   P ("label.models.perceptual_difference_label.oklab_delta_d_dramatic_perceptual_difference",
+      "OKLab 델타 {v1}, 극적인 지각 차이");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_low_confusion_risk_delta_n",
+      "전색맹: 혼동 위험 낮음, 델타 {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_distinct_delta_n",
+      "적색맹: 구별 가능, 델타 {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.deuteranopia_distinct_delta_n",
+      "녹색맹: 구별 가능, 델타 {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_distinct_delta_n",
+      "청색맹: 구별 가능, 델타 {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_distinct_delta_n",
+      "전색맹: 구별 가능, 델타 {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.achromatopsia_moderate_confusion_risk_delta_n",
+      "전색맹: 혼동 위험 보통, 델타 {v1, number}");
+   P ("label.models.perceptual_difference_label.cie76_delta_d_large_perceptual_difference",
+      "CIE76 델타 {v1}, 큰 지각 차이");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_large_perceptual_difference",
+      "CIE94 델타 {v1}, 큰 지각 차이");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_large_perceptual_difference",
+      "CIE94 섬유 델타 {v1}, 큰 지각 차이");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_d_large_perceptual_difference",
+      "CIEDE2000 델타 {v1}, 큰 지각 차이");
+   P ("label.models.perceptual_difference_label.oklab_delta_d_noticeable_perceptual_difference",
+      "OKLab 델타 {v1}, 눈에 띄는 지각 차이");
+   P ("label.contrast.color_vision_deficiency_label.protanopia_high_confusion_risk_delta_n",
+      "적색맹: 혼동 위험 높음, 델타 {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_high_confusion_risk_delta_n",
+      "청색맹: 혼동 위험 높음, 델타 {v1, number}");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_noticeable_perceptual_difference",
+      "CIE94 델타 {v1}, 눈에 띄는 지각 차이");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_noticeable_perceptual_difference",
+      "CIE94 섬유 델타 {v1}, 눈에 띄는 지각 차이");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_d_noticeable_perceptual_difference",
+      "CIEDE2000 델타 {v1}, 눈에 띄는 지각 차이");
+   P ("label.models.perceptual_difference_label.oklab_delta_n_noticeable_perceptual_difference",
+      "OKLab 델타 {v1, number}, 눈에 띄는 지각 차이");
+   P ("label.contrast.color_vision_deficiency_label.tritanopia_low_confusion_risk_delta_n",
+      "청색맹: 혼동 위험 낮음, 델타 {v1, number}");
+   P ("label.contrast.color_vision_deficiency_label.deuteranopia_low_confusion_risk_delta_n",
+      "녹색맹: 혼동 위험 낮음, 델타 {v1, number}");
+   P ("label.models.perceptual_difference_label.oklab_delta_n_large_perceptual_difference",
+      "OKLab 델타 {v1, number}, 큰 지각 차이");
+   P ("label.contrast.color_vision_deficiency_label.deuteranopia_high_confusion_risk_delta_n",
+      "녹색맹: 혼동 위험 높음, 델타 {v1, number}");
+   P ("label.models.perceptual_difference_label.cie76_delta_n_dramatic_perceptual_difference",
+      "CIE76 델타 {v1, number}, 극적인 지각 차이");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_n_dramatic_perceptual_difference",
+      "CIE94 섬유 델타 {v1, number}, 극적인 지각 차이");
+   P ("label.models.perceptual_difference_label.oklab_delta_n_dramatic_perceptual_difference",
+      "OKLab 델타 {v1, number}, 극적인 지각 차이");
+   P ("label.models.perceptual_difference_label.cie76_delta_n_large_perceptual_difference",
+      "CIE76 델타 {v1, number}, 큰 지각 차이");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_n_large_perceptual_difference",
+      "CIE94 섬유 델타 {v1, number}, 큰 지각 차이");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_n_large_perceptual_difference",
+      "CIEDE2000 델타 {v1, number}, 큰 지각 차이");
+   P ("label.models.perceptual_difference_label.cie76_delta_d_noticeable_perceptual_difference",
+      "CIE76 델타 {v1}, 눈에 띄는 지각 차이");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_subtle_perceptual_difference",
+      "CIE94 섬유 델타 {v1}, 미묘한 지각 차이");
+   P ("label.models.perceptual_difference_label.ciede2000_delta_n_noticeable_perceptual_difference",
+      "CIEDE2000 델타 {v1, number}, 눈에 띄는 지각 차이");
+   P ("label.models.perceptual_difference_label.cie94_textile_delta_n_noticeable_perceptual_difference",
+      "CIE94 섬유 델타 {v1, number}, 눈에 띄는 지각 차이");
+   P ("label.models.perceptual_difference_label.cie76_delta_d_barely_perceptible",
+      "CIE76 델타 {v1}, 거의 인지 불가");
+   P ("label.models.perceptual_difference_label.cie94_delta_d_imperceptible", "CIE94 델타 {v1}, 인지 불가");
 end Labels_2;

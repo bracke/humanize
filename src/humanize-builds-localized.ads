@@ -33,6 +33,18 @@ package Humanize.Builds.Localized is
    --  @param State As for the parent's Build_Label.
    --  @return The label in Context's locale.
 
+   function Build_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Build_State;
+       Options : Build_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Build_Label.
+   --  @param State As for the parent's Build_Label.
+   --  @param Options As for the parent's Build_Label.
+   --  @return The label in Context's locale.
+
    function Build_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Build_State)
@@ -111,6 +123,22 @@ package Humanize.Builds.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Build_Label.
    --  @param State As for the parent's Build_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Build_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Build_State;
+       Options : Build_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Build_Label.
+   --  @param State As for the parent's Build_Label.
+   --  @param Options As for the parent's Build_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

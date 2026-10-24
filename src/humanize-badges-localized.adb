@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Badges.Localized is
@@ -25,10 +26,27 @@ package body Humanize.Badges.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
-      Selection := Sel.With_Arg (Selection, "tone", Lower (Badge_Tone'Image (Tone)));
       Selection := Sel.With_Arg (Selection, "state", Lower (Badge_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "tone", Lower (Badge_Tone'Image (Tone)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Badge_Label;
+
+   function Badge_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Tone    : Badge_Tone;
+       State   : Badge_State;
+       Options : Badge_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Badges.Badge_Label (Name => Name, Tone => Tone, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Badges.Badge_Label (Name => Name, Tone => Tone, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Badge_Label (Context, Name => Name, Tone =>
+        Tone, State => State));
    end Badge_Label;
 
    function Badge_Priority_Label
@@ -92,8 +110,8 @@ package body Humanize.Badges.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "selected", Lower (Boolean'Image (Selected)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Chip_Label;
 
@@ -110,8 +128,8 @@ package body Humanize.Badges.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Count_Badge_Label;
 
@@ -210,9 +228,25 @@ package body Humanize.Badges.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "tone", Lower (Badge_Tone'Image (Tone)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Status_Badge_Label;
+
+   function Status_Badge_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Tone    : Badge_Tone;
+       Options : Badge_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Badges.Status_Badge_Label (Name => Name, Tone => Tone, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Badges.Status_Badge_Label (Name => Name, Tone => Tone);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Status_Badge_Label (Context, Name => Name, Tone
+        => Tone));
    end Status_Badge_Label;
 
    function Tag_Count_Label
@@ -273,7 +307,25 @@ package body Humanize.Badges.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Badge_Label (Context, Name, Tone, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Badge_Label (Context, Name => Name, Tone => Tone, State => State),
+         Target, Written, Status);
+   end Badge_Label_Into;
+
+   procedure Badge_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Tone    : Badge_Tone;
+       State   : Badge_State;
+       Options : Badge_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Badge_Label (Context, Name => Name, Tone => Tone, State => State, Options => Options),
+         Target, Written, Status);
    end Badge_Label_Into;
 
    procedure Badge_Priority_Label_Into
@@ -284,7 +336,7 @@ package body Humanize.Badges.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Badge_Priority_Label (Context, Priority), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Badge_Priority_Label (Context, Priority => Priority), Target, Written, Status);
    end Badge_Priority_Label_Into;
 
    procedure Badge_State_Label_Into
@@ -295,7 +347,7 @@ package body Humanize.Badges.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Badge_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Badge_State_Label (Context, State => State), Target, Written, Status);
    end Badge_State_Label_Into;
 
    procedure Badge_Tone_Label_Into
@@ -306,7 +358,7 @@ package body Humanize.Badges.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Badge_Tone_Label (Context, Tone), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Badge_Tone_Label (Context, Tone => Tone), Target, Written, Status);
    end Badge_Tone_Label_Into;
 
    procedure Chip_Label_Into
@@ -318,7 +370,9 @@ package body Humanize.Badges.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Chip_Label (Context, Name, Selected), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Chip_Label (Context, Name => Name, Selected => Selected),
+         Target, Written, Status);
    end Chip_Label_Into;
 
    procedure Count_Badge_Label_Into
@@ -330,7 +384,9 @@ package body Humanize.Badges.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Count_Badge_Label (Context, Name, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Count_Badge_Label (Context, Name => Name, Count => Count),
+         Target, Written, Status);
    end Count_Badge_Label_Into;
 
    procedure Deprecated_Label_Into
@@ -341,7 +397,7 @@ package body Humanize.Badges.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Deprecated_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Deprecated_Label (Context, Name => Name), Target, Written, Status);
    end Deprecated_Label_Into;
 
    procedure Dismiss_Label_Into
@@ -352,7 +408,7 @@ package body Humanize.Badges.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Dismiss_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Dismiss_Label (Context, Name => Name), Target, Written, Status);
    end Dismiss_Label_Into;
 
    procedure New_Label_Into
@@ -363,7 +419,7 @@ package body Humanize.Badges.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (New_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (New_Label (Context, Name => Name), Target, Written, Status);
    end New_Label_Into;
 
    procedure Overflow_Badge_Label_Into
@@ -374,7 +430,9 @@ package body Humanize.Badges.Localized is
        Status       : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Overflow_Badge_Label (Context, Hidden_Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Overflow_Badge_Label (Context, Hidden_Count => Hidden_Count),
+         Target, Written, Status);
    end Overflow_Badge_Label_Into;
 
    procedure Priority_Badge_Label_Into
@@ -386,7 +444,9 @@ package body Humanize.Badges.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Priority_Badge_Label (Context, Priority, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Priority_Badge_Label (Context, Priority => Priority, Name => Name),
+         Target, Written, Status);
    end Priority_Badge_Label_Into;
 
    procedure Status_Badge_Label_Into
@@ -398,7 +458,24 @@ package body Humanize.Badges.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Status_Badge_Label (Context, Name, Tone), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Status_Badge_Label (Context, Name => Name, Tone => Tone),
+         Target, Written, Status);
+   end Status_Badge_Label_Into;
+
+   procedure Status_Badge_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Tone    : Badge_Tone;
+       Options : Badge_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Status_Badge_Label (Context, Name => Name, Tone => Tone, Options => Options),
+         Target, Written, Status);
    end Status_Badge_Label_Into;
 
    procedure Tag_Count_Label_Into
@@ -409,7 +486,7 @@ package body Humanize.Badges.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Tag_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Tag_Count_Label (Context, Count => Count), Target, Written, Status);
    end Tag_Count_Label_Into;
 
    procedure Tag_Label_Into
@@ -420,7 +497,7 @@ package body Humanize.Badges.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Tag_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Tag_Label (Context, Name => Name), Target, Written, Status);
    end Tag_Label_Into;
 
    procedure Updated_Label_Into
@@ -431,7 +508,7 @@ package body Humanize.Badges.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Updated_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Updated_Label (Context, Name => Name), Target, Written, Status);
    end Updated_Label_Into;
 
 end Humanize.Badges.Localized;

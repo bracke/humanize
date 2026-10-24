@@ -13,6 +13,18 @@ package Humanize.Navigation.Localized is
    --  @param Target As for the parent's Back_Label.
    --  @return The label in Context's locale.
 
+   function Breadcrumb_Position_Label
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Current As for the parent's Breadcrumb_Position_Label.
+   --  @param Total As for the parent's Breadcrumb_Position_Label.
+   --  @param Name As for the parent's Breadcrumb_Position_Label.
+   --  @return The label in Context's locale.
+
    function Breadcrumb_Trail_Label
       (Context : Humanize.Contexts.Context;
        Depth   : Natural)
@@ -81,6 +93,20 @@ package Humanize.Navigation.Localized is
    --  @param State As for the parent's Navigation_Item_Label.
    --  @return The label in Context's locale.
 
+   function Navigation_Item_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Navigation_Item_Kind;
+       State   : Navigation_State;
+       Options : Navigation_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Navigation_Item_Label.
+   --  @param Kind As for the parent's Navigation_Item_Label.
+   --  @param State As for the parent's Navigation_Item_Label.
+   --  @param Options As for the parent's Navigation_Item_Label.
+   --  @return The label in Context's locale.
+
    function Navigation_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Navigation_State)
@@ -126,6 +152,34 @@ package Humanize.Navigation.Localized is
    --  @param Name As for the parent's Submenu_Label.
    --  @param Count As for the parent's Submenu_Label.
    --  @return The label in Context's locale.
+
+   function Tab_Label
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "")
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Current As for the parent's Tab_Label.
+   --  @param Total As for the parent's Tab_Label.
+   --  @param Name As for the parent's Tab_Label.
+   --  @return The label in Context's locale.
+
+   procedure Breadcrumb_Position_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Current As for the parent's Breadcrumb_Position_Label.
+   --  @param Total As for the parent's Breadcrumb_Position_Label.
+   --  @param Name As for the parent's Breadcrumb_Position_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
 
    procedure Breadcrumb_Trail_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -203,6 +257,24 @@ package Humanize.Navigation.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Navigation_Item_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Navigation_Item_Kind;
+       State   : Navigation_State;
+       Options : Navigation_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Navigation_Item_Label.
+   --  @param Kind As for the parent's Navigation_Item_Label.
+   --  @param State As for the parent's Navigation_Item_Label.
+   --  @param Options As for the parent's Navigation_Item_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Navigation_State_Label_Into
       (Context : Humanize.Contexts.Context;
        State   : Navigation_State;
@@ -241,6 +313,22 @@ package Humanize.Navigation.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Submenu_Label.
    --  @param Count As for the parent's Submenu_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Tab_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Current : Natural;
+       Total   : Natural;
+       Name    : String := "";
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Current As for the parent's Tab_Label.
+   --  @param Total As for the parent's Tab_Label.
+   --  @param Name As for the parent's Tab_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

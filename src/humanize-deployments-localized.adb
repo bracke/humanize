@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Deployments.Localized is
@@ -41,10 +42,31 @@ package body Humanize.Deployments.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
+      Selection := Sel.With_Arg (Selection, "state", Lower (Deployment_State'Image (State)));
       Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "environment", Humanize.Bounded_Text.Clean (Environment));
-      Selection := Sel.With_Arg (Selection, "state", Lower (Deployment_State'Image (State)));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Deployment_Label;
+
+   function Deployment_Label
+      (Context     : Humanize.Contexts.Context;
+       Name        : String;
+       Environment : String;
+       State       : Deployment_State;
+       Options     : Deployment_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Deployments.Deployment_Label
+          (Name => Name,
+           Environment => Environment,
+           State => State,
+           Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Deployments.Deployment_Label (Name => Name, Environment => Environment, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Deployment_Label (Context, Name => Name,
+        Environment => Environment, State => State));
    end Deployment_Label;
 
    function Deployment_State_Label
@@ -162,7 +184,7 @@ package body Humanize.Deployments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Artifact_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Artifact_State_Label (Context, State => State), Target, Written, Status);
    end Artifact_State_Label_Into;
 
    procedure Deployment_Label_Into
@@ -175,7 +197,25 @@ package body Humanize.Deployments.Localized is
        Status      : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Deployment_Label (Context, Name, Environment, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Deployment_Label (Context, Name => Name, Environment => Environment, State => State),
+         Target, Written, Status);
+   end Deployment_Label_Into;
+
+   procedure Deployment_Label_Into
+      (Context     : Humanize.Contexts.Context;
+       Name        : String;
+       Environment : String;
+       State       : Deployment_State;
+       Options     : Deployment_Label_Options;
+       Target      : in out String;
+       Written     : out Natural;
+       Status      : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Deployment_Label (Context, Name => Name, Environment => Environment, State => State, Options => Options),
+         Target, Written, Status);
    end Deployment_Label_Into;
 
    procedure Deployment_State_Label_Into
@@ -186,7 +226,7 @@ package body Humanize.Deployments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Deployment_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Deployment_State_Label (Context, State => State), Target, Written, Status);
    end Deployment_State_Label_Into;
 
    procedure Environment_State_Label_Into
@@ -197,7 +237,7 @@ package body Humanize.Deployments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Environment_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Environment_State_Label (Context, State => State), Target, Written, Status);
    end Environment_State_Label_Into;
 
    procedure Migration_State_Label_Into
@@ -208,7 +248,7 @@ package body Humanize.Deployments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Migration_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Migration_State_Label (Context, State => State), Target, Written, Status);
    end Migration_State_Label_Into;
 
    procedure Promotion_Label_Into
@@ -222,7 +262,8 @@ package body Humanize.Deployments.Localized is
    is
    begin
       Humanize.Bounded_Text.Copy_Text
-        (Promotion_Label (Context, Name, From_Environment, To_Environment),
+        (Promotion_Label (Context, Name => Name, From_Environment => From_Environment, To_Environment =>
+         To_Environment),
          Target, Written, Status);
    end Promotion_Label_Into;
 
@@ -235,7 +276,9 @@ package body Humanize.Deployments.Localized is
        Status       : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Rollout_Label (Context, Name, Percent_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Rollout_Label (Context, Name => Name, Percent_Text => Percent_Text),
+         Target, Written, Status);
    end Rollout_Label_Into;
 
 end Humanize.Deployments.Localized;

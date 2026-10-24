@@ -25,6 +25,20 @@ package Humanize.Deployments.Localized is
    --  @param State As for the parent's Deployment_Label.
    --  @return The label in Context's locale.
 
+   function Deployment_Label
+      (Context     : Humanize.Contexts.Context;
+       Name        : String;
+       Environment : String;
+       State       : Deployment_State;
+       Options     : Deployment_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Deployment_Label.
+   --  @param Environment As for the parent's Deployment_Label.
+   --  @param State As for the parent's Deployment_Label.
+   --  @param Options As for the parent's Deployment_Label.
+   --  @return The label in Context's locale.
+
    function Deployment_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Deployment_State)
@@ -105,6 +119,24 @@ package Humanize.Deployments.Localized is
    --  @param Name As for the parent's Deployment_Label.
    --  @param Environment As for the parent's Deployment_Label.
    --  @param State As for the parent's Deployment_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Deployment_Label_Into
+      (Context     : Humanize.Contexts.Context;
+       Name        : String;
+       Environment : String;
+       State       : Deployment_State;
+       Options     : Deployment_Label_Options;
+       Target      : in out String;
+       Written     : out Natural;
+       Status      : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Deployment_Label.
+   --  @param Environment As for the parent's Deployment_Label.
+   --  @param State As for the parent's Deployment_Label.
+   --  @param Options As for the parent's Deployment_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

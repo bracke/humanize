@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Events.Localized is
@@ -75,6 +76,24 @@ package body Humanize.Events.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Canceled_Label;
 
+   function Capacity_Label
+      (Context  : Humanize.Contexts.Context;
+       Reserved : Natural;
+       Capacity : Natural)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Events.Capacity_Label (Reserved => Reserved, Capacity => Capacity);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.events.capacity_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "capacity", Long_Long_Integer (Capacity));
+      Selection := Sel.With_Arg (Selection, "reserved", Long_Long_Integer (Reserved));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Capacity_Label;
+
    function Check_In_Label
       (Context : Humanize.Contexts.Context;
        Name    : String := "")
@@ -136,9 +155,25 @@ package body Humanize.Events.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "state", Lower (Event_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Event_Label;
+
+   function Event_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Event_State;
+       Options : Event_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Events.Event_Label (Name => Name, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Events.Event_Label (Name => Name, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Event_Label (Context, Name => Name, State =>
+        State));
    end Event_Label;
 
    function Event_Location_Label
@@ -241,6 +276,20 @@ package body Humanize.Events.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end RSVP_Label;
 
+   function RSVP_Label
+      (Context : Humanize.Contexts.Context;
+       State   : Attendance_State;
+       Options : Event_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Events.RSVP_Label (State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Events.RSVP_Label (State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, RSVP_Label (Context, State => State));
+   end RSVP_Label;
+
    function Reminder_Label
       (Context   : Humanize.Contexts.Context;
        Time_Text : String)
@@ -275,6 +324,24 @@ package body Humanize.Events.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Rescheduled_Label;
 
+   function Waitlist_Label
+      (Context  : Humanize.Contexts.Context;
+       Position : Positive;
+       Total    : Natural := 0)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Events.Waitlist_Label (Position => Position, Total => Total);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.events.waitlist_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "total", Long_Long_Integer (Total));
+      Selection := Sel.With_Arg (Selection, "position", Long_Long_Integer (Position));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Waitlist_Label;
+
    procedure All_Day_Label_Into
       (Context : Humanize.Contexts.Context;
        Name    : String := "";
@@ -283,7 +350,7 @@ package body Humanize.Events.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (All_Day_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (All_Day_Label (Context, Name => Name), Target, Written, Status);
    end All_Day_Label_Into;
 
    procedure Attendance_State_Label_Into
@@ -294,7 +361,7 @@ package body Humanize.Events.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Attendance_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Attendance_State_Label (Context, State => State), Target, Written, Status);
    end Attendance_State_Label_Into;
 
    procedure Attendee_Count_Label_Into
@@ -305,7 +372,7 @@ package body Humanize.Events.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Attendee_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Attendee_Count_Label (Context, Count => Count), Target, Written, Status);
    end Attendee_Count_Label_Into;
 
    procedure Canceled_Label_Into
@@ -316,8 +383,22 @@ package body Humanize.Events.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Canceled_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Canceled_Label (Context, Name => Name), Target, Written, Status);
    end Canceled_Label_Into;
+
+   procedure Capacity_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Reserved : Natural;
+       Capacity : Natural;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Capacity_Label (Context, Reserved => Reserved, Capacity => Capacity),
+         Target, Written, Status);
+   end Capacity_Label_Into;
 
    procedure Check_In_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -327,7 +408,7 @@ package body Humanize.Events.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Check_In_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Check_In_Label (Context, Name => Name), Target, Written, Status);
    end Check_In_Label_Into;
 
    procedure Conference_Link_Label_Into
@@ -338,7 +419,7 @@ package body Humanize.Events.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Conference_Link_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Conference_Link_Label (Context, Name => Name), Target, Written, Status);
    end Conference_Link_Label_Into;
 
    procedure Event_Count_Label_Into
@@ -349,7 +430,7 @@ package body Humanize.Events.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Event_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Event_Count_Label (Context, Count => Count), Target, Written, Status);
    end Event_Count_Label_Into;
 
    procedure Event_Label_Into
@@ -361,7 +442,22 @@ package body Humanize.Events.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Event_Label (Context, Name, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Event_Label (Context, Name => Name, State => State), Target, Written, Status);
+   end Event_Label_Into;
+
+   procedure Event_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Event_State;
+       Options : Event_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Event_Label (Context, Name => Name, State => State, Options => Options),
+         Target, Written, Status);
    end Event_Label_Into;
 
    procedure Event_Location_Label_Into
@@ -373,7 +469,9 @@ package body Humanize.Events.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Event_Location_Label (Context, Name, Location), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Event_Location_Label (Context, Name => Name, Location => Location),
+         Target, Written, Status);
    end Event_Location_Label_Into;
 
    procedure Event_State_Label_Into
@@ -384,7 +482,7 @@ package body Humanize.Events.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Event_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Event_State_Label (Context, State => State), Target, Written, Status);
    end Event_State_Label_Into;
 
    procedure Event_Time_Label_Into
@@ -396,7 +494,9 @@ package body Humanize.Events.Localized is
        Status    : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Event_Time_Label (Context, Name, Time_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Event_Time_Label (Context, Name => Name, Time_Text => Time_Text),
+         Target, Written, Status);
    end Event_Time_Label_Into;
 
    procedure Event_Visibility_Label_Into
@@ -407,7 +507,9 @@ package body Humanize.Events.Localized is
        Status     : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Event_Visibility_Label (Context, Visibility), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Event_Visibility_Label (Context, Visibility => Visibility),
+         Target, Written, Status);
    end Event_Visibility_Label_Into;
 
    procedure Organizer_Label_Into
@@ -418,7 +520,7 @@ package body Humanize.Events.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Organizer_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Organizer_Label (Context, Name => Name), Target, Written, Status);
    end Organizer_Label_Into;
 
    procedure RSVP_Label_Into
@@ -429,7 +531,21 @@ package body Humanize.Events.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (RSVP_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (RSVP_Label (Context, State => State), Target, Written, Status);
+   end RSVP_Label_Into;
+
+   procedure RSVP_Label_Into
+      (Context : Humanize.Contexts.Context;
+       State   : Attendance_State;
+       Options : Event_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (RSVP_Label (Context, State => State, Options => Options),
+         Target, Written, Status);
    end RSVP_Label_Into;
 
    procedure Reminder_Label_Into
@@ -440,7 +556,7 @@ package body Humanize.Events.Localized is
        Status    : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Reminder_Label (Context, Time_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Reminder_Label (Context, Time_Text => Time_Text), Target, Written, Status);
    end Reminder_Label_Into;
 
    procedure Rescheduled_Label_Into
@@ -452,7 +568,23 @@ package body Humanize.Events.Localized is
        Status    : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Rescheduled_Label (Context, Name, Time_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Rescheduled_Label (Context, Name => Name, Time_Text => Time_Text),
+         Target, Written, Status);
    end Rescheduled_Label_Into;
+
+   procedure Waitlist_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Position : Positive;
+       Total    : Natural := 0;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Waitlist_Label (Context, Position => Position, Total => Total),
+         Target, Written, Status);
+   end Waitlist_Label_Into;
 
 end Humanize.Events.Localized;

@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Diagnostics.Localized is
@@ -41,9 +42,9 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
-      Selection := Sel.With_Arg (Selection, "status", Lower (Check_Status'Image (Status)));
       Selection := Sel.With_Arg (Selection, "duration_s", Long_Long_Integer (Duration_S));
+      Selection := Sel.With_Arg (Selection, "status", Lower (Check_Status'Image (Status)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Check_Duration_Label;
 
@@ -60,9 +61,25 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "status", Lower (Check_Status'Image (Status)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Check_Result_Label;
+
+   function Check_Result_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Status  : Check_Status;
+       Options : Diagnostic_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Diagnostics.Check_Result_Label (Name => Name, Status => Status, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Diagnostics.Check_Result_Label (Name => Name, Status => Status);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Check_Result_Label (Context, Name => Name,
+        Status => Status));
    end Check_Result_Label;
 
    function Check_Status_Label
@@ -100,9 +117,9 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
+      Selection := Sel.With_Arg (Selection, "position", Long_Long_Integer (Position));
       Selection := Sel.With_Arg (Selection, "kind", Lower (Diagnostic_Explanation_Kind'Image (Kind)));
       Selection := Sel.With_Arg (Selection, "subject", Humanize.Bounded_Text.Clean (Subject));
-      Selection := Sel.With_Arg (Selection, "position", Long_Long_Integer (Position));
       Selection := Sel.With_Arg (Selection, "suggestion", Humanize.Bounded_Text.Clean (Suggestion));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Diagnostic_Explanation_Label;
@@ -122,11 +139,34 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "message", Humanize.Bounded_Text.Clean (Message));
+      Selection := Sel.With_Arg (Selection, "line", Long_Long_Integer (Line));
       Selection := Sel.With_Arg (Selection, "severity", Lower (Issue_Severity'Image (Severity)));
       Selection := Sel.With_Arg (Selection, "path", Humanize.Bounded_Text.Clean (Path));
-      Selection := Sel.With_Arg (Selection, "line", Long_Long_Integer (Line));
+      Selection := Sel.With_Arg (Selection, "message", Humanize.Bounded_Text.Clean (Message));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Diagnostic_Label;
+
+   function Diagnostic_Label
+      (Context  : Humanize.Contexts.Context;
+       Message  : String;
+       Severity : Issue_Severity;
+       Options  : Diagnostic_Label_Options;
+       Path     : String := "";
+       Line     : Natural := 0)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Diagnostics.Diagnostic_Label
+          (Message => Message,
+           Severity => Severity,
+           Options => Options,
+           Path => Path,
+           Line => Line);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Diagnostics.Diagnostic_Label (Message => Message, Severity => Severity, Path => Path, Line => Line);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Diagnostic_Label (Context, Message => Message,
+        Severity => Severity, Path => Path, Line => Line));
    end Diagnostic_Label;
 
    function Failed_At_Label
@@ -143,8 +183,8 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "path", Humanize.Bounded_Text.Clean (Path));
       Selection := Sel.With_Arg (Selection, "line", Long_Long_Integer (Line));
+      Selection := Sel.With_Arg (Selection, "path", Humanize.Bounded_Text.Clean (Path));
       Selection := Sel.With_Arg (Selection, "column", Long_Long_Integer (Column));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Failed_At_Label;
@@ -163,10 +203,31 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
+      Selection := Sel.With_Arg (Selection, "severity", Lower (Issue_Severity'Image (Severity)));
       Selection := Sel.With_Arg (Selection, "field_name", Humanize.Bounded_Text.Clean (Field_Name));
       Selection := Sel.With_Arg (Selection, "message", Humanize.Bounded_Text.Clean (Message));
-      Selection := Sel.With_Arg (Selection, "severity", Lower (Issue_Severity'Image (Severity)));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Field_Problem_Label;
+
+   function Field_Problem_Label
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Message    : String;
+       Severity   : Issue_Severity;
+       Options    : Diagnostic_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Diagnostics.Field_Problem_Label
+          (Field_Name => Field_Name,
+           Message => Message,
+           Severity => Severity,
+           Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Diagnostics.Field_Problem_Label (Field_Name => Field_Name, Message => Message, Severity => Severity);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Field_Problem_Label (Context, Field_Name =>
+        Field_Name, Message => Message, Severity => Severity));
    end Field_Problem_Label;
 
    function First_Failure_Label
@@ -183,9 +244,9 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
+      Selection := Sel.With_Arg (Selection, "line", Long_Long_Integer (Line));
       Selection := Sel.With_Arg (Selection, "check_name", Humanize.Bounded_Text.Clean (Check_Name));
       Selection := Sel.With_Arg (Selection, "path", Humanize.Bounded_Text.Clean (Path));
-      Selection := Sel.With_Arg (Selection, "line", Long_Long_Integer (Line));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end First_Failure_Label;
 
@@ -203,11 +264,39 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "errors", Long_Long_Integer (Errors));
       Selection := Sel.With_Arg (Selection, "warnings", Long_Long_Integer (Warnings));
       Selection := Sel.With_Arg (Selection, "notices", Long_Long_Integer (Notices));
+      Selection := Sel.With_Arg (Selection, "errors", Long_Long_Integer (Errors));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Issue_Count_Label;
+
+   function Issue_Summary_Label
+      (Context  : Humanize.Contexts.Context;
+       Errors   : Natural := 0;
+       Warnings : Natural := 0;
+       Notices  : Natural := 0;
+       Blocking : Natural := 0)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Diagnostics.Issue_Summary_Label
+          (Errors => Errors,
+           Warnings => Warnings,
+           Notices => Notices,
+           Blocking => Blocking);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.diagnostics.issue_summary_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "state", (if Blocking > 0 then (if Errors = 0 and then Warnings = 0 and
+        then Notices = 0 then "blocking_only" else "blocking") elsif Errors = 0 and then (Warnings > 0 or else Notices
+        > 0) then "only" else "plain"));
+      Selection := Sel.With_Arg (Selection, "blocking", Long_Long_Integer (Blocking));
+      Selection := Sel.With_Arg (Selection, "base", Humanize.Label_Values.Text_Of (Issue_Count_Label (Context, Errors,
+        Warnings, Notices)));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Issue_Summary_Label;
 
    function Location_Label
       (Context : Humanize.Contexts.Context;
@@ -223,8 +312,8 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "path", Humanize.Bounded_Text.Clean (Path));
       Selection := Sel.With_Arg (Selection, "line", Long_Long_Integer (Line));
+      Selection := Sel.With_Arg (Selection, "path", Humanize.Bounded_Text.Clean (Path));
       Selection := Sel.With_Arg (Selection, "column", Long_Long_Integer (Column));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Location_Label;
@@ -243,9 +332,9 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
+      Selection := Sel.With_Arg (Selection, "position", Long_Long_Integer (Position));
       Selection := Sel.With_Arg (Selection, "family", Lower (Parser_Family'Image (Family)));
       Selection := Sel.With_Arg (Selection, "error", Humanize.Bounded_Text.Clean (Error));
-      Selection := Sel.With_Arg (Selection, "position", Long_Long_Integer (Position));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Parser_Diagnostic_Explanation_Label;
 
@@ -280,8 +369,8 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "attempt", Long_Long_Integer (Attempt));
       Selection := Sel.With_Arg (Selection, "limit", Long_Long_Integer (Limit));
+      Selection := Sel.With_Arg (Selection, "attempt", Long_Long_Integer (Attempt));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Retry_Label;
 
@@ -330,8 +419,8 @@ package body Humanize.Diagnostics.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "source", Lower (Diagnostic_Source'Image (Source)));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "source", Lower (Diagnostic_Source'Image (Source)));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Source_Summary_Label;
 
@@ -359,7 +448,7 @@ package body Humanize.Diagnostics.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Affected_Items_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Affected_Items_Label (Context, Count => Count), Target, Written, Status);
    end Affected_Items_Label_Into;
 
    procedure Diagnostic_Explanation_Label_Into
@@ -374,7 +463,8 @@ package body Humanize.Diagnostics.Localized is
    is
    begin
       Humanize.Bounded_Text.Copy_Text
-        (Diagnostic_Explanation_Label (Context, Kind, Subject, Position, Suggestion),
+        (Diagnostic_Explanation_Label (Context, Kind => Kind, Subject => Subject, Position => Position, Suggestion =>
+         Suggestion),
          Target, Written, Status);
    end Diagnostic_Explanation_Label_Into;
 
@@ -390,7 +480,25 @@ package body Humanize.Diagnostics.Localized is
    is
    begin
       Humanize.Bounded_Text.Copy_Text
-        (Diagnostic_Label (Context, Message, Severity, Path, Line),
+        (Diagnostic_Label (Context, Message => Message, Severity => Severity, Path => Path, Line => Line),
+         Target, Written, Status);
+   end Diagnostic_Label_Into;
+
+   procedure Diagnostic_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Message  : String;
+       Severity : Issue_Severity;
+       Options  : Diagnostic_Label_Options;
+       Path     : String := "";
+       Line     : Natural := 0;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Diagnostic_Label (Context, Message => Message, Severity => Severity, Options => Options, Path => Path, Line
+         => Line),
          Target, Written, Status);
    end Diagnostic_Label_Into;
 
@@ -404,7 +512,9 @@ package body Humanize.Diagnostics.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Failed_At_Label (Context, Path, Line, Column), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Failed_At_Label (Context, Path => Path, Line => Line, Column => Column),
+         Target, Written, Status);
    end Failed_At_Label_Into;
 
    procedure Field_Problem_Label_Into
@@ -418,7 +528,24 @@ package body Humanize.Diagnostics.Localized is
    is
    begin
       Humanize.Bounded_Text.Copy_Text
-        (Field_Problem_Label (Context, Field_Name, Message, Severity),
+        (Field_Problem_Label (Context, Field_Name => Field_Name, Message => Message, Severity => Severity),
+         Target, Written, Status);
+   end Field_Problem_Label_Into;
+
+   procedure Field_Problem_Label_Into
+      (Context    : Humanize.Contexts.Context;
+       Field_Name : String;
+       Message    : String;
+       Severity   : Issue_Severity;
+       Options    : Diagnostic_Label_Options;
+       Target     : in out String;
+       Written    : out Natural;
+       Status     : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Field_Problem_Label (Context, Field_Name => Field_Name, Message => Message, Severity => Severity, Options =>
+         Options),
          Target, Written, Status);
    end Field_Problem_Label_Into;
 
@@ -433,7 +560,7 @@ package body Humanize.Diagnostics.Localized is
    is
    begin
       Humanize.Bounded_Text.Copy_Text
-        (First_Failure_Label (Context, Check_Name, Path, Line),
+        (First_Failure_Label (Context, Check_Name => Check_Name, Path => Path, Line => Line),
          Target, Written, Status);
    end First_Failure_Label_Into;
 
@@ -448,9 +575,26 @@ package body Humanize.Diagnostics.Localized is
    is
    begin
       Humanize.Bounded_Text.Copy_Text
-        (Issue_Count_Label (Context, Errors, Warnings, Notices),
+        (Issue_Count_Label (Context, Errors => Errors, Warnings => Warnings, Notices => Notices),
          Target, Written, Status);
    end Issue_Count_Label_Into;
+
+   procedure Issue_Summary_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Errors   : Natural := 0;
+       Warnings : Natural := 0;
+       Notices  : Natural := 0;
+       Blocking : Natural := 0;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Issue_Summary_Label (Context, Errors => Errors, Warnings => Warnings, Notices => Notices, Blocking =>
+         Blocking),
+         Target, Written, Status);
+   end Issue_Summary_Label_Into;
 
    procedure Location_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -462,7 +606,9 @@ package body Humanize.Diagnostics.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Location_Label (Context, Path, Line, Column), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Location_Label (Context, Path => Path, Line => Line, Column => Column),
+         Target, Written, Status);
    end Location_Label_Into;
 
    procedure Parser_Diagnostic_Explanation_Label_Into
@@ -476,7 +622,7 @@ package body Humanize.Diagnostics.Localized is
    is
    begin
       Humanize.Bounded_Text.Copy_Text
-        (Parser_Diagnostic_Explanation_Label (Context, Family, Error, Position),
+        (Parser_Diagnostic_Explanation_Label (Context, Family => Family, Error => Error, Position => Position),
          Target, Written, Status);
    end Parser_Diagnostic_Explanation_Label_Into;
 
@@ -489,7 +635,9 @@ package body Humanize.Diagnostics.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Retry_Label (Context, Attempt, Limit), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Retry_Label (Context, Attempt => Attempt, Limit => Limit),
+         Target, Written, Status);
    end Retry_Label_Into;
 
    procedure Severity_Label_Into
@@ -500,7 +648,7 @@ package body Humanize.Diagnostics.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Severity_Label (Context, Severity), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Severity_Label (Context, Severity => Severity), Target, Written, Status);
    end Severity_Label_Into;
 
    procedure Source_Label_Into
@@ -511,7 +659,7 @@ package body Humanize.Diagnostics.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Source_Label (Context, Source), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Source_Label (Context, Source => Source), Target, Written, Status);
    end Source_Label_Into;
 
    procedure Source_Summary_Label_Into
@@ -523,7 +671,9 @@ package body Humanize.Diagnostics.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Source_Summary_Label (Context, Source, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Source_Summary_Label (Context, Source => Source, Count => Count),
+         Target, Written, Status);
    end Source_Summary_Label_Into;
 
    procedure Suggested_Action_Label_Into
@@ -534,7 +684,7 @@ package body Humanize.Diagnostics.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Suggested_Action_Label (Context, Action), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Suggested_Action_Label (Context, Action => Action), Target, Written, Status);
    end Suggested_Action_Label_Into;
 
 end Humanize.Diagnostics.Localized;

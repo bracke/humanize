@@ -23,6 +23,18 @@ package Humanize.Notification_Preferences.Localized is
    --  @param State As for the parent's Channel_Preference_Label.
    --  @return The label in Context's locale.
 
+   function Channel_Preference_Label
+      (Context : Humanize.Contexts.Context;
+       Channel : String;
+       State   : Preference_State;
+       Options : Notification_Preference_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Channel As for the parent's Channel_Preference_Label.
+   --  @param State As for the parent's Channel_Preference_Label.
+   --  @param Options As for the parent's Channel_Preference_Label.
+   --  @return The label in Context's locale.
+
    function Digest_Schedule_Label
       (Context  : Humanize.Contexts.Context;
        Schedule : Digest_Schedule)
@@ -59,6 +71,20 @@ package Humanize.Notification_Preferences.Localized is
    --  @param State As for the parent's Subscription_Label.
    --  @return The label in Context's locale.
 
+   function Subscription_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Scope   : Subscription_Scope;
+       State   : Preference_State;
+       Options : Notification_Preference_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Subscription_Label.
+   --  @param Scope As for the parent's Subscription_Label.
+   --  @param State As for the parent's Subscription_Label.
+   --  @param Options As for the parent's Subscription_Label.
+   --  @return The label in Context's locale.
+
    function Subscription_Scope_Label
       (Context : Humanize.Contexts.Context;
        Scope   : Subscription_Scope)
@@ -89,6 +115,22 @@ package Humanize.Notification_Preferences.Localized is
    --  @param Context Formatting context.
    --  @param Channel As for the parent's Channel_Preference_Label.
    --  @param State As for the parent's Channel_Preference_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Channel_Preference_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Channel : String;
+       State   : Preference_State;
+       Options : Notification_Preference_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Channel As for the parent's Channel_Preference_Label.
+   --  @param State As for the parent's Channel_Preference_Label.
+   --  @param Options As for the parent's Channel_Preference_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -141,6 +183,24 @@ package Humanize.Notification_Preferences.Localized is
    --  @param Name As for the parent's Subscription_Label.
    --  @param Scope As for the parent's Subscription_Label.
    --  @param State As for the parent's Subscription_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Subscription_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Scope   : Subscription_Scope;
+       State   : Preference_State;
+       Options : Notification_Preference_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Subscription_Label.
+   --  @param Scope As for the parent's Subscription_Label.
+   --  @param State As for the parent's Subscription_Label.
+   --  @param Options As for the parent's Subscription_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

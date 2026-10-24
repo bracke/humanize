@@ -16,6 +16,7 @@ package Humanize.Numbers is
    --  * Humanize.Numbers.Scales: compact, SI, scientific, and currency helpers.
    --  * Humanize.Numbers.Spellout: word, ordinal-word, and fraction helpers.
    --  * Humanize.Numbers.Statistics: dataset and uncertainty helpers.
+   --  * Humanize.Numbers.Statistics.Localized: the dataset labels in a context's locale.
    --  New number families should move behind a child facade before broad root
    --  exposure, keeping this package as the compatibility import surface.
 

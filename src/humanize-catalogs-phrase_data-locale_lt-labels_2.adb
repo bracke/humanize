@@ -687,4 +687,8 @@ begin
       & "patvirtinimo} blocked_state {užblokuota} completed_state {užbaigta} "
       & "failed_state {nepavyko} cancelled_state {atšaukta} skipped_state "
       & "{praleista} other {pristabdyta}}");
+   P ("label.contrast.opacity_label",
+      "{percent}, {state, select, transparent {skaidru} mostly_transparent "
+      & "{beveik skaidru} translucent {pusiau skaidru} mostly_opaque {beveik "
+      & "neskaidru} other {neskaidru}}");
 end Labels_2;

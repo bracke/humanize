@@ -37,6 +37,20 @@ package Humanize.Permissions.Localized is
    --  @param State As for the parent's Permission_Label.
    --  @return The label in Context's locale.
 
+   function Permission_Label
+      (Context : Humanize.Contexts.Context;
+       Subject : String;
+       Action  : String;
+       State   : Permission_State;
+       Options : Permission_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Subject As for the parent's Permission_Label.
+   --  @param Action As for the parent's Permission_Label.
+   --  @param State As for the parent's Permission_Label.
+   --  @param Options As for the parent's Permission_Label.
+   --  @return The label in Context's locale.
+
    function Permission_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Permission_State)
@@ -111,6 +125,24 @@ package Humanize.Permissions.Localized is
    --  @param Subject As for the parent's Permission_Label.
    --  @param Action As for the parent's Permission_Label.
    --  @param State As for the parent's Permission_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Permission_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Subject : String;
+       Action  : String;
+       State   : Permission_State;
+       Options : Permission_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Subject As for the parent's Permission_Label.
+   --  @param Action As for the parent's Permission_Label.
+   --  @param State As for the parent's Permission_Label.
+   --  @param Options As for the parent's Permission_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

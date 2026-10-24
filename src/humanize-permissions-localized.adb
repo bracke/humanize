@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Permissions.Localized is
@@ -42,8 +43,8 @@ package body Humanize.Permissions.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "subject", Humanize.Bounded_Text.Clean (Subject));
       Selection := Sel.With_Arg (Selection, "role", Lower (Role_Kind'Image (Role)));
+      Selection := Sel.With_Arg (Selection, "subject", Humanize.Bounded_Text.Clean (Subject));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Grant_Label;
 
@@ -61,10 +62,27 @@ package body Humanize.Permissions.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
+      Selection := Sel.With_Arg (Selection, "state", Lower (Permission_State'Image (State)));
       Selection := Sel.With_Arg (Selection, "subject", Humanize.Bounded_Text.Clean (Subject));
       Selection := Sel.With_Arg (Selection, "action", Humanize.Bounded_Text.Clean (Action));
-      Selection := Sel.With_Arg (Selection, "state", Lower (Permission_State'Image (State)));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Permission_Label;
+
+   function Permission_Label
+      (Context : Humanize.Contexts.Context;
+       Subject : String;
+       Action  : String;
+       State   : Permission_State;
+       Options : Permission_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Permissions.Permission_Label (Subject => Subject, Action => Action, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Permissions.Permission_Label (Subject => Subject, Action => Action, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Permission_Label (Context, Subject => Subject,
+        Action => Action, State => State));
    end Permission_Label;
 
    function Permission_State_Label
@@ -112,8 +130,8 @@ package body Humanize.Permissions.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "subject", Humanize.Bounded_Text.Clean (Subject));
       Selection := Sel.With_Arg (Selection, "role", Lower (Role_Kind'Image (Role)));
+      Selection := Sel.With_Arg (Selection, "subject", Humanize.Bounded_Text.Clean (Subject));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Revoke_Label;
 
@@ -142,7 +160,9 @@ package body Humanize.Permissions.Localized is
        Status    : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Access_Expiry_Label (Context, Subject, Time_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Access_Expiry_Label (Context, Subject => Subject, Time_Text => Time_Text),
+         Target, Written, Status);
    end Access_Expiry_Label_Into;
 
    procedure Grant_Label_Into
@@ -154,7 +174,9 @@ package body Humanize.Permissions.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Grant_Label (Context, Subject, Role), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Grant_Label (Context, Subject => Subject, Role => Role),
+         Target, Written, Status);
    end Grant_Label_Into;
 
    procedure Permission_Label_Into
@@ -167,7 +189,25 @@ package body Humanize.Permissions.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Permission_Label (Context, Subject, Action, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Permission_Label (Context, Subject => Subject, Action => Action, State => State),
+         Target, Written, Status);
+   end Permission_Label_Into;
+
+   procedure Permission_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Subject : String;
+       Action  : String;
+       State   : Permission_State;
+       Options : Permission_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Permission_Label (Context, Subject => Subject, Action => Action, State => State, Options => Options),
+         Target, Written, Status);
    end Permission_Label_Into;
 
    procedure Permission_State_Label_Into
@@ -178,7 +218,7 @@ package body Humanize.Permissions.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Permission_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Permission_State_Label (Context, State => State), Target, Written, Status);
    end Permission_State_Label_Into;
 
    procedure Policy_Result_Label_Into
@@ -189,7 +229,7 @@ package body Humanize.Permissions.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Policy_Result_Label (Context, Result), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Policy_Result_Label (Context, Result => Result), Target, Written, Status);
    end Policy_Result_Label_Into;
 
    procedure Revoke_Label_Into
@@ -201,7 +241,9 @@ package body Humanize.Permissions.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Revoke_Label (Context, Subject, Role), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Revoke_Label (Context, Subject => Subject, Role => Role),
+         Target, Written, Status);
    end Revoke_Label_Into;
 
    procedure Role_Label_Into
@@ -212,7 +254,7 @@ package body Humanize.Permissions.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Role_Label (Context, Role), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Role_Label (Context, Role => Role), Target, Written, Status);
    end Role_Label_Into;
 
 end Humanize.Permissions.Localized;

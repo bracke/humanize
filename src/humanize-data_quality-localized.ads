@@ -35,6 +35,22 @@ package Humanize.Data_Quality.Localized is
    --  @param Rejected As for the parent's Import_Result_Label.
    --  @return The label in Context's locale.
 
+   function Import_Result_Label
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       State    : Import_Check_State;
+       Accepted : Natural;
+       Rejected : Natural;
+       Options  : Data_Quality_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Import_Result_Label.
+   --  @param State As for the parent's Import_Result_Label.
+   --  @param Accepted As for the parent's Import_Result_Label.
+   --  @param Rejected As for the parent's Import_Result_Label.
+   --  @param Options As for the parent's Import_Result_Label.
+   --  @return The label in Context's locale.
+
    function Issue_Count_Label
       (Context : Humanize.Contexts.Context;
        Issue   : Data_Issue;
@@ -103,6 +119,26 @@ package Humanize.Data_Quality.Localized is
    --  @param State As for the parent's Import_Result_Label.
    --  @param Accepted As for the parent's Import_Result_Label.
    --  @param Rejected As for the parent's Import_Result_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Import_Result_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       State    : Import_Check_State;
+       Accepted : Natural;
+       Rejected : Natural;
+       Options  : Data_Quality_Label_Options;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Import_Result_Label.
+   --  @param State As for the parent's Import_Result_Label.
+   --  @param Accepted As for the parent's Import_Result_Label.
+   --  @param Rejected As for the parent's Import_Result_Label.
+   --  @param Options As for the parent's Import_Result_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

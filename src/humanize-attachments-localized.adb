@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Attachments.Localized is
@@ -40,8 +41,8 @@ package body Humanize.Attachments.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Attachment_Group_Label;
 
@@ -75,10 +76,27 @@ package body Humanize.Attachments.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
-      Selection := Sel.With_Arg (Selection, "kind", Lower (Attachment_Kind'Image (Kind)));
       Selection := Sel.With_Arg (Selection, "state", Lower (Attachment_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "kind", Lower (Attachment_Kind'Image (Kind)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Attachment_Label;
+
+   function Attachment_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Attachment_Kind;
+       State   : Attachment_State;
+       Options : Attachment_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Attachments.Attachment_Label (Name => Name, Kind => Kind, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Attachments.Attachment_Label (Name => Name, Kind => Kind, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Attachment_Label (Context, Name => Name, Kind =>
+        Kind, State => State));
    end Attachment_Label;
 
    function Attachment_Size_Label
@@ -212,9 +230,25 @@ package body Humanize.Attachments.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "state", Lower (Scan_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Scan_Result_Label;
+
+   function Scan_Result_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Scan_State;
+       Options : Attachment_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Attachments.Scan_Result_Label (Name => Name, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Attachments.Scan_Result_Label (Name => Name, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Scan_Result_Label (Context, Name => Name, State
+        => State));
    end Scan_Result_Label;
 
    function Scan_State_Label
@@ -251,6 +285,24 @@ package body Humanize.Attachments.Localized is
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Upload_Error_Label;
 
+   function Upload_Progress_Label
+      (Context : Humanize.Contexts.Context;
+       Done    : Natural;
+       Total   : Natural)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Attachments.Upload_Progress_Label (Done => Done, Total => Total);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.attachments.upload_progress_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "total", Long_Long_Integer (Total));
+      Selection := Sel.With_Arg (Selection, "done", Long_Long_Integer (Done));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Upload_Progress_Label;
+
    procedure Attachment_Count_Label_Into
       (Context : Humanize.Contexts.Context;
        Count   : Natural;
@@ -259,7 +311,7 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Attachment_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Attachment_Count_Label (Context, Count => Count), Target, Written, Status);
    end Attachment_Count_Label_Into;
 
    procedure Attachment_Group_Label_Into
@@ -271,7 +323,9 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Attachment_Group_Label (Context, Name, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Attachment_Group_Label (Context, Name => Name, Count => Count),
+         Target, Written, Status);
    end Attachment_Group_Label_Into;
 
    procedure Attachment_Kind_Label_Into
@@ -282,7 +336,7 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Attachment_Kind_Label (Context, Kind), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Attachment_Kind_Label (Context, Kind => Kind), Target, Written, Status);
    end Attachment_Kind_Label_Into;
 
    procedure Attachment_Label_Into
@@ -295,7 +349,25 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Attachment_Label (Context, Name, Kind, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Attachment_Label (Context, Name => Name, Kind => Kind, State => State),
+         Target, Written, Status);
+   end Attachment_Label_Into;
+
+   procedure Attachment_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Attachment_Kind;
+       State   : Attachment_State;
+       Options : Attachment_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Attachment_Label (Context, Name => Name, Kind => Kind, State => State, Options => Options),
+         Target, Written, Status);
    end Attachment_Label_Into;
 
    procedure Attachment_Size_Label_Into
@@ -307,7 +379,9 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Attachment_Size_Label (Context, Name, Size), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Attachment_Size_Label (Context, Name => Name, Size => Size),
+         Target, Written, Status);
    end Attachment_Size_Label_Into;
 
    procedure Attachment_State_Label_Into
@@ -318,7 +392,7 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Attachment_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Attachment_State_Label (Context, State => State), Target, Written, Status);
    end Attachment_State_Label_Into;
 
    procedure Download_Label_Into
@@ -329,7 +403,7 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Download_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Download_Label (Context, Name => Name), Target, Written, Status);
    end Download_Label_Into;
 
    procedure Expiring_Link_Label_Into
@@ -341,7 +415,9 @@ package body Humanize.Attachments.Localized is
        Status    : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Expiring_Link_Label (Context, Name, Time_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Expiring_Link_Label (Context, Name => Name, Time_Text => Time_Text),
+         Target, Written, Status);
    end Expiring_Link_Label_Into;
 
    procedure Image_Dimensions_Label_Into
@@ -353,7 +429,9 @@ package body Humanize.Attachments.Localized is
        Status     : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Image_Dimensions_Label (Context, Name, Dimensions), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Image_Dimensions_Label (Context, Name => Name, Dimensions => Dimensions),
+         Target, Written, Status);
    end Image_Dimensions_Label_Into;
 
    procedure Preview_Label_Into
@@ -364,7 +442,7 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Preview_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Preview_Label (Context, Name => Name), Target, Written, Status);
    end Preview_Label_Into;
 
    procedure Remove_Label_Into
@@ -375,7 +453,7 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Remove_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Remove_Label (Context, Name => Name), Target, Written, Status);
    end Remove_Label_Into;
 
    procedure Scan_Result_Label_Into
@@ -387,7 +465,24 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Scan_Result_Label (Context, Name, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Scan_Result_Label (Context, Name => Name, State => State),
+         Target, Written, Status);
+   end Scan_Result_Label_Into;
+
+   procedure Scan_Result_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Scan_State;
+       Options : Attachment_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Scan_Result_Label (Context, Name => Name, State => State, Options => Options),
+         Target, Written, Status);
    end Scan_Result_Label_Into;
 
    procedure Scan_State_Label_Into
@@ -398,7 +493,7 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Scan_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Scan_State_Label (Context, State => State), Target, Written, Status);
    end Scan_State_Label_Into;
 
    procedure Upload_Error_Label_Into
@@ -410,7 +505,23 @@ package body Humanize.Attachments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Upload_Error_Label (Context, Name, Reason), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Upload_Error_Label (Context, Name => Name, Reason => Reason),
+         Target, Written, Status);
    end Upload_Error_Label_Into;
+
+   procedure Upload_Progress_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Done    : Natural;
+       Total   : Natural;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Upload_Progress_Label (Context, Done => Done, Total => Total),
+         Target, Written, Status);
+   end Upload_Progress_Label_Into;
 
 end Humanize.Attachments.Localized;

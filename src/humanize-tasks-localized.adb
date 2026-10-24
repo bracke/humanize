@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Tasks.Localized is
@@ -24,9 +25,25 @@ package body Humanize.Tasks.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "assignee", Humanize.Bounded_Text.Clean (Assignee));
       Selection := Sel.With_Arg (Selection, "state", Lower (Assignment_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "assignee", Humanize.Bounded_Text.Clean (Assignee));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Assignment_Label;
+
+   function Assignment_Label
+      (Context  : Humanize.Contexts.Context;
+       Assignee : String;
+       State    : Assignment_State;
+       Options  : Task_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Tasks.Assignment_Label (Assignee => Assignee, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Tasks.Assignment_Label (Assignee => Assignee, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Assignment_Label (Context, Assignee => Assignee,
+        State => State));
    end Assignment_Label;
 
    function Assignment_State_Label
@@ -76,6 +93,24 @@ package body Humanize.Tasks.Localized is
       Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Blocker_Label;
+
+   function Checklist_Label
+      (Context : Humanize.Contexts.Context;
+       Done    : Natural;
+       Total   : Natural)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Tasks.Checklist_Label (Done => Done, Total => Total);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.tasks.checklist_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      Selection := Sel.With_Arg (Selection, "total", Long_Long_Integer (Total));
+      Selection := Sel.With_Arg (Selection, "done", Long_Long_Integer (Done));
+      return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Checklist_Label;
 
    function Complete_Action_Label
       (Context : Humanize.Contexts.Context;
@@ -218,8 +253,8 @@ package body Humanize.Tasks.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Sprint_Label;
 
@@ -236,8 +271,8 @@ package body Humanize.Tasks.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Subtask_Label;
 
@@ -271,10 +306,27 @@ package body Humanize.Tasks.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
-      Selection := Sel.With_Arg (Selection, "state", Lower (Task_State'Image (State)));
       Selection := Sel.With_Arg (Selection, "priority", Lower (Task_Priority'Image (Priority)));
+      Selection := Sel.With_Arg (Selection, "state", Lower (Task_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Task_Label;
+
+   function Task_Label
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       State    : Task_State;
+       Priority : Task_Priority;
+       Options  : Task_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Tasks.Task_Label (Name => Name, State => State, Priority => Priority, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Tasks.Task_Label (Name => Name, State => State, Priority => Priority);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Task_Label (Context, Name => Name, State =>
+        State, Priority => Priority));
    end Task_Label;
 
    function Task_Priority_Label
@@ -318,7 +370,24 @@ package body Humanize.Tasks.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Assignment_Label (Context, Assignee, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Assignment_Label (Context, Assignee => Assignee, State => State),
+         Target, Written, Status);
+   end Assignment_Label_Into;
+
+   procedure Assignment_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Assignee : String;
+       State    : Assignment_State;
+       Options  : Task_Label_Options;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Assignment_Label (Context, Assignee => Assignee, State => State, Options => Options),
+         Target, Written, Status);
    end Assignment_Label_Into;
 
    procedure Assignment_State_Label_Into
@@ -329,7 +398,7 @@ package body Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Assignment_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Assignment_State_Label (Context, State => State), Target, Written, Status);
    end Assignment_State_Label_Into;
 
    procedure Backlog_Label_Into
@@ -340,7 +409,7 @@ package body Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Backlog_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Backlog_Label (Context, Count => Count), Target, Written, Status);
    end Backlog_Label_Into;
 
    procedure Blocker_Label_Into
@@ -351,8 +420,22 @@ package body Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Blocker_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Blocker_Label (Context, Name => Name), Target, Written, Status);
    end Blocker_Label_Into;
+
+   procedure Checklist_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Done    : Natural;
+       Total   : Natural;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Checklist_Label (Context, Done => Done, Total => Total),
+         Target, Written, Status);
+   end Checklist_Label_Into;
 
    procedure Complete_Action_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -362,7 +445,7 @@ package body Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Complete_Action_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Complete_Action_Label (Context, Count => Count), Target, Written, Status);
    end Complete_Action_Label_Into;
 
    procedure Completed_Task_Count_Label_Into
@@ -373,7 +456,7 @@ package body Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Completed_Task_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Completed_Task_Count_Label (Context, Count => Count), Target, Written, Status);
    end Completed_Task_Count_Label_Into;
 
    procedure Due_Label_Into
@@ -384,7 +467,7 @@ package body Humanize.Tasks.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Due_Label (Context, Due_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Due_Label (Context, Due_Text => Due_Text), Target, Written, Status);
    end Due_Label_Into;
 
    procedure Estimate_Label_Into
@@ -395,7 +478,9 @@ package body Humanize.Tasks.Localized is
        Status        : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Estimate_Label (Context, Estimate_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Estimate_Label (Context, Estimate_Text => Estimate_Text),
+         Target, Written, Status);
    end Estimate_Label_Into;
 
    procedure Open_Task_Count_Label_Into
@@ -406,7 +491,7 @@ package body Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Open_Task_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Open_Task_Count_Label (Context, Count => Count), Target, Written, Status);
    end Open_Task_Count_Label_Into;
 
    procedure Overdue_Label_Into
@@ -417,7 +502,7 @@ package body Humanize.Tasks.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Overdue_Label (Context, Due_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Overdue_Label (Context, Due_Text => Due_Text), Target, Written, Status);
    end Overdue_Label_Into;
 
    procedure Recurring_Task_Label_Into
@@ -428,7 +513,9 @@ package body Humanize.Tasks.Localized is
        Status        : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Recurring_Task_Label (Context, Schedule_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Recurring_Task_Label (Context, Schedule_Text => Schedule_Text),
+         Target, Written, Status);
    end Recurring_Task_Label_Into;
 
    procedure Reopen_Action_Label_Into
@@ -439,7 +526,7 @@ package body Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Reopen_Action_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Reopen_Action_Label (Context, Count => Count), Target, Written, Status);
    end Reopen_Action_Label_Into;
 
    procedure Sprint_Label_Into
@@ -451,7 +538,7 @@ package body Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Sprint_Label (Context, Name, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Sprint_Label (Context, Name => Name, Count => Count), Target, Written, Status);
    end Sprint_Label_Into;
 
    procedure Subtask_Label_Into
@@ -463,7 +550,9 @@ package body Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Subtask_Label (Context, Name, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Subtask_Label (Context, Name => Name, Count => Count),
+         Target, Written, Status);
    end Subtask_Label_Into;
 
    procedure Task_Count_Label_Into
@@ -474,7 +563,7 @@ package body Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Task_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Task_Count_Label (Context, Count => Count), Target, Written, Status);
    end Task_Count_Label_Into;
 
    procedure Task_Label_Into
@@ -487,7 +576,25 @@ package body Humanize.Tasks.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Task_Label (Context, Name, State, Priority), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Task_Label (Context, Name => Name, State => State, Priority => Priority),
+         Target, Written, Status);
+   end Task_Label_Into;
+
+   procedure Task_Label_Into
+      (Context  : Humanize.Contexts.Context;
+       Name     : String;
+       State    : Task_State;
+       Priority : Task_Priority;
+       Options  : Task_Label_Options;
+       Target   : in out String;
+       Written  : out Natural;
+       Status   : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Task_Label (Context, Name => Name, State => State, Priority => Priority, Options => Options),
+         Target, Written, Status);
    end Task_Label_Into;
 
    procedure Task_Priority_Label_Into
@@ -498,7 +605,7 @@ package body Humanize.Tasks.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Task_Priority_Label (Context, Priority), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Task_Priority_Label (Context, Priority => Priority), Target, Written, Status);
    end Task_Priority_Label_Into;
 
    procedure Task_State_Label_Into
@@ -509,7 +616,7 @@ package body Humanize.Tasks.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Task_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Task_State_Label (Context, State => State), Target, Written, Status);
    end Task_State_Label_Into;
 
 end Humanize.Tasks.Localized;

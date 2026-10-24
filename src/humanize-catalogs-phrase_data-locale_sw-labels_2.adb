@@ -543,4 +543,154 @@ begin
       & "{inasubiri idhini} blocked_state {imezuiwa} completed_state "
       & "{imekamilika} failed_state {imeshindwa} cancelled_state {imeghairiwa} "
       & "skipped_state {imerukwa} other {imesitishwa}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {inayopenyeza mwanga} "
+      & "mostly_transparent {karibu inayopenyeza mwanga} translucent "
+      & "{nusu-angavu} mostly_opaque {karibu isiyopenyeza mwanga} other "
+      & "{isiyopenyeza mwanga}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {hakuna vipimo} one {kipimo 1, chini {minimum} "
+      & "{unit}, wastani wa kati {median} {unit}, juu {maximum} {unit}} other "
+      & "{vipimo {count, number}, chini {minimum} {unit}, wastani wa kati "
+      & "{median} {unit}, juu {maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {hakuna vipimo} other "
+      & "{thamani ngeni 0 kati ya vipimo {total, number}}}} one {thamani ngeni "
+      & "1 kati ya vipimo {total, number}} other {thamani ngeni {outliers, "
+      & "number} kati ya vipimo {total, number}}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {{unit} {count, number} zaidi ya uwezo} other "
+      & "{{unit} {count, number} kati ya {total, number} zimebaki}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {mgao umezidishwa kwa {unit} {count, number} "
+      & "({percent} imetumika)} near {mgao unakaribia kikomo: {unit} {count, "
+      & "number} zimebaki ({percent} imetumika)} other {mgao unapatikana: "
+      & "{unit} {count, number} zimebaki ({percent} imetumika)}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {kiwango cha kupatikana kwenye akiba "
+      & "hakipatikani: hakuna maombi} other {kiwango cha kupatikana kwenye "
+      & "akiba {percent}: vilivyopatikana {hits, number}, vilivyokosekana "
+      & "{misses, number}}}");
+   P ("label.markup.attribute_count_label.total", "{count, plural, one {sifa 1} other {sifa {count, number}}}");
+   P ("label.markup.attribute_count_label.data",
+      "{count, plural, one {sifa ya data 1} other {sifa za data {count, "
+      & "number}}}");
+   P ("label.markup.attribute_count_label.aria",
+      "{count, plural, one {sifa ya ARIA 1} other {sifa za ARIA {count, "
+      & "number}}}");
+   P ("label.markup.attribute_count_label.events",
+      "{count, plural, one {kishughulikia tukio 1} other {vishughulikia tukio "
+      & "{count, number}}}");
+   P ("label.markup.heading_label", "kichwa cha kiwango {level, number}");
+   P ("label.markup.tag_count_label.total", "{count, plural, one {lebo 1} other {lebo {count, number}}}");
+   P ("label.markup.tag_count_label.links", "{count, plural, one {kiungo 1} other {viungo {count, number}}}");
+   P ("label.markup.tag_count_label.media",
+      "{count, plural, one {kipengele cha media 1} other {vipengele vya media "
+      & "{count, number}}}");
+   P ("label.markup.tag_count_label.forms",
+      "{count, plural, one {kidhibiti cha fomu 1} other {vidhibiti vya fomu "
+      & "{count, number}}}");
+   P ("label.markup.document_outline_label.headings",
+      "{count, plural, one {kichwa 1} other {vichwa {count, number}}}");
+   P ("label.markup.document_outline_label.landmarks",
+      "{count, plural, one {alama kuu 1} other {alama kuu {count, number}}}");
+   P ("label.markup.document_outline_label.forms", "{count, plural, one {fomu 1} other {fomu {count, number}}}");
+   P ("label.markup.document_outline_label.media",
+      "{count, plural, one {kipengele cha media 1} other {vipengele vya media "
+      & "{count, number}}}");
+   P ("label.markup.table_navigation_label",
+      "{caption} safu {row, number} kati ya {rows, number}, safu wima "
+      & "{column, number} kati ya {columns, number}");
+   P ("label.secrets.secret_count_label.total", "{count, plural, one {siri 1} other {siri {count, number}}}");
+   P ("label.secrets.secret_count_label.masked", "zilizofichwa {count, number}");
+   P ("label.secrets.secret_count_label.unset", "ambazo hazijawekwa {count, number}");
+   P ("label.secrets.secret_count_label.fingerprints",
+      "{count, plural, one {alama ya kidole 1} other {alama za vidole {count, "
+      & "number}}}");
+   P ("label.schema.type_mismatch_label",
+      "sehemu {field_name} ilitarajia {expected, select, string_field "
+      & "{mfuatano} integer_field {nambari kamili} decimal_field {desimali} "
+      & "boolean_field {boolean} date_field {tarehe} date_time_field {tarehe na "
+      & "saa} object_field {kitu} array_field {safu-mpangilio} enum_field "
+      & "{enum} binary_field {binari} null_field {null} any_field {yoyote} "
+      & "other {haijulikani}}, ikapata {actual, select, string_field {mfuatano} "
+      & "integer_field {nambari kamili} decimal_field {desimali} boolean_field "
+      & "{boolean} date_field {tarehe} date_time_field {tarehe na saa} "
+      & "object_field {kitu} array_field {safu-mpangilio} enum_field {enum} "
+      & "binary_field {binari} null_field {null} any_field {yoyote} other "
+      & "{haijulikani}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {tatizo 1 "
+      & "linalozuia} other {matatizo {blocking, number} yanayozuia}}} blocking "
+      & "{{base}, {blocking, plural, one {tatizo 1 linalozuia} other {matatizo "
+      & "{blocking, number} yanayozuia}}} only {{base} tu} other {{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {kiwango lengwa {low} hadi "
+      & "{high}} other {dirisha lengwa {low} hadi {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} ndani ya kiwango kinachotarajiwa} "
+      & "below {{value} chini ya kiwango kinachotarajiwa} other {{value} juu ya "
+      & "kiwango kinachotarajiwa}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} kwenye kizingiti muhimu} warning "
+      & "{{value} kwenye kizingiti cha onyo} other {{value} ndani ya kiwango "
+      & "cha kawaida}}");
+   P ("label.thresholds.breach_label", "{state, select, ok {hakijavukwa} other {kimevukwa kwa {difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {kwenye lengo} below {{difference} chini ya lengo} "
+      & "other {{difference} juu ya lengo}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {kikomo kimevukwa} near {karibu na kikomo, "
+      & "{distance} imebaki} other {{distance} kutoka kikomo}}");
+   P ("label.thresholds.threshold_summary_label.none", "hakuna vipimo");
+   P ("label.thresholds.threshold_summary_label.normal", "za kawaida {count, number}");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {onyo 1} other {maonyo {count, number}}}");
+   P ("label.thresholds.threshold_summary_label.critical", "muhimu {count, number}");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {ukiukaji 1} other {ukiukaji {count, number}}}");
+   P ("label.thresholds.target_window_label", "lengo {target} jumlisha/toa {tolerance}");
+   P ("label.thresholds.tolerance_label", "ustahimilivu {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} ya kikomo");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {kikomo kimezidishwa kwa {amount}} other "
+      & "{{amount} imebaki}}");
+   P ("label.thresholds.budget_used_label", "{used} imetumika kati ya {budget}");
+   P ("label.workflows.step_label", "hatua {current, number} kati ya {total, number}: {name}");
+   P ("label.workflows.milestone_label",
+      "hatua muhimu {current, number} kati ya {total, number} zimekamilika: "
+      & "{name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {hakuna vipengee vya mtiririko wa kazi} half "
+      & "{nusu ya mtiririko wa kazi imekamilika} other {{completed, number} "
+      & "kati ya {total, number} zimekamilika}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {nafasi kwenye foleni {position, number}} other "
+      & "{nafasi kwenye foleni {position, number} kati ya {total, number}}}");
+   P ("label.changes.change_set_label.none", "hakuna mabadiliko");
+   P ("label.changes.change_set_label.added", "zilizoongezwa {count, number}");
+   P ("label.changes.change_set_label.removed", "zilizoondolewa {count, number}");
+   P ("label.changes.change_set_label.modified", "zilizobadilishwa {count, number}");
+   P ("label.changes.change_set_label.unchanged", "zisizobadilika {count, number}");
+   P ("label.changes.sync_change_label.none", "hakuna mabadiliko ya usawazishaji");
+   P ("label.changes.sync_change_label.uploaded", "zilizopakiwa {count, number}");
+   P ("label.changes.sync_change_label.downloaded", "zilizopakuliwa {count, number}");
+   P ("label.changes.sync_change_label.deleted", "zilizofutwa {count, number}");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {mgongano 1} other {migongano {count, number}}}");
+   P ("label.changes.net_change_label",
+      "{state, select, none {hakuna badiliko halisi} up {halisi +{count, "
+      & "plural, one {kipengee 1} other {vipengee {count, number}}}} other "
+      & "{halisi -{count, plural, one {kipengee 1} other {vipengee {count, "
+      & "number}}}}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {hakuna mabadiliko ya kukagua} all {mabadiliko "
+      & "yote yamekaguliwa} other {mabadiliko {reviewed, number} kati ya "
+      & "{total, number} yamekaguliwa}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} haijabadilika, {new_value}} up "
+      & "{{field_name} imeongezeka kutoka {old_value} hadi {new_value}} other "
+      & "{{field_name} imepungua kutoka {old_value} hadi {new_value}}}");
 end Labels_2;

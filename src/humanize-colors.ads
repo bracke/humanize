@@ -6,10 +6,14 @@ with Humanize.Status;
 package Humanize.Colors is
    --  Facade map:
    --  * Humanize.Colors.Contrast: contrast ratios, APCA, accessibility, and remediation helpers.
+   --  * Humanize.Colors.Contrast.Localized: the contrast labels in a context's locale.
    --  * Humanize.Colors.CSS: CSS color parsing and rendering helpers.
    --  * Humanize.Colors.Models: color-model conversion helpers.
+   --  * Humanize.Colors.Models.Localized: the model labels in a context's locale.
    --  * Humanize.Colors.Names: color name and description helpers.
+   --  * Humanize.Colors.Names.Localized: the name and description labels in a context's locale.
    --  * Humanize.Colors.Palettes: palette analysis, role, and mood helpers.
+   --  * Humanize.Colors.Palettes.Localized: the palette labels in a context's locale.
 
    --  Facade section: shared color types, metadata, labels, and bounded output adapters.
    subtype Color_Channel is Natural range 0 .. 255;

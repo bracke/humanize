@@ -43,6 +43,20 @@ package Humanize.Attachments.Localized is
    --  @param State As for the parent's Attachment_Label.
    --  @return The label in Context's locale.
 
+   function Attachment_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Attachment_Kind;
+       State   : Attachment_State;
+       Options : Attachment_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Attachment_Label.
+   --  @param Kind As for the parent's Attachment_Label.
+   --  @param State As for the parent's Attachment_Label.
+   --  @param Options As for the parent's Attachment_Label.
+   --  @return The label in Context's locale.
+
    function Attachment_Size_Label
       (Context : Humanize.Contexts.Context;
        Name    : String;
@@ -115,6 +129,18 @@ package Humanize.Attachments.Localized is
    --  @param State As for the parent's Scan_Result_Label.
    --  @return The label in Context's locale.
 
+   function Scan_Result_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Scan_State;
+       Options : Attachment_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Scan_Result_Label.
+   --  @param State As for the parent's Scan_Result_Label.
+   --  @param Options As for the parent's Scan_Result_Label.
+   --  @return The label in Context's locale.
+
    function Scan_State_Label
       (Context : Humanize.Contexts.Context;
        State   : Scan_State)
@@ -131,6 +157,16 @@ package Humanize.Attachments.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Upload_Error_Label.
    --  @param Reason As for the parent's Upload_Error_Label.
+   --  @return The label in Context's locale.
+
+   function Upload_Progress_Label
+      (Context : Humanize.Contexts.Context;
+       Done    : Natural;
+       Total   : Natural)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Done As for the parent's Upload_Progress_Label.
+   --  @param Total As for the parent's Upload_Progress_Label.
    --  @return The label in Context's locale.
 
    procedure Attachment_Count_Label_Into
@@ -183,6 +219,24 @@ package Humanize.Attachments.Localized is
    --  @param Name As for the parent's Attachment_Label.
    --  @param Kind As for the parent's Attachment_Label.
    --  @param State As for the parent's Attachment_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Attachment_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Attachment_Kind;
+       State   : Attachment_State;
+       Options : Attachment_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Attachment_Label.
+   --  @param Kind As for the parent's Attachment_Label.
+   --  @param State As for the parent's Attachment_Label.
+   --  @param Options As for the parent's Attachment_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
@@ -291,6 +345,22 @@ package Humanize.Attachments.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Scan_Result_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Scan_State;
+       Options : Attachment_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Scan_Result_Label.
+   --  @param State As for the parent's Scan_Result_Label.
+   --  @param Options As for the parent's Scan_Result_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure Scan_State_Label_Into
       (Context : Humanize.Contexts.Context;
        State   : Scan_State;
@@ -313,6 +383,20 @@ package Humanize.Attachments.Localized is
    --  @param Context Formatting context.
    --  @param Name As for the parent's Upload_Error_Label.
    --  @param Reason As for the parent's Upload_Error_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Upload_Progress_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Done    : Natural;
+       Total   : Natural;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Done As for the parent's Upload_Progress_Label.
+   --  @param Total As for the parent's Upload_Progress_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

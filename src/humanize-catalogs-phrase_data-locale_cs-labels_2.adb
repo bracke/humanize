@@ -689,4 +689,9 @@ begin
       & "schválení} blocked_state {blokováno} completed_state {dokončeno} "
       & "failed_state {selhalo} cancelled_state {zrušeno} skipped_state "
       & "{přeskočeno} other {pozastaveno}}");
+   P ("label.contrast.opacity_label",
+      "{percent}, {state, select, transparent {průhledná} "
+      & "mostly_transparent {převážně průhledná} translucent "
+      & "{průsvitná} mostly_opaque {převážně neprůhledná} other "
+      & "{neprůhledná}}");
 end Labels_2;

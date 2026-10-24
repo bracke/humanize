@@ -41,6 +41,20 @@ package Humanize.Media.Localized is
    --  @param State As for the parent's Media_Summary.
    --  @return The label in Context's locale.
 
+   function Media_Summary
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Media_Kind;
+       State   : Media_State;
+       Options : Media_Label_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Media_Summary.
+   --  @param Kind As for the parent's Media_Summary.
+   --  @param State As for the parent's Media_Summary.
+   --  @param Options As for the parent's Media_Summary.
+   --  @return The label in Context's locale.
+
    function Page_Count_Label
       (Context : Humanize.Contexts.Context;
        Pages   : Natural)
@@ -107,6 +121,24 @@ package Humanize.Media.Localized is
    --  @param Name As for the parent's Media_Summary.
    --  @param Kind As for the parent's Media_Summary.
    --  @param State As for the parent's Media_Summary.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure Media_Summary_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Kind    : Media_Kind;
+       State   : Media_State;
+       Options : Media_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param Name As for the parent's Media_Summary.
+   --  @param Kind As for the parent's Media_Summary.
+   --  @param State As for the parent's Media_Summary.
+   --  @param Options As for the parent's Media_Summary.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

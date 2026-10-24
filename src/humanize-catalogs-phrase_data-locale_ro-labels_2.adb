@@ -553,4 +553,146 @@ begin
       & "{așteaptă aprobare} blocked_state {blocat} completed_state "
       & "{finalizat} failed_state {eșuat} cancelled_state {anulat} "
       & "skipped_state {omis} other {întrerupt}}");
+   P ("label.contrast.opacity_label",
+      "{percent}, {state, select, transparent {transparent} "
+      & "mostly_transparent {aproape transparent} translucent {translucid} "
+      & "mostly_opaque {aproape opac} other {opac}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {nicio observație} one {1 observație, min. "
+      & "{minimum} {unit}, mediană {median} {unit}, max. {maximum} {unit}} few "
+      & "{{count, number} observații, min. {minimum} {unit}, mediană {median} "
+      & "{unit}, max. {maximum} {unit}} other {{count, number} de observații, "
+      & "min. {minimum} {unit}, mediană {median} {unit}, max. {maximum} "
+      & "{unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {nicio observație} other {0 "
+      & "valori aberante din {total, plural, one {{total, number} observație} "
+      & "few {{total, number} observații} other {{total, number} de "
+      & "observații}}}}} one {1 valoare aberantă din {total, plural, one "
+      & "{{total, number} observație} few {{total, number} observații} other "
+      & "{{total, number} de observații}}} few {{outliers, number} valori "
+      & "aberante din {total, plural, one {{total, number} observație} few "
+      & "{{total, number} observații} other {{total, number} de observații}}} "
+      & "other {{outliers, number} de valori aberante din {total, plural, one "
+      & "{{total, number} observație} few {{total, number} observații} other "
+      & "{{total, number} de observații}}}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {capacitate depășită cu {count, number} "
+      & "{unit}} other {rămân {count, number} din {total, number} {unit}}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {cotă depășită cu {count, number} {unit} "
+      & "({percent} utilizat)} near {cotă aproape de limită: rămân {count, "
+      & "number} {unit} ({percent} utilizat)} other {cotă disponibilă: "
+      & "rămân {count, number} {unit} ({percent} utilizat)}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {rata de accesări în cache indisponibilă: "
+      & "nicio cerere} other {rata de accesări în cache {percent}: accesări "
+      & "{hits, number}, ratări {misses, number}}}");
+   P ("label.markup.attribute_count_label.total",
+      "{count, plural, one {{count, number} atribut} few {{count, number} "
+      & "atribute} other {{count, number} de atribute}}");
+   P ("label.markup.attribute_count_label.data",
+      "{count, plural, one {{count, number} atribut data} few {{count, "
+      & "number} atribute data} other {{count, number} de atribute data}}");
+   P ("label.markup.attribute_count_label.aria",
+      "{count, plural, one {{count, number} atribut ARIA} few {{count, "
+      & "number} atribute ARIA} other {{count, number} de atribute ARIA}}");
+   P ("label.markup.attribute_count_label.events",
+      "{count, plural, one {{count, number} handler de evenimente} few "
+      & "{{count, number} handlere de evenimente} other {{count, number} de "
+      & "handlere de evenimente}}");
+   P ("label.markup.heading_label", "titlu de nivel {level, number}");
+   P ("label.markup.tag_count_label.total",
+      "{count, plural, one {{count, number} etichetă} few {{count, number} "
+      & "etichete} other {{count, number} de etichete}}");
+   P ("label.markup.tag_count_label.links",
+      "{count, plural, one {{count, number} link} few {{count, number} "
+      & "linkuri} other {{count, number} de linkuri}}");
+   P ("label.markup.tag_count_label.media",
+      "{count, plural, one {{count, number} element media} few {{count, "
+      & "number} elemente media} other {{count, number} de elemente media}}");
+   P ("label.markup.tag_count_label.forms",
+      "{count, plural, one {{count, number} control de formular} few {{count, "
+      & "number} controale de formular} other {{count, number} de controale de "
+      & "formular}}");
+   P ("label.markup.document_outline_label.headings",
+      "{count, plural, one {{count, number} titlu} few {{count, number} "
+      & "titluri} other {{count, number} de titluri}}");
+   P ("label.markup.document_outline_label.landmarks",
+      "{count, plural, one {{count, number} reper} few {{count, number} "
+      & "repere} other {{count, number} de repere}}");
+   P ("label.markup.document_outline_label.forms",
+      "{count, plural, one {{count, number} formular} few {{count, number} "
+      & "formulare} other {{count, number} de formulare}}");
+   P ("label.markup.document_outline_label.media",
+      "{count, plural, one {{count, number} element media} few {{count, "
+      & "number} elemente media} other {{count, number} de elemente media}}");
+   P ("label.markup.table_navigation_label",
+      "{caption}, rândul {row, number} din {rows, number}, coloana {column, "
+      & "number} din {columns, number}");
+   P ("label.secrets.secret_count_label.total",
+      "{count, plural, one {{count, number} secret} few {{count, number} "
+      & "secrete} other {{count, number} de secrete}}");
+   P ("label.secrets.secret_count_label.masked", "mascate: {count, number}");
+   P ("label.secrets.secret_count_label.unset", "nesetate: {count, number}");
+   P ("label.secrets.secret_count_label.fingerprints",
+      "{count, plural, one {{count, number} amprentă} few {{count, number} "
+      & "amprente} other {{count, number} de amprente}}");
+   P ("label.schema.type_mismatch_label",
+      "câmpul {field_name}: se aștepta {expected, select, string_field "
+      & "{șir} integer_field {întreg} decimal_field {zecimal} boolean_field "
+      & "{boolean} date_field {dată} date_time_field {dată și oră} "
+      & "object_field {obiect} array_field {tablou} enum_field {enumerare} "
+      & "binary_field {binar} null_field {null} any_field {orice tip} other "
+      & "{tip necunoscut}}, s-a primit {actual, select, string_field {șir} "
+      & "integer_field {întreg} decimal_field {zecimal} boolean_field "
+      & "{boolean} date_field {dată} date_time_field {dată și oră} "
+      & "object_field {obiect} array_field {tablou} enum_field {enumerare} "
+      & "binary_field {binar} null_field {null} any_field {orice tip} other "
+      & "{tip necunoscut}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {{blocking, "
+      & "number} problemă blocantă} few {{blocking, number} probleme "
+      & "blocante} other {{blocking, number} de probleme blocante}}} blocking "
+      & "{{base}, {blocking, plural, one {{blocking, number} problemă "
+      & "blocantă} few {{blocking, number} probleme blocante} other "
+      & "{{blocking, number} de probleme blocante}}} only {doar {base}} other "
+      & "{{base}}}");
+   P ("label.thresholds.metric_value_label", "{name}: {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {interval țintă de la {low} la "
+      & "{high}} other {fereastră țintă de la {low} la {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} în intervalul așteptat} below "
+      & "{{value} sub intervalul așteptat} other {{value} peste intervalul "
+      & "așteptat}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} la pragul critic} warning {{value} "
+      & "la pragul de avertizare} other {{value} în limite normale}}");
+   P ("label.thresholds.breach_label", "{state, select, ok {nedepășit} other {depășit cu {difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {la țintă} below {{difference} sub țintă} other "
+      & "{{difference} peste țintă}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {limită depășită} near {aproape de "
+      & "limită, rămân {distance}} other {{distance} până la limită}}");
+   P ("label.thresholds.threshold_summary_label.none", "nicio metrică");
+   P ("label.thresholds.threshold_summary_label.normal", "normale: {count, number}");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {{count, number} avertisment} few {{count, number} "
+      & "avertismente} other {{count, number} de avertismente}}");
+   P ("label.thresholds.threshold_summary_label.critical", "critice: {count, number}");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {{count, number} depășire} few {{count, number} "
+      & "depășiri} other {{count, number} de depășiri}}");
+   P ("label.thresholds.target_window_label", "țintă {target} ± {tolerance}");
+   P ("label.thresholds.tolerance_label", "toleranță {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} din limită");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {limită depășită cu {amount}} other "
+      & "{rămân {amount}}}");
+   P ("label.thresholds.budget_used_label", "utilizat {used} din {budget}");
+   P ("label.workflows.step_label", "pasul {current, number} din {total, number}: {name}");
+   P ("label.workflows.milestone_label", "etape finalizate {current, number} din {total, number}: {name}");
 end Labels_2;

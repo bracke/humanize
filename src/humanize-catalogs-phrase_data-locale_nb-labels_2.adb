@@ -512,4 +512,185 @@ begin
       & "godkjenning} blocked_state {blokkert} completed_state {fullført} "
       & "failed_state {mislyktes} cancelled_state {avbrutt} skipped_state "
       & "{hoppet over} other {satt på pause}}");
+   P ("label.contrast.opacity_label",
+      "{percent} {state, select, transparent {gjennomsiktig} "
+      & "mostly_transparent {hovedsakelig gjennomsiktig} translucent "
+      & "{halvgjennomsiktig} mostly_opaque {hovedsakelig ugjennomsiktig} other "
+      & "{ugjennomsiktig}}");
+   P ("label.statistics.distribution_summary_label",
+      "{count, plural, =0 {ingen observasjoner} one {1 observasjon, min. "
+      & "{minimum} {unit}, median {median} {unit}, maks. {maximum} {unit}} "
+      & "other {{count, number} observasjoner, min. {minimum} {unit}, median "
+      & "{median} {unit}, maks. {maximum} {unit}}}");
+   P ("label.statistics.percentile_summary_label", "p50 {p50} {unit}, p95 {p95} {unit}, p99 {p99} {unit}");
+   P ("label.statistics.outlier_summary_label",
+      "{outliers, plural, =0 {{total, plural, =0 {ingen observasjoner} one {0 "
+      & "avvikere av 1 observasjon} other {0 avvikere av {total, number} "
+      & "observasjoner}}} one {{total, plural, one {1 avviker av 1 observasjon} "
+      & "other {1 avviker av {total, number} observasjoner}}} other {{outliers, "
+      & "number} avvikere av {total, number} observasjoner}}");
+   P ("label.resources.remaining_label",
+      "{state, select, over {{count, number} {unit} over kapasiteten} other "
+      & "{{count, number} av {total, number} {unit} gjenstår}}");
+   P ("label.resources.quota_label",
+      "{state, select, exceeded {kvoten overskredet med {count, number} "
+      & "{unit} ({percent} brukt)} near {kvoten nesten nådd: {count, number} "
+      & "{unit} gjenstår ({percent} brukt)} other {kvote tilgjengelig: {count, "
+      & "number} {unit} gjenstår ({percent} brukt)}}");
+   P ("label.resources.cache_hit_rate_label",
+      "{state, select, none {treffrate for hurtigbuffer utilgjengelig: ingen "
+      & "forespørsler} other {treffrate for hurtigbuffer {percent}: {hits, "
+      & "plural, one {1 treff} other {{hits, number} treff}}, {misses, plural, "
+      & "one {1 bom} other {{misses, number} bom}}}}");
+   P ("label.markup.attribute_count_label.total",
+      "{count, plural, one {1 attributt} other {{count, number} attributter}}");
+   P ("label.markup.attribute_count_label.data",
+      "{count, plural, one {1 data-attributt} other {{count, number} "
+      & "data-attributter}}");
+   P ("label.markup.attribute_count_label.aria",
+      "{count, plural, one {1 ARIA-attributt} other {{count, number} "
+      & "ARIA-attributter}}");
+   P ("label.markup.attribute_count_label.events",
+      "{count, plural, one {1 hendelsesbehandler} other {{count, number} "
+      & "hendelsesbehandlere}}");
+   P ("label.markup.heading_label", "overskrift på nivå {level, number}");
+   P ("label.markup.tag_count_label.total", "{count, plural, one {1 tagg} other {{count, number} tagger}}");
+   P ("label.markup.tag_count_label.links", "{count, plural, one {1 lenke} other {{count, number} lenker}}");
+   P ("label.markup.tag_count_label.media",
+      "{count, plural, one {1 medieelement} other {{count, number} "
+      & "medieelementer}}");
+   P ("label.markup.tag_count_label.forms",
+      "{count, plural, one {1 skjemakontroll} other {{count, number} "
+      & "skjemakontroller}}");
+   P ("label.markup.document_outline_label.headings",
+      "{count, plural, one {1 overskrift} other {{count, number} "
+      & "overskrifter}}");
+   P ("label.markup.document_outline_label.landmarks",
+      "{count, plural, one {1 landemerke} other {{count, number} "
+      & "landemerker}}");
+   P ("label.markup.document_outline_label.forms",
+      "{count, plural, one {1 skjema} other {{count, number} skjemaer}}");
+   P ("label.markup.document_outline_label.media",
+      "{count, plural, one {1 medieelement} other {{count, number} "
+      & "medieelementer}}");
+   P ("label.markup.table_navigation_label",
+      "{caption} rad {row, number} av {rows, number}, kolonne {column, "
+      & "number} av {columns, number}");
+   P ("label.secrets.secret_count_label.total",
+      "{count, plural, one {1 hemmelighet} other {{count, number} "
+      & "hemmeligheter}}");
+   P ("label.secrets.secret_count_label.masked", "{count, number} maskert");
+   P ("label.secrets.secret_count_label.unset", "{count, number} ikke angitt");
+   P ("label.secrets.secret_count_label.fingerprints",
+      "{count, plural, one {1 fingeravtrykk} other {{count, number} "
+      & "fingeravtrykk}}");
+   P ("label.schema.type_mismatch_label",
+      "feltet {field_name} forventet {expected, select, string_field {streng} "
+      & "integer_field {heltall} decimal_field {desimaltall} boolean_field "
+      & "{boolsk verdi} date_field {dato} date_time_field {tidspunkt} "
+      & "object_field {objekt} array_field {array} enum_field {enum} "
+      & "binary_field {binærverdi} null_field {null} any_field {vilkårlig "
+      & "verdi} other {ukjent}}, fikk {actual, select, string_field {streng} "
+      & "integer_field {heltall} decimal_field {desimaltall} boolean_field "
+      & "{boolsk verdi} date_field {dato} date_time_field {tidspunkt} "
+      & "object_field {objekt} array_field {array} enum_field {enum} "
+      & "binary_field {binærverdi} null_field {null} any_field {vilkårlig "
+      & "verdi} other {ukjent}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {1 blokkerende "
+      & "problem} other {{blocking, number} blokkerende problemer}}} blocking "
+      & "{{base}, {blocking, plural, one {1 blokkerende problem} other "
+      & "{{blocking, number} blokkerende problemer}}} only {bare {base}} other "
+      & "{{base}}}");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {målområde {low} til {high}} "
+      & "other {målvindu {low} til {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} innenfor forventet område} below "
+      & "{{value} under forventet område} other {{value} over forventet "
+      & "område}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} ved kritisk terskel} warning "
+      & "{{value} ved varselterskel} other {{value} innenfor normalområdet}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {ikke overskredet} other {overskredet med "
+      & "{difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {på målet} below {{difference} under målet} "
+      & "other {{difference} over målet}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {grensen overskredet} near {nær grensen, "
+      & "{distance} gjenstår} other {{distance} fra grensen}}");
+   P ("label.thresholds.threshold_summary_label.none", "ingen måleverdier");
+   P ("label.thresholds.threshold_summary_label.normal", "{count, number} normale");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {1 advarsel} other {{count, number} advarsler}}");
+   P ("label.thresholds.threshold_summary_label.critical", "{count, number} kritiske");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {1 overskridelse} other {{count, number} "
+      & "overskridelser}}");
+   P ("label.thresholds.target_window_label", "mål {target} ± {tolerance}");
+   P ("label.thresholds.tolerance_label", "toleranse {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} av grensen");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {grensen overskredet med {amount}} other "
+      & "{{amount} gjenstår}}");
+   P ("label.thresholds.budget_used_label", "{used} brukt av {budget}");
+   P ("label.workflows.step_label", "trinn {current, number} av {total, number}: {name}");
+   P ("label.workflows.milestone_label", "{current, number} av {total, number} milepæler nådd: {name}");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {ingen arbeidsflytelementer} half {halvveis i "
+      & "arbeidsflyten} other {{completed, number} av {total, number} "
+      & "fullført}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {plass {position, number} i køen} other {plass "
+      & "{position, number} av {total, number} i køen}}");
+   P ("label.changes.change_set_label.none", "ingen endringer");
+   P ("label.changes.change_set_label.added", "{count, number} lagt til");
+   P ("label.changes.change_set_label.removed", "{count, number} fjernet");
+   P ("label.changes.change_set_label.modified", "{count, number} endret");
+   P ("label.changes.change_set_label.unchanged", "{count, number} uendret");
+   P ("label.changes.sync_change_label.none", "ingen synkroniseringsendringer");
+   P ("label.changes.sync_change_label.uploaded", "{count, number} lastet opp");
+   P ("label.changes.sync_change_label.downloaded", "{count, number} lastet ned");
+   P ("label.changes.sync_change_label.deleted", "{count, number} slettet");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {1 konflikt} other {{count, number} konflikter}}");
+   P ("label.changes.net_change_label",
+      "{state, select, none {ingen nettoendring} up {netto +{count, plural, "
+      & "one {1 element} other {{count, number} elementer}}} other {netto "
+      & "-{count, plural, one {1 element} other {{count, number} elementer}}}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {ingen endringer å gjennomgå} all {alle "
+      & "endringer gjennomgått} other {{reviewed, number} av {total, number} "
+      & "endringer gjennomgått}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} uendret på {new_value}} up "
+      & "{{field_name} økte fra {old_value} til {new_value}} other "
+      & "{{field_name} sank fra {old_value} til {new_value}}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {ingen rader kan velges} none {ingen rader "
+      & "valgt} all {{total, plural, one {1 rad} other {alle {total, number} "
+      & "rader}} valgt} other {{selected, number} av {total, plural, one {1 "
+      & "rad} other {{total, number} rader}} valgt}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {ingen sider} other {{pages, plural, =0 {ingen "
+      & "sider} other {{rows, plural, =0 {side {page, number} av {pages, "
+      & "number}} one {side {page, number} av {pages, number}, 1 rad} other "
+      & "{side {page, number} av {pages, number}, {rows, number} rader}}}}}}");
+   P ("label.tables.filter_label",
+      "{state, select, no_rows {ingen rader} none {ingen rader samsvarer} all "
+      & "{{total, plural, one {1 rad} other {alle {total, number} rader}} "
+      & "vises} other {{visible, number} av {total, plural, one {1 rad} other "
+      & "{{total, number} rader}} vises}}");
+   P ("label.tables.row_range_label",
+      "{state, select, none {ingen rader} single {rad {first_row, number} av "
+      & "{total, number}} other {rader {first_row, number}–{last_row, number} "
+      & "av {total, number}}}");
+   P ("label.forms.remaining_characters_label",
+      "{state, select, unlimited {ingen tegngrense} none_left {ingen tegn "
+      & "igjen} left {{count, plural, one {1 tegn} other {{count, number} "
+      & "tegn}} igjen} other {{count, plural, one {1 tegn} other {{count, "
+      & "number} tegn}} over grensen}}");
 end Labels_2;

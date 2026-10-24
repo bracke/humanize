@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Comments.Localized is
@@ -24,8 +25,8 @@ package body Humanize.Comments.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "author", Humanize.Bounded_Text.Clean (Author));
       Selection := Sel.With_Arg (Selection, "state", Lower (Comment_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "author", Humanize.Bounded_Text.Clean (Author));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
    end Author_Action_Label;
 
@@ -58,9 +59,25 @@ package body Humanize.Comments.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "author", Humanize.Bounded_Text.Clean (Author));
       Selection := Sel.With_Arg (Selection, "state", Lower (Comment_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "author", Humanize.Bounded_Text.Clean (Author));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Comment_Label;
+
+   function Comment_Label
+      (Context : Humanize.Contexts.Context;
+       Author  : String;
+       State   : Comment_State;
+       Options : Comment_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Comments.Comment_Label (Author => Author, State => State, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Comments.Comment_Label (Author => Author, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Comment_Label (Context, Author => Author, State
+        => State));
    end Comment_Label;
 
    function Comment_State_Label
@@ -305,10 +322,27 @@ package body Humanize.Comments.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       Selection := Sel.With_Arg (Selection, "state", Lower (Thread_State'Image (State)));
       Selection := Sel.With_Arg (Selection, "count", Long_Long_Integer (Count));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Thread_Label;
+
+   function Thread_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Thread_State;
+       Count   : Natural;
+       Options : Comment_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Comments.Thread_Label (Name => Name, State => State, Count => Count, Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Comments.Thread_Label (Name => Name, State => State, Count => Count);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Thread_Label (Context, Name => Name, State =>
+        State, Count => Count));
    end Thread_Label;
 
    function Thread_State_Label
@@ -368,7 +402,9 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Author_Action_Label (Context, Author, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Author_Action_Label (Context, Author => Author, State => State),
+         Target, Written, Status);
    end Author_Action_Label_Into;
 
    procedure Comment_Count_Label_Into
@@ -379,7 +415,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Comment_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Comment_Count_Label (Context, Count => Count), Target, Written, Status);
    end Comment_Count_Label_Into;
 
    procedure Comment_Label_Into
@@ -391,7 +427,24 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Comment_Label (Context, Author, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Comment_Label (Context, Author => Author, State => State),
+         Target, Written, Status);
+   end Comment_Label_Into;
+
+   procedure Comment_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Author  : String;
+       State   : Comment_State;
+       Options : Comment_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Comment_Label (Context, Author => Author, State => State, Options => Options),
+         Target, Written, Status);
    end Comment_Label_Into;
 
    procedure Comment_State_Label_Into
@@ -402,7 +455,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Comment_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Comment_State_Label (Context, State => State), Target, Written, Status);
    end Comment_State_Label_Into;
 
    procedure Deleted_Label_Into
@@ -413,7 +466,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Deleted_Label (Context, Author), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Deleted_Label (Context, Author => Author), Target, Written, Status);
    end Deleted_Label_Into;
 
    procedure Edited_Label_Into
@@ -424,7 +477,7 @@ package body Humanize.Comments.Localized is
        Status    : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Edited_Label (Context, Time_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Edited_Label (Context, Time_Text => Time_Text), Target, Written, Status);
    end Edited_Label_Into;
 
    procedure Hide_Comment_Label_Into
@@ -435,7 +488,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Hide_Comment_Label (Context, Reason), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Hide_Comment_Label (Context, Reason => Reason), Target, Written, Status);
    end Hide_Comment_Label_Into;
 
    procedure Lock_Thread_Label_Into
@@ -446,7 +499,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Lock_Thread_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Lock_Thread_Label (Context, Name => Name), Target, Written, Status);
    end Lock_Thread_Label_Into;
 
    procedure Participant_Count_Label_Into
@@ -457,7 +510,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Participant_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Participant_Count_Label (Context, Count => Count), Target, Written, Status);
    end Participant_Count_Label_Into;
 
    procedure Pin_Label_Into
@@ -468,7 +521,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Pin_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Pin_Label (Context, Name => Name), Target, Written, Status);
    end Pin_Label_Into;
 
    procedure Reaction_Kind_Label_Into
@@ -479,7 +532,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Reaction_Kind_Label (Context, Kind), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Reaction_Kind_Label (Context, Kind => Kind), Target, Written, Status);
    end Reaction_Kind_Label_Into;
 
    procedure Reaction_Label_Into
@@ -491,7 +544,9 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Reaction_Label (Context, Kind, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Reaction_Label (Context, Kind => Kind, Count => Count),
+         Target, Written, Status);
    end Reaction_Label_Into;
 
    procedure Reply_Count_Label_Into
@@ -502,7 +557,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Reply_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Reply_Count_Label (Context, Count => Count), Target, Written, Status);
    end Reply_Count_Label_Into;
 
    procedure Resolved_Label_Into
@@ -513,7 +568,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Resolved_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Resolved_Label (Context, Name => Name), Target, Written, Status);
    end Resolved_Label_Into;
 
    procedure Subscribe_Label_Into
@@ -524,7 +579,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Subscribe_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Subscribe_Label (Context, Name => Name), Target, Written, Status);
    end Subscribe_Label_Into;
 
    procedure Thread_Count_Label_Into
@@ -535,7 +590,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Thread_Count_Label (Context, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Thread_Count_Label (Context, Count => Count), Target, Written, Status);
    end Thread_Count_Label_Into;
 
    procedure Thread_Label_Into
@@ -548,7 +603,25 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Thread_Label (Context, Name, State, Count), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Thread_Label (Context, Name => Name, State => State, Count => Count),
+         Target, Written, Status);
+   end Thread_Label_Into;
+
+   procedure Thread_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       State   : Thread_State;
+       Count   : Natural;
+       Options : Comment_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Thread_Label (Context, Name => Name, State => State, Count => Count, Options => Options),
+         Target, Written, Status);
    end Thread_Label_Into;
 
    procedure Thread_State_Label_Into
@@ -559,7 +632,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Thread_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Thread_State_Label (Context, State => State), Target, Written, Status);
    end Thread_State_Label_Into;
 
    procedure Unpin_Label_Into
@@ -570,7 +643,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Unpin_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Unpin_Label (Context, Name => Name), Target, Written, Status);
    end Unpin_Label_Into;
 
    procedure Unsubscribe_Label_Into
@@ -581,7 +654,7 @@ package body Humanize.Comments.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Unsubscribe_Label (Context, Name), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Unsubscribe_Label (Context, Name => Name), Target, Written, Status);
    end Unsubscribe_Label_Into;
 
 end Humanize.Comments.Localized;

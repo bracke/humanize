@@ -2,6 +2,7 @@ with Ada.Characters.Handling;
 
 with Humanize.Bounded_Text;
 with Humanize.I18N_Rendering;
+with Humanize.Label_Values;
 with Humanize.Selections;
 
 package body Humanize.Notification_Preferences.Localized is
@@ -40,9 +41,28 @@ package body Humanize.Notification_Preferences.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "channel", Humanize.Bounded_Text.Clean (Channel));
       Selection := Sel.With_Arg (Selection, "state", Lower (Preference_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "channel", Humanize.Bounded_Text.Clean (Channel));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Channel_Preference_Label;
+
+   function Channel_Preference_Label
+      (Context : Humanize.Contexts.Context;
+       Channel : String;
+       State   : Preference_State;
+       Options : Notification_Preference_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Notification_Preferences.Channel_Preference_Label
+          (Channel => Channel,
+           State => State,
+           Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Notification_Preferences.Channel_Preference_Label (Channel => Channel, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Channel_Preference_Label (Context, Channel =>
+        Channel, State => State));
    end Channel_Preference_Label;
 
    function Digest_Schedule_Label
@@ -107,10 +127,31 @@ package body Humanize.Notification_Preferences.Localized is
       if English.Status /= Humanize.Status.Ok then
          return English;
       end if;
-      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
-      Selection := Sel.With_Arg (Selection, "scope", Lower (Subscription_Scope'Image (Scope)));
       Selection := Sel.With_Arg (Selection, "state", Lower (Preference_State'Image (State)));
+      Selection := Sel.With_Arg (Selection, "scope", Lower (Subscription_Scope'Image (Scope)));
+      Selection := Sel.With_Arg (Selection, "name", Humanize.Bounded_Text.Clean (Name));
       return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+   end Subscription_Label;
+
+   function Subscription_Label
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Scope   : Subscription_Scope;
+       State   : Preference_State;
+       Options : Notification_Preference_Label_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Notification_Preferences.Subscription_Label
+          (Name => Name,
+           Scope => Scope,
+           State => State,
+           Options => Options);
+      Plain_English : constant Humanize.Status.Text_Result :=
+        Notification_Preferences.Subscription_Label (Name => Name, Scope => Scope, State => State);
+   begin
+      return Humanize.Label_Values.Decorated (English, Plain_English, Subscription_Label (Context, Name => Name, Scope
+        => Scope, State => State));
    end Subscription_Label;
 
    function Subscription_Scope_Label
@@ -137,7 +178,7 @@ package body Humanize.Notification_Preferences.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Alert_Level_Label (Context, Level), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Alert_Level_Label (Context, Level => Level), Target, Written, Status);
    end Alert_Level_Label_Into;
 
    procedure Channel_Preference_Label_Into
@@ -149,7 +190,24 @@ package body Humanize.Notification_Preferences.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Channel_Preference_Label (Context, Channel, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Channel_Preference_Label (Context, Channel => Channel, State => State),
+         Target, Written, Status);
+   end Channel_Preference_Label_Into;
+
+   procedure Channel_Preference_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Channel : String;
+       State   : Preference_State;
+       Options : Notification_Preference_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Channel_Preference_Label (Context, Channel => Channel, State => State, Options => Options),
+         Target, Written, Status);
    end Channel_Preference_Label_Into;
 
    procedure Digest_Schedule_Label_Into
@@ -160,7 +218,9 @@ package body Humanize.Notification_Preferences.Localized is
        Status   : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Digest_Schedule_Label (Context, Schedule), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Digest_Schedule_Label (Context, Schedule => Schedule),
+         Target, Written, Status);
    end Digest_Schedule_Label_Into;
 
    procedure Preference_State_Label_Into
@@ -171,7 +231,7 @@ package body Humanize.Notification_Preferences.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Preference_State_Label (Context, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Preference_State_Label (Context, State => State), Target, Written, Status);
    end Preference_State_Label_Into;
 
    procedure Quiet_Hours_Label_Into
@@ -182,7 +242,7 @@ package body Humanize.Notification_Preferences.Localized is
        Status    : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Quiet_Hours_Label (Context, Time_Text), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Quiet_Hours_Label (Context, Time_Text => Time_Text), Target, Written, Status);
    end Quiet_Hours_Label_Into;
 
    procedure Subscription_Label_Into
@@ -195,7 +255,25 @@ package body Humanize.Notification_Preferences.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Subscription_Label (Context, Name, Scope, State), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text
+        (Subscription_Label (Context, Name => Name, Scope => Scope, State => State),
+         Target, Written, Status);
+   end Subscription_Label_Into;
+
+   procedure Subscription_Label_Into
+      (Context : Humanize.Contexts.Context;
+       Name    : String;
+       Scope   : Subscription_Scope;
+       State   : Preference_State;
+       Options : Notification_Preference_Label_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text
+        (Subscription_Label (Context, Name => Name, Scope => Scope, State => State, Options => Options),
+         Target, Written, Status);
    end Subscription_Label_Into;
 
    procedure Subscription_Scope_Label_Into
@@ -206,7 +284,7 @@ package body Humanize.Notification_Preferences.Localized is
        Status  : out Humanize.Status.Status_Code)
    is
    begin
-      Humanize.Bounded_Text.Copy_Text (Subscription_Scope_Label (Context, Scope), Target, Written, Status);
+      Humanize.Bounded_Text.Copy_Text (Subscription_Scope_Label (Context, Scope => Scope), Target, Written, Status);
    end Subscription_Scope_Label_Into;
 
 end Humanize.Notification_Preferences.Localized;
