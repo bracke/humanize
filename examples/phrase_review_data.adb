@@ -171,6 +171,7 @@ procedure Phrase_Review_Data is
    is
       Numbers : constant String := Field (Arguments, 1);
       Texts   : constant String := Field (Arguments, 3);
+      Selects : constant String := Field (Arguments, 2);
       Chosen  : constant String := First_Choices (Arguments);
    begin
       for I in 1 .. Numbers'Length loop
@@ -180,6 +181,20 @@ procedure Phrase_Review_Data is
       for I in 1 .. Texts'Length loop
          exit when Item (Texts, I) = "";
          Messages.Arguments.Set (Args, Item (Texts, I), "[" & Item (Texts, I) & "]");
+      end loop;
+      --  every select its first choice, then the row's select its Choice
+      for I in 1 .. Selects'Length loop
+         exit when Item (Selects, I) = "";
+         declare
+            One    : constant String := Item (Selects, I);
+            Equals : constant Natural := Ada.Strings.Fixed.Index (One, "=");
+            Slash  : constant Natural := Ada.Strings.Fixed.Index (One, "/");
+         begin
+            if Equals > 0 then
+               Messages.Arguments.Set
+                 (Args, One (One'First .. Equals - 1), One (Equals + 1 .. (if Slash = 0 then One'Last else Slash - 1)));
+            end if;
+         end;
       end loop;
       if Chosen /= "" then
          Messages.Arguments.Set (Args, Chosen (Chosen'First .. Ada.Strings.Fixed.Index (Chosen, "=") - 1), Choice);
