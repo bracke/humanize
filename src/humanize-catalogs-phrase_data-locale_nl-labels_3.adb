@@ -1,6 +1,137 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Nl)
 procedure Labels_3 is
 begin
+   P ("label.schema.type_mismatch_label",
+      "veld {field_name}: {expected, select, string_field {string} "
+      & "integer_field {geheel getal} decimal_field {decimaal getal} "
+      & "boolean_field {boolean} date_field {datum} date_time_field "
+      & "{datum-tijd} object_field {object} array_field {array} enum_field "
+      & "{enum} binary_field {binair} null_field {null} any_field {willekeurig} "
+      & "other {onbekend}} verwacht, {actual, select, string_field {string} "
+      & "integer_field {geheel getal} decimal_field {decimaal getal} "
+      & "boolean_field {boolean} date_field {datum} date_time_field "
+      & "{datum-tijd} object_field {object} array_field {array} enum_field "
+      & "{enum} binary_field {binair} null_field {null} any_field {willekeurig} "
+      & "other {onbekend}} ontvangen");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {1 blokkerend "
+      & "probleem} other {{blocking, number} blokkerende problemen}}} blocking "
+      & "{{base}, {blocking, plural, one {1 blokkerend probleem} other "
+      & "{{blocking, number} blokkerende problemen}}} only {alleen {base}} "
+      & "other {{base}}}");
+   P ("label.diagnostics.check_run_summary_label.none", "geen controles uitgevoerd");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} geslaagd");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} mislukt");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 waarschuwing} other {{count, number} "
+      & "waarschuwingen}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} overgeslagen");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} in afwachting");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {doelbereik {low} tot en met "
+      & "{high}} other {doelvenster {low} tot {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} binnen verwacht bereik} below {{value} "
+      & "onder verwacht bereik} other {{value} boven verwacht bereik}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} op kritieke drempel} warning "
+      & "{{value} op waarschuwingsdrempel} other {{value} binnen normaal "
+      & "bereik}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {niet overschreden} other {overschreden met "
+      & "{difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {op doelwaarde} below {{difference} onder "
+      & "doelwaarde} other {{difference} boven doelwaarde}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {limiet overschreden} near {dicht bij limiet, "
+      & "{distance} resterend} other {{distance} van limiet}}");
+   P ("label.thresholds.threshold_summary_label.none", "geen metrieken");
+   P ("label.thresholds.threshold_summary_label.normal", "{count, number} normaal");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {1 waarschuwing} other {{count, number} "
+      & "waarschuwingen}}");
+   P ("label.thresholds.threshold_summary_label.critical", "{count, number} kritiek");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {1 overschrijding} other {{count, number} "
+      & "overschrijdingen}}");
+   P ("label.thresholds.target_window_label", "doel {target} plus/min {tolerance}");
+   P ("label.thresholds.tolerance_label", "tolerantie {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} van limiet");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {limiet overschreden met {amount}} other "
+      & "{{amount} resterend}}");
+   P ("label.thresholds.budget_used_label", "{used} van {budget} gebruikt");
+   P ("label.workflows.step_label", "stap {current, number} van {total, number}: {name}");
+   P ("label.workflows.milestone_label", "{current, number} van {total, number} mijlpalen behaald: {name}");
+   P ("label.workflows.workflow_summary_label.total", "{count, plural, one {1 item} other {{count, number} items}}");
+   P ("label.workflows.workflow_summary_label.completed", "{count, number} voltooid");
+   P ("label.workflows.workflow_summary_label.active", "{count, number} actief");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} geblokkeerd");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} mislukt");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} overgeslagen");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {geen workflowitems} half {workflow halverwege} "
+      & "other {{completed, number} van {total, number} voltooid}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {positie {position, number} in wachtrij} other "
+      & "{positie {position, number} van {total, number} in wachtrij}}");
+   P ("label.changes.change_set_label.none", "geen wijzigingen");
+   P ("label.changes.change_set_label.added", "{count, number} toegevoegd");
+   P ("label.changes.change_set_label.removed", "{count, number} verwijderd");
+   P ("label.changes.change_set_label.modified", "{count, number} gewijzigd");
+   P ("label.changes.change_set_label.unchanged", "{count, number} ongewijzigd");
+   P ("label.changes.change_summary_label.total", "{count, plural, one {1 item} other {{count, number} items}}");
+   P ("label.changes.change_summary_label.added", "{count, number} toegevoegd");
+   P ("label.changes.change_summary_label.removed", "{count, number} verwijderd");
+   P ("label.changes.change_summary_label.modified", "{count, number} gewijzigd");
+   P ("label.changes.change_summary_label.renamed", "{count, number} hernoemd");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} ongewijzigd");
+   P ("label.changes.sync_change_label.none", "geen synchronisatiewijzigingen");
+   P ("label.changes.sync_change_label.uploaded", "{count, number} geüpload");
+   P ("label.changes.sync_change_label.downloaded", "{count, number} gedownload");
+   P ("label.changes.sync_change_label.deleted", "{count, number} verwijderd");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {1 conflict} other {{count, number} conflicten}}");
+   P ("label.changes.net_change_label",
+      "{state, select, none {geen nettowijziging} up {netto +{count, plural, "
+      & "one {1 item} other {{count, number} items}}} other {netto -{count, "
+      & "plural, one {1 item} other {{count, number} items}}}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {geen wijzigingen om te beoordelen} all {alle "
+      & "wijzigingen beoordeeld} other {{reviewed, number} van {total, number} "
+      & "wijzigingen beoordeeld}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} ongewijzigd op {new_value}} up "
+      & "{{field_name} gestegen van {old_value} naar {new_value}} other "
+      & "{{field_name} gedaald van {old_value} naar {new_value}}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {geen rijen selecteerbaar} none {geen rijen "
+      & "geselecteerd} all {{total, plural, one {1 rij geselecteerd} other "
+      & "{alle {total, number} rijen geselecteerd}}} other {{selected, number} "
+      & "van {total, plural, one {1 rij} other {{total, number} rijen}} "
+      & "geselecteerd}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {geen pagina’s} other {{pages, plural, =0 {geen "
+      & "pagina’s} other {{rows, plural, =0 {pagina {page, number} van "
+      & "{pages, number}} one {pagina {page, number} van {pages, number}, 1 "
+      & "rij} other {pagina {page, number} van {pages, number}, {rows, number} "
+      & "rijen}}}}}}");
+   P ("label.tables.filter_label",
+      "{state, select, no_rows {geen rijen} none {geen overeenkomende rijen} "
+      & "all {{total, plural, one {1 rij zichtbaar} other {alle {total, number} "
+      & "rijen zichtbaar}}} other {{visible, number} van {total, plural, one {1 "
+      & "rij} other {{total, number} rijen}} zichtbaar}}");
+   P ("label.tables.row_range_label",
+      "{state, select, none {geen rijen} single {rij {first_row, number} van "
+      & "{total, number}} other {rijen {first_row, number}-{last_row, number} "
+      & "van {total, number}}}");
+   P ("label.forms.remaining_characters_label",
+      "{state, select, unlimited {geen tekenlimiet} none_left {geen tekens "
+      & "over} left {{count, plural, one {1 teken} other {{count, number} "
+      & "tekens}} over} other {{count, plural, one {1 teken} other {{count, "
+      & "number} tekens}} boven limiet}}");
    P ("label.forms.required_fields_label",
       "{total, plural, =0 {geen verplichte velden} one {{missing, plural, =0 "
       & "{alle verplichte velden ingevuld} other {1 van 1 verplicht veld "
@@ -51,9 +182,117 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} gewijzigd} other {{name}: {changed, number} gewijzigd, "
       & "{unchanged, number} ongewijzigd, {total, number} totaal}}");
+   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{brightness} {chroma} {temperature} {base, select, pink {{hue}} other "
+      & "{{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
-   P ("label.groups", "{first}; {second}");
-   P ("label.parts", "{first}, {second}");
+   P ("label.markup.accessible_control_label.control",
+      "{named, select, no {{role, select, button_control {naamloze knop} "
+      & "link_control {naamloze link} tab_control {naamloos tabblad} "
+      & "menu_item_control {naamloos menu-item} checkbox_control {naamloos "
+      & "selectievakje} radio_control {naamloos keuzerondje} text_field_control "
+      & "{naamloos tekstveld} progress_control {naamloze voortgangsbalk} "
+      & "table_cell_control {naamloze tabelcel} region_control {naamloze regio} "
+      & "other {naamloos besturingselement}}} other {{role, select, "
+      & "button_control {knop} link_control {link} tab_control {tabblad} "
+      & "menu_item_control {menu-item} checkbox_control {selectievakje} "
+      & "radio_control {keuzerondje} text_field_control {tekstveld} "
+      & "progress_control {voortgangsbalk} table_cell_control {tabelcel} "
+      & "region_control {regio} other {besturingselement}} {name}}}");
+   P ("label.markup.accessible_control_label.selected", "geselecteerd");
+   P ("label.markup.accessible_control_label.expanded", "uitgevouwen");
+   P ("label.markup.accessible_control_label.current", "huidig");
+   P ("label.markup.accessible_control_label.disabled", "uitgeschakeld");
+   P ("label.markup.accessible_control_label.required", "verplicht");
+   P ("label.markup.accessible_control_label.invalid", "ongeldig");
+   P ("label.markup.accessible_control_label.count", "{count, plural, one {1 item} other {{count, number} items}}");
+   P ("label.markup.accessible_control_label.position", "item {position} van {total}");
+   P ("label.markup.accessible_control_label.issues",
+      "{count, plural, one {1 probleem} other {{count, number} problemen}}");
+   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
+   P ("label.endpoints.url_component.scheme", "schema");
+   P ("label.endpoints.url_component.host", "host");
+   P ("label.endpoints.url_component.path", "pad");
+   P ("label.endpoints.url_component.query", "query");
+   P ("label.endpoints.url_component.fragment", "fragment");
+   P ("label.names.hue_noun.red", "rood");
+   P ("label.names.hue_noun.orange", "oranje");
+   P ("label.names.hue_noun.yellow", "geel");
+   P ("label.names.hue_noun.green", "groen");
+   P ("label.names.hue_noun.cyan", "cyaan");
+   P ("label.names.hue_noun.blue", "blauw");
+   P ("label.names.hue_noun.purple", "paars");
+   P ("label.names.hue_noun.magenta", "magenta");
+   P ("label.names.hue_noun.neutral", "neutraal");
+   P ("label.names.hue_noun.pink", "roze");
+   P ("label.names.hue_gender.red", "neuter");
+   P ("label.names.hue_gender.orange", "neuter");
+   P ("label.names.hue_gender.yellow", "neuter");
+   P ("label.names.hue_gender.green", "neuter");
+   P ("label.names.hue_gender.cyan", "neuter");
+   P ("label.names.hue_gender.blue", "neuter");
+   P ("label.names.hue_gender.purple", "neuter");
+   P ("label.names.hue_gender.magenta", "neuter");
+   P ("label.names.hue_gender.neutral", "neuter");
+   P ("label.names.hue_gender.pink", "neuter");
+   P ("label.names.agree.very_dark",
+      "{gender, select, neuter {zeer donker} masculine {zeer donkere} "
+      & "feminine {zeer donkere} other {zeer donker}}");
+   P ("label.names.agree.dark",
+      "{gender, select, neuter {donker} masculine {donkere} feminine "
+      & "{donkere} other {donker}}");
+   P ("label.names.agree.medium_brightness",
+      "{gender, select, neuter {middelhelder} masculine {middelheldere} "
+      & "feminine {middelheldere} other {middelhelder}}");
+   P ("label.names.agree.light",
+      "{gender, select, neuter {licht} masculine {lichte} feminine {lichte} "
+      & "other {licht}}");
+   P ("label.names.agree.very_light",
+      "{gender, select, neuter {zeer licht} masculine {zeer lichte} feminine "
+      & "{zeer lichte} other {zeer licht}}");
+   P ("label.names.agree.desaturated",
+      "{gender, select, neuter {onverzadigd} masculine {onverzadigde} "
+      & "feminine {onverzadigde} other {onverzadigd}}");
+   P ("label.names.agree.muted",
+      "{gender, select, neuter {gedempt} masculine {gedempte} feminine "
+      & "{gedempte} other {gedempt}}");
+   P ("label.names.agree.neutral",
+      "{gender, select, neuter {neutraal} masculine {neutrale} feminine "
+      & "{neutrale} other {neutraal}}");
+   P ("label.names.agree.saturated",
+      "{gender, select, neuter {verzadigd} masculine {verzadigde} feminine "
+      & "{verzadigde} other {verzadigd}}");
+   P ("label.names.agree.vivid",
+      "{gender, select, neuter {levendig} masculine {levendige} feminine "
+      & "{levendige} other {levendig}}");
+   P ("label.names.agree.grayish",
+      "{gender, select, neuter {grijzig} masculine {grijzige} feminine "
+      & "{grijzige} other {grijzig}}");
+   P ("label.names.agree.soft",
+      "{gender, select, neuter {zacht} masculine {zachte} feminine {zachte} "
+      & "other {zacht}}");
+   P ("label.names.agree.moderate_chroma",
+      "{gender, select, neuter {matig chromatisch} masculine {matig "
+      & "chromatische} feminine {matig chromatische} other {matig chromatisch}}");
+   P ("label.names.agree.high_chroma",
+      "{gender, select, neuter {sterk chromatisch} masculine {sterk "
+      & "chromatische} feminine {sterk chromatische} other {sterk chromatisch}}");
+   P ("label.names.agree.pastel", "{gender, select, other {pastel}}");
+   P ("label.names.agree.warm",
+      "{gender, select, neuter {warm} masculine {warme} feminine {warme} "
+      & "other {warm}}");
+   P ("label.names.agree.cool",
+      "{gender, select, neuter {koel} masculine {koele} feminine {koele} "
+      & "other {koel}}");
+   P ("label.names.agree.neutral_temperature",
+      "{gender, select, neuter {temperatuurneutraal} masculine "
+      & "{temperatuurneutrale} feminine {temperatuurneutrale} other "
+      & "{temperatuurneutraal}}");
+   P ("label.names.agree.balanced_temperature",
+      "{gender, select, neuter {temperatuurgebalanceerd} masculine "
+      & "{temperatuurgebalanceerde} feminine {temperatuurgebalanceerde} other "
+      & "{temperatuurgebalanceerd}}");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
       "huidige voorgrondkleur voldoet aan contrast voor grote tekst bij "
       & "{v1}:{v2, number}");
@@ -456,245 +695,4 @@ begin
    P ("label.metrics.text_summary_with_options.n_sentences", "{v1, plural, one {1 zin} other {{v1, number} zinnen}}");
    P ("label.metrics.text_summary_with_options.n_paragraphs",
       "{v1, plural, one {1 alinea} other {{v1, number} alinea’s}}");
-   P ("label.metrics.text_summary_with_options.n_minutes_read",
-      "{v1, plural, one {1 minuut leestijd} other {{v1, number} minuten "
-      & "leestijd}}");
-   P ("label.metrics.paragraph_count_summary.n_paragraph",
-      "{v1, plural, one {1 alinea} other {{v1, number} alinea’s}}");
-   P ("label.metrics.reading_time.less_than_n_minute_read",
-      "{v1, plural, one {minder dan 1 minuut leestijd} other {minder dan {v1, "
-      & "number} minuten leestijd}}");
-   P ("label.metrics.speaking_time.less_than_n_minute_spoken",
-      "{v1, plural, one {minder dan 1 minuut spreektijd} other {minder dan "
-      & "{v1, number} minuten spreektijd}}");
-   P ("label.metrics.text_summary_with_options.n_paragraph",
-      "{v1, plural, one {1 alinea} other {{v1, number} alinea’s}}");
-   P ("label.metrics.text_summary_with_options.less_than_n_minute_read",
-      "{v1, plural, one {minder dan 1 minuut leestijd} other {minder dan {v1, "
-      & "number} minuten leestijd}}");
-   P ("label.metrics.sentence_count_summary.n_sentence", "{v1, plural, one {1 zin} other {{v1, number} zinnen}}");
-   P ("label.metrics.text_summary_with_options.n_sentence", "{v1, plural, one {1 zin} other {{v1, number} zinnen}}");
-   P ("label.metrics.word_count_summary.no_words", "geen woorden");
-   P ("label.metrics.sentence_count_summary.no_sentences", "geen zinnen");
-   P ("label.metrics.paragraph_count_summary.no_paragraphs", "geen alinea’s");
-   P ("label.metrics.text_summary_with_options.no_words", "geen woorden");
-   P ("label.metrics.text_summary_with_options.no_sentences", "geen zinnen");
-   P ("label.metrics.text_summary_with_options.no_paragraphs", "geen alinea’s");
-   P ("label.metrics.word_count_summary.n_word", "{v1, plural, one {1 woord} other {{v1, number} woorden}}");
-   P ("label.metrics.text_summary_with_options.n_word", "{v1, plural, one {1 woord} other {{v1, number} woorden}}");
-   P ("label.statistics.distribution_shape_label",
-      "{shape, select, no_distribution_shape {geen waarnemingen} "
-      & "sample_too_small_shape {steekproef te klein om de vorm te beschrijven, "
-      & "{count, plural, one {1 waarneming} other {{count, number} "
-      & "waarnemingen}}} flat_shape {vlakke verdeling op {median}} "
-      & "outlier_heavy_shape {verdeling met veel uitschieters rond {median}} "
-      & "volatile_shape {volatiele verdeling rond {median}} clustered_shape "
-      & "{geclusterde verdeling rond {median}} wide_spread_shape {breed "
-      & "gespreide verdeling} wide_spread_range {breed gespreide verdeling van "
-      & "{minimum} tot {maximum}} right_skewed_shape {rechtsscheve verdeling, "
-      & "mediaan {median}} left_skewed_shape {linksscheve verdeling, mediaan "
-      & "{median}} other {grotendeels evenwichtige verdeling rond {median}}}");
-   P ("label.privacy.safe_email_label",
-      "{state, select, empty {leeg e-mailadres} address {e-mailadres} other "
-      & "{e-mail bij {domain}}}");
-   P ("label.privacy.safe_phone_label",
-      "{state, select, none {telefoonnummer} redacted {telefoonnummer "
-      & "verborgen} other {telefoonnummer eindigend op {digits}}}");
-   P ("label.privacy.safe_handle_label", "{state, select, none {gebruikersnaam} other {gebruikersnaam {shown}}}");
-   P ("label.privacy.code_symbol_label", "{state, select, none {codesymbool} other {codesymbool {symbol}}}");
-   P ("label.privacy.address_metadata_label",
-      "adresmetadata: {present, plural, one {1 veld aanwezig} other "
-      & "{{present, number} velden aanwezig}}, {missing, plural, one {1 veld "
-      & "ontbreekt} other {{missing, number} velden ontbreken}}");
-   P ("label.endpoints.host_label", "{state, select, none {onbekende host} other {{kind} {host}}}");
-   P ("label.endpoints.endpoint_label",
-      "{state, select, none {onbekend eindpunt} other {eindpunt "
-      & "{scheme}{host}{port} ({kind})}}");
-   P ("label.endpoints.url_component_summary",
-      "{state, select, empty {lege URL} none {URL zonder herkende onderdelen} "
-      & "other {URL met {count, plural, one {1 onderdeel} other {{count, "
-      & "number} onderdelen}}: {components}}}");
-   P ("label.endpoints.query_summary",
-      "{count, plural, =0 {geen queryparameters} one {1 queryparameter} other "
-      & "{{count, number} queryparameters}}");
-   P ("label.endpoints.ip_address_label",
-      "{address} ({kind, select, ipv4_host {openbaar IPv4-adres} ipv6_host "
-      & "{openbaar IPv6-adres} private_network_host {privénetwerkadres} "
-      & "localhost_host {lokale host} other {geen IP-adres}})");
-   P ("label.endpoints.cidr_label",
-      "{state, select, invalid {{cidr}: ongeldige CIDR} other {{cidr}: "
-      & "{kind}, netwerkprefix {prefix}}}");
-   P ("label.resources.utilization_label", "{used, number} van {total, number} {unit} gebruikt ({percent}, {band})");
-   P ("label.resources.saturation_label", "{named, select, no {bron} other {{name}}} {percent} {band}");
-   P ("label.versions.version_label",
-      "{state, select, both {versie {version}, pre-release {prerelease}, "
-      & "build {build}} prerelease {versie {version}, pre-release {prerelease}} "
-      & "build {versie {version}, build {build}} other {versie {version}}}");
-   P ("label.versions.version_delta_label",
-      "{delta, select, same_version {zelfde versie} major_upgrade "
-      & "{major-upgrade} minor_upgrade {minor-upgrade} patch_upgrade "
-      & "{patch-upgrade} prerelease_change {wijziging pre-release} "
-      & "build_metadata_change {wijziging buildmetadata} downgrade {downgrade} "
-      & "other {onbekende versiewijziging}}: {from} -> {to}");
-   P ("label.versions.compatibility_range_label",
-      "{kind, select, exact_range {exact versie {version}} minimum_range "
-      & "{versie {version} of nieuwer} maximum_range {versie {version} of "
-      & "ouder} major_compatible_range {compatibel met hoofdversie {version}} "
-      & "minor_compatible_range {compatibel met subversie {version}} other "
-      & "{versiebereik {version}}}");
-   P ("label.versions.release_label",
-      "{state, select, initial {eerste ontwikkelingsrelease {version}} "
-      & "prerelease {pre-release {version}} major {hoofdrelease {version}} "
-      & "minor {subrelease {version}} other {patchrelease {version}}}");
-   P ("label.markup.tag_label",
-      "{tag, select, link {linktag} image {afbeeldingstag} paragraph "
-      & "{alineatag} ordered_list {tag genummerde lijst} unordered_list {tag "
-      & "ongenummerde lijst} list_item {lijstitemtag} table_header_cell "
-      & "{tabelkopceltag} table_cell {tabelceltag} table_row {tabelrijtag} "
-      & "line_break {regeleindetag} thematic_break {tag thematische scheiding} "
-      & "heading_level_n {tag kopniveau {level, number}} other {tag {name}}}");
-   P ("label.markup.attribute_label",
-      "{state, select, bare {attribuut {name}} event {eventhandler-attribuut "
-      & "{name}} other {attribuut {name} ingesteld op “{value}”}}");
-   P ("label.markup.content_type_label",
-      "{kind, select, text_content {tekstinhoud} html_content {HTML-document} "
-      & "json_content {JSON-document} xml_content {XML-document} image_content "
-      & "{afbeeldingsinhoud} audio_content {audio-inhoud} video_content "
-      & "{video-inhoud} font_content {lettertype-inhoud} archive_content "
-      & "{archiefinhoud} binary_content {binaire inhoud} form_content "
-      & "{formulierinzending} other {onbekende inhoud}} ({base})");
-   P ("label.secrets.secret_label",
-      "{state, select, unset {{kind} niet ingesteld} hidden_value {{kind} "
-      & "verborgen} masked_value {{kind} {shown}} fingerprint_only {{kind}, "
-      & "vingerafdruk eindigend op {shown}} other {{kind} eindigend op "
-      & "{shown}}}");
-   P ("label.secrets.environment_secret_label",
-      "{state, select, unset {{name} {kind} niet ingesteld} other {{name} "
-      & "{kind} eindigend op {shown}}}");
-   P ("label.secrets.header_credential_label",
-      "{state, select, unset {aanmeldingsheader {name} niet ingesteld} other "
-      & "{{name} {kind} eindigend op {shown}}}");
-   P ("label.secrets.fingerprint_label", "{algorithm}-vingerafdruk eindigend op {shown}");
-   P ("label.secrets.safe_display_label",
-      "{state, select, not_set {{label} niet ingesteld} redacted {{label} "
-      & "verborgen} url_redacted {URL verborgen} ip_redacted {IP-adres "
-      & "verborgen} path_ending {bestandspad eindigend op {shown}} at {{label} "
-      & "bij {shown}} audit {{label} lengte {length, number}, eindigend op "
-      & "{shown}} debug {{label} {shown}} other {{label} eindigend op {shown}}}");
-   P ("label.schema.field_label",
-      "{state, select, deprecated_field {verouderd } unknown_field {onbekend "
-      & "} read_only_field {alleen-lezen } write_only_field {alleen-schrijven } "
-      & "computed_field {berekend } other {}}{presence, select, required_field "
-      & "{verplicht} optional_field {optioneel} conditional_field "
-      & "{voorwaardelijk} other {aanwezigheid onbekend}}{nullable, select, "
-      & "non_nullable { niet-nullable} nullable { nullable} other {}} veld "
-      & "{name} van type {kind, select, string_field {string} integer_field "
-      & "{geheel getal} decimal_field {decimaal} boolean_field {boolean} "
-      & "date_field {datum} date_time_field {datum-tijd} object_field {object} "
-      & "array_field {array} enum_field {enum} binary_field {binair} null_field "
-      & "{null} any_field {willekeurig} other {onbekend}}");
-   P ("label.schema.schema_summary_label.fields", "{count, plural, one {1 veld} other {{count, number} velden}}");
-   P ("label.schema.schema_summary_label.required", "{count, number} verplicht");
-   P ("label.schema.schema_summary_label.optional", "{count, number} optioneel");
-   P ("label.schema.schema_summary_label.deprecated", "{count, number} verouderd");
-   P ("label.schema.schema_summary_label.unknown", "{count, number} onbekend");
-   P ("label.diagnostics.check_run_summary_label.none", "geen controles uitgevoerd");
-   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} geslaagd");
-   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} mislukt");
-   P ("label.diagnostics.check_run_summary_label.warnings",
-      "{count, plural, one {1 waarschuwing} other {{count, number} "
-      & "waarschuwingen}}");
-   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} overgeslagen");
-   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} in afwachting");
-   P ("label.workflows.workflow_summary_label.total", "{count, plural, one {1 item} other {{count, number} items}}");
-   P ("label.workflows.workflow_summary_label.completed", "{count, number} voltooid");
-   P ("label.workflows.workflow_summary_label.active", "{count, number} actief");
-   P ("label.workflows.workflow_summary_label.blocked", "{count, number} geblokkeerd");
-   P ("label.workflows.workflow_summary_label.failed", "{count, number} mislukt");
-   P ("label.workflows.workflow_summary_label.skipped", "{count, number} overgeslagen");
-   P ("label.changes.change_summary_label.total", "{count, plural, one {1 item} other {{count, number} items}}");
-   P ("label.changes.change_summary_label.added", "{count, number} toegevoegd");
-   P ("label.changes.change_summary_label.removed", "{count, number} verwijderd");
-   P ("label.changes.change_summary_label.modified", "{count, number} gewijzigd");
-   P ("label.changes.change_summary_label.renamed", "{count, number} hernoemd");
-   P ("label.changes.change_summary_label.unchanged", "{count, number} ongewijzigd");
-   P ("label.markup.accessible_control_label.control",
-      "{named, select, no {{role, select, button_control {naamloze knop} "
-      & "link_control {naamloze link} tab_control {naamloos tabblad} "
-      & "menu_item_control {naamloos menu-item} checkbox_control {naamloos "
-      & "selectievakje} radio_control {naamloos keuzerondje} text_field_control "
-      & "{naamloos tekstveld} progress_control {naamloze voortgangsbalk} "
-      & "table_cell_control {naamloze tabelcel} region_control {naamloze regio} "
-      & "other {naamloos besturingselement}}} other {{role, select, "
-      & "button_control {knop} link_control {link} tab_control {tabblad} "
-      & "menu_item_control {menu-item} checkbox_control {selectievakje} "
-      & "radio_control {keuzerondje} text_field_control {tekstveld} "
-      & "progress_control {voortgangsbalk} table_cell_control {tabelcel} "
-      & "region_control {regio} other {besturingselement}} {name}}}");
-   P ("label.markup.accessible_control_label.selected", "geselecteerd");
-   P ("label.markup.accessible_control_label.expanded", "uitgevouwen");
-   P ("label.markup.accessible_control_label.current", "huidig");
-   P ("label.markup.accessible_control_label.disabled", "uitgeschakeld");
-   P ("label.markup.accessible_control_label.required", "verplicht");
-   P ("label.markup.accessible_control_label.invalid", "ongeldig");
-   P ("label.markup.accessible_control_label.count", "{count, plural, one {1 item} other {{count, number} items}}");
-   P ("label.markup.accessible_control_label.position", "item {position} van {total}");
-   P ("label.markup.accessible_control_label.issues",
-      "{count, plural, one {1 probleem} other {{count, number} problemen}}");
-   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
-   P ("label.endpoints.url_component.scheme", "schema");
-   P ("label.endpoints.url_component.host", "host");
-   P ("label.endpoints.url_component.path", "pad");
-   P ("label.endpoints.url_component.query", "query");
-   P ("label.endpoints.url_component.fragment", "fragment");
-   P ("label.names.hue_noun.red", "rood");
-   P ("label.names.hue_noun.orange", "oranje");
-   P ("label.names.hue_noun.yellow", "geel");
-   P ("label.names.hue_noun.green", "groen");
-   P ("label.names.hue_noun.cyan", "cyaan");
-   P ("label.names.hue_noun.blue", "blauw");
-   P ("label.names.hue_noun.purple", "paars");
-   P ("label.names.hue_noun.magenta", "magenta");
-   P ("label.names.hue_noun.neutral", "neutraal");
-   P ("label.names.hue_noun.pink", "roze");
-   P ("label.names.hue_gender.red", "neuter");
-   P ("label.names.hue_gender.orange", "neuter");
-   P ("label.names.hue_gender.yellow", "neuter");
-   P ("label.names.hue_gender.green", "neuter");
-   P ("label.names.hue_gender.cyan", "neuter");
-   P ("label.names.hue_gender.blue", "neuter");
-   P ("label.names.hue_gender.purple", "neuter");
-   P ("label.names.hue_gender.magenta", "neuter");
-   P ("label.names.hue_gender.neutral", "neuter");
-   P ("label.names.hue_gender.pink", "neuter");
-   P ("label.names.agree.very_dark",
-      "{gender, select, neuter {zeer donker} masculine {zeer donkere} "
-      & "feminine {zeer donkere} other {zeer donker}}");
-   P ("label.names.agree.dark",
-      "{gender, select, neuter {donker} masculine {donkere} feminine "
-      & "{donkere} other {donker}}");
-   P ("label.names.agree.medium_brightness",
-      "{gender, select, neuter {middelhelder} masculine {middelheldere} "
-      & "feminine {middelheldere} other {middelhelder}}");
-   P ("label.names.agree.light",
-      "{gender, select, neuter {licht} masculine {lichte} feminine {lichte} "
-      & "other {licht}}");
-   P ("label.names.agree.very_light",
-      "{gender, select, neuter {zeer licht} masculine {zeer lichte} feminine "
-      & "{zeer lichte} other {zeer licht}}");
-   P ("label.names.agree.desaturated",
-      "{gender, select, neuter {onverzadigd} masculine {onverzadigde} "
-      & "feminine {onverzadigde} other {onverzadigd}}");
-   P ("label.names.agree.muted",
-      "{gender, select, neuter {gedempt} masculine {gedempte} feminine "
-      & "{gedempte} other {gedempt}}");
-   P ("label.names.agree.neutral",
-      "{gender, select, neuter {neutraal} masculine {neutrale} feminine "
-      & "{neutrale} other {neutraal}}");
-   P ("label.names.agree.saturated",
-      "{gender, select, neuter {verzadigd} masculine {verzadigde} feminine "
-      & "{verzadigde} other {verzadigd}}");
-   P ("label.names.agree.vivid",
-      "{gender, select, neuter {levendig} masculine {levendige} feminine "
-      & "{levendige} other {levendig}}");
 end Labels_3;

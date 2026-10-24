@@ -618,7 +618,7 @@ begin
       & "participant} many {{count, number} de participants} other {{count, "
       & "number} participants}}");
    P ("label.events.canceled_label", "{name} : annulé");
-   P ("label.events.check_in_label", "enregistrement pour {name}");
+   P ("label.events.check_in_label", "s’enregistrer pour {name}");
    P ("label.events.conference_link_label", "lien de visioconférence de {name}");
    P ("label.events.event_count_label",
       "{count, plural, =0 {aucun événement} one {{count, number} "

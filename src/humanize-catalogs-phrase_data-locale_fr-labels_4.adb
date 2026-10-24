@@ -179,7 +179,7 @@ begin
       & "{median}}}");
    P ("label.privacy.safe_email_label",
       "{state, select, empty {e-mail vide} address {adresse e-mail} other "
-      & "{e-mail sur {domain}}}");
+      & "{e-mail du domaine {domain}}}");
    P ("label.privacy.safe_phone_label",
       "{state, select, none {numéro de téléphone} redacted {numéro de "
       & "téléphone masqué} other {téléphone se terminant par {digits}}}");
@@ -188,9 +188,10 @@ begin
       "{state, select, none {symbole de code} other {symbole de code "
       & "{symbol}}}");
    P ("label.privacy.address_metadata_label",
-      "métadonnées d’adresse : {present, plural, one {{present, number} "
-      & "champ présent} many {{present, number} de champs présents} other "
-      & "{{present, number} champs présents}}, {missing, plural, one "
+      "métadonnées d’adresse : {present, plural, =0 {aucun champ "
+      & "présent} one {{present, number} champ présent} many {{present, "
+      & "number} de champs présents} other {{present, number} champs "
+      & "présents}}, {missing, plural, =0 {aucun champ manquant} one "
       & "{{missing, number} champ manquant} many {{missing, number} de champs "
       & "manquants} other {{missing, number} champs manquants}}");
    P ("label.endpoints.host_label", "{state, select, none {hôte inconnu} other {{host} ({kind})}}");
@@ -451,4 +452,10 @@ begin
    P ("label.names.descriptive_color_name",
       "{base, select, pink {{hue}} other {{hue}}} {brightness} {chroma} "
       & "{temperature}");
+   P ("label.endpoints.url_label", "{state, select, empty {URL vide} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {URL vide} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[utilisateur masqué]");
+   P ("label.endpoints.url_label.query",
+      "requête {count, plural, one {{count, number} paramètre} many "
+      & "{{count, number} de paramètres} other {{count, number} paramètres}}");
 end Labels_4;

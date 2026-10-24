@@ -152,7 +152,8 @@ begin
       & "teszt} other {{count, number} várhatóan sikertelen teszt}}}}");
    P ("label.builds.test_state_label",
       "{state, select, passed_test {sikeres} failed_test {sikertelen} "
-      & "skipped_test {kihagyva} flaky_test {instabil} other {várt hiba}}");
+      & "skipped_test {kihagyva} flaky_test {instabil} other {várhatóan "
+      & "sikertelen}}");
    P ("label.changes.boolean_field_change_label",
       "{old_value, select, false {{new_value, select, false {{field_name} "
       & "változatlan: kikapcsolva} other {{field_name} módosítva: "
@@ -489,14 +490,14 @@ begin
       & "{megjegyzés} warning_severity {figyelmeztetés} error_severity {hiba} "
       & "critical_severity {kritikus} other {blokkoló}}");
    P ("label.diagnostics.source_label",
-      "{source, select, build_source {összeállítási diagnosztika} "
-      & "test_source {tesztdiagnosztika} lint_source {lint-diagnosztika} "
-      & "import_source {importálási diagnosztika} validation_source "
-      & "{validálási diagnosztika} runtime_source {futásidejű diagnosztika} "
+      "{source, select, build_source {fordítási diagnosztika} test_source "
+      & "{tesztdiagnosztika} lint_source {lint-diagnosztika} import_source "
+      & "{importálási diagnosztika} validation_source {validálási "
+      & "diagnosztika} runtime_source {futásidejű diagnosztika} "
       & "security_source {biztonsági diagnosztika} other {diagnosztika}}");
    P ("label.diagnostics.source_summary_label",
       "{count, plural, one {1} other {{count, number}}} {source, select, "
-      & "build_source {összeállítási diagnosztikai üzenet} test_source "
+      & "build_source {fordítási diagnosztikai üzenet} test_source "
       & "{tesztdiagnosztikai üzenet} lint_source {lint-diagnosztikai üzenet} "
       & "import_source {importálási diagnosztikai üzenet} validation_source "
       & "{validálási diagnosztikai üzenet} runtime_source {futásidejű "
@@ -515,8 +516,8 @@ begin
       "{count, plural, =0 {nincs résztvevő} one {1 résztvevő} other "
       & "{{count, number} résztvevő}}");
    P ("label.events.canceled_label", "{name} – lemondva");
-   P ("label.events.check_in_label", "bejelentkezés: {name}");
-   P ("label.events.conference_link_label", "{name} – konferencialink");
+   P ("label.events.check_in_label", "becsekkolás: {name}");
+   P ("label.events.conference_link_label", "{name} – konferencia-hivatkozás");
    P ("label.events.event_count_label",
       "{count, plural, =0 {nincs esemény} one {1 esemény} other {{count, "
       & "number} esemény}}");
@@ -647,7 +648,7 @@ begin
       & "{HTML-tartalom} json_content {JSON-tartalom} xml_content "
       & "{XML-tartalom} image_content {képtartalom} audio_content "
       & "{hangtartalom} video_content {videótartalom} font_content "
-      & "{betűkészlet-tartalom} archive_content {archívumtartalom} "
+      & "{betűtípus-tartalom} archive_content {archívumtartalom} "
       & "binary_content {bináris tartalom} form_content {űrlaptartalom} other "
       & "{ismeretlen tartalom}}");
    P ("label.markup.tag_kind_label",

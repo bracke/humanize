@@ -100,16 +100,16 @@ begin
    Check (Locale, "label.names.chroma_label", Plain,
           Humanize.Colors.Names.Localized.Chroma_Label (C, (0, 0, 51)),
           Humanize.Colors.Names.Chroma_Label ((0, 0, 51)));
-   Check (Locale, "label.names.color_description", Plain,
+   Check (Locale, "label.names.color_description", Phrase,
           Humanize.Colors.Names.Localized.Color_Description (C, (0, 0, 0)),
           Humanize.Colors.Names.Color_Description ((0, 0, 0)));
-   Check (Locale, "label.names.color_description", Plain,
+   Check (Locale, "label.names.color_description", Phrase,
           Humanize.Colors.Names.Localized.Color_Description (C, (0, 0, 51)),
           Humanize.Colors.Names.Color_Description ((0, 0, 51)));
-   Check (Locale, "label.names.descriptive_color_name", Plain,
+   Check (Locale, "label.names.descriptive_color_name", Phrase,
           Humanize.Colors.Names.Localized.Descriptive_Color_Name (C, (0, 0, 0)),
           Humanize.Colors.Names.Descriptive_Color_Name ((0, 0, 0)));
-   Check (Locale, "label.names.descriptive_color_name", Plain,
+   Check (Locale, "label.names.descriptive_color_name", Phrase,
           Humanize.Colors.Names.Localized.Descriptive_Color_Name (C, (0, 0, 51)),
           Humanize.Colors.Names.Descriptive_Color_Name ((0, 0, 51)));
    Check (Locale, "label.names.hue_family_label", Plain,
@@ -136,12 +136,12 @@ begin
    Check (Locale, "label.names.temperature_label", Plain,
           Humanize.Colors.Names.Localized.Temperature_Label (C, (0, 0, 51)),
           Humanize.Colors.Names.Temperature_Label ((0, 0, 51)));
-   Check (Locale, "label.palettes.advanced_palette_summary", Plain,
+   Check (Locale, "label.palettes.advanced_palette_summary", Phrase,
           Humanize.Colors.Palettes.Localized.Advanced_Palette_Summary (C, Color_List'((33, 155, 1), (195, 244, 101),
             (79, 146, 150), (225, 165, 93), (102, 102, 0))),
           Humanize.Colors.Palettes.Advanced_Palette_Summary (Color_List'((33, 155, 1), (195, 244, 101), (79, 146,
             150), (225, 165, 93), (102, 102, 0))));
-   Check (Locale, "label.palettes.advanced_palette_summary", Plain,
+   Check (Locale, "label.palettes.advanced_palette_summary", Phrase,
           Humanize.Colors.Palettes.Localized.Advanced_Palette_Summary (C, Color_List'((121, 176, 128), (252, 127,
             24), (191, 28, 70), (51, 51, 255), (51, 0, 153), (162, 245, 140))),
           Humanize.Colors.Palettes.Advanced_Palette_Summary (Color_List'((121, 176, 128), (252, 127, 24), (191, 28,

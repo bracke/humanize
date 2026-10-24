@@ -631,7 +631,7 @@ begin
       "{kind, select, text_content {teksta enhavo} html_content {HTML-enhavo} "
       & "json_content {JSON-enhavo} xml_content {XML-enhavo} image_content "
       & "{bilda enhavo} audio_content {sona enhavo} video_content {videa "
-      & "enhavo} font_content {tipara enhavo} archive_content {arĥiva enhavo} "
+      & "enhavo} font_content {tipara enhavo} archive_content {arkiva enhavo} "
       & "binary_content {duuma enhavo} form_content {formulara enhavo} other "
       & "{nekonata enhavo}}");
    P ("label.markup.tag_kind_label",
@@ -645,7 +645,7 @@ begin
    P ("label.media.media_kind_label",
       "{kind, select, image_media {bildo} video_media {video} audio_media "
       & "{sono} pdf_document {PDF-dokumento} text_document {teksta dokumento} "
-      & "archive_media {arĥivo} other {aŭdvidaĵo}}");
+      & "archive_media {arkivo} other {aŭdvidaĵo}}");
    P ("label.media.media_state_label",
       "{state, select, ready_media {preta} processing_media {traktata} "
       & "transcoding_media {transkodata} thumbnail_missing {miniaturo "
@@ -654,7 +654,7 @@ begin
    P ("label.media.media_summary",
       "{name} ({kind, select, image_media {bildo} video_media {video} "
       & "audio_media {sono} pdf_document {PDF-dokumento} text_document {teksta "
-      & "dokumento} archive_media {arĥivo} other {aŭdvidaĵo}}): {state, "
+      & "dokumento} archive_media {arkivo} other {aŭdvidaĵo}}): {state, "
       & "select, ready_media {preta} processing_media {traktata} "
       & "transcoding_media {transkodata} thumbnail_missing {miniaturo "
       & "nedisponebla} metadata_missing {metadatumoj mankas} locked_document "

@@ -81,12 +81,30 @@ package Humanize.Endpoints.Localized is
    --  @param URL As for the parent's Query_Summary.
    --  @return The label in Context's locale.
 
+   function Safe_URL_Label
+      (Context : Humanize.Contexts.Context;
+       URL     : String)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param URL As for the parent's Safe_URL_Label.
+   --  @return The label in Context's locale.
+
    function URL_Component_Summary
       (Context : Humanize.Contexts.Context;
        URL     : String)
       return Humanize.Status.Text_Result;
    --  @param Context Formatting context.
    --  @param URL As for the parent's URL_Component_Summary.
+   --  @return The label in Context's locale.
+
+   function URL_Label
+      (Context : Humanize.Contexts.Context;
+       URL     : String;
+       Options : URL_Display_Options := Default_URL_Display_Options)
+      return Humanize.Status.Text_Result;
+   --  @param Context Formatting context.
+   --  @param URL As for the parent's URL_Label.
+   --  @param Options As for the parent's URL_Label.
    --  @return The label in Context's locale.
 
    procedure CIDR_Label_Into
@@ -197,6 +215,18 @@ package Humanize.Endpoints.Localized is
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.
 
+   procedure Safe_URL_Label_Into
+      (Context : Humanize.Contexts.Context;
+       URL     : String;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param URL As for the parent's Safe_URL_Label.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
    procedure URL_Component_Summary_Into
       (Context : Humanize.Contexts.Context;
        URL     : String;
@@ -205,6 +235,20 @@ package Humanize.Endpoints.Localized is
        Status  : out Humanize.Status.Status_Code);
    --  @param Context Formatting context.
    --  @param URL As for the parent's URL_Component_Summary.
+   --  @param Target Caller-owned 1-based output buffer.
+   --  @param Written Number of characters written, or copied on overflow.
+   --  @param Status Humanize status for the operation.
+
+   procedure URL_Label_Into
+      (Context : Humanize.Contexts.Context;
+       URL     : String;
+       Options : URL_Display_Options := Default_URL_Display_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code);
+   --  @param Context Formatting context.
+   --  @param URL As for the parent's URL_Label.
+   --  @param Options As for the parent's URL_Label.
    --  @param Target Caller-owned 1-based output buffer.
    --  @param Written Number of characters written, or copied on overflow.
    --  @param Status Humanize status for the operation.

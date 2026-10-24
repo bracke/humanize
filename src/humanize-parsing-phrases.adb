@@ -185,9 +185,9 @@ package body Humanize.Parsing.Phrases is
       Texts    : constant String := Field (Entry_Text, 4);
       Pool     : constant Pool_Type := Candidates (Text);
       N_Count  : constant Natural := Natural'Min (Item_Count (Numbers), Max_Values);
-      S_Count  : constant Natural := Natural'Min (Item_Count (Selects), 2);
+      S_Count  : constant Natural := Natural'Min (Item_Count (Selects), 4);
       Picks    : array (1 .. Max_Values) of Positive := [others => 1];
-      Chosen   : array (1 .. 2) of Positive := [others => 1];
+      Chosen   : array (1 .. 4) of Positive := [others => 1];
 
       function Choice (Index : Positive) return String is
         (Item (Choices_For (Item (Selects, Index)), Chosen (Index)));
@@ -389,6 +389,12 @@ package body Humanize.Parsing.Phrases is
       return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Parse_Entry;
 
+   function Parse_Parts
+     (Context : Humanize.Contexts.Context;
+      Name    : String;
+      Text    : String)
+      return Phrase_Parse_Result is separate;
+
    function Parse
      (Context : Humanize.Contexts.Context;
       Name    : String;
@@ -415,7 +421,8 @@ package body Humanize.Parsing.Phrases is
             end;
          end if;
       end loop;
-      return (Status => Humanize.Status.Missing_Message, others => <>);
+      --  No phrase of that name: a label joined from parts, if it has them.
+      return Parse_Parts (Context, Name, Text);
    end Parse;
 
    function Parse_Any

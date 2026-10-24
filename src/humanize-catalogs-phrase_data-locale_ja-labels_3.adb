@@ -1,6 +1,11 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Ja)
 procedure Labels_3 is
 begin
+   P ("label.comparisons.multi_value_summary",
+      "{mode, select, comparison_compact {{name} {changed, number}/{total, "
+      & "number}件変更} other {{name}：変更{changed, "
+      & "number}件、変更なし{unchanged, number}件、合計{total, "
+      & "number}件}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}、{mood}、{accessibility}；{roles}");
    P ("label.groups", "{first}；{second}");
    P ("label.parts", "{first}、{second}");
@@ -50,7 +55,7 @@ begin
    P ("label.models.perceptual_difference_label.cie94_delta_d_dramatic_perceptual_difference",
       "CIE94 デルタ{v1}、劇的な知覚差");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_d_dramatic_perceptual_difference",
-      "CIE94（テキスタイル） デルタ{v1}、劇的な知覚差");
+      "CIE94（テキスタイル）デルタ{v1}、劇的な知覚差");
    P ("label.models.perceptual_difference_label.ciede2000_delta_n_dramatic_perceptual_difference",
       "CIEDE2000 デルタ{v1, number}、劇的な知覚差");
    P ("label.models.perceptual_difference_label.oklab_delta_d_large_perceptual_difference",
@@ -80,7 +85,7 @@ begin
    P ("label.models.perceptual_difference_label.cie94_delta_d_large_perceptual_difference",
       "CIE94 デルタ{v1}、大きな知覚差");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_d_large_perceptual_difference",
-      "CIE94（テキスタイル） デルタ{v1}、大きな知覚差");
+      "CIE94（テキスタイル）デルタ{v1}、大きな知覚差");
    P ("label.models.perceptual_difference_label.ciede2000_delta_d_large_perceptual_difference",
       "CIEDE2000 デルタ{v1}、大きな知覚差");
    P ("label.models.perceptual_difference_label.oklab_delta_d_noticeable_perceptual_difference",
@@ -92,7 +97,7 @@ begin
    P ("label.models.perceptual_difference_label.cie94_delta_d_noticeable_perceptual_difference",
       "CIE94 デルタ{v1}、目立つ知覚差");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_d_noticeable_perceptual_difference",
-      "CIE94（テキスタイル） デルタ{v1}、目立つ知覚差");
+      "CIE94（テキスタイル）デルタ{v1}、目立つ知覚差");
    P ("label.models.perceptual_difference_label.ciede2000_delta_d_noticeable_perceptual_difference",
       "CIEDE2000 デルタ{v1}、目立つ知覚差");
    P ("label.models.perceptual_difference_label.oklab_delta_n_noticeable_perceptual_difference",
@@ -108,31 +113,31 @@ begin
    P ("label.models.perceptual_difference_label.cie76_delta_n_dramatic_perceptual_difference",
       "CIE76 デルタ{v1, number}、劇的な知覚差");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_n_dramatic_perceptual_difference",
-      "CIE94（テキスタイル） デルタ{v1, "
+      "CIE94（テキスタイル）デルタ{v1, "
       & "number}、劇的な知覚差");
    P ("label.models.perceptual_difference_label.oklab_delta_n_dramatic_perceptual_difference",
       "OKLab デルタ{v1, number}、劇的な知覚差");
    P ("label.models.perceptual_difference_label.cie76_delta_n_large_perceptual_difference",
       "CIE76 デルタ{v1, number}、大きな知覚差");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_n_large_perceptual_difference",
-      "CIE94（テキスタイル） デルタ{v1, "
+      "CIE94（テキスタイル）デルタ{v1, "
       & "number}、大きな知覚差");
    P ("label.models.perceptual_difference_label.ciede2000_delta_n_large_perceptual_difference",
       "CIEDE2000 デルタ{v1, number}、大きな知覚差");
    P ("label.models.perceptual_difference_label.cie76_delta_d_noticeable_perceptual_difference",
       "CIE76 デルタ{v1}、目立つ知覚差");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_d_subtle_perceptual_difference",
-      "CIE94（テキスタイル） デルタ{v1}、わずかな知覚差");
+      "CIE94（テキスタイル）デルタ{v1}、わずかな知覚差");
    P ("label.models.perceptual_difference_label.ciede2000_delta_n_noticeable_perceptual_difference",
       "CIEDE2000 デルタ{v1, number}、目立つ知覚差");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_n_noticeable_perceptual_difference",
-      "CIE94（テキスタイル） デルタ{v1, "
+      "CIE94（テキスタイル）デルタ{v1, "
       & "number}、目立つ知覚差");
    P ("label.models.perceptual_difference_label.cie76_delta_d_barely_perceptible",
       "CIE76 デルタ{v1}、かろうじて知覚可能");
    P ("label.models.perceptual_difference_label.cie94_delta_d_imperceptible", "CIE94 デルタ{v1}、知覚不能");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_d_imperceptible",
-      "CIE94（テキスタイル） デルタ{v1}、知覚不能");
+      "CIE94（テキスタイル）デルタ{v1}、知覚不能");
    P ("label.models.perceptual_difference_label.ciede2000_delta_d_imperceptible",
       "CIEDE2000 デルタ{v1}、知覚不能");
    P ("label.models.perceptual_difference_label.oklab_delta_d_imperceptible", "OKLab デルタ{v1}、知覚不能");
@@ -143,7 +148,7 @@ begin
    P ("label.models.perceptual_difference_label.cie94_delta_n_imperceptible",
       "CIE94 デルタ{v1, number}、知覚不能");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_n_imperceptible",
-      "CIE94（テキスタイル） デルタ{v1, number}、知覚不能");
+      "CIE94（テキスタイル）デルタ{v1, number}、知覚不能");
    P ("label.models.perceptual_difference_label.ciede2000_delta_n_imperceptible",
       "CIEDE2000 デルタ{v1, number}、知覚不能");
    P ("label.models.perceptual_difference_label.oklab_delta_n_imperceptible",
@@ -440,8 +445,8 @@ begin
       & "left_skewed_shape {左に裾の長い分布、中央値{median}} other "
       & "{{median}付近でほぼ左右対称の分布}}");
    P ("label.privacy.safe_email_label",
-      "{state, select, empty {空のメール} address "
-      & "{メールアドレス} other {{domain}のメール}}");
+      "{state, select, empty {空のメールアドレス} address "
+      & "{メールアドレス} other {{domain}のメールアドレス}}");
    P ("label.privacy.safe_phone_label",
       "{state, select, none {電話番号} redacted "
       & "{電話番号（非表示）} other {末尾{digits}の電話番号}}");
@@ -472,8 +477,8 @@ begin
       "{state, select, invalid {{cidr}：無効なCIDR} other "
       & "{{cidr}：{kind}ネットワーク、プレフィックス{prefix}}}");
    P ("label.resources.utilization_label",
-      "{total, number}{unit}中{used, "
-      & "number}{unit}使用（{percent}、{band}）");
+      "{total, number} {unit}中{used, number} "
+      & "{unit}を使用（{percent}、{band}）");
    P ("label.resources.saturation_label",
       "{named, select, no {リソース} other "
       & "{{name}}}：{percent}（{band}）");
@@ -555,7 +560,7 @@ begin
       & "{必須かどうか不明}}{nullable, select, non_nullable "
       & "{・null不可} nullable {・null可} other {}}の{kind, select, "
       & "string_field {文字列} integer_field {整数} decimal_field {小数} "
-      & "boolean_field {ブール} date_field {日付} date_time_field {日時} "
+      & "boolean_field {真偽値} date_field {日付} date_time_field {日時} "
       & "object_field {オブジェクト} array_field {配列} enum_field "
       & "{列挙} binary_field {バイナリ} null_field {null} any_field "
       & "{任意の型} other {不明な型}}フィールド{name}");
@@ -648,4 +653,10 @@ begin
    P ("label.names.descriptive_color_name",
       "{brightness}{chroma}{temperature}{base, select, pink {{hue}} other "
       & "{{hue}}}");
+   P ("label.endpoints.url_label", "{state, select, empty {空のURL} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {空のURL} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[非表示のユーザー]");
+   P ("label.endpoints.url_label.query",
+      "クエリ {count, plural, other {パラメーター{count, "
+      & "number}個}}");
 end Labels_3;

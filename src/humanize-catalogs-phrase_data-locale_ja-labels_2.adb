@@ -194,7 +194,8 @@ begin
    P ("label.payments.refund_label",
       "{amount_text}の返金：{state, select, pending_payment {保留中} "
       & "authorized_payment {承認済み} paid_payment {完了} failed_payment "
-      & "{失敗} refunded_payment {完了} other {キャンセル済み}}");
+      & "{失敗} refunded_payment {返金済み} other "
+      & "{キャンセル済み}}");
    P ("label.payments.subtotal_label", "小計：{amount_text}");
    P ("label.payments.tax_label", "税：{amount_text}");
    P ("label.payments.total_label", "合計：{amount_text}");
@@ -345,7 +346,7 @@ begin
       & "aws_access_key {AWSアクセスキー} google_api_key {Google "
       & "APIキー} slack_token {Slackトークン} npm_token {npmトークン} "
       & "bearer_token {Bearerトークン} jwt_token {JWTトークン} "
-      & "basic_auth_credential {Basic認証の資格情報} password_secret "
+      & "basic_auth_credential {Basic認証の認証情報} password_secret "
       & "{パスワード} private_key {秘密鍵} ssh_private_key "
       & "{SSH秘密鍵} webhook_secret {Webhookシークレット} oauth_token "
       & "{OAuthトークン} database_url_secret {データベースURL} "
@@ -389,7 +390,7 @@ begin
    P ("label.tables.subtotal_label", "{name}の小計：{value}");
    P ("label.tables.table_size_label", "{rows, number}行×{columns, number}列");
    P ("label.tasks.assignment_label",
-      "{assignee}：{state, select, unassigned {割り当て解除} assigned "
+      "{assignee}：{state, select, unassigned {未割り当て} assigned "
       & "{割り当て済み} reassigned {再割り当て済み} watching "
       & "{ウォッチ中} other {タスクの所有者}}");
    P ("label.tasks.assignment_state_label",
@@ -573,8 +574,9 @@ begin
       & "{{value}：想定範囲を下回る} other "
       & "{{value}：想定範囲を上回る}}");
    P ("label.thresholds.threshold_status_label",
-      "{state, select, critical {{value}：危険しきい値} warning "
-      & "{{value}：警告しきい値} other {{value}：正常範囲内}}");
+      "{state, select, critical {{value}：重大しきい値に到達} "
+      & "warning {{value}：警告しきい値に到達} other "
+      & "{{value}：正常範囲内}}");
    P ("label.thresholds.breach_label", "{state, select, ok {超過なし} other {{difference}超過}}");
    P ("label.thresholds.target_delta_label",
       "{state, select, at {目標どおり} below "
@@ -586,7 +588,7 @@ begin
    P ("label.thresholds.threshold_summary_label.none", "指標なし");
    P ("label.thresholds.threshold_summary_label.normal", "正常{count, number}件");
    P ("label.thresholds.threshold_summary_label.warnings", "警告{count, number}件");
-   P ("label.thresholds.threshold_summary_label.critical", "危険{count, number}件");
+   P ("label.thresholds.threshold_summary_label.critical", "重大{count, number}件");
    P ("label.thresholds.threshold_summary_label.breaches", "超過{count, number}件");
    P ("label.thresholds.target_window_label", "目標{target} ±{tolerance}");
    P ("label.thresholds.tolerance_label", "許容差{tolerance}");
@@ -692,9 +694,4 @@ begin
       "{total, plural, =0 {キャンセル待ち{position, number}番目} "
       & "other {キャンセル待ち{total, number}人中{position, "
       & "number}番目}}");
-   P ("label.comparisons.multi_value_summary",
-      "{mode, select, comparison_compact {{name} {changed, number}/{total, "
-      & "number}件変更} other {{name}：変更{changed, "
-      & "number}件、変更なし{unchanged, number}件、合計{total, "
-      & "number}件}}");
 end Labels_2;

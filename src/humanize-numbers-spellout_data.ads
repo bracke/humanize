@@ -61,6 +61,10 @@ private package Humanize.Numbers.Spellout_Data is
                and then not (Value / 1_000 mod 10 = 0 and then Value / 1_000 < 100)
                and then Value / 1_000 mod 100 /= 0));
 
+   --  The Lithuanian ordinal of a round 100, 200, 300, 1000, 2000 or 3000
+   --  ("dvitūkstantasis"), which CLDR's rules leave bare; "" otherwise.
+   function Lt_Round_Ordinal (Value : Natural) return String;
+
    --  The Russian ordinal of a round 200 .. 900 ("трехсотый"), which CLDR's
    --  rules miss; "" otherwise.
    function Ru_Round_Hundredth (Hundreds : Positive) return String;

@@ -91,7 +91,7 @@ begin
       & "{معلم غير معروف}}");
    P ("label.markup.live_region_update_label",
       "{polite, select, false {{region}، تحديث عاجل: {update}} "
-      & "other {{region}، تحديث مهذب: {update}}}");
+      & "other {{region}، تحديث غير عاجل: {update}}}");
    P ("label.markup.mime_kind_label",
       "{kind, select, text_content {محتوى نصي} html_content "
       & "{محتوى HTML} json_content {محتوى JSON} xml_content "
@@ -195,16 +195,16 @@ begin
       & "number} عنصر في القائمة}}");
    P ("label.navigation.navigation_item_kind_label",
       "{kind, select, link_item {رابط} menu_item {عنصر قائمة} "
-      & "tab_item {تبويب} breadcrumb_item {عنصر مسار التنقل} "
-      & "section_item {قسم} other {فاصل}}");
+      & "tab_item {علامة تبويب} breadcrumb_item {عنصر مسار "
+      & "التنقل} section_item {قسم} other {فاصل}}");
    P ("label.navigation.navigation_item_label",
       "{kind, select, link_item {رابط} menu_item {عنصر "
-      & "القائمة} tab_item {تبويب} breadcrumb_item {عنصر "
-      & "مسار التنقل} section_item {قسم} other {فاصل}} {name}: "
-      & "{state, select, current_item {حالي} active_item {نشط} "
-      & "inactive_item {غير نشط} disabled_item {معطّل} expanded_item "
-      & "{موسّع} collapsed_item {مطوي} visited_item {تمت "
-      & "زيارته} other {خارجي}}");
+      & "القائمة} tab_item {علامة التبويب} breadcrumb_item "
+      & "{عنصر مسار التنقل} section_item {قسم} other "
+      & "{فاصل}} {name}: {state, select, current_item {حالي} "
+      & "active_item {نشط} inactive_item {غير نشط} disabled_item "
+      & "{معطّل} expanded_item {موسّع} collapsed_item {مطوي} "
+      & "visited_item {تمت زيارته} other {خارجي}}");
    P ("label.navigation.navigation_state_label",
       "{state, select, current_item {حالي} active_item {نشط} "
       & "inactive_item {غير نشط} disabled_item {معطّل} expanded_item "

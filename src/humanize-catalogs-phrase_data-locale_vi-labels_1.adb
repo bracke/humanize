@@ -649,7 +649,7 @@ begin
       & "{nội dung HTML} json_content {nội dung JSON} xml_content {nội "
       & "dung XML} image_content {nội dung hình ảnh} audio_content {nội "
       & "dung âm thanh} video_content {nội dung video} font_content {nội "
-      & "dung phông chữ} archive_content {nội dung lưu trữ} "
+      & "dung phông chữ} archive_content {nội dung tệp nén} "
       & "binary_content {nội dung nhị phân} form_content {nội dung "
       & "biểu mẫu} other {nội dung không xác định}}");
    P ("label.markup.tag_kind_label",
@@ -663,8 +663,8 @@ begin
    P ("label.media.media_kind_label",
       "{kind, select, image_media {hình ảnh} video_media {video} "
       & "audio_media {âm thanh} pdf_document {tài liệu PDF} text_document "
-      & "{tài liệu văn bản} archive_media {tệp lưu trữ} other "
-      & "{phương tiện}}");
+      & "{tài liệu văn bản} archive_media {tệp nén} other {phương "
+      & "tiện}}");
    P ("label.media.media_state_label",
       "{state, select, ready_media {sẵn sàng} processing_media {đang xử "
       & "lý} transcoding_media {đang chuyển mã} thumbnail_missing {không "
@@ -673,10 +673,10 @@ begin
    P ("label.media.media_summary",
       "{name} ({kind, select, image_media {hình ảnh} video_media {video} "
       & "audio_media {âm thanh} pdf_document {tài liệu PDF} text_document "
-      & "{tài liệu văn bản} archive_media {tệp lưu trữ} other "
-      & "{phương tiện}}): {state, select, ready_media {sẵn sàng} "
-      & "processing_media {đang xử lý} transcoding_media {đang chuyển "
-      & "mã} thumbnail_missing {không có hình thu nhỏ} metadata_missing "
+      & "{tài liệu văn bản} archive_media {tệp nén} other {phương "
+      & "tiện}}): {state, select, ready_media {sẵn sàng} processing_media "
+      & "{đang xử lý} transcoding_media {đang chuyển mã} "
+      & "thumbnail_missing {không có hình thu nhỏ} metadata_missing "
       & "{thiếu siêu dữ liệu} locked_document {tài liệu bị khóa} "
       & "other {không khả dụng}}");
    P ("label.media.page_count_label",

@@ -54,7 +54,7 @@ begin
    P ("label.names.saturation_label.saturated", "高飽和");
    P ("label.names.nearest_color_name.maroon", "栗色");
    P ("label.names.nearest_color_name.purple", "紫色");
-   P ("label.names.hue_family_label.orange", "橙色");
+   P ("label.names.hue_family_label.orange", "橘色");
    P ("label.names.nearest_color_name.olive", "橄欖色");
    P ("label.names.nearest_color_name.gray", "灰色");
    P ("label.names.saturation_label.desaturated", "低飽和");
@@ -64,7 +64,7 @@ begin
    P ("label.names.nearest_color_name.fuchsia", "紫紅色");
    P ("label.names.nearest_color_name.yellow", "黃色");
    P ("label.names.nearest_color_name.red", "紅色");
-   P ("label.names.nearest_color_name.orange", "橙色");
+   P ("label.names.nearest_color_name.orange", "橘色");
    P ("label.names.nearest_color_name.white", "白色");
    P ("label.contrast.contrast_label.d_n_low_contrast", "{v1}:{v2, number} 低對比");
    P ("label.contrast.readability_label.low_readability", "可讀性低");
@@ -192,8 +192,8 @@ begin
    P ("label.palettes.palette_summary.mostly_blue", "以藍色為主");
    P ("label.palettes.palette_summary.low_contrast_spread", "對比範圍小");
    P ("label.palettes.palette_harmony_label.single_accent_palette", "單一強調色調色盤");
-   P ("label.palettes.palette_mood_label.dark", "暗色");
-   P ("label.palettes.palette_mood_label.cool_mood", "冷靜氛圍");
+   P ("label.palettes.palette_mood_label.dark", "深色");
+   P ("label.palettes.palette_mood_label.cool_mood", "清冷氛圍");
    P ("label.palettes.palette_summary.mostly_rebeccapurple", "以麗貝卡紫為主");
    P ("label.palettes.palette_accessibility_label.no_accessible_text_pairs", "沒有符合無障礙的文字配對");
    P ("label.palettes.palette_mood_label.subtle", "低調");
@@ -220,7 +220,7 @@ begin
    P ("label.palettes.palette_summary.mostly_yellow", "以黃色為主");
    P ("label.palettes.palette_summary.mostly_maroon", "以栗色為主");
    P ("label.palettes.palette_summary.mostly_white", "以白色為主");
-   P ("label.palettes.palette_summary.mostly_orange", "以橙色為主");
+   P ("label.palettes.palette_summary.mostly_orange", "以橘色為主");
    P ("label.palettes.palette_summary.mostly_fuchsia", "以紫紅色為主");
    P ("label.palettes.palette_harmony_label.neutral_palette", "中性調色盤");
    P ("label.palettes.palette_summary.mostly_red", "以紅色為主");
@@ -296,14 +296,14 @@ begin
    P ("label.resources.saturation_label", "{named, select, no {資源} other {{name}}}：{percent}，{band}");
    P ("label.versions.version_label",
       "{state, select, both "
-      & "{版本{version}，預先發行{prerelease}，組建{build}} "
+      & "{版本{version}，預先發行{prerelease}，建置{build}} "
       & "prerelease {版本{version}，預先發行{prerelease}} build "
-      & "{版本{version}，組建{build}} other {版本{version}}}");
+      & "{版本{version}，建置{build}} other {版本{version}}}");
    P ("label.versions.version_delta_label",
       "{delta, select, same_version {版本相同} major_upgrade "
       & "{主要版本升級} minor_upgrade {次要版本升級} patch_upgrade "
       & "{修補程式升級} prerelease_change {預先發行變更} "
-      & "build_metadata_change {組建中繼資料變更} downgrade {降級} "
+      & "build_metadata_change {建置中繼資料變更} downgrade {降級} "
       & "other {不明的版本變更}}：{from} → {to}");
    P ("label.versions.compatibility_range_label",
       "{kind, select, exact_range {僅限版本{version}} minimum_range "
@@ -330,9 +330,9 @@ begin
    P ("label.markup.content_type_label",
       "{kind, select, text_content {文字內容} html_content {HTML文件} "
       & "json_content {JSON文件} xml_content {XML文件} image_content "
-      & "{影像內容} audio_content {音訊內容} video_content "
-      & "{視訊內容} font_content {字型內容} archive_content "
-      & "{封存內容} binary_content {二進位內容} form_content "
+      & "{圖片內容} audio_content {音訊內容} video_content "
+      & "{影片內容} font_content {字型內容} archive_content "
+      & "{壓縮檔內容} binary_content {二進位內容} form_content "
       & "{表單提交} other {不明內容}}（{base}）");
    P ("label.secrets.secret_label",
       "{state, select, unset {{kind}未設定} hidden_value {{kind}已隱藏} "
@@ -388,11 +388,11 @@ begin
    P ("label.changes.change_summary_label.unchanged", "{count, number}項未變");
    P ("label.markup.accessible_control_label.control",
       "{named, select, no {未命名} other {{name}}}{role, select, "
-      & "button_control {按鈕} link_control {連結} tab_control "
-      & "{索引標籤} menu_item_control {選單項目} checkbox_control "
-      & "{核取方塊} radio_control {選項按鈕} text_field_control "
-      & "{文字欄位} progress_control {進度列} table_cell_control "
-      & "{表格儲存格} region_control {區域} other {控制項}}");
+      & "button_control {按鈕} link_control {連結} tab_control {分頁} "
+      & "menu_item_control {選單項目} checkbox_control {核取方塊} "
+      & "radio_control {選項按鈕} text_field_control {文字欄位} "
+      & "progress_control {進度列} table_cell_control {表格儲存格} "
+      & "region_control {區域} other {控制項}}");
    P ("label.markup.accessible_control_label.selected", "已選取");
    P ("label.markup.accessible_control_label.expanded", "已展開");
    P ("label.markup.accessible_control_label.current", "目前項目");
@@ -409,7 +409,7 @@ begin
    P ("label.endpoints.url_component.query", "查詢");
    P ("label.endpoints.url_component.fragment", "片段");
    P ("label.names.hue_noun.red", "紅色");
-   P ("label.names.hue_noun.orange", "橙色");
+   P ("label.names.hue_noun.orange", "橘色");
    P ("label.names.hue_noun.yellow", "黃色");
    P ("label.names.hue_noun.green", "綠色");
    P ("label.names.hue_noun.cyan", "青色");
@@ -451,4 +451,8 @@ begin
    P ("label.names.descriptive_color_name",
       "{brightness}、{chroma}、{temperature}的{base, select, pink {{hue}} "
       & "other {{hue}}}");
+   P ("label.endpoints.url_label", "{state, select, empty {空白URL} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {空白URL} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[已隱藏的使用者]");
+   P ("label.endpoints.url_label.query", "查詢 {count, plural, other {{count, number}個參數}}");
 end Labels_3;

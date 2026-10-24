@@ -44,7 +44,7 @@ begin
       & "pašto adresas} other {el. pašto adresas domene {domain}}}");
    P ("label.privacy.safe_phone_label",
       "{state, select, none {telefono numeris} redacted {telefono numeris "
-      & "paslėptas} other {telefono numeris, besibaigiantis {digits}}}");
+      & "paslėptas} other {telefono numeris, kurio pabaiga {digits}}}");
    P ("label.privacy.safe_handle_label",
       "{state, select, none {naudotojo vardas} other {naudotojo vardas "
       & "{shown}}}");
@@ -80,14 +80,14 @@ begin
    P ("label.resources.saturation_label", "{named, select, no {išteklius} other {{name}}}: {percent}, {band}");
    P ("label.versions.version_label",
       "{state, select, both {versija {version}, išankstinė laida "
-      & "{prerelease}, darinys {build}} prerelease {versija {version}, "
-      & "išankstinė laida {prerelease}} build {versija {version}, darinys "
+      & "{prerelease}, surinkimas {build}} prerelease {versija {version}, "
+      & "išankstinė laida {prerelease}} build {versija {version}, surinkimas "
       & "{build}} other {versija {version}}}");
    P ("label.versions.version_delta_label",
       "{delta, select, same_version {ta pati versija} major_upgrade "
       & "{pagrindinės versijos naujinimas} minor_upgrade {šalutinės versijos "
       & "naujinimas} patch_upgrade {pataisos naujinimas} prerelease_change "
-      & "{išankstinės laidos pakeitimas} build_metadata_change {darinio "
+      & "{išankstinės laidos pakeitimas} build_metadata_change {surinkimo "
       & "metaduomenų pakeitimas} downgrade {versijos sumažinimas} other "
       & "{nežinomas versijos pakeitimas}}: {from} -> {to}");
    P ("label.versions.compatibility_range_label",
@@ -128,8 +128,8 @@ begin
       "{state, select, unset {{name} ({kind}): nenustatyta} other {{name} "
       & "({kind}): pabaiga {shown}}}");
    P ("label.secrets.header_credential_label",
-      "{state, select, unset {{name}: kredencialų antraštė nenustatyta} "
-      & "other {{name} ({kind}): pabaiga {shown}}}");
+      "{state, select, unset {{name}: prisijungimo duomenų antraštė "
+      & "nenustatyta} other {{name} ({kind}): pabaiga {shown}}}");
    P ("label.secrets.fingerprint_label", "{algorithm} kontrolinis kodas: pabaiga {shown}");
    P ("label.secrets.safe_display_label",
       "{state, select, not_set {{label}: nenustatyta} redacted {{label}: "
@@ -145,8 +145,8 @@ begin
       & "enum_field {išvardijimas} binary_field {dvejetainiai duomenys} "
       & "null_field {null} any_field {bet koks tipas} other {nežinomas "
       & "tipas}}): {state, select, deprecated_field {pasenęs, } unknown_field "
-      & "{nežinomas, } read_only_field {tik skaityti, } write_only_field {tik "
-      & "rašyti, } computed_field {apskaičiuojamas, } other {}}{presence, "
+      & "{nežinomas, } read_only_field {tik skaitomas, } write_only_field {tik "
+      & "rašomas, } computed_field {apskaičiuojamas, } other {}}{presence, "
       & "select, required_field {privalomas} optional_field {neprivalomas} "
       & "conditional_field {sąlyginis} other {privalomumas "
       & "nežinomas}}{nullable, select, non_nullable {, negali būti null} "
@@ -263,4 +263,11 @@ begin
    P ("label.names.descriptive_color_name",
       "{brightness} {chroma} {temperature} {base, select, pink {{hue}} other "
       & "{{hue}}}");
+   P ("label.endpoints.url_label", "{state, select, empty {tuščias URL} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {tuščias URL} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[paslėptas naudotojas]");
+   P ("label.endpoints.url_label.query",
+      "užklausa {count, plural, one {{count, number} parametras} few "
+      & "{{count, number} parametrai} many {{count, number} parametro} other "
+      & "{{count, number} parametrų}}");
 end Labels_4;

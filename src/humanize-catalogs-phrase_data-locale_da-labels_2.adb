@@ -150,8 +150,9 @@ begin
       & "number} betalinger}}");
    P ("label.payments.payment_label",
       "{amount_text}: betaling {state, select, pending_payment {afventer} "
-      & "authorized_payment {godkendt} paid_payment {betalt} failed_payment "
-      & "{mislykkedes} refunded_payment {refunderet} other {annulleret}}");
+      & "authorized_payment {godkendt} paid_payment {gennemført} "
+      & "failed_payment {mislykkedes} refunded_payment {refunderet} other "
+      & "{annulleret}}");
    P ("label.payments.payment_link_label", "betalingslink {name}");
    P ("label.payments.payment_method_label",
       "{method, select, card_method {kort} bank_transfer_method "
@@ -512,6 +513,50 @@ begin
       & "observation} other {1 afviger ud af {total, number} observationer}}} "
       & "other {{outliers, number} afvigere ud af {total, number} "
       & "observationer}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {ingen observationer} "
+      & "sample_too_small_shape {stikprøven er for lille til at beskrive "
+      & "formen, {count, plural, one {1 observation} other {{count, number} "
+      & "observationer}}} flat_shape {flad fordeling ved {median}} "
+      & "outlier_heavy_shape {fordeling med mange afvigere omkring {median}} "
+      & "volatile_shape {svingende fordeling omkring {median}} clustered_shape "
+      & "{klyngedelt fordeling omkring {median}} wide_spread_shape {bredt "
+      & "spredt fordeling} wide_spread_range {bredt spredt fordeling fra "
+      & "{minimum} til {maximum}} right_skewed_shape {højreskæv fordeling, "
+      & "median {median}} left_skewed_shape {venstreskæv fordeling, median "
+      & "{median}} other {overvejende balanceret fordeling omkring {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {tom e-mail} address {e-mailadresse} other "
+      & "{e-mail hos {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {telefonnummer} redacted {telefonnummer sløret} "
+      & "other {telefonnummer der ender på {digits}}}");
+   P ("label.privacy.safe_handle_label", "{state, select, none {brugernavn} other {brugernavn {shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {kodesymbol} other {kodesymbol {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "adressemetadata: {present, plural, one {1 felt til stede} other "
+      & "{{present, number} felter til stede}}, {missing, plural, one {1 felt "
+      & "mangler} other {{missing, number} felter mangler}}");
+   P ("label.endpoints.host_label", "{state, select, none {ukendt vært} other {{kind} {host}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {ukendt endepunkt} other {endepunkt "
+      & "{scheme}{host}{port} ({kind})}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {tom URL} none {URL uden genkendte komponenter} "
+      & "other {URL med {count, plural, one {1 komponent} other {{count, "
+      & "number} komponenter}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {ingen forespørgselsparametre} one {1 "
+      & "forespørgselsparameter} other {{count, number} "
+      & "forespørgselsparametre}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} ({kind, select, ipv4_host {offentlig IPv4-adresse} ipv6_host "
+      & "{offentlig IPv6-adresse} private_network_host {adresse på privat "
+      & "netværk} localhost_host {lokal vært} other {ikke en IP-adresse}})");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} (ugyldig CIDR)} other {{cidr} ({kind}, "
+      & "netværkspræfiks {prefix})}}");
+   P ("label.resources.utilization_label", "{used, number} af {total, number} {unit} brugt ({percent}, {band})");
    P ("label.resources.remaining_label",
       "{state, select, over {{count, number} {unit} over kapaciteten} other "
       & "{{count, number} af {total, number} {unit} tilbage}}");
@@ -525,6 +570,42 @@ begin
       & "forespørgsler} other {cachehitrate {percent}: {hits, plural, one {1 "
       & "hit} other {{hits, number} hits}}, {misses, plural, one {1 miss} other "
       & "{{misses, number} misses}}}}");
+   P ("label.resources.saturation_label", "{named, select, no {ressource} other {{name}}} {percent}, {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {version {version}, forhåndsversion "
+      & "{prerelease}, build {build}} prerelease {version {version}, "
+      & "forhåndsversion {prerelease}} build {version {version}, build "
+      & "{build}} other {version {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {samme version} major_upgrade "
+      & "{opgradering af hovedversion} minor_upgrade {opgradering af "
+      & "underversion} patch_upgrade {patchopgradering} prerelease_change "
+      & "{ændret forhåndsversion} build_metadata_change {ændrede "
+      & "buildmetadata} downgrade {nedgradering} other {ukendt "
+      & "versionsændring}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {præcis version {version}} minimum_range "
+      & "{version {version} eller nyere} maximum_range {version {version} eller "
+      & "ældre} major_compatible_range {kompatibel med hovedversion {version}} "
+      & "minor_compatible_range {kompatibel med underversion {version}} other "
+      & "{versionsinterval {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {første udviklingsudgivelse {version}} "
+      & "prerelease {forhåndsudgivelse {version}} major {hovedudgivelse "
+      & "{version}} minor {underudgivelse {version}} other {patchudgivelse "
+      & "{version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {linktag} image {billedtag} paragraph {afsnitstag} "
+      & "ordered_list {tag for nummereret liste} unordered_list {tag for "
+      & "punktliste} list_item {listeelementtag} table_header_cell {tag for "
+      & "tabeloverskriftscelle} table_cell {tabelcelletag} table_row "
+      & "{tabelrækketag} line_break {linjeskifttag} thematic_break {tag for "
+      & "tematisk skift} heading_level_n {tag for overskrift på niveau {level, "
+      & "number}} other {{name}-tag}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {{name}-attribut} event "
+      & "{hændelseshåndteringsattribut {name}} other {attribut {name} sat til "
+      & "»{value}«}}");
    P ("label.markup.attribute_count_label.total",
       "{count, plural, one {1 attribut} other {{count, number} attributter}}");
    P ("label.markup.attribute_count_label.data",
@@ -536,6 +617,14 @@ begin
    P ("label.markup.attribute_count_label.events",
       "{count, plural, one {1 hændelseshåndtering} other {{count, number} "
       & "hændelseshåndteringer}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {tekstindhold} html_content "
+      & "{HTML-dokument} json_content {JSON-dokument} xml_content "
+      & "{XML-dokument} image_content {billedindhold} audio_content "
+      & "{lydindhold} video_content {videoindhold} font_content "
+      & "{skrifttypeindhold} archive_content {arkivindhold} binary_content "
+      & "{binært indhold} form_content {formularindsendelse} other {ukendt "
+      & "indhold}} ({base})");
    P ("label.markup.heading_label", "overskrift på niveau {level, number}");
    P ("label.markup.tag_count_label.total", "{count, plural, one {1 tag} other {{count, number} tags}}");
    P ("label.markup.tag_count_label.links", "{count, plural, one {1 link} other {{count, number} links}}");
@@ -558,141 +647,54 @@ begin
    P ("label.markup.table_navigation_label",
       "{caption} række {row, number} af {rows, number}, kolonne {column, "
       & "number} af {columns, number}");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} ikke angivet} hidden_value {{kind} "
+      & "skjult} masked_value {{kind} {shown}} fingerprint_only {{kind}, "
+      & "fingeraftryk der ender på {shown}} other {{kind} der ender på "
+      & "{shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name}: {kind} ikke angivet} other {{name}: "
+      & "{kind} der ender på {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {legitimationsheader {name} ikke angivet} other "
+      & "{{name}: {kind} der ender på {shown}}}");
+   P ("label.secrets.fingerprint_label", "{algorithm}-fingeraftryk der ender på {shown}");
    P ("label.secrets.secret_count_label.total",
       "{count, plural, one {1 hemmelighed} other {{count, number} "
       & "hemmeligheder}}");
-   P ("label.secrets.secret_count_label.masked", "{count, number} maskeret");
-   P ("label.secrets.secret_count_label.unset", "{count, number} ikke angivet");
+   P ("label.secrets.secret_count_label.masked",
+      "{count, plural, one {1 maskeret} other {{count, number} maskerede}}");
+   P ("label.secrets.secret_count_label.unset",
+      "{count, plural, one {1 ikke angivet} other {{count, number} ikke "
+      & "angivne}}");
    P ("label.secrets.secret_count_label.fingerprints",
       "{count, plural, one {1 fingeraftryk} other {{count, number} "
       & "fingeraftryk}}");
-   P ("label.schema.type_mismatch_label",
-      "feltet {field_name} forventede {expected, select, string_field "
-      & "{streng} integer_field {heltal} decimal_field {decimaltal} "
-      & "boolean_field {boolesk} date_field {dato} date_time_field {dato-tid} "
-      & "object_field {objekt} array_field {array} enum_field {enum} "
-      & "binary_field {binær} null_field {null} any_field {vilkårlig} other "
-      & "{ukendt}}, fik {actual, select, string_field {streng} integer_field "
-      & "{heltal} decimal_field {decimaltal} boolean_field {boolesk} date_field "
-      & "{dato} date_time_field {dato-tid} object_field {objekt} array_field "
-      & "{array} enum_field {enum} binary_field {binær} null_field {null} "
-      & "any_field {vilkårlig} other {ukendt}}");
-   P ("label.diagnostics.issue_summary_label",
-      "{state, select, blocking_only {{blocking, plural, one {1 blokerende "
-      & "problem} other {{blocking, number} blokerende problemer}}} blocking "
-      & "{{base}, {blocking, plural, one {1 blokerende problem} other "
-      & "{{blocking, number} blokerende problemer}}} only {kun {base}} other "
-      & "{{base}}}");
-   P ("label.thresholds.metric_value_label", "{name} {value}");
-   P ("label.thresholds.range_label",
-      "{inclusive, select, inclusive_window {målinterval {low} til {high}} "
-      & "other {målvindue {low} til {high}}}");
-   P ("label.thresholds.window_status_label",
-      "{state, select, inside {{value} inden for forventet interval} below "
-      & "{{value} under forventet interval} other {{value} over forventet "
-      & "interval}}");
-   P ("label.thresholds.threshold_status_label",
-      "{state, select, critical {{value} ved kritisk tærskel} warning "
-      & "{{value} ved advarselstærskel} other {{value} inden for "
-      & "normalområdet}}");
-   P ("label.thresholds.breach_label",
-      "{state, select, ok {ikke overskredet} other {overskredet med "
-      & "{difference}}}");
-   P ("label.thresholds.target_delta_label",
-      "{state, select, at {mål nået} below {{difference} under målet} "
-      & "other {{difference} over målet}}");
-   P ("label.thresholds.near_limit_label",
-      "{state, select, breached {grænse overskredet} near {tæt på "
-      & "grænsen, {distance} tilbage} other {{distance} fra grænsen}}");
-   P ("label.thresholds.threshold_summary_label.none", "ingen målinger");
-   P ("label.thresholds.threshold_summary_label.normal", "{count, number} normale");
-   P ("label.thresholds.threshold_summary_label.warnings",
-      "{count, plural, one {1 advarsel} other {{count, number} advarsler}}");
-   P ("label.thresholds.threshold_summary_label.critical", "{count, number} kritiske");
-   P ("label.thresholds.threshold_summary_label.breaches",
-      "{count, plural, one {1 overskridelse} other {{count, number} "
-      & "overskridelser}}");
-   P ("label.thresholds.target_window_label", "mål {target} ± {tolerance}");
-   P ("label.thresholds.tolerance_label", "tolerance {tolerance}");
-   P ("label.thresholds.percent_of_limit_label", "{percent} af grænsen");
-   P ("label.thresholds.remaining_to_limit_label",
-      "{state, select, exceeded {grænse overskredet med {amount}} other "
-      & "{{amount} tilbage}}");
-   P ("label.thresholds.budget_used_label", "{used} brugt af {budget}");
-   P ("label.workflows.step_label", "trin {current, number} af {total, number}: {name}");
-   P ("label.workflows.milestone_label", "{current, number} af {total, number} milepæle nået: {name}");
-   P ("label.workflows.workflow_progress_label",
-      "{state, select, none {ingen workflowelementer} half {halvvejs gennem "
-      & "workflowet} other {{completed, number} af {total, number} fuldført}}");
-   P ("label.workflows.queue_position_label",
-      "{total, plural, =0 {position {position, number} i køen} other "
-      & "{position {position, number} af {total, number} i køen}}");
-   P ("label.changes.change_set_label.none", "ingen ændringer");
-   P ("label.changes.change_set_label.added", "{count, number} tilføjet");
-   P ("label.changes.change_set_label.removed", "{count, number} fjernet");
-   P ("label.changes.change_set_label.modified", "{count, number} ændret");
-   P ("label.changes.change_set_label.unchanged", "{count, number} uændret");
-   P ("label.changes.sync_change_label.none", "ingen synkroniseringsændringer");
-   P ("label.changes.sync_change_label.uploaded", "{count, number} uploadet");
-   P ("label.changes.sync_change_label.downloaded", "{count, number} downloadet");
-   P ("label.changes.sync_change_label.deleted", "{count, number} slettet");
-   P ("label.changes.sync_change_label.conflicts",
-      "{count, plural, one {1 konflikt} other {{count, number} konflikter}}");
-   P ("label.changes.net_change_label",
-      "{state, select, none {ingen nettoændring} up {netto +{count, plural, "
-      & "one {1 element} other {{count, number} elementer}}} other {netto "
-      & "-{count, plural, one {1 element} other {{count, number} elementer}}}}");
-   P ("label.changes.review_progress_label",
-      "{state, select, none {ingen ændringer at gennemgå} all {alle "
-      & "ændringer gennemgået} other {{reviewed, number} af {total, number} "
-      & "ændringer gennemgået}}");
-   P ("label.changes.numeric_field_change_label",
-      "{state, select, same {{field_name} uændret på {new_value}} up "
-      & "{{field_name} steg fra {old_value} til {new_value}} other "
-      & "{{field_name} faldt fra {old_value} til {new_value}}}");
-   P ("label.tables.selection_label",
-      "{state, select, no_rows {ingen rækker kan vælges} none {ingen "
-      & "rækker valgt} all {{total, plural, one {1 række} other {alle {total, "
-      & "number} rækker}} valgt} other {{selected, number} af {total, plural, "
-      & "one {1 række} other {{total, number} rækker}} valgt}}");
-   P ("label.tables.page_label",
-      "{page, plural, =0 {ingen sider} other {{pages, plural, =0 {ingen "
-      & "sider} other {{rows, plural, =0 {side {page, number} af {pages, "
-      & "number}} one {side {page, number} af {pages, number}, 1 række} other "
-      & "{side {page, number} af {pages, number}, {rows, number} rækker}}}}}}");
-   P ("label.tables.filter_label",
-      "{state, select, no_rows {ingen rækker} none {ingen rækker matcher} "
-      & "all {{total, plural, one {1 række} other {alle {total, number} "
-      & "rækker}} vist} other {{visible, number} af {total, plural, one {1 "
-      & "række} other {{total, number} rækker}} vist}}");
-   P ("label.tables.row_range_label",
-      "{state, select, none {ingen rækker} single {række {first_row, "
-      & "number} af {total, number}} other {rækker {first_row, "
-      & "number}–{last_row, number} af {total, number}}}");
-   P ("label.forms.remaining_characters_label",
-      "{state, select, unlimited {ingen tegngrænse} none_left {ingen tegn "
-      & "tilbage} left {{count, plural, one {1 tegn} other {{count, number} "
-      & "tegn}} tilbage} other {{count, plural, one {1 tegn} other {{count, "
-      & "number} tegn}} over grænsen}}");
-   P ("label.forms.required_fields_label",
-      "{total, plural, =0 {ingen obligatoriske felter} one {{missing, plural, "
-      & "=0 {alle obligatoriske felter udfyldt} other {1 af 1 obligatorisk felt "
-      & "mangler}}} other {{missing, plural, =0 {alle obligatoriske felter "
-      & "udfyldt} other {{missing, number} af {total, number} obligatoriske "
-      & "felter mangler}}}}");
-   P ("label.forms.form_progress_label",
-      "{state, select, none {ingen felter} all {alle felter udfyldt} other "
-      & "{{completed, number} af {total, plural, one {1 felt} other {{total, "
-      & "number} felter}} udfyldt}}");
-   P ("label.forms.section_progress_label",
-      "{state, select, none {{name}: ingen felter} all {{name}: alle felter "
-      & "udfyldt} other {{name}: {completed, number} af {total, plural, one {1 "
-      & "felt} other {{total, number} felter}} udfyldt}}");
-   P ("label.forms.form_step_label",
-      "{total, plural, =0 {ingen formulartrin} one {trin 1 af 1: {name}} "
-      & "other {trin {current, number} af {total, number}: {name}}}");
-   P ("label.navigation.breadcrumb_position_label",
-      "{total, plural, =0 {ingen brødkrummer} one {brødkrumme 1 af 1: "
-      & "{name}} other {brødkrumme {current, number} af {total, number}: "
-      & "{name}}}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} ikke angivet} redacted {{label} "
+      & "sløret} url_redacted {URL sløret} ip_redacted {IP-adresse sløret} "
+      & "path_ending {filsti der ender på {shown}} at {{label} hos {shown}} "
+      & "audit {{label}, længde {length, number}, ender på {shown}} debug "
+      & "{{label} {shown}} other {{label} der ender på {shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {forældet } unknown_field {ukendt } "
+      & "read_only_field {skrivebeskyttet } write_only_field {kun skrivbart } "
+      & "computed_field {beregnet } other {}}{kind, select, string_field "
+      & "{strengfelt} integer_field {heltalsfelt} decimal_field {decimalfelt} "
+      & "boolean_field {boolesk felt} date_field {datofelt} date_time_field "
+      & "{dato-tidsfelt} object_field {objektfelt} array_field {arrayfelt} "
+      & "enum_field {enum-felt} binary_field {binært felt} null_field "
+      & "{null-felt} any_field {felt af vilkårlig type} other {felt af ukendt "
+      & "type}} {name} ({presence, select, required_field {obligatorisk} "
+      & "optional_field {valgfrit} conditional_field {betinget} other {ukendt "
+      & "tilstedeværelse}}{nullable, select, non_nullable {, ikke null} "
+      & "nullable {, kan være null} other {}})");
+   P ("label.schema.schema_summary_label.fields", "{count, plural, one {1 felt} other {{count, number} felter}}");
+   P ("label.schema.schema_summary_label.required",
+      "{count, plural, one {1 obligatorisk} other {{count, number} "
+      & "obligatoriske}}");
+   P ("label.schema.schema_summary_label.optional",
+      "{count, plural, one {1 valgfrit} other {{count, number} valgfrie}}");
+   P ("label.schema.schema_summary_label.deprecated",
+      "{count, plural, one {1 forældet} other {{count, number} forældede}}");
 end Labels_2;

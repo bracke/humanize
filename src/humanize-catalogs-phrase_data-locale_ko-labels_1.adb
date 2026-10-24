@@ -463,7 +463,7 @@ begin
    P ("label.events.rsvp_label",
       "참석 여부: {state, select, not_responded {응답 안 함} accepted "
       & "{수락} declined {거절} maybe {미정} other {대기자 명단}}");
-   P ("label.events.reminder_label", "리마인더 {time_text}");
+   P ("label.events.reminder_label", "미리 알림: {time_text}");
    P ("label.events.rescheduled_label", "{name} 일정 변경: {time_text}");
    P ("label.forms.character_count_label", "{used, number}자");
    P ("label.forms.character_limit_label",

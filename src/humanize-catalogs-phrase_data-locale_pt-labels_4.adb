@@ -42,9 +42,9 @@ begin
       & "de pares} other {{v2, number} pares}} {v1, plural, one {atende} other "
       & "{atendem}} ao contraste para texto normal");
    P ("label.palettes.palette_contrast_matrix_label.n_enhanced_n_normal_n_large_only_n_fail_out_of_n_pairs",
-      "aprimorado {v1, number}, normal {v2, number}, somente texto grande "
-      & "{v3, number}, reprovado {v4, number}, de {v5, plural, one {{v5, "
-      & "number} par} many {{v5, number} de pares} other {{v5, number} pares}}");
+      "{v5, plural, one {{v5, number} par} many {{v5, number} de pares} other "
+      & "{{v5, number} pares}}: aprimorado {v1, number}, normal {v2, number}, "
+      & "somente texto grande {v3, number}, reprovado {v4, number}");
    P ("label.palettes.palette_metadata_label.n_colors_n_pairs_n_enhanced_n_normal_n_large_only_n_fail",
       "{v1, plural, one {{v1, number} cor} many {{v1, number} de cores} other "
       & "{{v1, number} cores}}, {v2, plural, one {{v2, number} par} many {{v2, "
@@ -171,17 +171,18 @@ begin
       & "other {e-mail em {domain}}}");
    P ("label.privacy.safe_phone_label",
       "{state, select, none {número de telefone} redacted {número de "
-      & "telefone ocultado} other {telefone terminado em {digits}}}");
+      & "telefone ocultado} other {telefone com final {digits}}}");
    P ("label.privacy.safe_handle_label", "{state, select, none {identificador} other {identificador {shown}}}");
    P ("label.privacy.code_symbol_label",
       "{state, select, none {símbolo de código} other {símbolo de código "
       & "{symbol}}}");
    P ("label.privacy.address_metadata_label",
-      "metadados de endereço: {present, plural, one {{present, number} campo "
-      & "presente} many {{present, number} de campos presentes} other "
-      & "{{present, number} campos presentes}}, {missing, plural, one "
-      & "{{missing, number} campo ausente} many {{missing, number} de campos "
-      & "ausentes} other {{missing, number} campos ausentes}}");
+      "metadados de endereço: {present, plural, =0 {nenhum campo presente} "
+      & "one {{present, number} campo presente} many {{present, number} de "
+      & "campos presentes} other {{present, number} campos presentes}}, "
+      & "{missing, plural, =0 {nenhum campo ausente} one {{missing, number} "
+      & "campo ausente} many {{missing, number} de campos ausentes} other "
+      & "{{missing, number} campos ausentes}}");
    P ("label.endpoints.host_label", "{state, select, none {host desconhecido} other {{host} ({kind})}}");
    P ("label.endpoints.endpoint_label",
       "{state, select, none {endpoint desconhecido} other {endpoint "
@@ -253,7 +254,7 @@ begin
    P ("label.secrets.secret_label",
       "{state, select, unset {{kind}: sem valor} hidden_value {{kind}: valor "
       & "oculto} masked_value {{kind} {shown}} fingerprint_only {{kind}, "
-      & "impressão digital terminada em {shown}} other {{kind} com final "
+      & "impressão digital com final {shown}} other {{kind} com final "
       & "{shown}}}");
    P ("label.secrets.environment_secret_label",
       "{state, select, unset {{name} ({kind}): sem valor} other {{name} "
@@ -266,8 +267,8 @@ begin
       "{state, select, not_set {{label}: não definido} redacted {{label}: "
       & "ocultado} url_redacted {URL ocultada} ip_redacted {endereço IP "
       & "ocultado} path_ending {caminho de arquivo com final {shown}} at "
-      & "{{label} em {shown}} audit {{label} de comprimento {length, number}, "
-      & "com final {shown}} debug {{label} {shown}} other {{label} com final "
+      & "{{label} em {shown}} audit {{label}, comprimento {length, number}, com "
+      & "final {shown}} debug {{label} {shown}} other {{label} com final "
       & "{shown}}}");
    P ("label.schema.field_label",
       "campo {name} do tipo {kind, select, string_field {string} "
@@ -400,8 +401,8 @@ begin
       & "other {muito escuro}}");
    P ("label.names.agree.dark", "{gender, select, masculine {escuro} feminine {escura} other {escuro}}");
    P ("label.names.agree.medium_brightness",
-      "{gender, select, masculine {de brilho médio} feminine {de brilho "
-      & "médio} other {de brilho médio}}");
+      "{gender, select, masculine {de luminosidade média} feminine {de "
+      & "luminosidade média} other {de luminosidade média}}");
    P ("label.names.agree.light", "{gender, select, masculine {claro} feminine {clara} other {claro}}");
    P ("label.names.agree.very_light",
       "{gender, select, masculine {muito claro} feminine {muito clara} other "
@@ -442,4 +443,10 @@ begin
    P ("label.names.descriptive_color_name",
       "{base, select, pink {{hue}} other {{hue}}} {brightness} {chroma} "
       & "{temperature}");
+   P ("label.endpoints.url_label", "{state, select, empty {URL vazia} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {URL vazia} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[usuário ocultado]");
+   P ("label.endpoints.url_label.query",
+      "consulta {count, plural, one {{count, number} parâmetro} many "
+      & "{{count, number} de parâmetros} other {{count, number} parâmetros}}");
 end Labels_4;

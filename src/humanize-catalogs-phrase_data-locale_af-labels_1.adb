@@ -4,12 +4,12 @@ begin
    P ("label.accounts.account_label",
       "{state, select, active_account {{name}: aktiewe rekening} "
       & "invited_account {{name}: genooide rekening} locked_account {{name}: "
-      & "geslote rekening} suspended_account {{name}: opgeskorte rekening} "
+      & "gesluite rekening} suspended_account {{name}: opgeskorte rekening} "
       & "deleted_account {{name}: geskrapte rekening} other {{name}: "
       & "rekeningstatus onbekend}}");
    P ("label.accounts.account_state_label",
       "{state, select, active_account {aktiewe rekening} invited_account "
-      & "{genooide rekening} locked_account {geslote rekening} "
+      & "{genooide rekening} locked_account {gesluite rekening} "
       & "suspended_account {opgeskorte rekening} deleted_account {geskrapte "
       & "rekening} other {rekeningstatus onbekend}}");
    P ("label.accounts.device_trust_label",
@@ -260,12 +260,12 @@ begin
       & "number} drade}}");
    P ("label.comments.thread_label",
       "{name}: {state, select, open_thread {oop draad} resolved_thread "
-      & "{opgeloste draad} locked_thread {geslote draad} other {geargiveerde "
+      & "{opgeloste draad} locked_thread {gesluite draad} other {geargiveerde "
       & "draad}}{count, plural, =0 {} one {, 1 kommentaar} other {, {count, "
       & "number} kommentare}}");
    P ("label.comments.thread_state_label",
       "{state, select, open_thread {oop draad} resolved_thread {opgeloste "
-      & "draad} locked_thread {geslote draad} other {geargiveerde draad}}");
+      & "draad} locked_thread {gesluite draad} other {geargiveerde draad}}");
    P ("label.comments.unpin_label", "maak {name} los");
    P ("label.comments.unsubscribe_label", "teken uit van {name}");
    P ("label.comparisons.baseline_label",
@@ -433,7 +433,7 @@ begin
       "{family, select, byte_parser {greep-ontleder} duration_parser "
       & "{duurontleder} date_time_parser {datum-tyd-ontleder} color_parser "
       & "{kleurontleder} url_parser {URL-ontleder} unit_parser "
-      & "{eenheidontleder} recurrence_parser {herhalingsontleder} "
+      & "{eenheidsontleder} recurrence_parser {herhalingsontleder} "
       & "domain_label_parser {domeinetiket-ontleder} other {ontleder}}: "
       & "{position, plural, =0 {nie-ondersteunde sintaksis {error}} other "
       & "{nie-ondersteunde sintaksis {error} by posisie {position, number}}}; "
@@ -599,9 +599,9 @@ begin
       & "{navigasielandmerk} main_role {hooflandmerk} complementary_role "
       & "{aanvullende landmerk} contentinfo_role {inhoudsinligting-landmerk} "
       & "search_role {soeklandmerk} form_role {vormlandmerk} region_role "
-      & "{streeklandmerk} dialog_role {dialoog} alert_role "
-      & "{waarskuwing-regstreekse streek} status_role {status-regstreekse "
-      & "streek} other {onbekende landmerk}}");
+      & "{streeklandmerk} dialog_role {dialoog} alert_role {regstreekse "
+      & "waarskuwingstreek} status_role {regstreekse statusstreek} other "
+      & "{onbekende landmerk}}");
    P ("label.markup.live_region_update_label",
       "{region}, {polite, select, false {dringende opdatering} other "
       & "{beleefde opdatering}}: {update}");
@@ -614,7 +614,7 @@ begin
       & "{vorminhoud} other {onbekende inhoud}}");
    P ("label.markup.tag_kind_label",
       "{kind, select, document_tag {dokumentmerker} metadata_tag "
-      & "{metadatamerker} section_tag {afdelingmerker} text_tag {teksmerker} "
+      & "{metadatamerker} section_tag {afdelingsmerker} text_tag {teksmerker} "
       & "link_tag {skakelmerker} media_tag {mediamerker} form_tag {vormmerker} "
       & "table_tag {tabelmerker} interactive_tag {interaktiewe merker} "
       & "scripting_tag {skripmerker} other {onbekende merker}}");
@@ -641,10 +641,10 @@ begin
       & "number} bladsye}}");
    P ("label.media.resolution_label", "{width, number} × {height, number}");
    P ("label.moderation.appeal_label",
-      "{item}: appèl, {state, select, open_report {aanmelding oop} "
-      & "triaged_report {aanmelding beoordeel} actioned_report {aksie geneem} "
-      & "dismissed_report {aanmelding afgewys} appealed_report {aanmelding "
-      & "geappelleer} other {aanmelding gesluit}}");
+      "{item}: appèl, {state, select, open_report {verslag oop} "
+      & "triaged_report {verslag beoordeel} actioned_report {aksie geneem} "
+      & "dismissed_report {verslag afgewys} appealed_report {verslag "
+      & "geappelleer} other {verslag gesluit}}");
    P ("label.moderation.moderation_action_label",
       "{action, select, no_action {geen moderasie-aksie nie} flagged {gevlag} "
       & "hidden {deur moderator versteek} restored {herstel} marked_spam {as "
@@ -659,15 +659,15 @@ begin
       & "{{pending, number} wag op hersiening}}} other {{pending, number} wag "
       & "op hersiening, {escalated, number} geëskaleer}}");
    P ("label.moderation.report_label",
-      "{item}: {state, select, open_report {oop aanmelding} triaged_report "
-      & "{beoordeelde aanmelding} actioned_report {aksie geneem} "
-      & "dismissed_report {afgewysde aanmelding} appealed_report {geappelleerde "
-      & "aanmelding} other {geslote aanmelding}}");
+      "{item}: {state, select, open_report {oop verslag} triaged_report "
+      & "{beoordeelde verslag} actioned_report {aksie geneem} dismissed_report "
+      & "{afgewysde verslag} appealed_report {geappelleerde verslag} other "
+      & "{geslote verslag}}");
    P ("label.moderation.report_state_label",
-      "{state, select, open_report {oop aanmelding} triaged_report "
-      & "{beoordeelde aanmelding} actioned_report {aksie geneem} "
-      & "dismissed_report {afgewysde aanmelding} appealed_report {geappelleerde "
-      & "aanmelding} other {geslote aanmelding}}");
+      "{state, select, open_report {oop verslag} triaged_report {beoordeelde "
+      & "verslag} actioned_report {aksie geneem} dismissed_report {afgewysde "
+      & "verslag} appealed_report {geappelleerde verslag} other {geslote "
+      & "verslag}}");
    P ("label.moderation.review_label",
       "{item}: {state, select, pending_review {wag op hersiening} approved "
       & "{goedgekeur} rejected {afgekeur} needs_changes {veranderinge nodig} "

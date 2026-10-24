@@ -187,6 +187,29 @@ package body Humanize.Endpoints.Localized is
       end;
    end Query_Summary;
 
+   function Safe_URL_Label
+      (Context : Humanize.Contexts.Context;
+       URL     : String)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Endpoints.Safe_URL_Label (URL => URL);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.endpoints.safe_url_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      declare
+         E : constant String := Humanize.Label_Values.Text_Of (English);
+         D_State : constant String := (if E = "empty URL" then "empty" else "some");
+         D_Url : constant String := Humanize.Label_Values.URL_Text (Context, E);
+      begin
+         Selection := Sel.With_Arg (Selection, "state", D_State);
+         Selection := Sel.With_Arg (Selection, "url", D_Url);
+         return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+      end;
+   end Safe_URL_Label;
+
    function URL_Component_Summary
       (Context : Humanize.Contexts.Context;
        URL     : String)
@@ -214,6 +237,30 @@ package body Humanize.Endpoints.Localized is
          return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
       end;
    end URL_Component_Summary;
+
+   function URL_Label
+      (Context : Humanize.Contexts.Context;
+       URL     : String;
+       Options : URL_Display_Options := Default_URL_Display_Options)
+      return Humanize.Status.Text_Result
+   is
+      English : constant Humanize.Status.Text_Result :=
+        Endpoints.URL_Label (URL => URL, Options => Options);
+      Selection : Sel.Message_Selection := Sel.Phrase ("label.endpoints.url_label");
+   begin
+      if English.Status /= Humanize.Status.Ok then
+         return English;
+      end if;
+      declare
+         E : constant String := Humanize.Label_Values.Text_Of (English);
+         D_State : constant String := (if E = "empty URL" then "empty" else "some");
+         D_Url : constant String := Humanize.Label_Values.URL_Text (Context, E);
+      begin
+         Selection := Sel.With_Arg (Selection, "state", D_State);
+         Selection := Sel.With_Arg (Selection, "url", D_Url);
+         return Humanize.I18N_Rendering.Phrase_Or (Context, Selection, English);
+      end;
+   end URL_Label;
 
    procedure CIDR_Label_Into
       (Context : Humanize.Contexts.Context;
@@ -315,6 +362,17 @@ package body Humanize.Endpoints.Localized is
       Humanize.Bounded_Text.Copy_Text (Query_Summary (Context, URL => URL), Target, Written, Status);
    end Query_Summary_Into;
 
+   procedure Safe_URL_Label_Into
+      (Context : Humanize.Contexts.Context;
+       URL     : String;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text (Safe_URL_Label (Context, URL => URL), Target, Written, Status);
+   end Safe_URL_Label_Into;
+
    procedure URL_Component_Summary_Into
       (Context : Humanize.Contexts.Context;
        URL     : String;
@@ -325,5 +383,17 @@ package body Humanize.Endpoints.Localized is
    begin
       Humanize.Bounded_Text.Copy_Text (URL_Component_Summary (Context, URL => URL), Target, Written, Status);
    end URL_Component_Summary_Into;
+
+   procedure URL_Label_Into
+      (Context : Humanize.Contexts.Context;
+       URL     : String;
+       Options : URL_Display_Options := Default_URL_Display_Options;
+       Target  : in out String;
+       Written : out Natural;
+       Status  : out Humanize.Status.Status_Code)
+   is
+   begin
+      Humanize.Bounded_Text.Copy_Text (URL_Label (Context, URL => URL, Options => Options), Target, Written, Status);
+   end URL_Label_Into;
 
 end Humanize.Endpoints.Localized;

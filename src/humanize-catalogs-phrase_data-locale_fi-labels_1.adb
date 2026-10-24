@@ -336,7 +336,7 @@ begin
       & "ristiriita} other {ohitettu tietue}}");
    P ("label.deployments.artifact_state_label",
       "{state, select, artifact_ready {artefakti valmis} artifact_uploaded "
-      & "{artefakti ladattu} artifact_signed {artefakti allekirjoitettu} "
+      & "{artefakti lähetetty} artifact_signed {artefakti allekirjoitettu} "
       & "artifact_missing {artefakti puuttuu} other {artefakti vanhentunut}}");
    P ("label.deployments.deployment_label",
       "{name} (ympäristö {environment}): {state, select, queued_deployment "
@@ -595,7 +595,7 @@ begin
       "{issue, select, missing_accessible_name {lisää saavutettava nimi} "
       & "low_contrast {lisää tekstin kontrastia} skipped_heading_level "
       & "{käytä otsikkotasoja järjestyksessä} missing_form_label {liitä "
-      & "nimiö lomakkeen ohjaimeen} invalid_aria {käytä kelvollista "
+      & "nimiö lomakkeen ohjausobjektiin} invalid_aria {käytä kelvollista "
       & "ARIA-roolia tai -attribuuttia} keyboard_trap {varmista, että "
       & "näppäimistön kohdistus voi poistua komponentista} other {tarkista "
       & "saavutettavuusongelma}}");

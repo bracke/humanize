@@ -1,6 +1,148 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_De)
 procedure Labels_3 is
 begin
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} nicht gesetzt} redacted {{label} "
+      & "geschwärzt} url_redacted {URL geschwärzt} ip_redacted {IP-Adresse "
+      & "geschwärzt} path_ending {Dateipfad mit Endung {shown}} at {{label} "
+      & "bei {shown}} audit {{label}, Länge {length, number}, Endung {shown}} "
+      & "debug {{label} {shown}} other {{label} mit Endung {shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {veraltetes } unknown_field "
+      & "{unbekanntes } read_only_field {schreibgeschütztes } write_only_field "
+      & "{nur beschreibbares } computed_field {berechnetes } other {}}{kind, "
+      & "select, string_field {String-Feld} integer_field {Ganzzahlfeld} "
+      & "decimal_field {Dezimalfeld} boolean_field {boolesches Feld} date_field "
+      & "{Datumsfeld} date_time_field {Datum-Zeit-Feld} object_field "
+      & "{Objektfeld} array_field {Array-Feld} enum_field {Enum-Feld} "
+      & "binary_field {Binärfeld} null_field {Null-Feld} any_field {Feld "
+      & "beliebigen Typs} other {Feld unbekannten Typs}} {name} ({presence, "
+      & "select, required_field {erforderlich} optional_field {optional} "
+      & "conditional_field {bedingt} other {Vorhandensein unbekannt}}{nullable, "
+      & "select, non_nullable {, nicht null} nullable {, nullbar} other {}})");
+   P ("label.schema.schema_summary_label.fields", "{count, plural, one {1 Feld} other {{count, number} Felder}}");
+   P ("label.schema.schema_summary_label.required", "{count, number} erforderlich");
+   P ("label.schema.schema_summary_label.optional", "{count, number} optional");
+   P ("label.schema.schema_summary_label.deprecated", "{count, number} veraltet");
+   P ("label.schema.schema_summary_label.unknown", "{count, number} unbekannt");
+   P ("label.schema.type_mismatch_label",
+      "Feld {field_name}: {expected, select, string_field {String} "
+      & "integer_field {Ganzzahl} decimal_field {Dezimalzahl} boolean_field "
+      & "{boolescher Wert} date_field {Datum} date_time_field {Datum-Zeit} "
+      & "object_field {Objekt} array_field {Array} enum_field {Enum} "
+      & "binary_field {Binärwert} null_field {Null} any_field {beliebiger "
+      & "Wert} other {unbekannt}} erwartet, {actual, select, string_field "
+      & "{String} integer_field {Ganzzahl} decimal_field {Dezimalzahl} "
+      & "boolean_field {boolescher Wert} date_field {Datum} date_time_field "
+      & "{Datum-Zeit} object_field {Objekt} array_field {Array} enum_field "
+      & "{Enum} binary_field {Binärwert} null_field {Null} any_field "
+      & "{beliebiger Wert} other {unbekannt}} erhalten");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {1 blockierendes "
+      & "Problem} other {{blocking, number} blockierende Probleme}}} blocking "
+      & "{{base}, {blocking, plural, one {1 blockierendes Problem} other "
+      & "{{blocking, number} blockierende Probleme}}} only {nur {base}} other "
+      & "{{base}}}");
+   P ("label.diagnostics.check_run_summary_label.none", "keine Prüfungen ausgeführt");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} bestanden");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} fehlgeschlagen");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 Warnung} other {{count, number} Warnungen}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} übersprungen");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} ausstehend");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {Zielbereich {low} bis {high}} "
+      & "other {Zielfenster {low} bis {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} innerhalb des erwarteten Bereichs} "
+      & "below {{value} unterhalb des erwarteten Bereichs} other {{value} "
+      & "oberhalb des erwarteten Bereichs}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} an der kritischen Schwelle} warning "
+      & "{{value} an der Warnschwelle} other {{value} im Normalbereich}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {nicht überschritten} other {um {difference} "
+      & "überschritten}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {Zielwert erreicht} below {{difference} unter dem "
+      & "Zielwert} other {{difference} über dem Zielwert}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {Grenzwert überschritten} near {nahe am "
+      & "Grenzwert, {distance} verbleibend} other {{distance} bis zum "
+      & "Grenzwert}}");
+   P ("label.thresholds.threshold_summary_label.none", "keine Messwerte");
+   P ("label.thresholds.threshold_summary_label.normal", "{count, number} normal");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {1 Warnung} other {{count, number} Warnungen}}");
+   P ("label.thresholds.threshold_summary_label.critical", "{count, number} kritisch");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {1 Überschreitung} other {{count, number} "
+      & "Überschreitungen}}");
+   P ("label.thresholds.target_window_label", "Ziel {target} ± {tolerance}");
+   P ("label.thresholds.tolerance_label", "Toleranz {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} des Grenzwerts");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {Grenzwert um {amount} überschritten} other "
+      & "{{amount} verbleibend}}");
+   P ("label.thresholds.budget_used_label", "{used} von {budget} verbraucht");
+   P ("label.workflows.step_label", "Schritt {current, number} von {total, number}: {name}");
+   P ("label.workflows.milestone_label", "{current, number} von {total, number} Meilensteinen erreicht: {name}");
+   P ("label.workflows.workflow_summary_label.total",
+      "{count, plural, one {1 Element} other {{count, number} Elemente}}");
+   P ("label.workflows.workflow_summary_label.completed", "{count, number} abgeschlossen");
+   P ("label.workflows.workflow_summary_label.active", "{count, number} aktiv");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} blockiert");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} fehlgeschlagen");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} übersprungen");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {keine Workflow-Elemente} half {Workflow zur "
+      & "Hälfte abgeschlossen} other {{completed, number} von {total, number} "
+      & "abgeschlossen}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {Position {position, number} in der Warteschlange} "
+      & "other {Position {position, number} von {total, number} in der "
+      & "Warteschlange}}");
+   P ("label.changes.change_set_label.none", "keine Änderungen");
+   P ("label.changes.change_set_label.added", "{count, number} hinzugefügt");
+   P ("label.changes.change_set_label.removed", "{count, number} entfernt");
+   P ("label.changes.change_set_label.modified", "{count, number} geändert");
+   P ("label.changes.change_set_label.unchanged", "{count, number} unverändert");
+   P ("label.changes.change_summary_label.total",
+      "{count, plural, one {1 Element} other {{count, number} Elemente}}");
+   P ("label.changes.change_summary_label.added", "{count, number} hinzugefügt");
+   P ("label.changes.change_summary_label.removed", "{count, number} entfernt");
+   P ("label.changes.change_summary_label.modified", "{count, number} geändert");
+   P ("label.changes.change_summary_label.renamed", "{count, number} umbenannt");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} unverändert");
+   P ("label.changes.sync_change_label.none", "keine Synchronisierungsänderungen");
+   P ("label.changes.sync_change_label.uploaded", "{count, number} hochgeladen");
+   P ("label.changes.sync_change_label.downloaded", "{count, number} heruntergeladen");
+   P ("label.changes.sync_change_label.deleted", "{count, number} gelöscht");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {1 Konflikt} other {{count, number} Konflikte}}");
+   P ("label.changes.net_change_label",
+      "{state, select, none {keine Nettoänderung} up {netto +{count, plural, "
+      & "one {1 Element} other {{count, number} Elemente}}} other {netto "
+      & "-{count, plural, one {1 Element} other {{count, number} Elemente}}}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {keine Änderungen zu prüfen} all {alle "
+      & "Änderungen geprüft} other {{reviewed, number} von {total, number} "
+      & "Änderungen geprüft}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} unverändert bei {new_value}} up "
+      & "{{field_name} von {old_value} auf {new_value} gestiegen} other "
+      & "{{field_name} von {old_value} auf {new_value} gesunken}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {keine Zeilen auswählbar} none {keine Zeilen "
+      & "ausgewählt} all {{total, plural, one {1 Zeile} other {alle {total, "
+      & "number} Zeilen}} ausgewählt} other {{selected, number} von {total, "
+      & "plural, one {1 Zeile} other {{total, number} Zeilen}} ausgewählt}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {keine Seiten} other {{pages, plural, =0 {keine "
+      & "Seiten} other {{rows, plural, =0 {Seite {page, number} von {pages, "
+      & "number}} one {Seite {page, number} von {pages, number}, 1 Zeile} other "
+      & "{Seite {page, number} von {pages, number}, {rows, number} Zeilen}}}}}}");
    P ("label.tables.filter_label",
       "{state, select, no_rows {keine Zeilen} none {keine passenden Zeilen} "
       & "all {{total, plural, one {1 Zeile} other {alle {total, number} "
@@ -66,9 +208,116 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} geändert} other {{name}: {changed, number} geändert, "
       & "{unchanged, number} unverändert, {total, number} gesamt}}");
+   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{brightness} {chroma} {temperature} {base, select, pink {Rosa} other "
+      & "{{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
-   P ("label.groups", "{first}; {second}");
-   P ("label.parts", "{first}, {second}");
+   P ("label.markup.accessible_control_label.control",
+      "{role, select, button_control {Schaltfläche} link_control {Link} "
+      & "tab_control {Registerkarte} menu_item_control {Menüeintrag} "
+      & "checkbox_control {Kontrollkästchen} radio_control {Optionsfeld} "
+      & "text_field_control {Textfeld} progress_control {Fortschrittsanzeige} "
+      & "table_cell_control {Tabellenzelle} region_control {Bereich} other "
+      & "{Steuerelement}} {named, select, no {ohne Namen} other {{name}}}");
+   P ("label.markup.accessible_control_label.selected", "ausgewählt");
+   P ("label.markup.accessible_control_label.expanded", "ausgeklappt");
+   P ("label.markup.accessible_control_label.current", "aktuell");
+   P ("label.markup.accessible_control_label.disabled", "deaktiviert");
+   P ("label.markup.accessible_control_label.required", "erforderlich");
+   P ("label.markup.accessible_control_label.invalid", "ungültig");
+   P ("label.markup.accessible_control_label.count",
+      "{count, plural, one {1 Element} other {{count, number} Elemente}}");
+   P ("label.markup.accessible_control_label.position", "Element {position, number} von {total, number}");
+   P ("label.markup.accessible_control_label.issues",
+      "{count, plural, one {1 Problem} other {{count, number} Probleme}}");
+   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
+   P ("label.endpoints.url_component.scheme", "Schema");
+   P ("label.endpoints.url_component.host", "Host");
+   P ("label.endpoints.url_component.path", "Pfad");
+   P ("label.endpoints.url_component.query", "Abfrage");
+   P ("label.endpoints.url_component.fragment", "Fragment");
+   P ("label.names.hue_noun.red", "Rot");
+   P ("label.names.hue_noun.orange", "Orange");
+   P ("label.names.hue_noun.yellow", "Gelb");
+   P ("label.names.hue_noun.green", "Grün");
+   P ("label.names.hue_noun.cyan", "Cyan");
+   P ("label.names.hue_noun.blue", "Blau");
+   P ("label.names.hue_noun.purple", "Violett");
+   P ("label.names.hue_noun.magenta", "Magenta");
+   P ("label.names.hue_noun.neutral", "Neutralton");
+   P ("label.names.hue_noun.pink", "Rosa");
+   P ("label.names.hue_gender.red", "neuter");
+   P ("label.names.hue_gender.orange", "neuter");
+   P ("label.names.hue_gender.yellow", "neuter");
+   P ("label.names.hue_gender.green", "neuter");
+   P ("label.names.hue_gender.cyan", "neuter");
+   P ("label.names.hue_gender.blue", "neuter");
+   P ("label.names.hue_gender.purple", "neuter");
+   P ("label.names.hue_gender.magenta", "neuter");
+   P ("label.names.hue_gender.neutral", "masculine");
+   P ("label.names.hue_gender.pink", "neuter");
+   P ("label.names.agree.very_dark",
+      "{gender, select, neuter {sehr dunkles} masculine {sehr dunkler} "
+      & "feminine {sehr dunkle} other {sehr dunkel}}");
+   P ("label.names.agree.dark",
+      "{gender, select, neuter {dunkles} masculine {dunkler} feminine "
+      & "{dunkle} other {dunkel}}");
+   P ("label.names.agree.medium_brightness",
+      "{gender, select, neuter {mittelhelles} masculine {mittelheller} "
+      & "feminine {mittelhelle} other {mittelhell}}");
+   P ("label.names.agree.light",
+      "{gender, select, neuter {helles} masculine {heller} feminine {helle} "
+      & "other {hell}}");
+   P ("label.names.agree.very_light",
+      "{gender, select, neuter {sehr helles} masculine {sehr heller} feminine "
+      & "{sehr helle} other {sehr hell}}");
+   P ("label.names.agree.desaturated",
+      "{gender, select, neuter {entsättigtes} masculine {entsättigter} "
+      & "feminine {entsättigte} other {entsättigt}}");
+   P ("label.names.agree.muted",
+      "{gender, select, neuter {gedämpftes} masculine {gedämpfter} feminine "
+      & "{gedämpfte} other {gedämpft}}");
+   P ("label.names.agree.neutral",
+      "{gender, select, neuter {neutrales} masculine {neutraler} feminine "
+      & "{neutrale} other {neutral}}");
+   P ("label.names.agree.saturated",
+      "{gender, select, neuter {gesättigtes} masculine {gesättigter} "
+      & "feminine {gesättigte} other {gesättigt}}");
+   P ("label.names.agree.vivid",
+      "{gender, select, neuter {lebhaftes} masculine {lebhafter} feminine "
+      & "{lebhafte} other {lebhaft}}");
+   P ("label.names.agree.grayish",
+      "{gender, select, neuter {gräuliches} masculine {gräulicher} feminine "
+      & "{gräuliche} other {gräulich}}");
+   P ("label.names.agree.soft",
+      "{gender, select, neuter {sanftes} masculine {sanfter} feminine "
+      & "{sanfte} other {sanft}}");
+   P ("label.names.agree.moderate_chroma",
+      "{gender, select, neuter {mittelchromatisches} masculine "
+      & "{mittelchromatischer} feminine {mittelchromatische} other "
+      & "{mittelchromatisch}}");
+   P ("label.names.agree.high_chroma",
+      "{gender, select, neuter {hochchromatisches} masculine "
+      & "{hochchromatischer} feminine {hochchromatische} other "
+      & "{hochchromatisch}}");
+   P ("label.names.agree.pastel",
+      "{gender, select, neuter {pastellfarbenes} masculine {pastellfarbener} "
+      & "feminine {pastellfarbene} other {pastellfarben}}");
+   P ("label.names.agree.warm",
+      "{gender, select, neuter {warmes} masculine {warmer} feminine {warme} "
+      & "other {warm}}");
+   P ("label.names.agree.cool",
+      "{gender, select, neuter {kühles} masculine {kühler} feminine "
+      & "{kühle} other {kühl}}");
+   P ("label.names.agree.neutral_temperature",
+      "{gender, select, neuter {temperaturneutrales} masculine "
+      & "{temperaturneutraler} feminine {temperaturneutrale} other "
+      & "{temperaturneutral}}");
+   P ("label.names.agree.balanced_temperature",
+      "{gender, select, neuter {temperaturausgewogenes} masculine "
+      & "{temperaturausgewogener} feminine {temperaturausgewogene} other "
+      & "{temperaturausgewogen}}");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
       "aktueller Vordergrund erfüllt den Kontrast für großen Text mit "
       & "{v1}:{v2, number}");
@@ -448,252 +697,4 @@ begin
    P ("label.palettes.palette_mood_label.light", "hell");
    P ("label.palettes.palette_summary.mostly_teal", "überwiegend Petrol");
    P ("label.palettes.palette_summary.mostly_aqua", "überwiegend Aqua");
-   P ("label.palettes.palette_summary.mostly_lime", "überwiegend Limettengrün");
-   P ("label.palettes.palette_harmony_label.monochrome_palette", "monochrome Palette");
-   P ("label.palettes.palette_summary.mostly_black", "überwiegend Schwarz");
-   P ("label.palettes.palette_summary.mostly_yellow", "überwiegend Gelb");
-   P ("label.palettes.palette_summary.mostly_maroon", "überwiegend Kastanienbraun");
-   P ("label.palettes.palette_summary.mostly_white", "überwiegend Weiß");
-   P ("label.palettes.palette_summary.mostly_orange", "überwiegend Orange");
-   P ("label.palettes.palette_summary.mostly_fuchsia", "überwiegend Fuchsia");
-   P ("label.palettes.palette_harmony_label.neutral_palette", "neutrale Palette");
-   P ("label.palettes.palette_summary.mostly_red", "überwiegend Rot");
-   P ("label.metrics.word_count_summary.n_words", "{v1, plural, one {1 Wort} other {{v1, number} Wörter}}");
-   P ("label.metrics.sentence_count_summary.n_sentences", "{v1, plural, one {1 Satz} other {{v1, number} Sätze}}");
-   P ("label.metrics.paragraph_count_summary.n_paragraphs",
-      "{v1, plural, one {1 Absatz} other {{v1, number} Absätze}}");
-   P ("label.metrics.reading_time.n_minutes_read",
-      "{v1, plural, one {1 Minute Lesezeit} other {{v1, number} Minuten "
-      & "Lesezeit}}");
-   P ("label.metrics.speaking_time.n_minutes_spoken",
-      "{v1, plural, one {1 Minute Sprechzeit} other {{v1, number} Minuten "
-      & "Sprechzeit}}");
-   P ("label.metrics.text_summary_with_options.n_words", "{v1, plural, one {1 Wort} other {{v1, number} Wörter}}");
-   P ("label.metrics.text_summary_with_options.n_sentences",
-      "{v1, plural, one {1 Satz} other {{v1, number} Sätze}}");
-   P ("label.metrics.text_summary_with_options.n_paragraphs",
-      "{v1, plural, one {1 Absatz} other {{v1, number} Absätze}}");
-   P ("label.metrics.text_summary_with_options.n_minutes_read",
-      "{v1, plural, one {1 Minute Lesezeit} other {{v1, number} Minuten "
-      & "Lesezeit}}");
-   P ("label.metrics.paragraph_count_summary.n_paragraph",
-      "{v1, plural, one {1 Absatz} other {{v1, number} Absätze}}");
-   P ("label.metrics.reading_time.less_than_n_minute_read",
-      "{v1, plural, one {weniger als 1 Minute Lesezeit} other {weniger als "
-      & "{v1, number} Minuten Lesezeit}}");
-   P ("label.metrics.speaking_time.less_than_n_minute_spoken",
-      "{v1, plural, one {weniger als 1 Minute Sprechzeit} other {weniger als "
-      & "{v1, number} Minuten Sprechzeit}}");
-   P ("label.metrics.text_summary_with_options.n_paragraph",
-      "{v1, plural, one {1 Absatz} other {{v1, number} Absätze}}");
-   P ("label.metrics.text_summary_with_options.less_than_n_minute_read",
-      "{v1, plural, one {weniger als 1 Minute Lesezeit} other {weniger als "
-      & "{v1, number} Minuten Lesezeit}}");
-   P ("label.metrics.sentence_count_summary.n_sentence", "{v1, plural, one {1 Satz} other {{v1, number} Sätze}}");
-   P ("label.metrics.text_summary_with_options.n_sentence", "{v1, plural, one {1 Satz} other {{v1, number} Sätze}}");
-   P ("label.metrics.word_count_summary.no_words", "keine Wörter");
-   P ("label.metrics.sentence_count_summary.no_sentences", "keine Sätze");
-   P ("label.metrics.paragraph_count_summary.no_paragraphs", "keine Absätze");
-   P ("label.metrics.text_summary_with_options.no_words", "keine Wörter");
-   P ("label.metrics.text_summary_with_options.no_sentences", "keine Sätze");
-   P ("label.metrics.text_summary_with_options.no_paragraphs", "keine Absätze");
-   P ("label.metrics.word_count_summary.n_word", "{v1, plural, one {1 Wort} other {{v1, number} Wörter}}");
-   P ("label.metrics.text_summary_with_options.n_word", "{v1, plural, one {1 Wort} other {{v1, number} Wörter}}");
-   P ("label.statistics.distribution_shape_label",
-      "{shape, select, no_distribution_shape {keine Beobachtungen} "
-      & "sample_too_small_shape {Stichprobe zu klein, um die Form zu "
-      & "beschreiben, {count, plural, one {1 Beobachtung} other {{count, "
-      & "number} Beobachtungen}}} flat_shape {flache Verteilung bei {median}} "
-      & "outlier_heavy_shape {ausreißerreiche Verteilung um {median}} "
-      & "volatile_shape {schwankende Verteilung um {median}} clustered_shape "
-      & "{gehäufte Verteilung um {median}} wide_spread_shape {weit gestreute "
-      & "Verteilung} wide_spread_range {weit gestreute Verteilung von {minimum} "
-      & "bis {maximum}} right_skewed_shape {rechtsschiefe Verteilung, Median "
-      & "{median}} left_skewed_shape {linksschiefe Verteilung, Median {median}} "
-      & "other {weitgehend ausgeglichene Verteilung um {median}}}");
-   P ("label.privacy.safe_email_label",
-      "{state, select, empty {leere E-Mail} address {E-Mail-Adresse} other "
-      & "{E-Mail bei {domain}}}");
-   P ("label.privacy.safe_phone_label",
-      "{state, select, none {Telefonnummer} redacted {Telefonnummer "
-      & "geschwärzt} other {Telefonnummer mit Endung {digits}}}");
-   P ("label.privacy.safe_handle_label", "{state, select, none {Handle} other {Handle {shown}}}");
-   P ("label.privacy.code_symbol_label", "{state, select, none {Codesymbol} other {Codesymbol {symbol}}}");
-   P ("label.privacy.address_metadata_label",
-      "Adressmetadaten: {present, plural, one {1 Feld vorhanden} other "
-      & "{{present, number} Felder vorhanden}}, {missing, plural, one {1 Feld "
-      & "fehlt} other {{missing, number} Felder fehlen}}");
-   P ("label.endpoints.host_label", "{state, select, none {unbekannter Host} other {{kind} {host}}}");
-   P ("label.endpoints.endpoint_label",
-      "{state, select, none {unbekannter Endpunkt} other {Endpunkt "
-      & "{scheme}{host}{port} ({kind})}}");
-   P ("label.endpoints.url_component_summary",
-      "{state, select, empty {leere URL} none {URL ohne erkannte "
-      & "Bestandteile} other {URL mit {count, plural, one {1 Bestandteil} other "
-      & "{{count, number} Bestandteilen}}: {components}}}");
-   P ("label.endpoints.query_summary",
-      "{count, plural, =0 {keine Abfrageparameter} one {1 Abfrageparameter} "
-      & "other {{count, number} Abfrageparameter}}");
-   P ("label.endpoints.ip_address_label",
-      "{address} ({kind, select, ipv4_host {öffentliche IPv4-Adresse} "
-      & "ipv6_host {öffentliche IPv6-Adresse} private_network_host {Adresse im "
-      & "privaten Netz} localhost_host {lokaler Host} other {keine "
-      & "IP-Adresse}})");
-   P ("label.endpoints.cidr_label",
-      "{state, select, invalid {{cidr} (ungültiges CIDR)} other {{cidr} "
-      & "({kind}, Netzpräfix {prefix})}}");
-   P ("label.resources.utilization_label", "{used, number} von {total, number} {unit} genutzt ({percent}, {band})");
-   P ("label.resources.saturation_label", "{named, select, no {Ressource} other {{name}}} {percent}, {band}");
-   P ("label.versions.version_label",
-      "{state, select, both {Version {version}, Vorabversion {prerelease}, "
-      & "Build {build}} prerelease {Version {version}, Vorabversion "
-      & "{prerelease}} build {Version {version}, Build {build}} other {Version "
-      & "{version}}}");
-   P ("label.versions.version_delta_label",
-      "{delta, select, same_version {gleiche Version} major_upgrade "
-      & "{Hauptversions-Upgrade} minor_upgrade {Nebenversions-Upgrade} "
-      & "patch_upgrade {Patch-Upgrade} prerelease_change {Änderung der "
-      & "Vorabversion} build_metadata_change {Änderung der Build-Metadaten} "
-      & "downgrade {Downgrade} other {unbekannte Versionsänderung}}: {from} -> "
-      & "{to}");
-   P ("label.versions.compatibility_range_label",
-      "{kind, select, exact_range {genau Version {version}} minimum_range "
-      & "{Version {version} oder neuer} maximum_range {Version {version} oder "
-      & "älter} major_compatible_range {kompatibel mit Hauptversion {version}} "
-      & "minor_compatible_range {kompatibel mit Nebenversion {version}} other "
-      & "{Versionsbereich {version}}}");
-   P ("label.versions.release_label",
-      "{state, select, initial {erste Entwicklungsversion {version}} "
-      & "prerelease {Vorabversion {version}} major {Hauptversion {version}} "
-      & "minor {Nebenversion {version}} other {Patch-Version {version}}}");
-   P ("label.markup.tag_label",
-      "{tag, select, link {Link-Tag} image {Bild-Tag} paragraph {Absatz-Tag} "
-      & "ordered_list {Tag für nummerierte Liste} unordered_list {Tag für "
-      & "Aufzählungsliste} list_item {Listenelement-Tag} table_header_cell "
-      & "{Tabellenkopfzellen-Tag} table_cell {Tabellenzellen-Tag} table_row "
-      & "{Tabellenzeilen-Tag} line_break {Zeilenumbruch-Tag} thematic_break "
-      & "{Tag für thematischen Umbruch} heading_level_n {Tag für Überschrift "
-      & "der Ebene {level, number}} other {{name}-Tag}}");
-   P ("label.markup.attribute_label",
-      "{state, select, bare {{name}-Attribut} event {Event-Handler-Attribut "
-      & "{name}} other {Attribut {name} mit Wert „{value}“}}");
-   P ("label.markup.content_type_label",
-      "{kind, select, text_content {Textinhalt} html_content {HTML-Dokument} "
-      & "json_content {JSON-Dokument} xml_content {XML-Dokument} image_content "
-      & "{Bildinhalt} audio_content {Audioinhalt} video_content {Videoinhalt} "
-      & "font_content {Schriftinhalt} archive_content {Archivinhalt} "
-      & "binary_content {Binärinhalt} form_content {Formularübermittlung} "
-      & "other {unbekannter Inhalt}} ({base})");
-   P ("label.secrets.secret_label",
-      "{state, select, unset {{kind} nicht gesetzt} hidden_value {{kind} "
-      & "verborgen} masked_value {{kind} {shown}} fingerprint_only {{kind}, "
-      & "Fingerabdruck mit Endung {shown}} other {{kind} mit Endung {shown}}}");
-   P ("label.secrets.environment_secret_label",
-      "{state, select, unset {{name}: {kind} nicht gesetzt} other {{name}: "
-      & "{kind} mit Endung {shown}}}");
-   P ("label.secrets.header_credential_label",
-      "{state, select, unset {Anmelde-Header {name} nicht gesetzt} other "
-      & "{{name}: {kind} mit Endung {shown}}}");
-   P ("label.secrets.fingerprint_label", "{algorithm}-Fingerabdruck mit Endung {shown}");
-   P ("label.secrets.safe_display_label",
-      "{state, select, not_set {{label} nicht gesetzt} redacted {{label} "
-      & "geschwärzt} url_redacted {URL geschwärzt} ip_redacted {IP-Adresse "
-      & "geschwärzt} path_ending {Dateipfad mit Endung {shown}} at {{label} "
-      & "bei {shown}} audit {{label}, Länge {length, number}, Endung {shown}} "
-      & "debug {{label} {shown}} other {{label} mit Endung {shown}}}");
-   P ("label.schema.field_label",
-      "{state, select, deprecated_field {veraltetes } unknown_field "
-      & "{unbekanntes } read_only_field {schreibgeschütztes } write_only_field "
-      & "{nur beschreibbares } computed_field {berechnetes } other {}}{kind, "
-      & "select, string_field {String-Feld} integer_field {Ganzzahlfeld} "
-      & "decimal_field {Dezimalfeld} boolean_field {boolesches Feld} date_field "
-      & "{Datumsfeld} date_time_field {Datum-Zeit-Feld} object_field "
-      & "{Objektfeld} array_field {Array-Feld} enum_field {Enum-Feld} "
-      & "binary_field {Binärfeld} null_field {Null-Feld} any_field {Feld "
-      & "beliebigen Typs} other {Feld unbekannten Typs}} {name} ({presence, "
-      & "select, required_field {erforderlich} optional_field {optional} "
-      & "conditional_field {bedingt} other {Vorhandensein unbekannt}}{nullable, "
-      & "select, non_nullable {, nicht null} nullable {, nullbar} other {}})");
-   P ("label.schema.schema_summary_label.fields", "{count, plural, one {1 Feld} other {{count, number} Felder}}");
-   P ("label.schema.schema_summary_label.required", "{count, number} erforderlich");
-   P ("label.schema.schema_summary_label.optional", "{count, number} optional");
-   P ("label.schema.schema_summary_label.deprecated", "{count, number} veraltet");
-   P ("label.schema.schema_summary_label.unknown", "{count, number} unbekannt");
-   P ("label.diagnostics.check_run_summary_label.none", "keine Prüfungen ausgeführt");
-   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} bestanden");
-   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} fehlgeschlagen");
-   P ("label.diagnostics.check_run_summary_label.warnings",
-      "{count, plural, one {1 Warnung} other {{count, number} Warnungen}}");
-   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} übersprungen");
-   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} ausstehend");
-   P ("label.workflows.workflow_summary_label.total",
-      "{count, plural, one {1 Element} other {{count, number} Elemente}}");
-   P ("label.workflows.workflow_summary_label.completed", "{count, number} abgeschlossen");
-   P ("label.workflows.workflow_summary_label.active", "{count, number} aktiv");
-   P ("label.workflows.workflow_summary_label.blocked", "{count, number} blockiert");
-   P ("label.workflows.workflow_summary_label.failed", "{count, number} fehlgeschlagen");
-   P ("label.workflows.workflow_summary_label.skipped", "{count, number} übersprungen");
-   P ("label.changes.change_summary_label.total",
-      "{count, plural, one {1 Element} other {{count, number} Elemente}}");
-   P ("label.changes.change_summary_label.added", "{count, number} hinzugefügt");
-   P ("label.changes.change_summary_label.removed", "{count, number} entfernt");
-   P ("label.changes.change_summary_label.modified", "{count, number} geändert");
-   P ("label.changes.change_summary_label.renamed", "{count, number} umbenannt");
-   P ("label.changes.change_summary_label.unchanged", "{count, number} unverändert");
-   P ("label.markup.accessible_control_label.control",
-      "{role, select, button_control {Schaltfläche} link_control {Link} "
-      & "tab_control {Registerkarte} menu_item_control {Menüeintrag} "
-      & "checkbox_control {Kontrollkästchen} radio_control {Optionsfeld} "
-      & "text_field_control {Textfeld} progress_control {Fortschrittsanzeige} "
-      & "table_cell_control {Tabellenzelle} region_control {Bereich} other "
-      & "{Steuerelement}} {named, select, no {ohne Namen} other {{name}}}");
-   P ("label.markup.accessible_control_label.selected", "ausgewählt");
-   P ("label.markup.accessible_control_label.expanded", "erweitert");
-   P ("label.markup.accessible_control_label.current", "aktuell");
-   P ("label.markup.accessible_control_label.disabled", "deaktiviert");
-   P ("label.markup.accessible_control_label.required", "erforderlich");
-   P ("label.markup.accessible_control_label.invalid", "ungültig");
-   P ("label.markup.accessible_control_label.count",
-      "{count, plural, one {1 Element} other {{count, number} Elemente}}");
-   P ("label.markup.accessible_control_label.position", "Element {position, number} von {total, number}");
-   P ("label.markup.accessible_control_label.issues",
-      "{count, plural, one {1 Problem} other {{count, number} Probleme}}");
-   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
-   P ("label.endpoints.url_component.scheme", "Schema");
-   P ("label.endpoints.url_component.host", "Host");
-   P ("label.endpoints.url_component.path", "Pfad");
-   P ("label.endpoints.url_component.query", "Abfrage");
-   P ("label.endpoints.url_component.fragment", "Fragment");
-   P ("label.names.hue_noun.red", "Rot");
-   P ("label.names.hue_noun.orange", "Orange");
-   P ("label.names.hue_noun.yellow", "Gelb");
-   P ("label.names.hue_noun.green", "Grün");
-   P ("label.names.hue_noun.cyan", "Cyan");
-   P ("label.names.hue_noun.blue", "Blau");
-   P ("label.names.hue_noun.purple", "Violett");
-   P ("label.names.hue_noun.magenta", "Magenta");
-   P ("label.names.hue_noun.neutral", "Neutralton");
-   P ("label.names.hue_noun.pink", "Rosa");
-   P ("label.names.hue_gender.red", "neuter");
-   P ("label.names.hue_gender.orange", "neuter");
-   P ("label.names.hue_gender.yellow", "neuter");
-   P ("label.names.hue_gender.green", "neuter");
-   P ("label.names.hue_gender.cyan", "neuter");
-   P ("label.names.hue_gender.blue", "neuter");
-   P ("label.names.hue_gender.purple", "neuter");
-   P ("label.names.hue_gender.magenta", "neuter");
-   P ("label.names.hue_gender.neutral", "masculine");
-   P ("label.names.hue_gender.pink", "neuter");
-   P ("label.names.agree.very_dark",
-      "{gender, select, neuter {sehr dunkles} masculine {sehr dunkler} "
-      & "feminine {sehr dunkle} other {sehr dunkel}}");
-   P ("label.names.agree.dark",
-      "{gender, select, neuter {dunkles} masculine {dunkler} feminine "
-      & "{dunkle} other {dunkel}}");
-   P ("label.names.agree.medium_brightness",
-      "{gender, select, neuter {mittelhelles} masculine {mittelheller} "
-      & "feminine {mittelhelle} other {mittelhell}}");
-   P ("label.names.agree.light",
-      "{gender, select, neuter {helles} masculine {heller} feminine {helle} "
-      & "other {hell}}");
 end Labels_3;

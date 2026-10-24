@@ -333,9 +333,9 @@ begin
       "{total, plural, =0 {nenhuma etapa do formulário} one {etapa 1 de 1: "
       & "{name}} other {etapa {current, number} de {total, number}: {name}}}");
    P ("label.navigation.breadcrumb_position_label",
-      "{total, plural, =0 {nenhuma trilha de navegação} one {trilha de "
-      & "navegação 1 de 1: {name}} other {trilha de navegação {current, "
-      & "number} de {total, number}: {name}}}");
+      "{total, plural, =0 {trilha de navegação vazia} one {item 1 de 1 da "
+      & "trilha de navegação: {name}} other {item {current, number} de "
+      & "{total, number} da trilha de navegação: {name}}}");
    P ("label.navigation.tab_label",
       "{total, plural, =0 {nenhuma guia} one {guia 1 de 1: {name}} other "
       & "{guia {current, number} de {total, number}: {name}}}");
@@ -450,19 +450,19 @@ begin
    P ("label.models.perceptual_difference_label.ciede2000_delta_d_large_perceptual_difference",
       "CIEDE2000 delta {v1}, diferença perceptual grande");
    P ("label.models.perceptual_difference_label.oklab_delta_d_noticeable_perceptual_difference",
-      "OKLab delta {v1}, diferença perceptual perceptível");
+      "OKLab delta {v1}, diferença perceptual visível");
    P ("label.contrast.color_vision_deficiency_label.protanopia_high_confusion_risk_delta_n",
       "protanopia: risco de confusão alto, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.tritanopia_high_confusion_risk_delta_n",
       "tritanopia: risco de confusão alto, delta {v1, number}");
    P ("label.models.perceptual_difference_label.cie94_delta_d_noticeable_perceptual_difference",
-      "CIE94 delta {v1}, diferença perceptual perceptível");
+      "CIE94 delta {v1}, diferença perceptual visível");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_d_noticeable_perceptual_difference",
-      "CIE94 têxtil delta {v1}, diferença perceptual perceptível");
+      "CIE94 têxtil delta {v1}, diferença perceptual visível");
    P ("label.models.perceptual_difference_label.ciede2000_delta_d_noticeable_perceptual_difference",
-      "CIEDE2000 delta {v1}, diferença perceptual perceptível");
+      "CIEDE2000 delta {v1}, diferença perceptual visível");
    P ("label.models.perceptual_difference_label.oklab_delta_n_noticeable_perceptual_difference",
-      "OKLab delta {v1, number}, diferença perceptual perceptível");
+      "OKLab delta {v1, number}, diferença perceptual visível");
    P ("label.contrast.color_vision_deficiency_label.tritanopia_low_confusion_risk_delta_n",
       "tritanopia: risco de confusão baixo, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.deuteranopia_low_confusion_risk_delta_n",
@@ -484,13 +484,13 @@ begin
    P ("label.models.perceptual_difference_label.ciede2000_delta_n_large_perceptual_difference",
       "CIEDE2000 delta {v1, number}, diferença perceptual grande");
    P ("label.models.perceptual_difference_label.cie76_delta_d_noticeable_perceptual_difference",
-      "CIE76 delta {v1}, diferença perceptual perceptível");
+      "CIE76 delta {v1}, diferença perceptual visível");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_d_subtle_perceptual_difference",
       "CIE94 têxtil delta {v1}, diferença perceptual sutil");
    P ("label.models.perceptual_difference_label.ciede2000_delta_n_noticeable_perceptual_difference",
-      "CIEDE2000 delta {v1, number}, diferença perceptual perceptível");
+      "CIEDE2000 delta {v1, number}, diferença perceptual visível");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_n_noticeable_perceptual_difference",
-      "CIE94 têxtil delta {v1, number}, diferença perceptual perceptível");
+      "CIE94 têxtil delta {v1, number}, diferença perceptual visível");
    P ("label.models.perceptual_difference_label.cie76_delta_d_barely_perceptible",
       "CIE76 delta {v1}, pouco perceptível");
    P ("label.models.perceptual_difference_label.cie94_delta_d_imperceptible", "CIE94 delta {v1}, imperceptível");
@@ -659,20 +659,20 @@ begin
    P ("label.contrast.contrast_label.d_n_normal_text_contrast", "{v1}:{v2, number}, contraste para texto normal");
    P ("label.contrast.readability_label.readable_for_normal_text", "legível para texto normal");
    P ("label.contrast.apca_contrast_label.lc_n_body_text_light_text_on_dark_background",
-      "Lc {v1, number}, texto do corpo, texto claro sobre fundo escuro");
+      "Lc {v1, number}, corpo de texto, texto claro sobre fundo escuro");
    P ("label.contrast.color_accessibility_summary.d_n_normal_text_contrast",
       "{v1}:{v2, number}, contraste para texto normal");
    P ("label.contrast.color_accessibility_summary.lc_n_body_text_light_text_on_dark_background",
-      "Lc {v1, number}, texto do corpo, texto claro sobre fundo escuro");
+      "Lc {v1, number}, corpo de texto, texto claro sobre fundo escuro");
    P ("label.contrast.apca_contrast_label.lc_n_large_text_dark_text_on_light_background",
       "Lc {v1, number}, texto grande, texto escuro sobre fundo claro");
    P ("label.contrast.color_accessibility_summary.lc_n_large_text_dark_text_on_light_background",
       "Lc {v1, number}, texto grande, texto escuro sobre fundo claro");
    P ("label.models.color_difference_label.n_subtle_difference", "{v1, number}%, diferença sutil");
    P ("label.contrast.apca_contrast_label.lc_n_body_text_dark_text_on_light_background",
-      "Lc {v1, number}, texto do corpo, texto escuro sobre fundo claro");
+      "Lc {v1, number}, corpo de texto, texto escuro sobre fundo claro");
    P ("label.contrast.color_accessibility_summary.lc_n_body_text_dark_text_on_light_background",
-      "Lc {v1, number}, texto do corpo, texto escuro sobre fundo claro");
+      "Lc {v1, number}, corpo de texto, texto escuro sobre fundo claro");
    P ("label.contrast.color_accessibility_summary.tritanopia_low_confusion_risk",
       "tritanopia: risco de confusão baixo");
    P ("label.models.color_difference_label.n_noticeable_difference", "{v1, number}%, diferença perceptível");

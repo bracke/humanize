@@ -18,6 +18,56 @@ begin
       & "pozorování} many {{outliers, number} odlehlé hodnoty z {total, "
       & "number} pozorování} other {{outliers, number} odlehlých hodnot z "
       & "{total, number} pozorování}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {žádná pozorování} "
+      & "sample_too_small_shape {vzorek je příliš malý pro popis tvaru, "
+      & "{count, number} pozorování} flat_shape {ploché rozdělení na "
+      & "{median}} outlier_heavy_shape {rozdělení s mnoha odlehlými "
+      & "hodnotami kolem {median}} volatile_shape {proměnlivé rozdělení "
+      & "kolem {median}} clustered_shape {shlukované rozdělení kolem "
+      & "{median}} wide_spread_shape {široce rozptýlené rozdělení} "
+      & "wide_spread_range {široce rozptýlené rozdělení od {minimum} do "
+      & "{maximum}} right_skewed_shape {rozdělení zešikmené doprava, "
+      & "medián {median}} left_skewed_shape {rozdělení zešikmené doleva, "
+      & "medián {median}} other {převážně vyvážené rozdělení kolem "
+      & "{median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {prázdný e-mail} address {e-mailová adresa} "
+      & "other {e-mail v doméně {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {telefonní číslo} redacted {telefonní číslo "
+      & "skryto} other {telefon končící na {digits}}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {uživatelské jméno} other {uživatelské "
+      & "jméno {shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {symbol kódu} other {symbol kódu {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "metadata adresy: {present, plural, one {1 pole uvedeno} few {{present, "
+      & "number} pole uvedena} many {{present, number} pole uvedeno} other "
+      & "{{present, number} polí uvedeno}}, {missing, plural, one {1 pole "
+      & "chybí} few {{missing, number} pole chybí} many {{missing, number} "
+      & "pole chybí} other {{missing, number} polí chybí}}");
+   P ("label.endpoints.host_label", "{state, select, none {neznámý hostitel} other {{kind} {host}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {neznámý koncový bod} other {koncový bod "
+      & "{scheme}{host}{port} ({kind})}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {prázdná adresa URL} none {URL bez "
+      & "rozpoznaných součástí} other {URL s {count, plural, one {1 "
+      & "součástí} few {{count, number} součástmi} many {{count, number} "
+      & "součásti} other {{count, number} součástmi}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {žádné parametry dotazu} one {1 parametr dotazu} "
+      & "few {{count, number} parametry dotazu} many {{count, number} parametru "
+      & "dotazu} other {{count, number} parametrů dotazu}}");
+   P ("label.endpoints.ip_address_label",
+      "{address}: {kind, select, ipv4_host {veřejná adresa IPv4} ipv6_host "
+      & "{veřejná adresa IPv6} private_network_host {adresa privátní "
+      & "sítě} localhost_host {místní hostitel} other {není adresa IP}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr}: neplatný CIDR} other {{cidr}: "
+      & "{kind}, síťový prefix {prefix}}}");
+   P ("label.resources.utilization_label", "využito {used, number} z {total, number} {unit} ({percent}, {band})");
    P ("label.resources.remaining_label",
       "{state, select, over {{count, number} {unit} nad kapacitu} other "
       & "{zbývá {count, number} z {total, number} {unit}}}");
@@ -33,6 +83,42 @@ begin
       & "number} zásahu} other {{hits, number} zásahů}}, {misses, plural, "
       & "one {{misses, number} minutí} few {{misses, number} minutí} many "
       & "{{misses, number} minutí} other {{misses, number} minutí}}}}");
+   P ("label.resources.saturation_label", "{named, select, no {prostředek} other {{name}}}: {percent}, {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {verze {version}, předběžná verze "
+      & "{prerelease}, sestavení {build}} prerelease {verze {version}, "
+      & "předběžná verze {prerelease}} build {verze {version}, sestavení "
+      & "{build}} other {verze {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {stejná verze} major_upgrade "
+      & "{povýšení hlavní verze} minor_upgrade {povýšení vedlejší "
+      & "verze} patch_upgrade {povýšení opravné verze} prerelease_change "
+      & "{změna předběžné verze} build_metadata_change {změna metadat "
+      & "sestavení} downgrade {snížení verze} other {neznámá změna "
+      & "verze}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {přesně verze {version}} minimum_range "
+      & "{verze {version} nebo novější} maximum_range {verze {version} nebo "
+      & "starší} major_compatible_range {kompatibilní s hlavní verzí "
+      & "{version}} minor_compatible_range {kompatibilní s vedlejší verzí "
+      & "{version}} other {rozsah verzí {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {počáteční vývojové vydání {version}} "
+      & "prerelease {předběžné vydání {version}} major {hlavní vydání "
+      & "{version}} minor {vedlejší vydání {version}} other {opravné "
+      & "vydání {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {značka odkazu} image {značka obrázku} paragraph "
+      & "{značka odstavce} ordered_list {značka číslovaného seznamu} "
+      & "unordered_list {značka nečíslovaného seznamu} list_item {značka "
+      & "položky seznamu} table_header_cell {značka buňky záhlaví tabulky} "
+      & "table_cell {značka buňky tabulky} table_row {značka řádku "
+      & "tabulky} line_break {značka zalomení řádku} thematic_break "
+      & "{značka tematického zlomu} heading_level_n {značka nadpisu úrovně "
+      & "{level, number}} other {značka {name}}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {atribut {name}} event {atribut obsluhy události "
+      & "{name}} other {atribut {name} nastavený na „{value}“}}");
    P ("label.markup.attribute_count_label.total",
       "{count, plural, one {{count, number} atribut} few {{count, number} "
       & "atributy} many {{count, number} atributu} other {{count, number} "
@@ -50,6 +136,13 @@ begin
       & "{{count, number} obslužné rutiny událostí} many {{count, number} "
       & "obslužné rutiny událostí} other {{count, number} obslužných "
       & "rutin událostí}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {textový obsah} html_content {dokument "
+      & "HTML} json_content {dokument JSON} xml_content {dokument XML} "
+      & "image_content {obrázek} audio_content {zvuk} video_content {video} "
+      & "font_content {písmo} archive_content {archiv} binary_content "
+      & "{binární obsah} form_content {odeslání formuláře} other "
+      & "{neznámý obsah}} ({base})");
    P ("label.markup.heading_label", "nadpis úrovně {level, number}");
    P ("label.markup.tag_count_label.total",
       "{count, plural, one {{count, number} značka} few {{count, number} "
@@ -86,6 +179,17 @@ begin
    P ("label.markup.table_navigation_label",
       "{caption}, řádek {row, number} z {rows, number}, sloupec {column, "
       & "number} z {columns, number}");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind}: nenastaveno} hidden_value {{kind}: "
+      & "skryto} masked_value {{kind} {shown}} fingerprint_only {{kind}: otisk "
+      & "končící na {shown}} other {{kind} končící na {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind}: nenastaveno} other {{name} "
+      & "{kind} končící na {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {hlavička pověření {name}: nenastaveno} "
+      & "other {{name} {kind} končící na {shown}}}");
+   P ("label.secrets.fingerprint_label", "otisk {algorithm} končící na {shown}");
    P ("label.secrets.secret_count_label.total",
       "{count, plural, one {{count, number} tajný údaj} few {{count, "
       & "number} tajné údaje} many {{count, number} tajného údaje} other "
@@ -95,6 +199,33 @@ begin
    P ("label.secrets.secret_count_label.fingerprints",
       "{count, plural, one {{count, number} otisk} few {{count, number} "
       & "otisky} many {{count, number} otisku} other {{count, number} otisků}}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label}: nenastaveno} redacted {{label}: "
+      & "skryto} url_redacted {adresa URL skryta} ip_redacted {adresa IP "
+      & "skryta} path_ending {cesta k souboru končící na {shown}} at "
+      & "{{label} na {shown}} audit {{label}, délka {length, number}, "
+      & "končící na {shown}} debug {{label} {shown}} other {{label} "
+      & "končící na {shown}}}");
+   P ("label.schema.field_label",
+      "pole {name}: {state, select, deprecated_field {zastaralé, } "
+      & "unknown_field {neznámé, } read_only_field {jen pro čtení, } "
+      & "write_only_field {jen pro zápis, } computed_field {vypočítané, } "
+      & "other {}}{presence, select, required_field {povinné} optional_field "
+      & "{volitelné} conditional_field {podmíněné} other {přítomnost "
+      & "neznámá}}{nullable, select, non_nullable {, bez null} nullable {, "
+      & "může být null} other {}}, typ {kind, select, string_field "
+      & "{řetězec} integer_field {celé číslo} decimal_field {desetinné "
+      & "číslo} boolean_field {logická hodnota} date_field {datum} "
+      & "date_time_field {datum a čas} object_field {objekt} array_field "
+      & "{pole} enum_field {výčet} binary_field {binární data} null_field "
+      & "{null} any_field {libovolný} other {neznámý}}");
+   P ("label.schema.schema_summary_label.fields",
+      "{count, plural, one {1 pole} few {{count, number} pole} many {{count, "
+      & "number} pole} other {{count, number} polí}}");
+   P ("label.schema.schema_summary_label.required", "povinné: {count, number}");
+   P ("label.schema.schema_summary_label.optional", "volitelné: {count, number}");
+   P ("label.schema.schema_summary_label.deprecated", "zastaralé: {count, number}");
+   P ("label.schema.schema_summary_label.unknown", "neznámé: {count, number}");
    P ("label.schema.type_mismatch_label",
       "pole {field_name}: očekávaný typ {expected, select, string_field "
       & "{řetězec} integer_field {celé číslo} decimal_field {desetinné "
@@ -117,6 +248,14 @@ begin
       & "{{blocking, number} blokující problémy} many {{blocking, number} "
       & "blokujícího problému} other {{blocking, number} blokujících "
       & "problémů}}} only {pouze {base}} other {{base}}}");
+   P ("label.diagnostics.check_run_summary_label.none", "nebyly spuštěny žádné kontroly");
+   P ("label.diagnostics.check_run_summary_label.passed", "prošlo: {count, number}");
+   P ("label.diagnostics.check_run_summary_label.failed", "selhalo: {count, number}");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 varování} few {{count, number} varování} "
+      & "many {{count, number} varování} other {{count, number} varování}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "přeskočeno: {count, number}");
+   P ("label.diagnostics.check_run_summary_label.pending", "čeká: {count, number}");
    P ("label.thresholds.metric_value_label", "{name}: {value}");
    P ("label.thresholds.range_label",
       "{inclusive, select, inclusive_window {cílový rozsah {low} až "
@@ -157,6 +296,14 @@ begin
    P ("label.thresholds.budget_used_label", "využito {used} z {budget}");
    P ("label.workflows.step_label", "krok {current, number} z {total, number}: {name}");
    P ("label.workflows.milestone_label", "dokončené milníky: {current, number} z {total, number}, {name}");
+   P ("label.workflows.workflow_summary_label.total",
+      "{count, plural, one {1 položka} few {{count, number} položky} many "
+      & "{{count, number} položky} other {{count, number} položek}}");
+   P ("label.workflows.workflow_summary_label.completed", "dokončeno: {count, number}");
+   P ("label.workflows.workflow_summary_label.active", "aktivní: {count, number}");
+   P ("label.workflows.workflow_summary_label.blocked", "blokováno: {count, number}");
+   P ("label.workflows.workflow_summary_label.failed", "selhalo: {count, number}");
+   P ("label.workflows.workflow_summary_label.skipped", "přeskočeno: {count, number}");
    P ("label.workflows.workflow_progress_label",
       "{state, select, none {žádné položky pracovního postupu} half "
       & "{pracovní postup v polovině} other {dokončeno {completed, number} z "
@@ -169,6 +316,14 @@ begin
    P ("label.changes.change_set_label.removed", "odebráno {count, number}");
    P ("label.changes.change_set_label.modified", "změněno {count, number}");
    P ("label.changes.change_set_label.unchanged", "beze změny {count, number}");
+   P ("label.changes.change_summary_label.total",
+      "{count, plural, one {1 položka} few {{count, number} položky} many "
+      & "{{count, number} položky} other {{count, number} položek}}");
+   P ("label.changes.change_summary_label.added", "přidáno {count, number}");
+   P ("label.changes.change_summary_label.removed", "odebráno {count, number}");
+   P ("label.changes.change_summary_label.modified", "změněno {count, number}");
+   P ("label.changes.change_summary_label.renamed", "přejmenováno {count, number}");
+   P ("label.changes.change_summary_label.unchanged", "beze změny {count, number}");
    P ("label.changes.sync_change_label.none", "žádné změny synchronizace");
    P ("label.changes.sync_change_label.uploaded", "nahráno {count, number}");
    P ("label.changes.sync_change_label.downloaded", "staženo {count, number}");
@@ -193,9 +348,9 @@ begin
       & "{{field_name}: zvýšeno z {old_value} na {new_value}} other "
       & "{{field_name}: sníženo z {old_value} na {new_value}}}");
    P ("label.tables.selection_label",
-      "{state, select, no_rows {žádné řádky k výběru} none {nevybrány "
-      & "žádné řádky} all {{total, plural, =1 {vybrán 1 řádek} other "
-      & "{vybrány všechny řádky ({total, number})}}} other {vybrané "
+      "{state, select, no_rows {žádné řádky k výběru} none {nejsou "
+      & "vybrány žádné řádky} all {{total, plural, =1 {vybrán 1 řádek} "
+      & "other {vybrány všechny řádky ({total, number})}}} other {vybrané "
       & "řádky: {selected, number} z {total, number}}}");
    P ("label.tables.page_label",
       "{page, plural, =0 {žádné stránky} other {{pages, plural, =0 "
@@ -263,9 +418,95 @@ begin
       "{mode, select, comparison_compact {{name}: změněno {changed, "
       & "number}/{total, number}} other {{name}: změněno {changed, number}, "
       & "beze změny {unchanged, number}, celkem {total, number}}}");
+   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{brightness} {chroma} {temperature} {base, select, pink {{hue}} other "
+      & "{{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
-   P ("label.groups", "{first}; {second}");
-   P ("label.parts", "{first}, {second}");
+   P ("label.markup.accessible_control_label.control",
+      "{role, select, button_control {tlačítko} link_control {odkaz} "
+      & "tab_control {karta} menu_item_control {položka nabídky} "
+      & "checkbox_control {zaškrtávací políčko} radio_control "
+      & "{přepínač} text_field_control {textové pole} progress_control "
+      & "{ukazatel průběhu} table_cell_control {buňka tabulky} "
+      & "region_control {oblast} other {ovládací prvek}} {named, select, no "
+      & "{bez názvu} other {{name}}}");
+   P ("label.markup.accessible_control_label.selected", "vybráno");
+   P ("label.markup.accessible_control_label.expanded", "rozbaleno");
+   P ("label.markup.accessible_control_label.current", "aktuální");
+   P ("label.markup.accessible_control_label.disabled", "nedostupné");
+   P ("label.markup.accessible_control_label.required", "povinné");
+   P ("label.markup.accessible_control_label.invalid", "neplatné");
+   P ("label.markup.accessible_control_label.count",
+      "{count, plural, one {1 položka} few {{count, number} položky} many "
+      & "{{count, number} položky} other {{count, number} položek}}");
+   P ("label.markup.accessible_control_label.position", "položka {position} z {total}");
+   P ("label.markup.accessible_control_label.issues",
+      "{count, plural, one {1 problém} few {{count, number} problémy} many "
+      & "{{count, number} problému} other {{count, number} problémů}}");
+   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
+   P ("label.endpoints.url_component.scheme", "schéma");
+   P ("label.endpoints.url_component.host", "hostitel");
+   P ("label.endpoints.url_component.path", "cesta");
+   P ("label.endpoints.url_component.query", "dotaz");
+   P ("label.endpoints.url_component.fragment", "fragment");
+   P ("label.names.hue_noun.red", "červená");
+   P ("label.names.hue_noun.orange", "oranžová");
+   P ("label.names.hue_noun.yellow", "žlutá");
+   P ("label.names.hue_noun.green", "zelená");
+   P ("label.names.hue_noun.cyan", "azurová");
+   P ("label.names.hue_noun.blue", "modrá");
+   P ("label.names.hue_noun.purple", "fialová");
+   P ("label.names.hue_noun.magenta", "purpurová");
+   P ("label.names.hue_noun.neutral", "neutrální");
+   P ("label.names.hue_noun.pink", "růžová");
+   P ("label.names.hue_gender.red", "feminine");
+   P ("label.names.hue_gender.orange", "feminine");
+   P ("label.names.hue_gender.yellow", "feminine");
+   P ("label.names.hue_gender.green", "feminine");
+   P ("label.names.hue_gender.cyan", "feminine");
+   P ("label.names.hue_gender.blue", "feminine");
+   P ("label.names.hue_gender.purple", "feminine");
+   P ("label.names.hue_gender.magenta", "feminine");
+   P ("label.names.hue_gender.neutral", "feminine");
+   P ("label.names.hue_gender.pink", "feminine");
+   P ("label.names.agree.very_dark",
+      "{gender, select, masculine {velmi tmavý} neuter {velmi tmavé} other "
+      & "{velmi tmavá}}");
+   P ("label.names.agree.dark", "{gender, select, masculine {tmavý} neuter {tmavé} other {tmavá}}");
+   P ("label.names.agree.medium_brightness",
+      "{gender, select, masculine {středně světlý} neuter {středně "
+      & "světlé} other {středně světlá}}");
+   P ("label.names.agree.light",
+      "{gender, select, masculine {světlý} neuter {světlé} other "
+      & "{světlá}}");
+   P ("label.names.agree.very_light",
+      "{gender, select, masculine {velmi světlý} neuter {velmi světlé} "
+      & "other {velmi světlá}}");
+   P ("label.names.agree.desaturated",
+      "{gender, select, masculine {nenasycený} neuter {nenasycené} other "
+      & "{nenasycená}}");
+   P ("label.names.agree.muted",
+      "{gender, select, masculine {tlumený} neuter {tlumené} other "
+      & "{tlumená}}");
+   P ("label.names.agree.neutral", "{gender, select, other {neutrální}}");
+   P ("label.names.agree.saturated", "{gender, select, masculine {sytý} neuter {syté} other {sytá}}");
+   P ("label.names.agree.vivid", "{gender, select, masculine {živý} neuter {živé} other {živá}}");
+   P ("label.names.agree.grayish",
+      "{gender, select, masculine {našedlý} neuter {našedlé} other "
+      & "{našedlá}}");
+   P ("label.names.agree.soft", "{gender, select, masculine {jemný} neuter {jemné} other {jemná}}");
+   P ("label.names.agree.moderate_chroma", "{gender, select, other {střední pestrost}}");
+   P ("label.names.agree.high_chroma", "{gender, select, other {vysoká pestrost}}");
+   P ("label.names.agree.pastel",
+      "{gender, select, masculine {pastelový} neuter {pastelové} other "
+      & "{pastelová}}");
+   P ("label.names.agree.warm", "{gender, select, masculine {teplý} neuter {teplé} other {teplá}}");
+   P ("label.names.agree.cool",
+      "{gender, select, masculine {studený} neuter {studené} other "
+      & "{studená}}");
+   P ("label.names.agree.neutral_temperature", "{gender, select, other {neutrální teplota}}");
+   P ("label.names.agree.balanced_temperature", "{gender, select, other {vyvážená teplota}}");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
       "aktuální barva popředí splňuje kontrast pro velký text při "
       & "{v1}:{v2, number}");
@@ -456,245 +697,4 @@ begin
    P ("label.names.hue_family_label.green", "zelená");
    P ("label.names.temperature_label.balanced_temperature", "vyvážená teplota");
    P ("label.names.hue_family_label.cyan", "azurová");
-   P ("label.names.chroma_label.soft", "jemná");
-   P ("label.models.brightness_label.dark", "tmavá");
-   P ("label.names.nearest_color_name.green", "zelená");
-   P ("label.names.nearest_color_name.teal", "modrozelená");
-   P ("label.models.brightness_label.medium_brightness", "střední jas");
-   P ("label.names.nearest_color_name.aqua", "azurová");
-   P ("label.names.nearest_color_name.lime", "limetková");
-   P ("label.models.brightness_label.light", "světlá");
-   P ("label.names.hue_family_label.red", "červená");
-   P ("label.names.temperature_label.warm", "teplá");
-   P ("label.names.hue_family_label.magenta", "purpurová");
-   P ("label.names.hue_family_label.purple", "fialová");
-   P ("label.names.hue_family_label.yellow", "žlutá");
-   P ("label.names.saturation_label.muted", "tlumená");
-   P ("label.names.nearest_color_name.rebeccapurple", "rebeccapurple");
-   P ("label.names.saturation_label.saturated", "sytá");
-   P ("label.names.nearest_color_name.maroon", "kaštanová");
-   P ("label.names.nearest_color_name.purple", "fialová");
-   P ("label.names.hue_family_label.orange", "oranžová");
-   P ("label.names.nearest_color_name.olive", "olivová");
-   P ("label.names.nearest_color_name.gray", "šedá");
-   P ("label.names.saturation_label.desaturated", "nenasycená");
-   P ("label.names.nearest_color_name.silver", "stříbrná");
-   P ("label.names.chroma_label.pastel", "pastelová");
-   P ("label.models.brightness_label.very_light", "velmi světlá");
-   P ("label.names.nearest_color_name.fuchsia", "fuchsiová");
-   P ("label.names.nearest_color_name.yellow", "žlutá");
-   P ("label.names.nearest_color_name.red", "červená");
-   P ("label.names.nearest_color_name.orange", "oranžová");
-   P ("label.names.nearest_color_name.white", "bílá");
-   P ("label.contrast.contrast_label.d_n_low_contrast", "{v1}:{v2, number}, nízký kontrast");
-   P ("label.contrast.readability_label.low_readability", "nízká čitelnost");
-   P ("label.contrast.apca_contrast_label.lc_n_insufficient_dark_text_on_light_background",
-      "Lc {v1, number}, nedostatečný, tmavý text na světlém pozadí");
-   P ("label.contrast.color_accessibility_summary.d_n_low_contrast", "{v1}:{v2, number}, nízký kontrast");
-   P ("label.contrast.color_accessibility_summary.lc_n_insufficient_dark_text_on_light_background",
-      "Lc {v1, number}, nedostatečný, tmavý text na světlém pozadí");
-   P ("label.contrast.color_accessibility_summary.achromatopsia_moderate_confusion_risk",
-      "achromatopsie: střední riziko záměny");
-   P ("label.models.color_difference_label.n_strong_difference", "{v1, number} % – výrazný rozdíl");
-   P ("label.contrast.alpha_contrast_label.d_n_low_contrast_after_alpha_compositing",
-      "{v1}:{v2, number}, nízký kontrast po alfa kompozici");
-   P ("label.contrast.apca_contrast_label.lc_n_insufficient_light_text_on_dark_background",
-      "Lc {v1, number}, nedostatečný, světlý text na tmavém pozadí");
-   P ("label.contrast.color_accessibility_summary.lc_n_insufficient_light_text_on_dark_background",
-      "Lc {v1, number}, nedostatečný, světlý text na tmavém pozadí");
-   P ("label.contrast.color_accessibility_summary.deuteranopia_high_confusion_risk",
-      "deuteranopie: vysoké riziko záměny");
-   P ("label.contrast.contrast_label.d_n_large_text_contrast", "{v1}:{v2, number}, kontrast pro velký text");
-   P ("label.contrast.readability_label.readable_for_large_text_only", "čitelné jen pro velký text");
-   P ("label.contrast.apca_contrast_label.lc_n_large_text_light_text_on_dark_background",
-      "Lc {v1, number}, velký text, světlý text na tmavém pozadí");
-   P ("label.contrast.color_accessibility_summary.d_n_large_text_contrast",
-      "{v1}:{v2, number}, kontrast pro velký text");
-   P ("label.contrast.color_accessibility_summary.lc_n_large_text_light_text_on_dark_background",
-      "Lc {v1, number}, velký text, světlý text na tmavém pozadí");
-   P ("label.contrast.color_accessibility_summary.tritanopia_high_confusion_risk",
-      "tritanopie: vysoké riziko záměny");
-   P ("label.contrast.alpha_contrast_label.d_n_large_text_contrast_after_alpha_compositing",
-      "{v1}:{v2, number}, kontrast pro velký text po alfa kompozici");
-   P ("label.contrast.apca_contrast_label.lc_n_non_text_only_light_text_on_dark_background",
-      "Lc {v1, number}, pouze netextové prvky, světlý text na tmavém "
-      & "pozadí");
-   P ("label.contrast.color_accessibility_summary.lc_n_non_text_only_light_text_on_dark_background",
-      "Lc {v1, number}, pouze netextové prvky, světlý text na tmavém "
-      & "pozadí");
-   P ("label.contrast.color_accessibility_summary.tritanopia_moderate_confusion_risk",
-      "tritanopie: střední riziko záměny");
-   P ("label.contrast.contrast_label.n_n_low_contrast", "{v1, number}:{v2, number}, nízký kontrast");
-   P ("label.contrast.color_accessibility_summary.n_n_low_contrast", "{v1, number}:{v2, number}, nízký kontrast");
-   P ("label.contrast.apca_contrast_label.lc_n_non_text_only_dark_text_on_light_background",
-      "Lc {v1, number}, pouze netextové prvky, tmavý text na světlém "
-      & "pozadí");
-   P ("label.contrast.color_accessibility_summary.lc_n_non_text_only_dark_text_on_light_background",
-      "Lc {v1, number}, pouze netextové prvky, tmavý text na světlém "
-      & "pozadí");
-   P ("label.contrast.color_accessibility_summary.deuteranopia_moderate_confusion_risk",
-      "deuteranopie: střední riziko záměny");
-   P ("label.contrast.color_accessibility_summary.protanopia_high_confusion_risk",
-      "protanopie: vysoké riziko záměny");
-   P ("label.models.color_difference_label.n_very_different", "{v1, number} % – velmi odlišné");
-   P ("label.contrast.color_accessibility_summary.achromatopsia_high_confusion_risk",
-      "achromatopsie: vysoké riziko záměny");
-   P ("label.contrast.color_accessibility_summary.achromatopsia_low_confusion_risk",
-      "achromatopsie: nízké riziko záměny");
-   P ("label.contrast.alpha_contrast_label.n_n_low_contrast_after_alpha_compositing",
-      "{v1, number}:{v2, number}, nízký kontrast po alfa kompozici");
-   P ("label.contrast.contrast_label.d_n_normal_text_contrast", "{v1}:{v2, number}, kontrast pro běžný text");
-   P ("label.contrast.readability_label.readable_for_normal_text", "čitelné pro běžný text");
-   P ("label.contrast.apca_contrast_label.lc_n_body_text_light_text_on_dark_background",
-      "Lc {v1, number}, základní text, světlý text na tmavém pozadí");
-   P ("label.contrast.color_accessibility_summary.d_n_normal_text_contrast",
-      "{v1}:{v2, number}, kontrast pro běžný text");
-   P ("label.contrast.color_accessibility_summary.lc_n_body_text_light_text_on_dark_background",
-      "Lc {v1, number}, základní text, světlý text na tmavém pozadí");
-   P ("label.contrast.apca_contrast_label.lc_n_large_text_dark_text_on_light_background",
-      "Lc {v1, number}, velký text, tmavý text na světlém pozadí");
-   P ("label.contrast.color_accessibility_summary.lc_n_large_text_dark_text_on_light_background",
-      "Lc {v1, number}, velký text, tmavý text na světlém pozadí");
-   P ("label.models.color_difference_label.n_subtle_difference", "{v1, number} % – jemný rozdíl");
-   P ("label.contrast.apca_contrast_label.lc_n_body_text_dark_text_on_light_background",
-      "Lc {v1, number}, základní text, tmavý text na světlém pozadí");
-   P ("label.contrast.color_accessibility_summary.lc_n_body_text_dark_text_on_light_background",
-      "Lc {v1, number}, základní text, tmavý text na světlém pozadí");
-   P ("label.contrast.color_accessibility_summary.tritanopia_low_confusion_risk",
-      "tritanopie: nízké riziko záměny");
-   P ("label.models.color_difference_label.n_noticeable_difference", "{v1, number} % – znatelný rozdíl");
-   P ("label.contrast.contrast_label.n_n_large_text_contrast", "{v1, number}:{v2, number}, kontrast pro velký text");
-   P ("label.contrast.color_accessibility_summary.n_n_large_text_contrast",
-      "{v1, number}:{v2, number}, kontrast pro velký text");
-   P ("label.contrast.color_accessibility_summary.deuteranopia_low_confusion_risk",
-      "deuteranopie: nízké riziko záměny");
-   P ("label.contrast.contrast_label.d_n_enhanced_contrast", "{v1}:{v2, number}, vylepšený kontrast");
-   P ("label.contrast.readability_label.readable_for_enhanced_text", "čitelné pro text s vylepšeným kontrastem");
-   P ("label.contrast.color_accessibility_summary.d_n_enhanced_contrast", "{v1}:{v2, number}, vylepšený kontrast");
-   P ("label.models.perceptual_difference_label.oklab_delta_n_subtle_perceptual_difference",
-      "OKLab delta {v1, number}, jemný vjemový rozdíl");
-   P ("label.contrast.color_accessibility_summary.tritanopia_distinct", "tritanopie: barvy rozlišitelné");
-   P ("label.contrast.alpha_contrast_label.n_n_normal_text_contrast_after_alpha_compositing",
-      "{v1, number}:{v2, number}, kontrast pro běžný text po alfa "
-      & "kompozici");
-   P ("label.contrast.color_accessibility_summary.protanopia_moderate_confusion_risk",
-      "protanopie: střední riziko záměny");
-   P ("label.contrast.alpha_contrast_label.d_n_normal_text_contrast_after_alpha_compositing",
-      "{v1}:{v2, number}, kontrast pro běžný text po alfa kompozici");
-   P ("label.contrast.alpha_contrast_label.n_n_large_text_contrast_after_alpha_compositing",
-      "{v1, number}:{v2, number}, kontrast pro velký text po alfa kompozici");
-   P ("label.contrast.apca_contrast_label.lc_n_excellent_dark_text_on_light_background",
-      "Lc {v1, number}, výborný, tmavý text na světlém pozadí");
-   P ("label.contrast.color_accessibility_summary.lc_n_excellent_dark_text_on_light_background",
-      "Lc {v1, number}, výborný, tmavý text na světlém pozadí");
-   P ("label.contrast.contrast_label.n_n_normal_text_contrast",
-      "{v1, number}:{v2, number}, kontrast pro běžný text");
-   P ("label.contrast.color_accessibility_summary.n_n_normal_text_contrast",
-      "{v1, number}:{v2, number}, kontrast pro běžný text");
-   P ("label.contrast.contrast_label.n_n_enhanced_contrast", "{v1, number}:{v2, number}, vylepšený kontrast");
-   P ("label.contrast.apca_contrast_label.lc_n_excellent_light_text_on_dark_background",
-      "Lc {v1, number}, výborný, světlý text na tmavém pozadí");
-   P ("label.contrast.color_accessibility_summary.n_n_enhanced_contrast",
-      "{v1, number}:{v2, number}, vylepšený kontrast");
-   P ("label.contrast.color_accessibility_summary.lc_n_excellent_light_text_on_dark_background",
-      "Lc {v1, number}, výborný, světlý text na tmavém pozadí");
-   P ("label.contrast.color_accessibility_summary.deuteranopia_distinct", "deuteranopie: barvy rozlišitelné");
-   P ("label.contrast.alpha_contrast_label.d_n_enhanced_contrast_after_alpha_compositing",
-      "{v1}:{v2, number}, vylepšený kontrast po alfa kompozici");
-   P ("label.models.perceptual_difference_label.oklab_delta_n_barely_perceptible",
-      "OKLab delta {v1, number}, sotva postřehnutelný");
-   P ("label.models.color_difference_label.n_nearly_identical", "{v1, number} % – téměř totožné");
-   P ("label.contrast.color_accessibility_summary.protanopia_low_confusion_risk",
-      "protanopie: nízké riziko záměny");
-   P ("label.contrast.color_accessibility_summary.achromatopsia_distinct", "achromatopsie: barvy rozlišitelné");
-   P ("label.palettes.palette_summary.n_colors",
-      "{v1, plural, one {{v1, number} barva} few {{v1, number} barvy} many "
-      & "{{v1, number} barvy} other {{v1, number} barev}}");
-   P ("label.palettes.palette_summary.mostly_gray", "převážně šedá");
-   P ("label.palettes.palette_summary.moderate_contrast_spread", "střední rozptyl kontrastu");
-   P ("label.palettes.palette_roles.background_c_text_c_accent_c", "pozadí {v1}, text {v2}, akcent {v3}");
-   P ("label.palettes.palette_harmony_label.triadic_palette", "triadická paleta");
-   P ("label.palettes.palette_contrast_suggestion.best_contrast_c_on_c_at_d_n",
-      "nejlepší kontrast: {v1} na {v2} při {v3}:{v4, number}");
-   P ("label.palettes.palette_accessibility_label.n_of_n_pairs_pass_normal_text_contrast",
-      "{v1, number} z {v2, plural, one {1 páru} other {{v2, number} párů}} "
-      & "splňuje kontrast pro běžný text");
-   P ("label.palettes.palette_contrast_matrix_label.n_enhanced_n_normal_n_large_only_n_fail_out_of_n_pairs",
-      "vylepšený {v1, number}, běžný {v2, number}, jen velký text {v3, "
-      & "number}, nevyhovuje {v4, number} (z {v5, plural, one {1 páru} other "
-      & "{{v5, number} párů}})");
-   P ("label.palettes.palette_metadata_label.n_colors_n_pairs_n_enhanced_n_normal_n_large_only_n_fail",
-      "{v1, plural, one {{v1, number} barva} few {{v1, number} barvy} many "
-      & "{{v1, number} barvy} other {{v1, number} barev}}, {v2, plural, one "
-      & "{{v2, number} pár} few {{v2, number} páry} many {{v2, number} páru} "
-      & "other {{v2, number} párů}}: vylepšený {v3, number}, běžný {v4, "
-      & "number}, jen velký text {v5, number}, nevyhovuje {v6, number}");
-   P ("label.palettes.palette_mood_label.balanced", "vyvážená");
-   P ("label.palettes.palette_mood_label.vibrant", "živá");
-   P ("label.palettes.palette_mood_label.warm_mood", "teplá nálada");
-   P ("label.palettes.palette_summary.mostly_blue", "převážně modrá");
-   P ("label.palettes.palette_summary.low_contrast_spread", "nízký rozptyl kontrastu");
-   P ("label.palettes.palette_harmony_label.single_accent_palette", "paleta s jedním akcentem");
-   P ("label.palettes.palette_mood_label.dark", "tmavá");
-   P ("label.palettes.palette_mood_label.cool_mood", "chladná nálada");
-   P ("label.palettes.palette_summary.mostly_rebeccapurple", "převážně rebeccapurple");
-   P ("label.palettes.palette_accessibility_label.no_accessible_text_pairs", "žádné přístupné textové páry");
-   P ("label.palettes.palette_mood_label.subtle", "jemná");
-   P ("label.palettes.palette_summary.high_contrast_spread", "vysoký rozptyl kontrastu");
-   P ("label.palettes.palette_contrast_suggestion.best_contrast_c_on_c_at_n_n",
-      "nejlepší kontrast: {v1} na {v2} při {v3, number}:{v4, number}");
-   P ("label.palettes.palette_mood_label.neutral_mood", "neutrální nálada");
-   P ("label.palettes.palette_summary.mostly_purple", "převážně fialová");
-   P ("label.palettes.palette_harmony_label.complementary_palette", "komplementární paleta");
-   P ("label.palettes.palette_summary.mostly_green", "převážně zelená");
-   P ("label.palettes.palette_mood_label.moderate", "umírněná");
-   P ("label.palettes.palette_summary.mostly_silver", "převážně stříbrná");
-   P ("label.palettes.palette_harmony_label.varied_palette", "různorodá paleta");
-   P ("label.palettes.palette_summary.mostly_olive", "převážně olivová");
-   P ("label.palettes.palette_harmony_label.analogous_palette", "analogická paleta");
-   P ("label.palettes.palette_accessibility_label.n_of_n_pairs_pass_large_text_only",
-      "{v1, number} z {v2, plural, one {1 páru} other {{v2, number} párů}} "
-      & "splňuje kontrast jen pro velký text");
-   P ("label.palettes.palette_mood_label.light", "světlá");
-   P ("label.palettes.palette_summary.mostly_teal", "převážně modrozelená");
-   P ("label.palettes.palette_summary.mostly_aqua", "převážně azurová");
-   P ("label.palettes.palette_summary.mostly_lime", "převážně limetková");
-   P ("label.palettes.palette_harmony_label.monochrome_palette", "monochromatická paleta");
-   P ("label.palettes.palette_summary.mostly_black", "převážně černá");
-   P ("label.palettes.palette_summary.mostly_yellow", "převážně žlutá");
-   P ("label.palettes.palette_summary.mostly_maroon", "převážně kaštanová");
-   P ("label.palettes.palette_summary.mostly_white", "převážně bílá");
-   P ("label.palettes.palette_summary.mostly_orange", "převážně oranžová");
-   P ("label.palettes.palette_summary.mostly_fuchsia", "převážně fuchsiová");
-   P ("label.palettes.palette_harmony_label.neutral_palette", "neutrální paleta");
-   P ("label.palettes.palette_summary.mostly_red", "převážně červená");
-   P ("label.metrics.word_count_summary.n_words",
-      "{v1, plural, one {{v1, number} slovo} few {{v1, number} slova} many "
-      & "{{v1, number} slova} other {{v1, number} slov}}");
-   P ("label.metrics.sentence_count_summary.n_sentences",
-      "{v1, plural, one {{v1, number} věta} few {{v1, number} věty} many "
-      & "{{v1, number} věty} other {{v1, number} vět}}");
-   P ("label.metrics.paragraph_count_summary.n_paragraphs",
-      "{v1, plural, one {{v1, number} odstavec} few {{v1, number} odstavce} "
-      & "many {{v1, number} odstavce} other {{v1, number} odstavců}}");
-   P ("label.metrics.reading_time.n_minutes_read", "{v1, number} min čtení");
-   P ("label.metrics.speaking_time.n_minutes_spoken", "{v1, number} min mluvení");
-   P ("label.metrics.text_summary_with_options.n_words",
-      "{v1, plural, one {{v1, number} slovo} few {{v1, number} slova} many "
-      & "{{v1, number} slova} other {{v1, number} slov}}");
-   P ("label.metrics.text_summary_with_options.n_sentences",
-      "{v1, plural, one {{v1, number} věta} few {{v1, number} věty} many "
-      & "{{v1, number} věty} other {{v1, number} vět}}");
-   P ("label.metrics.text_summary_with_options.n_paragraphs",
-      "{v1, plural, one {{v1, number} odstavec} few {{v1, number} odstavce} "
-      & "many {{v1, number} odstavce} other {{v1, number} odstavců}}");
-   P ("label.metrics.text_summary_with_options.n_minutes_read", "{v1, number} min čtení");
-   P ("label.metrics.paragraph_count_summary.n_paragraph",
-      "{v1, plural, one {{v1, number} odstavec} few {{v1, number} odstavce} "
-      & "many {{v1, number} odstavce} other {{v1, number} odstavců}}");
-   P ("label.metrics.reading_time.less_than_n_minute_read", "méně než {v1, number} min čtení");
-   P ("label.metrics.speaking_time.less_than_n_minute_spoken", "méně než {v1, number} min mluvení");
-   P ("label.metrics.text_summary_with_options.n_paragraph",
-      "{v1, plural, one {{v1, number} odstavec} few {{v1, number} odstavce} "
-      & "many {{v1, number} odstavce} other {{v1, number} odstavců}}");
 end Labels_3;

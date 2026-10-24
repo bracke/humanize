@@ -21,8 +21,7 @@ begin
    P ("label.search.filter_label",
       "{state, select, active_filter {фільтр {name}: {value}, "
       & "активний} inactive_filter {фільтр {name}: {value}, "
-      & "неактивний} other {фільтр {name}: виключити "
-      & "{value}}}");
+      & "неактивний} other {фільтр {name}: крім {value}}}");
    P ("label.search.filter_state_label",
       "{state, select, active_filter {активний фільтр} "
       & "inactive_filter {неактивний фільтр} other "

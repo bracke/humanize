@@ -120,9 +120,9 @@ begin
    P ("label.badges.tag_label", "lebo {name}");
    P ("label.badges.updated_label", "beji {name} (mafanikio, imesasishwa)");
    P ("label.builds.artifact_state_label",
-      "{state, select, artifact_uploaded {artifact imepakiwa} "
-      & "artifact_missing {artifact haipo} artifact_expired {muda wa artifact "
-      & "umeisha} other {artifact imethibitishwa}}");
+      "{state, select, artifact_uploaded {kifurushi kimepakiwa} "
+      & "artifact_missing {kifurushi hakipo} artifact_expired {muda wa "
+      & "kifurushi umeisha} other {kifurushi kimethibitishwa}}");
    P ("label.builds.benchmark_label", "kipimo {name}: {result_text}");
    P ("label.builds.build_label",
       "{state, select, build_queued {ujenzi {name} uko kwenye foleni} "
@@ -430,7 +430,7 @@ begin
       & "mstari {line, number}}}: {message}");
    P ("label.diagnostics.failed_at_label",
       "imeshindwa katika {path}{line, plural, =0 {} other {, mstari {line, "
-      & "number}{column, plural, =0 {} other {, safu {column, number}}}}}");
+      & "number}{column, plural, =0 {} other {, safu wima {column, number}}}}}");
    P ("label.diagnostics.field_problem_label",
       "{severity, select, info_severity {maelezo} notice_severity {taarifa} "
       & "warning_severity {onyo} error_severity {hitilafu} critical_severity "
@@ -458,7 +458,7 @@ begin
       & "number}}}}}}}}}");
    P ("label.diagnostics.location_label",
       "{path}{line, plural, =0 {} other {, mstari {line, number}{column, "
-      & "plural, =0 {} other {, safu {column, number}}}}}");
+      & "plural, =0 {} other {, safu wima {column, number}}}}}");
    P ("label.diagnostics.parser_diagnostic_explanation_label",
       "{family, select, byte_parser {sintaksia isiyotumika kwa kichanganuzi "
       & "cha baiti {error}{position, plural, =0 {} other { katika nafasi "
@@ -648,8 +648,8 @@ begin
       & "{maudhui ya HTML} json_content {maudhui ya JSON} xml_content {maudhui "
       & "ya XML} image_content {maudhui ya picha} audio_content {maudhui ya "
       & "sauti} video_content {maudhui ya video} font_content {maudhui ya "
-      & "fonti} archive_content {maudhui ya kumbukumbu} binary_content {maudhui "
-      & "ya binari} form_content {maudhui ya fomu} other {maudhui "
+      & "fonti} archive_content {maudhui ya faili iliyobanwa} binary_content "
+      & "{maudhui ya binari} form_content {maudhui ya fomu} other {maudhui "
       & "yasiyojulikana}}");
    P ("label.markup.tag_kind_label",
       "{kind, select, document_tag {tagi ya hati} metadata_tag {tagi ya "
@@ -661,7 +661,7 @@ begin
    P ("label.media.media_kind_label",
       "{kind, select, image_media {picha} video_media {video} audio_media "
       & "{sauti} pdf_document {hati ya PDF} text_document {hati ya maandishi} "
-      & "archive_media {kumbukumbu} other {midia}}");
+      & "archive_media {faili iliyobanwa} other {midia}}");
    P ("label.media.media_state_label",
       "{state, select, ready_media {iko tayari} processing_media "
       & "{inachakatwa} transcoding_media {inabadilishwa umbizo} "
@@ -670,8 +670,8 @@ begin
    P ("label.media.media_summary",
       "{name} ({kind, select, image_media {picha} video_media {video} "
       & "audio_media {sauti} pdf_document {hati ya PDF} text_document {hati ya "
-      & "maandishi} archive_media {kumbukumbu} other {midia}}): {state, select, "
-      & "ready_media {iko tayari} processing_media {inachakatwa} "
+      & "maandishi} archive_media {faili iliyobanwa} other {midia}}): {state, "
+      & "select, ready_media {iko tayari} processing_media {inachakatwa} "
       & "transcoding_media {inabadilishwa umbizo} thumbnail_missing {kijipicha "
       & "hakipatikani} metadata_missing {metadata haipo} locked_document {hati "
       & "imefungwa} other {haipatikani}}");

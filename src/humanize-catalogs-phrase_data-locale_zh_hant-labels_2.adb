@@ -283,7 +283,7 @@ begin
    P ("label.tasks.backlog_label",
       "{count, plural, =0 {待辦清單為空} other {待辦清單：{count, "
       & "number}項工作}}");
-   P ("label.tasks.blocker_label", "被{name}封鎖");
+   P ("label.tasks.blocker_label", "受{name}阻擋");
    P ("label.tasks.complete_action_label",
       "{count, plural, =1 {完成工作} other {完成{count, "
       & "number}項工作}}");
@@ -304,7 +304,7 @@ begin
    P ("label.tasks.subtask_label", "{name}：{count, number}項子工作");
    P ("label.tasks.task_count_label", "{count, plural, =0 {沒有工作} other {{count, number}項工作}}");
    P ("label.tasks.task_label",
-      "{name}：{state, select, open_task {未開始的工作} "
+      "{name}：{state, select, open_task {待處理的工作} "
       & "in_progress_task {進行中的工作} blocked_task {受阻的工作} "
       & "done_task {已完成的工作} canceled_task {已取消的工作} "
       & "deferred_task {已延後的工作} other "
@@ -316,7 +316,7 @@ begin
       & "{低優先順序} medium_priority {中優先順序} high_priority "
       & "{高優先順序} other {緊急優先順序}}");
    P ("label.tasks.task_state_label",
-      "{state, select, open_task {未開始的工作} in_progress_task "
+      "{state, select, open_task {待處理的工作} in_progress_task "
       & "{進行中的工作} blocked_task {受阻的工作} done_task "
       & "{已完成的工作} canceled_task {已取消的工作} deferred_task "
       & "{已延後的工作} other {已逾期的工作}}");
@@ -325,8 +325,8 @@ begin
       "{state, select, below_range {低於預期範圍} within_range "
       & "{在預期範圍內} above_range {高於預期範圍} below_target "
       & "{低於目標} at_target {達到目標} above_target {高於目標} "
-      & "near_limit {接近限制} warning_level {警告閾值} critical_level "
-      & "{嚴重閾值} breached {已超出閾值} other {閾值狀態不明}}");
+      & "near_limit {接近限制} warning_level {警告門檻} critical_level "
+      & "{嚴重門檻} breached {已超出門檻} other {門檻狀態不明}}");
    P ("label.versions.commit_distance_label",
       "{behind, plural, =0 {{ahead, plural, =0 {已是最新} other "
       & "{領先{ahead, number}個提交}}} other {{ahead, plural, =0 "
@@ -436,9 +436,9 @@ begin
       & "binary_field {二進位} null_field {null} any_field {任意值} other "
       & "{不明}}");
    P ("label.diagnostics.issue_summary_label",
-      "{state, select, blocking_only {{blocking, number}個阻礙問題} "
-      & "blocking {{base}，{blocking, number}個阻礙問題} only {僅{base}} "
-      & "other {{base}}}");
+      "{state, select, blocking_only {{blocking, number}個阻斷性問題} "
+      & "blocking {{base}，{blocking, number}個阻斷性問題} only "
+      & "{僅{base}} other {{base}}}");
    P ("label.thresholds.metric_value_label", "{name} {value}");
    P ("label.thresholds.range_label",
       "{inclusive, select, inclusive_window {目標範圍{low}至{high}} "

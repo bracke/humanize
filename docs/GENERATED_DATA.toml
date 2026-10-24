@@ -142,8 +142,8 @@ source = "Humanize spellout tables"
 coverage = "locale spellout words"
 currentness = "reviewed with release verification"
 marker = "Provenance: generated from Humanize spellout tables"
-line_count = 387
-sha256 = "640ffa1c54ca0c05cabb5447fb1225c7c6ef255abaf54ff7bafea7f17568fbb3"
+line_count = 389
+sha256 = "71e3bcf4427fe649729753eea06c6e421b4bef39baa2bc9473a5934fa1e1f6c2"
 
 [[artifact]]
 path = "src/humanize-numbers-spellout_data-small_locale_word.adb"
@@ -263,5 +263,5 @@ source = "docs/PHRASE_TEMPLATES.md key list"
 coverage = "every phrase key's numeric, select and text arguments"
 currentness = "regenerated with the phrase catalogs"
 marker = "Provenance: generated from docs/PHRASE_TEMPLATES.md"
-line_count = 1754
-sha256 = "960f6c00fbdc5df932102e469e9c16a0e8e32190db97599795adc93a40a01a4a"
+line_count = 1758
+sha256 = "1f9dd3fdc7d0397b8879e847b863b1b88ef66f9a0289c41f4010c258391080e6"

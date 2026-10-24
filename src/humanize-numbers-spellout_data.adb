@@ -328,6 +328,8 @@ package body Humanize.Numbers.Spellout_Data is
 
    function Ru_Round_Hundredth (Hundreds : Positive) return String is separate;
 
+   function Lt_Round_Ordinal (Value : Natural) return String is separate;
+
    function Locale_Ordinal_Words_Text
      (Locale : String;
       Value  : Natural)

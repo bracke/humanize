@@ -1,6 +1,146 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Nb)
 procedure Labels_3 is
 begin
+   P ("label.schema.schema_summary_label.optional",
+      "{count, plural, one {1 valgfritt} other {{count, number} valgfrie}}");
+   P ("label.schema.schema_summary_label.deprecated",
+      "{count, plural, one {1 foreldet} other {{count, number} foreldede}}");
+   P ("label.schema.schema_summary_label.unknown", "{count, plural, one {1 ukjent} other {{count, number} ukjente}}");
+   P ("label.schema.type_mismatch_label",
+      "feltet {field_name} forventet {expected, select, string_field {streng} "
+      & "integer_field {heltall} decimal_field {desimaltall} boolean_field "
+      & "{boolsk verdi} date_field {dato} date_time_field {tidspunkt} "
+      & "object_field {objekt} array_field {array} enum_field {enum} "
+      & "binary_field {binærverdi} null_field {null} any_field {vilkårlig "
+      & "verdi} other {ukjent}}, fikk {actual, select, string_field {streng} "
+      & "integer_field {heltall} decimal_field {desimaltall} boolean_field "
+      & "{boolsk verdi} date_field {dato} date_time_field {tidspunkt} "
+      & "object_field {objekt} array_field {array} enum_field {enum} "
+      & "binary_field {binærverdi} null_field {null} any_field {vilkårlig "
+      & "verdi} other {ukjent}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {1 blokkerende "
+      & "problem} other {{blocking, number} blokkerende problemer}}} blocking "
+      & "{{base}, {blocking, plural, one {1 blokkerende problem} other "
+      & "{{blocking, number} blokkerende problemer}}} only {bare {base}} other "
+      & "{{base}}}");
+   P ("label.diagnostics.check_run_summary_label.none", "ingen kontroller kjørt");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} bestått");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} mislyktes");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 advarsel} other {{count, number} advarsler}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} hoppet over");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} venter");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {målområde {low} til {high}} "
+      & "other {målvindu {low} til {high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} innenfor forventet område} below "
+      & "{{value} under forventet område} other {{value} over forventet "
+      & "område}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} ved kritisk terskel} warning "
+      & "{{value} ved varselterskel} other {{value} innenfor normalområdet}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {ikke overskredet} other {overskredet med "
+      & "{difference}}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {på målet} below {{difference} under målet} "
+      & "other {{difference} over målet}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {grensen overskredet} near {nær grensen, "
+      & "{distance} gjenstår} other {{distance} fra grensen}}");
+   P ("label.thresholds.threshold_summary_label.none", "ingen måleverdier");
+   P ("label.thresholds.threshold_summary_label.normal",
+      "{count, plural, one {1 normal} other {{count, number} normale}}");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {1 advarsel} other {{count, number} advarsler}}");
+   P ("label.thresholds.threshold_summary_label.critical",
+      "{count, plural, one {1 kritisk} other {{count, number} kritiske}}");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {1 overskridelse} other {{count, number} "
+      & "overskridelser}}");
+   P ("label.thresholds.target_window_label", "mål {target} ± {tolerance}");
+   P ("label.thresholds.tolerance_label", "toleranse {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} av grensen");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {grensen overskredet med {amount}} other "
+      & "{{amount} gjenstår}}");
+   P ("label.thresholds.budget_used_label", "{used} brukt av {budget}");
+   P ("label.workflows.step_label", "trinn {current, number} av {total, number}: {name}");
+   P ("label.workflows.milestone_label", "{current, number} av {total, number} milepæler nådd: {name}");
+   P ("label.workflows.workflow_summary_label.total",
+      "{count, plural, one {1 element} other {{count, number} elementer}}");
+   P ("label.workflows.workflow_summary_label.completed",
+      "{count, plural, one {1 fullført} other {{count, number} fullførte}}");
+   P ("label.workflows.workflow_summary_label.active",
+      "{count, plural, one {1 aktivt} other {{count, number} aktive}}");
+   P ("label.workflows.workflow_summary_label.blocked",
+      "{count, plural, one {1 blokkert} other {{count, number} blokkerte}}");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} mislyktes");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} hoppet over");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {ingen arbeidsflytelementer} half {halvveis i "
+      & "arbeidsflyten} other {{completed, number} av {total, number} "
+      & "fullført}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {plass {position, number} i køen} other {plass "
+      & "{position, number} av {total, number} i køen}}");
+   P ("label.changes.change_set_label.none", "ingen endringer");
+   P ("label.changes.change_set_label.added", "{count, number} lagt til");
+   P ("label.changes.change_set_label.removed", "{count, number} fjernet");
+   P ("label.changes.change_set_label.modified", "{count, number} endret");
+   P ("label.changes.change_set_label.unchanged", "{count, number} uendret");
+   P ("label.changes.change_summary_label.total",
+      "{count, plural, one {1 element} other {{count, number} elementer}}");
+   P ("label.changes.change_summary_label.added", "{count, number} lagt til");
+   P ("label.changes.change_summary_label.removed", "{count, number} fjernet");
+   P ("label.changes.change_summary_label.modified", "{count, number} endret");
+   P ("label.changes.change_summary_label.renamed", "{count, number} omdøpt");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} uendret");
+   P ("label.changes.sync_change_label.none", "ingen synkroniseringsendringer");
+   P ("label.changes.sync_change_label.uploaded", "{count, number} lastet opp");
+   P ("label.changes.sync_change_label.downloaded", "{count, number} lastet ned");
+   P ("label.changes.sync_change_label.deleted", "{count, number} slettet");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {1 konflikt} other {{count, number} konflikter}}");
+   P ("label.changes.net_change_label",
+      "{state, select, none {ingen nettoendring} up {netto +{count, plural, "
+      & "one {1 element} other {{count, number} elementer}}} other {netto "
+      & "-{count, plural, one {1 element} other {{count, number} elementer}}}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {ingen endringer å gjennomgå} all {alle "
+      & "endringer gjennomgått} other {{reviewed, number} av {total, number} "
+      & "endringer gjennomgått}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} uendret på {new_value}} up "
+      & "{{field_name} økte fra {old_value} til {new_value}} other "
+      & "{{field_name} sank fra {old_value} til {new_value}}}");
+   P ("label.tables.selection_label",
+      "{state, select, no_rows {ingen rader kan velges} none {ingen rader "
+      & "valgt} all {{total, plural, one {1 rad} other {alle {total, number} "
+      & "rader}} valgt} other {{selected, number} av {total, plural, one {1 "
+      & "rad} other {{total, number} rader}} valgt}}");
+   P ("label.tables.page_label",
+      "{page, plural, =0 {ingen sider} other {{pages, plural, =0 {ingen "
+      & "sider} other {{rows, plural, =0 {side {page, number} av {pages, "
+      & "number}} one {side {page, number} av {pages, number}, 1 rad} other "
+      & "{side {page, number} av {pages, number}, {rows, number} rader}}}}}}");
+   P ("label.tables.filter_label",
+      "{state, select, no_rows {ingen rader} none {ingen rader samsvarer} all "
+      & "{{total, plural, one {1 rad} other {alle {total, number} rader}} "
+      & "vises} other {{visible, number} av {total, plural, one {1 rad} other "
+      & "{{total, number} rader}} vises}}");
+   P ("label.tables.row_range_label",
+      "{state, select, none {ingen rader} single {rad {first_row, number} av "
+      & "{total, number}} other {rader {first_row, number}–{last_row, number} "
+      & "av {total, number}}}");
+   P ("label.forms.remaining_characters_label",
+      "{state, select, unlimited {ingen tegngrense} none_left {ingen tegn "
+      & "igjen} left {{count, plural, one {1 tegn} other {{count, number} "
+      & "tegn}} igjen} other {{count, plural, one {1 tegn} other {{count, "
+      & "number} tegn}} over grensen}}");
    P ("label.forms.required_fields_label",
       "{total, plural, =0 {ingen obligatoriske felt} one {{missing, plural, "
       & "=0 {alle obligatoriske felt er fylt ut} other {1 av 1 obligatorisk "
@@ -49,9 +189,76 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} endret} other {{name}: {changed, number} endret, {unchanged, "
       & "number} uendret, {total, number} totalt}}");
+   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{brightness} {chroma} {temperature} {base, select, pink {rosa} other "
+      & "{{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
-   P ("label.groups", "{first}; {second}");
-   P ("label.parts", "{first}, {second}");
+   P ("label.markup.accessible_control_label.control",
+      "{role, select, button_control {knapp} link_control {lenke} tab_control "
+      & "{fane} menu_item_control {menyelement} checkbox_control "
+      & "{avmerkingsboks} radio_control {alternativknapp} text_field_control "
+      & "{tekstfelt} progress_control {fremdriftsindikator} table_cell_control "
+      & "{tabellcelle} region_control {region} other {kontroll}} {named, "
+      & "select, no {uten navn} other {{name}}}");
+   P ("label.markup.accessible_control_label.selected", "valgt");
+   P ("label.markup.accessible_control_label.expanded", "utvidet");
+   P ("label.markup.accessible_control_label.current", "gjeldende");
+   P ("label.markup.accessible_control_label.disabled", "deaktivert");
+   P ("label.markup.accessible_control_label.required", "obligatorisk");
+   P ("label.markup.accessible_control_label.invalid", "ugyldig");
+   P ("label.markup.accessible_control_label.count",
+      "{count, plural, one {1 element} other {{count, number} elementer}}");
+   P ("label.markup.accessible_control_label.position", "element {position, number} av {total, number}");
+   P ("label.markup.accessible_control_label.issues",
+      "{count, plural, one {1 problem} other {{count, number} problemer}}");
+   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
+   P ("label.endpoints.url_component.scheme", "skjema");
+   P ("label.endpoints.url_component.host", "vert");
+   P ("label.endpoints.url_component.path", "bane");
+   P ("label.endpoints.url_component.query", "spørring");
+   P ("label.endpoints.url_component.fragment", "fragment");
+   P ("label.names.hue_noun.red", "rødt");
+   P ("label.names.hue_noun.orange", "oransje");
+   P ("label.names.hue_noun.yellow", "gult");
+   P ("label.names.hue_noun.green", "grønt");
+   P ("label.names.hue_noun.cyan", "cyan");
+   P ("label.names.hue_noun.blue", "blått");
+   P ("label.names.hue_noun.purple", "lilla");
+   P ("label.names.hue_noun.magenta", "magenta");
+   P ("label.names.hue_noun.neutral", "nøytral tone");
+   P ("label.names.hue_noun.pink", "rosa");
+   P ("label.names.hue_gender.red", "neuter");
+   P ("label.names.hue_gender.orange", "neuter");
+   P ("label.names.hue_gender.yellow", "neuter");
+   P ("label.names.hue_gender.green", "neuter");
+   P ("label.names.hue_gender.cyan", "neuter");
+   P ("label.names.hue_gender.blue", "neuter");
+   P ("label.names.hue_gender.purple", "neuter");
+   P ("label.names.hue_gender.magenta", "neuter");
+   P ("label.names.hue_gender.neutral", "masculine");
+   P ("label.names.hue_gender.pink", "neuter");
+   P ("label.names.agree.very_dark", "{gender, select, neuter {svært mørkt} other {svært mørk}}");
+   P ("label.names.agree.dark", "{gender, select, neuter {mørkt} other {mørk}}");
+   P ("label.names.agree.medium_brightness", "{gender, select, neuter {middels lyst} other {middels lys}}");
+   P ("label.names.agree.light", "{gender, select, neuter {lyst} other {lys}}");
+   P ("label.names.agree.very_light", "{gender, select, neuter {svært lyst} other {svært lys}}");
+   P ("label.names.agree.desaturated", "{gender, select, other {avmettet}}");
+   P ("label.names.agree.muted", "{gender, select, other {dempet}}");
+   P ("label.names.agree.neutral", "{gender, select, neuter {nøytralt} other {nøytral}}");
+   P ("label.names.agree.saturated", "{gender, select, other {mettet}}");
+   P ("label.names.agree.vivid", "{gender, select, other {livlig}}");
+   P ("label.names.agree.grayish", "{gender, select, other {gråaktig}}");
+   P ("label.names.agree.soft", "{gender, select, neuter {mykt} other {myk}}");
+   P ("label.names.agree.moderate_chroma", "{gender, select, other {moderat kromatisk}}");
+   P ("label.names.agree.high_chroma", "{gender, select, other {høykromatisk}}");
+   P ("label.names.agree.pastel", "{gender, select, other {pastellfarget}}");
+   P ("label.names.agree.warm", "{gender, select, neuter {varmt} other {varm}}");
+   P ("label.names.agree.cool", "{gender, select, other {kjølig}}");
+   P ("label.names.agree.neutral_temperature",
+      "{gender, select, neuter {temperaturnøytralt} other "
+      & "{temperaturnøytral}}");
+   P ("label.names.agree.balanced_temperature", "{gender, select, other {temperaturbalansert}}");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
       "gjeldende forgrunn oppfyller kontrast for stor tekst ved {v1}:{v2, "
       & "number}");
@@ -471,223 +678,12 @@ begin
    P ("label.metrics.text_summary_with_options.no_paragraphs", "ingen avsnitt");
    P ("label.metrics.word_count_summary.n_word", "{v1, plural, one {1 ord} other {{v1, number} ord}}");
    P ("label.metrics.text_summary_with_options.n_word", "{v1, plural, one {1 ord} other {{v1, number} ord}}");
-   P ("label.statistics.distribution_shape_label",
-      "{shape, select, no_distribution_shape {ingen observasjoner} "
-      & "sample_too_small_shape {utvalget er for lite til å beskrive formen, "
-      & "{count, plural, one {1 observasjon} other {{count, number} "
-      & "observasjoner}}} flat_shape {flat fordeling ved {median}} "
-      & "outlier_heavy_shape {fordeling med mange uteliggere rundt {median}} "
-      & "volatile_shape {ustabil fordeling rundt {median}} clustered_shape "
-      & "{gruppert fordeling rundt {median}} wide_spread_shape {bredt spredt "
-      & "fordeling} wide_spread_range {bredt spredt fordeling fra {minimum} til "
-      & "{maximum}} right_skewed_shape {høyreskjev fordeling, median {median}} "
-      & "left_skewed_shape {venstreskjev fordeling, median {median}} other "
-      & "{stort sett balansert fordeling rundt {median}}}");
-   P ("label.privacy.safe_email_label",
-      "{state, select, empty {tom e-post} address {e-postadresse} other "
-      & "{e-post hos {domain}}}");
-   P ("label.privacy.safe_phone_label",
-      "{state, select, none {telefonnummer} redacted {telefonnummer sladdet} "
-      & "other {telefonnummer som slutter på {digits}}}");
-   P ("label.privacy.safe_handle_label", "{state, select, none {brukernavn} other {brukernavn {shown}}}");
-   P ("label.privacy.code_symbol_label", "{state, select, none {kodesymbol} other {kodesymbol {symbol}}}");
-   P ("label.privacy.address_metadata_label",
-      "adressemetadata: {present, plural, one {1 felt finnes} other "
-      & "{{present, number} felt finnes}}, {missing, plural, one {1 felt "
-      & "mangler} other {{missing, number} felt mangler}}");
-   P ("label.endpoints.host_label", "{state, select, none {ukjent vert} other {{kind} {host}}}");
-   P ("label.endpoints.endpoint_label",
-      "{state, select, none {ukjent endepunkt} other {endepunkt "
-      & "{scheme}{host}{port} ({kind})}}");
-   P ("label.endpoints.url_component_summary",
-      "{state, select, empty {tom URL} none {URL uten gjenkjente komponenter} "
-      & "other {URL med {count, plural, one {1 komponent} other {{count, "
-      & "number} komponenter}}: {components}}}");
-   P ("label.endpoints.query_summary",
-      "{count, plural, =0 {ingen spørreparametere} one {1 spørreparameter} "
-      & "other {{count, number} spørreparametere}}");
-   P ("label.endpoints.ip_address_label",
-      "{address} ({kind, select, ipv4_host {offentlig IPv4-adresse} ipv6_host "
-      & "{offentlig IPv6-adresse} private_network_host {privat "
-      & "nettverksadresse} localhost_host {lokal vert} other {ikke en "
-      & "IP-adresse}})");
-   P ("label.endpoints.cidr_label",
-      "{state, select, invalid {{cidr} (ugyldig CIDR)} other {{cidr} ({kind}, "
-      & "nettverksprefiks {prefix})}}");
-   P ("label.resources.utilization_label", "{used, number} av {total, number} {unit} brukt ({percent}, {band})");
-   P ("label.resources.saturation_label", "{named, select, no {ressurs} other {{name}}} {percent}, {band}");
-   P ("label.versions.version_label",
-      "{state, select, both {versjon {version}, forhåndsversjon "
-      & "{prerelease}, bygg {build}} prerelease {versjon {version}, "
-      & "forhåndsversjon {prerelease}} build {versjon {version}, bygg {build}} "
-      & "other {versjon {version}}}");
-   P ("label.versions.version_delta_label",
-      "{delta, select, same_version {samme versjon} major_upgrade "
-      & "{oppgradering av hovedversjon} minor_upgrade {oppgradering av "
-      & "delversjon} patch_upgrade {patchoppgradering} prerelease_change "
-      & "{endret forhåndsversjon} build_metadata_change {endrede byggmetadata} "
-      & "downgrade {nedgradering} other {ukjent versjonsendring}}: {from} -> "
-      & "{to}");
-   P ("label.versions.compatibility_range_label",
-      "{kind, select, exact_range {nøyaktig versjon {version}} minimum_range "
-      & "{versjon {version} eller nyere} maximum_range {versjon {version} eller "
-      & "eldre} major_compatible_range {kompatibel med hovedversjon {version}} "
-      & "minor_compatible_range {kompatibel med delversjon {version}} other "
-      & "{versjonsområde {version}}}");
-   P ("label.versions.release_label",
-      "{state, select, initial {første utviklingsversjon {version}} "
-      & "prerelease {forhåndsversjon {version}} major {hovedversjon {version}} "
-      & "minor {delversjon {version}} other {patchversjon {version}}}");
-   P ("label.markup.tag_label",
-      "{tag, select, link {lenketagg} image {bildetagg} paragraph "
-      & "{avsnittstagg} ordered_list {tagg for nummerert liste} unordered_list "
-      & "{tagg for punktliste} list_item {listeelementtagg} table_header_cell "
-      & "{tagg for tabelloverskriftscelle} table_cell {tabellcelletagg} "
-      & "table_row {tabellradtagg} line_break {linjeskifttagg} thematic_break "
-      & "{tagg for tematisk skille} heading_level_n {tagg for overskrift på "
-      & "nivå {level, number}} other {{name}-tagg}}");
-   P ("label.markup.attribute_label",
-      "{state, select, bare {{name}-attributt} event "
-      & "{hendelsesbehandlerattributt {name}} other {attributt {name} satt til "
-      & "«{value}»}}");
-   P ("label.markup.content_type_label",
-      "{kind, select, text_content {tekstinnhold} html_content "
-      & "{HTML-dokument} json_content {JSON-dokument} xml_content "
-      & "{XML-dokument} image_content {bildeinnhold} audio_content {lydinnhold} "
-      & "video_content {videoinnhold} font_content {skriftinnhold} "
-      & "archive_content {arkivinnhold} binary_content {binært innhold} "
-      & "form_content {skjemainnsending} other {ukjent innhold}} ({base})");
-   P ("label.secrets.secret_label",
-      "{state, select, unset {{kind} ikke angitt} hidden_value {{kind} "
-      & "skjult} masked_value {{kind} {shown}} fingerprint_only {{kind}, "
-      & "fingeravtrykk som slutter på {shown}} other {{kind} som slutter på "
-      & "{shown}}}");
-   P ("label.secrets.environment_secret_label",
-      "{state, select, unset {{name}: {kind} ikke angitt} other {{name}: "
-      & "{kind} som slutter på {shown}}}");
-   P ("label.secrets.header_credential_label",
-      "{state, select, unset {påloggingshode {name} ikke angitt} other "
-      & "{{name}: {kind} som slutter på {shown}}}");
-   P ("label.secrets.fingerprint_label", "{algorithm}-fingeravtrykk som slutter på {shown}");
-   P ("label.secrets.safe_display_label",
-      "{state, select, not_set {{label} ikke angitt} redacted {{label} "
-      & "sladdet} url_redacted {URL sladdet} ip_redacted {IP-adresse sladdet} "
-      & "path_ending {filbane som slutter på {shown}} at {{label} hos {shown}} "
-      & "audit {{label}, lengde {length, number}, slutter på {shown}} debug "
-      & "{{label} {shown}} other {{label} som slutter på {shown}}}");
-   P ("label.schema.field_label",
-      "{state, select, deprecated_field {foreldet } unknown_field {ukjent } "
-      & "read_only_field {skrivebeskyttet } write_only_field {bare skrivbart } "
-      & "computed_field {beregnet } other {}}{kind, select, string_field "
-      & "{strengfelt} integer_field {heltallsfelt} decimal_field {desimalfelt} "
-      & "boolean_field {boolsk felt} date_field {datofelt} date_time_field "
-      & "{tidspunktfelt} object_field {objektfelt} array_field {arrayfelt} "
-      & "enum_field {enum-felt} binary_field {binærfelt} null_field "
-      & "{null-felt} any_field {felt av vilkårlig type} other {felt av ukjent "
-      & "type}} {name} ({presence, select, required_field {obligatorisk} "
-      & "optional_field {valgfritt} conditional_field {betinget} other {ukjent "
-      & "forekomst}}{nullable, select, non_nullable {, ikke null} nullable {, "
-      & "kan være null} other {}})");
-   P ("label.schema.schema_summary_label.fields", "{count, plural, one {1 felt} other {{count, number} felt}}");
-   P ("label.schema.schema_summary_label.required",
-      "{count, plural, one {1 obligatorisk} other {{count, number} "
-      & "obligatoriske}}");
-   P ("label.schema.schema_summary_label.optional",
-      "{count, plural, one {1 valgfritt} other {{count, number} valgfrie}}");
-   P ("label.schema.schema_summary_label.deprecated",
-      "{count, plural, one {1 foreldet} other {{count, number} foreldede}}");
-   P ("label.schema.schema_summary_label.unknown", "{count, plural, one {1 ukjent} other {{count, number} ukjente}}");
-   P ("label.diagnostics.check_run_summary_label.none", "ingen kontroller kjørt");
-   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} bestått");
-   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} mislyktes");
-   P ("label.diagnostics.check_run_summary_label.warnings",
-      "{count, plural, one {1 advarsel} other {{count, number} advarsler}}");
-   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} hoppet over");
-   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} venter");
-   P ("label.workflows.workflow_summary_label.total",
-      "{count, plural, one {1 element} other {{count, number} elementer}}");
-   P ("label.workflows.workflow_summary_label.completed",
-      "{count, plural, one {1 fullført} other {{count, number} fullførte}}");
-   P ("label.workflows.workflow_summary_label.active",
-      "{count, plural, one {1 aktivt} other {{count, number} aktive}}");
-   P ("label.workflows.workflow_summary_label.blocked",
-      "{count, plural, one {1 blokkert} other {{count, number} blokkerte}}");
-   P ("label.workflows.workflow_summary_label.failed", "{count, number} mislyktes");
-   P ("label.workflows.workflow_summary_label.skipped", "{count, number} hoppet over");
-   P ("label.changes.change_summary_label.total",
-      "{count, plural, one {1 element} other {{count, number} elementer}}");
-   P ("label.changes.change_summary_label.added", "{count, number} lagt til");
-   P ("label.changes.change_summary_label.removed", "{count, number} fjernet");
-   P ("label.changes.change_summary_label.modified", "{count, number} endret");
-   P ("label.changes.change_summary_label.renamed", "{count, number} omdøpt");
-   P ("label.changes.change_summary_label.unchanged", "{count, number} uendret");
-   P ("label.markup.accessible_control_label.control",
-      "{role, select, button_control {knapp} link_control {lenke} tab_control "
-      & "{fane} menu_item_control {menyelement} checkbox_control "
-      & "{avmerkingsboks} radio_control {alternativknapp} text_field_control "
-      & "{tekstfelt} progress_control {fremdriftsindikator} table_cell_control "
-      & "{tabellcelle} region_control {region} other {kontroll}} {named, "
-      & "select, no {uten navn} other {{name}}}");
-   P ("label.markup.accessible_control_label.selected", "valgt");
-   P ("label.markup.accessible_control_label.expanded", "utvidet");
-   P ("label.markup.accessible_control_label.current", "gjeldende");
-   P ("label.markup.accessible_control_label.disabled", "deaktivert");
-   P ("label.markup.accessible_control_label.required", "obligatorisk");
-   P ("label.markup.accessible_control_label.invalid", "ugyldig");
-   P ("label.markup.accessible_control_label.count",
-      "{count, plural, one {1 element} other {{count, number} elementer}}");
-   P ("label.markup.accessible_control_label.position", "element {position, number} av {total, number}");
-   P ("label.markup.accessible_control_label.issues",
-      "{count, plural, one {1 problem} other {{count, number} problemer}}");
-   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
-   P ("label.endpoints.url_component.scheme", "skjema");
-   P ("label.endpoints.url_component.host", "vert");
-   P ("label.endpoints.url_component.path", "bane");
-   P ("label.endpoints.url_component.query", "spørring");
-   P ("label.endpoints.url_component.fragment", "fragment");
-   P ("label.names.hue_noun.red", "rødt");
-   P ("label.names.hue_noun.orange", "oransje");
-   P ("label.names.hue_noun.yellow", "gult");
-   P ("label.names.hue_noun.green", "grønt");
-   P ("label.names.hue_noun.cyan", "cyan");
-   P ("label.names.hue_noun.blue", "blått");
-   P ("label.names.hue_noun.purple", "lilla");
-   P ("label.names.hue_noun.magenta", "magenta");
-   P ("label.names.hue_noun.neutral", "nøytral tone");
-   P ("label.names.hue_noun.pink", "rosa");
-   P ("label.names.hue_gender.red", "neuter");
-   P ("label.names.hue_gender.orange", "neuter");
-   P ("label.names.hue_gender.yellow", "neuter");
-   P ("label.names.hue_gender.green", "neuter");
-   P ("label.names.hue_gender.cyan", "neuter");
-   P ("label.names.hue_gender.blue", "neuter");
-   P ("label.names.hue_gender.purple", "neuter");
-   P ("label.names.hue_gender.magenta", "neuter");
-   P ("label.names.hue_gender.neutral", "masculine");
-   P ("label.names.hue_gender.pink", "neuter");
-   P ("label.names.agree.very_dark", "{gender, select, neuter {svært mørkt} other {svært mørk}}");
-   P ("label.names.agree.dark", "{gender, select, neuter {mørkt} other {mørk}}");
-   P ("label.names.agree.medium_brightness", "{gender, select, neuter {middels lyst} other {middels lys}}");
-   P ("label.names.agree.light", "{gender, select, neuter {lyst} other {lys}}");
-   P ("label.names.agree.very_light", "{gender, select, neuter {svært lyst} other {svært lys}}");
-   P ("label.names.agree.desaturated", "{gender, select, other {avmettet}}");
-   P ("label.names.agree.muted", "{gender, select, other {dempet}}");
-   P ("label.names.agree.neutral", "{gender, select, neuter {nøytralt} other {nøytral}}");
-   P ("label.names.agree.saturated", "{gender, select, other {mettet}}");
-   P ("label.names.agree.vivid", "{gender, select, other {livlig}}");
-   P ("label.names.agree.grayish", "{gender, select, other {gråaktig}}");
-   P ("label.names.agree.soft", "{gender, select, neuter {mykt} other {myk}}");
-   P ("label.names.agree.moderate_chroma", "{gender, select, other {moderat kromatisk}}");
-   P ("label.names.agree.high_chroma", "{gender, select, other {høykromatisk}}");
-   P ("label.names.agree.pastel", "{gender, select, other {pastellfarget}}");
-   P ("label.names.agree.warm", "{gender, select, neuter {varmt} other {varm}}");
-   P ("label.names.agree.cool", "{gender, select, other {kjølig}}");
-   P ("label.names.agree.neutral_temperature",
-      "{gender, select, neuter {temperaturnøytralt} other "
-      & "{temperaturnøytral}}");
-   P ("label.names.agree.balanced_temperature", "{gender, select, other {temperaturbalansert}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {rosa} other "
-      & "{{hue}}}");
+   P ("label.groups", "{first}; {second}");
+   P ("label.parts", "{first}, {second}");
+   P ("label.endpoints.url_label", "{state, select, empty {tom URL} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {tom URL} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[skjult bruker]");
+   P ("label.endpoints.url_label.query",
+      "spørring {count, plural, one {1 parameter} other {{count, number} "
+      & "parametere}}");
 end Labels_3;

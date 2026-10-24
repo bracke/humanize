@@ -242,17 +242,17 @@ begin
    Check (Locale, "label.schema.example_value_label", Phrase,
           Humanize.Schema.Localized.Example_Value_Label (C, Field_Name => "plain", Value => "plain"),
           Humanize.Schema.Example_Value_Label (Field_Name => "plain", Value => "plain"));
-   Check (Locale, "label.schema.field_label", Plain,
+   Check (Locale, "label.schema.field_label", Phrase,
           Humanize.Schema.Localized.Field_Label (C, Name => "email", Kind => Humanize.Schema.String_Field),
           Humanize.Schema.Field_Label (Name => "email", Kind => Humanize.Schema.String_Field));
-   Check (Locale, "label.schema.field_label", Plain,
+   Check (Locale, "label.schema.field_label", Phrase,
           Humanize.Schema.Localized.Field_Label (C, Name => "id", Kind => Humanize.Schema.Integer_Field, Presence =>
             Humanize.Schema.Required_Field, Nullable => Humanize.Schema.Non_Nullable, State =>
             Humanize.Schema.Read_Only_Field),
           Humanize.Schema.Field_Label (Name => "id", Kind => Humanize.Schema.Integer_Field, Presence =>
             Humanize.Schema.Required_Field, Nullable => Humanize.Schema.Non_Nullable, State =>
             Humanize.Schema.Read_Only_Field));
-   Check (Locale, "label.schema.field_label", Plain,
+   Check (Locale, "label.schema.field_label", Phrase,
           Humanize.Schema.Localized.Field_Label (C, Name => "x", Kind => Humanize.Schema.Any_Field, Presence =>
             Humanize.Schema.Unknown_Presence, Nullable => Humanize.Schema.Nullable, State =>
             Humanize.Schema.Deprecated_Field),
@@ -286,13 +286,13 @@ begin
    Check (Locale, "label.schema.schema_source_label", Phrase,
           Humanize.Schema.Localized.Schema_Source_Label (C, Name => "plain", Version => "plain"),
           Humanize.Schema.Schema_Source_Label (Name => "plain", Version => "plain"));
-   Check (Locale, "label.schema.schema_summary_label", Plain,
+   Check (Locale, "label.schema.schema_summary_label", Phrase,
           Humanize.Schema.Localized.Schema_Summary_Label (C, Fields => 10, Required => 3, Optional => 7),
           Humanize.Schema.Schema_Summary_Label (Fields => 10, Required => 3, Optional => 7));
-   Check (Locale, "label.schema.schema_summary_label", Plain,
+   Check (Locale, "label.schema.schema_summary_label", Phrase,
           Humanize.Schema.Localized.Schema_Summary_Label (C, Fields => 1),
           Humanize.Schema.Schema_Summary_Label (Fields => 1));
-   Check (Locale, "label.schema.schema_summary_label", Plain,
+   Check (Locale, "label.schema.schema_summary_label", Phrase,
           Humanize.Schema.Localized.Schema_Summary_Label (C, Fields => 4, Unknown => 1),
           Humanize.Schema.Schema_Summary_Label (Fields => 4, Unknown => 1));
    Check (Locale, "label.schema.shape_label", Phrase,

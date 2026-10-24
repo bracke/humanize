@@ -15,12 +15,12 @@ begin
       "{state, select, trusted_device {受信任的设备} untrusted_device "
       & "{不受信任的设备} new_device {新设备} other "
       & "{已屏蔽的设备}}");
-   P ("label.accounts.last_active_label", "{name}：上次活跃 {time_text}");
+   P ("label.accounts.last_active_label", "{name}：上次活跃于{time_text}");
    P ("label.accounts.login_attempt_label",
       "{succeeded, select, false {{name}：登录失败} other "
       & "{{name}：登录成功}}");
    P ("label.accounts.mfa_state_label",
-      "{state, select, mfa_enabled {已启用 MFA} mfa_disabled {已停用 "
+      "{state, select, mfa_enabled {已启用 MFA} mfa_disabled {已禁用 "
       & "MFA} mfa_required {需要 MFA} other {需要重置 MFA}}");
    P ("label.accounts.session_label",
       "{name}：{state, select, active_session {活跃会话} expired_session "
@@ -35,16 +35,16 @@ begin
    P ("label.attachments.attachment_group_label", "{name}：{count, number}个附件");
    P ("label.attachments.attachment_kind_label",
       "{kind, select, file_attachment {文件附件} image_attachment "
-      & "{图片附件} video_attachment {视频附件} audio_attachment "
+      & "{图像附件} video_attachment {视频附件} audio_attachment "
       & "{音频附件} document_attachment {文档附件} archive_attachment "
-      & "{压缩包附件} other {链接附件}}");
+      & "{归档附件} other {链接附件}}");
    P ("label.attachments.attachment_label",
       "{name}（{kind, select, file_attachment {文件} image_attachment "
-      & "{图片} video_attachment {视频} audio_attachment {音频} "
-      & "document_attachment {文档} archive_attachment {压缩包} other "
+      & "{图像} video_attachment {视频} audio_attachment {音频} "
+      & "document_attachment {文档} archive_attachment {归档} other "
       & "{链接}}）：{state, select, pending_attachment {待处理} "
       & "uploading_attachment {正在上传} uploaded_attachment {已上传} "
-      & "failed_attachment {失败} removed_attachment {已移除} other "
+      & "failed_attachment {上传失败} removed_attachment {已移除} other "
       & "{已拦截}}");
    P ("label.attachments.attachment_size_label", "{name}，{size}");
    P ("label.attachments.attachment_state_label",
@@ -228,8 +228,7 @@ begin
       "{kind, select, like_reaction {赞} dislike_reaction {踩} "
       & "heart_reaction {爱心} laugh_reaction {大笑} confused_reaction "
       & "{困惑} hooray_reaction {欢呼} rocket_reaction {火箭} other "
-      & "{眼睛}}回应{count, plural, =0 {：无} other {：{count, "
-      & "number}个}}");
+      & "{眼睛}}回应：{count, plural, =0 {无} other {{count, number}}}");
    P ("label.comments.reply_count_label", "{count, plural, =0 {没有回复} other {{count, number}条回复}}");
    P ("label.comments.resolved_label", "{name}已解决");
    P ("label.comments.subscribe_label", "订阅{name}");
@@ -328,7 +327,7 @@ begin
       & "{迁移完成} other {迁移失败}}");
    P ("label.deployments.promotion_label", "{name}已从{from_environment}提升到{to_environment}");
    P ("label.deployments.rollback_label", "{name}回滚到{target}");
-   P ("label.deployments.rollout_label", "{name}发布进度{percent_text}");
+   P ("label.deployments.rollout_label", "{name}发布进度：{percent_text}");
    P ("label.diagnostics.affected_items_label",
       "{count, plural, =0 {没有受影响的项} other {{count, "
       & "number}个受影响的项}}");
@@ -652,13 +651,13 @@ begin
       & "{已禁用} preference_inherited {已继承} other {必需}}");
    P ("label.notification_preferences.quiet_hours_label", "免打扰时段：{time_text}");
    P ("label.notification_preferences.subscription_label",
-      "{name}{scope, select, thread_subscription {会话} "
+      "{name}{scope, select, thread_subscription {话题} "
       & "project_subscription {项目} team_subscription {团队} other "
       & "{账户}}订阅：{state, select, preference_enabled {已启用} "
       & "preference_disabled {已禁用} preference_inherited {已继承} other "
       & "{必需}}");
    P ("label.notification_preferences.subscription_scope_label",
-      "{scope, select, thread_subscription {会话订阅} "
+      "{scope, select, thread_subscription {话题订阅} "
       & "project_subscription {项目订阅} team_subscription {团队订阅} "
       & "other {账户订阅}}");
    P ("label.notifications.actor_event_label",

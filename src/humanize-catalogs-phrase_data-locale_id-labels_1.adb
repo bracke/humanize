@@ -329,13 +329,12 @@ begin
       & "artifact_missing {artefak tidak ada} other {artefak kedaluwarsa}}");
    P ("label.deployments.deployment_label",
       "{name} ke {environment}: {state, select, queued_deployment {deploy "
-      & "dalam antrean} deploying {sedang men-deploy} deployed {sudah "
-      & "di-deploy} failed_deployment {deploy gagal} rolled_back {sudah "
-      & "di-rollback} blocked_deployment {deploy diblokir} other {deploy "
-      & "dibatalkan}}");
+      & "dalam antrean} deploying {sedang di-deploy} deployed {sudah di-deploy} "
+      & "failed_deployment {deploy gagal} rolled_back {sudah di-rollback} "
+      & "blocked_deployment {deploy diblokir} other {deploy dibatalkan}}");
    P ("label.deployments.deployment_state_label",
       "{state, select, queued_deployment {deploy dalam antrean} deploying "
-      & "{sedang men-deploy} deployed {sudah di-deploy} failed_deployment "
+      & "{sedang di-deploy} deployed {sudah di-deploy} failed_deployment "
       & "{deploy gagal} rolled_back {sudah di-rollback} blocked_deployment "
       & "{deploy diblokir} other {deploy dibatalkan}}");
    P ("label.deployments.environment_state_label",

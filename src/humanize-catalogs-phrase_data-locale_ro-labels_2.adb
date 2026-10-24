@@ -293,23 +293,24 @@ begin
       & "number} câmpuri} other {obiect cu {count, number} de câmpuri}}} "
       & "array_shape {{count, plural, =0 {matrice} one {matrice cu 1 element} "
       & "few {matrice cu {count, number} elemente} other {matrice cu {count, "
-      & "number} de elemente}}} map_shape {{count, plural, =0 {hartă} one "
-      & "{hartă cu 1 intrare} few {hartă cu {count, number} intrări} other "
-      & "{hartă cu {count, number} de intrări}}} tuple_shape {{count, plural, "
-      & "=0 {tuplu} one {tuplu cu 1 element} few {tuplu cu {count, number} "
-      & "elemente} other {tuplu cu {count, number} de elemente}}} union_shape "
-      & "{{count, plural, =0 {uniune} one {uniune de 1 tip} few {uniune de "
-      & "{count, number} tipuri} other {uniune de {count, number} de tipuri}}} "
-      & "empty_shape {formă goală} other {formă necunoscută}}");
+      & "number} de elemente}}} map_shape {{count, plural, =0 {dicționar} one "
+      & "{dicționar cu 1 intrare} few {dicționar cu {count, number} intrări} "
+      & "other {dicționar cu {count, number} de intrări}}} tuple_shape "
+      & "{{count, plural, =0 {tuplu} one {tuplu cu 1 element} few {tuplu cu "
+      & "{count, number} elemente} other {tuplu cu {count, number} de "
+      & "elemente}}} union_shape {{count, plural, =0 {uniune} one {uniune de 1 "
+      & "tip} few {uniune de {count, number} tipuri} other {uniune de {count, "
+      & "number} de tipuri}}} empty_shape {formă goală} other {formă "
+      & "necunoscută}}");
    P ("label.schema.unknown_field_label", "câmp necunoscut {name}");
    P ("label.search.active_filter_count_label",
       "{count, plural, =0 {niciun filtru activ} one {1 filtru activ} few "
       & "{{count, number} filtre active} other {{count, number} de filtre "
       & "active}}");
    P ("label.search.clear_filters_label",
-      "{count, plural, =0 {ștergeți filtrele} one {ștergeți filtrul "
-      & "activ} few {ștergeți {count, number} filtre active} other "
-      & "{ștergeți {count, number} de filtre active}}");
+      "{count, plural, =0 {șterge filtrele} one {șterge filtrul activ} few "
+      & "{șterge {count, number} filtre active} other {șterge {count, number} "
+      & "de filtre active}}");
    P ("label.search.facet_label",
       "{count, plural, one {fațeta {name}, 1 opțiune} few {fațeta {name}, "
       & "{count, number} opțiuni} other {fațeta {name}, {count, number} de "
@@ -333,7 +334,7 @@ begin
       "{count, plural, =0 {nicio căutare recentă} one {1 căutare recentă} "
       & "few {{count, number} căutări recente} other {{count, number} de "
       & "căutări recente}}");
-   P ("label.search.search_query_label", "căutați „{query}”");
+   P ("label.search.search_query_label", "caută „{query}”");
    P ("label.search.search_result_count_label",
       "{count, plural, =0 {niciun rezultat} one {1 rezultat} few {{count, "
       & "number} rezultate} other {{count, number} de rezultate}}");
@@ -445,8 +446,8 @@ begin
       & "sarcini}}");
    P ("label.tasks.blocker_label", "blocat de {name}");
    P ("label.tasks.complete_action_label",
-      "{count, plural, one {finalizați sarcina} few {finalizați {count, "
-      & "number} sarcini} other {finalizați {count, number} de sarcini}}");
+      "{count, plural, one {finalizează sarcina} few {finalizează {count, "
+      & "number} sarcini} other {finalizează {count, number} de sarcini}}");
    P ("label.tasks.completed_task_count_label",
       "{count, plural, =0 {nicio sarcină finalizată} one {1 sarcină "
       & "finalizată} few {{count, number} sarcini finalizate} other {{count, "
@@ -460,8 +461,8 @@ begin
    P ("label.tasks.overdue_label", "termen depășit din {due_text}");
    P ("label.tasks.recurring_task_label", "se repetă {schedule_text}");
    P ("label.tasks.reopen_action_label",
-      "{count, plural, one {redeschideți sarcina} few {redeschideți {count, "
-      & "number} sarcini} other {redeschideți {count, number} de sarcini}}");
+      "{count, plural, one {redeschide sarcina} few {redeschide {count, "
+      & "number} sarcini} other {redeschide {count, number} de sarcini}}");
    P ("label.tasks.sprint_label",
       "{count, plural, one {{name}: 1 sarcină} few {{name}: {count, number} "
       & "sarcini} other {{name}: {count, number} de sarcini}}");
@@ -531,7 +532,7 @@ begin
       & "blocată}}");
    P ("label.workflows.next_action_label", "pasul următor: {action}");
    P ("label.workflows.owner_label", "proprietar: {owner}");
-   P ("label.workflows.resume_label", "reluați {name}");
+   P ("label.workflows.resume_label", "reia {name}");
    P ("label.workflows.step_state_label",
       "{state, select, pending_step {în așteptare} active_step {activ} "
       & "waiting_step {așteaptă} blocked_step {blocat} done_step {finalizat} "
@@ -546,13 +547,13 @@ begin
       & "in_progress_state {în curs} waiting_state {în așteptare} "
       & "waiting_approval_state {așteaptă aprobare} blocked_state {blocat} "
       & "completed_state {finalizat} failed_state {eșuat} cancelled_state "
-      & "{anulat} skipped_state {omis} other {întrerupt}}");
+      & "{anulat} skipped_state {omis} other {în pauză}}");
    P ("label.workflows.workflow_state_label",
       "{state, select, not_started_state {neînceput} in_progress_state {în "
       & "curs} waiting_state {în așteptare} waiting_approval_state "
       & "{așteaptă aprobare} blocked_state {blocat} completed_state "
       & "{finalizat} failed_state {eșuat} cancelled_state {anulat} "
-      & "skipped_state {omis} other {întrerupt}}");
+      & "skipped_state {omis} other {în pauză}}");
    P ("label.contrast.opacity_label",
       "{percent}, {state, select, transparent {transparent} "
       & "mostly_transparent {aproape transparent} translucent {translucid} "
@@ -643,12 +644,12 @@ begin
       "câmpul {field_name}: se aștepta {expected, select, string_field "
       & "{șir} integer_field {întreg} decimal_field {zecimal} boolean_field "
       & "{boolean} date_field {dată} date_time_field {dată și oră} "
-      & "object_field {obiect} array_field {tablou} enum_field {enumerare} "
+      & "object_field {obiect} array_field {matrice} enum_field {enumerare} "
       & "binary_field {binar} null_field {null} any_field {orice tip} other "
       & "{tip necunoscut}}, s-a primit {actual, select, string_field {șir} "
       & "integer_field {întreg} decimal_field {zecimal} boolean_field "
       & "{boolean} date_field {dată} date_time_field {dată și oră} "
-      & "object_field {obiect} array_field {tablou} enum_field {enumerare} "
+      & "object_field {obiect} array_field {matrice} enum_field {enumerare} "
       & "binary_field {binar} null_field {null} any_field {orice tip} other "
       & "{tip necunoscut}}");
    P ("label.diagnostics.issue_summary_label",

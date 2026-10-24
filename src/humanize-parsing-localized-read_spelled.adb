@@ -64,23 +64,11 @@ is
    function Read_Table return Float_Parse_Result is
       type Step_List is array (Positive range <>) of Natural;
       Steps : constant Step_List := [10, 100, 1_000];
-      Scale_Steps : constant Step_List := [1_000, 1_000_000];
       Small : constant Integer := Small_Ordinal (Item);
    begin
       if Small >= 0 then
          return (Status => Humanize.Status.Ok, Value => Long_Float (Small), Exact => True,
                  Consumed => Text'Length, others => <>);
-      elsif (for all C of Item => C /= ' ') then
-         --  One word for a round thousand or million, its multiplier glued
-         --  on (Ukrainian "двадцятитисячний").
-         for Scale of Scale_Steps loop
-            for K in 2 .. 999 loop
-               if Ordinal_Text (K * Scale) = Item then
-                  return (Status => Humanize.Status.Ok, Value => Long_Float (K * Scale), Exact => True,
-                          Consumed => Text'Length, others => <>);
-               end if;
-            end loop;
-         end loop;
       end if;
       for Space in reverse Item'Range loop
          if Item (Space) = ' ' and then Space > Item'First and then Space < Item'Last then
@@ -120,10 +108,32 @@ is
       return (Status => Humanize.Status.Invalid_Argument, others => <>);
    end Read_Table;
 
+   --  One word for a round hundred, thousand or million, its multiplier glued
+   --  on (Ukrainian "двадцятитисячний", German "zwei­millionste"), in any locale.
+   function Read_Round return Float_Parse_Result is
+      type Scale_List is array (Positive range <>) of Natural;
+      Scales : constant Scale_List := [100, 1_000, 1_000_000];
+   begin
+      if (for some C of Item => C = ' ') then
+         return (Status => Humanize.Status.Invalid_Argument, others => <>);
+      end if;
+      for Scale of Scales loop
+         for K in 1 .. (if Scale = 100 then 9 else 999) loop
+            if Ordinal_Text (K * Scale) = Item then
+               return (Status => Humanize.Status.Ok, Value => Long_Float (K * Scale), Exact => True,
+                       Consumed => Text'Length, others => <>);
+            end if;
+         end loop;
+      end loop;
+      return (Status => Humanize.Status.Invalid_Argument, others => <>);
+   end Read_Round;
+
    Own : constant Float_Parse_Result := Read (Humanize.Contexts.Locale (Context));
 begin
    if Own.Status = Humanize.Status.Ok then
       return Own;
+   elsif Ordinal and then Read_Round.Status = Humanize.Status.Ok then
+      return Read_Round;
    elsif Ordinal and then not Vocabulary.Has_Ordinal_Rules (Humanize.Contexts.Locale (Context)) then
       declare
          Table : constant Float_Parse_Result := Read_Table;

@@ -206,4 +206,8 @@ begin
    P ("label.names.agree.cool", "{gender, select, other {cool}}");
    P ("label.names.agree.neutral_temperature", "{gender, select, other {neutral temperature}}");
    P ("label.names.agree.balanced_temperature", "{gender, select, other {balanced temperature}}");
+   P ("label.endpoints.url_label", "{state, select, empty {empty URL} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {empty URL} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[redacted user]");
+   P ("label.endpoints.url_label.query", "query {count, plural, one {1 param} other {{count, number} params}}");
 end Labels_4;

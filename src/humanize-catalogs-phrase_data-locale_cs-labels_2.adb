@@ -166,9 +166,9 @@ begin
       & "number} položky} many {{count, number} položky} other {{count, "
       & "number} položek}}");
    P ("label.notification_preferences.alert_level_label",
-      "{level, select, all_alerts {všechna upozornění} important_alerts "
-      & "{důležitá upozornění} critical_alerts_only {pouze kritická "
-      & "upozornění} other {žádná upozornění}}");
+      "{level, select, all_alerts {všechny výstrahy} important_alerts "
+      & "{důležité výstrahy} critical_alerts_only {pouze kritické "
+      & "výstrahy} other {žádné výstrahy}}");
    P ("label.notification_preferences.channel_preference_label",
       "{channel}: {state, select, preference_enabled {oznámení zapnuta} "
       & "preference_disabled {oznámení vypnuta} preference_inherited "
@@ -193,8 +193,8 @@ begin
    P ("label.notifications.actor_event_label",
       "{actor}: {event, select, mention_event {zmínka o vás} reply_event "
       & "{odpověď} assignment_event {přiřazení vám} approval_event "
-      & "{žádost o schválení} alert_event {upozornění} digest_event "
-      & "{souhrn} reminder_event {připomínka} other {systémové oznámení}}");
+      & "{žádost o schválení} alert_event {výstraha} digest_event {souhrn} "
+      & "reminder_event {připomenutí} other {systémové oznámení}}");
    P ("label.notifications.delivery_label",
       "{channel, select, in_app_channel {oznámení v aplikaci} email_channel "
       & "{e-mailové oznámení} sms_channel {oznámení SMS} push_channel "
@@ -231,14 +231,14 @@ begin
       & "o schválení} one {1 žádost o schválení} few {{count, number} "
       & "žádosti o schválení} many {{count, number} žádosti o "
       & "schválení} other {{count, number} žádostí o schválení}}} "
-      & "alert_event {{count, plural, =0 {žádná upozornění} one {1 "
-      & "upozornění} few {{count, number} upozornění} many {{count, number} "
-      & "upozornění} other {{count, number} upozornění}}} digest_event "
-      & "{{count, plural, =0 {žádné souhrny} one {1 souhrn} few {{count, "
-      & "number} souhrny} many {{count, number} souhrnu} other {{count, number} "
-      & "souhrnů}}} reminder_event {{count, plural, =0 {žádné připomínky} "
-      & "one {1 připomínka} few {{count, number} připomínky} many {{count, "
-      & "number} připomínky} other {{count, number} připomínek}}} other "
+      & "alert_event {{count, plural, =0 {žádné výstrahy} one {1 výstraha} "
+      & "few {{count, number} výstrahy} many {{count, number} výstrahy} other "
+      & "{{count, number} výstrah}}} digest_event {{count, plural, =0 "
+      & "{žádné souhrny} one {1 souhrn} few {{count, number} souhrny} many "
+      & "{{count, number} souhrnu} other {{count, number} souhrnů}}} "
+      & "reminder_event {{count, plural, =0 {žádná připomenutí} one {1 "
+      & "připomenutí} few {{count, number} připomenutí} many {{count, "
+      & "number} připomenutí} other {{count, number} připomenutí}}} other "
       & "{{count, plural, =0 {žádná systémová oznámení} one {1 "
       & "systémové oznámení} few {{count, number} systémová oznámení} "
       & "many {{count, number} systémového oznámení} other {{count, number} "
@@ -257,8 +257,8 @@ begin
    P ("label.notifications.new_event_label",
       "{event, select, mention_event {nová zmínka} reply_event {nová "
       & "odpověď} assignment_event {nové přiřazení} approval_event {nová "
-      & "žádost o schválení} alert_event {nové upozornění} digest_event "
-      & "{nový souhrn} reminder_event {nová připomínka} other {nové "
+      & "žádost o schválení} alert_event {nová výstraha} digest_event "
+      & "{nový souhrn} reminder_event {nové připomenutí} other {nové "
       & "systémové oznámení}}");
    P ("label.notifications.notification_channel_label",
       "{channel, select, in_app_channel {oznámení v aplikaci} email_channel "
@@ -272,8 +272,8 @@ begin
    P ("label.notifications.notification_event_label",
       "{event, select, mention_event {zmínka} reply_event {odpověď} "
       & "assignment_event {přiřazení} approval_event {žádost o "
-      & "schválení} alert_event {upozornění} digest_event {souhrn} "
-      & "reminder_event {připomínka} other {systémové oznámení}}");
+      & "schválení} alert_event {výstraha} digest_event {souhrn} "
+      & "reminder_event {připomenutí} other {systémové oznámení}}");
    P ("label.notifications.notification_group_label",
       "{name}: {count, plural, =0 {žádná oznámení} one {1 oznámení} "
       & "few {{count, number} oznámení} many {{count, number} oznámení} "
@@ -281,8 +281,8 @@ begin
    P ("label.notifications.notification_label",
       "{subject} ({event, select, mention_event {zmínka} reply_event "
       & "{odpověď} assignment_event {přiřazení} approval_event {žádost o "
-      & "schválení} alert_event {upozornění} digest_event {souhrn} "
-      & "reminder_event {připomínka} other {systémové oznámení}}): "
+      & "schválení} alert_event {výstraha} digest_event {souhrn} "
+      & "reminder_event {připomenutí} other {systémové oznámení}}): "
       & "oznámení {state, select, unread_state {nepřečtené} read_state "
       & "{přečtené} archived_state {archivované} muted_state {ztlumené} "
       & "snoozed_state {odložené} other {potlačené}}");
@@ -525,7 +525,7 @@ begin
       & "SHA-256} other {tajný údaj}}");
    P ("label.secrets.sensitive_value_kind_label",
       "{kind, select, email_value {e-mail} phone_value {telefon} url_value "
-      & "{URL} ip_address_value {IP adresa} token_value {token} file_path_value "
+      & "{URL} ip_address_value {adresa IP} token_value {token} file_path_value "
       & "{cesta k souboru} account_id_value {ID účtu} payment_reference_value "
       & "{platební reference} log_field_value {pole protokolu} other {citlivá "
       & "hodnota}}");

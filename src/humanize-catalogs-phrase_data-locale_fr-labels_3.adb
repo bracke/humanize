@@ -166,7 +166,7 @@ begin
       & "{{count, number} d’éléments multimédias} other {{count, number} "
       & "éléments multimédias}}");
    P ("label.markup.table_navigation_label",
-      "{caption} ligne {row, number} sur {rows, number}, colonne {column, "
+      "{caption}, ligne {row, number} sur {rows, number}, colonne {column, "
       & "number} sur {columns, number}");
    P ("label.secrets.secret_count_label.total",
       "{count, plural, one {{count, number} secret} many {{count, number} de "
@@ -362,10 +362,9 @@ begin
       & "terminé}}} other {{done, number} sur {total, number} éléments "
       & "terminés}}");
    P ("label.attachments.upload_progress_label",
-      "{total, plural, =0 {aucun téléversement} one {{done, plural, =0 {0 "
-      & "sur 1 téléversement terminé} other {1 sur 1 téléversement "
-      & "terminé}}} other {{done, number} sur {total, number} téléversements "
-      & "terminés}}");
+      "{total, plural, =0 {aucun envoi} one {{done, plural, =0 {0 sur 1 envoi "
+      & "terminé} other {1 sur 1 envoi terminé}}} other {{done, number} sur "
+      & "{total, number} envois terminés}}");
    P ("label.events.capacity_label",
       "{capacity, plural, =0 {aucune place} one {{reserved, plural, =0 {0 sur "
       & "1 place réservée} other {1 sur 1 place réservée}}} other "

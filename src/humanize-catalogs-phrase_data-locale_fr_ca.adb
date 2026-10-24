@@ -6,6 +6,8 @@ procedure Locale_Fr_Ca (Target : in out Catalog_Text) is
    begin
       Add (Target, "fr-CA", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
 begin
    P ("business_days", "{days} {days, plural, one {jour ouvrable} other {jours ouvrables}}");
    P ("file.uploading", "téléversement en cours");
@@ -24,4 +26,5 @@ begin
    P ("calendar_range.weekend.this", "cette fin de semaine");
    P ("calendar_range.weekend.next", "la fin de semaine prochaine");
    P ("calendar_range.weekend_of", "fin de semaine du {date}");
+   Labels_1;
 end Locale_Fr_Ca;

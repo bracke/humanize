@@ -76,13 +76,13 @@ begin
       & "safe {fără amenințări} suspicious {suspect} other {infectat}}");
    P ("label.attachments.upload_error_label", "încărcarea {name} a eșuat: {reason}");
    P ("label.badges.badge_label",
-      "{name}: {state, select, default_badge {insignă} new_badge {insignă "
-      & "nouă} updated_badge {insignă actualizată} deprecated_badge "
-      & "{insignă învechită} selected_badge {insignă selectată} "
-      & "disabled_badge {insignă dezactivată} other {insignă care poate fi "
-      & "închisă}}, {tone, select, neutral_tone {ton neutru} info_tone {ton "
-      & "informativ} success_tone {ton de succes} warning_tone {ton de "
-      & "avertizare} danger_tone {ton de pericol} other {ton estompat}}");
+      "{name}: {state, select, default_badge {insignă implicită} new_badge "
+      & "{insignă nouă} updated_badge {insignă actualizată} "
+      & "deprecated_badge {insignă învechită} selected_badge {insignă "
+      & "selectată} disabled_badge {insignă dezactivată} other {insignă "
+      & "care poate fi închisă}}, {tone, select, neutral_tone {ton neutru} "
+      & "info_tone {ton informativ} success_tone {ton de succes} warning_tone "
+      & "{ton de avertizare} danger_tone {ton de pericol} other {ton estompat}}");
    P ("label.badges.badge_priority_label",
       "{priority, select, low_priority {insignă cu prioritate scăzută} "
       & "medium_priority {insignă cu prioritate medie} high_priority {insignă "
@@ -303,8 +303,8 @@ begin
    P ("label.data_quality.data_issue_label",
       "{issue, select, invalid_row {rând invalid} duplicate_record "
       & "{înregistrare duplicată} missing_column {coloană lipsă} "
-      & "unknown_field {câmp necunoscut} schema_mismatch {schemă "
-      & "nepotrivită} other {înregistrare omisă}}");
+      & "unknown_field {câmp necunoscut} schema_mismatch {nepotrivire de "
+      & "schemă} other {înregistrare omisă}}");
    P ("label.data_quality.import_check_state_label",
       "{state, select, dry_run_passed {rulare de test reușită} "
       & "dry_run_failed {rulare de test eșuată} import_valid {import valid} "
@@ -322,13 +322,13 @@ begin
    P ("label.data_quality.row_issue_label",
       "rândul {row, number}: {issue, select, invalid_row {rând invalid} "
       & "duplicate_record {înregistrare duplicată} missing_column {coloană "
-      & "lipsă} unknown_field {câmp necunoscut} schema_mismatch {schemă "
-      & "nepotrivită} other {înregistrare omisă}}");
+      & "lipsă} unknown_field {câmp necunoscut} schema_mismatch {nepotrivire "
+      & "de schemă} other {înregistrare omisă}}");
    P ("label.data_quality.source_file_issue_label",
       "{file_name}: {issue, select, invalid_row {rând invalid} "
       & "duplicate_record {înregistrare duplicată} missing_column {coloană "
-      & "lipsă} unknown_field {câmp necunoscut} schema_mismatch {schemă "
-      & "nepotrivită} other {înregistrare omisă}}");
+      & "lipsă} unknown_field {câmp necunoscut} schema_mismatch {nepotrivire "
+      & "de schemă} other {înregistrare omisă}}");
    P ("label.deployments.artifact_state_label",
       "{state, select, artifact_ready {artefact pregătit} artifact_uploaded "
       & "{artefact încărcat} artifact_signed {artefact semnat} "
@@ -626,11 +626,12 @@ begin
       & "binar} form_content {conținut de formular} other {conținut "
       & "necunoscut}}");
    P ("label.markup.tag_kind_label",
-      "{kind, select, document_tag {tag de document} metadata_tag {tag de "
-      & "metadate} section_tag {tag de secțiune} text_tag {tag de text} "
-      & "link_tag {tag de link} media_tag {tag media} form_tag {tag de "
-      & "formular} table_tag {tag de tabel} interactive_tag {tag interactiv} "
-      & "scripting_tag {tag de scripting} other {tag necunoscut}}");
+      "{kind, select, document_tag {etichetă de document} metadata_tag "
+      & "{etichetă de metadate} section_tag {etichetă de secțiune} text_tag "
+      & "{etichetă de text} link_tag {etichetă de link} media_tag {etichetă "
+      & "media} form_tag {etichetă de formular} table_tag {etichetă de tabel} "
+      & "interactive_tag {etichetă interactivă} scripting_tag {etichetă de "
+      & "scripting} other {etichetă necunoscută}}");
    P ("label.media.duration_label", "durată: {duration_text}");
    P ("label.media.media_kind_label",
       "{kind, select, image_media {imagine} video_media {video} audio_media "

@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+* Regional labels: European Portuguese ("ficheiro", "separador", "a enviar"),
+  Latin American Spanish, Canadian French ("courriel", "téléverser") and Hong
+  Kong Chinese ("電郵", "網絡") override the domain labels where they differ.
+  A second review pass corrected 432 labels across the shipped locales.
+
+* `Parsing.Phrases.Parse` reads back labels joined from parts (summaries,
+  accessible controls) and phrases with up to four selects; ordinal words
+  read back single-word round values in every locale.
+
+* More ordinal words: Ukrainian compound multipliers ("двадцятидвохтисячний"),
+  German round millions ("zwei­millionste", where CLDR 48 writes "zwei
+  Millionenste") and Lithuanian round hundreds and thousands
+  ("dvišimtasis", "dvitūkstantasis").
+
+* URL labels speak the locale: "empty URL", the redacted user and the query
+  parameter count; the URL itself stays as it is.
+
 * Composed colour names agree: the hue is a noun and its modifiers take its
   gender ("dunkles, gesättigtes Rot", "rose très clair pastel chaud"), through
   per-locale hue nouns, hue genders and agreeing modifier forms; a locale

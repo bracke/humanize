@@ -142,11 +142,11 @@ begin
       & "배열{count_known, select, false {} other { ({count, number}개)}}");
    P ("label.schema.constraint_label", "{name} 제약 조건: {value}");
    P ("label.schema.default_value_label", "{field_name} 필드 기본값: {value}");
-   P ("label.schema.deprecated_field_label", "사용 중단된 필드 {name}, {replacement} 사용");
+   P ("label.schema.deprecated_field_label", "지원 중단된 필드 {name}: 대신 {replacement} 사용");
    P ("label.schema.enum_options_label", "열거형 옵션 {count, number}개");
    P ("label.schema.example_value_label", "{field_name} 필드 예: {value}");
    P ("label.schema.field_state_label",
-      "{state, select, normal_field {일반 필드} deprecated_field {사용 "
+      "{state, select, normal_field {일반 필드} deprecated_field {지원 "
       & "중단된 필드} unknown_field {알 수 없는 필드} "
       & "read_only_field {읽기 전용 필드} write_only_field {쓰기 전용 "
       & "필드} other {계산된 필드}}");
@@ -434,15 +434,15 @@ begin
    P ("label.schema.type_mismatch_label",
       "필드 {field_name}: 예상 {expected, select, string_field "
       & "{문자열} integer_field {정수} decimal_field {소수} "
-      & "boolean_field {불리언} date_field {날짜} date_time_field "
-      & "{날짜/시간} object_field {객체} array_field {배열} enum_field "
+      & "boolean_field {불리언} date_field {날짜} date_time_field {날짜 "
+      & "및 시간} object_field {객체} array_field {배열} enum_field "
       & "{열거형} binary_field {바이너리} null_field {null} any_field "
-      & "{모든 값} other {알 수 없음}}, 실제 {actual, select, "
-      & "string_field {문자열} integer_field {정수} decimal_field {소수} "
-      & "boolean_field {불리언} date_field {날짜} date_time_field "
-      & "{날짜/시간} object_field {객체} array_field {배열} enum_field "
-      & "{열거형} binary_field {바이너리} null_field {null} any_field "
-      & "{모든 값} other {알 수 없음}}");
+      & "{임의 형식} other {알 수 없는 형식}}, 실제 {actual, "
+      & "select, string_field {문자열} integer_field {정수} decimal_field "
+      & "{소수} boolean_field {불리언} date_field {날짜} date_time_field "
+      & "{날짜 및 시간} object_field {객체} array_field {배열} "
+      & "enum_field {열거형} binary_field {바이너리} null_field {null} "
+      & "any_field {임의 형식} other {알 수 없는 형식}}");
    P ("label.diagnostics.issue_summary_label",
       "{state, select, blocking_only {차단 문제 {blocking, number}개} "
       & "blocking {{base}, 차단 문제 {blocking, number}개} only "
@@ -455,9 +455,9 @@ begin
       "{state, select, inside {{value}, 예상 범위 내} below {{value}, "
       & "예상 범위 미만} other {{value}, 예상 범위 초과}}");
    P ("label.thresholds.threshold_status_label",
-      "{state, select, critical {{value}, 위험 임계값 도달} warning "
+      "{state, select, critical {{value}, 심각 임계값 도달} warning "
       & "{{value}, 경고 임계값 도달} other {{value}, 정상 범위 내}}");
-   P ("label.thresholds.breach_label", "{state, select, ok {위반 없음} other {{difference} 위반}}");
+   P ("label.thresholds.breach_label", "{state, select, ok {초과하지 않음} other {{difference} 초과}}");
    P ("label.thresholds.target_delta_label",
       "{state, select, at {목표 달성} below {목표보다 {difference} "
       & "낮음} other {목표보다 {difference} 높음}}");
@@ -467,8 +467,8 @@ begin
    P ("label.thresholds.threshold_summary_label.none", "지표 없음");
    P ("label.thresholds.threshold_summary_label.normal", "정상 {count, number}개");
    P ("label.thresholds.threshold_summary_label.warnings", "경고 {count, number}개");
-   P ("label.thresholds.threshold_summary_label.critical", "위험 {count, number}개");
-   P ("label.thresholds.threshold_summary_label.breaches", "위반 {count, number}건");
+   P ("label.thresholds.threshold_summary_label.critical", "심각 {count, number}개");
+   P ("label.thresholds.threshold_summary_label.breaches", "초과 {count, number}건");
    P ("label.thresholds.target_window_label", "목표 {target} ±{tolerance}");
    P ("label.thresholds.tolerance_label", "허용 오차 {tolerance}");
    P ("label.thresholds.percent_of_limit_label", "한도의 {percent}");
@@ -545,8 +545,8 @@ begin
       & "{name}} other {{total, number}단계 중 {current, number}단계: "
       & "{name}}}");
    P ("label.navigation.breadcrumb_position_label",
-      "{total, plural, =0 {이동 경로 없음} =1 {이동 경로 1/1: "
-      & "{name}} other {이동 경로 {current, number}/{total, number}: "
+      "{total, plural, =0 {탐색 경로 없음} =1 {탐색 경로 1/1: "
+      & "{name}} other {탐색 경로 {current, number}/{total, number}: "
       & "{name}}}");
    P ("label.navigation.tab_label",
       "{total, plural, =0 {탭 없음} =1 {탭 1/1: {name}} other {탭 "

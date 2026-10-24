@@ -69,10 +69,10 @@ begin
             "jane.doe@example.com/12345678", Profile => Humanize.Secrets.Audit_Profile),
           Humanize.Secrets.Safe_Display_Label (Kind => Humanize.Secrets.Email_Value, Value =>
             "jane.doe@example.com/12345678", Profile => Humanize.Secrets.Audit_Profile));
-   Check (Locale, "label.secrets.secret_count_label", Plain,
+   Check (Locale, "label.secrets.secret_count_label", Phrase,
           Humanize.Secrets.Localized.Secret_Count_Label (C, Total => 7, Masked => 9, Unset => 4, Fingerprints => 6),
           Humanize.Secrets.Secret_Count_Label (Total => 7, Masked => 9, Unset => 4, Fingerprints => 6));
-   Check (Locale, "label.secrets.secret_count_label", Plain,
+   Check (Locale, "label.secrets.secret_count_label", Phrase,
           Humanize.Secrets.Localized.Secret_Count_Label (C, Total => 2, Masked => 0, Unset => 0, Fingerprints => 0),
           Humanize.Secrets.Secret_Count_Label (Total => 2, Masked => 0, Unset => 0, Fingerprints => 0));
    Check (Locale, "label.secrets.secret_kind_label", Phrase,

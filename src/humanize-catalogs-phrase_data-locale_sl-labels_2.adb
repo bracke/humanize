@@ -563,7 +563,7 @@ begin
       "{count, plural, =0 {prazen zaostanek} one {zaostanek: {count, number} "
       & "opravilo} two {zaostanek: {count, number} opravili} few {zaostanek: "
       & "{count, number} opravila} other {zaostanek: {count, number} opravil}}");
-   P ("label.tasks.blocker_label", "blokira: {name}");
+   P ("label.tasks.blocker_label", "blokirano zaradi: {name}");
    P ("label.tasks.complete_action_label",
       "{count, plural, =1 {dokončaj opravilo} one {dokončaj {count, number} "
       & "opravilo} two {dokončaj {count, number} opravili} few {dokončaj "
@@ -625,7 +625,7 @@ begin
       & "{opozorilni prag} critical_level {kritični prag} breached "
       & "{preseženo} other {neznano stanje praga}}");
    P ("label.versions.commit_distance_label",
-      "{behind, plural, =0 {{ahead, plural, =0 {ažurno} other {commiti "
+      "{behind, plural, =0 {{ahead, plural, =0 {na tekočem} other {commiti "
       & "naprej: {ahead, number}}}} other {{ahead, plural, =0 {commiti zadaj: "
       & "{behind, number}} other {commiti naprej: {ahead, number}, zadaj: "
       & "{behind, number}}}}}");

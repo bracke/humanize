@@ -1,20 +1,6 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Hi)
 procedure Labels_3 is
 begin
-   P ("label.search.filter_label",
-      "{name}: {value}, {state, select, active_filter {सक्रिय "
-      & "फ़िल्टर} inactive_filter {निष्क्रिय "
-      & "फ़िल्टर} other {बहिष्कृत "
-      & "फ़िल्टर}}");
-   P ("label.search.filter_state_label",
-      "{state, select, active_filter {सक्रिय "
-      & "फ़िल्टर} inactive_filter {निष्क्रिय "
-      & "फ़िल्टर} other {बहिष्कृत "
-      & "फ़िल्टर}}");
-   P ("label.search.no_results_label",
-      "“{query}” के लिए कोई परिणाम "
-      & "नहीं");
-   P ("label.search.recent_search_label", "हाल की खोज: “{query}”");
    P ("label.search.saved_search_label",
       "सहेजी गई खोज: {name}{count, plural, =0 {} other {, "
       & "{count, number} परिणाम}}");
@@ -72,8 +58,8 @@ begin
       & "पुराना}}");
    P ("label.secrets.secret_kind_label",
       "{kind, select, api_key {API कुंजी} live_api_key "
-      & "{लाइव API कुंजी} test_api_key {परीक्षण "
-      & "API कुंजी} github_token {GitHub टोकन} aws_access_key "
+      & "{लाइव API कुंजी} test_api_key {टेस्ट API "
+      & "कुंजी} github_token {GitHub टोकन} aws_access_key "
       & "{AWS एक्सेस कुंजी} google_api_key {Google API "
       & "कुंजी} slack_token {Slack टोकन} npm_token {npm "
       & "टोकन} bearer_token {बेयरर टोकन} jwt_token "
@@ -149,8 +135,8 @@ begin
       & "{{assignee} देख रहे हैं} other {{assignee} "
       & "कार्य के स्वामी हैं}}");
    P ("label.tasks.assignment_state_label",
-      "{state, select, unassigned {असाइन नहीं} assigned "
-      & "{सौंपा गया} reassigned {फिर से "
+      "{state, select, unassigned {सौंपा नहीं गया} "
+      & "assigned {सौंपा गया} reassigned {फिर से "
       & "सौंपा गया} watching {देख रहे हैं} "
       & "other {कार्य के स्वामी}}");
    P ("label.tasks.backlog_label",
@@ -304,6 +290,73 @@ begin
       & "से 1 असामान्य मान} other {{total, number} "
       & "अवलोकनों में से {outliers, number} "
       & "असामान्य मान}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {कोई अवलोकन "
+      & "नहीं} sample_too_small_shape {आकार बताने "
+      & "के लिए नमूना बहुत छोटा, {count, "
+      & "plural, one {{count, number} अवलोकन} other {{count, "
+      & "number} अवलोकन}}} flat_shape {{median} पर समतल "
+      & "वितरण} outlier_heavy_shape {{median} के आसपास "
+      & "अधिक असामान्य मानों वाला "
+      & "वितरण} volatile_shape {{median} के आसपास "
+      & "अस्थिर वितरण} clustered_shape {{median} के "
+      & "आसपास समूहित वितरण} wide_spread_shape "
+      & "{व्यापक रूप से फैला वितरण} "
+      & "wide_spread_range {{minimum} से {maximum} तक "
+      & "व्यापक रूप से फैला वितरण} "
+      & "right_skewed_shape {दाईं ओर विषम वितरण, "
+      & "माध्यिका {median}} left_skewed_shape {बाईं "
+      & "ओर विषम वितरण, माध्यिका "
+      & "{median}} other {{median} के आसपास अधिकतर "
+      & "संतुलित वितरण}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {खाली ईमेल} address "
+      & "{ईमेल पता} other {{domain} पर ईमेल}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {फ़ोन नंबर} redacted "
+      & "{फ़ोन नंबर छिपाया गया} other "
+      & "{{digits} पर समाप्त होने वाला "
+      & "फ़ोन}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {हैंडल} other {हैंडल "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label",
+      "{state, select, none {कोड प्रतीक} other {कोड "
+      & "प्रतीक {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "पता मेटाडेटा: {present, plural, one {{present, "
+      & "number} फ़ील्ड मौजूद} other {{present, number} "
+      & "फ़ील्ड मौजूद}}, {missing, plural, one {{missing, "
+      & "number} फ़ील्ड अनुपस्थित} other "
+      & "{{missing, number} फ़ील्ड अनुपस्थित}}");
+   P ("label.endpoints.host_label",
+      "{state, select, none {अज्ञात होस्ट} other "
+      & "{{host} {kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {अज्ञात एंडपॉइंट} "
+      & "other {{scheme}{host}{port} {kind} एंडपॉइंट}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {खाली URL} none {बिना "
+      & "पहचाने गए घटकों वाला URL} other "
+      & "{{count, plural, one {{count, number} घटक} other {{count, "
+      & "number} घटकों}} वाला URL: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {कोई क्वेरी "
+      & "पैरामीटर नहीं} one {{count, number} "
+      & "क्वेरी पैरामीटर} other {{count, number} "
+      & "क्वेरी पैरामीटर}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {सार्वजनिक IPv4 "
+      & "पता} ipv6_host {सार्वजनिक IPv6 पता} "
+      & "private_network_host {निजी नेटवर्क पता} "
+      & "localhost_host {लोकल होस्ट} other {IP पता "
+      & "नहीं}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} अमान्य CIDR} other {{cidr} "
+      & "{kind} नेटवर्क प्रीफ़िक्स {prefix}}}");
+   P ("label.resources.utilization_label",
+      "{total, number} {unit} में से {used, number} उपयोग "
+      & "में ({percent}, {band})");
    P ("label.resources.remaining_label",
       "{state, select, over {क्षमता से {count, number} {unit} "
       & "अधिक} other {{total, number} {unit} में से {count, "
@@ -319,6 +372,59 @@ begin
       & "अनुपलब्ध: कोई अनुरोध नहीं} "
       & "other {कैश हिट दर {percent}: {hits, number} हिट, "
       & "{misses, number} मिस}}");
+   P ("label.resources.saturation_label",
+      "{named, select, no {संसाधन} other {{name}}} {percent} "
+      & "{band}");
+   P ("label.versions.version_label",
+      "{state, select, both {संस्करण {version}, "
+      & "प्रीरिलीज़ {prerelease}, बिल्ड {build}} "
+      & "prerelease {संस्करण {version}, "
+      & "प्रीरिलीज़ {prerelease}} build "
+      & "{संस्करण {version}, बिल्ड {build}} other "
+      & "{संस्करण {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {समान संस्करण} "
+      & "major_upgrade {मेजर अपग्रेड} minor_upgrade "
+      & "{माइनर अपग्रेड} patch_upgrade {पैच "
+      & "अपग्रेड} prerelease_change "
+      & "{प्रीरिलीज़ परिवर्तन} "
+      & "build_metadata_change {बिल्ड मेटाडेटा "
+      & "परिवर्तन} downgrade {डाउनग्रेड} "
+      & "other {अज्ञात संस्करण "
+      & "परिवर्तन}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {ठीक संस्करण {version}} "
+      & "minimum_range {संस्करण {version} या नया} "
+      & "maximum_range {संस्करण {version} या "
+      & "पुराना} major_compatible_range {मेजर "
+      & "संस्करण {version} के साथ संगत} "
+      & "minor_compatible_range {माइनर संस्करण "
+      & "{version} के साथ संगत} other {संस्करण "
+      & "सीमा {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {प्रारंभिक विकास "
+      & "रिलीज़ {version}} prerelease "
+      & "{प्रीरिलीज़ {version}} major {मेजर "
+      & "रिलीज़ {version}} minor {माइनर "
+      & "रिलीज़ {version}} other {पैच रिलीज़ "
+      & "{version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {लिंक टैग} image {छवि "
+      & "टैग} paragraph {अनुच्छेद टैग} ordered_list "
+      & "{क्रमित सूची टैग} unordered_list "
+      & "{अक्रमित सूची टैग} list_item {सूची "
+      & "आइटम टैग} table_header_cell {तालिका "
+      & "शीर्ष सेल टैग} table_cell {तालिका "
+      & "सेल टैग} table_row {तालिका पंक्ति "
+      & "टैग} line_break {पंक्ति विराम टैग} "
+      & "thematic_break {विषयगत विराम टैग} "
+      & "heading_level_n {शीर्षक स्तर {level, number} "
+      & "टैग} other {{name} टैग}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {{name} एट्रिब्यूट} event "
+      & "{{name} इवेंट हैंडलर "
+      & "एट्रिब्यूट} other {{name} "
+      & "एट्रिब्यूट, मान “{value}”}}");
    P ("label.markup.attribute_count_label.total",
       "{count, plural, one {{count, number} एट्रिब्यूट} "
       & "other {{count, number} एट्रिब्यूट}}");
@@ -334,6 +440,19 @@ begin
       "{count, plural, one {{count, number} इवेंट "
       & "हैंडलर} other {{count, number} इवेंट "
       & "हैंडलर}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {टेक्स्ट "
+      & "सामग्री} html_content {HTML दस्तावेज़} "
+      & "json_content {JSON दस्तावेज़} xml_content {XML "
+      & "दस्तावेज़} image_content {छवि "
+      & "सामग्री} audio_content {ऑडियो "
+      & "सामग्री} video_content {वीडियो "
+      & "सामग्री} font_content {फ़ॉन्ट "
+      & "सामग्री} archive_content {आर्काइव "
+      & "सामग्री} binary_content {बाइनरी "
+      & "सामग्री} form_content {फ़ॉर्म "
+      & "सबमिशन} other {अज्ञात सामग्री}} "
+      & "({base})");
    P ("label.markup.heading_label", "शीर्षक स्तर {level, number}");
    P ("label.markup.tag_count_label.total",
       "{count, plural, one {{count, number} टैग} other {{count, number} "
@@ -362,16 +481,65 @@ begin
       & "other {{count, number} मीडिया तत्व}}");
    P ("label.markup.table_navigation_label",
       "{caption} पंक्ति {row, number}/{rows, number}, "
-      & "स्तंभ {column, number}/{columns, number}");
+      & "कॉलम {column, number}/{columns, number}");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} सेट नहीं} hidden_value "
+      & "{{kind} छिपा हुआ} masked_value {{kind} {shown}} "
+      & "fingerprint_only {{kind} फ़िंगरप्रिंट, "
+      & "अंत में {shown}} other {{kind}, अंत में "
+      & "{shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} सेट नहीं} other "
+      & "{{name} {kind}, अंत में {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {{name} क्रेडेंशियल "
+      & "हेडर सेट नहीं} other {{name} {kind}, अंत "
+      & "में {shown}}}");
+   P ("label.secrets.fingerprint_label",
+      "{algorithm} फ़िंगरप्रिंट, अंत में "
+      & "{shown}");
    P ("label.secrets.secret_count_label.total",
-      "{count, plural, one {{count, number} गुप्त मान} other "
-      & "{{count, number} गुप्त मान}}");
-   P ("label.secrets.secret_count_label.masked", "{count, number} छिपाए गए");
+      "{count, plural, one {{count, number} सीक्रेट} other "
+      & "{{count, number} सीक्रेट}}");
+   P ("label.secrets.secret_count_label.masked", "{count, number} मास्क किए गए");
    P ("label.secrets.secret_count_label.unset", "{count, number} सेट नहीं");
    P ("label.secrets.secret_count_label.fingerprints",
       "{count, plural, one {{count, number} "
       & "फ़िंगरप्रिंट} other {{count, number} "
       & "फ़िंगरप्रिंट}}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} सेट नहीं} redacted "
+      & "{{label} छिपाया गया} url_redacted {URL "
+      & "छिपाया गया} ip_redacted {IP पता "
+      & "छिपाया गया} path_ending {फ़ाइल पथ, "
+      & "अंत में {shown}} at {{label} {shown} पर} audit "
+      & "{{label} लंबाई {length, number}, अंत में "
+      & "{shown}} debug {{label} {shown}} other {{label}, अंत में "
+      & "{shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {अप्रचलित } "
+      & "unknown_field {अज्ञात } read_only_field "
+      & "{केवल-पठन } write_only_field {केवल-लेखन "
+      & "} computed_field {परिकलित } other {}}{presence, select, "
+      & "required_field {आवश्यक} optional_field "
+      & "{वैकल्पिक} conditional_field {सशर्त} other "
+      & "{उपस्थिति अज्ञात}}{nullable, select, "
+      & "non_nullable {, गैर-null} nullable {, null-योग्य} "
+      & "other {}} {kind, select, string_field {स्ट्रिंग} "
+      & "integer_field {पूर्णांक} decimal_field "
+      & "{दशमलव} boolean_field {बूलियन} date_field "
+      & "{दिनांक} date_time_field {दिनांक-समय} "
+      & "object_field {ऑब्जेक्ट} array_field {ऐरे} "
+      & "enum_field {एनम} binary_field {बाइनरी} null_field "
+      & "{null} any_field {कोई भी} other {अज्ञात}} "
+      & "फ़ील्ड {name}");
+   P ("label.schema.schema_summary_label.fields",
+      "{count, plural, one {{count, number} फ़ील्ड} other "
+      & "{{count, number} फ़ील्ड}}");
+   P ("label.schema.schema_summary_label.required", "{count, number} आवश्यक");
+   P ("label.schema.schema_summary_label.optional", "{count, number} वैकल्पिक");
+   P ("label.schema.schema_summary_label.deprecated", "{count, number} अप्रचलित");
+   P ("label.schema.schema_summary_label.unknown", "{count, number} अज्ञात");
    P ("label.schema.type_mismatch_label",
       "फ़ील्ड {field_name}: अपेक्षित {expected, "
       & "select, string_field {स्ट्रिंग} integer_field "
@@ -395,6 +563,14 @@ begin
       & "{{base}, {blocking, plural, one {{blocking, number} अवरोधक "
       & "समस्या} other {{blocking, number} अवरोधक "
       & "समस्याएँ}}} only {केवल {base}} other {{base}}}");
+   P ("label.diagnostics.check_run_summary_label.none", "कोई जाँच नहीं चली");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} सफल");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} विफल");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {{count, number} चेतावनी} other "
+      & "{{count, number} चेतावनियाँ}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} छोड़ी गईं");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} लंबित");
    P ("label.thresholds.metric_value_label", "{name} {value}");
    P ("label.thresholds.range_label",
       "{inclusive, select, inclusive_window {लक्ष्य सीमा "
@@ -442,6 +618,14 @@ begin
    P ("label.workflows.milestone_label",
       "{total, number} में से {current, number} "
       & "माइलस्टोन पूर्ण: {name}");
+   P ("label.workflows.workflow_summary_label.total",
+      "{count, plural, one {{count, number} आइटम} other {{count, "
+      & "number} आइटम}}");
+   P ("label.workflows.workflow_summary_label.completed", "{count, number} पूर्ण");
+   P ("label.workflows.workflow_summary_label.active", "{count, number} सक्रिय");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} अवरुद्ध");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} विफल");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} छोड़े गए");
    P ("label.workflows.workflow_progress_label",
       "{state, select, none {कोई वर्कफ़्लो "
       & "आइटम नहीं} half {वर्कफ़्लो आधा "
@@ -456,6 +640,14 @@ begin
    P ("label.changes.change_set_label.removed", "{count, number} हटाए गए");
    P ("label.changes.change_set_label.modified", "{count, number} बदले गए");
    P ("label.changes.change_set_label.unchanged", "{count, number} अपरिवर्तित");
+   P ("label.changes.change_summary_label.total",
+      "{count, plural, one {{count, number} आइटम} other {{count, "
+      & "number} आइटम}}");
+   P ("label.changes.change_summary_label.added", "{count, number} जोड़े गए");
+   P ("label.changes.change_summary_label.removed", "{count, number} हटाए गए");
+   P ("label.changes.change_summary_label.modified", "{count, number} बदले गए");
+   P ("label.changes.change_summary_label.renamed", "{count, number} के नाम बदले गए");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} अपरिवर्तित");
    P ("label.changes.sync_change_label.none", "कोई सिंक परिवर्तन नहीं");
    P ("label.changes.sync_change_label.uploaded", "{count, number} अपलोड किए गए");
    P ("label.changes.sync_change_label.downloaded", "{count, number} डाउनलोड किए गए");
@@ -504,196 +696,4 @@ begin
       & "दृश्यमान} other {{total, number} में से "
       & "{visible, number} पंक्तियाँ "
       & "दृश्यमान}}");
-   P ("label.tables.row_range_label",
-      "{state, select, none {कोई पंक्ति नहीं} "
-      & "single {पंक्ति {first_row, number}/{total, number}} other "
-      & "{पंक्तियाँ {first_row, number}-{last_row, "
-      & "number}/{total, number}}}");
-   P ("label.forms.remaining_characters_label",
-      "{state, select, unlimited {कोई वर्ण सीमा "
-      & "नहीं} none_left {कोई वर्ण शेष "
-      & "नहीं} left {{count, plural, one {{count, number} वर्ण} "
-      & "other {{count, number} वर्ण}} शेष} other {सीमा "
-      & "से {count, plural, one {{count, number} वर्ण} other "
-      & "{{count, number} वर्ण}} अधिक}}");
-   P ("label.forms.required_fields_label",
-      "{total, plural, =0 {कोई आवश्यक फ़ील्ड "
-      & "नहीं} one {{missing, plural, =0 {सभी आवश्यक "
-      & "फ़ील्ड पूर्ण} other {1 में से 1 "
-      & "आवश्यक फ़ील्ड अनुपस्थित}}} "
-      & "other {{missing, plural, =0 {सभी आवश्यक "
-      & "फ़ील्ड पूर्ण} other {{total, number} में "
-      & "से {missing, number} आवश्यक फ़ील्ड "
-      & "अनुपस्थित}}}}");
-   P ("label.forms.form_progress_label",
-      "{state, select, none {कोई फ़ील्ड नहीं} all "
-      & "{सभी फ़ील्ड पूर्ण} other {{total, number} "
-      & "में से {completed, number} फ़ील्ड "
-      & "पूर्ण}}");
-   P ("label.forms.section_progress_label",
-      "{state, select, none {{name}: कोई फ़ील्ड "
-      & "नहीं} all {{name}: सभी फ़ील्ड "
-      & "पूर्ण} other {{name}: {total, number} में से "
-      & "{completed, number} फ़ील्ड पूर्ण}}");
-   P ("label.forms.form_step_label",
-      "{total, plural, =0 {कोई फ़ॉर्म चरण "
-      & "नहीं} one {चरण 1/1: {name}} other {चरण {current, "
-      & "number}/{total, number}: {name}}}");
-   P ("label.navigation.breadcrumb_position_label",
-      "{total, plural, =0 {कोई ब्रेडक्रंब "
-      & "नहीं} one {ब्रेडक्रंब 1/1: {name}} other "
-      & "{ब्रेडक्रंब {current, number}/{total, number}: "
-      & "{name}}}");
-   P ("label.navigation.tab_label",
-      "{total, plural, =0 {कोई टैब नहीं} one {टैब "
-      & "1/1: {name}} other {टैब {current, number}/{total, number}: "
-      & "{name}}}");
-   P ("label.notifications.inbox_label",
-      "{total, plural, =0 {इनबॉक्स खाली} one {{unread, "
-      & "plural, =0 {सभी सूचनाएँ पढ़ी गईं} "
-      & "other {1 में से 1 सूचना अपठित}}} other "
-      & "{{unread, plural, =0 {सभी सूचनाएँ पढ़ी "
-      & "गईं} other {{total, number} में से {unread, number} "
-      & "सूचनाएँ अपठित}}}}");
-   P ("label.notifications.delivery_attempt_label",
-      "डिलीवरी प्रयास {attempt, "
-      & "number}/{max_attempts, number}");
-   P ("label.tasks.checklist_label",
-      "{total, plural, =0 {कोई चेकलिस्ट आइटम "
-      & "नहीं} one {{done, plural, =0 {1 में से 0 "
-      & "आइटम पूर्ण} other {1 में से 1 आइटम "
-      & "पूर्ण}}} other {{total, number} में से {done, "
-      & "number} आइटम पूर्ण}}");
-   P ("label.attachments.upload_progress_label",
-      "{total, plural, =0 {कोई अपलोड नहीं} one "
-      & "{{done, plural, =0 {1 में से 0 अपलोड "
-      & "पूर्ण} other {1 में से 1 अपलोड "
-      & "पूर्ण}}} other {{total, number} में से {done, "
-      & "number} अपलोड पूर्ण}}");
-   P ("label.events.capacity_label",
-      "{capacity, plural, =0 {कोई क्षमता नहीं} one "
-      & "{{reserved, plural, =0 {1 में से 0 सीट "
-      & "आरक्षित} other {1 में से 1 सीट "
-      & "आरक्षित}}} other {{capacity, number} में से "
-      & "{reserved, number} सीटें आरक्षित}}");
-   P ("label.events.waitlist_label",
-      "{total, plural, =0 {प्रतीक्षा सूची में "
-      & "स्थान {position, number}} other {प्रतीक्षा "
-      & "सूची में स्थान {position, number}/{total, "
-      & "number}}}");
-   P ("label.comparisons.multi_value_summary",
-      "{mode, select, comparison_compact {{name} {changed, number}/{total, "
-      & "number} बदले} other {{name}: {changed, number} बदले, "
-      & "{unchanged, number} अपरिवर्तित, कुल {total, "
-      & "number}}}");
-   P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
-   P ("label.groups", "{first}; {second}");
-   P ("label.parts", "{first}, {second}");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
-      "वर्तमान अग्रभूमि {v1}:{v2, number} "
-      & "पर बड़े टेक्स्ट के "
-      & "कंट्रास्ट को पूरा करती है");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_d_n",
-      "वर्तमान अग्रभूमि {v1}:{v2, number} "
-      & "पर सामान्य टेक्स्ट के "
-      & "कंट्रास्ट को पूरा करती है");
-   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_enhanced_text_contrast",
-      "{v2, number}:{v3, number} उन्नत टेक्स्ट के "
-      & "कंट्रास्ट के लिए {v1} का "
-      & "उपयोग करें");
-   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_large_text_contrast",
-      "{v2, number}:{v3, number} बड़े टेक्स्ट के "
-      & "कंट्रास्ट के लिए {v1} का "
-      & "उपयोग करें");
-   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_normal_text_contrast",
-      "{v2}:{v3, number} सामान्य टेक्स्ट के "
-      & "कंट्रास्ट के लिए {v1} का "
-      & "उपयोग करें");
-   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_large_text_contrast",
-      "{v2}:{v3, number} बड़े टेक्स्ट के "
-      & "कंट्रास्ट के लिए {v1} का "
-      & "उपयोग करें");
-   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_enhanced_text_contrast",
-      "{v2}:{v3, number} उन्नत टेक्स्ट के "
-      & "कंट्रास्ट के लिए {v1} का "
-      & "उपयोग करें");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_n_n",
-      "वर्तमान अग्रभूमि {v1, number}:{v2, "
-      & "number} पर बड़े टेक्स्ट के "
-      & "कंट्रास्ट को पूरा करती है");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_n_n",
-      "वर्तमान अग्रभूमि {v1, number}:{v2, "
-      & "number} पर सामान्य टेक्स्ट के "
-      & "कंट्रास्ट को पूरा करती है");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_d_n",
-      "वर्तमान अग्रभूमि {v1}:{v2, number} "
-      & "पर उन्नत टेक्स्ट के "
-      & "कंट्रास्ट को पूरा करती है");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_n_n",
-      "वर्तमान अग्रभूमि {v1, number}:{v2, "
-      & "number} पर उन्नत टेक्स्ट के "
-      & "कंट्रास्ट को पूरा करती है");
-   P ("label.contrast.color_vision_deficiency_label.protanopia_low_confusion_risk_delta_n",
-      "प्रोटानोपिया: भ्रम का कम "
-      & "जोखिम, डेल्टा {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.deuteranopia_moderate_confusion_risk_delta_n",
-      "ड्यूटेरानोपिया: भ्रम का "
-      & "मध्यम जोखिम, डेल्टा {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.tritanopia_moderate_confusion_risk_delta_n",
-      "ट्राइटानोपिया: भ्रम का "
-      & "मध्यम जोखिम, डेल्टा {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.achromatopsia_high_confusion_risk_delta_n",
-      "एक्रोमैटोप्सिया: भ्रम का "
-      & "उच्च जोखिम, डेल्टा {v1, number}");
-   P ("label.models.perceptual_difference_label.cie76_delta_d_dramatic_perceptual_difference",
-      "CIE76 डेल्टा {v1}, अत्यधिक दृश्य "
-      & "अंतर");
-   P ("label.models.perceptual_difference_label.cie94_delta_d_dramatic_perceptual_difference",
-      "CIE94 डेल्टा {v1}, अत्यधिक दृश्य "
-      & "अंतर");
-   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_dramatic_perceptual_difference",
-      "CIE94 टेक्सटाइल डेल्टा {v1}, "
-      & "अत्यधिक दृश्य अंतर");
-   P ("label.models.perceptual_difference_label.ciede2000_delta_n_dramatic_perceptual_difference",
-      "CIEDE2000 डेल्टा {v1, number}, अत्यधिक "
-      & "दृश्य अंतर");
-   P ("label.models.perceptual_difference_label.oklab_delta_d_large_perceptual_difference",
-      "OKLab डेल्टा {v1}, बड़ा दृश्य "
-      & "अंतर");
-   P ("label.contrast.color_vision_deficiency_label.protanopia_moderate_confusion_risk_delta_n",
-      "प्रोटानोपिया: भ्रम का "
-      & "मध्यम जोखिम, डेल्टा {v1, number}");
-   P ("label.models.perceptual_difference_label.cie94_delta_n_dramatic_perceptual_difference",
-      "CIE94 डेल्टा {v1, number}, अत्यधिक "
-      & "दृश्य अंतर");
-   P ("label.models.perceptual_difference_label.ciede2000_delta_d_dramatic_perceptual_difference",
-      "CIEDE2000 डेल्टा {v1}, अत्यधिक "
-      & "दृश्य अंतर");
-   P ("label.models.perceptual_difference_label.oklab_delta_d_dramatic_perceptual_difference",
-      "OKLab डेल्टा {v1}, अत्यधिक दृश्य "
-      & "अंतर");
-   P ("label.contrast.color_vision_deficiency_label.achromatopsia_low_confusion_risk_delta_n",
-      "एक्रोमैटोप्सिया: भ्रम का "
-      & "कम जोखिम, डेल्टा {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.protanopia_distinct_delta_n",
-      "प्रोटानोपिया: स्पष्ट रूप "
-      & "से अलग, डेल्टा {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.deuteranopia_distinct_delta_n",
-      "ड्यूटेरानोपिया: स्पष्ट "
-      & "रूप से अलग, डेल्टा {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.tritanopia_distinct_delta_n",
-      "ट्राइटानोपिया: स्पष्ट रूप "
-      & "से अलग, डेल्टा {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.achromatopsia_distinct_delta_n",
-      "एक्रोमैटोप्सिया: स्पष्ट "
-      & "रूप से अलग, डेल्टा {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.achromatopsia_moderate_confusion_risk_delta_n",
-      "एक्रोमैटोप्सिया: भ्रम का "
-      & "मध्यम जोखिम, डेल्टा {v1, number}");
-   P ("label.models.perceptual_difference_label.cie76_delta_d_large_perceptual_difference",
-      "CIE76 डेल्टा {v1}, बड़ा दृश्य "
-      & "अंतर");
-   P ("label.models.perceptual_difference_label.cie94_delta_d_large_perceptual_difference",
-      "CIE94 डेल्टा {v1}, बड़ा दृश्य "
-      & "अंतर");
 end Labels_3;

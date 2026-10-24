@@ -29,8 +29,8 @@ begin
       & "number} di commit indietro} other {{behind, number} commit "
       & "indietro}}}}}}");
    P ("label.workflows.approval_label",
-      "{waiting, select, false {approvato da {approver}} other {in attesa di "
-      & "approvazione da {approver}}}");
+      "{waiting, select, false {approvato da {approver}} other {in attesa "
+      & "dell’approvazione di {approver}}}");
    P ("label.workflows.attempt_label",
       "{limit, plural, one {{attempt, plural, one {tentativo {attempt, "
       & "number} di {limit, number}} other {tentativo {attempt, number} di "
@@ -229,9 +229,9 @@ begin
    P ("label.thresholds.budget_used_label", "{used} utilizzati su {budget}");
    P ("label.workflows.step_label", "passaggio {current, number} di {total, number}: {name}");
    P ("label.workflows.milestone_label",
-      "{current, number} di {total, plural, one {{total, number} traguardo "
-      & "completato} many {{total, number} di traguardi completati} other "
-      & "{{total, number} traguardi completati}}: {name}");
+      "{current, number} di {total, plural, one {{total, number} milestone "
+      & "completata} many {{total, number} di milestone completate} other "
+      & "{{total, number} milestone completate}}: {name}");
    P ("label.workflows.workflow_progress_label",
       "{state, select, none {nessun elemento del flusso di lavoro} half "
       & "{flusso di lavoro a metà} other {{completed, number} di {total, "
@@ -276,9 +276,9 @@ begin
       & "modifiche revisionate} other {{reviewed, number} di {total, number} "
       & "modifiche revisionate}}");
    P ("label.changes.numeric_field_change_label",
-      "{state, select, same {{field_name} invariato a {new_value}} up "
-      & "{{field_name} aumentato da {old_value} a {new_value}} other "
-      & "{{field_name} diminuito da {old_value} a {new_value}}}");
+      "{state, select, same {{field_name}: invariato ({new_value})} up "
+      & "{{field_name}: aumentato da {old_value} a {new_value}} other "
+      & "{{field_name}: diminuito da {old_value} a {new_value}}}");
    P ("label.tables.selection_label",
       "{state, select, no_rows {nessuna riga selezionabile} none {nessuna "
       & "riga selezionata} all {{total, plural, one {{total, number} riga "
@@ -318,8 +318,9 @@ begin
       & "=0 {tutti i campi obbligatori compilati} other {manca 1 campo "
       & "obbligatorio su 1}}} other {{missing, plural, =0 {tutti i campi "
       & "obbligatori compilati} one {manca {missing, number} campo obbligatorio "
-      & "su {total, number}} other {mancano {missing, number} campi obbligatori "
-      & "su {total, number}}}}}");
+      & "su {total, number}} many {mancano {missing, number} di campi "
+      & "obbligatori su {total, number}} other {mancano {missing, number} campi "
+      & "obbligatori su {total, number}}}}}");
    P ("label.forms.form_progress_label",
       "{state, select, none {nessun campo} all {tutti i campi compilati} "
       & "other {{completed, number} di {total, plural, one {{total, number} "
@@ -344,8 +345,11 @@ begin
    P ("label.notifications.inbox_label",
       "{total, plural, =0 {posta in arrivo vuota} one {{unread, plural, =0 "
       & "{tutte le notifiche lette} other {1 notifica non letta su 1}}} other "
-      & "{{unread, plural, =0 {tutte le notifiche lette} other {{unread, "
-      & "number} non lette su {total, number} notifiche}}}}");
+      & "{{unread, plural, =0 {tutte le notifiche lette} one {1 non letta su "
+      & "{total, plural, many {{total, number} di notifiche} other {{total, "
+      & "number} notifiche}}} other {{unread, number} non lette su {total, "
+      & "plural, many {{total, number} di notifiche} other {{total, number} "
+      & "notifiche}}}}}}");
    P ("label.notifications.delivery_attempt_label",
       "tentativo di consegna {attempt, number} di {max_attempts, number}");
    P ("label.tasks.checklist_label",
@@ -692,9 +696,4 @@ begin
    P ("label.contrast.alpha_contrast_label.n_n_normal_text_contrast_after_alpha_compositing",
       "{v1, number}:{v2, number}, contrasto per testo normale dopo la "
       & "composizione alfa");
-   P ("label.contrast.color_accessibility_summary.protanopia_moderate_confusion_risk",
-      "protanopia: rischio di confusione moderato");
-   P ("label.contrast.alpha_contrast_label.d_n_normal_text_contrast_after_alpha_compositing",
-      "{v1}:{v2, number}, contrasto per testo normale dopo la composizione "
-      & "alfa");
 end Labels_3;

@@ -1,6 +1,161 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Fi)
 procedure Labels_3 is
 begin
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} ei asetettu} other {{name} "
+      & "{kind}, loppuosa {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {tunnistusotsake {name} ei asetettu} other "
+      & "{{name} {kind}, loppuosa {shown}}}");
+   P ("label.secrets.fingerprint_label", "{algorithm}-sormenjälki, loppuosa {shown}");
+   P ("label.secrets.secret_count_label.total",
+      "{count, plural, one {1 salaisuus} other {{count, number} salaisuutta}}");
+   P ("label.secrets.secret_count_label.masked", "{count, number} peitetty");
+   P ("label.secrets.secret_count_label.unset", "{count, number} asettamatta");
+   P ("label.secrets.secret_count_label.fingerprints",
+      "{count, plural, one {1 sormenjälki} other {{count, number} "
+      & "sormenjälkeä}}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} ei asetettu} redacted {{label} "
+      & "piilotettu} url_redacted {URL piilotettu} ip_redacted {IP-osoite "
+      & "piilotettu} path_ending {tiedostopolku, loppuosa {shown}} at {{label}, "
+      & "osoite {shown}} audit {{label}, pituus {length, number}, loppuosa "
+      & "{shown}} debug {{label} {shown}} other {{label}, loppuosa {shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {vanhentunut } unknown_field "
+      & "{tuntematon } read_only_field {vain luettava } write_only_field {vain "
+      & "kirjoitettava } computed_field {laskettu } other {}}{presence, select, "
+      & "required_field {pakollinen} optional_field {valinnainen} "
+      & "conditional_field {ehdollinen} other {läsnäololtaan tuntematon}} "
+      & "kenttä {name}, tyyppi {kind, select, string_field {merkkijono} "
+      & "integer_field {kokonaisluku} decimal_field {desimaaliluku} "
+      & "boolean_field {totuusarvo} date_field {päivämäärä} "
+      & "date_time_field {päivämäärä ja aika} object_field {objekti} "
+      & "array_field {taulukko} enum_field {enum} binary_field {binääri} "
+      & "null_field {null} any_field {mikä tahansa} other "
+      & "{tuntematon}}{nullable, select, non_nullable {, ei null} nullable {, "
+      & "null sallittu} other {}}");
+   P ("label.schema.schema_summary_label.fields",
+      "{count, plural, one {1 kenttä} other {{count, number} kenttää}}");
+   P ("label.schema.schema_summary_label.required",
+      "{count, plural, one {1 pakollinen} other {{count, number} pakollista}}");
+   P ("label.schema.schema_summary_label.optional",
+      "{count, plural, one {1 valinnainen} other {{count, number} "
+      & "valinnaista}}");
+   P ("label.schema.schema_summary_label.deprecated",
+      "{count, plural, one {1 vanhentunut} other {{count, number} "
+      & "vanhentunutta}}");
+   P ("label.schema.schema_summary_label.unknown",
+      "{count, plural, one {1 tuntematon} other {{count, number} "
+      & "tuntematonta}}");
+   P ("label.schema.type_mismatch_label",
+      "kenttä {field_name}: odotettiin {expected, select, string_field "
+      & "{merkkijonoa} integer_field {kokonaislukua} decimal_field "
+      & "{desimaalilukua} boolean_field {totuusarvoa} date_field "
+      & "{päivämäärää} date_time_field {aikaleimaa} object_field "
+      & "{objektia} array_field {taulukkoa} enum_field {enum-arvoa} "
+      & "binary_field {binääriarvoa} null_field {null-arvoa} any_field {mitä "
+      & "tahansa} other {tuntematonta}}, saatiin {actual, select, string_field "
+      & "{merkkijono} integer_field {kokonaisluku} decimal_field "
+      & "{desimaaliluku} boolean_field {totuusarvo} date_field "
+      & "{päivämäärä} date_time_field {aikaleima} object_field {objekti} "
+      & "array_field {taulukko} enum_field {enum-arvo} binary_field "
+      & "{binääriarvo} null_field {null-arvo} any_field {mikä tahansa} other "
+      & "{tuntematon}}");
+   P ("label.diagnostics.issue_summary_label",
+      "{state, select, blocking_only {{blocking, plural, one {1 estävä "
+      & "ongelma} other {{blocking, number} estävää ongelmaa}}} blocking "
+      & "{{base}, {blocking, plural, one {1 estävä ongelma} other {{blocking, "
+      & "number} estävää ongelmaa}}} only {vain {base}} other {{base}}}");
+   P ("label.diagnostics.check_run_summary_label.none", "ei suoritettuja tarkistuksia");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} hyväksytty");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} epäonnistui");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 varoitus} other {{count, number} varoitusta}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} ohitettu");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} odottaa");
+   P ("label.thresholds.metric_value_label", "{name} {value}");
+   P ("label.thresholds.range_label",
+      "{inclusive, select, inclusive_window {tavoitealue {low}–{high} "
+      & "(päätepisteet mukaan lukien)} other {tavoiteikkuna {low}–{high}}}");
+   P ("label.thresholds.window_status_label",
+      "{state, select, inside {{value} odotetulla vaihteluvälillä} below "
+      & "{{value} alle odotetun vaihteluvälin} other {{value} yli odotetun "
+      & "vaihteluvälin}}");
+   P ("label.thresholds.threshold_status_label",
+      "{state, select, critical {{value} kriittisessä kynnyksessä} warning "
+      & "{{value} varoituskynnyksessä} other {{value} normaalilla alueella}}");
+   P ("label.thresholds.breach_label", "{state, select, ok {ei ylitetty} other {ylitetty {difference} verran}}");
+   P ("label.thresholds.target_delta_label",
+      "{state, select, at {tavoitteessa} below {{difference} alle tavoitteen} "
+      & "other {{difference} yli tavoitteen}}");
+   P ("label.thresholds.near_limit_label",
+      "{state, select, breached {raja ylitetty} near {lähellä rajaa, "
+      & "{distance} jäljellä} other {{distance} rajaan}}");
+   P ("label.thresholds.threshold_summary_label.none", "ei mittareita");
+   P ("label.thresholds.threshold_summary_label.normal",
+      "{count, plural, one {1 normaali} other {{count, number} normaalia}}");
+   P ("label.thresholds.threshold_summary_label.warnings",
+      "{count, plural, one {1 varoitus} other {{count, number} varoitusta}}");
+   P ("label.thresholds.threshold_summary_label.critical",
+      "{count, plural, one {1 kriittinen} other {{count, number} "
+      & "kriittistä}}");
+   P ("label.thresholds.threshold_summary_label.breaches",
+      "{count, plural, one {1 ylitys} other {{count, number} ylitystä}}");
+   P ("label.thresholds.target_window_label", "tavoite {target} ± {tolerance}");
+   P ("label.thresholds.tolerance_label", "toleranssi {tolerance}");
+   P ("label.thresholds.percent_of_limit_label", "{percent} rajasta");
+   P ("label.thresholds.remaining_to_limit_label",
+      "{state, select, exceeded {raja ylitetty {amount} verran} other "
+      & "{{amount} jäljellä}}");
+   P ("label.thresholds.budget_used_label", "{used} / {budget} käytetty");
+   P ("label.workflows.step_label", "vaihe {current, number}/{total, number}: {name}");
+   P ("label.workflows.milestone_label", "{current, number}/{total, number} välitavoitetta saavutettu: {name}");
+   P ("label.workflows.workflow_summary_label.total",
+      "{count, plural, one {1 kohde} other {{count, number} kohdetta}}");
+   P ("label.workflows.workflow_summary_label.completed",
+      "{count, plural, one {1 valmis} other {{count, number} valmista}}");
+   P ("label.workflows.workflow_summary_label.active",
+      "{count, plural, one {1 aktiivinen} other {{count, number} aktiivista}}");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} estetty");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} epäonnistui");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} ohitettu");
+   P ("label.workflows.workflow_progress_label",
+      "{state, select, none {ei työnkulun kohteita} half {työnkulku "
+      & "puolivälissä} other {{completed, number}/{total, number} valmiina}}");
+   P ("label.workflows.queue_position_label",
+      "{total, plural, =0 {jonossa sijalla {position, number}} other {jonossa "
+      & "sijalla {position, number}/{total, number}}}");
+   P ("label.changes.change_set_label.none", "ei muutoksia");
+   P ("label.changes.change_set_label.added", "{count, number} lisätty");
+   P ("label.changes.change_set_label.removed", "{count, number} poistettu");
+   P ("label.changes.change_set_label.modified", "{count, number} muutettu");
+   P ("label.changes.change_set_label.unchanged", "{count, number} ennallaan");
+   P ("label.changes.change_summary_label.total", "{count, plural, one {1 kohde} other {{count, number} kohdetta}}");
+   P ("label.changes.change_summary_label.added", "{count, number} lisätty");
+   P ("label.changes.change_summary_label.removed", "{count, number} poistettu");
+   P ("label.changes.change_summary_label.modified", "{count, number} muutettu");
+   P ("label.changes.change_summary_label.renamed", "{count, number} nimetty uudelleen");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} ennallaan");
+   P ("label.changes.sync_change_label.none", "ei synkronointimuutoksia");
+   P ("label.changes.sync_change_label.uploaded", "{count, number} lähetetty");
+   P ("label.changes.sync_change_label.downloaded", "{count, number} ladattu");
+   P ("label.changes.sync_change_label.deleted", "{count, number} poistettu");
+   P ("label.changes.sync_change_label.conflicts",
+      "{count, plural, one {1 ristiriita} other {{count, number} "
+      & "ristiriitaa}}");
+   P ("label.changes.net_change_label",
+      "{state, select, none {ei nettomuutosta} up {netto +{count, plural, one "
+      & "{1 kohde} other {{count, number} kohdetta}}} other {netto -{count, "
+      & "plural, one {1 kohde} other {{count, number} kohdetta}}}}");
+   P ("label.changes.review_progress_label",
+      "{state, select, none {ei tarkistettavia muutoksia} all {kaikki "
+      & "muutokset tarkistettu} other {{reviewed, number}/{total, number} "
+      & "muutosta tarkistettu}}");
+   P ("label.changes.numeric_field_change_label",
+      "{state, select, same {{field_name} ennallaan: {new_value}} up "
+      & "{{field_name} kasvoi: {old_value} → {new_value}} other {{field_name} "
+      & "pieneni: {old_value} → {new_value}}}");
    P ("label.tables.selection_label",
       "{state, select, no_rows {ei valittavia rivejä} none {ei valittuja "
       & "rivejä} all {{total, plural, one {1 rivi valittu} other {kaikki "
@@ -76,9 +231,79 @@ begin
       "{mode, select, comparison_compact {{name} {changed, number}/{total, "
       & "number} muuttunut} other {{name}: {changed, number} muuttunut, "
       & "{unchanged, number} ennallaan, yhteensä {total, number}}}");
+   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{brightness} {chroma} {temperature} {base, select, pink {{hue}} other "
+      & "{{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
-   P ("label.groups", "{first}; {second}");
-   P ("label.parts", "{first}, {second}");
+   P ("label.markup.accessible_control_label.control",
+      "{named, select, no {nimetön {role, select, button_control {painike} "
+      & "link_control {linkki} tab_control {välilehti} menu_item_control "
+      & "{valikkokohde} checkbox_control {valintaruutu} radio_control "
+      & "{valintanappi} text_field_control {tekstikenttä} progress_control "
+      & "{edistymispalkki} table_cell_control {taulukon solu} region_control "
+      & "{alue} other {ohjausobjekti}}} other {{name}, {role, select, "
+      & "button_control {painike} link_control {linkki} tab_control "
+      & "{välilehti} menu_item_control {valikkokohde} checkbox_control "
+      & "{valintaruutu} radio_control {valintanappi} text_field_control "
+      & "{tekstikenttä} progress_control {edistymispalkki} table_cell_control "
+      & "{taulukon solu} region_control {alue} other {ohjausobjekti}}}}");
+   P ("label.markup.accessible_control_label.selected", "valittu");
+   P ("label.markup.accessible_control_label.expanded", "laajennettu");
+   P ("label.markup.accessible_control_label.current", "nykyinen");
+   P ("label.markup.accessible_control_label.disabled", "poistettu käytöstä");
+   P ("label.markup.accessible_control_label.required", "pakollinen");
+   P ("label.markup.accessible_control_label.invalid", "virheellinen");
+   P ("label.markup.accessible_control_label.count",
+      "{count, plural, one {1 kohde} other {{count, number} kohdetta}}");
+   P ("label.markup.accessible_control_label.position", "kohde {position}/{total}");
+   P ("label.markup.accessible_control_label.issues",
+      "{count, plural, one {1 ongelma} other {{count, number} ongelmaa}}");
+   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
+   P ("label.endpoints.url_component.scheme", "skeema");
+   P ("label.endpoints.url_component.host", "isäntä");
+   P ("label.endpoints.url_component.path", "polku");
+   P ("label.endpoints.url_component.query", "kysely");
+   P ("label.endpoints.url_component.fragment", "fragmentti");
+   P ("label.names.hue_noun.red", "punainen");
+   P ("label.names.hue_noun.orange", "oranssi");
+   P ("label.names.hue_noun.yellow", "keltainen");
+   P ("label.names.hue_noun.green", "vihreä");
+   P ("label.names.hue_noun.cyan", "syaani");
+   P ("label.names.hue_noun.blue", "sininen");
+   P ("label.names.hue_noun.purple", "violetti");
+   P ("label.names.hue_noun.magenta", "magenta");
+   P ("label.names.hue_noun.neutral", "neutraali sävy");
+   P ("label.names.hue_noun.pink", "vaaleanpunainen");
+   P ("label.names.hue_gender.red", "other");
+   P ("label.names.hue_gender.orange", "other");
+   P ("label.names.hue_gender.yellow", "other");
+   P ("label.names.hue_gender.green", "other");
+   P ("label.names.hue_gender.cyan", "other");
+   P ("label.names.hue_gender.blue", "other");
+   P ("label.names.hue_gender.purple", "other");
+   P ("label.names.hue_gender.magenta", "other");
+   P ("label.names.hue_gender.neutral", "other");
+   P ("label.names.hue_gender.pink", "other");
+   P ("label.names.agree.very_dark", "{gender, select, other {hyvin tumma}}");
+   P ("label.names.agree.dark", "{gender, select, other {tumma}}");
+   P ("label.names.agree.medium_brightness", "{gender, select, other {keskikirkas}}");
+   P ("label.names.agree.light", "{gender, select, other {vaalea}}");
+   P ("label.names.agree.very_light", "{gender, select, other {hyvin vaalea}}");
+   P ("label.names.agree.desaturated", "{gender, select, other {haalistunut}}");
+   P ("label.names.agree.muted", "{gender, select, other {hillitty}}");
+   P ("label.names.agree.neutral", "{gender, select, other {neutraali}}");
+   P ("label.names.agree.saturated", "{gender, select, other {kylläinen}}");
+   P ("label.names.agree.vivid", "{gender, select, other {kirkas}}");
+   P ("label.names.agree.grayish", "{gender, select, other {harmahtava}}");
+   P ("label.names.agree.soft", "{gender, select, other {pehmeä}}");
+   P ("label.names.agree.moderate_chroma", "{gender, select, other {kohtalaisen kromaattinen}}");
+   P ("label.names.agree.high_chroma", "{gender, select, other {voimakkaan kromaattinen}}");
+   P ("label.names.agree.pastel", "{gender, select, other {pastellinen}}");
+   P ("label.names.agree.warm", "{gender, select, other {lämmin}}");
+   P ("label.names.agree.cool", "{gender, select, other {viileä}}");
+   P ("label.names.agree.neutral_temperature", "{gender, select, other {lämpötilaltaan neutraali}}");
+   P ("label.names.agree.balanced_temperature", "{gender, select, other {lämpötilaltaan tasapainoinen}}");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
       "nykyinen tekstin väri täyttää suuren tekstin kontrastivaatimuksen: "
       & "{v1}:{v2, number}");
@@ -156,19 +381,19 @@ begin
    P ("label.models.perceptual_difference_label.ciede2000_delta_d_large_perceptual_difference",
       "CIEDE2000 delta {v1}, suuri havaittava ero");
    P ("label.models.perceptual_difference_label.oklab_delta_d_noticeable_perceptual_difference",
-      "OKLab delta {v1}, huomattava ero");
+      "OKLab delta {v1}, selvästi havaittava ero");
    P ("label.contrast.color_vision_deficiency_label.protanopia_high_confusion_risk_delta_n",
       "protanopia: suuri sekoittumisriski, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.tritanopia_high_confusion_risk_delta_n",
       "tritanopia: suuri sekoittumisriski, delta {v1, number}");
    P ("label.models.perceptual_difference_label.cie94_delta_d_noticeable_perceptual_difference",
-      "CIE94 delta {v1}, huomattava ero");
+      "CIE94 delta {v1}, selvästi havaittava ero");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_d_noticeable_perceptual_difference",
-      "CIE94 tekstiili delta {v1}, huomattava ero");
+      "CIE94 tekstiili delta {v1}, selvästi havaittava ero");
    P ("label.models.perceptual_difference_label.ciede2000_delta_d_noticeable_perceptual_difference",
-      "CIEDE2000 delta {v1}, huomattava ero");
+      "CIEDE2000 delta {v1}, selvästi havaittava ero");
    P ("label.models.perceptual_difference_label.oklab_delta_n_noticeable_perceptual_difference",
-      "OKLab delta {v1, number}, huomattava ero");
+      "OKLab delta {v1, number}, selvästi havaittava ero");
    P ("label.contrast.color_vision_deficiency_label.tritanopia_low_confusion_risk_delta_n",
       "tritanopia: pieni sekoittumisriski, delta {v1, number}");
    P ("label.contrast.color_vision_deficiency_label.deuteranopia_low_confusion_risk_delta_n",
@@ -190,13 +415,13 @@ begin
    P ("label.models.perceptual_difference_label.ciede2000_delta_n_large_perceptual_difference",
       "CIEDE2000 delta {v1, number}, suuri havaittava ero");
    P ("label.models.perceptual_difference_label.cie76_delta_d_noticeable_perceptual_difference",
-      "CIE76 delta {v1}, huomattava ero");
+      "CIE76 delta {v1}, selvästi havaittava ero");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_d_subtle_perceptual_difference",
       "CIE94 tekstiili delta {v1}, hienovarainen havaittava ero");
    P ("label.models.perceptual_difference_label.ciede2000_delta_n_noticeable_perceptual_difference",
-      "CIEDE2000 delta {v1, number}, huomattava ero");
+      "CIEDE2000 delta {v1, number}, selvästi havaittava ero");
    P ("label.models.perceptual_difference_label.cie94_textile_delta_n_noticeable_perceptual_difference",
-      "CIE94 tekstiili delta {v1, number}, huomattava ero");
+      "CIE94 tekstiili delta {v1, number}, selvästi havaittava ero");
    P ("label.models.perceptual_difference_label.cie76_delta_d_barely_perceptible",
       "CIE76 delta {v1}, tuskin havaittava");
    P ("label.models.perceptual_difference_label.cie94_delta_d_imperceptible", "CIE94 delta {v1}, ei havaittavissa");
@@ -368,7 +593,7 @@ begin
       "Lc {v1, number}, leipäteksti, tumma teksti vaalealla taustalla");
    P ("label.contrast.color_accessibility_summary.tritanopia_low_confusion_risk",
       "tritanopia: pieni sekoittumisriski");
-   P ("label.models.color_difference_label.n_noticeable_difference", "{v1, number} % huomattava ero");
+   P ("label.models.color_difference_label.n_noticeable_difference", "{v1, number} % selvästi havaittava ero");
    P ("label.contrast.contrast_label.n_n_large_text_contrast", "{v1, number}:{v2, number} suuren tekstin kontrasti");
    P ("label.contrast.color_accessibility_summary.n_n_large_text_contrast",
       "{v1, number}:{v2, number} suuren tekstin kontrasti");
@@ -422,8 +647,8 @@ begin
    P ("label.palettes.palette_contrast_suggestion.best_contrast_c_on_c_at_d_n",
       "paras kontrasti: {v1} taustalla {v2}, {v3}:{v4, number}");
    P ("label.palettes.palette_accessibility_label.n_of_n_pairs_pass_normal_text_contrast",
-      "{v1, number}/{v2, number} parista täyttää normaalin tekstin "
-      & "kontrastin");
+      "{v1, number}/{v2, number} paria täyttää normaalin tekstin "
+      & "kontrastivaatimuksen");
    P ("label.palettes.palette_contrast_matrix_label.n_enhanced_n_normal_n_large_only_n_fail_out_of_n_pairs",
       "{v5, plural, one {1 pari} other {{v5, number} paria}}: {v1, number} "
       & "tehostettu, {v2, number} normaali, {v3, number} vain suuri, {v4, "
@@ -456,8 +681,8 @@ begin
    P ("label.palettes.palette_summary.mostly_olive", "enimmäkseen oliivinvihreää");
    P ("label.palettes.palette_harmony_label.analogous_palette", "analoginen paletti");
    P ("label.palettes.palette_accessibility_label.n_of_n_pairs_pass_large_text_only",
-      "{v1, number}/{v2, number} parista täyttää vain suuren tekstin "
-      & "kontrastin");
+      "{v1, number}/{v2, number} paria täyttää vain suuren tekstin "
+      & "kontrastivaatimuksen");
    P ("label.palettes.palette_mood_label.light", "vaalea");
    P ("label.palettes.palette_summary.mostly_teal", "enimmäkseen sinivihreää");
    P ("label.palettes.palette_summary.mostly_aqua", "enimmäkseen vedensinistä");
@@ -472,229 +697,4 @@ begin
    P ("label.palettes.palette_harmony_label.neutral_palette", "neutraali paletti");
    P ("label.palettes.palette_summary.mostly_red", "enimmäkseen punaista");
    P ("label.metrics.word_count_summary.n_words", "{v1, plural, one {1 sana} other {{v1, number} sanaa}}");
-   P ("label.metrics.sentence_count_summary.n_sentences",
-      "{v1, plural, one {1 virke} other {{v1, number} virkettä}}");
-   P ("label.metrics.paragraph_count_summary.n_paragraphs",
-      "{v1, plural, one {1 kappale} other {{v1, number} kappaletta}}");
-   P ("label.metrics.reading_time.n_minutes_read",
-      "{v1, plural, one {lukuaika 1 minuutti} other {lukuaika {v1, number} "
-      & "minuuttia}}");
-   P ("label.metrics.speaking_time.n_minutes_spoken",
-      "{v1, plural, one {puheaika 1 minuutti} other {puheaika {v1, number} "
-      & "minuuttia}}");
-   P ("label.metrics.text_summary_with_options.n_words", "{v1, plural, one {1 sana} other {{v1, number} sanaa}}");
-   P ("label.metrics.text_summary_with_options.n_sentences",
-      "{v1, plural, one {1 virke} other {{v1, number} virkettä}}");
-   P ("label.metrics.text_summary_with_options.n_paragraphs",
-      "{v1, plural, one {1 kappale} other {{v1, number} kappaletta}}");
-   P ("label.metrics.text_summary_with_options.n_minutes_read",
-      "{v1, plural, one {lukuaika 1 minuutti} other {lukuaika {v1, number} "
-      & "minuuttia}}");
-   P ("label.metrics.paragraph_count_summary.n_paragraph",
-      "{v1, plural, one {1 kappale} other {{v1, number} kappaletta}}");
-   P ("label.metrics.reading_time.less_than_n_minute_read",
-      "{v1, plural, one {lukuaika alle 1 minuutin} other {lukuaika alle {v1, "
-      & "number} minuutin}}");
-   P ("label.metrics.speaking_time.less_than_n_minute_spoken",
-      "{v1, plural, one {puheaika alle 1 minuutin} other {puheaika alle {v1, "
-      & "number} minuutin}}");
-   P ("label.metrics.text_summary_with_options.n_paragraph",
-      "{v1, plural, one {1 kappale} other {{v1, number} kappaletta}}");
-   P ("label.metrics.text_summary_with_options.less_than_n_minute_read",
-      "{v1, plural, one {lukuaika alle 1 minuutin} other {lukuaika alle {v1, "
-      & "number} minuutin}}");
-   P ("label.metrics.sentence_count_summary.n_sentence",
-      "{v1, plural, one {1 virke} other {{v1, number} virkettä}}");
-   P ("label.metrics.text_summary_with_options.n_sentence",
-      "{v1, plural, one {1 virke} other {{v1, number} virkettä}}");
-   P ("label.metrics.word_count_summary.no_words", "ei sanoja");
-   P ("label.metrics.sentence_count_summary.no_sentences", "ei virkkeitä");
-   P ("label.metrics.paragraph_count_summary.no_paragraphs", "ei kappaleita");
-   P ("label.metrics.text_summary_with_options.no_words", "ei sanoja");
-   P ("label.metrics.text_summary_with_options.no_sentences", "ei virkkeitä");
-   P ("label.metrics.text_summary_with_options.no_paragraphs", "ei kappaleita");
-   P ("label.metrics.word_count_summary.n_word", "{v1, plural, one {1 sana} other {{v1, number} sanaa}}");
-   P ("label.metrics.text_summary_with_options.n_word", "{v1, plural, one {1 sana} other {{v1, number} sanaa}}");
-   P ("label.statistics.distribution_shape_label",
-      "{shape, select, no_distribution_shape {ei havaintoja} "
-      & "sample_too_small_shape {otos liian pieni muodon kuvaamiseen, {count, "
-      & "plural, one {1 havainto} other {{count, number} havaintoa}}} "
-      & "flat_shape {tasainen jakauma, arvo {median}} outlier_heavy_shape "
-      & "{jakauma, jossa paljon poikkeavia arvoja, mediaani {median}} "
-      & "volatile_shape {vaihteleva jakauma, mediaani {median}} clustered_shape "
-      & "{ryhmittynyt jakauma, mediaani {median}} wide_spread_shape {laajalle "
-      & "hajautunut jakauma} wide_spread_range {laajalle hajautunut jakauma, "
-      & "{minimum}–{maximum}} right_skewed_shape {oikealle vino jakauma, "
-      & "mediaani {median}} left_skewed_shape {vasemmalle vino jakauma, "
-      & "mediaani {median}} other {enimmäkseen tasapainoinen jakauma, mediaani "
-      & "{median}}}");
-   P ("label.privacy.safe_email_label",
-      "{state, select, empty {tyhjä sähköpostiosoite} address "
-      & "{sähköpostiosoite} other {sähköposti, verkkotunnus {domain}}}");
-   P ("label.privacy.safe_phone_label",
-      "{state, select, none {puhelinnumero} redacted {puhelinnumero "
-      & "piilotettu} other {puhelinnumero, loppuosa {digits}}}");
-   P ("label.privacy.safe_handle_label",
-      "{state, select, none {käyttäjätunnus} other {käyttäjätunnus "
-      & "{shown}}}");
-   P ("label.privacy.code_symbol_label", "{state, select, none {koodisymboli} other {koodisymboli {symbol}}}");
-   P ("label.privacy.address_metadata_label",
-      "osoitteen metatiedot: {present, plural, one {1 kenttä annettu} other "
-      & "{{present, number} kenttää annettu}}, {missing, plural, one {1 "
-      & "kenttä puuttuu} other {{missing, number} kenttää puuttuu}}");
-   P ("label.endpoints.host_label", "{state, select, none {tuntematon isäntä} other {{host} ({kind})}}");
-   P ("label.endpoints.endpoint_label",
-      "{state, select, none {tuntematon päätepiste} other {päätepiste "
-      & "{scheme}{host}{port} ({kind})}}");
-   P ("label.endpoints.url_component_summary",
-      "{state, select, empty {tyhjä URL} none {URL ilman tunnistettuja osia} "
-      & "other {URL, {count, plural, one {1 osa} other {{count, number} osaa}}: "
-      & "{components}}}");
-   P ("label.endpoints.query_summary",
-      "{count, plural, =0 {ei kyselyparametreja} one {1 kyselyparametri} "
-      & "other {{count, number} kyselyparametria}}");
-   P ("label.endpoints.ip_address_label",
-      "{address} ({kind, select, ipv4_host {julkinen IPv4-osoite} ipv6_host "
-      & "{julkinen IPv6-osoite} private_network_host {yksityisverkon osoite} "
-      & "localhost_host {paikallinen isäntä} other {ei IP-osoite}})");
-   P ("label.endpoints.cidr_label",
-      "{state, select, invalid {{cidr}: virheellinen CIDR} other {{cidr}: "
-      & "{kind}, verkkoetuliite {prefix}}}");
-   P ("label.resources.utilization_label", "käytössä {used, number}/{total, number} {unit} ({percent}, {band})");
-   P ("label.resources.saturation_label", "{named, select, no {resurssi} other {{name}}} {percent} {band}");
-   P ("label.versions.version_label",
-      "{state, select, both {versio {version}, esijulkaisu {prerelease}, "
-      & "koontiversio {build}} prerelease {versio {version}, esijulkaisu "
-      & "{prerelease}} build {versio {version}, koontiversio {build}} other "
-      & "{versio {version}}}");
-   P ("label.versions.version_delta_label",
-      "{delta, select, same_version {sama versio} major_upgrade {pääversion "
-      & "päivitys} minor_upgrade {aliversion päivitys} patch_upgrade "
-      & "{korjausversion päivitys} prerelease_change {esijulkaisun muutos} "
-      & "build_metadata_change {koontimetatietojen muutos} downgrade "
-      & "{siirtyminen vanhempaan versioon} other {tuntematon versiomuutos}}: "
-      & "{from} -> {to}");
-   P ("label.versions.compatibility_range_label",
-      "{kind, select, exact_range {täsmälleen versio {version}} "
-      & "minimum_range {versio {version} tai uudempi} maximum_range {versio "
-      & "{version} tai vanhempi} major_compatible_range {yhteensopiva "
-      & "pääversion {version} kanssa} minor_compatible_range {yhteensopiva "
-      & "aliversion {version} kanssa} other {versioalue {version}}}");
-   P ("label.versions.release_label",
-      "{state, select, initial {ensimmäinen kehitysjulkaisu {version}} "
-      & "prerelease {esijulkaisu {version}} major {pääjulkaisu {version}} "
-      & "minor {alijulkaisu {version}} other {korjausjulkaisu {version}}}");
-   P ("label.markup.tag_label",
-      "{tag, select, link {linkkitagi} image {kuvatagi} paragraph "
-      & "{kappaletagi} ordered_list {numeroidun luettelon tagi} unordered_list "
-      & "{numeroimattoman luettelon tagi} list_item {luettelokohteen tagi} "
-      & "table_header_cell {taulukon otsikkosolun tagi} table_cell {taulukon "
-      & "solun tagi} table_row {taulukon rivin tagi} line_break "
-      & "{rivinvaihtotagi} thematic_break {teemanvaihdon tagi} heading_level_n "
-      & "{otsikkotason {level, number} tagi} other {tagi {name}}}");
-   P ("label.markup.attribute_label",
-      "{state, select, bare {attribuutti {name}} event "
-      & "{tapahtumankäsittelijäattribuutti {name}} other {attribuutti {name}, "
-      & "arvo ”{value}”}}");
-   P ("label.markup.content_type_label",
-      "{kind, select, text_content {tekstisisältö} html_content "
-      & "{HTML-dokumentti} json_content {JSON-dokumentti} xml_content "
-      & "{XML-dokumentti} image_content {kuvasisältö} audio_content "
-      & "{äänisisältö} video_content {videosisältö} font_content "
-      & "{fonttisisältö} archive_content {arkistosisältö} binary_content "
-      & "{binäärisisältö} form_content {lomakkeen lähetys} other "
-      & "{tuntematon sisältö}} ({base})");
-   P ("label.secrets.secret_label",
-      "{state, select, unset {{kind} ei asetettu} hidden_value {{kind} "
-      & "piilotettu} masked_value {{kind} {shown}} fingerprint_only {{kind}, "
-      & "sormenjäljen loppuosa {shown}} other {{kind}, loppuosa {shown}}}");
-   P ("label.secrets.environment_secret_label",
-      "{state, select, unset {{name} {kind} ei asetettu} other {{name} "
-      & "{kind}, loppuosa {shown}}}");
-   P ("label.secrets.header_credential_label",
-      "{state, select, unset {tunnistusotsake {name} ei asetettu} other "
-      & "{{name} {kind}, loppuosa {shown}}}");
-   P ("label.secrets.fingerprint_label", "{algorithm}-sormenjälki, loppuosa {shown}");
-   P ("label.secrets.safe_display_label",
-      "{state, select, not_set {{label} ei asetettu} redacted {{label} "
-      & "piilotettu} url_redacted {URL piilotettu} ip_redacted {IP-osoite "
-      & "piilotettu} path_ending {tiedostopolku, loppuosa {shown}} at {{label}, "
-      & "osoite {shown}} audit {{label}, pituus {length, number}, loppuosa "
-      & "{shown}} debug {{label} {shown}} other {{label}, loppuosa {shown}}}");
-   P ("label.schema.field_label",
-      "{state, select, deprecated_field {vanhentunut } unknown_field "
-      & "{tuntematon } read_only_field {vain luettava } write_only_field {vain "
-      & "kirjoitettava } computed_field {laskettu } other {}}{presence, select, "
-      & "required_field {pakollinen} optional_field {valinnainen} "
-      & "conditional_field {ehdollinen} other {läsnäololtaan tuntematon}} "
-      & "kenttä {name}, tyyppi {kind, select, string_field {merkkijono} "
-      & "integer_field {kokonaisluku} decimal_field {desimaaliluku} "
-      & "boolean_field {totuusarvo} date_field {päivämäärä} "
-      & "date_time_field {päivämäärä ja aika} object_field {objekti} "
-      & "array_field {taulukko} enum_field {enum} binary_field {binääri} "
-      & "null_field {null} any_field {mikä tahansa} other "
-      & "{tuntematon}}{nullable, select, non_nullable {, ei null} nullable {, "
-      & "null sallittu} other {}}");
-   P ("label.schema.schema_summary_label.fields",
-      "{count, plural, one {1 kenttä} other {{count, number} kenttää}}");
-   P ("label.schema.schema_summary_label.required",
-      "{count, plural, one {1 pakollinen} other {{count, number} pakollista}}");
-   P ("label.schema.schema_summary_label.optional",
-      "{count, plural, one {1 valinnainen} other {{count, number} "
-      & "valinnaista}}");
-   P ("label.schema.schema_summary_label.deprecated",
-      "{count, plural, one {1 vanhentunut} other {{count, number} "
-      & "vanhentunutta}}");
-   P ("label.schema.schema_summary_label.unknown",
-      "{count, plural, one {1 tuntematon} other {{count, number} "
-      & "tuntematonta}}");
-   P ("label.diagnostics.check_run_summary_label.none", "ei suoritettuja tarkistuksia");
-   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} hyväksytty");
-   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} epäonnistui");
-   P ("label.diagnostics.check_run_summary_label.warnings",
-      "{count, plural, one {1 varoitus} other {{count, number} varoitusta}}");
-   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} ohitettu");
-   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} odottaa");
-   P ("label.workflows.workflow_summary_label.total",
-      "{count, plural, one {1 kohde} other {{count, number} kohdetta}}");
-   P ("label.workflows.workflow_summary_label.completed",
-      "{count, plural, one {1 valmis} other {{count, number} valmista}}");
-   P ("label.workflows.workflow_summary_label.active",
-      "{count, plural, one {1 aktiivinen} other {{count, number} aktiivista}}");
-   P ("label.workflows.workflow_summary_label.blocked", "{count, number} estetty");
-   P ("label.workflows.workflow_summary_label.failed", "{count, number} epäonnistui");
-   P ("label.workflows.workflow_summary_label.skipped", "{count, number} ohitettu");
-   P ("label.changes.change_summary_label.total", "{count, plural, one {1 kohde} other {{count, number} kohdetta}}");
-   P ("label.changes.change_summary_label.added", "{count, number} lisätty");
-   P ("label.changes.change_summary_label.removed", "{count, number} poistettu");
-   P ("label.changes.change_summary_label.modified", "{count, number} muutettu");
-   P ("label.changes.change_summary_label.renamed", "{count, number} nimetty uudelleen");
-   P ("label.changes.change_summary_label.unchanged", "{count, number} ennallaan");
-   P ("label.markup.accessible_control_label.control",
-      "{named, select, no {nimetön {role, select, button_control {painike} "
-      & "link_control {linkki} tab_control {välilehti} menu_item_control "
-      & "{valikkokohde} checkbox_control {valintaruutu} radio_control "
-      & "{valintanappi} text_field_control {tekstikenttä} progress_control "
-      & "{edistymispalkki} table_cell_control {taulukon solu} region_control "
-      & "{alue} other {ohjausobjekti}}} other {{name}, {role, select, "
-      & "button_control {painike} link_control {linkki} tab_control "
-      & "{välilehti} menu_item_control {valikkokohde} checkbox_control "
-      & "{valintaruutu} radio_control {valintanappi} text_field_control "
-      & "{tekstikenttä} progress_control {edistymispalkki} table_cell_control "
-      & "{taulukon solu} region_control {alue} other {ohjausobjekti}}}}");
-   P ("label.markup.accessible_control_label.selected", "valittu");
-   P ("label.markup.accessible_control_label.expanded", "laajennettu");
-   P ("label.markup.accessible_control_label.current", "nykyinen");
-   P ("label.markup.accessible_control_label.disabled", "poissa käytöstä");
-   P ("label.markup.accessible_control_label.required", "pakollinen");
-   P ("label.markup.accessible_control_label.invalid", "virheellinen");
-   P ("label.markup.accessible_control_label.count",
-      "{count, plural, one {1 kohde} other {{count, number} kohdetta}}");
-   P ("label.markup.accessible_control_label.position", "kohde {position}/{total}");
-   P ("label.markup.accessible_control_label.issues",
-      "{count, plural, one {1 ongelma} other {{count, number} ongelmaa}}");
-   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
-   P ("label.endpoints.url_component.scheme", "skeema");
-   P ("label.endpoints.url_component.host", "isäntä");
-   P ("label.endpoints.url_component.path", "polku");
 end Labels_3;

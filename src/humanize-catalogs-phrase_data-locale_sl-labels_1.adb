@@ -13,7 +13,7 @@ begin
       & "{neznano stanje računa}}");
    P ("label.accounts.device_trust_label",
       "{state, select, trusted_device {zaupanja vredna naprava} "
-      & "untrusted_device {nepreverjena naprava} new_device {nova naprava} "
+      & "untrusted_device {nezaupanja vredna naprava} new_device {nova naprava} "
       & "other {blokirana naprava}}");
    P ("label.accounts.last_active_label", "{name}: zadnja dejavnost {time_text}");
    P ("label.accounts.login_attempt_label",

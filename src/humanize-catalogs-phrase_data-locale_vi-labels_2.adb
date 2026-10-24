@@ -384,8 +384,8 @@ begin
    P ("label.secrets.secret_kind_label",
       "{kind, select, api_key {khóa API} live_api_key {khóa API production} "
       & "test_api_key {khóa API thử nghiệm} github_token {token GitHub} "
-      & "aws_access_key {khóa truy cập AWS} google_api_key {khóa Google "
-      & "API} slack_token {token Slack} npm_token {token npm} bearer_token "
+      & "aws_access_key {khóa truy cập AWS} google_api_key {khóa API "
+      & "Google} slack_token {token Slack} npm_token {token npm} bearer_token "
       & "{bearer token} jwt_token {token JWT} basic_auth_credential {thông tin "
       & "xác thực basic auth} password_secret {mật khẩu} private_key "
       & "{khóa riêng tư} ssh_private_key {khóa riêng tư SSH} "
@@ -563,6 +563,54 @@ begin
       & "other {0 giá trị ngoại lai trên {total, number} quan sát}}} "
       & "other {{outliers, number} giá trị ngoại lai trên {total, number} "
       & "quan sát}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {không có quan sát} "
+      & "sample_too_small_shape {mẫu quá nhỏ để mô tả hình dạng, "
+      & "{count, number} quan sát} flat_shape {phân phối phẳng tại "
+      & "{median}} outlier_heavy_shape {phân phối nhiều giá trị ngoại "
+      & "lai quanh {median}} volatile_shape {phân phối biến động quanh "
+      & "{median}} clustered_shape {phân phối tập trung theo cụm quanh "
+      & "{median}} wide_spread_shape {phân phối trải rộng} "
+      & "wide_spread_range {phân phối trải rộng từ {minimum} đến "
+      & "{maximum}} right_skewed_shape {phân phối lệch phải, trung vị "
+      & "{median}} left_skewed_shape {phân phối lệch trái, trung vị "
+      & "{median}} other {phân phối gần cân bằng quanh {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {email trống} address {địa chỉ email} "
+      & "other {email tại {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {số điện thoại} redacted {số điện "
+      & "thoại đã ẩn} other {số điện thoại kết thúc bằng "
+      & "{digits}}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {tên người dùng} other {tên người dùng "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {ký hiệu mã} other {ký hiệu mã {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "siêu dữ liệu địa chỉ: có {present, number} trường, "
+      & "thiếu {missing, number} trường");
+   P ("label.endpoints.host_label",
+      "{state, select, none {máy chủ không xác định} other {{host} "
+      & "{kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {điểm cuối không xác định} other "
+      & "{điểm cuối {kind} {scheme}{host}{port}}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {URL trống} none {URL không có thành phần "
+      & "nào được nhận dạng} other {URL có {count, number} thành "
+      & "phần: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {không có tham số truy vấn} other {{count, "
+      & "number} tham số truy vấn}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {địa chỉ IPv4 công khai} "
+      & "ipv6_host {địa chỉ IPv6 công khai} private_network_host {địa "
+      & "chỉ mạng riêng} localhost_host {máy chủ cục bộ} other "
+      & "{không phải địa chỉ IP}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} CIDR không hợp lệ} other {{cidr} "
+      & "tiền tố mạng {kind} {prefix}}}");
+   P ("label.resources.utilization_label", "đã dùng {used, number}/{total, number} {unit} ({percent}, {band})");
    P ("label.resources.remaining_label",
       "{state, select, over {vượt dung lượng {count, number} {unit}} "
       & "other {còn {count, number}/{total, number} {unit}}}");
@@ -576,10 +624,56 @@ begin
       & "đệm: không có yêu cầu} other {tỷ lệ truy cập bộ nhớ "
       & "đệm {percent}: {hits, number} lần trúng, {misses, number} lần "
       & "trượt}}");
+   P ("label.resources.saturation_label", "{named, select, no {tài nguyên} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {phiên bản {version} tiền phát hành "
+      & "{prerelease} bản dựng {build}} prerelease {phiên bản {version} "
+      & "tiền phát hành {prerelease}} build {phiên bản {version} bản "
+      & "dựng {build}} other {phiên bản {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {cùng phiên bản} major_upgrade {nâng "
+      & "cấp lớn} minor_upgrade {nâng cấp nhỏ} patch_upgrade {nâng "
+      & "cấp bản vá} prerelease_change {thay đổi tiền phát hành} "
+      & "build_metadata_change {thay đổi siêu dữ liệu bản dựng} "
+      & "downgrade {hạ cấp} other {thay đổi phiên bản không xác "
+      & "định}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {đúng phiên bản {version}} "
+      & "minimum_range {phiên bản {version} trở lên} maximum_range "
+      & "{phiên bản {version} trở xuống} major_compatible_range {tương "
+      & "thích với phiên bản chính {version}} minor_compatible_range "
+      & "{tương thích với phiên bản phụ {version}} other {khoảng "
+      & "phiên bản {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {bản phát hành phát triển ban đầu "
+      & "{version}} prerelease {bản tiền phát hành {version}} major "
+      & "{bản phát hành chính {version}} minor {bản phát hành phụ "
+      & "{version}} other {bản vá {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {thẻ liên kết} image {thẻ hình ảnh} "
+      & "paragraph {thẻ đoạn văn} ordered_list {thẻ danh sách có "
+      & "thứ tự} unordered_list {thẻ danh sách không thứ tự} "
+      & "list_item {thẻ mục danh sách} table_header_cell {thẻ ô tiêu "
+      & "đề bảng} table_cell {thẻ ô bảng} table_row {thẻ hàng "
+      & "bảng} line_break {thẻ ngắt dòng} thematic_break {thẻ ngắt "
+      & "chủ đề} heading_level_n {thẻ tiêu đề cấp {level, number}} "
+      & "other {thẻ {name}}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {thuộc tính {name}} event {thuộc tính "
+      & "trình xử lý sự kiện {name}} other {thuộc tính {name} có "
+      & "giá trị “{value}”}}");
    P ("label.markup.attribute_count_label.total", "{count, number} thuộc tính");
    P ("label.markup.attribute_count_label.data", "{count, number} thuộc tính dữ liệu");
    P ("label.markup.attribute_count_label.aria", "{count, number} thuộc tính ARIA");
    P ("label.markup.attribute_count_label.events", "{count, number} trình xử lý sự kiện");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {nội dung văn bản} html_content {tài "
+      & "liệu HTML} json_content {tài liệu JSON} xml_content {tài liệu "
+      & "XML} image_content {nội dung hình ảnh} audio_content {nội dung "
+      & "âm thanh} video_content {nội dung video} font_content {nội dung "
+      & "phông chữ} archive_content {nội dung tệp nén} binary_content "
+      & "{nội dung nhị phân} form_content {dữ liệu gửi biểu mẫu} "
+      & "other {nội dung không xác định}} ({base})");
    P ("label.markup.heading_label", "tiêu đề cấp {level, number}");
    P ("label.markup.tag_count_label.total", "{count, number} thẻ");
    P ("label.markup.tag_count_label.links", "{count, number} liên kết");
@@ -592,106 +686,15 @@ begin
    P ("label.markup.table_navigation_label",
       "{caption} hàng {row, number}/{rows, number}, cột {column, "
       & "number}/{columns, number}");
-   P ("label.secrets.secret_count_label.total", "{count, number} bí mật");
-   P ("label.secrets.secret_count_label.masked", "{count, number} đã che");
-   P ("label.secrets.secret_count_label.unset", "{count, number} chưa đặt");
-   P ("label.secrets.secret_count_label.fingerprints", "{count, number} dấu vân tay");
-   P ("label.schema.type_mismatch_label",
-      "trường {field_name} cần {expected, select, string_field {chuỗi} "
-      & "integer_field {số nguyên} decimal_field {số thập phân} "
-      & "boolean_field {boolean} date_field {ngày} date_time_field {ngày "
-      & "giờ} object_field {đối tượng} array_field {mảng} enum_field "
-      & "{enum} binary_field {nhị phân} null_field {null} any_field {bất "
-      & "kỳ} other {không xác định}}, nhận được {actual, select, "
-      & "string_field {chuỗi} integer_field {số nguyên} decimal_field "
-      & "{số thập phân} boolean_field {boolean} date_field {ngày} "
-      & "date_time_field {ngày giờ} object_field {đối tượng} "
-      & "array_field {mảng} enum_field {enum} binary_field {nhị phân} "
-      & "null_field {null} any_field {bất kỳ} other {không xác định}}");
-   P ("label.diagnostics.issue_summary_label",
-      "{state, select, blocking_only {{blocking, number} vấn đề chặn} "
-      & "blocking {{base}, {blocking, number} vấn đề chặn} only {chỉ "
-      & "{base}} other {{base}}}");
-   P ("label.thresholds.metric_value_label", "{name} {value}");
-   P ("label.thresholds.range_label",
-      "{inclusive, select, inclusive_window {phạm vi mục tiêu từ {low} "
-      & "đến {high}} other {khoảng mục tiêu từ {low} đến {high}}}");
-   P ("label.thresholds.window_status_label",
-      "{state, select, inside {{value} trong phạm vi dự kiến} below "
-      & "{{value} dưới phạm vi dự kiến} other {{value} trên phạm vi "
-      & "dự kiến}}");
-   P ("label.thresholds.threshold_status_label",
-      "{state, select, critical {{value} ở ngưỡng nghiêm trọng} "
-      & "warning {{value} ở ngưỡng cảnh báo} other {{value} trong "
-      & "phạm vi bình thường}}");
-   P ("label.thresholds.breach_label",
-      "{state, select, ok {chưa vượt ngưỡng} other {vượt ngưỡng "
-      & "{difference}}}");
-   P ("label.thresholds.target_delta_label",
-      "{state, select, at {đạt mục tiêu} below {thấp hơn mục tiêu "
-      & "{difference}} other {cao hơn mục tiêu {difference}}}");
-   P ("label.thresholds.near_limit_label",
-      "{state, select, breached {đã vượt giới hạn} near {gần "
-      & "giới hạn, còn {distance}} other {cách giới hạn {distance}}}");
-   P ("label.thresholds.threshold_summary_label.none", "không có chỉ số nào");
-   P ("label.thresholds.threshold_summary_label.normal", "{count, number} bình thường");
-   P ("label.thresholds.threshold_summary_label.warnings", "{count, number} cảnh báo");
-   P ("label.thresholds.threshold_summary_label.critical", "{count, number} nghiêm trọng");
-   P ("label.thresholds.threshold_summary_label.breaches", "{count, number} lần vượt ngưỡng");
-   P ("label.thresholds.target_window_label", "mục tiêu {target} cộng trừ {tolerance}");
-   P ("label.thresholds.tolerance_label", "dung sai {tolerance}");
-   P ("label.thresholds.percent_of_limit_label", "{percent} giới hạn");
-   P ("label.thresholds.remaining_to_limit_label",
-      "{state, select, exceeded {vượt giới hạn {amount}} other {còn "
-      & "{amount}}}");
-   P ("label.thresholds.budget_used_label", "đã dùng {used}/{budget}");
-   P ("label.workflows.step_label", "bước {current, number}/{total, number}: {name}");
-   P ("label.workflows.milestone_label",
-      "đã hoàn thành {current, number}/{total, number} cột mốc: "
-      & "{name}");
-   P ("label.workflows.workflow_progress_label",
-      "{state, select, none {không có mục quy trình nào} half {đã đi "
-      & "được nửa quy trình} other {đã hoàn thành {completed, "
-      & "number}/{total, number}}}");
-   P ("label.workflows.queue_position_label",
-      "{total, plural, =0 {vị trí hàng đợi {position, number}} other "
-      & "{vị trí hàng đợi {position, number}/{total, number}}}");
-   P ("label.changes.change_set_label.none", "không có thay đổi");
-   P ("label.changes.change_set_label.added", "đã thêm {count, number}");
-   P ("label.changes.change_set_label.removed", "đã xóa {count, number}");
-   P ("label.changes.change_set_label.modified", "đã thay đổi {count, number}");
-   P ("label.changes.change_set_label.unchanged", "{count, number} không đổi");
-   P ("label.changes.sync_change_label.none", "không có thay đổi đồng bộ");
-   P ("label.changes.sync_change_label.uploaded", "đã tải lên {count, number}");
-   P ("label.changes.sync_change_label.downloaded", "đã tải xuống {count, number}");
-   P ("label.changes.sync_change_label.deleted", "đã xóa {count, number}");
-   P ("label.changes.sync_change_label.conflicts", "{count, number} xung đột");
-   P ("label.changes.net_change_label",
-      "{state, select, none {không có thay đổi ròng} up {ròng +{count, "
-      & "number} mục} other {ròng -{count, number} mục}}");
-   P ("label.changes.review_progress_label",
-      "{state, select, none {không có thay đổi cần xem xét} all {đã "
-      & "xem xét mọi thay đổi} other {đã xem xét {reviewed, "
-      & "number}/{total, number} thay đổi}}");
-   P ("label.changes.numeric_field_change_label",
-      "{state, select, same {{field_name} giữ nguyên ở {new_value}} up "
-      & "{{field_name} tăng từ {old_value} lên {new_value}} other "
-      & "{{field_name} giảm từ {old_value} xuống {new_value}}}");
-   P ("label.tables.selection_label",
-      "{state, select, no_rows {không có hàng nào để chọn} none "
-      & "{chưa chọn hàng nào} all {đã chọn tất cả {total, number} "
-      & "hàng} other {đã chọn {selected, number}/{total, number} hàng}}");
-   P ("label.tables.page_label",
-      "{page, plural, =0 {không có trang nào} other {{pages, plural, =0 "
-      & "{không có trang nào} other {{rows, plural, =0 {trang {page, "
-      & "number}/{pages, number}} other {trang {page, number}/{pages, number}, "
-      & "{rows, number} hàng}}}}}}");
-   P ("label.tables.filter_label",
-      "{state, select, no_rows {không có hàng} none {không có hàng nào "
-      & "khớp} all {hiển thị tất cả {total, number} hàng} other "
-      & "{hiển thị {visible, number}/{total, number} hàng}}");
-   P ("label.tables.row_range_label",
-      "{state, select, none {không có hàng} single {hàng {first_row, "
-      & "number}/{total, number}} other {hàng {first_row, number}-{last_row, "
-      & "number}/{total, number}}}");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} chưa đặt} hidden_value {{kind} đã "
+      & "ẩn} masked_value {{kind} {shown}} fingerprint_only {dấu vân tay "
+      & "{kind} kết thúc bằng {shown}} other {{kind} kết thúc bằng "
+      & "{shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} chưa đặt} other {{name} "
+      & "{kind} kết thúc bằng {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {tiêu đề thông tin xác thực {name} chưa "
+      & "đặt} other {{name} {kind} kết thúc bằng {shown}}}");
 end Labels_2;

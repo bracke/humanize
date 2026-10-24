@@ -84,7 +84,7 @@ begin
       & "{控えめ}}バッジ{state, select, default_badge {} new_badge "
       & "{、新規} updated_badge {、更新済み} deprecated_badge "
       & "{、非推奨} selected_badge {、選択済み} disabled_badge "
-      & "{、無効} other {、閉じられる}}");
+      & "{、無効} other {、閉じることが可能}}");
    P ("label.badges.badge_priority_label",
       "{priority, select, low_priority {低優先度バッジ} "
       & "medium_priority {中優先度バッジ} high_priority "
@@ -94,7 +94,7 @@ begin
       & "{新規バッジ} updated_badge {更新済みバッジ} "
       & "deprecated_badge {非推奨バッジ} selected_badge "
       & "{選択済みバッジ} disabled_badge {無効なバッジ} other "
-      & "{閉じられるバッジ}}");
+      & "{閉じることが可能なバッジ}}");
    P ("label.badges.badge_tone_label",
       "{tone, select, neutral_tone {中立バッジ} info_tone "
       & "{情報バッジ} success_tone {成功バッジ} warning_tone "
@@ -219,7 +219,7 @@ begin
       & "{{author}がコメントを編集} deleted_comment "
       & "{{author}がコメントを削除} resolved_comment "
       & "{{author}がコメントを解決} unresolved_comment "
-      & "{{author}がコメントを再開} pinned_comment "
+      & "{{author}がコメントを再オープン} pinned_comment "
       & "{{author}がコメントをピン留め} other "
       & "{{author}がコメントを非表示}}");
    P ("label.comments.comment_count_label",
@@ -353,7 +353,7 @@ begin
       "{state, select, queued_deployment {デプロイ待機中} deploying "
       & "{デプロイ中} deployed {デプロイ済み} failed_deployment "
       & "{デプロイ失敗} rolled_back {ロールバック済み} "
-      & "blocked_deployment {デプロイがブロック中} other "
+      & "blocked_deployment {デプロイブロック中} other "
       & "{デプロイキャンセル済み}}");
    P ("label.deployments.environment_state_label",
       "{state, select, healthy_environment {環境正常} "
@@ -368,7 +368,7 @@ begin
       & "{マイグレーション失敗}}");
    P ("label.deployments.promotion_label", "{name}を{from_environment}から{to_environment}に昇格");
    P ("label.deployments.rollback_label", "{name}を{target}にロールバック");
-   P ("label.deployments.rollout_label", "{name}のロールアウト {percent_text}");
+   P ("label.deployments.rollout_label", "{name}のロールアウト：{percent_text}");
    P ("label.diagnostics.affected_items_label",
       "{count, plural, =0 {影響を受ける項目なし} other "
       & "{影響を受ける項目{count, number}件}}");
@@ -512,7 +512,7 @@ begin
    P ("label.events.rsvp_label",
       "出欠：{state, select, not_responded {未回答} accepted {承諾} "
       & "declined {辞退} maybe {未定} other {キャンセル待ち}}");
-   P ("label.events.reminder_label", "リマインダー {time_text}");
+   P ("label.events.reminder_label", "リマインダー：{time_text}");
    P ("label.events.rescheduled_label", "{name}の日程を{time_text}に変更");
    P ("label.forms.character_count_label", "{used, number}文字");
    P ("label.forms.character_limit_label",
@@ -628,7 +628,7 @@ begin
       & "{メディアタグ} form_tag {フォームタグ} table_tag "
       & "{テーブルタグ} interactive_tag {インタラクティブタグ} "
       & "scripting_tag {スクリプトタグ} other {不明なタグ}}");
-   P ("label.media.duration_label", "再生時間 {duration_text}");
+   P ("label.media.duration_label", "再生時間：{duration_text}");
    P ("label.media.media_kind_label",
       "{kind, select, image_media {画像} video_media {動画} audio_media "
       & "{音声} pdf_document {PDFドキュメント} text_document "

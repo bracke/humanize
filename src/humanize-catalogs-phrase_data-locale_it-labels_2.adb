@@ -220,7 +220,7 @@ begin
    P ("label.notification_preferences.preference_state_label",
       "{state, select, preference_enabled {attivato} preference_disabled "
       & "{disattivato} preference_inherited {ereditato} other {obbligatorio}}");
-   P ("label.notification_preferences.quiet_hours_label", "orario di silenzio {time_text}");
+   P ("label.notification_preferences.quiet_hours_label", "orario di silenzio: {time_text}");
    P ("label.notification_preferences.subscription_label",
       "{name}: iscrizione {scope, select, thread_subscription {alla "
       & "discussione} project_subscription {al progetto} team_subscription {al "
@@ -243,8 +243,8 @@ begin
       & "email} sms_channel {via SMS} push_channel {push} webhook_channel {via "
       & "webhook} other {di riepilogo}} {state, select, pending_delivery {in "
       & "attesa} sent_delivery {inviata} delivered_delivery {recapitata} "
-      & "failed_delivery {non riuscita} retrying_delivery {in nuovo tentativo} "
-      & "other {annullata}}");
+      & "failed_delivery {non riuscita} retrying_delivery {in attesa di nuovo "
+      & "tentativo} other {annullata}}");
    P ("label.notifications.delivery_state_label",
       "{state, select, pending_delivery {notifica in attesa} sent_delivery "
       & "{notifica inviata} delivered_delivery {notifica recapitata} "

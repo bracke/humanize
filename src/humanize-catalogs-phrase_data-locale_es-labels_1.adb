@@ -228,7 +228,7 @@ begin
       & "{{lines_added, number} de líneas añadidas, {lines_removed, number} "
       & "líneas eliminadas} other {{lines_added, number} líneas añadidas, "
       & "{lines_removed, number} líneas eliminadas}}}}");
-   P ("label.changes.rename_label", "cambio de nombre de {old_name} a {new_name}");
+   P ("label.changes.rename_label", "renombrado de {old_name} a {new_name}");
    P ("label.comments.author_action_label",
       "{state, select, draft_comment {{author} redactó un borrador de "
       & "comentario} published_comment {{author} comentó} edited_comment "
@@ -268,14 +268,15 @@ begin
       & "rocket_reaction {reacción de cohete} other {reacción de ojos}}");
    P ("label.comments.reaction_label",
       "{kind, select, like_reaction {{count, plural, =0 {ningún «me "
-      & "gusta»} one {1 «me gusta»} other {{count, number} «me gusta»}}} "
-      & "dislike_reaction {{count, plural, =0 {ningún «no me gusta»} one {1 "
-      & "«no me gusta»} other {{count, number} «no me gusta»}}} "
-      & "heart_reaction {{count, plural, =0 {ningún corazón} one {1 corazón} "
-      & "many {{count, number} de corazones} other {{count, number} "
-      & "corazones}}} laugh_reaction {{count, plural, =0 {ninguna risa} one {1 "
-      & "risa} many {{count, number} de risas} other {{count, number} risas}}} "
-      & "confused_reaction {{count, plural, =0 {ninguna reacción de "
+      & "gusta»} one {1 «me gusta»} many {{count, number} de «me gusta»} "
+      & "other {{count, number} «me gusta»}}} dislike_reaction {{count, "
+      & "plural, =0 {ningún «no me gusta»} one {1 «no me gusta»} many "
+      & "{{count, number} de «no me gusta»} other {{count, number} «no me "
+      & "gusta»}}} heart_reaction {{count, plural, =0 {ningún corazón} one "
+      & "{1 corazón} many {{count, number} de corazones} other {{count, "
+      & "number} corazones}}} laugh_reaction {{count, plural, =0 {ninguna risa} "
+      & "one {1 risa} many {{count, number} de risas} other {{count, number} "
+      & "risas}}} confused_reaction {{count, plural, =0 {ninguna reacción de "
       & "confusión} one {1 reacción de confusión} many {{count, number} de "
       & "reacciones de confusión} other {{count, number} reacciones de "
       & "confusión}}} hooray_reaction {{count, plural, =0 {ninguna "
@@ -629,7 +630,7 @@ begin
    P ("label.events.organizer_label", "organizado por {name}");
    P ("label.events.rsvp_label",
       "respuesta: {state, select, not_responded {pendiente} accepted "
-      & "{aceptada} declined {rechazada} maybe {quizás} other {lista de "
+      & "{aceptada} declined {rechazada} maybe {quizás} other {en lista de "
       & "espera}}");
    P ("label.events.reminder_label", "recordatorio: {time_text}");
    P ("label.events.rescheduled_label", "{name} reprogramado: {time_text}");
@@ -665,7 +666,7 @@ begin
       & "number} advertencia} many {{warnings, number} de advertencias} other "
       & "{{warnings, number} advertencias}}}}}}");
    P ("label.forms.form_state_label",
-      "{state, select, pristine_form {sin cambios} editing_form {editando} "
+      "{state, select, pristine_form {sin empezar} editing_form {editando} "
       & "dirty_form {cambios sin guardar} saving_form {guardando} saved_form "
       & "{guardado} submitted_form {enviado} other {error en el envío}}");
    P ("label.forms.input_state_label",
@@ -674,7 +675,7 @@ begin
       & "{entrada opcional} disabled_input {entrada deshabilitada} other "
       & "{entrada de solo lectura}}");
    P ("label.forms.submission_label",
-      "{state, select, pristine_form {sin cambios} editing_form {editando} "
+      "{state, select, pristine_form {sin empezar} editing_form {editando} "
       & "dirty_form {cambios sin guardar} saving_form {guardando el formulario} "
       & "saved_form {formulario guardado} submitted_form {formulario enviado} "
       & "other {{errors, plural, =0 {error en el envío} other {error en el "

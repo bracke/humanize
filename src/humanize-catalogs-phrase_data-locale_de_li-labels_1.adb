@@ -88,6 +88,18 @@ begin
       & "Beobachtung} other {1 Ausreisser bei {total, number} Beobachtungen}}} "
       & "other {{outliers, number} Ausreisser bei {total, number} "
       & "Beobachtungen}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {keine Beobachtungen} "
+      & "sample_too_small_shape {Stichprobe zu klein, um die Form zu "
+      & "beschreiben, {count, plural, one {1 Beobachtung} other {{count, "
+      & "number} Beobachtungen}}} flat_shape {flache Verteilung bei {median}} "
+      & "outlier_heavy_shape {ausreisserreiche Verteilung um {median}} "
+      & "volatile_shape {schwankende Verteilung um {median}} clustered_shape "
+      & "{gehäufte Verteilung um {median}} wide_spread_shape {weit gestreute "
+      & "Verteilung} wide_spread_range {weit gestreute Verteilung von {minimum} "
+      & "bis {maximum}} right_skewed_shape {rechtsschiefe Verteilung, Median "
+      & "{median}} left_skewed_shape {linksschiefe Verteilung, Median {median}} "
+      & "other {weitgehend ausgeglichene Verteilung um {median}}}");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
       "aktueller Vordergrund erfüllt den Kontrast für grossen Text mit "
       & "{v1}:{v2, number}");
@@ -162,16 +174,4 @@ begin
       & "geeignet} other {{v1, number} von {v2, number} Paaren nur für grossen "
       & "Text geeignet}}");
    P ("label.palettes.palette_summary.mostly_white", "überwiegend Weiss");
-   P ("label.statistics.distribution_shape_label",
-      "{shape, select, no_distribution_shape {keine Beobachtungen} "
-      & "sample_too_small_shape {Stichprobe zu klein, um die Form zu "
-      & "beschreiben, {count, plural, one {1 Beobachtung} other {{count, "
-      & "number} Beobachtungen}}} flat_shape {flache Verteilung bei {median}} "
-      & "outlier_heavy_shape {ausreisserreiche Verteilung um {median}} "
-      & "volatile_shape {schwankende Verteilung um {median}} clustered_shape "
-      & "{gehäufte Verteilung um {median}} wide_spread_shape {weit gestreute "
-      & "Verteilung} wide_spread_range {weit gestreute Verteilung von {minimum} "
-      & "bis {maximum}} right_skewed_shape {rechtsschiefe Verteilung, Median "
-      & "{median}} left_skewed_shape {linksschiefe Verteilung, Median {median}} "
-      & "other {weitgehend ausgeglichene Verteilung um {median}}}");
 end Labels_1;

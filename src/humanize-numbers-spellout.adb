@@ -716,8 +716,9 @@ package body Humanize.Numbers.Spellout is
 
    pragma Style_Checks (On);
 
-   --  A Russian round 200 .. 900, which CLDR 48 writes as the cardinal; not Ok otherwise.
-   function Russian_Round_Hundredth
+   --  An ordinal CLDR 48's rules write wrong (Russian "триста" for the 300th,
+   --  Lithuanian "šimt", German "zwei Millionenste"); not Ok for the others.
+   function Ordinal_Override
      (Context : Humanize.Contexts.Context;
       Value   : Natural)
       return Humanize.Status.Text_Result is separate;
@@ -730,8 +731,8 @@ package body Humanize.Numbers.Spellout is
       Locale : constant String :=
         Humanize.Locales.Language_Code (Humanize.Contexts.Locale (Context));
    begin
-      if Locale = "ru" and then Russian_Round_Hundredth (Context, Value).Status = Humanize.Status.Ok then
-         return Russian_Round_Hundredth (Context, Value);
+      if Ordinal_Override (Context, Value).Status = Humanize.Status.Ok then
+         return Ordinal_Override (Context, Value);
       end if;
       if Locale /= "en"
         and then

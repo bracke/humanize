@@ -1,10 +1,6 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Ru)
 procedure Labels_4 is
 begin
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_d_n",
-      "текущий цвет переднего плана "
-      & "соответствует контрасту для обычного "
-      & "текста при {v1}:{v2, number}");
    P ("label.contrast.contrast_remediation_label.use_c_for_n_n_enhanced_text_contrast",
       "используйте {v1}: повышенный контраст "
       & "текста {v2, number}:{v3, number}");

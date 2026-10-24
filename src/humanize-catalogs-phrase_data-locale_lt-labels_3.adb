@@ -159,7 +159,7 @@ begin
       & "{amount}}}");
    P ("label.thresholds.budget_used_label", "panaudota {used} iš {budget}");
    P ("label.workflows.step_label", "žingsnis {current, number} iš {total, number}: {name}");
-   P ("label.workflows.milestone_label", "užbaigti etapai {current, number} iš {total, number}: {name}");
+   P ("label.workflows.milestone_label", "užbaigta etapų: {current, number} iš {total, number} ({name})");
    P ("label.workflows.workflow_progress_label",
       "{state, select, none {darbo eigos elementų nėra} half {darbo eiga "
       & "įpusėta} other {užbaigta {completed, number} iš {total, number}}}");

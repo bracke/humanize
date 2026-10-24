@@ -144,6 +144,12 @@ private package Humanize.Label_Values is
    --  itself where one has no phrase.
    function Word_List (Context : Humanize.Contexts.Context; Prefix, Words : String) return String;
 
+   --  A URL label's English (Humanize.Endpoints.URL_Label) with its words in
+   --  Context's locale: "[redacted user]" as label.endpoints.url_label.redacted_user,
+   --  "query 3 params" as label.endpoints.url_label.query with {count}; each
+   --  kept where the locale has no phrase, the URL's own parts as they are.
+   function URL_Text (Context : Humanize.Contexts.Context; English : String) return String;
+
    --  The text of a rendered label.
    function Text_Of (Result : Humanize.Status.Text_Result) return String;
 

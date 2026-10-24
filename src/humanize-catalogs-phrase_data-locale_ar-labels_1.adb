@@ -5,12 +5,12 @@ begin
       "{state, select, active_account {الحساب {name} نشط} "
       & "invited_account {الحساب {name} مدعو} locked_account "
       & "{الحساب {name} مقفل} suspended_account {الحساب {name} "
-      & "معلّق} deleted_account {الحساب {name} محذوف} other "
+      & "موقوف} deleted_account {الحساب {name} محذوف} other "
       & "{الحساب {name}: حالة غير معروفة}}");
    P ("label.accounts.account_state_label",
       "{state, select, active_account {حساب نشط} invited_account "
       & "{حساب مدعو} locked_account {حساب مقفل} "
-      & "suspended_account {حساب معلّق} deleted_account {حساب "
+      & "suspended_account {حساب موقوف} deleted_account {حساب "
       & "محذوف} other {حالة حساب غير معروفة}}");
    P ("label.accounts.device_trust_label",
       "{state, select, trusted_device {جهاز موثوق} untrusted_device "

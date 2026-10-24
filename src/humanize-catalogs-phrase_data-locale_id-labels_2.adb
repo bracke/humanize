@@ -423,6 +423,49 @@ begin
       "{outliers, plural, =0 {{total, plural, =0 {tidak ada observasi} other "
       & "{0 pencilan dari {total, number} observasi}}} other {{outliers, "
       & "number} pencilan dari {total, number} observasi}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {tidak ada observasi} "
+      & "sample_too_small_shape {sampel terlalu kecil untuk menggambarkan "
+      & "bentuk, {count, number} observasi} flat_shape {distribusi datar pada "
+      & "{median}} outlier_heavy_shape {distribusi banyak pencilan di sekitar "
+      & "{median}} volatile_shape {distribusi fluktuatif di sekitar {median}} "
+      & "clustered_shape {distribusi mengelompok di sekitar {median}} "
+      & "wide_spread_shape {distribusi tersebar luas} wide_spread_range "
+      & "{distribusi tersebar luas dari {minimum} hingga {maximum}} "
+      & "right_skewed_shape {distribusi condong ke kanan, median {median}} "
+      & "left_skewed_shape {distribusi condong ke kiri, median {median}} other "
+      & "{distribusi cenderung seimbang di sekitar {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {email kosong} address {alamat email} other "
+      & "{email di {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {nomor telepon} redacted {nomor telepon "
+      & "disamarkan} other {telepon berakhiran {digits}}}");
+   P ("label.privacy.safe_handle_label", "{state, select, none {nama pengguna} other {nama pengguna {shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {simbol kode} other {simbol kode {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "metadata alamat: {present, number} bidang ada, {missing, number} "
+      & "bidang tidak ada");
+   P ("label.endpoints.host_label", "{state, select, none {host tidak dikenal} other {{host} {kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {endpoint tidak dikenal} other {endpoint {kind} "
+      & "{scheme}{host}{port}}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {URL kosong} none {URL tanpa komponen yang "
+      & "dikenali} other {URL dengan {count, number} komponen: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {tidak ada parameter kueri} other {{count, number} "
+      & "parameter kueri}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {alamat IPv4 publik} ipv6_host "
+      & "{alamat IPv6 publik} private_network_host {alamat jaringan privat} "
+      & "localhost_host {host lokal} other {bukan alamat IP}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} CIDR tidak valid} other {{cidr} "
+      & "prefiks jaringan {kind} {prefix}}}");
+   P ("label.resources.utilization_label",
+      "{used, number} dari {total, number} {unit} terpakai ({percent}, "
+      & "{band})");
    P ("label.resources.remaining_label",
       "{state, select, over {{count, number} {unit} melebihi kapasitas} other "
       & "{tersisa {count, number} dari {total, number} {unit}}}");
@@ -435,10 +478,49 @@ begin
       "{state, select, none {rasio cache hit tidak tersedia: tidak ada "
       & "permintaan} other {rasio cache hit {percent}: {hits, number} hit, "
       & "{misses, number} miss}}");
+   P ("label.resources.saturation_label", "{named, select, no {sumber daya} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {versi {version} prarilis {prerelease} build "
+      & "{build}} prerelease {versi {version} prarilis {prerelease}} build "
+      & "{versi {version} build {build}} other {versi {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {versi sama} major_upgrade {peningkatan "
+      & "mayor} minor_upgrade {peningkatan minor} patch_upgrade {peningkatan "
+      & "patch} prerelease_change {perubahan prarilis} build_metadata_change "
+      & "{perubahan metadata build} downgrade {penurunan versi} other "
+      & "{perubahan versi tidak diketahui}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {tepat versi {version}} minimum_range "
+      & "{versi {version} atau lebih baru} maximum_range {versi {version} atau "
+      & "lebih lama} major_compatible_range {kompatibel dengan versi mayor "
+      & "{version}} minor_compatible_range {kompatibel dengan versi minor "
+      & "{version}} other {rentang versi {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {rilis pengembangan awal {version}} prerelease "
+      & "{prarilis {version}} major {rilis mayor {version}} minor {rilis minor "
+      & "{version}} other {rilis patch {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {tag tautan} image {tag gambar} paragraph {tag "
+      & "paragraf} ordered_list {tag daftar bernomor} unordered_list {tag "
+      & "daftar berpoin} list_item {tag item daftar} table_header_cell {tag sel "
+      & "header tabel} table_cell {tag sel tabel} table_row {tag baris tabel} "
+      & "line_break {tag pemisah baris} thematic_break {tag pemisah tematik} "
+      & "heading_level_n {tag judul tingkat {level, number}} other {tag "
+      & "{name}}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {atribut {name}} event {atribut penangan "
+      & "peristiwa {name}} other {atribut {name} bernilai “{value}”}}");
    P ("label.markup.attribute_count_label.total", "{count, number} atribut");
    P ("label.markup.attribute_count_label.data", "{count, number} atribut data");
    P ("label.markup.attribute_count_label.aria", "{count, number} atribut ARIA");
-   P ("label.markup.attribute_count_label.events", "{count, number} penangan event");
+   P ("label.markup.attribute_count_label.events", "{count, number} penangan peristiwa");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {konten teks} html_content {dokumen HTML} "
+      & "json_content {dokumen JSON} xml_content {dokumen XML} image_content "
+      & "{konten gambar} audio_content {konten audio} video_content {konten "
+      & "video} font_content {konten font} archive_content {konten arsip} "
+      & "binary_content {konten biner} form_content {kiriman formulir} other "
+      & "{konten tidak dikenal}} ({base})");
    P ("label.markup.heading_label", "judul tingkat {level, number}");
    P ("label.markup.tag_count_label.total", "{count, number} tag");
    P ("label.markup.tag_count_label.links", "{count, number} tautan");
@@ -451,10 +533,45 @@ begin
    P ("label.markup.table_navigation_label",
       "{caption} baris {row, number} dari {rows, number}, kolom {column, "
       & "number} dari {columns, number}");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} belum disetel} hidden_value {{kind} "
+      & "disembunyikan} masked_value {{kind} {shown}} fingerprint_only {sidik "
+      & "jari {kind} berakhiran {shown}} other {{kind} berakhiran {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} belum disetel} other {{name} "
+      & "{kind} berakhiran {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {header kredensial {name} belum disetel} other "
+      & "{{name} {kind} berakhiran {shown}}}");
+   P ("label.secrets.fingerprint_label", "sidik jari {algorithm} berakhiran {shown}");
    P ("label.secrets.secret_count_label.total", "{count, number} rahasia");
    P ("label.secrets.secret_count_label.masked", "{count, number} disamarkan");
    P ("label.secrets.secret_count_label.unset", "{count, number} belum disetel");
    P ("label.secrets.secret_count_label.fingerprints", "{count, number} sidik jari");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} belum disetel} redacted {{label} "
+      & "disamarkan} url_redacted {URL disamarkan} ip_redacted {alamat IP "
+      & "disamarkan} path_ending {jalur file berakhiran {shown}} at {{label} di "
+      & "{shown}} audit {{label} panjang {length, number}, berakhiran {shown}} "
+      & "debug {{label} {shown}} other {{label} berakhiran {shown}}}");
+   P ("label.schema.field_label",
+      "bidang {kind, select, string_field {string} integer_field {bilangan "
+      & "bulat} decimal_field {desimal} boolean_field {boolean} date_field "
+      & "{tanggal} date_time_field {tanggal-waktu} object_field {objek} "
+      & "array_field {array} enum_field {enum} binary_field {biner} null_field "
+      & "{null} any_field {apa saja} other {tidak dikenal}} {name} {presence, "
+      & "select, required_field {wajib} optional_field {opsional} "
+      & "conditional_field {bersyarat} other {keberadaan tidak "
+      & "diketahui}}{nullable, select, non_nullable {, tidak boleh null} "
+      & "nullable {, boleh null} other {}}{state, select, deprecated_field {, "
+      & "usang} unknown_field {, tidak dikenal} read_only_field {, hanya baca} "
+      & "write_only_field {, hanya tulis} computed_field {, terhitung} other "
+      & "{}}");
+   P ("label.schema.schema_summary_label.fields", "{count, number} bidang");
+   P ("label.schema.schema_summary_label.required", "{count, number} wajib");
+   P ("label.schema.schema_summary_label.optional", "{count, number} opsional");
+   P ("label.schema.schema_summary_label.deprecated", "{count, number} usang");
+   P ("label.schema.schema_summary_label.unknown", "{count, number} tidak dikenal");
    P ("label.schema.type_mismatch_label",
       "bidang {field_name} mengharapkan {expected, select, string_field "
       & "{string} integer_field {bilangan bulat} decimal_field {desimal} "
@@ -471,6 +588,12 @@ begin
       "{state, select, blocking_only {{blocking, number} masalah pemblokir} "
       & "blocking {{base}, {blocking, number} masalah pemblokir} only {{base} "
       & "saja} other {{base}}}");
+   P ("label.diagnostics.check_run_summary_label.none", "tidak ada pemeriksaan yang dijalankan");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} lulus");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} gagal");
+   P ("label.diagnostics.check_run_summary_label.warnings", "{count, number} peringatan");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} dilewati");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} tertunda");
    P ("label.thresholds.metric_value_label", "{name} {value}");
    P ("label.thresholds.range_label",
       "{inclusive, select, inclusive_window {rentang target {low} hingga "
@@ -505,6 +628,12 @@ begin
    P ("label.thresholds.budget_used_label", "{used} terpakai dari {budget}");
    P ("label.workflows.step_label", "langkah {current, number} dari {total, number}: {name}");
    P ("label.workflows.milestone_label", "{current, number} dari {total, number} tonggak selesai: {name}");
+   P ("label.workflows.workflow_summary_label.total", "{count, number} item");
+   P ("label.workflows.workflow_summary_label.completed", "{count, number} selesai");
+   P ("label.workflows.workflow_summary_label.active", "{count, number} aktif");
+   P ("label.workflows.workflow_summary_label.blocked", "{count, number} diblokir");
+   P ("label.workflows.workflow_summary_label.failed", "{count, number} gagal");
+   P ("label.workflows.workflow_summary_label.skipped", "{count, number} dilewati");
    P ("label.workflows.workflow_progress_label",
       "{state, select, none {tidak ada item alur kerja} half {setengah alur "
       & "kerja selesai} other {{completed, number} dari {total, number} "
@@ -517,6 +646,12 @@ begin
    P ("label.changes.change_set_label.removed", "{count, number} dihapus");
    P ("label.changes.change_set_label.modified", "{count, number} diubah");
    P ("label.changes.change_set_label.unchanged", "{count, number} tidak berubah");
+   P ("label.changes.change_summary_label.total", "{count, number} item");
+   P ("label.changes.change_summary_label.added", "{count, number} ditambahkan");
+   P ("label.changes.change_summary_label.removed", "{count, number} dihapus");
+   P ("label.changes.change_summary_label.modified", "{count, number} diubah");
+   P ("label.changes.change_summary_label.renamed", "{count, number} diganti nama");
+   P ("label.changes.change_summary_label.unchanged", "{count, number} tidak berubah");
    P ("label.changes.sync_change_label.none", "tidak ada perubahan sinkronisasi");
    P ("label.changes.sync_change_label.uploaded", "{count, number} diunggah");
    P ("label.changes.sync_change_label.downloaded", "{count, number} diunduh");
@@ -562,139 +697,4 @@ begin
    P ("label.forms.form_progress_label",
       "{state, select, none {tidak ada bidang} all {semua bidang lengkap} "
       & "other {{completed, number} dari {total, number} bidang lengkap}}");
-   P ("label.forms.section_progress_label",
-      "{state, select, none {{name}: tidak ada bidang} all {{name}: semua "
-      & "bidang lengkap} other {{name}: {completed, number} dari {total, "
-      & "number} bidang lengkap}}");
-   P ("label.forms.form_step_label",
-      "{total, plural, =0 {tidak ada langkah formulir} other {langkah "
-      & "{current, number} dari {total, number}: {name}}}");
-   P ("label.navigation.breadcrumb_position_label",
-      "{total, plural, =0 {tidak ada jejak navigasi} other {jejak navigasi "
-      & "{current, number} dari {total, number}: {name}}}");
-   P ("label.navigation.tab_label",
-      "{total, plural, =0 {tidak ada tab} other {tab {current, number} dari "
-      & "{total, number}: {name}}}");
-   P ("label.notifications.inbox_label",
-      "{total, plural, =0 {kotak masuk kosong} other {{unread, plural, =0 "
-      & "{semua notifikasi sudah dibaca} other {{unread, number} belum dibaca "
-      & "dari {total, number} notifikasi}}}}");
-   P ("label.notifications.delivery_attempt_label",
-      "percobaan pengiriman {attempt, number} dari {max_attempts, number}");
-   P ("label.tasks.checklist_label",
-      "{total, plural, =0 {tidak ada item daftar periksa} other {{done, "
-      & "number} dari {total, number} item selesai}}");
-   P ("label.attachments.upload_progress_label",
-      "{total, plural, =0 {tidak ada unggahan} other {{done, number} dari "
-      & "{total, number} unggahan selesai}}");
-   P ("label.events.capacity_label",
-      "{capacity, plural, =0 {tidak ada kapasitas} other {{reserved, number} "
-      & "dari {capacity, number} kursi dipesan}}");
-   P ("label.events.waitlist_label",
-      "{total, plural, =0 {posisi daftar tunggu {position, number}} other "
-      & "{posisi daftar tunggu {position, number} dari {total, number}}}");
-   P ("label.comparisons.multi_value_summary",
-      "{mode, select, comparison_compact {{name} {changed, number}/{total, "
-      & "number} berubah} other {{name}: {changed, number} berubah, {unchanged, "
-      & "number} tidak berubah, {total, number} total}}");
-   P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
-   P ("label.groups", "{first}; {second}");
-   P ("label.parts", "{first}, {second}");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
-      "warna latar depan saat ini memenuhi kontras teks besar pada {v1}:{v2, "
-      & "number}");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_d_n",
-      "warna latar depan saat ini memenuhi kontras teks normal pada {v1}:{v2, "
-      & "number}");
-   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_enhanced_text_contrast",
-      "gunakan {v1} untuk kontras teks yang ditingkatkan {v2, number}:{v3, "
-      & "number}");
-   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_large_text_contrast",
-      "gunakan {v1} untuk kontras teks besar {v2, number}:{v3, number}");
-   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_normal_text_contrast",
-      "gunakan {v1} untuk kontras teks normal {v2}:{v3, number}");
-   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_large_text_contrast",
-      "gunakan {v1} untuk kontras teks besar {v2}:{v3, number}");
-   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_enhanced_text_contrast",
-      "gunakan {v1} untuk kontras teks yang ditingkatkan {v2}:{v3, number}");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_n_n",
-      "warna latar depan saat ini memenuhi kontras teks besar pada {v1, "
-      & "number}:{v2, number}");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_n_n",
-      "warna latar depan saat ini memenuhi kontras teks normal pada {v1, "
-      & "number}:{v2, number}");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_d_n",
-      "warna latar depan saat ini memenuhi kontras teks yang ditingkatkan "
-      & "pada {v1}:{v2, number}");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_enhanced_text_contrast_at_n_n",
-      "warna latar depan saat ini memenuhi kontras teks yang ditingkatkan "
-      & "pada {v1, number}:{v2, number}");
-   P ("label.contrast.color_vision_deficiency_label.protanopia_low_confusion_risk_delta_n",
-      "protanopia: risiko kerancuan rendah, delta {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.deuteranopia_moderate_confusion_risk_delta_n",
-      "deuteranopia: risiko kerancuan sedang, delta {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.tritanopia_moderate_confusion_risk_delta_n",
-      "tritanopia: risiko kerancuan sedang, delta {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.achromatopsia_high_confusion_risk_delta_n",
-      "akromatopsia: risiko kerancuan tinggi, delta {v1, number}");
-   P ("label.models.perceptual_difference_label.cie76_delta_d_dramatic_perceptual_difference",
-      "CIE76 delta {v1}, perbedaan perseptual dramatis");
-   P ("label.models.perceptual_difference_label.cie94_delta_d_dramatic_perceptual_difference",
-      "CIE94 delta {v1}, perbedaan perseptual dramatis");
-   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_dramatic_perceptual_difference",
-      "CIE94 tekstil delta {v1}, perbedaan perseptual dramatis");
-   P ("label.models.perceptual_difference_label.ciede2000_delta_n_dramatic_perceptual_difference",
-      "CIEDE2000 delta {v1, number}, perbedaan perseptual dramatis");
-   P ("label.models.perceptual_difference_label.oklab_delta_d_large_perceptual_difference",
-      "OKLab delta {v1}, perbedaan perseptual besar");
-   P ("label.contrast.color_vision_deficiency_label.protanopia_moderate_confusion_risk_delta_n",
-      "protanopia: risiko kerancuan sedang, delta {v1, number}");
-   P ("label.models.perceptual_difference_label.cie94_delta_n_dramatic_perceptual_difference",
-      "CIE94 delta {v1, number}, perbedaan perseptual dramatis");
-   P ("label.models.perceptual_difference_label.ciede2000_delta_d_dramatic_perceptual_difference",
-      "CIEDE2000 delta {v1}, perbedaan perseptual dramatis");
-   P ("label.models.perceptual_difference_label.oklab_delta_d_dramatic_perceptual_difference",
-      "OKLab delta {v1}, perbedaan perseptual dramatis");
-   P ("label.contrast.color_vision_deficiency_label.achromatopsia_low_confusion_risk_delta_n",
-      "akromatopsia: risiko kerancuan rendah, delta {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.protanopia_distinct_delta_n",
-      "protanopia: dapat dibedakan, delta {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.deuteranopia_distinct_delta_n",
-      "deuteranopia: dapat dibedakan, delta {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.tritanopia_distinct_delta_n",
-      "tritanopia: dapat dibedakan, delta {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.achromatopsia_distinct_delta_n",
-      "akromatopsia: dapat dibedakan, delta {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.achromatopsia_moderate_confusion_risk_delta_n",
-      "akromatopsia: risiko kerancuan sedang, delta {v1, number}");
-   P ("label.models.perceptual_difference_label.cie76_delta_d_large_perceptual_difference",
-      "CIE76 delta {v1}, perbedaan perseptual besar");
-   P ("label.models.perceptual_difference_label.cie94_delta_d_large_perceptual_difference",
-      "CIE94 delta {v1}, perbedaan perseptual besar");
-   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_large_perceptual_difference",
-      "CIE94 tekstil delta {v1}, perbedaan perseptual besar");
-   P ("label.models.perceptual_difference_label.ciede2000_delta_d_large_perceptual_difference",
-      "CIEDE2000 delta {v1}, perbedaan perseptual besar");
-   P ("label.models.perceptual_difference_label.oklab_delta_d_noticeable_perceptual_difference",
-      "OKLab delta {v1}, perbedaan perseptual nyata");
-   P ("label.contrast.color_vision_deficiency_label.protanopia_high_confusion_risk_delta_n",
-      "protanopia: risiko kerancuan tinggi, delta {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.tritanopia_high_confusion_risk_delta_n",
-      "tritanopia: risiko kerancuan tinggi, delta {v1, number}");
-   P ("label.models.perceptual_difference_label.cie94_delta_d_noticeable_perceptual_difference",
-      "CIE94 delta {v1}, perbedaan perseptual nyata");
-   P ("label.models.perceptual_difference_label.cie94_textile_delta_d_noticeable_perceptual_difference",
-      "CIE94 tekstil delta {v1}, perbedaan perseptual nyata");
-   P ("label.models.perceptual_difference_label.ciede2000_delta_d_noticeable_perceptual_difference",
-      "CIEDE2000 delta {v1}, perbedaan perseptual nyata");
-   P ("label.models.perceptual_difference_label.oklab_delta_n_noticeable_perceptual_difference",
-      "OKLab delta {v1, number}, perbedaan perseptual nyata");
-   P ("label.contrast.color_vision_deficiency_label.tritanopia_low_confusion_risk_delta_n",
-      "tritanopia: risiko kerancuan rendah, delta {v1, number}");
-   P ("label.contrast.color_vision_deficiency_label.deuteranopia_low_confusion_risk_delta_n",
-      "deuteranopia: risiko kerancuan rendah, delta {v1, number}");
-   P ("label.models.perceptual_difference_label.oklab_delta_n_large_perceptual_difference",
-      "OKLab delta {v1, number}, perbedaan perseptual besar");
-   P ("label.contrast.color_vision_deficiency_label.deuteranopia_high_confusion_risk_delta_n",
-      "deuteranopia: risiko kerancuan tinggi, delta {v1, number}");
 end Labels_2;

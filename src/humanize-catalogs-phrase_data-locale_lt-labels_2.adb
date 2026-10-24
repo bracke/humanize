@@ -11,12 +11,12 @@ begin
       & "archive_content {archyvas} binary_content {dvejetainiai duomenys} "
       & "form_content {formos duomenys} other {nežinomas turinys}}");
    P ("label.markup.tag_kind_label",
-      "{kind, select, document_tag {dokumento žyma} metadata_tag "
-      & "{metaduomenų žyma} section_tag {skyriaus žyma} text_tag {teksto "
-      & "žyma} link_tag {nuorodos žyma} media_tag {medijos žyma} form_tag "
-      & "{formos žyma} table_tag {lentelės žyma} interactive_tag "
-      & "{interaktyvi žyma} scripting_tag {scenarijaus žyma} other {nežinoma "
-      & "žyma}}");
+      "{kind, select, document_tag {dokumento žymė} metadata_tag "
+      & "{metaduomenų žymė} section_tag {skyriaus žymė} text_tag {teksto "
+      & "žymė} link_tag {nuorodos žymė} media_tag {medijos žymė} form_tag "
+      & "{formos žymė} table_tag {lentelės žymė} interactive_tag "
+      & "{interaktyvi žymė} scripting_tag {scenarijaus žymė} other "
+      & "{nežinoma žymė}}");
    P ("label.media.duration_label", "trukmė: {duration_text}");
    P ("label.media.media_kind_label",
       "{kind, select, image_media {vaizdas} video_media {vaizdo įrašas} "
@@ -428,7 +428,7 @@ begin
    P ("label.search.filter_label",
       "{state, select, active_filter {filtras {name}: {value}, aktyvus} "
       & "inactive_filter {filtras {name}: {value}, neaktyvus} other {filtras "
-      & "{name}: išskirti {value}}}");
+      & "{name}: išskyrus {value}}}");
    P ("label.search.filter_state_label",
       "{state, select, active_filter {aktyvus filtras} inactive_filter "
       & "{neaktyvus filtras} other {išskiriantis filtras}}");
@@ -494,11 +494,10 @@ begin
       & "bearer_token {nešėjo žetonas} jwt_token {JWT žetonas} "
       & "basic_auth_credential {Basic Auth prisijungimo duomenys} "
       & "password_secret {slaptažodis} private_key {privatusis raktas} "
-      & "ssh_private_key {SSH privatusis raktas} webhook_secret {žiniatinklio "
-      & "kablio paslaptis} oauth_token {OAuth žetonas} database_url_secret "
-      & "{duomenų bazės URL paslaptis} sha1_fingerprint {SHA-1 kontrolinis "
-      & "kodas} sha256_fingerprint {SHA-256 kontrolinis kodas} other "
-      & "{paslaptis}}");
+      & "ssh_private_key {SSH privatusis raktas} webhook_secret {webhook "
+      & "paslaptis} oauth_token {OAuth žetonas} database_url_secret {duomenų "
+      & "bazės URL paslaptis} sha1_fingerprint {SHA-1 kontrolinis kodas} "
+      & "sha256_fingerprint {SHA-256 kontrolinis kodas} other {paslaptis}}");
    P ("label.secrets.sensitive_value_kind_label",
       "{kind, select, email_value {el. paštas} phone_value {telefonas} "
       & "url_value {URL} ip_address_value {IP adresas} token_value {žetonas} "
@@ -508,7 +507,7 @@ begin
    P ("label.tables.cell_label",
       "eilutė {row, number}, stulpelis {column, number}: {state, select, "
       & "empty_cell {tuščia} edited_cell {redaguota} invalid_cell {netinkama "
-      & "reikšmė} highlighted_cell {paryškinta} other {tik skaityti}}");
+      & "reikšmė} highlighted_cell {paryškinta} other {tik skaitoma}}");
    P ("label.tables.cell_position_label", "eilutė {row, number}, stulpelis {column, number}");
    P ("label.tables.cell_state_label",
       "{state, select, empty_cell {tuščias langelis} edited_cell "

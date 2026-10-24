@@ -1,37 +1,51 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Sv)
 procedure Labels_4 is
 begin
-   P ("label.names.hue_gender.purple", "neuter");
-   P ("label.names.hue_gender.magenta", "neuter");
-   P ("label.names.hue_gender.neutral", "other");
-   P ("label.names.hue_gender.pink", "neuter");
-   P ("label.names.agree.very_dark", "{gender, select, neuter {mycket mörkt} other {mycket mörk}}");
-   P ("label.names.agree.dark", "{gender, select, neuter {mörkt} other {mörk}}");
-   P ("label.names.agree.medium_brightness", "{gender, select, neuter {medelljust} other {medelljus}}");
-   P ("label.names.agree.light", "{gender, select, neuter {ljust} other {ljus}}");
-   P ("label.names.agree.very_light", "{gender, select, neuter {mycket ljust} other {mycket ljus}}");
-   P ("label.names.agree.desaturated", "{gender, select, neuter {avmättat} other {avmättad}}");
-   P ("label.names.agree.muted", "{gender, select, neuter {dämpat} other {dämpad}}");
-   P ("label.names.agree.neutral", "{gender, select, neuter {neutralt} other {neutral}}");
-   P ("label.names.agree.saturated", "{gender, select, neuter {mättat} other {mättad}}");
-   P ("label.names.agree.vivid", "{gender, select, neuter {livfullt} other {livfull}}");
-   P ("label.names.agree.grayish", "{gender, select, neuter {gråaktigt} other {gråaktig}}");
-   P ("label.names.agree.soft", "{gender, select, neuter {mjukt} other {mjuk}}");
-   P ("label.names.agree.moderate_chroma",
-      "{gender, select, neuter {måttligt kromatiskt} other {måttligt "
-      & "kromatisk}}");
-   P ("label.names.agree.high_chroma", "{gender, select, neuter {högkromatiskt} other {högkromatisk}}");
-   P ("label.names.agree.pastel", "{gender, select, neuter {pastellfärgat} other {pastellfärgad}}");
-   P ("label.names.agree.warm", "{gender, select, neuter {varmt} other {varm}}");
-   P ("label.names.agree.cool", "{gender, select, neuter {svalt} other {sval}}");
-   P ("label.names.agree.neutral_temperature",
-      "{gender, select, neuter {temperaturneutralt} other "
-      & "{temperaturneutral}}");
-   P ("label.names.agree.balanced_temperature",
-      "{gender, select, neuter {temperaturbalanserat} other "
-      & "{temperaturbalanserad}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {rosa} other "
-      & "{{hue}}}");
+   P ("label.metrics.reading_time.n_minutes_read",
+      "{v1, plural, one {1 minuts lästid} other {{v1, number} minuters "
+      & "lästid}}");
+   P ("label.metrics.speaking_time.n_minutes_spoken",
+      "{v1, plural, one {1 minuts taltid} other {{v1, number} minuters "
+      & "taltid}}");
+   P ("label.metrics.text_summary_with_options.n_words", "{v1, plural, one {1 ord} other {{v1, number} ord}}");
+   P ("label.metrics.text_summary_with_options.n_sentences",
+      "{v1, plural, one {1 mening} other {{v1, number} meningar}}");
+   P ("label.metrics.text_summary_with_options.n_paragraphs",
+      "{v1, plural, one {1 stycke} other {{v1, number} stycken}}");
+   P ("label.metrics.text_summary_with_options.n_minutes_read",
+      "{v1, plural, one {1 minuts lästid} other {{v1, number} minuters "
+      & "lästid}}");
+   P ("label.metrics.paragraph_count_summary.n_paragraph",
+      "{v1, plural, one {1 stycke} other {{v1, number} stycken}}");
+   P ("label.metrics.reading_time.less_than_n_minute_read",
+      "{v1, plural, one {mindre än 1 minuts lästid} other {mindre än {v1, "
+      & "number} minuters lästid}}");
+   P ("label.metrics.speaking_time.less_than_n_minute_spoken",
+      "{v1, plural, one {mindre än 1 minuts taltid} other {mindre än {v1, "
+      & "number} minuters taltid}}");
+   P ("label.metrics.text_summary_with_options.n_paragraph",
+      "{v1, plural, one {1 stycke} other {{v1, number} stycken}}");
+   P ("label.metrics.text_summary_with_options.less_than_n_minute_read",
+      "{v1, plural, one {mindre än 1 minuts lästid} other {mindre än {v1, "
+      & "number} minuters lästid}}");
+   P ("label.metrics.sentence_count_summary.n_sentence",
+      "{v1, plural, one {1 mening} other {{v1, number} meningar}}");
+   P ("label.metrics.text_summary_with_options.n_sentence",
+      "{v1, plural, one {1 mening} other {{v1, number} meningar}}");
+   P ("label.metrics.word_count_summary.no_words", "inga ord");
+   P ("label.metrics.sentence_count_summary.no_sentences", "inga meningar");
+   P ("label.metrics.paragraph_count_summary.no_paragraphs", "inga stycken");
+   P ("label.metrics.text_summary_with_options.no_words", "inga ord");
+   P ("label.metrics.text_summary_with_options.no_sentences", "inga meningar");
+   P ("label.metrics.text_summary_with_options.no_paragraphs", "inga stycken");
+   P ("label.metrics.word_count_summary.n_word", "{v1, plural, one {1 ord} other {{v1, number} ord}}");
+   P ("label.metrics.text_summary_with_options.n_word", "{v1, plural, one {1 ord} other {{v1, number} ord}}");
+   P ("label.groups", "{first}; {second}");
+   P ("label.parts", "{first}, {second}");
+   P ("label.endpoints.url_label", "{state, select, empty {tom URL} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {tom URL} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[dold användare]");
+   P ("label.endpoints.url_label.query",
+      "fråga {count, plural, one {1 parameter} other {{count, number} "
+      & "parametrar}}");
 end Labels_4;

@@ -96,13 +96,13 @@ begin
             with delta Include_Surface => True)),
           Humanize.Diagnostics.Check_Result_Label (Name => "plain", Status => Humanize.Diagnostics.Passed_Check,
             Options => (Humanize.Diagnostics.Default_Diagnostic_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.diagnostics.check_run_summary_label", Plain,
+   Check (Locale, "label.diagnostics.check_run_summary_label", Phrase,
           Humanize.Diagnostics.Localized.Check_Run_Summary_Label (C, Passed => 3, Failed => 1, Warnings => 2),
           Humanize.Diagnostics.Check_Run_Summary_Label (Passed => 3, Failed => 1, Warnings => 2));
-   Check (Locale, "label.diagnostics.check_run_summary_label", Plain,
+   Check (Locale, "label.diagnostics.check_run_summary_label", Phrase,
           Humanize.Diagnostics.Localized.Check_Run_Summary_Label (C),
           Humanize.Diagnostics.Check_Run_Summary_Label);
-   Check (Locale, "label.diagnostics.check_run_summary_label", Plain,
+   Check (Locale, "label.diagnostics.check_run_summary_label", Phrase,
           Humanize.Diagnostics.Localized.Check_Run_Summary_Label (C, Pending => 1),
           Humanize.Diagnostics.Check_Run_Summary_Label (Pending => 1));
    Check (Locale, "label.diagnostics.check_status_label", Phrase,
@@ -299,6 +299,15 @@ begin
    Check (Locale, "label.endpoints.query_summary", Phrase,
           Humanize.Endpoints.Localized.Query_Summary (C, "https://x/?a=1"),
           Humanize.Endpoints.Query_Summary ("https://x/?a=1"));
+   Check (Locale, "label.endpoints.safe_url_label", Phrase,
+          Humanize.Endpoints.Localized.Safe_URL_Label (C, "https://user:pw@example.com/a?x=1#top"),
+          Humanize.Endpoints.Safe_URL_Label ("https://user:pw@example.com/a?x=1#top"));
+   Check (Locale, "label.endpoints.safe_url_label", Phrase,
+          Humanize.Endpoints.Localized.Safe_URL_Label (C, ""),
+          Humanize.Endpoints.Safe_URL_Label (""));
+   Check (Locale, "label.endpoints.safe_url_label", Phrase,
+          Humanize.Endpoints.Localized.Safe_URL_Label (C, "http://example.com:80/"),
+          Humanize.Endpoints.Safe_URL_Label ("http://example.com:80/"));
    Check (Locale, "label.endpoints.url_component_summary", Phrase,
           Humanize.Endpoints.Localized.URL_Component_Summary (C, "https://example.com/a?b=1#c"),
           Humanize.Endpoints.URL_Component_Summary ("https://example.com/a?b=1#c"));
@@ -308,6 +317,15 @@ begin
    Check (Locale, "label.endpoints.url_component_summary", Phrase,
           Humanize.Endpoints.Localized.URL_Component_Summary (C, "example"),
           Humanize.Endpoints.URL_Component_Summary ("example"));
+   Check (Locale, "label.endpoints.url_label", Phrase,
+          Humanize.Endpoints.Localized.URL_Label (C, "https://user:pw@example.com:8443/a/b?x=1&y=2#top"),
+          Humanize.Endpoints.URL_Label ("https://user:pw@example.com:8443/a/b?x=1&y=2#top"));
+   Check (Locale, "label.endpoints.url_label", Phrase,
+          Humanize.Endpoints.Localized.URL_Label (C, ""),
+          Humanize.Endpoints.URL_Label (""));
+   Check (Locale, "label.endpoints.url_label", Phrase,
+          Humanize.Endpoints.Localized.URL_Label (C, "example.com"),
+          Humanize.Endpoints.URL_Label ("example.com"));
    Check (Locale, "label.events.all_day_label", Phrase,
           Humanize.Events.Localized.All_Day_Label (C, Name => "plain"),
           Humanize.Events.All_Day_Label (Name => "plain"));

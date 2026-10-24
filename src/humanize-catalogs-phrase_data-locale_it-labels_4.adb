@@ -1,6 +1,11 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_It)
 procedure Labels_4 is
 begin
+   P ("label.contrast.color_accessibility_summary.protanopia_moderate_confusion_risk",
+      "protanopia: rischio di confusione moderato");
+   P ("label.contrast.alpha_contrast_label.d_n_normal_text_contrast_after_alpha_compositing",
+      "{v1}:{v2, number}, contrasto per testo normale dopo la composizione "
+      & "alfa");
    P ("label.contrast.alpha_contrast_label.n_n_large_text_contrast_after_alpha_compositing",
       "{v1, number}:{v2, number}, contrasto per testo grande dopo la "
       & "composizione alfa");
@@ -437,4 +442,10 @@ begin
    P ("label.names.descriptive_color_name",
       "{base, select, pink {{hue}} other {{hue}}} {brightness} {chroma} "
       & "{temperature}");
+   P ("label.endpoints.url_label", "{state, select, empty {URL vuoto} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {URL vuoto} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[utente oscurato]");
+   P ("label.endpoints.url_label.query",
+      "query {count, plural, one {{count, number} parametro} many {{count, "
+      & "number} di parametri} other {{count, number} parametri}}");
 end Labels_4;

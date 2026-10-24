@@ -62,12 +62,12 @@ begin
    P ("label.attachments.preview_label", "Vorschau: {name}");
    P ("label.attachments.remove_label", "{name} entfernen");
    P ("label.attachments.scan_result_label",
-      "{state, select, not_scanned {{name}: nicht gescannt} scanning {{name}: "
-      & "wird gescannt} safe {{name}: Scan unbedenklich} suspicious {{name}: "
-      & "Scan verdächtig} other {{name}: Scan infiziert}}");
+      "{name}: {state, select, not_scanned {nicht gescannt} scanning {wird "
+      & "gescannt} safe {unbedenklich} suspicious {verdächtig} other "
+      & "{infiziert}}");
    P ("label.attachments.scan_state_label",
       "{state, select, not_scanned {nicht gescannt} scanning {wird gescannt} "
-      & "safe {Scan unbedenklich} suspicious {Scan verdächtig} other {Scan "
+      & "safe {Scan: unbedenklich} suspicious {Scan: verdächtig} other {Scan: "
       & "infiziert}}");
    P ("label.attachments.upload_error_label", "Hochladen von {name} fehlgeschlagen: {reason}");
    P ("label.badges.badge_label",

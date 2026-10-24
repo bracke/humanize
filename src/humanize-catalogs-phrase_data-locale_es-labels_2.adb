@@ -141,9 +141,12 @@ begin
       & "removed {{item}: eliminado} other {{item}: escalado}}");
    P ("label.moderation.moderation_queue_label",
       "{escalated, plural, =0 {{pending, plural, =0 {cola de moderación "
-      & "vacía} other {{pending, number} pendientes de revisión}}} one "
-      & "{{pending, number} pendientes de revisión, 1 escalado} other "
-      & "{{pending, number} pendientes de revisión, {escalated, number} "
+      & "vacía} one {{pending, number} pendiente de revisión} other "
+      & "{{pending, number} pendientes de revisión}}} one {{pending, plural, "
+      & "one {{pending, number} pendiente de revisión} other {{pending, "
+      & "number} pendientes de revisión}}, 1 escalado} other {{pending, "
+      & "plural, one {{pending, number} pendiente de revisión} other "
+      & "{{pending, number} pendientes de revisión}}, {escalated, number} "
       & "escalados}}");
    P ("label.moderation.report_label",
       "{state, select, open_report {{item}: denuncia abierta} triaged_report "
@@ -689,11 +692,4 @@ begin
    P ("label.tasks.task_count_label",
       "{count, plural, =0 {ninguna tarea} one {{count, number} tarea} many "
       & "{{count, number} de tareas} other {{count, number} tareas}}");
-   P ("label.tasks.task_label",
-      "{name}: {state, select, open_task {tarea abierta} in_progress_task "
-      & "{tarea en curso} blocked_task {tarea bloqueada} done_task {tarea "
-      & "completada} canceled_task {tarea cancelada} deferred_task {tarea "
-      & "aplazada} other {tarea vencida}}{priority, select, no_priority {} "
-      & "low_priority {, prioridad baja} medium_priority {, prioridad media} "
-      & "high_priority {, prioridad alta} other {, prioridad crítica}}");
 end Labels_2;

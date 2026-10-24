@@ -468,7 +468,7 @@ begin
       & "схемі} other {{file_name}: пропущений запис}}");
    P ("label.deployments.artifact_state_label",
       "{state, select, artifact_ready {артефакт готовий} "
-      & "artifact_uploaded {артефакт завантажено} "
+      & "artifact_uploaded {артефакт надіслано} "
       & "artifact_signed {артефакт підписано} artifact_missing "
       & "{артефакт відсутній} other {термін дії "
       & "артефакту минув}}");

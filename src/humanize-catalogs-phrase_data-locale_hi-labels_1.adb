@@ -505,19 +505,14 @@ begin
       & "नहीं} one {1 प्रभावित आइटम} other "
       & "{{count, number} प्रभावित आइटम}}");
    P ("label.diagnostics.check_duration_label",
-      "{status, select, passed_check {{name}: {duration_s, plural, one {1 "
-      & "सेकंड} other {{duration_s, number} सेकंड}} "
-      & "में सफल} failed_check {{name}: {duration_s, plural, one {1 "
-      & "सेकंड} other {{duration_s, number} सेकंड}} "
-      & "में विफल} warning_check {{name}: {duration_s, plural, "
-      & "one {1 सेकंड} other {{duration_s, number} सेकंड}} "
-      & "में चेतावनियाँ} skipped_check {{name}: "
-      & "{duration_s, plural, one {1 सेकंड} other {{duration_s, "
-      & "number} सेकंड}} में छोड़ा गया} "
-      & "pending_check {{name}: {duration_s, plural, one {1 सेकंड} "
-      & "other {{duration_s, number} सेकंड}} में "
-      & "लंबित} other {{name}: {duration_s, plural, one {1 "
-      & "सेकंड} other {{duration_s, number} सेकंड}} "
+      "{status, select, passed_check {{name}: {duration_s, number} "
+      & "सेकंड में सफल} failed_check {{name}: "
+      & "{duration_s, number} सेकंड में विफल} "
+      & "warning_check {{name}: {duration_s, number} सेकंड में "
+      & "चेतावनियाँ} skipped_check {{name}: {duration_s, "
+      & "number} सेकंड में छोड़ा गया} "
+      & "pending_check {{name}: {duration_s, number} सेकंड में "
+      & "लंबित} other {{name}: {duration_s, number} सेकंड "
       & "में चल रहा है}}");
    P ("label.diagnostics.check_result_label",
       "{status, select, passed_check {{name}: सफल} failed_check "
@@ -567,7 +562,7 @@ begin
       & "{अवरोधक}}: {message}");
    P ("label.diagnostics.failed_at_label",
       "{path}{line, plural, =0 {} other {, पंक्ति {line, "
-      & "number}{column, plural, =0 {} other {, स्तंभ {column, "
+      & "number}{column, plural, =0 {} other {, कॉलम {column, "
       & "number}}}}} पर विफल");
    P ("label.diagnostics.field_problem_label",
       "{field_name} में {severity, select, info_severity "
@@ -607,7 +602,7 @@ begin
       & "सूचनाएँ}}}}}}}}");
    P ("label.diagnostics.location_label",
       "{path}{line, plural, =0 {} other {, पंक्ति {line, "
-      & "number}{column, plural, =0 {} other {, स्तंभ {column, "
+      & "number}{column, plural, =0 {} other {, कॉलम {column, "
       & "number}}}}}");
    P ("label.diagnostics.parser_diagnostic_explanation_label",
       "{family, select, byte_parser {बाइट पार्सर के "
@@ -632,7 +627,7 @@ begin
       & "पार्सर के लिए असमर्थित "
       & "सिंटैक्स {error}{position, plural, =0 {} other { "
       & "(स्थिति {position, number})}}; स्कीम, "
-      & "होस्ट, पाथ, क्वेरी या "
+      & "होस्ट, पथ, क्वेरी या "
       & "फ़्रैगमेंट का उपयोग करें} "
       & "unit_parser {इकाई पार्सर के लिए "
       & "असमर्थित सिंटैक्स {error}{position, "
@@ -673,7 +668,7 @@ begin
       & "critical_severity {गंभीर} other {अवरोधक}}");
    P ("label.diagnostics.source_label",
       "{source, select, build_source {बिल्ड निदान} "
-      & "test_source {परीक्षण निदान} lint_source "
+      & "test_source {टेस्ट निदान} lint_source "
       & "{लिंट निदान} import_source {आयात "
       & "निदान} validation_source {सत्यापन "
       & "निदान} runtime_source {रनटाइम निदान} "
@@ -681,7 +676,7 @@ begin
       & "{निदान}}");
    P ("label.diagnostics.source_summary_label",
       "{count, number} {source, select, build_source {बिल्ड "
-      & "निदान} test_source {परीक्षण निदान} "
+      & "निदान} test_source {टेस्ट निदान} "
       & "lint_source {लिंट निदान} import_source {आयात "
       & "निदान} validation_source {सत्यापन "
       & "निदान} runtime_source {रनटाइम निदान} "
@@ -695,4 +690,9 @@ begin
       & "नेटवर्क पता} other {अज्ञात "
       & "होस्ट}}");
    P ("label.events.all_day_label", "{name} (पूरे दिन का कार्यक्रम)");
+   P ("label.events.attendance_state_label",
+      "{state, select, not_responded {जवाब नहीं दिया} "
+      & "accepted {स्वीकार किया} declined "
+      & "{अस्वीकार किया} maybe {शायद} other "
+      & "{प्रतीक्षा सूची में}}");
 end Labels_1;

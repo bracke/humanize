@@ -571,6 +571,57 @@ begin
       & "{0 kiugró érték {total, number} megfigyelésből}}} one {1 kiugró "
       & "érték {total, number} megfigyelésből} other {{outliers, number} "
       & "kiugró érték {total, number} megfigyelésből}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {nincs megfigyelés} "
+      & "sample_too_small_shape {a minta túl kicsi az alak leírásához, "
+      & "{count, plural, one {1 megfigyelés} other {{count, number} "
+      & "megfigyelés}}} flat_shape {lapos eloszlás {median} értéknél} "
+      & "outlier_heavy_shape {kiugró értékekben gazdag eloszlás {median} "
+      & "körül} volatile_shape {ingadozó eloszlás {median} körül} "
+      & "clustered_shape {csoportosuló eloszlás {median} körül} "
+      & "wide_spread_shape {széles szórású eloszlás} wide_spread_range "
+      & "{széles szórású eloszlás {minimum} és {maximum} között} "
+      & "right_skewed_shape {jobbra ferde eloszlás, medián: {median}} "
+      & "left_skewed_shape {balra ferde eloszlás, medián: {median}} other "
+      & "{nagyjából kiegyensúlyozott eloszlás {median} körül}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {üres e-mail} address {e-mail-cím} other "
+      & "{e-mail ezen a tartományon: {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {telefonszám} redacted {telefonszám kitakarva} "
+      & "other {telefonszám, vége: {digits}}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {felhasználónév} other {felhasználónév: "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label",
+      "{state, select, none {kódszimbólum} other {kódszimbólum: "
+      & "{symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "címmetaadatok: {present, plural, one {1 mező megvan} other "
+      & "{{present, number} mező megvan}}, {missing, plural, one {1 mező "
+      & "hiányzik} other {{missing, number} mező hiányzik}}");
+   P ("label.endpoints.host_label", "{state, select, none {ismeretlen gazdagép} other {{host} {kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {ismeretlen végpont} other {{scheme}{host}{port} "
+      & "{kind} végpont}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {üres URL} none {URL felismert összetevők "
+      & "nélkül} other {URL {count, plural, one {1 összetevővel} other "
+      & "{{count, number} összetevővel}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {nincs lekérdezési paraméter} one {1 "
+      & "lekérdezési paraméter} other {{count, number} lekérdezési "
+      & "paraméter}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {nyilvános IPv4-cím} ipv6_host "
+      & "{nyilvános IPv6-cím} private_network_host {magánhálózati cím} "
+      & "localhost_host {helyi gép} other {nem IP-cím}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} érvénytelen CIDR} other {{cidr} "
+      & "{kind} hálózati előtag: {prefix}}}");
+   P ("label.resources.utilization_label",
+      "{used, number}/{total, number} {unit} felhasználva ({percent}, "
+      & "{band})");
    P ("label.resources.remaining_label",
       "{state, select, over {{count, number} {unit} a kapacitás felett} "
       & "other {{count, number}/{total, number} {unit} maradt}}");
@@ -584,6 +635,43 @@ begin
       "{state, select, none {gyorsítótár-találati arány nem érhető el: "
       & "nincs kérés} other {gyorsítótár-találati arány {percent}: "
       & "{hits, number} találat, {misses, number} tévesztés}}");
+   P ("label.resources.saturation_label", "{named, select, no {erőforrás} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {verzió: {version}, előzetes: {prerelease}, "
+      & "build: {build}} prerelease {verzió: {version}, előzetes: "
+      & "{prerelease}} build {verzió: {version}, build: {build}} other "
+      & "{verzió: {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {azonos verzió} major_upgrade "
+      & "{főverzió-frissítés} minor_upgrade {alverzió-frissítés} "
+      & "patch_upgrade {javítófrissítés} prerelease_change {előzetes "
+      & "verzió változása} build_metadata_change {build-metaadat "
+      & "változása} downgrade {visszaléptetés} other {ismeretlen "
+      & "verzióváltozás}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {pontosan ez a verzió: {version}} "
+      & "minimum_range {{version} vagy újabb verzió} maximum_range {{version} "
+      & "vagy régebbi verzió} major_compatible_range {kompatibilis ezzel a "
+      & "főverzióval: {version}} minor_compatible_range {kompatibilis ezzel "
+      & "az alverzióval: {version}} other {verziótartomány: {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {kezdeti fejlesztői kiadás: {version}} "
+      & "prerelease {előzetes kiadás: {version}} major {főkiadás: "
+      & "{version}} minor {alkiadás: {version}} other {javítókiadás: "
+      & "{version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {hivatkozáscímke} image {képcímke} paragraph "
+      & "{bekezdéscímke} ordered_list {rendezett lista címke} unordered_list "
+      & "{rendezetlen lista címke} list_item {listaelem-címke} "
+      & "table_header_cell {táblázatfejléc-cella címke} table_cell "
+      & "{táblázatcella-címke} table_row {táblázatsor-címke} line_break "
+      & "{sortörés-címke} thematic_break {tematikus elválasztó címke} "
+      & "heading_level_n {{level, number}. szintű címsor címke} other "
+      & "{{name} címke}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {{name} attribútum} event {{name} "
+      & "eseménykezelő attribútum} other {{name} attribútum, értéke: "
+      & "„{value}”}}");
    P ("label.markup.attribute_count_label.total",
       "{count, plural, one {1 attribútum} other {{count, number} "
       & "attribútum}}");
@@ -596,104 +684,17 @@ begin
    P ("label.markup.attribute_count_label.events",
       "{count, plural, one {1 eseménykezelő} other {{count, number} "
       & "eseménykezelő}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {szöveges tartalom} html_content "
+      & "{HTML-dokumentum} json_content {JSON-dokumentum} xml_content "
+      & "{XML-dokumentum} image_content {képtartalom} audio_content "
+      & "{hangtartalom} video_content {videótartalom} font_content "
+      & "{betűtípus-tartalom} archive_content {archívumtartalom} "
+      & "binary_content {bináris tartalom} form_content {űrlapbeküldés} "
+      & "other {ismeretlen tartalom}} ({base})");
    P ("label.markup.heading_label", "{level, number}. szintű címsor");
    P ("label.markup.tag_count_label.total", "{count, plural, one {1 címke} other {{count, number} címke}}");
    P ("label.markup.tag_count_label.links",
       "{count, plural, one {1 hivatkozás} other {{count, number} "
       & "hivatkozás}}");
-   P ("label.markup.tag_count_label.media", "{count, plural, one {1 médiaelem} other {{count, number} médiaelem}}");
-   P ("label.markup.tag_count_label.forms",
-      "{count, plural, one {1 űrlapvezérlő} other {{count, number} "
-      & "űrlapvezérlő}}");
-   P ("label.markup.document_outline_label.headings",
-      "{count, plural, one {1 címsor} other {{count, number} címsor}}");
-   P ("label.markup.document_outline_label.landmarks",
-      "{count, plural, one {1 tájékozódási pont} other {{count, number} "
-      & "tájékozódási pont}}");
-   P ("label.markup.document_outline_label.forms", "{count, plural, one {1 űrlap} other {{count, number} űrlap}}");
-   P ("label.markup.document_outline_label.media",
-      "{count, plural, one {1 médiaelem} other {{count, number} médiaelem}}");
-   P ("label.markup.table_navigation_label",
-      "{caption}, sor: {row, number}/{rows, number}, oszlop: {column, "
-      & "number}/{columns, number}");
-   P ("label.secrets.secret_count_label.total", "{count, plural, one {1 titok} other {{count, number} titok}}");
-   P ("label.secrets.secret_count_label.masked", "{count, number} maszkolva");
-   P ("label.secrets.secret_count_label.unset", "{count, number} nincs beállítva");
-   P ("label.secrets.secret_count_label.fingerprints",
-      "{count, plural, one {1 ujjlenyomat} other {{count, number} "
-      & "ujjlenyomat}}");
-   P ("label.schema.type_mismatch_label",
-      "{field_name} mező: várt {expected, select, string_field "
-      & "{karakterlánc} integer_field {egész szám} decimal_field "
-      & "{decimális} boolean_field {logikai} date_field {dátum} "
-      & "date_time_field {dátum-idő} object_field {objektum} array_field "
-      & "{tömb} enum_field {felsorolás} binary_field {bináris} null_field "
-      & "{null} any_field {bármely} other {ismeretlen}}, kapott {actual, "
-      & "select, string_field {karakterlánc} integer_field {egész szám} "
-      & "decimal_field {decimális} boolean_field {logikai} date_field {dátum} "
-      & "date_time_field {dátum-idő} object_field {objektum} array_field "
-      & "{tömb} enum_field {felsorolás} binary_field {bináris} null_field "
-      & "{null} any_field {bármely} other {ismeretlen}}");
-   P ("label.diagnostics.issue_summary_label",
-      "{state, select, blocking_only {{blocking, plural, one {1 blokkoló "
-      & "probléma} other {{blocking, number} blokkoló probléma}}} blocking "
-      & "{{base}, {blocking, plural, one {1 blokkoló probléma} other "
-      & "{{blocking, number} blokkoló probléma}}} only {csak {base}} other "
-      & "{{base}}}");
-   P ("label.thresholds.metric_value_label", "{name} {value}");
-   P ("label.thresholds.range_label",
-      "{inclusive, select, inclusive_window {céltartomány: {low} – "
-      & "{high}} other {célablak: {low} – {high}}}");
-   P ("label.thresholds.window_status_label",
-      "{state, select, inside {{value} a várt tartományon belül} below "
-      & "{{value} a várt tartomány alatt} other {{value} a várt tartomány "
-      & "felett}}");
-   P ("label.thresholds.threshold_status_label",
-      "{state, select, critical {{value} a kritikus küszöbön} warning "
-      & "{{value} a figyelmeztetési küszöbön} other {{value} a normál "
-      & "tartományban}}");
-   P ("label.thresholds.breach_label",
-      "{state, select, ok {nincs túllépés} other {túllépés: "
-      & "{difference}}}");
-   P ("label.thresholds.target_delta_label",
-      "{state, select, at {a célértéken} below {{difference} a cél alatt} "
-      & "other {{difference} a cél felett}}");
-   P ("label.thresholds.near_limit_label",
-      "{state, select, breached {korlát túllépve} near {korlát "
-      & "közelében, {distance} maradt} other {{distance} a korláttól}}");
-   P ("label.thresholds.threshold_summary_label.none", "nincs mérőszám");
-   P ("label.thresholds.threshold_summary_label.normal", "{count, number} normál");
-   P ("label.thresholds.threshold_summary_label.warnings",
-      "{count, plural, one {1 figyelmeztetés} other {{count, number} "
-      & "figyelmeztetés}}");
-   P ("label.thresholds.threshold_summary_label.critical", "{count, number} kritikus");
-   P ("label.thresholds.threshold_summary_label.breaches",
-      "{count, plural, one {1 túllépés} other {{count, number} "
-      & "túllépés}}");
-   P ("label.thresholds.target_window_label", "cél: {target} ± {tolerance}");
-   P ("label.thresholds.tolerance_label", "tűrés: {tolerance}");
-   P ("label.thresholds.percent_of_limit_label", "a korlát {percent}-a");
-   P ("label.thresholds.remaining_to_limit_label",
-      "{state, select, exceeded {korlát túllépve: {amount}} other "
-      & "{{amount} maradt}}");
-   P ("label.thresholds.budget_used_label", "{used} felhasználva ennyiből: {budget}");
-   P ("label.workflows.step_label", "{current, number}/{total, number}. lépés: {name}");
-   P ("label.workflows.milestone_label", "{current, number}/{total, number} mérföldkő teljesítve: {name}");
-   P ("label.workflows.workflow_progress_label",
-      "{state, select, none {nincs munkafolyamat-elem} half {a munkafolyamat "
-      & "félúton} other {{completed, number}/{total, number} kész}}");
-   P ("label.workflows.queue_position_label",
-      "{total, plural, =0 {hely a sorban: {position, number}} other {hely a "
-      & "sorban: {position, number}/{total, number}}}");
-   P ("label.changes.change_set_label.none", "nincs változás");
-   P ("label.changes.change_set_label.added", "{count, number} hozzáadva");
-   P ("label.changes.change_set_label.removed", "{count, number} eltávolítva");
-   P ("label.changes.change_set_label.modified", "{count, number} módosítva");
-   P ("label.changes.change_set_label.unchanged", "{count, number} változatlan");
-   P ("label.changes.sync_change_label.none", "nincs szinkronizálási változás");
-   P ("label.changes.sync_change_label.uploaded", "{count, number} feltöltve");
-   P ("label.changes.sync_change_label.downloaded", "{count, number} letöltve");
-   P ("label.changes.sync_change_label.deleted", "{count, number} törölve");
-   P ("label.changes.sync_change_label.conflicts",
-      "{count, plural, one {1 ütközés} other {{count, number} ütközés}}");
 end Labels_2;

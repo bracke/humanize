@@ -35,13 +35,13 @@ begin
    P ("label.attachments.attachment_count_label", "{count, plural, =0 {ek yok} other {{count, number} ek}}");
    P ("label.attachments.attachment_group_label", "{name}: {count, number} ek");
    P ("label.attachments.attachment_kind_label",
-      "{kind, select, file_attachment {dosya eki} image_attachment {görsel "
-      & "eki} video_attachment {video eki} audio_attachment {ses eki} "
-      & "document_attachment {belge eki} archive_attachment {arşiv eki} other "
-      & "{bağlantı eki}}");
+      "{kind, select, file_attachment {dosya eki} image_attachment "
+      & "{görüntü eki} video_attachment {video eki} audio_attachment {ses "
+      & "eki} document_attachment {belge eki} archive_attachment {arşiv eki} "
+      & "other {bağlantı eki}}");
    P ("label.attachments.attachment_label",
       "{name}, {kind, select, file_attachment {dosya} image_attachment "
-      & "{görsel} video_attachment {video} audio_attachment {ses} "
+      & "{görüntü} video_attachment {video} audio_attachment {ses} "
       & "document_attachment {belge} archive_attachment {arşiv} other "
       & "{bağlantı}}: {state, select, pending_attachment {bekliyor} "
       & "uploading_attachment {yükleniyor} uploaded_attachment {yüklendi} "
@@ -53,11 +53,11 @@ begin
       & "{ek yükleniyor} uploaded_attachment {ek yüklendi} failed_attachment "
       & "{ek yüklenemedi} removed_attachment {ek kaldırıldı} other {ek "
       & "engellendi}}");
-   P ("label.attachments.download_label", "{name} indir");
+   P ("label.attachments.download_label", "indir: {name}");
    P ("label.attachments.expiring_link_label", "{name}: bağlantının süresi doluyor ({time_text})");
    P ("label.attachments.image_dimensions_label", "{name}, {dimensions}");
-   P ("label.attachments.preview_label", "{name} önizle");
-   P ("label.attachments.remove_label", "{name} kaldır");
+   P ("label.attachments.preview_label", "önizle: {name}");
+   P ("label.attachments.remove_label", "kaldır: {name}");
    P ("label.attachments.scan_result_label",
       "{state, select, not_scanned {{name}: taranmadı} scanning {{name}: "
       & "taranıyor} safe {{name}: güvenli} suspicious {{name}: şüpheli} "
@@ -90,7 +90,7 @@ begin
    P ("label.badges.chip_label", "{selected, select, false {{name} çipi} other {{name} çipi, seçili}}");
    P ("label.badges.count_badge_label", "{count, plural, other {{name}: {count, number}}}");
    P ("label.badges.deprecated_label", "{name}: kullanımdan kaldırılmış rozet");
-   P ("label.badges.dismiss_label", "{name} kapat");
+   P ("label.badges.dismiss_label", "kapat: {name}");
    P ("label.badges.new_label", "{name}: yeni rozet");
    P ("label.badges.overflow_badge_label",
       "{hidden_count, plural, =0 {gizli rozet yok} other {+{hidden_count, "
@@ -142,9 +142,10 @@ begin
       & "başarısızlık}}");
    P ("label.changes.boolean_field_change_label",
       "{old_value, select, false {{new_value, select, false {{field_name} "
-      & "değişmedi, devre dışı} other {{field_name} devre dışıyken "
-      & "etkin oldu}}} other {{new_value, select, false {{field_name} etkinken "
-      & "devre dışı oldu} other {{field_name} değişmedi, etkin}}}}");
+      & "değişmedi, devre dışı} other {{field_name} devre dışı "
+      & "durumundan etkin duruma geçti}}} other {{new_value, select, false "
+      & "{{field_name} etkin durumdan devre dışı duruma geçti} other "
+      & "{{field_name} değişmedi, etkin}}}}");
    P ("label.changes.change_kind_label",
       "{kind, select, added_change {eklendi} removed_change {kaldırıldı} "
       & "modified_change {değiştirildi} renamed_change {yeniden "
@@ -225,7 +226,7 @@ begin
    P ("label.comments.participant_count_label",
       "{count, plural, =0 {katılımcı yok} other {{count, number} "
       & "katılımcı}}");
-   P ("label.comments.pin_label", "{name} sabitle");
+   P ("label.comments.pin_label", "sabitle: {name}");
    P ("label.comments.reaction_kind_label",
       "{kind, select, like_reaction {beğeni tepkisi} dislike_reaction "
       & "{beğenmeme tepkisi} heart_reaction {kalp tepkisi} laugh_reaction "
@@ -258,7 +259,7 @@ begin
       "{state, select, open_thread {açık ileti dizisi} resolved_thread "
       & "{çözümlenmiş ileti dizisi} locked_thread {kilitli ileti dizisi} "
       & "other {arşivlenmiş ileti dizisi}}");
-   P ("label.comments.unpin_label", "{name} sabitlemesini kaldır");
+   P ("label.comments.unpin_label", "sabitlemeyi kaldır: {name}");
    P ("label.comments.unsubscribe_label", "{name} aboneliğinden çık");
    P ("label.comparisons.baseline_label",
       "{result, select, improved {{name}: iyileşti} regressed {{name}: "

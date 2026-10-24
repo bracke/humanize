@@ -327,7 +327,7 @@ begin
       & "{在预期范围内} above_range {高于预期范围} below_target "
       & "{低于目标} at_target {达到目标} above_target {高于目标} "
       & "near_limit {接近限值} warning_level {警告阈值} critical_level "
-      & "{严重阈值} breached {已超出阈值} other {阈值状态未知}}");
+      & "{严重阈值} breached {已突破阈值} other {阈值状态未知}}");
    P ("label.versions.commit_distance_label",
       "{behind, plural, =0 {{ahead, plural, =0 {已是最新} other "
       & "{领先{ahead, number}个提交}}} other {{ahead, plural, =0 "
@@ -338,7 +338,7 @@ begin
       & "{等待{approver}批准}}");
    P ("label.workflows.attempt_label",
       "{limit, plural, =1 {{attempt, plural, =1 {第1次尝试，共1次} "
-      & "other {第{attempt, number}次尝试，已超过1次的上限}}} other "
+      & "other {第{attempt, number}次尝试，已超出上限1次}}} other "
       & "{第{attempt, number}次尝试，共{limit, number}次}}");
    P ("label.workflows.blocker_label", "受阻：{reason}");
    P ("label.workflows.dependency_label",
@@ -454,8 +454,8 @@ begin
       "{state, select, at {达到目标} below {低于目标{difference}} "
       & "other {高于目标{difference}}}");
    P ("label.thresholds.near_limit_label",
-      "{state, select, breached {已突破上限} near "
-      & "{接近上限，剩余{distance}} other {距上限{distance}}}");
+      "{state, select, breached {已突破限值} near "
+      & "{接近限值，剩余{distance}} other {距限值{distance}}}");
    P ("label.thresholds.threshold_summary_label.none", "没有指标");
    P ("label.thresholds.threshold_summary_label.normal", "{count, number}个正常");
    P ("label.thresholds.threshold_summary_label.warnings", "{count, number}个警告");
@@ -463,9 +463,9 @@ begin
    P ("label.thresholds.threshold_summary_label.breaches", "{count, number}次突破");
    P ("label.thresholds.target_window_label", "目标{target} ±{tolerance}");
    P ("label.thresholds.tolerance_label", "容差{tolerance}");
-   P ("label.thresholds.percent_of_limit_label", "上限的{percent}");
+   P ("label.thresholds.percent_of_limit_label", "限值的{percent}");
    P ("label.thresholds.remaining_to_limit_label",
-      "{state, select, exceeded {超出上限{amount}} other "
+      "{state, select, exceeded {超出限值{amount}} other "
       & "{剩余{amount}}}");
    P ("label.thresholds.budget_used_label", "已用{used}，预算{budget}");
    P ("label.workflows.step_label", "第{current, number}/{total, number}步：{name}");

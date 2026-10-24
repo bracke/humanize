@@ -6,6 +6,8 @@ procedure Locale_Zh_Hant_Hk (Target : in out Catalog_Text) is
    begin
       Add (Target, "zh-Hant-HK", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
 begin
    P ("due.today", "今日到期");
    P ("due.tomorrow", "明日到期");
@@ -58,4 +60,5 @@ begin
    P ("duration.natural.few",
       "{unit, select, second {幾秒} minute {幾分鐘} hour {幾小時} day "
       & "{幾日} week {幾星期} month {幾個月} year {幾年} other {幾}}");
+   Labels_1;
 end Locale_Zh_Hant_Hk;

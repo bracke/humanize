@@ -362,7 +362,7 @@ begin
    P ("label.diagnostics.diagnostic_label",
       "{severity, select, info_severity {資訊} notice_severity {提示} "
       & "warning_severity {警告} error_severity {錯誤} critical_severity "
-      & "{嚴重} other {封鎖}}：{path}{line, plural, =0 {} other {第{line, "
+      & "{嚴重} other {阻斷}}：{path}{line, plural, =0 {} other {第{line, "
       & "number}行}}：{message}");
    P ("label.diagnostics.failed_at_label",
       "在{line, plural, =0 {{path}} other {{column, plural, =0 "
@@ -371,7 +371,7 @@ begin
    P ("label.diagnostics.field_problem_label",
       "{severity, select, info_severity {資訊} notice_severity {提示} "
       & "warning_severity {警告} error_severity {錯誤} critical_severity "
-      & "{嚴重} other {封鎖}}（{field_name}）：{message}");
+      & "{嚴重} other {阻斷}}（{field_name}）：{message}");
    P ("label.diagnostics.first_failure_label",
       "{check_name}首次失敗：{path}{line, plural, =0 {} other {第{line, "
       & "number}行}}");
@@ -417,7 +417,7 @@ begin
    P ("label.diagnostics.severity_label",
       "{severity, select, info_severity {資訊} notice_severity {提示} "
       & "warning_severity {警告} error_severity {錯誤} critical_severity "
-      & "{嚴重} other {封鎖}}");
+      & "{嚴重} other {阻斷}}");
    P ("label.diagnostics.source_label",
       "{source, select, build_source {建置診斷} test_source "
       & "{測試診斷} lint_source {Lint診斷} import_source {匯入診斷} "
@@ -547,9 +547,9 @@ begin
    P ("label.markup.mime_kind_label",
       "{kind, select, text_content {文字內容} html_content {HTML內容} "
       & "json_content {JSON內容} xml_content {XML內容} image_content "
-      & "{影像內容} audio_content {音訊內容} video_content "
+      & "{圖片內容} audio_content {音訊內容} video_content "
       & "{影片內容} font_content {字型內容} archive_content "
-      & "{封存內容} binary_content {二進位內容} form_content "
+      & "{壓縮檔內容} binary_content {二進位內容} form_content "
       & "{表單內容} other {不明內容}}");
    P ("label.markup.tag_kind_label",
       "{kind, select, document_tag {文件標籤} metadata_tag "
@@ -559,18 +559,18 @@ begin
       & "{互動標籤} scripting_tag {指令碼標籤} other {不明標籤}}");
    P ("label.media.duration_label", "時長：{duration_text}");
    P ("label.media.media_kind_label",
-      "{kind, select, image_media {影像} video_media {影片} audio_media "
+      "{kind, select, image_media {圖片} video_media {影片} audio_media "
       & "{音訊} pdf_document {PDF文件} text_document {文字文件} "
-      & "archive_media {封存檔} other {媒體}}");
+      & "archive_media {壓縮檔} other {媒體}}");
    P ("label.media.media_state_label",
       "{state, select, ready_media {就緒} processing_media {處理中} "
       & "transcoding_media {轉碼中} thumbnail_missing {縮圖無法使用} "
       & "metadata_missing {缺少中繼資料} locked_document "
       & "{文件已鎖定} other {無法使用}}");
    P ("label.media.media_summary",
-      "{name}（{kind, select, image_media {影像} video_media {影片} "
+      "{name}（{kind, select, image_media {圖片} video_media {影片} "
       & "audio_media {音訊} pdf_document {PDF文件} text_document "
-      & "{文字文件} archive_media {封存檔} other {媒體}}）：{state, "
+      & "{文字文件} archive_media {壓縮檔} other {媒體}}）：{state, "
       & "select, ready_media {就緒} processing_media {處理中} "
       & "transcoding_media {轉碼中} thumbnail_missing {縮圖無法使用} "
       & "metadata_missing {缺少中繼資料} locked_document "
@@ -669,8 +669,8 @@ begin
       & "project_subscription {專案訂閱} team_subscription {團隊訂閱} "
       & "other {帳戶訂閱}}");
    P ("label.notifications.actor_event_label",
-      "{event, select, mention_event {{actor}提及了你} reply_event "
-      & "{{actor}已回覆} assignment_event {{actor}指派了工作給你} "
+      "{event, select, mention_event {{actor}提及了您} reply_event "
+      & "{{actor}已回覆} assignment_event {{actor}指派了工作給您} "
       & "approval_event {{actor}要求核准} alert_event "
       & "{{actor}傳送了警示} digest_event {{actor}傳送了摘要} "
       & "reminder_event {{actor}傳送了提醒} other "

@@ -1,49 +1,55 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Fi)
 procedure Labels_4 is
 begin
-   P ("label.endpoints.url_component.query", "kysely");
-   P ("label.endpoints.url_component.fragment", "fragmentti");
-   P ("label.names.hue_noun.red", "punainen");
-   P ("label.names.hue_noun.orange", "oranssi");
-   P ("label.names.hue_noun.yellow", "keltainen");
-   P ("label.names.hue_noun.green", "vihreä");
-   P ("label.names.hue_noun.cyan", "syaani");
-   P ("label.names.hue_noun.blue", "sininen");
-   P ("label.names.hue_noun.purple", "violetti");
-   P ("label.names.hue_noun.magenta", "magenta");
-   P ("label.names.hue_noun.neutral", "neutraali sävy");
-   P ("label.names.hue_noun.pink", "vaaleanpunainen");
-   P ("label.names.hue_gender.red", "other");
-   P ("label.names.hue_gender.orange", "other");
-   P ("label.names.hue_gender.yellow", "other");
-   P ("label.names.hue_gender.green", "other");
-   P ("label.names.hue_gender.cyan", "other");
-   P ("label.names.hue_gender.blue", "other");
-   P ("label.names.hue_gender.purple", "other");
-   P ("label.names.hue_gender.magenta", "other");
-   P ("label.names.hue_gender.neutral", "other");
-   P ("label.names.hue_gender.pink", "other");
-   P ("label.names.agree.very_dark", "{gender, select, other {hyvin tumma}}");
-   P ("label.names.agree.dark", "{gender, select, other {tumma}}");
-   P ("label.names.agree.medium_brightness", "{gender, select, other {keskikirkas}}");
-   P ("label.names.agree.light", "{gender, select, other {vaalea}}");
-   P ("label.names.agree.very_light", "{gender, select, other {hyvin vaalea}}");
-   P ("label.names.agree.desaturated", "{gender, select, other {haalistunut}}");
-   P ("label.names.agree.muted", "{gender, select, other {hillitty}}");
-   P ("label.names.agree.neutral", "{gender, select, other {neutraali}}");
-   P ("label.names.agree.saturated", "{gender, select, other {kylläinen}}");
-   P ("label.names.agree.vivid", "{gender, select, other {kirkas}}");
-   P ("label.names.agree.grayish", "{gender, select, other {harmahtava}}");
-   P ("label.names.agree.soft", "{gender, select, other {pehmeä}}");
-   P ("label.names.agree.moderate_chroma", "{gender, select, other {kohtalaisen kromaattinen}}");
-   P ("label.names.agree.high_chroma", "{gender, select, other {voimakkaan kromaattinen}}");
-   P ("label.names.agree.pastel", "{gender, select, other {pastellinen}}");
-   P ("label.names.agree.warm", "{gender, select, other {lämmin}}");
-   P ("label.names.agree.cool", "{gender, select, other {viileä}}");
-   P ("label.names.agree.neutral_temperature", "{gender, select, other {lämpötilaltaan neutraali}}");
-   P ("label.names.agree.balanced_temperature", "{gender, select, other {lämpötilaltaan tasapainoinen}}");
-   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
-   P ("label.names.descriptive_color_name",
-      "{brightness} {chroma} {temperature} {base, select, pink {{hue}} other "
-      & "{{hue}}}");
+   P ("label.metrics.sentence_count_summary.n_sentences",
+      "{v1, plural, one {1 virke} other {{v1, number} virkettä}}");
+   P ("label.metrics.paragraph_count_summary.n_paragraphs",
+      "{v1, plural, one {1 kappale} other {{v1, number} kappaletta}}");
+   P ("label.metrics.reading_time.n_minutes_read",
+      "{v1, plural, one {lukuaika 1 minuutti} other {lukuaika {v1, number} "
+      & "minuuttia}}");
+   P ("label.metrics.speaking_time.n_minutes_spoken",
+      "{v1, plural, one {puheaika 1 minuutti} other {puheaika {v1, number} "
+      & "minuuttia}}");
+   P ("label.metrics.text_summary_with_options.n_words", "{v1, plural, one {1 sana} other {{v1, number} sanaa}}");
+   P ("label.metrics.text_summary_with_options.n_sentences",
+      "{v1, plural, one {1 virke} other {{v1, number} virkettä}}");
+   P ("label.metrics.text_summary_with_options.n_paragraphs",
+      "{v1, plural, one {1 kappale} other {{v1, number} kappaletta}}");
+   P ("label.metrics.text_summary_with_options.n_minutes_read",
+      "{v1, plural, one {lukuaika 1 minuutti} other {lukuaika {v1, number} "
+      & "minuuttia}}");
+   P ("label.metrics.paragraph_count_summary.n_paragraph",
+      "{v1, plural, one {1 kappale} other {{v1, number} kappaletta}}");
+   P ("label.metrics.reading_time.less_than_n_minute_read",
+      "{v1, plural, one {lukuaika alle 1 minuutin} other {lukuaika alle {v1, "
+      & "number} minuutin}}");
+   P ("label.metrics.speaking_time.less_than_n_minute_spoken",
+      "{v1, plural, one {puheaika alle 1 minuutin} other {puheaika alle {v1, "
+      & "number} minuutin}}");
+   P ("label.metrics.text_summary_with_options.n_paragraph",
+      "{v1, plural, one {1 kappale} other {{v1, number} kappaletta}}");
+   P ("label.metrics.text_summary_with_options.less_than_n_minute_read",
+      "{v1, plural, one {lukuaika alle 1 minuutin} other {lukuaika alle {v1, "
+      & "number} minuutin}}");
+   P ("label.metrics.sentence_count_summary.n_sentence",
+      "{v1, plural, one {1 virke} other {{v1, number} virkettä}}");
+   P ("label.metrics.text_summary_with_options.n_sentence",
+      "{v1, plural, one {1 virke} other {{v1, number} virkettä}}");
+   P ("label.metrics.word_count_summary.no_words", "ei sanoja");
+   P ("label.metrics.sentence_count_summary.no_sentences", "ei virkkeitä");
+   P ("label.metrics.paragraph_count_summary.no_paragraphs", "ei kappaleita");
+   P ("label.metrics.text_summary_with_options.no_words", "ei sanoja");
+   P ("label.metrics.text_summary_with_options.no_sentences", "ei virkkeitä");
+   P ("label.metrics.text_summary_with_options.no_paragraphs", "ei kappaleita");
+   P ("label.metrics.word_count_summary.n_word", "{v1, plural, one {1 sana} other {{v1, number} sanaa}}");
+   P ("label.metrics.text_summary_with_options.n_word", "{v1, plural, one {1 sana} other {{v1, number} sanaa}}");
+   P ("label.groups", "{first}; {second}");
+   P ("label.parts", "{first}, {second}");
+   P ("label.endpoints.url_label", "{state, select, empty {tyhjä URL} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {tyhjä URL} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[piilotettu käyttäjä]");
+   P ("label.endpoints.url_label.query",
+      "kysely {count, plural, one {1 parametri} other {{count, number} "
+      & "parametria}}");
 end Labels_4;

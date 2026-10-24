@@ -64,13 +64,12 @@ begin
    P ("label.attachments.preview_label", "forhåndsvis {name}");
    P ("label.attachments.remove_label", "fjern {name}");
    P ("label.attachments.scan_result_label",
-      "{state, select, not_scanned {{name}: ikke scannet} scanning {{name}: "
-      & "scannes} safe {{name}: scanning sikker} suspicious {{name}: scanning "
-      & "mistænkelig} other {{name}: scanning inficeret}}");
+      "{name}: {state, select, not_scanned {ikke scannet} scanning {scannes} "
+      & "safe {sikker} suspicious {mistænkelig} other {inficeret}}");
    P ("label.attachments.scan_state_label",
       "{state, select, not_scanned {ikke scannet} scanning {scannes} safe "
-      & "{scanning sikker} suspicious {scanning mistænkelig} other {scanning "
-      & "inficeret}}");
+      & "{scanning: sikker} suspicious {scanning: mistænkelig} other "
+      & "{scanning: inficeret}}");
    P ("label.attachments.upload_error_label", "upload af {name} mislykkedes: {reason}");
    P ("label.badges.badge_label",
       "{name}: {state, select, default_badge {badge} new_badge {nyt badge} "
@@ -349,7 +348,7 @@ begin
       "{state, select, no_migration {ingen migrering} migration_pending "
       & "{migrering afventer} migrating {migrering i gang} migration_complete "
       & "{migrering fuldført} other {migrering mislykkedes}}");
-   P ("label.deployments.promotion_label", "{name} forfremmet fra {from_environment} til {to_environment}");
+   P ("label.deployments.promotion_label", "{name} flyttet op fra {from_environment} til {to_environment}");
    P ("label.deployments.rollback_label", "{name}: tilbagerulning til {target}");
    P ("label.deployments.rollout_label", "{name}: trinvis udrulning {percent_text}");
    P ("label.diagnostics.affected_items_label",

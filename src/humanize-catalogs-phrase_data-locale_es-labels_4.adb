@@ -1,6 +1,12 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Es)
 procedure Labels_4 is
 begin
+   P ("label.contrast.contrast_label.d_n_enhanced_contrast", "{v1}:{v2, number}, contraste mejorado");
+   P ("label.contrast.readability_label.readable_for_enhanced_text", "legible con contraste mejorado");
+   P ("label.contrast.color_accessibility_summary.d_n_enhanced_contrast", "{v1}:{v2, number}, contraste mejorado");
+   P ("label.models.perceptual_difference_label.oklab_delta_n_subtle_perceptual_difference",
+      "OKLab delta {v1, number}, diferencia perceptual sutil");
+   P ("label.contrast.color_accessibility_summary.tritanopia_distinct", "tritanopía: colores distinguibles");
    P ("label.contrast.alpha_contrast_label.n_n_normal_text_contrast_after_alpha_compositing",
       "{v1, number}:{v2, number}, contraste para texto normal tras la "
       & "composición alfa");
@@ -50,9 +56,9 @@ begin
       & "de pares} other {{v2, number} pares}} {v1, plural, one {cumple} other "
       & "{cumplen}} el contraste para texto normal");
    P ("label.palettes.palette_contrast_matrix_label.n_enhanced_n_normal_n_large_only_n_fail_out_of_n_pairs",
-      "mejorado {v1, number}, normal {v2, number}, solo texto grande {v3, "
-      & "number}, fallo {v4, number}, de {v5, plural, one {{v5, number} par} "
-      & "many {{v5, number} de pares} other {{v5, number} pares}}");
+      "{v5, plural, one {{v5, number} par} many {{v5, number} de pares} other "
+      & "{{v5, number} pares}}: mejorado {v1, number}, normal {v2, number}, "
+      & "solo texto grande {v3, number}, fallo {v4, number}");
    P ("label.palettes.palette_metadata_label.n_colors_n_pairs_n_enhanced_n_normal_n_large_only_n_fail",
       "{v1, plural, one {{v1, number} color} many {{v1, number} de colores} "
       & "other {{v1, number} colores}}, {v2, plural, one {{v2, number} par} "
@@ -406,8 +412,8 @@ begin
       & "{muy oscuro}}");
    P ("label.names.agree.dark", "{gender, select, masculine {oscuro} feminine {oscura} other {oscuro}}");
    P ("label.names.agree.medium_brightness",
-      "{gender, select, masculine {de brillo medio} feminine {de brillo "
-      & "medio} other {de brillo medio}}");
+      "{gender, select, masculine {de luminosidad media} feminine {de "
+      & "luminosidad media} other {de luminosidad media}}");
    P ("label.names.agree.light", "{gender, select, masculine {claro} feminine {clara} other {claro}}");
    P ("label.names.agree.very_light",
       "{gender, select, masculine {muy claro} feminine {muy clara} other {muy "
@@ -448,4 +454,10 @@ begin
    P ("label.names.descriptive_color_name",
       "{base, select, pink {{hue}} other {{hue}}} {brightness} {chroma} "
       & "{temperature}");
+   P ("label.endpoints.url_label", "{state, select, empty {URL vacía} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {URL vacía} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[usuario oculto]");
+   P ("label.endpoints.url_label.query",
+      "consulta {count, plural, one {{count, number} parámetro} many "
+      & "{{count, number} de parámetros} other {{count, number} parámetros}}");
 end Labels_4;

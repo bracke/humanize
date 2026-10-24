@@ -6,6 +6,8 @@ procedure Locale_Es_419 (Target : in out Catalog_Text) is
    begin
       Add (Target, "es-419", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
 begin
    P ("field_added", "{field}: valor {value} agregado");
    P ("api_key.api_key_expired", "clave de API vencida");
@@ -36,4 +38,5 @@ begin
    P ("number.below", "{value} está por debajo del rango {bounds}");
    P ("number.above", "{value} está por encima del rango {bounds}");
    P ("duration.expires", "vence {relative}");
+   Labels_1;
 end Locale_Es_419;

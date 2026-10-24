@@ -76,7 +76,7 @@ begin
    P ("label.attachments.upload_error_label", "caricamento di {name} non riuscito: {reason}");
    P ("label.badges.badge_label",
       "{name}: {state, select, default_badge {badge} new_badge {nuovo badge} "
-      & "updated_badge {badge aggiornato} deprecated_badge {badge obsoleto} "
+      & "updated_badge {badge aggiornato} deprecated_badge {badge deprecato} "
       & "selected_badge {badge selezionato} disabled_badge {badge disattivato} "
       & "other {badge ignorabile}} ({tone, select, neutral_tone {neutro} "
       & "info_tone {informazione} success_tone {successo} warning_tone {avviso} "
@@ -88,7 +88,7 @@ begin
    P ("label.badges.badge_state_label",
       "{state, select, default_badge {badge predefinito} new_badge {nuovo "
       & "badge} updated_badge {badge aggiornato} deprecated_badge {badge "
-      & "obsoleto} selected_badge {badge selezionato} disabled_badge {badge "
+      & "deprecato} selected_badge {badge selezionato} disabled_badge {badge "
       & "disattivato} other {badge ignorabile}}");
    P ("label.badges.badge_tone_label",
       "{tone, select, neutral_tone {badge neutro} info_tone {badge "
@@ -98,7 +98,7 @@ begin
       "{selected, select, false {chip {name}} other {chip {name} "
       & "selezionato}}");
    P ("label.badges.count_badge_label", "{name}: {count, number}");
-   P ("label.badges.deprecated_label", "{name}: badge obsoleto (avviso)");
+   P ("label.badges.deprecated_label", "{name}: badge deprecato (avviso)");
    P ("label.badges.dismiss_label", "ignora {name}");
    P ("label.badges.new_label", "{name}: nuovo badge (informazione)");
    P ("label.badges.overflow_badge_label",
@@ -142,18 +142,18 @@ begin
       "{state, select, passed_test {{count, plural, =0 {nessun test superato} "
       & "one {1 test superato} many {{count, number} di test superati} other "
       & "{{count, number} test superati}}} failed_test {{count, plural, =0 "
-      & "{nessun test non riuscito} one {1 test non riuscito} many {{count, "
-      & "number} di test non riusciti} other {{count, number} test non "
-      & "riusciti}}} skipped_test {{count, plural, =0 {nessun test saltato} one "
+      & "{nessun test non superato} one {1 test non superato} many {{count, "
+      & "number} di test non superati} other {{count, number} test non "
+      & "superati}}} skipped_test {{count, plural, =0 {nessun test saltato} one "
       & "{1 test saltato} many {{count, number} di test saltati} other {{count, "
       & "number} test saltati}}} flaky_test {{count, plural, =0 {nessun test "
       & "instabile} one {1 test instabile} many {{count, number} di test "
       & "instabili} other {{count, number} test instabili}}} other {{count, "
-      & "plural, =0 {nessun errore previsto} one {1 test con errore previsto} "
-      & "many {{count, number} di test con errore previsto} other {{count, "
-      & "number} test con errore previsto}}}}");
+      & "plural, =0 {nessun test con errore previsto} one {1 test con errore "
+      & "previsto} many {{count, number} di test con errore previsto} other "
+      & "{{count, number} test con errore previsto}}}}");
    P ("label.builds.test_state_label",
-      "{state, select, passed_test {superato} failed_test {non riuscito} "
+      "{state, select, passed_test {superato} failed_test {non superato} "
       & "skipped_test {saltato} flaky_test {instabile} other {errore previsto}}");
    P ("label.changes.boolean_field_change_label",
       "{old_value, select, false {{new_value, select, false {{field_name}: "
@@ -619,7 +619,7 @@ begin
    P ("label.events.organizer_label", "organizzato da {name}");
    P ("label.events.rsvp_label",
       "risposta: {state, select, not_responded {in attesa} accepted "
-      & "{accettata} declined {rifiutata} maybe {forse} other {lista "
+      & "{accettata} declined {rifiutata} maybe {forse} other {in lista "
       & "d’attesa}}");
    P ("label.events.reminder_label", "promemoria: {time_text}");
    P ("label.events.rescheduled_label", "{name} riprogrammato: {time_text}");
@@ -655,9 +655,9 @@ begin
       & "number} di avvisi} other {{warnings, number} avvisi}}}}}}");
    P ("label.forms.form_state_label",
       "{state, select, pristine_form {non modificato} editing_form {modifica "
-      & "in corso} dirty_form {modifiche non salvate} saving_form {salvataggio} "
-      & "saved_form {salvato} submitted_form {inviato} other {invio non "
-      & "riuscito}}");
+      & "in corso} dirty_form {modifiche non salvate} saving_form {salvataggio "
+      & "in corso} saved_form {salvato} submitted_form {inviato} other {invio "
+      & "non riuscito}}");
    P ("label.forms.input_state_label",
       "{state, select, valid_input {input valido} invalid_input {input non "
       & "valido} required_input {input obbligatorio} optional_input {input "
@@ -666,10 +666,11 @@ begin
    P ("label.forms.submission_label",
       "{state, select, pristine_form {non modificato} editing_form {modifica "
       & "in corso} dirty_form {modifiche non salvate} saving_form {salvataggio "
-      & "del modulo} saved_form {modulo salvato} submitted_form {modulo "
-      & "inviato} other {{errors, plural, =0 {invio non riuscito} other {invio "
-      & "non riuscito ({errors, plural, one {{errors, number} errore} many "
-      & "{{errors, number} di errori} other {{errors, number} errori}})}}}}");
+      & "del modulo in corso} saved_form {modulo salvato} submitted_form "
+      & "{modulo inviato} other {{errors, plural, =0 {invio non riuscito} other "
+      & "{invio non riuscito ({errors, plural, one {{errors, number} errore} "
+      & "many {{errors, number} di errori} other {{errors, number} "
+      & "errori}})}}}}");
    P ("label.forms.unsaved_changes_label",
       "{count, plural, =0 {nessuna modifica non salvata} one {{count, number} "
       & "modifica non salvata} many {{count, number} di modifiche non salvate} "

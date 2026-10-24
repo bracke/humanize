@@ -181,8 +181,9 @@ begin
       & "number} Zahlungen}}");
    P ("label.payments.payment_label",
       "{amount_text}: Zahlung {state, select, pending_payment {ausstehend} "
-      & "authorized_payment {autorisiert} paid_payment {bezahlt} failed_payment "
-      & "{fehlgeschlagen} refunded_payment {erstattet} other {storniert}}");
+      & "authorized_payment {autorisiert} paid_payment {abgeschlossen} "
+      & "failed_payment {fehlgeschlagen} refunded_payment {erstattet} other "
+      & "{storniert}}");
    P ("label.payments.payment_link_label", "Zahlungslink {name}");
    P ("label.payments.payment_method_label",
       "{method, select, card_method {Karte} bank_transfer_method "
@@ -190,7 +191,7 @@ begin
       & "check_method {Scheck} other {Sonstige}}");
    P ("label.payments.payment_state_label",
       "{state, select, pending_payment {ausstehende Zahlung} "
-      & "authorized_payment {autorisierte Zahlung} paid_payment {bezahlte "
+      & "authorized_payment {autorisierte Zahlung} paid_payment {abgeschlossene "
       & "Zahlung} failed_payment {fehlgeschlagene Zahlung} refunded_payment "
       & "{erstattete Zahlung} other {stornierte Zahlung}}");
    P ("label.payments.receipt_label", "Beleg {number}");
@@ -547,6 +548,50 @@ begin
       & "Beobachtung} other {1 Ausreißer bei {total, number} Beobachtungen}}} "
       & "other {{outliers, number} Ausreißer bei {total, number} "
       & "Beobachtungen}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {keine Beobachtungen} "
+      & "sample_too_small_shape {Stichprobe zu klein, um die Form zu "
+      & "beschreiben, {count, plural, one {1 Beobachtung} other {{count, "
+      & "number} Beobachtungen}}} flat_shape {flache Verteilung bei {median}} "
+      & "outlier_heavy_shape {ausreißerreiche Verteilung um {median}} "
+      & "volatile_shape {schwankende Verteilung um {median}} clustered_shape "
+      & "{gehäufte Verteilung um {median}} wide_spread_shape {weit gestreute "
+      & "Verteilung} wide_spread_range {weit gestreute Verteilung von {minimum} "
+      & "bis {maximum}} right_skewed_shape {rechtsschiefe Verteilung, Median "
+      & "{median}} left_skewed_shape {linksschiefe Verteilung, Median {median}} "
+      & "other {weitgehend ausgeglichene Verteilung um {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {leere E-Mail} address {E-Mail-Adresse} other "
+      & "{E-Mail bei {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {Telefonnummer} redacted {Telefonnummer "
+      & "geschwärzt} other {Telefonnummer mit Endung {digits}}}");
+   P ("label.privacy.safe_handle_label", "{state, select, none {Handle} other {Handle {shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {Codesymbol} other {Codesymbol {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "Adressmetadaten: {present, plural, one {1 Feld vorhanden} other "
+      & "{{present, number} Felder vorhanden}}, {missing, plural, one {1 Feld "
+      & "fehlt} other {{missing, number} Felder fehlen}}");
+   P ("label.endpoints.host_label", "{state, select, none {unbekannter Host} other {{kind} {host}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {unbekannter Endpunkt} other {Endpunkt "
+      & "{scheme}{host}{port} ({kind})}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {leere URL} none {URL ohne erkannte "
+      & "Bestandteile} other {URL mit {count, plural, one {1 Bestandteil} other "
+      & "{{count, number} Bestandteilen}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {keine Abfrageparameter} one {1 Abfrageparameter} "
+      & "other {{count, number} Abfrageparameter}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} ({kind, select, ipv4_host {öffentliche IPv4-Adresse} "
+      & "ipv6_host {öffentliche IPv6-Adresse} private_network_host {Adresse im "
+      & "privaten Netz} localhost_host {lokaler Host} other {keine "
+      & "IP-Adresse}})");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} (ungültiges CIDR)} other {{cidr} "
+      & "({kind}, Netzpräfix {prefix})}}");
+   P ("label.resources.utilization_label", "{used, number} von {total, number} {unit} genutzt ({percent}, {band})");
    P ("label.resources.remaining_label",
       "{state, select, over {{count, number} {unit} über der Kapazität} "
       & "other {{count, number} von {total, number} {unit} verbleibend}}");
@@ -561,6 +606,40 @@ begin
       & "Anfragen} other {Cache-Trefferquote {percent}: {hits, plural, one {1 "
       & "Treffer} other {{hits, number} Treffer}}, {misses, plural, one {1 "
       & "Fehlzugriff} other {{misses, number} Fehlzugriffe}}}}");
+   P ("label.resources.saturation_label", "{named, select, no {Ressource} other {{name}}} {percent}, {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {Version {version}, Vorabversion {prerelease}, "
+      & "Build {build}} prerelease {Version {version}, Vorabversion "
+      & "{prerelease}} build {Version {version}, Build {build}} other {Version "
+      & "{version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {gleiche Version} major_upgrade "
+      & "{Hauptversions-Upgrade} minor_upgrade {Nebenversions-Upgrade} "
+      & "patch_upgrade {Patch-Upgrade} prerelease_change {Änderung der "
+      & "Vorabversion} build_metadata_change {Änderung der Build-Metadaten} "
+      & "downgrade {Downgrade} other {unbekannte Versionsänderung}}: {from} -> "
+      & "{to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {genau Version {version}} minimum_range "
+      & "{Version {version} oder neuer} maximum_range {Version {version} oder "
+      & "älter} major_compatible_range {kompatibel mit Hauptversion {version}} "
+      & "minor_compatible_range {kompatibel mit Nebenversion {version}} other "
+      & "{Versionsbereich {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {erste Entwicklungsversion {version}} "
+      & "prerelease {Vorabversion {version}} major {Hauptversion {version}} "
+      & "minor {Nebenversion {version}} other {Patch-Version {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {Link-Tag} image {Bild-Tag} paragraph {Absatz-Tag} "
+      & "ordered_list {Tag für nummerierte Liste} unordered_list {Tag für "
+      & "Aufzählungsliste} list_item {Listenelement-Tag} table_header_cell "
+      & "{Tabellenkopfzellen-Tag} table_cell {Tabellenzellen-Tag} table_row "
+      & "{Tabellenzeilen-Tag} line_break {Zeilenumbruch-Tag} thematic_break "
+      & "{Tag für thematischen Umbruch} heading_level_n {Tag für Überschrift "
+      & "der Ebene {level, number}} other {{name}-Tag}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {{name}-Attribut} event {Event-Handler-Attribut "
+      & "{name}} other {Attribut {name} mit Wert „{value}“}}");
    P ("label.markup.attribute_count_label.total",
       "{count, plural, one {1 Attribut} other {{count, number} Attribute}}");
    P ("label.markup.attribute_count_label.data",
@@ -572,6 +651,13 @@ begin
    P ("label.markup.attribute_count_label.events",
       "{count, plural, one {1 Event-Handler} other {{count, number} "
       & "Event-Handler}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {Textinhalt} html_content {HTML-Dokument} "
+      & "json_content {JSON-Dokument} xml_content {XML-Dokument} image_content "
+      & "{Bildinhalt} audio_content {Audioinhalt} video_content {Videoinhalt} "
+      & "font_content {Schriftinhalt} archive_content {Archivinhalt} "
+      & "binary_content {Binärinhalt} form_content {Formularübermittlung} "
+      & "other {unbekannter Inhalt}} ({base})");
    P ("label.markup.heading_label", "Überschrift der Ebene {level, number}");
    P ("label.markup.tag_count_label.total", "{count, plural, one {1 Tag} other {{count, number} Tags}}");
    P ("label.markup.tag_count_label.links", "{count, plural, one {1 Link} other {{count, number} Links}}");
@@ -594,107 +680,21 @@ begin
    P ("label.markup.table_navigation_label",
       "{caption} Zeile {row, number} von {rows, number}, Spalte {column, "
       & "number} von {columns, number}");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} nicht gesetzt} hidden_value {{kind} "
+      & "verborgen} masked_value {{kind} {shown}} fingerprint_only {{kind}, "
+      & "Fingerabdruck mit Endung {shown}} other {{kind} mit Endung {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name}: {kind} nicht gesetzt} other {{name}: "
+      & "{kind} mit Endung {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {Anmelde-Header {name} nicht gesetzt} other "
+      & "{{name}: {kind} mit Endung {shown}}}");
+   P ("label.secrets.fingerprint_label", "{algorithm}-Fingerabdruck mit Endung {shown}");
    P ("label.secrets.secret_count_label.total", "{count, plural, one {1 Secret} other {{count, number} Secrets}}");
    P ("label.secrets.secret_count_label.masked", "{count, number} maskiert");
    P ("label.secrets.secret_count_label.unset", "{count, number} nicht gesetzt");
    P ("label.secrets.secret_count_label.fingerprints",
       "{count, plural, one {1 Fingerabdruck} other {{count, number} "
       & "Fingerabdrücke}}");
-   P ("label.schema.type_mismatch_label",
-      "Feld {field_name}: {expected, select, string_field {String} "
-      & "integer_field {Ganzzahl} decimal_field {Dezimalzahl} boolean_field "
-      & "{boolescher Wert} date_field {Datum} date_time_field {Datum-Zeit} "
-      & "object_field {Objekt} array_field {Array} enum_field {Enum} "
-      & "binary_field {Binärwert} null_field {Null} any_field {beliebiger "
-      & "Wert} other {unbekannt}} erwartet, {actual, select, string_field "
-      & "{String} integer_field {Ganzzahl} decimal_field {Dezimalzahl} "
-      & "boolean_field {boolescher Wert} date_field {Datum} date_time_field "
-      & "{Datum-Zeit} object_field {Objekt} array_field {Array} enum_field "
-      & "{Enum} binary_field {Binärwert} null_field {Null} any_field "
-      & "{beliebiger Wert} other {unbekannt}} erhalten");
-   P ("label.diagnostics.issue_summary_label",
-      "{state, select, blocking_only {{blocking, plural, one {1 blockierendes "
-      & "Problem} other {{blocking, number} blockierende Probleme}}} blocking "
-      & "{{base}, {blocking, plural, one {1 blockierendes Problem} other "
-      & "{{blocking, number} blockierende Probleme}}} only {nur {base}} other "
-      & "{{base}}}");
-   P ("label.thresholds.metric_value_label", "{name} {value}");
-   P ("label.thresholds.range_label",
-      "{inclusive, select, inclusive_window {Zielbereich {low} bis {high}} "
-      & "other {Zielfenster {low} bis {high}}}");
-   P ("label.thresholds.window_status_label",
-      "{state, select, inside {{value} innerhalb des erwarteten Bereichs} "
-      & "below {{value} unterhalb des erwarteten Bereichs} other {{value} "
-      & "oberhalb des erwarteten Bereichs}}");
-   P ("label.thresholds.threshold_status_label",
-      "{state, select, critical {{value} an der kritischen Schwelle} warning "
-      & "{{value} an der Warnschwelle} other {{value} im Normalbereich}}");
-   P ("label.thresholds.breach_label",
-      "{state, select, ok {nicht überschritten} other {um {difference} "
-      & "überschritten}}");
-   P ("label.thresholds.target_delta_label",
-      "{state, select, at {Zielwert erreicht} below {{difference} unter dem "
-      & "Zielwert} other {{difference} über dem Zielwert}}");
-   P ("label.thresholds.near_limit_label",
-      "{state, select, breached {Grenzwert überschritten} near {nahe am "
-      & "Grenzwert, {distance} verbleibend} other {{distance} bis zum "
-      & "Grenzwert}}");
-   P ("label.thresholds.threshold_summary_label.none", "keine Messwerte");
-   P ("label.thresholds.threshold_summary_label.normal", "{count, number} normal");
-   P ("label.thresholds.threshold_summary_label.warnings",
-      "{count, plural, one {1 Warnung} other {{count, number} Warnungen}}");
-   P ("label.thresholds.threshold_summary_label.critical", "{count, number} kritisch");
-   P ("label.thresholds.threshold_summary_label.breaches",
-      "{count, plural, one {1 Überschreitung} other {{count, number} "
-      & "Überschreitungen}}");
-   P ("label.thresholds.target_window_label", "Ziel {target} ± {tolerance}");
-   P ("label.thresholds.tolerance_label", "Toleranz {tolerance}");
-   P ("label.thresholds.percent_of_limit_label", "{percent} des Grenzwerts");
-   P ("label.thresholds.remaining_to_limit_label",
-      "{state, select, exceeded {Grenzwert um {amount} überschritten} other "
-      & "{{amount} verbleibend}}");
-   P ("label.thresholds.budget_used_label", "{used} von {budget} verbraucht");
-   P ("label.workflows.step_label", "Schritt {current, number} von {total, number}: {name}");
-   P ("label.workflows.milestone_label", "{current, number} von {total, number} Meilensteinen erreicht: {name}");
-   P ("label.workflows.workflow_progress_label",
-      "{state, select, none {keine Workflow-Elemente} half {Workflow zur "
-      & "Hälfte abgeschlossen} other {{completed, number} von {total, number} "
-      & "abgeschlossen}}");
-   P ("label.workflows.queue_position_label",
-      "{total, plural, =0 {Position {position, number} in der Warteschlange} "
-      & "other {Position {position, number} von {total, number} in der "
-      & "Warteschlange}}");
-   P ("label.changes.change_set_label.none", "keine Änderungen");
-   P ("label.changes.change_set_label.added", "{count, number} hinzugefügt");
-   P ("label.changes.change_set_label.removed", "{count, number} entfernt");
-   P ("label.changes.change_set_label.modified", "{count, number} geändert");
-   P ("label.changes.change_set_label.unchanged", "{count, number} unverändert");
-   P ("label.changes.sync_change_label.none", "keine Synchronisierungsänderungen");
-   P ("label.changes.sync_change_label.uploaded", "{count, number} hochgeladen");
-   P ("label.changes.sync_change_label.downloaded", "{count, number} heruntergeladen");
-   P ("label.changes.sync_change_label.deleted", "{count, number} gelöscht");
-   P ("label.changes.sync_change_label.conflicts",
-      "{count, plural, one {1 Konflikt} other {{count, number} Konflikte}}");
-   P ("label.changes.net_change_label",
-      "{state, select, none {keine Nettoänderung} up {netto +{count, plural, "
-      & "one {1 Element} other {{count, number} Elemente}}} other {netto "
-      & "-{count, plural, one {1 Element} other {{count, number} Elemente}}}}");
-   P ("label.changes.review_progress_label",
-      "{state, select, none {keine Änderungen zu prüfen} all {alle "
-      & "Änderungen geprüft} other {{reviewed, number} von {total, number} "
-      & "Änderungen geprüft}}");
-   P ("label.changes.numeric_field_change_label",
-      "{state, select, same {{field_name} unverändert bei {new_value}} up "
-      & "{{field_name} von {old_value} auf {new_value} gestiegen} other "
-      & "{{field_name} von {old_value} auf {new_value} gesunken}}");
-   P ("label.tables.selection_label",
-      "{state, select, no_rows {keine Zeilen auswählbar} none {keine Zeilen "
-      & "ausgewählt} all {{total, plural, one {1 Zeile} other {alle {total, "
-      & "number} Zeilen}} ausgewählt} other {{selected, number} von {total, "
-      & "plural, one {1 Zeile} other {{total, number} Zeilen}} ausgewählt}}");
-   P ("label.tables.page_label",
-      "{page, plural, =0 {keine Seiten} other {{pages, plural, =0 {keine "
-      & "Seiten} other {{rows, plural, =0 {Seite {page, number} von {pages, "
-      & "number}} one {Seite {page, number} von {pages, number}, 1 Zeile} other "
-      & "{Seite {page, number} von {pages, number}, {rows, number} Zeilen}}}}}}");
 end Labels_2;

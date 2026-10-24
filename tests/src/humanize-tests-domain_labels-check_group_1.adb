@@ -316,10 +316,10 @@ begin
    Check (Locale, "label.changes.change_kind_label", Phrase,
           Humanize.Changes.Localized.Change_Kind_Label (C, Kind => Humanize.Changes.Unknown_Change),
           Humanize.Changes.Change_Kind_Label (Kind => Humanize.Changes.Unknown_Change));
-   Check (Locale, "label.changes.change_set_label", Plain,
+   Check (Locale, "label.changes.change_set_label", Phrase,
           Humanize.Changes.Localized.Change_Set_Label (C, Added => 7, Removed => 9, Modified => 4, Unchanged => 6),
           Humanize.Changes.Change_Set_Label (Added => 7, Removed => 9, Modified => 4, Unchanged => 6));
-   Check (Locale, "label.changes.change_set_label", Plain,
+   Check (Locale, "label.changes.change_set_label", Phrase,
           Humanize.Changes.Localized.Change_Set_Label (C, Added => 2, Removed => 0, Modified => 0, Unchanged => 0),
           Humanize.Changes.Change_Set_Label (Added => 2, Removed => 0, Modified => 0, Unchanged => 0));
    Check (Locale, "label.changes.change_severity_label", Phrase,
@@ -328,13 +328,13 @@ begin
    Check (Locale, "label.changes.change_severity_label", Phrase,
           Humanize.Changes.Localized.Change_Severity_Label (C, Severity => Humanize.Changes.Breaking_Change),
           Humanize.Changes.Change_Severity_Label (Severity => Humanize.Changes.Breaking_Change));
-   Check (Locale, "label.changes.change_summary_label", Plain,
+   Check (Locale, "label.changes.change_summary_label", Phrase,
           Humanize.Changes.Localized.Change_Summary_Label (C, Total => 5, Added => 2, Renamed => 1),
           Humanize.Changes.Change_Summary_Label (Total => 5, Added => 2, Renamed => 1));
-   Check (Locale, "label.changes.change_summary_label", Plain,
+   Check (Locale, "label.changes.change_summary_label", Phrase,
           Humanize.Changes.Localized.Change_Summary_Label (C, Total => 1),
           Humanize.Changes.Change_Summary_Label (Total => 1));
-   Check (Locale, "label.changes.change_summary_label", Plain,
+   Check (Locale, "label.changes.change_summary_label", Phrase,
           Humanize.Changes.Localized.Change_Summary_Label (C, Total => 3, Unchanged => 3),
           Humanize.Changes.Change_Summary_Label (Total => 3, Unchanged => 3));
    Check (Locale, "label.changes.collection_field_change_label", Phrase,
@@ -432,11 +432,11 @@ begin
    Check (Locale, "label.changes.review_progress_label", Phrase,
           Humanize.Changes.Localized.Review_Progress_Label (C, Reviewed => 1, Total => 2),
           Humanize.Changes.Review_Progress_Label (Reviewed => 1, Total => 2));
-   Check (Locale, "label.changes.sync_change_label", Plain,
+   Check (Locale, "label.changes.sync_change_label", Phrase,
           Humanize.Changes.Localized.Sync_Change_Label (C, Uploaded => 7, Downloaded => 9, Deleted => 4, Conflicts
             => 6),
           Humanize.Changes.Sync_Change_Label (Uploaded => 7, Downloaded => 9, Deleted => 4, Conflicts => 6));
-   Check (Locale, "label.changes.sync_change_label", Plain,
+   Check (Locale, "label.changes.sync_change_label", Phrase,
           Humanize.Changes.Localized.Sync_Change_Label (C, Uploaded => 2, Downloaded => 0, Deleted => 0, Conflicts
             => 0),
           Humanize.Changes.Sync_Change_Label (Uploaded => 2, Downloaded => 0, Deleted => 0, Conflicts => 0));

@@ -34,7 +34,7 @@ begin
    P ("label.metrics.text_summary.no_paragraphs", "문단 없음");
    P ("label.metrics.text_summary.no_sentences", "문장 없음");
    P ("label.metrics.text_summary.n_word", "단어 {v1, number}개");
-   P ("label.names.hue_family_label.neutral", "중립");
+   P ("label.names.hue_family_label.neutral", "무채색");
    P ("label.names.saturation_label.neutral", "무채색");
    P ("label.names.temperature_label.neutral_temperature", "중립 색온도");
    P ("label.names.chroma_label.grayish", "회색빛");
@@ -249,7 +249,7 @@ begin
    P ("label.palettes.palette_summary.mostly_white", "주로 흰색");
    P ("label.palettes.palette_summary.mostly_orange", "주로 주황");
    P ("label.palettes.palette_summary.mostly_fuchsia", "주로 푸크시아");
-   P ("label.palettes.palette_harmony_label.neutral_palette", "중립 팔레트");
+   P ("label.palettes.palette_harmony_label.neutral_palette", "무채색 팔레트");
    P ("label.palettes.palette_summary.mostly_red", "주로 빨강");
    P ("label.metrics.word_count_summary.n_words", "단어 {v1, number}개");
    P ("label.metrics.sentence_count_summary.n_sentences", "문장 {v1, number}개");
@@ -388,7 +388,7 @@ begin
       & "없음}}{nullable, select, non_nullable {, null 불가} nullable {, "
       & "null 허용} other {}} {kind, select, string_field {문자열} "
       & "integer_field {정수} decimal_field {소수} boolean_field "
-      & "{불리언} date_field {날짜} date_time_field {날짜-시간} "
+      & "{불리언} date_field {날짜} date_time_field {날짜 및 시간} "
       & "object_field {객체} array_field {배열} enum_field {열거형} "
       & "binary_field {바이너리} null_field {null} any_field {임의 "
       & "형식} other {알 수 없는 형식}} 필드 {name}");
@@ -480,4 +480,8 @@ begin
    P ("label.names.descriptive_color_name",
       "{brightness} {chroma} {temperature} {base, select, pink {{hue}} other "
       & "{{hue}}}");
+   P ("label.endpoints.url_label", "{state, select, empty {빈 URL} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {빈 URL} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[숨겨진 사용자]");
+   P ("label.endpoints.url_label.query", "쿼리 {count, plural, other {매개변수 {count, number}개}}");
 end Labels_3;

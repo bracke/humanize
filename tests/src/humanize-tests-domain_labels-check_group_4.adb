@@ -149,25 +149,25 @@ begin
    Check (Locale, "label.markup.accessibility_summary_label", Phrase,
           Humanize.Markup.Localized.Accessibility_Summary_Label (C, Issues => 1, Target => "plain"),
           Humanize.Markup.Accessibility_Summary_Label (Issues => 1, Target => "plain"));
-   Check (Locale, "label.markup.accessible_control_label", Plain,
+   Check (Locale, "label.markup.accessible_control_label", Phrase,
           Humanize.Markup.Localized.Accessible_Control_Label (C, Name => "Save", Role =>
             Humanize.Markup.Button_Control),
           Humanize.Markup.Accessible_Control_Label (Name => "Save", Role => Humanize.Markup.Button_Control));
-   Check (Locale, "label.markup.accessible_control_label", Plain,
+   Check (Locale, "label.markup.accessible_control_label", Phrase,
           Humanize.Markup.Localized.Accessible_Control_Label (C, Name => "", Role => Humanize.Markup.Tab_Control,
             State => (Selected => True, Current => True, others => <>)),
           Humanize.Markup.Accessible_Control_Label (Name => "", Role => Humanize.Markup.Tab_Control, State =>
             (Selected => True, Current => True, others => <>)));
-   Check (Locale, "label.markup.accessible_control_label", Plain,
+   Check (Locale, "label.markup.accessible_control_label", Phrase,
           Humanize.Markup.Localized.Accessible_Control_Label (C, Name => "Inbox", Role =>
             Humanize.Markup.Region_Control, State => (Count => 3, Position => 2, Total => 5, Issues => 1, others =>
             <>)),
           Humanize.Markup.Accessible_Control_Label (Name => "Inbox", Role => Humanize.Markup.Region_Control, State
             => (Count => 3, Position => 2, Total => 5, Issues => 1, others => <>)));
-   Check (Locale, "label.markup.attribute_count_label", Plain,
+   Check (Locale, "label.markup.attribute_count_label", Phrase,
           Humanize.Markup.Localized.Attribute_Count_Label (C, Total => 7, Data => 9, Aria => 4, Events => 6),
           Humanize.Markup.Attribute_Count_Label (Total => 7, Data => 9, Aria => 4, Events => 6));
-   Check (Locale, "label.markup.attribute_count_label", Plain,
+   Check (Locale, "label.markup.attribute_count_label", Phrase,
           Humanize.Markup.Localized.Attribute_Count_Label (C, Total => 2, Data => 0, Aria => 0, Events => 0),
           Humanize.Markup.Attribute_Count_Label (Total => 2, Data => 0, Aria => 0, Events => 0));
    Check (Locale, "label.markup.attribute_kind_label", Phrase,
@@ -204,11 +204,11 @@ begin
             (Humanize.Markup.Default_Markup_Label_Options with delta Include_Surface => True)),
           Humanize.Markup.Content_Type_Label ("text/html; charset=utf-8", Options =>
             (Humanize.Markup.Default_Markup_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.markup.document_outline_label", Plain,
+   Check (Locale, "label.markup.document_outline_label", Phrase,
           Humanize.Markup.Localized.Document_Outline_Label (C, Headings => 7, Landmarks => 9, Forms => 4, Media =>
             6),
           Humanize.Markup.Document_Outline_Label (Headings => 7, Landmarks => 9, Forms => 4, Media => 6));
-   Check (Locale, "label.markup.document_outline_label", Plain,
+   Check (Locale, "label.markup.document_outline_label", Phrase,
           Humanize.Markup.Localized.Document_Outline_Label (C, Headings => 2, Landmarks => 0, Forms => 0, Media =>
             0),
           Humanize.Markup.Document_Outline_Label (Headings => 2, Landmarks => 0, Forms => 0, Media => 0));
@@ -256,10 +256,10 @@ begin
             Columns => 2),
           Humanize.Markup.Table_Navigation_Label (Caption => "plain", Row => 2, Column => 2, Rows => 2, Columns =>
             2));
-   Check (Locale, "label.markup.tag_count_label", Plain,
+   Check (Locale, "label.markup.tag_count_label", Phrase,
           Humanize.Markup.Localized.Tag_Count_Label (C, Total => 7, Links => 9, Media => 4, Forms => 6),
           Humanize.Markup.Tag_Count_Label (Total => 7, Links => 9, Media => 4, Forms => 6));
-   Check (Locale, "label.markup.tag_count_label", Plain,
+   Check (Locale, "label.markup.tag_count_label", Phrase,
           Humanize.Markup.Localized.Tag_Count_Label (C, Total => 2, Links => 0, Media => 0, Forms => 0),
           Humanize.Markup.Tag_Count_Label (Total => 2, Links => 0, Media => 0, Forms => 0));
    Check (Locale, "label.markup.tag_kind_label", Phrase,

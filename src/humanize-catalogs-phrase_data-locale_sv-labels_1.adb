@@ -353,7 +353,7 @@ begin
       "{state, select, no_migration {ingen migrering} migration_pending "
       & "{migrering väntar} migrating {migrerar} migration_complete {migrering "
       & "klar} other {migrering misslyckades}}");
-   P ("label.deployments.promotion_label", "{name} befordrad från {from_environment} till {to_environment}");
+   P ("label.deployments.promotion_label", "{name} uppflyttad från {from_environment} till {to_environment}");
    P ("label.deployments.rollback_label", "{name}: återställning till {target}");
    P ("label.deployments.rollout_label", "{name}: utrullning {percent_text}");
    P ("label.diagnostics.affected_items_label",

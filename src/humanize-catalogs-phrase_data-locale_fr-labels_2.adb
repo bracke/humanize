@@ -231,7 +231,7 @@ begin
    P ("label.notification_preferences.preference_state_label",
       "{state, select, preference_enabled {activé} preference_disabled "
       & "{désactivé} preference_inherited {hérité} other {obligatoire}}");
-   P ("label.notification_preferences.quiet_hours_label", "heures silencieuses {time_text}");
+   P ("label.notification_preferences.quiet_hours_label", "heures silencieuses : {time_text}");
    P ("label.notification_preferences.subscription_label",
       "{name} : abonnement {scope, select, thread_subscription {à la "
       & "discussion} project_subscription {au projet} team_subscription {à "

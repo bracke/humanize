@@ -374,24 +374,24 @@ begin
    P ("label.deployments.rollback_label", "wycofanie {name} do {target}");
    P ("label.deployments.rollout_label", "stopniowe wdrażanie {name}: {percent_text}");
    P ("label.diagnostics.affected_items_label",
-      "{count, plural, =0 {brak objętych elementów} one {{count, number} "
-      & "objęty element} few {{count, number} objęte elementy} many {{count, "
-      & "number} objętych elementów} other {{count, number} objętego "
-      & "elementu}}");
+      "{count, plural, =0 {brak dotkniętych elementów} one {{count, number} "
+      & "dotknięty element} few {{count, number} dotknięte elementy} many "
+      & "{{count, number} dotkniętych elementów} other {{count, number} "
+      & "dotkniętego elementu}}");
    P ("label.diagnostics.check_duration_label",
       "{status, select, passed_check {{name}: zaliczono ({duration_s, number} "
-      & "s)} failed_check {{name}: niezaliczono ({duration_s, number} s)} "
+      & "s)} failed_check {{name}: nie zaliczono ({duration_s, number} s)} "
       & "warning_check {{name}: z ostrzeżeniami ({duration_s, number} s)} "
       & "skipped_check {{name}: pominięto ({duration_s, number} s)} "
       & "pending_check {{name}: oczekuje ({duration_s, number} s)} other "
       & "{{name}: w toku ({duration_s, number} s)}}");
    P ("label.diagnostics.check_result_label",
       "{status, select, passed_check {{name}: zaliczono} failed_check "
-      & "{{name}: niezaliczono} warning_check {{name}: z ostrzeżeniami} "
+      & "{{name}: nie zaliczono} warning_check {{name}: z ostrzeżeniami} "
       & "skipped_check {{name}: pominięto} pending_check {{name}: oczekuje} "
       & "other {{name}: w toku}}");
    P ("label.diagnostics.check_status_label",
-      "{status, select, passed_check {zaliczono} failed_check {niezaliczono} "
+      "{status, select, passed_check {zaliczono} failed_check {nie zaliczono} "
       & "warning_check {z ostrzeżeniami} skipped_check {pominięto} "
       & "pending_check {oczekuje} other {w toku}}");
    P ("label.diagnostics.diagnostic_explanation_label",
@@ -526,7 +526,7 @@ begin
       "{status, select, passed_check {zaliczono, {notices, plural, =0 {bez "
       & "uwag} one {{notices, number} uwaga} few {{notices, number} uwagi} many "
       & "{{notices, number} uwag} other {{notices, number} uwagi}}} "
-      & "failed_check {niezaliczono, {notices, plural, =0 {bez uwag} one "
+      & "failed_check {nie zaliczono, {notices, plural, =0 {bez uwag} one "
       & "{{notices, number} uwaga} few {{notices, number} uwagi} many "
       & "{{notices, number} uwag} other {{notices, number} uwagi}}} "
       & "warning_check {z ostrzeżeniami, {notices, plural, =0 {bez uwag} one "
@@ -575,7 +575,7 @@ begin
       & "declined {odrzucono} maybe {może} other {na liście oczekujących}}");
    P ("label.events.attendee_count_label",
       "{count, plural, =0 {brak uczestników} one {{count, number} uczestnik} "
-      & "few {{count, number} uczestników} many {{count, number} uczestników} "
+      & "few {{count, number} uczestnicy} many {{count, number} uczestników} "
       & "other {{count, number} uczestnika}}");
    P ("label.events.canceled_label", "{name}: odwołano");
    P ("label.events.check_in_label", "zgłoś obecność: {name}");

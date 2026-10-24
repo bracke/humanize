@@ -29,6 +29,61 @@ begin
       & "many {{outliers, number} wartości odstających z {total, number} "
       & "obserwacji} other {{outliers, number} wartości odstającej z {total, "
       & "number} obserwacji}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {brak obserwacji} "
+      & "sample_too_small_shape {próbka zbyt mała, by opisać kształt: "
+      & "{count, plural, one {{count, number} obserwacja} few {{count, number} "
+      & "obserwacje} many {{count, number} obserwacji} other {{count, number} "
+      & "obserwacji}}} flat_shape {płaski rozkład na poziomie {median}} "
+      & "outlier_heavy_shape {rozkład z wieloma wartościami odstającymi "
+      & "wokół {median}} volatile_shape {zmienny rozkład wokół {median}} "
+      & "clustered_shape {skupiony rozkład wokół {median}} wide_spread_shape "
+      & "{szeroko rozproszony rozkład} wide_spread_range {szeroko rozproszony "
+      & "rozkład od {minimum} do {maximum}} right_skewed_shape {rozkład "
+      & "prawoskośny, mediana {median}} left_skewed_shape {rozkład "
+      & "lewoskośny, mediana {median}} other {rozkład w większości "
+      & "zrównoważony wokół {median}}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {pusty e-mail} address {adres e-mail} other "
+      & "{e-mail w domenie {domain}}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {numer telefonu} redacted {numer telefonu ukryty} "
+      & "other {telefon z końcówką {digits}}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {nazwa użytkownika} other {nazwa użytkownika "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {symbol kodu} other {symbol kodu {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "metadane adresu: {present, plural, one {1 pole obecne} few {{present, "
+      & "number} pola obecne} many {{present, number} pól obecnych} other "
+      & "{{present, number} pola obecnego}}, {missing, plural, one {1 pole "
+      & "brakujące} few {{missing, number} pola brakujące} many {{missing, "
+      & "number} pól brakujących} other {{missing, number} pola "
+      & "brakującego}}");
+   P ("label.endpoints.host_label", "{state, select, none {nieznany host} other {{kind} {host}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {nieznany punkt końcowy} other {punkt końcowy "
+      & "{scheme}{host}{port} ({kind})}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {pusty URL} none {URL bez rozpoznanych "
+      & "składników} other {URL z {count, plural, one {1 składnikiem} few "
+      & "{{count, number} składnikami} many {{count, number} składnikami} "
+      & "other {{count, number} składnika}}: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {brak parametrów zapytania} one {1 parametr "
+      & "zapytania} few {{count, number} parametry zapytania} many {{count, "
+      & "number} parametrów zapytania} other {{count, number} parametru "
+      & "zapytania}}");
+   P ("label.endpoints.ip_address_label",
+      "{address}: {kind, select, ipv4_host {publiczny adres IPv4} ipv6_host "
+      & "{publiczny adres IPv6} private_network_host {adres sieci prywatnej} "
+      & "localhost_host {host lokalny} other {to nie jest adres IP}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr}: nieprawidłowy CIDR} other {{cidr}: "
+      & "{kind}, prefiks sieci {prefix}}}");
+   P ("label.resources.utilization_label",
+      "wykorzystano {used, number} z {total, number} {unit} ({percent}, "
+      & "{band})");
    P ("label.resources.remaining_label",
       "{state, select, over {{count, number} {unit} ponad pojemność} other "
       & "{pozostało {count, number} z {total, number} {unit}}}");
@@ -46,6 +101,42 @@ begin
       & "{{hits, number} trafienia}}, {misses, plural, one {{misses, number} "
       & "chybienie} few {{misses, number} chybienia} many {{misses, number} "
       & "chybień} other {{misses, number} chybienia}}}}");
+   P ("label.resources.saturation_label", "{named, select, no {zasób} other {{name}}}: {percent}, {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {wersja {version}, wydanie wstępne {prerelease}, "
+      & "kompilacja {build}} prerelease {wersja {version}, wydanie wstępne "
+      & "{prerelease}} build {wersja {version}, kompilacja {build}} other "
+      & "{wersja {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {ta sama wersja} major_upgrade "
+      & "{aktualizacja wersji głównej} minor_upgrade {aktualizacja wersji "
+      & "pomocniczej} patch_upgrade {aktualizacja poprawkowa} prerelease_change "
+      & "{zmiana wydania wstępnego} build_metadata_change {zmiana metadanych "
+      & "kompilacji} downgrade {obniżenie wersji} other {nieznana zmiana "
+      & "wersji}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {dokładnie wersja {version}} minimum_range "
+      & "{wersja {version} lub nowsza} maximum_range {wersja {version} lub "
+      & "starsza} major_compatible_range {zgodne z wersją główną {version}} "
+      & "minor_compatible_range {zgodne z wersją pomocniczą {version}} other "
+      & "{zakres wersji {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {wstępne wydanie rozwojowe {version}} "
+      & "prerelease {wydanie wstępne {version}} major {wydanie główne "
+      & "{version}} minor {wydanie pomocnicze {version}} other {wydanie "
+      & "poprawkowe {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {znacznik linku} image {znacznik obrazu} paragraph "
+      & "{znacznik akapitu} ordered_list {znacznik listy numerowanej} "
+      & "unordered_list {znacznik listy punktowanej} list_item {znacznik "
+      & "elementu listy} table_header_cell {znacznik komórki nagłówka "
+      & "tabeli} table_cell {znacznik komórki tabeli} table_row {znacznik "
+      & "wiersza tabeli} line_break {znacznik podziału wiersza} thematic_break "
+      & "{znacznik podziału tematycznego} heading_level_n {znacznik nagłówka "
+      & "poziomu {level, number}} other {znacznik {name}}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {atrybut {name}} event {atrybut obsługi "
+      & "zdarzenia {name}} other {atrybut {name} ustawiony na „{value}”}}");
    P ("label.markup.attribute_count_label.total",
       "{count, plural, one {{count, number} atrybut} few {{count, number} "
       & "atrybuty} many {{count, number} atrybutów} other {{count, number} "
@@ -63,6 +154,13 @@ begin
       & "{{count, number} procedury obsługi zdarzeń} many {{count, number} "
       & "procedur obsługi zdarzeń} other {{count, number} procedury obsługi "
       & "zdarzeń}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {treść tekstowa} html_content {dokument "
+      & "HTML} json_content {dokument JSON} xml_content {dokument XML} "
+      & "image_content {obraz} audio_content {dźwięk} video_content {wideo} "
+      & "font_content {czcionka} archive_content {archiwum} binary_content "
+      & "{dane binarne} form_content {przesłanie formularza} other {nieznana "
+      & "treść}} ({base})");
    P ("label.markup.heading_label", "nagłówek poziomu {level, number}");
    P ("label.markup.tag_count_label.total",
       "{count, plural, one {{count, number} znacznik} few {{count, number} "
@@ -100,6 +198,17 @@ begin
    P ("label.markup.table_navigation_label",
       "{caption}, wiersz {row, number} z {rows, number}, kolumna {column, "
       & "number} z {columns, number}");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind}: nie ustawiono} hidden_value {{kind}: "
+      & "ukryto} masked_value {{kind} {shown}} fingerprint_only {{kind}: odcisk "
+      & "z końcówką {shown}} other {{kind} z końcówką {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind}: nie ustawiono} other {{name} "
+      & "{kind} z końcówką {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {nagłówek poświadczeń {name}: nie ustawiono} "
+      & "other {{name} {kind} z końcówką {shown}}}");
+   P ("label.secrets.fingerprint_label", "odcisk {algorithm} z końcówką {shown}");
    P ("label.secrets.secret_count_label.total",
       "{count, plural, one {{count, number} sekret} few {{count, number} "
       & "sekrety} many {{count, number} sekretów} other {{count, number} "
@@ -110,6 +219,33 @@ begin
       "{count, plural, one {{count, number} odcisk} few {{count, number} "
       & "odciski} many {{count, number} odcisków} other {{count, number} "
       & "odcisku}}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label}: nie ustawiono} redacted {{label}: "
+      & "ukryto} url_redacted {URL ukryty} ip_redacted {adres IP ukryty} "
+      & "path_ending {ścieżka pliku z końcówką {shown}} at {{label} w "
+      & "{shown}} audit {{label}, długość {length, number}, końcówka "
+      & "{shown}} debug {{label} {shown}} other {{label} z końcówką "
+      & "{shown}}}");
+   P ("label.schema.field_label",
+      "pole {name}: {state, select, deprecated_field {przestarzałe, } "
+      & "unknown_field {nieznane, } read_only_field {tylko do odczytu, } "
+      & "write_only_field {tylko do zapisu, } computed_field {obliczane, } "
+      & "other {}}{presence, select, required_field {wymagane} optional_field "
+      & "{opcjonalne} conditional_field {warunkowe} other {obecność "
+      & "nieznana}}{nullable, select, non_nullable {, bez null} nullable {, "
+      & "dopuszcza null} other {}}, typ {kind, select, string_field {tekst} "
+      & "integer_field {liczba całkowita} decimal_field {liczba dziesiętna} "
+      & "boolean_field {wartość logiczna} date_field {data} date_time_field "
+      & "{data i godzina} object_field {obiekt} array_field {tablica} "
+      & "enum_field {wyliczenie} binary_field {dane binarne} null_field {null} "
+      & "any_field {dowolny} other {nieznany}}");
+   P ("label.schema.schema_summary_label.fields",
+      "{count, plural, one {1 pole} few {{count, number} pola} many {{count, "
+      & "number} pól} other {{count, number} pola}}");
+   P ("label.schema.schema_summary_label.required", "wymagane: {count, number}");
+   P ("label.schema.schema_summary_label.optional", "opcjonalne: {count, number}");
+   P ("label.schema.schema_summary_label.deprecated", "przestarzałe: {count, number}");
+   P ("label.schema.schema_summary_label.unknown", "nieznane: {count, number}");
    P ("label.schema.type_mismatch_label",
       "pole {field_name}: oczekiwany typ {expected, select, string_field "
       & "{tekst} integer_field {liczba całkowita} decimal_field {liczba "
@@ -132,6 +268,15 @@ begin
       & "{{blocking, number} problemy blokujące} many {{blocking, number} "
       & "problemów blokujących} other {{blocking, number} problemu "
       & "blokującego}}} only {tylko {base}} other {{base}}}");
+   P ("label.diagnostics.check_run_summary_label.none", "nie uruchomiono żadnych kontroli");
+   P ("label.diagnostics.check_run_summary_label.passed", "zaliczono: {count, number}");
+   P ("label.diagnostics.check_run_summary_label.failed", "nie zaliczono: {count, number}");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 ostrzeżenie} few {{count, number} "
+      & "ostrzeżenia} many {{count, number} ostrzeżeń} other {{count, "
+      & "number} ostrzeżenia}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "pominięto: {count, number}");
+   P ("label.diagnostics.check_run_summary_label.pending", "oczekujące: {count, number}");
    P ("label.thresholds.metric_value_label", "{name}: {value}");
    P ("label.thresholds.range_label",
       "{inclusive, select, inclusive_window {zakres docelowy od {low} do "
@@ -174,6 +319,14 @@ begin
    P ("label.workflows.milestone_label",
       "ukończono {current, number} z {total, number} kamieni milowych: "
       & "{name}");
+   P ("label.workflows.workflow_summary_label.total",
+      "{count, plural, one {1 element} few {{count, number} elementy} many "
+      & "{{count, number} elementów} other {{count, number} elementu}}");
+   P ("label.workflows.workflow_summary_label.completed", "ukończone: {count, number}");
+   P ("label.workflows.workflow_summary_label.active", "aktywne: {count, number}");
+   P ("label.workflows.workflow_summary_label.blocked", "zablokowane: {count, number}");
+   P ("label.workflows.workflow_summary_label.failed", "nieudane: {count, number}");
+   P ("label.workflows.workflow_summary_label.skipped", "pominięte: {count, number}");
    P ("label.workflows.workflow_progress_label",
       "{state, select, none {brak elementów przepływu pracy} half "
       & "{półmetek przepływu pracy} other {ukończono {completed, number} z "
@@ -186,6 +339,14 @@ begin
    P ("label.changes.change_set_label.removed", "usunięto {count, number}");
    P ("label.changes.change_set_label.modified", "zmieniono {count, number}");
    P ("label.changes.change_set_label.unchanged", "bez zmian {count, number}");
+   P ("label.changes.change_summary_label.total",
+      "{count, plural, one {1 element} few {{count, number} elementy} many "
+      & "{{count, number} elementów} other {{count, number} elementu}}");
+   P ("label.changes.change_summary_label.added", "dodano {count, number}");
+   P ("label.changes.change_summary_label.removed", "usunięto {count, number}");
+   P ("label.changes.change_summary_label.modified", "zmieniono {count, number}");
+   P ("label.changes.change_summary_label.renamed", "zmieniono nazwę {count, number}");
+   P ("label.changes.change_summary_label.unchanged", "bez zmian {count, number}");
    P ("label.changes.sync_change_label.none", "brak zmian synchronizacji");
    P ("label.changes.sync_change_label.uploaded", "przesłano {count, number}");
    P ("label.changes.sync_change_label.downloaded", "pobrano {count, number}");
@@ -280,9 +441,96 @@ begin
       "{mode, select, comparison_compact {{name}: zmieniono {changed, "
       & "number}/{total, number}} other {{name}: zmieniono {changed, number}, "
       & "bez zmian {unchanged, number}, łącznie {total, number}}}");
+   P ("label.names.color_description", "{brightness}, {saturation} {hue}, {temperature}, {chroma}");
+   P ("label.names.descriptive_color_name",
+      "{brightness} {chroma} {temperature} {base, select, pink {{hue}} other "
+      & "{{hue}}}");
    P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
-   P ("label.groups", "{first}; {second}");
-   P ("label.parts", "{first}, {second}");
+   P ("label.markup.accessible_control_label.control",
+      "{role, select, button_control {przycisk} link_control {link} "
+      & "tab_control {karta} menu_item_control {element menu} checkbox_control "
+      & "{pole wyboru} radio_control {przycisk opcji} text_field_control {pole "
+      & "tekstowe} progress_control {pasek postępu} table_cell_control "
+      & "{komórka tabeli} region_control {region} other {kontrolka}} {named, "
+      & "select, no {bez nazwy} other {{name}}}");
+   P ("label.markup.accessible_control_label.selected", "zaznaczone");
+   P ("label.markup.accessible_control_label.expanded", "rozwinięte");
+   P ("label.markup.accessible_control_label.current", "bieżące");
+   P ("label.markup.accessible_control_label.disabled", "wyłączone");
+   P ("label.markup.accessible_control_label.required", "wymagane");
+   P ("label.markup.accessible_control_label.invalid", "nieprawidłowe");
+   P ("label.markup.accessible_control_label.count",
+      "{count, plural, one {1 element} few {{count, number} elementy} many "
+      & "{{count, number} elementów} other {{count, number} elementu}}");
+   P ("label.markup.accessible_control_label.position", "element {position} z {total}");
+   P ("label.markup.accessible_control_label.issues",
+      "{count, plural, one {1 problem} few {{count, number} problemy} many "
+      & "{{count, number} problemów} other {{count, number} problemu}}");
+   P ("label.markup.accessible_control_label.with_states", "{control}, {states}");
+   P ("label.endpoints.url_component.scheme", "schemat");
+   P ("label.endpoints.url_component.host", "host");
+   P ("label.endpoints.url_component.path", "ścieżka");
+   P ("label.endpoints.url_component.query", "zapytanie");
+   P ("label.endpoints.url_component.fragment", "fragment");
+   P ("label.names.hue_noun.red", "czerwony");
+   P ("label.names.hue_noun.orange", "pomarańczowy");
+   P ("label.names.hue_noun.yellow", "żółty");
+   P ("label.names.hue_noun.green", "zielony");
+   P ("label.names.hue_noun.cyan", "cyjanowy");
+   P ("label.names.hue_noun.blue", "niebieski");
+   P ("label.names.hue_noun.purple", "fioletowy");
+   P ("label.names.hue_noun.magenta", "magenta");
+   P ("label.names.hue_noun.neutral", "neutralny");
+   P ("label.names.hue_noun.pink", "różowy");
+   P ("label.names.hue_gender.red", "masculine");
+   P ("label.names.hue_gender.orange", "masculine");
+   P ("label.names.hue_gender.yellow", "masculine");
+   P ("label.names.hue_gender.green", "masculine");
+   P ("label.names.hue_gender.cyan", "masculine");
+   P ("label.names.hue_gender.blue", "masculine");
+   P ("label.names.hue_gender.purple", "masculine");
+   P ("label.names.hue_gender.magenta", "feminine");
+   P ("label.names.hue_gender.neutral", "masculine");
+   P ("label.names.hue_gender.pink", "masculine");
+   P ("label.names.agree.very_dark",
+      "{gender, select, feminine {bardzo ciemna} neuter {bardzo ciemne} other "
+      & "{bardzo ciemny}}");
+   P ("label.names.agree.dark", "{gender, select, feminine {ciemna} neuter {ciemne} other {ciemny}}");
+   P ("label.names.agree.medium_brightness",
+      "{gender, select, feminine {średnio jasna} neuter {średnio jasne} "
+      & "other {średnio jasny}}");
+   P ("label.names.agree.light", "{gender, select, feminine {jasna} neuter {jasne} other {jasny}}");
+   P ("label.names.agree.very_light",
+      "{gender, select, feminine {bardzo jasna} neuter {bardzo jasne} other "
+      & "{bardzo jasny}}");
+   P ("label.names.agree.desaturated",
+      "{gender, select, feminine {odbarwiona} neuter {odbarwione} other "
+      & "{odbarwiony}}");
+   P ("label.names.agree.muted",
+      "{gender, select, feminine {stonowana} neuter {stonowane} other "
+      & "{stonowany}}");
+   P ("label.names.agree.neutral",
+      "{gender, select, feminine {neutralna} neuter {neutralne} other "
+      & "{neutralny}}");
+   P ("label.names.agree.saturated",
+      "{gender, select, feminine {nasycona} neuter {nasycone} other "
+      & "{nasycony}}");
+   P ("label.names.agree.vivid", "{gender, select, feminine {żywa} neuter {żywe} other {żywy}}");
+   P ("label.names.agree.grayish", "{gender, select, feminine {szarawa} neuter {szarawe} other {szarawy}}");
+   P ("label.names.agree.soft",
+      "{gender, select, feminine {delikatna} neuter {delikatne} other "
+      & "{delikatny}}");
+   P ("label.names.agree.moderate_chroma", "{gender, select, other {umiarkowana chromatyczność}}");
+   P ("label.names.agree.high_chroma", "{gender, select, other {wysoka chromatyczność}}");
+   P ("label.names.agree.pastel",
+      "{gender, select, feminine {pastelowa} neuter {pastelowe} other "
+      & "{pastelowy}}");
+   P ("label.names.agree.warm", "{gender, select, feminine {ciepła} neuter {ciepłe} other {ciepły}}");
+   P ("label.names.agree.cool",
+      "{gender, select, feminine {chłodna} neuter {chłodne} other "
+      & "{chłodny}}");
+   P ("label.names.agree.neutral_temperature", "{gender, select, other {neutralna temperatura}}");
+   P ("label.names.agree.balanced_temperature", "{gender, select, other {zrównoważona temperatura}}");
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
       "obecny kolor pierwszego planu zapewnia kontrast dla dużego tekstu na "
       & "poziomie {v1}:{v2, number}");
@@ -449,252 +697,4 @@ begin
       & "{{v1, number} akapitów} other {{v1, number} akapitu}}");
    P ("label.metrics.text_summary.less_than_n_minute_spoken", "mniej niż {v1, number} min mówienia");
    P ("label.metrics.text_summary.less_than_n_minute_read", "mniej niż {v1, number} min czytania");
-   P ("label.metrics.text_summary.n_sentence",
-      "{v1, plural, one {{v1, number} zdanie} few {{v1, number} zdania} many "
-      & "{{v1, number} zdań} other {{v1, number} zdania}}");
-   P ("label.metrics.text_summary.no_words", "brak słów");
-   P ("label.metrics.text_summary.no_paragraphs", "brak akapitów");
-   P ("label.metrics.text_summary.no_sentences", "brak zdań");
-   P ("label.metrics.text_summary.n_word",
-      "{v1, plural, one {{v1, number} słowo} few {{v1, number} słowa} many "
-      & "{{v1, number} słów} other {{v1, number} słowa}}");
-   P ("label.names.hue_family_label.neutral", "neutralny");
-   P ("label.names.saturation_label.neutral", "neutralny");
-   P ("label.names.temperature_label.neutral_temperature", "neutralna temperatura");
-   P ("label.names.chroma_label.grayish", "szarawy");
-   P ("label.names.nearest_color_name.black", "czarny");
-   P ("label.models.brightness_label.very_dark", "bardzo ciemny");
-   P ("label.names.hue_family_label.blue", "niebieski");
-   P ("label.names.saturation_label.vivid", "żywy");
-   P ("label.names.temperature_label.cool", "chłodny");
-   P ("label.names.chroma_label.moderate_chroma", "umiarkowana chromatyczność");
-   P ("label.names.nearest_color_name.navy", "granatowy");
-   P ("label.names.chroma_label.high_chroma", "wysoka chromatyczność");
-   P ("label.names.nearest_color_name.blue", "niebieski");
-   P ("label.names.hue_family_label.green", "zielony");
-   P ("label.names.temperature_label.balanced_temperature", "zrównoważona temperatura");
-   P ("label.names.hue_family_label.cyan", "cyjanowy");
-   P ("label.names.chroma_label.soft", "delikatny");
-   P ("label.models.brightness_label.dark", "ciemny");
-   P ("label.names.nearest_color_name.green", "zielony");
-   P ("label.names.nearest_color_name.teal", "morski");
-   P ("label.models.brightness_label.medium_brightness", "średnia jasność");
-   P ("label.names.nearest_color_name.aqua", "turkusowy");
-   P ("label.names.nearest_color_name.lime", "limonkowy");
-   P ("label.models.brightness_label.light", "jasny");
-   P ("label.names.hue_family_label.red", "czerwony");
-   P ("label.names.temperature_label.warm", "ciepły");
-   P ("label.names.hue_family_label.magenta", "magenta");
-   P ("label.names.hue_family_label.purple", "fioletowy");
-   P ("label.names.hue_family_label.yellow", "żółty");
-   P ("label.names.saturation_label.muted", "stonowany");
-   P ("label.names.nearest_color_name.rebeccapurple", "rebeccapurple");
-   P ("label.names.saturation_label.saturated", "nasycony");
-   P ("label.names.nearest_color_name.maroon", "kasztanowy");
-   P ("label.names.nearest_color_name.purple", "purpurowy");
-   P ("label.names.hue_family_label.orange", "pomarańczowy");
-   P ("label.names.nearest_color_name.olive", "oliwkowy");
-   P ("label.names.nearest_color_name.gray", "szary");
-   P ("label.names.saturation_label.desaturated", "odbarwiony");
-   P ("label.names.nearest_color_name.silver", "srebrny");
-   P ("label.names.chroma_label.pastel", "pastelowy");
-   P ("label.models.brightness_label.very_light", "bardzo jasny");
-   P ("label.names.nearest_color_name.fuchsia", "fuksja");
-   P ("label.names.nearest_color_name.yellow", "żółty");
-   P ("label.names.nearest_color_name.red", "czerwony");
-   P ("label.names.nearest_color_name.orange", "pomarańczowy");
-   P ("label.names.nearest_color_name.white", "biały");
-   P ("label.contrast.contrast_label.d_n_low_contrast", "{v1}:{v2, number}, niski kontrast");
-   P ("label.contrast.readability_label.low_readability", "niska czytelność");
-   P ("label.contrast.apca_contrast_label.lc_n_insufficient_dark_text_on_light_background",
-      "Lc {v1, number}, niewystarczający, ciemny tekst na jasnym tle");
-   P ("label.contrast.color_accessibility_summary.d_n_low_contrast", "{v1}:{v2, number}, niski kontrast");
-   P ("label.contrast.color_accessibility_summary.lc_n_insufficient_dark_text_on_light_background",
-      "Lc {v1, number}, niewystarczający, ciemny tekst na jasnym tle");
-   P ("label.contrast.color_accessibility_summary.achromatopsia_moderate_confusion_risk",
-      "achromatopsja: umiarkowane ryzyko pomyłki");
-   P ("label.models.color_difference_label.n_strong_difference", "{v1, number}% – silna różnica");
-   P ("label.contrast.alpha_contrast_label.d_n_low_contrast_after_alpha_compositing",
-      "{v1}:{v2, number}, niski kontrast po kompozycji alfa");
-   P ("label.contrast.apca_contrast_label.lc_n_insufficient_light_text_on_dark_background",
-      "Lc {v1, number}, niewystarczający, jasny tekst na ciemnym tle");
-   P ("label.contrast.color_accessibility_summary.lc_n_insufficient_light_text_on_dark_background",
-      "Lc {v1, number}, niewystarczający, jasny tekst na ciemnym tle");
-   P ("label.contrast.color_accessibility_summary.deuteranopia_high_confusion_risk",
-      "deuteranopia: wysokie ryzyko pomyłki");
-   P ("label.contrast.contrast_label.d_n_large_text_contrast", "{v1}:{v2, number}, kontrast dla dużego tekstu");
-   P ("label.contrast.readability_label.readable_for_large_text_only", "czytelne tylko dla dużego tekstu");
-   P ("label.contrast.apca_contrast_label.lc_n_large_text_light_text_on_dark_background",
-      "Lc {v1, number}, duży tekst, jasny tekst na ciemnym tle");
-   P ("label.contrast.color_accessibility_summary.d_n_large_text_contrast",
-      "{v1}:{v2, number}, kontrast dla dużego tekstu");
-   P ("label.contrast.color_accessibility_summary.lc_n_large_text_light_text_on_dark_background",
-      "Lc {v1, number}, duży tekst, jasny tekst na ciemnym tle");
-   P ("label.contrast.color_accessibility_summary.tritanopia_high_confusion_risk",
-      "tritanopia: wysokie ryzyko pomyłki");
-   P ("label.contrast.alpha_contrast_label.d_n_large_text_contrast_after_alpha_compositing",
-      "{v1}:{v2, number}, kontrast dla dużego tekstu po kompozycji alfa");
-   P ("label.contrast.apca_contrast_label.lc_n_non_text_only_light_text_on_dark_background",
-      "Lc {v1, number}, tylko elementy nietekstowe, jasny tekst na ciemnym "
-      & "tle");
-   P ("label.contrast.color_accessibility_summary.lc_n_non_text_only_light_text_on_dark_background",
-      "Lc {v1, number}, tylko elementy nietekstowe, jasny tekst na ciemnym "
-      & "tle");
-   P ("label.contrast.color_accessibility_summary.tritanopia_moderate_confusion_risk",
-      "tritanopia: umiarkowane ryzyko pomyłki");
-   P ("label.contrast.contrast_label.n_n_low_contrast", "{v1, number}:{v2, number}, niski kontrast");
-   P ("label.contrast.color_accessibility_summary.n_n_low_contrast", "{v1, number}:{v2, number}, niski kontrast");
-   P ("label.contrast.apca_contrast_label.lc_n_non_text_only_dark_text_on_light_background",
-      "Lc {v1, number}, tylko elementy nietekstowe, ciemny tekst na jasnym "
-      & "tle");
-   P ("label.contrast.color_accessibility_summary.lc_n_non_text_only_dark_text_on_light_background",
-      "Lc {v1, number}, tylko elementy nietekstowe, ciemny tekst na jasnym "
-      & "tle");
-   P ("label.contrast.color_accessibility_summary.deuteranopia_moderate_confusion_risk",
-      "deuteranopia: umiarkowane ryzyko pomyłki");
-   P ("label.contrast.color_accessibility_summary.protanopia_high_confusion_risk",
-      "protanopia: wysokie ryzyko pomyłki");
-   P ("label.models.color_difference_label.n_very_different", "{v1, number}% – bardzo różne");
-   P ("label.contrast.color_accessibility_summary.achromatopsia_high_confusion_risk",
-      "achromatopsja: wysokie ryzyko pomyłki");
-   P ("label.contrast.color_accessibility_summary.achromatopsia_low_confusion_risk",
-      "achromatopsja: niskie ryzyko pomyłki");
-   P ("label.contrast.alpha_contrast_label.n_n_low_contrast_after_alpha_compositing",
-      "{v1, number}:{v2, number}, niski kontrast po kompozycji alfa");
-   P ("label.contrast.contrast_label.d_n_normal_text_contrast", "{v1}:{v2, number}, kontrast dla zwykłego tekstu");
-   P ("label.contrast.readability_label.readable_for_normal_text", "czytelne dla zwykłego tekstu");
-   P ("label.contrast.apca_contrast_label.lc_n_body_text_light_text_on_dark_background",
-      "Lc {v1, number}, tekst główny, jasny tekst na ciemnym tle");
-   P ("label.contrast.color_accessibility_summary.d_n_normal_text_contrast",
-      "{v1}:{v2, number}, kontrast dla zwykłego tekstu");
-   P ("label.contrast.color_accessibility_summary.lc_n_body_text_light_text_on_dark_background",
-      "Lc {v1, number}, tekst główny, jasny tekst na ciemnym tle");
-   P ("label.contrast.apca_contrast_label.lc_n_large_text_dark_text_on_light_background",
-      "Lc {v1, number}, duży tekst, ciemny tekst na jasnym tle");
-   P ("label.contrast.color_accessibility_summary.lc_n_large_text_dark_text_on_light_background",
-      "Lc {v1, number}, duży tekst, ciemny tekst na jasnym tle");
-   P ("label.models.color_difference_label.n_subtle_difference", "{v1, number}% – subtelna różnica");
-   P ("label.contrast.apca_contrast_label.lc_n_body_text_dark_text_on_light_background",
-      "Lc {v1, number}, tekst główny, ciemny tekst na jasnym tle");
-   P ("label.contrast.color_accessibility_summary.lc_n_body_text_dark_text_on_light_background",
-      "Lc {v1, number}, tekst główny, ciemny tekst na jasnym tle");
-   P ("label.contrast.color_accessibility_summary.tritanopia_low_confusion_risk",
-      "tritanopia: niskie ryzyko pomyłki");
-   P ("label.models.color_difference_label.n_noticeable_difference", "{v1, number}% – zauważalna różnica");
-   P ("label.contrast.contrast_label.n_n_large_text_contrast",
-      "{v1, number}:{v2, number}, kontrast dla dużego tekstu");
-   P ("label.contrast.color_accessibility_summary.n_n_large_text_contrast",
-      "{v1, number}:{v2, number}, kontrast dla dużego tekstu");
-   P ("label.contrast.color_accessibility_summary.deuteranopia_low_confusion_risk",
-      "deuteranopia: niskie ryzyko pomyłki");
-   P ("label.contrast.contrast_label.d_n_enhanced_contrast", "{v1}:{v2, number}, wzmocniony kontrast");
-   P ("label.contrast.readability_label.readable_for_enhanced_text", "czytelne dla tekstu o wzmocnionym kontraście");
-   P ("label.contrast.color_accessibility_summary.d_n_enhanced_contrast", "{v1}:{v2, number}, wzmocniony kontrast");
-   P ("label.models.perceptual_difference_label.oklab_delta_n_subtle_perceptual_difference",
-      "OKLab delta {v1, number}, subtelna różnica percepcyjna");
-   P ("label.contrast.color_accessibility_summary.tritanopia_distinct", "tritanopia: kolory rozróżnialne");
-   P ("label.contrast.alpha_contrast_label.n_n_normal_text_contrast_after_alpha_compositing",
-      "{v1, number}:{v2, number}, kontrast dla zwykłego tekstu po kompozycji "
-      & "alfa");
-   P ("label.contrast.color_accessibility_summary.protanopia_moderate_confusion_risk",
-      "protanopia: umiarkowane ryzyko pomyłki");
-   P ("label.contrast.alpha_contrast_label.d_n_normal_text_contrast_after_alpha_compositing",
-      "{v1}:{v2, number}, kontrast dla zwykłego tekstu po kompozycji alfa");
-   P ("label.contrast.alpha_contrast_label.n_n_large_text_contrast_after_alpha_compositing",
-      "{v1, number}:{v2, number}, kontrast dla dużego tekstu po kompozycji "
-      & "alfa");
-   P ("label.contrast.apca_contrast_label.lc_n_excellent_dark_text_on_light_background",
-      "Lc {v1, number}, doskonały, ciemny tekst na jasnym tle");
-   P ("label.contrast.color_accessibility_summary.lc_n_excellent_dark_text_on_light_background",
-      "Lc {v1, number}, doskonały, ciemny tekst na jasnym tle");
-   P ("label.contrast.contrast_label.n_n_normal_text_contrast",
-      "{v1, number}:{v2, number}, kontrast dla zwykłego tekstu");
-   P ("label.contrast.color_accessibility_summary.n_n_normal_text_contrast",
-      "{v1, number}:{v2, number}, kontrast dla zwykłego tekstu");
-   P ("label.contrast.contrast_label.n_n_enhanced_contrast", "{v1, number}:{v2, number}, wzmocniony kontrast");
-   P ("label.contrast.apca_contrast_label.lc_n_excellent_light_text_on_dark_background",
-      "Lc {v1, number}, doskonały, jasny tekst na ciemnym tle");
-   P ("label.contrast.color_accessibility_summary.n_n_enhanced_contrast",
-      "{v1, number}:{v2, number}, wzmocniony kontrast");
-   P ("label.contrast.color_accessibility_summary.lc_n_excellent_light_text_on_dark_background",
-      "Lc {v1, number}, doskonały, jasny tekst na ciemnym tle");
-   P ("label.contrast.color_accessibility_summary.deuteranopia_distinct", "deuteranopia: kolory rozróżnialne");
-   P ("label.contrast.alpha_contrast_label.d_n_enhanced_contrast_after_alpha_compositing",
-      "{v1}:{v2, number}, wzmocniony kontrast po kompozycji alfa");
-   P ("label.models.perceptual_difference_label.oklab_delta_n_barely_perceptible",
-      "OKLab delta {v1, number}, ledwo dostrzegalna");
-   P ("label.models.color_difference_label.n_nearly_identical", "{v1, number}% – niemal identyczne");
-   P ("label.contrast.color_accessibility_summary.protanopia_low_confusion_risk",
-      "protanopia: niskie ryzyko pomyłki");
-   P ("label.contrast.color_accessibility_summary.achromatopsia_distinct", "achromatopsja: kolory rozróżnialne");
-   P ("label.palettes.palette_summary.n_colors",
-      "{v1, plural, one {{v1, number} kolor} few {{v1, number} kolory} many "
-      & "{{v1, number} kolorów} other {{v1, number} koloru}}");
-   P ("label.palettes.palette_summary.mostly_gray", "głównie szary");
-   P ("label.palettes.palette_summary.moderate_contrast_spread", "umiarkowany rozrzut kontrastu");
-   P ("label.palettes.palette_roles.background_c_text_c_accent_c", "tło {v1}, tekst {v2}, akcent {v3}");
-   P ("label.palettes.palette_harmony_label.triadic_palette", "paleta triadyczna");
-   P ("label.palettes.palette_contrast_suggestion.best_contrast_c_on_c_at_d_n",
-      "najlepszy kontrast: {v1} na {v2} przy {v3}:{v4, number}");
-   P ("label.palettes.palette_accessibility_label.n_of_n_pairs_pass_normal_text_contrast",
-      "{v1, number} z {v2, plural, one {1 pary} other {{v2, number} par}} "
-      & "spełnia kryterium kontrastu dla zwykłego tekstu");
-   P ("label.palettes.palette_contrast_matrix_label.n_enhanced_n_normal_n_large_only_n_fail_out_of_n_pairs",
-      "wzmocniony {v1, number}, zwykły {v2, number}, tylko duży tekst {v3, "
-      & "number}, niezaliczone {v4, number} (z {v5, plural, one {1 pary} other "
-      & "{{v5, number} par}})");
-   P ("label.palettes.palette_metadata_label.n_colors_n_pairs_n_enhanced_n_normal_n_large_only_n_fail",
-      "{v1, plural, one {{v1, number} kolor} few {{v1, number} kolory} many "
-      & "{{v1, number} kolorów} other {{v1, number} koloru}}, {v2, plural, one "
-      & "{{v2, number} para} few {{v2, number} pary} many {{v2, number} par} "
-      & "other {{v2, number} pary}}: wzmocniony {v3, number}, zwykły {v4, "
-      & "number}, tylko duży tekst {v5, number}, niezaliczone {v6, number}");
-   P ("label.palettes.palette_mood_label.balanced", "zrównoważona");
-   P ("label.palettes.palette_mood_label.vibrant", "żywa");
-   P ("label.palettes.palette_mood_label.warm_mood", "ciepły nastrój");
-   P ("label.palettes.palette_summary.mostly_blue", "głównie niebieski");
-   P ("label.palettes.palette_summary.low_contrast_spread", "niski rozrzut kontrastu");
-   P ("label.palettes.palette_harmony_label.single_accent_palette", "paleta z jednym akcentem");
-   P ("label.palettes.palette_mood_label.dark", "ciemna");
-   P ("label.palettes.palette_mood_label.cool_mood", "chłodny nastrój");
-   P ("label.palettes.palette_summary.mostly_rebeccapurple", "głównie rebeccapurple");
-   P ("label.palettes.palette_accessibility_label.no_accessible_text_pairs", "brak dostępnych par tekstowych");
-   P ("label.palettes.palette_mood_label.subtle", "subtelna");
-   P ("label.palettes.palette_summary.high_contrast_spread", "wysoki rozrzut kontrastu");
-   P ("label.palettes.palette_contrast_suggestion.best_contrast_c_on_c_at_n_n",
-      "najlepszy kontrast: {v1} na {v2} przy {v3, number}:{v4, number}");
-   P ("label.palettes.palette_mood_label.neutral_mood", "neutralny nastrój");
-   P ("label.palettes.palette_summary.mostly_purple", "głównie purpurowy");
-   P ("label.palettes.palette_harmony_label.complementary_palette", "paleta komplementarna");
-   P ("label.palettes.palette_summary.mostly_green", "głównie zielony");
-   P ("label.palettes.palette_mood_label.moderate", "umiarkowana");
-   P ("label.palettes.palette_summary.mostly_silver", "głównie srebrny");
-   P ("label.palettes.palette_harmony_label.varied_palette", "paleta zróżnicowana");
-   P ("label.palettes.palette_summary.mostly_olive", "głównie oliwkowy");
-   P ("label.palettes.palette_harmony_label.analogous_palette", "paleta analogiczna");
-   P ("label.palettes.palette_accessibility_label.n_of_n_pairs_pass_large_text_only",
-      "{v1, number} z {v2, plural, one {1 pary} other {{v2, number} par}} "
-      & "spełnia kryterium tylko dla dużego tekstu");
-   P ("label.palettes.palette_mood_label.light", "jasna");
-   P ("label.palettes.palette_summary.mostly_teal", "głównie morski");
-   P ("label.palettes.palette_summary.mostly_aqua", "głównie turkusowy");
-   P ("label.palettes.palette_summary.mostly_lime", "głównie limonkowy");
-   P ("label.palettes.palette_harmony_label.monochrome_palette", "paleta monochromatyczna");
-   P ("label.palettes.palette_summary.mostly_black", "głównie czarny");
-   P ("label.palettes.palette_summary.mostly_yellow", "głównie żółty");
-   P ("label.palettes.palette_summary.mostly_maroon", "głównie kasztanowy");
-   P ("label.palettes.palette_summary.mostly_white", "głównie biały");
-   P ("label.palettes.palette_summary.mostly_orange", "głównie pomarańczowy");
-   P ("label.palettes.palette_summary.mostly_fuchsia", "głównie fuksja");
-   P ("label.palettes.palette_harmony_label.neutral_palette", "paleta neutralna");
-   P ("label.palettes.palette_summary.mostly_red", "głównie czerwony");
-   P ("label.metrics.word_count_summary.n_words",
-      "{v1, plural, one {{v1, number} słowo} few {{v1, number} słowa} many "
-      & "{{v1, number} słów} other {{v1, number} słowa}}");
-   P ("label.metrics.sentence_count_summary.n_sentences",
-      "{v1, plural, one {{v1, number} zdanie} few {{v1, number} zdania} many "
-      & "{{v1, number} zdań} other {{v1, number} zdania}}");
-   P ("label.metrics.paragraph_count_summary.n_paragraphs",
-      "{v1, plural, one {{v1, number} akapit} few {{v1, number} akapity} many "
-      & "{{v1, number} akapitów} other {{v1, number} akapitu}}");
 end Labels_3;

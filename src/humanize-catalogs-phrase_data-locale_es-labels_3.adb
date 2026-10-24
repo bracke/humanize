@@ -1,6 +1,13 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Es)
 procedure Labels_3 is
 begin
+   P ("label.tasks.task_label",
+      "{name}: {state, select, open_task {tarea abierta} in_progress_task "
+      & "{tarea en curso} blocked_task {tarea bloqueada} done_task {tarea "
+      & "completada} canceled_task {tarea cancelada} deferred_task {tarea "
+      & "aplazada} other {tarea vencida}}{priority, select, no_priority {} "
+      & "low_priority {, prioridad baja} medium_priority {, prioridad media} "
+      & "high_priority {, prioridad alta} other {, prioridad crítica}}");
    P ("label.tasks.task_priority_label",
       "{priority, select, no_priority {sin prioridad} low_priority {prioridad "
       & "baja} medium_priority {prioridad media} high_priority {prioridad alta} "
@@ -181,12 +188,12 @@ begin
       "campo {field_name}: se esperaba {expected, select, string_field "
       & "{cadena} integer_field {entero} decimal_field {decimal} boolean_field "
       & "{booleano} date_field {fecha} date_time_field {fecha y hora} "
-      & "object_field {objeto} array_field {matriz} enum_field {enumeración} "
+      & "object_field {objeto} array_field {array} enum_field {enumeración} "
       & "binary_field {binario} null_field {nulo} any_field {cualquiera} other "
       & "{desconocido}}, se obtuvo {actual, select, string_field {cadena} "
       & "integer_field {entero} decimal_field {decimal} boolean_field "
       & "{booleano} date_field {fecha} date_time_field {fecha y hora} "
-      & "object_field {objeto} array_field {matriz} enum_field {enumeración} "
+      & "object_field {objeto} array_field {array} enum_field {enumeración} "
       & "binary_field {binario} null_field {nulo} any_field {cualquiera} other "
       & "{desconocido}}");
    P ("label.diagnostics.issue_summary_label",
@@ -690,10 +697,4 @@ begin
       "{v1, number}:{v2, number}, contraste para texto grande");
    P ("label.contrast.color_accessibility_summary.deuteranopia_low_confusion_risk",
       "deuteranopía: riesgo de confusión bajo");
-   P ("label.contrast.contrast_label.d_n_enhanced_contrast", "{v1}:{v2, number}, contraste mejorado");
-   P ("label.contrast.readability_label.readable_for_enhanced_text", "legible con contraste mejorado");
-   P ("label.contrast.color_accessibility_summary.d_n_enhanced_contrast", "{v1}:{v2, number}, contraste mejorado");
-   P ("label.models.perceptual_difference_label.oklab_delta_n_subtle_perceptual_difference",
-      "OKLab delta {v1, number}, diferencia perceptual sutil");
-   P ("label.contrast.color_accessibility_summary.tritanopia_distinct", "tritanopía: colores distinguibles");
 end Labels_3;

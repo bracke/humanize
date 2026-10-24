@@ -434,7 +434,7 @@ begin
    P ("label.diagnostics.parser_diagnostic_explanation_label",
       "{family, select, byte_parser {byte-parser} duration_parser "
       & "{duurparser} date_time_parser {datum-tijdparser} color_parser "
-      & "{kleurparser} url_parser {URL-parser} unit_parser {eenheidparser} "
+      & "{kleurparser} url_parser {URL-parser} unit_parser {eenheidsparser} "
       & "recurrence_parser {herhalingsparser} domain_label_parser "
       & "{domeinlabelparser} other {parser}}: {position, plural, =0 "
       & "{niet-ondersteunde syntaxis {error}} other {niet-ondersteunde syntaxis "

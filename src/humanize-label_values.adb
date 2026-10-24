@@ -430,6 +430,47 @@ package body Humanize.Label_Values is
       return Text_Of (Result);
    end Word_List;
 
+   function URL_Text (Context : Humanize.Contexts.Context; English : String) return String is
+      Redacted : constant String := "[redacted user]";
+      At_User  : constant Natural := Ada.Strings.Fixed.Index (English, Redacted);
+
+      function Phrase (Key : String; Fallback : String) return String is
+         Shown : constant Humanize.Status.Text_Result :=
+           Humanize.I18N_Rendering.Render (Context, Humanize.Selections.Phrase (Key));
+      begin
+         return (if Shown.Status = Humanize.Status.Ok then Text_Of (Shown) else Fallback);
+      end Phrase;
+
+      --  Text with " query 3 params" in the locale's words.
+      function With_Query (Text : String) return String is
+         At_Query : constant Natural := Ada.Strings.Fixed.Index (Text, " query ");
+      begin
+         if At_Query = 0 then
+            return Text;
+         end if;
+         declare
+            After : constant String := Text (At_Query + 7 .. Text'Last);
+            Words : constant String := Value_After (After, " ");
+            Word  : constant String := (if Starts (Words, "params") then "params" else "param");
+            Shown : constant Humanize.Status.Text_Result :=
+              Humanize.I18N_Rendering.Render
+                (Context,
+                 Humanize.Selections.With_Arg
+                   (Humanize.Selections.Phrase ("label.endpoints.url_label.query"), "count", Leading_Count (After)));
+         begin
+            return
+              (if Shown.Status = Humanize.Status.Ok and then Starts (Words, "param")
+               then Text (Text'First .. At_Query) & Text_Of (Shown) & Words (Words'First + Word'Length .. Words'Last)
+               else Text);
+         end;
+      end With_Query;
+   begin
+      return With_Query
+        (if At_User = 0 then English
+         else English (English'First .. At_User - 1) & Phrase ("label.endpoints.url_label.redacted_user", Redacted)
+              & English (At_User + Redacted'Length .. English'Last));
+   end URL_Text;
+
    function Text_Of (Result : Humanize.Status.Text_Result) return String is
      (Ada.Strings.Unbounded.To_String (Result.Text));
 

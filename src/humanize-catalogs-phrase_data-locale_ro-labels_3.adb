@@ -31,8 +31,8 @@ begin
       & "number} din {total, number}}}");
    P ("label.changes.numeric_field_change_label",
       "{state, select, same {{field_name}: nemodificat, {new_value}} up "
-      & "{{field_name}: crescut de la {old_value} la {new_value}} other "
-      & "{{field_name}: scăzut de la {old_value} la {new_value}}}");
+      & "{{field_name}: a crescut de la {old_value} la {new_value}} other "
+      & "{{field_name}: a scăzut de la {old_value} la {new_value}}}");
    P ("label.tables.selection_label",
       "{state, select, no_rows {niciun rând selectabil} none {niciun rând "
       & "selectat} all {{total, plural, one {1 rând selectat} few {toate cele "
@@ -576,8 +576,8 @@ begin
       & "{median}} other {distribuție în mare parte echilibrată în jurul "
       & "valorii {median}}}");
    P ("label.privacy.safe_email_label",
-      "{state, select, empty {e-mail gol} address {adresă de e-mail} other "
-      & "{e-mail la {domain}}}");
+      "{state, select, empty {adresă de e-mail goală} address {adresă de "
+      & "e-mail} other {adresă de e-mail din domeniul {domain}}}");
    P ("label.privacy.safe_phone_label",
       "{state, select, none {număr de telefon} redacted {număr de telefon "
       & "ascuns} other {telefon care se termină în {digits}}}");
@@ -667,7 +667,7 @@ begin
       "{state, select, unset {{name} {kind}: nesetat} other {{name} {kind} "
       & "care se termină în {shown}}}");
    P ("label.secrets.header_credential_label",
-      "{state, select, unset {{name}: antet de acreditări nesetat} other "
+      "{state, select, unset {{name}: antet de credențiale nesetat} other "
       & "{{name} {kind} care se termină în {shown}}}");
    P ("label.secrets.fingerprint_label", "amprentă {algorithm} care se termină în {shown}");
    P ("label.secrets.safe_display_label",
@@ -684,9 +684,9 @@ begin
       & "array_field {matrice} enum_field {enumerare} binary_field {binar} "
       & "null_field {null} any_field {orice tip} other {tip necunoscut}}): "
       & "{state, select, deprecated_field {învechit, } unknown_field "
-      & "{necunoscut, } read_only_field {doar citire, } write_only_field {doar "
-      & "scriere, } computed_field {calculat, } other {}}{presence, select, "
-      & "required_field {obligatoriu} optional_field {opțional} "
+      & "{necunoscut, } read_only_field {doar în citire, } write_only_field "
+      & "{doar în scriere, } computed_field {calculat, } other {}}{presence, "
+      & "select, required_field {obligatoriu} optional_field {opțional} "
       & "conditional_field {condițional} other {prezență "
       & "necunoscută}}{nullable, select, non_nullable {, non-null} nullable {, "
       & "poate fi null} other {}}");

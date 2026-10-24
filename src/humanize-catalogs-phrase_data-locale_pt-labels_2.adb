@@ -207,7 +207,7 @@ begin
    P ("label.notification_preferences.preference_state_label",
       "{state, select, preference_enabled {ativado} preference_disabled "
       & "{desativado} preference_inherited {herdado} other {obrigatório}}");
-   P ("label.notification_preferences.quiet_hours_label", "horário de silêncio {time_text}");
+   P ("label.notification_preferences.quiet_hours_label", "horário de silêncio: {time_text}");
    P ("label.notification_preferences.subscription_label",
       "{name}: inscrição {scope, select, thread_subscription {na conversa} "
       & "project_subscription {no projeto} team_subscription {na equipe} other "
@@ -456,13 +456,13 @@ begin
       & "somente leitura} write_only_field {campo somente gravação} other "
       & "{campo calculado}}");
    P ("label.schema.field_type_label",
-      "{kind, select, string_field {campo de string} integer_field {campo "
-      & "inteiro} decimal_field {campo decimal} boolean_field {campo booleano} "
-      & "date_field {campo de data} date_time_field {campo de data e hora} "
-      & "object_field {campo de objeto} array_field {campo de array} enum_field "
-      & "{campo de enumeração} binary_field {campo binário} null_field "
-      & "{campo nulo} any_field {campo de qualquer tipo} other {campo de tipo "
-      & "desconhecido}}");
+      "{kind, select, string_field {campo de string} integer_field {campo de "
+      & "número inteiro} decimal_field {campo decimal} boolean_field {campo "
+      & "booleano} date_field {campo de data} date_time_field {campo de data e "
+      & "hora} object_field {campo de objeto} array_field {campo de array} "
+      & "enum_field {campo de enumeração} binary_field {campo binário} "
+      & "null_field {campo nulo} any_field {campo de qualquer tipo} other "
+      & "{campo de tipo desconhecido}}");
    P ("label.schema.missing_required_label",
       "{count, plural, =0 {nenhum campo obrigatório ausente} one {1 campo "
       & "obrigatório ausente} many {{count, number} de campos obrigatórios "

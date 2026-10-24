@@ -116,13 +116,12 @@ begin
    P ("label.builds.benchmark_label", "ytelsestest {name}: {result_text}");
    P ("label.builds.build_label",
       "{name}: {state, select, build_queued {bygget er i kø} build_running "
-      & "{bygget kjører} build_passed {bygget er bestått} build_failed "
-      & "{bygget mislyktes} snapshot_build {snapshot-bygg} other "
-      & "{release-bygg}}");
+      & "{bygget kjører} build_passed {bygget besto} build_failed {bygget "
+      & "mislyktes} snapshot_build {snapshot-bygg} other {release-bygg}}");
    P ("label.builds.build_state_label",
       "{state, select, build_queued {bygget er i kø} build_running {bygget "
-      & "kjører} build_passed {bygget er bestått} build_failed {bygget "
-      & "mislyktes} snapshot_build {snapshot-bygg} other {release-bygg}}");
+      & "kjører} build_passed {bygget besto} build_failed {bygget mislyktes} "
+      & "snapshot_build {snapshot-bygg} other {release-bygg}}");
    P ("label.builds.coverage_label", "dekning {percent_text}");
    P ("label.builds.gate_state_label",
       "{state, select, gate_passed {utgivelseskontroll bestått} gate_failed "
@@ -346,7 +345,7 @@ begin
       "{state, select, no_migration {ingen migrering} migration_pending "
       & "{migrering venter} migrating {migrerer} migration_complete {migrering "
       & "fullført} other {migrering mislyktes}}");
-   P ("label.deployments.promotion_label", "{name} forfremmet fra {from_environment} til {to_environment}");
+   P ("label.deployments.promotion_label", "{name} flyttet opp fra {from_environment} til {to_environment}");
    P ("label.deployments.rollback_label", "{name}: tilbakerulling til {target}");
    P ("label.deployments.rollout_label", "{name}: utrulling {percent_text}");
    P ("label.diagnostics.affected_items_label",
@@ -688,4 +687,14 @@ begin
       "{kind, select, link_item {lenke} menu_item {menyelement} tab_item "
       & "{fane} breadcrumb_item {brødsmule} section_item {seksjon} other "
       & "{skilletegn}}");
+   P ("label.navigation.navigation_item_label",
+      "{name}: {kind, select, menu_item {menyelement, {state, select, "
+      & "current_item {gjeldende} active_item {aktivt} inactive_item {inaktivt} "
+      & "disabled_item {deaktivert} expanded_item {utvidet} collapsed_item "
+      & "{skjult} visited_item {besøkt} other {eksternt}}} other {{kind, "
+      & "select, link_item {lenke} tab_item {fane} breadcrumb_item {brødsmule} "
+      & "section_item {seksjon} other {skilletegn}}, {state, select, "
+      & "current_item {gjeldende} active_item {aktiv} inactive_item {inaktiv} "
+      & "disabled_item {deaktivert} expanded_item {utvidet} collapsed_item "
+      & "{skjult} visited_item {besøkt} other {ekstern}}}}");
 end Labels_1;

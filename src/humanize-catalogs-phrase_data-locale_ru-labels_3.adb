@@ -41,8 +41,7 @@ begin
    P ("label.search.filter_label",
       "{state, select, active_filter {фильтр {name}: {value}, "
       & "активен} inactive_filter {фильтр {name}: {value}, "
-      & "неактивен} other {фильтр {name}: исключить "
-      & "{value}}}");
+      & "неактивен} other {фильтр {name}: кроме {value}}}");
    P ("label.search.filter_state_label",
       "{state, select, active_filter {активный фильтр} "
       & "inactive_filter {неактивный фильтр} other "
@@ -561,8 +560,8 @@ begin
    P ("label.changes.change_set_label.modified", "изменено: {count, number}");
    P ("label.changes.change_set_label.unchanged", "без изменений: {count, number}");
    P ("label.changes.sync_change_label.none", "нет изменений синхронизации");
-   P ("label.changes.sync_change_label.uploaded", "отправлено: {count, number}");
-   P ("label.changes.sync_change_label.downloaded", "загружено: {count, number}");
+   P ("label.changes.sync_change_label.uploaded", "загружено: {count, number}");
+   P ("label.changes.sync_change_label.downloaded", "скачано: {count, number}");
    P ("label.changes.sync_change_label.deleted", "удалено: {count, number}");
    P ("label.changes.sync_change_label.conflicts",
       "{count, plural, one {{count, number} конфликт} few {{count, "
@@ -693,5 +692,9 @@ begin
    P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
       "текущий цвет переднего плана "
       & "соответствует контрасту для крупного "
+      & "текста при {v1}:{v2, number}");
+   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_d_n",
+      "текущий цвет переднего плана "
+      & "соответствует контрасту для обычного "
       & "текста при {v1}:{v2, number}");
 end Labels_3;

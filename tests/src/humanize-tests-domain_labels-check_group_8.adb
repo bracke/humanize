@@ -122,11 +122,11 @@ begin
           Humanize.Thresholds.Threshold_Status_Label (Value => 7.25, Warning => 9.75, Critical => 4.5, Direction =>
             Humanize.Thresholds.Lower_Limit, Unit => "plain", Decimals => 7, Options =>
             (Humanize.Thresholds.Default_Threshold_Label_Options with delta Include_Surface => True)));
-   Check (Locale, "label.thresholds.threshold_summary_label", Plain,
+   Check (Locale, "label.thresholds.threshold_summary_label", Phrase,
           Humanize.Thresholds.Localized.Threshold_Summary_Label (C, Normal => 7, Warnings => 9, Critical => 4,
             Breaches => 6),
           Humanize.Thresholds.Threshold_Summary_Label (Normal => 7, Warnings => 9, Critical => 4, Breaches => 6));
-   Check (Locale, "label.thresholds.threshold_summary_label", Plain,
+   Check (Locale, "label.thresholds.threshold_summary_label", Phrase,
           Humanize.Thresholds.Localized.Threshold_Summary_Label (C, Normal => 2, Warnings => 0, Critical => 0,
             Breaches => 0),
           Humanize.Thresholds.Threshold_Summary_Label (Normal => 2, Warnings => 0, Critical => 0, Breaches => 0));
@@ -344,13 +344,13 @@ begin
    Check (Locale, "label.workflows.workflow_state_label", Phrase,
           Humanize.Workflows.Localized.Workflow_State_Label (C, State => Humanize.Workflows.Paused_State),
           Humanize.Workflows.Workflow_State_Label (State => Humanize.Workflows.Paused_State));
-   Check (Locale, "label.workflows.workflow_summary_label", Plain,
+   Check (Locale, "label.workflows.workflow_summary_label", Phrase,
           Humanize.Workflows.Localized.Workflow_Summary_Label (C, Total => 5, Completed => 2, Failed => 1),
           Humanize.Workflows.Workflow_Summary_Label (Total => 5, Completed => 2, Failed => 1));
-   Check (Locale, "label.workflows.workflow_summary_label", Plain,
+   Check (Locale, "label.workflows.workflow_summary_label", Phrase,
           Humanize.Workflows.Localized.Workflow_Summary_Label (C, Total => 1),
           Humanize.Workflows.Workflow_Summary_Label (Total => 1));
-   Check (Locale, "label.workflows.workflow_summary_label", Plain,
+   Check (Locale, "label.workflows.workflow_summary_label", Phrase,
           Humanize.Workflows.Localized.Workflow_Summary_Label (C, Total => 9, Active => 3, Blocked => 1, Skipped =>
             2),
           Humanize.Workflows.Workflow_Summary_Label (Total => 9, Active => 3, Blocked => 1, Skipped => 2));

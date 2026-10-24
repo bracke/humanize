@@ -1,11 +1,6 @@
 separate (Humanize.Catalogs.Phrase_Data.Locale_Hi)
 procedure Labels_2 is
 begin
-   P ("label.events.attendance_state_label",
-      "{state, select, not_responded {जवाब नहीं दिया} "
-      & "accepted {स्वीकार किया} declined "
-      & "{अस्वीकार किया} maybe {शायद} other "
-      & "{प्रतीक्षा सूची में}}");
    P ("label.events.attendee_count_label",
       "{count, plural, =0 {कोई प्रतिभागी "
       & "नहीं} one {1 प्रतिभागी} other {{count, "
@@ -50,9 +45,7 @@ begin
    P ("label.events.rescheduled_label",
       "{name} को {time_text} पर "
       & "पुनर्निर्धारित किया गया");
-   P ("label.forms.character_count_label",
-      "{used, plural, one {1 वर्ण} other {{used, number} "
-      & "वर्ण}}");
+   P ("label.forms.character_count_label", "{used, number} वर्ण");
    P ("label.forms.character_limit_label",
       "{limit, plural, =0 {कोई वर्ण सीमा नहीं} "
       & "one {अधिकतम 1 वर्ण} other {अधिकतम "
@@ -121,12 +114,10 @@ begin
       & "{कीबोर्ड ट्रैप} other {अज्ञात "
       & "सुलभता समस्या}}");
    P ("label.markup.accessibility_page_summary_label",
-      "{title} सुलभता सारांश: {landmarks, plural, one "
-      & "{1 लैंडमार्क} other {{landmarks, number} "
-      & "लैंडमार्क}}, {headings, plural, one {1 "
-      & "शीर्षक} other {{headings, number} शीर्षक}}, "
-      & "{issues, plural, one {1 समस्या} other {{issues, number} "
-      & "समस्याएँ}}");
+      "{title} सुलभता सारांश: {landmarks, number} "
+      & "लैंडमार्क, {headings, number} शीर्षक, "
+      & "{issues, plural, one {{issues, number} समस्या} other "
+      & "{{issues, number} समस्याएँ}}");
    P ("label.markup.accessibility_remediation_label",
       "{issue, select, missing_accessible_name {सुलभ नाम "
       & "जोड़ें} low_contrast {टेक्स्ट "
@@ -340,9 +331,7 @@ begin
       & "{विस्तारित}}{count, plural, =0 {} one {, 1 "
       & "आइटम} other {, {count, number} आइटम}}");
    P ("label.navigation.skip_link_label", "{target} पर जाएँ");
-   P ("label.navigation.submenu_label",
-      "{name} उपमेनू, {count, plural, one {1 आइटम} other "
-      & "{{count, number} आइटम}}");
+   P ("label.navigation.submenu_label", "{name} उपमेनू, {count, number} आइटम");
    P ("label.notification_preferences.alert_level_label",
       "{level, select, all_alerts {सभी अलर्ट} "
       & "important_alerts {महत्वपूर्ण अलर्ट} "
@@ -488,19 +477,19 @@ begin
       & "unread_state {अपठित} read_state {पठित} "
       & "archived_state {संग्रहीत} muted_state "
       & "{म्यूट} snoozed_state {स्नूज़} other "
-      & "{अवरुद्ध}}");
+      & "{दबाई गई}}");
    P ("label.notifications.notification_state_label",
       "{state, select, unread_state {अपठित सूचना} "
       & "read_state {पठित सूचना} archived_state "
       & "{संग्रहीत सूचना} muted_state "
       & "{म्यूट सूचना} snoozed_state {स्नूज़ "
-      & "की गई सूचना} other {अवरुद्ध "
+      & "की गई सूचना} other {दबाई गई "
       & "सूचना}}");
    P ("label.notifications.snoozed_label", "{name} की सूचनाएँ स्नूज़ हैं");
    P ("label.notifications.suppressed_label",
-      "{count, plural, =0 {कोई सूचना अवरुद्ध "
-      & "नहीं} one {1 सूचना अवरुद्ध} other "
-      & "{{count, number} सूचनाएँ अवरुद्ध}}");
+      "{count, plural, =0 {कोई सूचना दबाई "
+      & "नहीं गई} one {1 सूचना दबाई गई} other "
+      & "{{count, number} सूचनाएँ दबाई गईं}}");
    P ("label.notifications.unread_label",
       "{count, plural, =0 {कोई अपठित सूचना "
       & "नहीं} one {1 अपठित सूचना} other {{count, "
@@ -618,8 +607,7 @@ begin
       & "enum_field {एनम} binary_field {बाइनरी} null_field "
       & "{null} any_field {किसी भी प्रकार} other "
       & "{अज्ञात प्रकार}} का ऐरे{count_known, "
-      & "select, false {} other { ({count, plural, one {1 आइटम} other "
-      & "{{count, number} आइटम}})}}");
+      & "select, false {} other { ({count, number} आइटम)}}");
    P ("label.schema.constraint_label", "बाधा {name}: {value}");
    P ("label.schema.default_value_label",
       "फ़ील्ड {field_name} का डिफ़ॉल्ट "
@@ -627,9 +615,7 @@ begin
    P ("label.schema.deprecated_field_label",
       "फ़ील्ड {name} अप्रचलित है, "
       & "{replacement} का उपयोग करें");
-   P ("label.schema.enum_options_label",
-      "{count, plural, one {1 एनम विकल्प} other {{count, "
-      & "number} एनम विकल्प}}");
+   P ("label.schema.enum_options_label", "{count, number} एनम विकल्प");
    P ("label.schema.example_value_label", "फ़ील्ड {field_name} का उदाहरण: {value}");
    P ("label.schema.field_state_label",
       "{state, select, normal_field {सामान्य "
@@ -658,11 +644,10 @@ begin
       & "फ़ील्ड अनुपस्थित} other {{count, number} "
       & "आवश्यक फ़ील्ड अनुपस्थित}}");
    P ("label.schema.object_shape_label",
-      "{fields, plural, one {1 फ़ील्ड} other {{fields, number} "
-      & "फ़ील्ड}} वाला ऑब्जेक्ट{required, "
-      & "plural, =0 {} other {, {required, number} "
-      & "आवश्यक}}{optional, plural, =0 {} other {, {optional, "
-      & "number} वैकल्पिक}}");
+      "{fields, number} फ़ील्ड वाला "
+      & "ऑब्जेक्ट{required, plural, =0 {} other {, {required, "
+      & "number} आवश्यक}}{optional, plural, =0 {} other {, "
+      & "{optional, number} वैकल्पिक}}");
    P ("label.schema.schema_source_label", "स्कीमा {name}, संस्करण {version}");
    P ("label.schema.shape_label",
       "{kind, select, scalar_shape {अदिश मान} object_shape "
@@ -696,4 +681,18 @@ begin
       "{name}, {count, plural, =0 {कोई परिणाम नहीं} "
       & "other {{count, number} परिणाम}}{selected, select, true {, "
       & "चयनित} other {}}");
+   P ("label.search.filter_label",
+      "{name}: {value}, {state, select, active_filter {सक्रिय "
+      & "फ़िल्टर} inactive_filter {निष्क्रिय "
+      & "फ़िल्टर} other {बहिष्कृत "
+      & "फ़िल्टर}}");
+   P ("label.search.filter_state_label",
+      "{state, select, active_filter {सक्रिय "
+      & "फ़िल्टर} inactive_filter {निष्क्रिय "
+      & "फ़िल्टर} other {बहिष्कृत "
+      & "फ़िल्टर}}");
+   P ("label.search.no_results_label",
+      "“{query}” के लिए कोई परिणाम "
+      & "नहीं");
+   P ("label.search.recent_search_label", "हाल की खोज: “{query}”");
 end Labels_2;

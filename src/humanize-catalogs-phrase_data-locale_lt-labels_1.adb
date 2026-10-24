@@ -527,13 +527,13 @@ begin
       & "{pastaba} warning_severity {įspėjimas} error_severity {klaida} "
       & "critical_severity {kritinė klaida} other {blokuojanti klaida}}");
    P ("label.diagnostics.source_label",
-      "{source, select, build_source {kompiliavimo diagnostika} test_source "
+      "{source, select, build_source {surinkimo diagnostika} test_source "
       & "{testų diagnostika} lint_source {lint diagnostika} import_source "
       & "{importo diagnostika} validation_source {patvirtinimo diagnostika} "
       & "runtime_source {vykdymo diagnostika} security_source {saugos "
       & "diagnostika} other {diagnostika}}");
    P ("label.diagnostics.source_summary_label",
-      "{source, select, build_source {kompiliavimo diagnostika} test_source "
+      "{source, select, build_source {surinkimo diagnostika} test_source "
       & "{testų diagnostika} lint_source {lint diagnostika} import_source "
       & "{importo diagnostika} validation_source {patvirtinimo diagnostika} "
       & "runtime_source {vykdymo diagnostika} security_source {saugos "
@@ -602,7 +602,7 @@ begin
    P ("label.forms.field_state_label",
       "{name}: {state, select, valid_input {tinkama} invalid_input "
       & "{netinkama} required_input {privaloma} optional_input {neprivaloma} "
-      & "disabled_input {išjungta} other {tik skaityti}}");
+      & "disabled_input {išjungta} other {tik skaitoma}}");
    P ("label.forms.form_error_summary_label",
       "{errors, plural, =0 {{warnings, plural, =0 {formoje problemų nėra} "
       & "other {{warnings, plural, one {{warnings, number} įspėjimas} few "

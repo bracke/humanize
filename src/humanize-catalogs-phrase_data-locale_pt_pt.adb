@@ -6,6 +6,9 @@ procedure Locale_Pt_Pt (Target : in out Catalog_Text) is
    begin
       Add (Target, "pt-PT", Name, Template);
    end P;
+   --  The domain labels (label.*), in nested subunits.
+   procedure Labels_1 is separate;
+   procedure Labels_2 is separate;
 begin
    P ("showing_count",
       "a mostrar {showing} de {total} {total, plural, one {{one}} many "
@@ -213,4 +216,6 @@ begin
    P ("geo.direction.east_north_east", "{style, select, short {ENE} other {és-nordeste}}");
    P ("geo.direction.east", "{style, select, short {E} other {este}}");
    P ("geo.direction.east_south_east", "{style, select, short {ESE} other {és-sudeste}}");
+   Labels_1;
+   Labels_2;
 end Locale_Pt_Pt;

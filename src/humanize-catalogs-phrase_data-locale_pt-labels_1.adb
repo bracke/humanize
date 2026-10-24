@@ -36,8 +36,8 @@ begin
       "{count, plural, =0 {nenhum anexo} one {1 anexo} many {{count, number} "
       & "de anexos} other {{count, number} anexos}}");
    P ("label.attachments.attachment_group_label",
-      "{count, plural, one {{name}: 1 anexo} many {{name}: {count, number} de "
-      & "anexos} other {{name}: {count, number} anexos}}");
+      "{count, plural, one {{name}: {count, number} anexo} many {{name}: "
+      & "{count, number} de anexos} other {{name}: {count, number} anexos}}");
    P ("label.attachments.attachment_kind_label",
       "{kind, select, file_attachment {arquivo anexado} image_attachment "
       & "{imagem anexada} video_attachment {vídeo anexado} audio_attachment "
@@ -401,7 +401,7 @@ begin
       "{state, select, healthy_environment {ambiente íntegro} "
       & "drifting_environment {desvio do ambiente} locked_environment {ambiente "
       & "bloqueado} maintenance_environment {ambiente em manutenção} other "
-      & "{status do ambiente desconhecido}}");
+      & "{estado do ambiente desconhecido}}");
    P ("label.deployments.migration_state_label",
       "{state, select, no_migration {nenhuma migração} migration_pending "
       & "{migração pendente} migrating {migrando} migration_complete "
@@ -551,9 +551,10 @@ begin
       & "observação} one {, {notices, number} observação} many {, {notices, "
       & "number} de observações} other {, {notices, number} observações}}");
    P ("label.diagnostics.retry_label",
-      "{limit, plural, one {{attempt, plural, one {nova tentativa 1 de 1} "
-      & "other {nova tentativa {attempt, number} de 1: limite excedido}}} other "
-      & "{nova tentativa {attempt, number} de {limit, number}}}");
+      "{limit, plural, one {{attempt, plural, one {nova tentativa {attempt, "
+      & "number} de 1} other {nova tentativa {attempt, number} de 1: limite "
+      & "excedido}}} other {nova tentativa {attempt, number} de {limit, "
+      & "number}}}");
    P ("label.diagnostics.severity_label",
       "{severity, select, info_severity {informação} notice_severity "
       & "{observação} warning_severity {aviso} error_severity {erro} "
@@ -629,7 +630,7 @@ begin
       "resposta: {state, select, not_responded {pendente} accepted {aceita} "
       & "declined {recusada} maybe {talvez} other {lista de espera}}");
    P ("label.events.reminder_label", "lembrete: {time_text}");
-   P ("label.events.rescheduled_label", "{name} reagendado: {time_text}");
+   P ("label.events.rescheduled_label", "{name} reagendado para {time_text}");
    P ("label.forms.character_count_label",
       "{used, plural, one {{used, number} caractere} many {{used, number} de "
       & "caracteres} other {{used, number} caracteres}}");
@@ -661,7 +662,7 @@ begin
       & "erros}}, {warnings, plural, one {{warnings, number} aviso} many "
       & "{{warnings, number} de avisos} other {{warnings, number} avisos}}}}}}");
    P ("label.forms.form_state_label",
-      "{state, select, pristine_form {inalterado} editing_form {editando} "
+      "{state, select, pristine_form {não iniciado} editing_form {editando} "
       & "dirty_form {alterações não salvas} saving_form {salvando} "
       & "saved_form {salvo} submitted_form {enviado} other {falha no envio}}");
    P ("label.forms.input_state_label",
@@ -670,7 +671,7 @@ begin
       & "{entrada opcional} disabled_input {entrada desativada} other {entrada "
       & "somente leitura}}");
    P ("label.forms.submission_label",
-      "{state, select, pristine_form {inalterado} editing_form {editando} "
+      "{state, select, pristine_form {não iniciado} editing_form {editando} "
       & "dirty_form {alterações não salvas} saving_form {salvando o "
       & "formulário} saved_form {formulário salvo} submitted_form "
       & "{formulário enviado} other {{errors, plural, =0 {falha no envio} "

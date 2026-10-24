@@ -193,14 +193,15 @@ begin
       & "number}对，未通过{v6, number}对");
    P ("label.palettes.palette_mood_label.balanced", "均衡");
    P ("label.palettes.palette_mood_label.vibrant", "鲜明");
-   P ("label.palettes.palette_mood_label.warm_mood", "温暖氛围");
+   P ("label.palettes.palette_mood_label.warm_mood", "暖色氛围");
    P ("label.palettes.palette_summary.mostly_blue", "以蓝色为主");
    P ("label.palettes.palette_summary.low_contrast_spread", "对比度范围小");
    P ("label.palettes.palette_harmony_label.single_accent_palette", "单强调色调色板");
    P ("label.palettes.palette_mood_label.dark", "暗色");
-   P ("label.palettes.palette_mood_label.cool_mood", "冷静氛围");
+   P ("label.palettes.palette_mood_label.cool_mood", "冷色氛围");
    P ("label.palettes.palette_summary.mostly_rebeccapurple", "以丽贝卡紫为主");
-   P ("label.palettes.palette_accessibility_label.no_accessible_text_pairs", "没有无障碍文本配对");
+   P ("label.palettes.palette_accessibility_label.no_accessible_text_pairs",
+      "没有符合无障碍要求的文本配对");
    P ("label.palettes.palette_mood_label.subtle", "低调");
    P ("label.palettes.palette_summary.high_contrast_spread", "对比度范围大");
    P ("label.palettes.palette_contrast_suggestion.best_contrast_c_on_c_at_n_n",
@@ -316,8 +317,8 @@ begin
       & "{版本范围{version}}}");
    P ("label.versions.release_label",
       "{state, select, initial {初始开发版本{version}} prerelease "
-      & "{预发布版本{version}} major {主要版本{version}} minor "
-      & "{次要版本{version}} other {补丁版本{version}}}");
+      & "{预发布版本{version}} major {主版本{version}} minor "
+      & "{次版本{version}} other {补丁版本{version}}}");
    P ("label.markup.tag_label",
       "{tag, select, link {链接标签} image {图像标签} paragraph "
       & "{段落标签} ordered_list {有序列表标签} unordered_list "
@@ -372,11 +373,11 @@ begin
    P ("label.schema.schema_summary_label.deprecated", "{count, number}个已弃用");
    P ("label.schema.schema_summary_label.unknown", "{count, number}个未知");
    P ("label.diagnostics.check_run_summary_label.none", "未运行检查");
-   P ("label.diagnostics.check_run_summary_label.passed", "{count, number}项通过");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number}项已通过");
    P ("label.diagnostics.check_run_summary_label.failed", "{count, number}项失败");
    P ("label.diagnostics.check_run_summary_label.warnings", "{count, number}个警告");
-   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number}项跳过");
-   P ("label.diagnostics.check_run_summary_label.pending", "{count, number}项待定");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number}项已跳过");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number}项待处理");
    P ("label.workflows.workflow_summary_label.total", "{count, number}项");
    P ("label.workflows.workflow_summary_label.completed", "{count, number}项已完成");
    P ("label.workflows.workflow_summary_label.active", "{count, number}项进行中");
@@ -438,7 +439,7 @@ begin
    P ("label.names.agree.very_light", "{gender, select, other {很亮}}");
    P ("label.names.agree.desaturated", "{gender, select, other {低饱和}}");
    P ("label.names.agree.muted", "{gender, select, other {暗淡}}");
-   P ("label.names.agree.neutral", "{gender, select, other {无彩}}");
+   P ("label.names.agree.neutral", "{gender, select, other {中性}}");
    P ("label.names.agree.saturated", "{gender, select, other {高饱和}}");
    P ("label.names.agree.vivid", "{gender, select, other {鲜艳}}");
    P ("label.names.agree.grayish", "{gender, select, other {偏灰}}");
@@ -454,4 +455,8 @@ begin
    P ("label.names.descriptive_color_name",
       "{brightness}、{chroma}、{temperature}的{base, select, pink {{hue}} "
       & "other {{hue}}}");
+   P ("label.endpoints.url_label", "{state, select, empty {空URL} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {空URL} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[已隐去的用户]");
+   P ("label.endpoints.url_label.query", "查询 {count, plural, other {{count, number}个参数}}");
 end Labels_3;

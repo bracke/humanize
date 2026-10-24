@@ -528,7 +528,7 @@ begin
       & "sha256_fingerprint {odtlačok SHA-256} other {tajný údaj}}");
    P ("label.secrets.sensitive_value_kind_label",
       "{kind, select, email_value {e-mail} phone_value {telefón} url_value "
-      & "{URL} ip_address_value {IP adresa} token_value {token} file_path_value "
+      & "{URL} ip_address_value {adresa IP} token_value {token} file_path_value "
       & "{cesta k súboru} account_id_value {ID účtu} payment_reference_value "
       & "{platobná referencia} log_field_value {pole denníka} other {citlivá "
       & "hodnota}}");

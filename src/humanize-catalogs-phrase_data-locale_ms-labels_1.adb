@@ -483,7 +483,7 @@ begin
    P ("label.forms.field_state_label",
       "{name}: {state, select, valid_input {sah} invalid_input {tidak sah} "
       & "required_input {wajib} optional_input {pilihan} disabled_input "
-      & "{dilumpuhkan} other {baca sahaja}}");
+      & "{dinyahdayakan} other {baca sahaja}}");
    P ("label.forms.form_error_summary_label",
       "{errors, plural, =0 {{warnings, plural, =0 {tiada isu borang} other "
       & "{{warnings, number} amaran}}} other {{warnings, plural, =0 {{errors, "
@@ -497,7 +497,7 @@ begin
    P ("label.forms.input_state_label",
       "{state, select, valid_input {input sah} invalid_input {input tidak "
       & "sah} required_input {input wajib} optional_input {input pilihan} "
-      & "disabled_input {input dilumpuhkan} other {input baca sahaja}}");
+      & "disabled_input {input dinyahdayakan} other {input baca sahaja}}");
    P ("label.forms.submission_label",
       "{state, select, pristine_form {belum dimulakan} editing_form {sedang "
       & "disunting} dirty_form {perubahan belum disimpan} saving_form "

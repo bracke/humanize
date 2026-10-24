@@ -1749,6 +1749,10 @@ private package Humanize.Parsing.Phrase_Keys is
       new String'("label.names.agree.warm||gender|"),
       new String'("label.names.agree.cool||gender|"),
       new String'("label.names.agree.neutral_temperature||gender|"),
-      new String'("label.names.agree.balanced_temperature||gender|")];
+      new String'("label.names.agree.balanced_temperature||gender|"),
+      new String'("label.endpoints.url_label||state=empty/some|url"),
+      new String'("label.endpoints.safe_url_label||state=empty/some|url"),
+      new String'("label.endpoints.url_label.redacted_user|||"),
+      new String'("label.endpoints.url_label.query|||")];
 
 end Humanize.Parsing.Phrase_Keys;

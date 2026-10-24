@@ -307,7 +307,7 @@ begin
       & "{SSH özel anahtarı} webhook_secret {webhook gizli anahtarı} "
       & "oauth_token {OAuth belirteci} database_url_secret {gizli veritabanı "
       & "URL’si} sha1_fingerprint {SHA-1 parmak izi} sha256_fingerprint "
-      & "{SHA-256 parmak izi} other {gizli bilgi}}");
+      & "{SHA-256 parmak izi} other {gizli değer}}");
    P ("label.secrets.sensitive_value_kind_label",
       "{kind, select, email_value {e-posta} phone_value {telefon} url_value "
       & "{URL} ip_address_value {IP adresi} token_value {belirteç} "
@@ -463,6 +463,54 @@ begin
       & "number} gözlemde 0 aykırı değer}}} one {{total, number} gözlemde "
       & "1 aykırı değer} other {{total, number} gözlemde {outliers, number} "
       & "aykırı değer}}");
+   P ("label.statistics.distribution_shape_label",
+      "{shape, select, no_distribution_shape {gözlem yok} "
+      & "sample_too_small_shape {şekli tanımlamak için örneklem çok "
+      & "küçük, {count, plural, one {1 gözlem} other {{count, number} "
+      & "gözlem}}} flat_shape {{median} değerinde düz dağılım} "
+      & "outlier_heavy_shape {{median} civarında aykırı değerleri yoğun "
+      & "dağılım} volatile_shape {{median} civarında oynak dağılım} "
+      & "clustered_shape {{median} civarında kümelenmiş dağılım} "
+      & "wide_spread_shape {geniş yayılımlı dağılım} wide_spread_range "
+      & "{{minimum} ile {maximum} arasında geniş yayılımlı dağılım} "
+      & "right_skewed_shape {sağa çarpık dağılım, medyan {median}} "
+      & "left_skewed_shape {sola çarpık dağılım, medyan {median}} other "
+      & "{{median} civarında büyük ölçüde dengeli dağılım}}");
+   P ("label.privacy.safe_email_label",
+      "{state, select, empty {boş e-posta} address {e-posta adresi} other "
+      & "{{domain} alan adında e-posta}}");
+   P ("label.privacy.safe_phone_label",
+      "{state, select, none {telefon numarası} redacted {telefon numarası "
+      & "gizlendi} other {sonu {digits} olan telefon}}");
+   P ("label.privacy.safe_handle_label",
+      "{state, select, none {kullanıcı adı} other {kullanıcı adı "
+      & "{shown}}}");
+   P ("label.privacy.code_symbol_label", "{state, select, none {kod sembolü} other {kod sembolü {symbol}}}");
+   P ("label.privacy.address_metadata_label",
+      "adres meta verisi: {present, plural, one {1 alan mevcut} other "
+      & "{{present, number} alan mevcut}}, {missing, plural, one {1 alan eksik} "
+      & "other {{missing, number} alan eksik}}");
+   P ("label.endpoints.host_label", "{state, select, none {bilinmeyen ana makine} other {{host} {kind}}}");
+   P ("label.endpoints.endpoint_label",
+      "{state, select, none {bilinmeyen uç nokta} other "
+      & "{{scheme}{host}{port} {kind} uç noktası}}");
+   P ("label.endpoints.url_component_summary",
+      "{state, select, empty {boş URL} none {tanınan bileşeni olmayan URL} "
+      & "other {{count, plural, one {1 bileşenli} other {{count, number} "
+      & "bileşenli}} URL: {components}}}");
+   P ("label.endpoints.query_summary",
+      "{count, plural, =0 {sorgu parametresi yok} one {1 sorgu parametresi} "
+      & "other {{count, number} sorgu parametresi}}");
+   P ("label.endpoints.ip_address_label",
+      "{address} {kind, select, ipv4_host {genel IPv4 adresi} ipv6_host "
+      & "{genel IPv6 adresi} private_network_host {özel ağ adresi} "
+      & "localhost_host {yerel ana makine} other {IP adresi değil}}");
+   P ("label.endpoints.cidr_label",
+      "{state, select, invalid {{cidr} geçersiz CIDR} other {{cidr} {kind} "
+      & "ağ öneki {prefix}}}");
+   P ("label.resources.utilization_label",
+      "{total, number} {unit} içinden {used, number} kullanıldı "
+      & "({percent}, {band})");
    P ("label.resources.remaining_label",
       "{state, select, over {kapasite {count, number} {unit} aşıldı} other "
       & "{{total, number} {unit} içinden {count, number} {unit} kaldı}}");
@@ -475,6 +523,42 @@ begin
       "{state, select, none {önbellek isabet oranı yok: istek yok} other "
       & "{önbellek isabet oranı {percent}: {hits, number} isabet, {misses, "
       & "number} ıska}}");
+   P ("label.resources.saturation_label", "{named, select, no {kaynak} other {{name}}} {percent} {band}");
+   P ("label.versions.version_label",
+      "{state, select, both {sürüm {version}, ön sürüm {prerelease}, "
+      & "derleme {build}} prerelease {sürüm {version}, ön sürüm "
+      & "{prerelease}} build {sürüm {version}, derleme {build}} other "
+      & "{sürüm {version}}}");
+   P ("label.versions.version_delta_label",
+      "{delta, select, same_version {aynı sürüm} major_upgrade {ana "
+      & "sürüm yükseltmesi} minor_upgrade {ara sürüm yükseltmesi} "
+      & "patch_upgrade {yama yükseltmesi} prerelease_change {ön sürüm "
+      & "değişikliği} build_metadata_change {derleme meta verisi "
+      & "değişikliği} downgrade {sürüm düşürme} other {bilinmeyen "
+      & "sürüm değişikliği}}: {from} -> {to}");
+   P ("label.versions.compatibility_range_label",
+      "{kind, select, exact_range {tam olarak sürüm {version}} "
+      & "minimum_range {sürüm {version} veya daha yeni} maximum_range "
+      & "{sürüm {version} veya daha eski} major_compatible_range {ana sürüm "
+      & "{version} ile uyumlu} minor_compatible_range {ara sürüm {version} "
+      & "ile uyumlu} other {sürüm aralığı {version}}}");
+   P ("label.versions.release_label",
+      "{state, select, initial {ilk geliştirme sürümü {version}} "
+      & "prerelease {ön sürüm {version}} major {ana sürüm {version}} minor "
+      & "{ara sürüm {version}} other {yama sürümü {version}}}");
+   P ("label.markup.tag_label",
+      "{tag, select, link {bağlantı etiketi} image {görüntü etiketi} "
+      & "paragraph {paragraf etiketi} ordered_list {sıralı liste etiketi} "
+      & "unordered_list {sırasız liste etiketi} list_item {liste öğesi "
+      & "etiketi} table_header_cell {tablo başlık hücresi etiketi} "
+      & "table_cell {tablo hücresi etiketi} table_row {tablo satırı etiketi} "
+      & "line_break {satır sonu etiketi} thematic_break {tematik ayırıcı "
+      & "etiketi} heading_level_n {{level, number}. düzey başlık etiketi} "
+      & "other {{name} etiketi}}");
+   P ("label.markup.attribute_label",
+      "{state, select, bare {{name} özniteliği} event {{name} olay "
+      & "işleyici özniteliği} other {{name} özniteliği “{value}” "
+      & "olarak ayarlı}}");
    P ("label.markup.attribute_count_label.total",
       "{count, plural, one {1 öznitelik} other {{count, number} öznitelik}}");
    P ("label.markup.attribute_count_label.data",
@@ -486,6 +570,13 @@ begin
    P ("label.markup.attribute_count_label.events",
       "{count, plural, one {1 olay işleyici} other {{count, number} olay "
       & "işleyici}}");
+   P ("label.markup.content_type_label",
+      "{kind, select, text_content {metin içeriği} html_content {HTML "
+      & "belgesi} json_content {JSON belgesi} xml_content {XML belgesi} "
+      & "image_content {görüntü içeriği} audio_content {ses içeriği} "
+      & "video_content {video içeriği} font_content {yazı tipi içeriği} "
+      & "archive_content {arşiv içeriği} binary_content {ikili içerik} "
+      & "form_content {form gönderimi} other {bilinmeyen içerik}} ({base})");
    P ("label.markup.heading_label", "başlık düzeyi {level, number}");
    P ("label.markup.tag_count_label.total", "{count, plural, one {1 etiket} other {{count, number} etiket}}");
    P ("label.markup.tag_count_label.links", "{count, plural, one {1 bağlantı} other {{count, number} bağlantı}}");
@@ -507,6 +598,17 @@ begin
    P ("label.markup.table_navigation_label",
       "{caption} satır {row, number}/{rows, number}, sütun {column, "
       & "number}/{columns, number}");
+   P ("label.secrets.secret_label",
+      "{state, select, unset {{kind} ayarlanmamış} hidden_value {{kind} "
+      & "gizli} masked_value {{kind} {shown}} fingerprint_only {{kind} parmak "
+      & "izi, sonu {shown}} other {{kind}, sonu {shown}}}");
+   P ("label.secrets.environment_secret_label",
+      "{state, select, unset {{name} {kind} ayarlanmamış} other {{name} "
+      & "{kind}, sonu {shown}}}");
+   P ("label.secrets.header_credential_label",
+      "{state, select, unset {{name} kimlik bilgisi başlığı "
+      & "ayarlanmamış} other {{name} {kind}, sonu {shown}}}");
+   P ("label.secrets.fingerprint_label", "{algorithm} parmak izi, sonu {shown}");
    P ("label.secrets.secret_count_label.total",
       "{count, plural, one {1 gizli değer} other {{count, number} gizli "
       & "değer}}");
@@ -514,6 +616,30 @@ begin
    P ("label.secrets.secret_count_label.unset", "{count, number} ayarlanmamış");
    P ("label.secrets.secret_count_label.fingerprints",
       "{count, plural, one {1 parmak izi} other {{count, number} parmak izi}}");
+   P ("label.secrets.safe_display_label",
+      "{state, select, not_set {{label} ayarlanmamış} redacted {{label} "
+      & "gizlendi} url_redacted {URL gizlendi} ip_redacted {IP adresi gizlendi} "
+      & "path_ending {dosya yolu, sonu {shown}} at {{label}: {shown}} audit "
+      & "{{label}, uzunluk {length, number}, sonu {shown}} debug {{label} "
+      & "{shown}} other {{label}, sonu {shown}}}");
+   P ("label.schema.field_label",
+      "{state, select, deprecated_field {kullanımdan kaldırılmış } "
+      & "unknown_field {bilinmeyen } read_only_field {salt okunur } "
+      & "write_only_field {salt yazılır } computed_field {hesaplanan } other "
+      & "{}}{presence, select, required_field {zorunlu} optional_field {isteğe "
+      & "bağlı} conditional_field {koşullu} other {varlığı "
+      & "bilinmeyen}}{nullable, select, non_nullable {, null olamaz} nullable "
+      & "{, null olabilir} other {}} {kind, select, string_field {dize} "
+      & "integer_field {tamsayı} decimal_field {ondalık} boolean_field "
+      & "{mantıksal} date_field {tarih} date_time_field {tarih-saat} "
+      & "object_field {nesne} array_field {dizi} enum_field {numaralandırma} "
+      & "binary_field {ikili} null_field {null} any_field {herhangi} other "
+      & "{bilinmeyen}} alanı: {name}");
+   P ("label.schema.schema_summary_label.fields", "{count, plural, one {1 alan} other {{count, number} alan}}");
+   P ("label.schema.schema_summary_label.required", "{count, number} zorunlu");
+   P ("label.schema.schema_summary_label.optional", "{count, number} isteğe bağlı");
+   P ("label.schema.schema_summary_label.deprecated", "{count, number} kullanımdan kaldırılmış");
+   P ("label.schema.schema_summary_label.unknown", "{count, number} bilinmeyen");
    P ("label.schema.type_mismatch_label",
       "{field_name} alanı: beklenen {expected, select, string_field {dize} "
       & "integer_field {tamsayı} decimal_field {ondalık} boolean_field "
@@ -532,6 +658,13 @@ begin
       & "{{base}, {blocking, plural, one {1 engelleyici sorun} other "
       & "{{blocking, number} engelleyici sorun}}} only {yalnızca {base}} other "
       & "{{base}}}");
+   P ("label.diagnostics.check_run_summary_label.none", "hiç denetim çalıştırılmadı");
+   P ("label.diagnostics.check_run_summary_label.passed", "{count, number} başarılı");
+   P ("label.diagnostics.check_run_summary_label.failed", "{count, number} başarısız");
+   P ("label.diagnostics.check_run_summary_label.warnings",
+      "{count, plural, one {1 uyarı} other {{count, number} uyarı}}");
+   P ("label.diagnostics.check_run_summary_label.skipped", "{count, number} atlandı");
+   P ("label.diagnostics.check_run_summary_label.pending", "{count, number} bekliyor");
    P ("label.thresholds.metric_value_label", "{name} {value}");
    P ("label.thresholds.range_label",
       "{inclusive, select, inclusive_window {hedef aralık {low} – {high}} "
@@ -543,13 +676,15 @@ begin
    P ("label.thresholds.threshold_status_label",
       "{state, select, critical {{value} kritik eşikte} warning {{value} "
       & "uyarı eşiğinde} other {{value} normal aralıkta}}");
-   P ("label.thresholds.breach_label", "{state, select, ok {aşılmadı} other {{difference} aşıldı}}");
+   P ("label.thresholds.breach_label",
+      "{state, select, ok {aşılmadı} other {{difference} farkla "
+      & "aşıldı}}");
    P ("label.thresholds.target_delta_label",
       "{state, select, at {hedefte} below {hedefin {difference} altında} "
       & "other {hedefin {difference} üstünde}}");
    P ("label.thresholds.near_limit_label",
       "{state, select, breached {sınır aşıldı} near {sınıra yakın, "
-      & "{distance} kaldı} other {sınıra {distance}}}");
+      & "{distance} kaldı} other {sınıra uzaklık: {distance}}}");
    P ("label.thresholds.threshold_summary_label.none", "metrik yok");
    P ("label.thresholds.threshold_summary_label.normal", "{count, number} normal");
    P ("label.thresholds.threshold_summary_label.warnings",
@@ -560,139 +695,4 @@ begin
    P ("label.thresholds.target_window_label", "hedef {target} ± {tolerance}");
    P ("label.thresholds.tolerance_label", "tolerans {tolerance}");
    P ("label.thresholds.percent_of_limit_label", "sınırın {percent} kadarı");
-   P ("label.thresholds.remaining_to_limit_label",
-      "{state, select, exceeded {sınır {amount} aşıldı} other {{amount} "
-      & "kaldı}}");
-   P ("label.thresholds.budget_used_label", "{budget} bütçeden {used} kullanıldı");
-   P ("label.workflows.step_label", "adım {current, number}/{total, number}: {name}");
-   P ("label.workflows.milestone_label", "{current, number}/{total, number} kilometre taşı tamamlandı: {name}");
-   P ("label.workflows.workflow_progress_label",
-      "{state, select, none {iş akışı öğesi yok} half {iş akışının "
-      & "yarısı tamamlandı} other {{completed, number}/{total, number} "
-      & "tamamlandı}}");
-   P ("label.workflows.queue_position_label",
-      "{total, plural, =0 {kuyruk sırası {position, number}} other {kuyruk "
-      & "sırası {position, number}/{total, number}}}");
-   P ("label.changes.change_set_label.none", "değişiklik yok");
-   P ("label.changes.change_set_label.added", "{count, number} eklendi");
-   P ("label.changes.change_set_label.removed", "{count, number} kaldırıldı");
-   P ("label.changes.change_set_label.modified", "{count, number} değişti");
-   P ("label.changes.change_set_label.unchanged", "{count, number} değişmedi");
-   P ("label.changes.sync_change_label.none", "eşitleme değişikliği yok");
-   P ("label.changes.sync_change_label.uploaded", "{count, number} yüklendi");
-   P ("label.changes.sync_change_label.downloaded", "{count, number} indirildi");
-   P ("label.changes.sync_change_label.deleted", "{count, number} silindi");
-   P ("label.changes.sync_change_label.conflicts",
-      "{count, plural, one {1 çakışma} other {{count, number} çakışma}}");
-   P ("label.changes.net_change_label",
-      "{state, select, none {net değişiklik yok} up {net +{count, plural, "
-      & "one {1 öğe} other {{count, number} öğe}}} other {net -{count, "
-      & "plural, one {1 öğe} other {{count, number} öğe}}}}");
-   P ("label.changes.review_progress_label",
-      "{state, select, none {incelenecek değişiklik yok} all {tüm "
-      & "değişiklikler incelendi} other {{reviewed, number}/{total, number} "
-      & "değişiklik incelendi}}");
-   P ("label.changes.numeric_field_change_label",
-      "{state, select, same {{field_name} değişmedi: {new_value}} up "
-      & "{{field_name} {old_value} değerinden {new_value} değerine yükseldi} "
-      & "other {{field_name} {old_value} değerinden {new_value} değerine "
-      & "düştü}}");
-   P ("label.tables.selection_label",
-      "{state, select, no_rows {seçilebilir satır yok} none {satır "
-      & "seçilmedi} all {{total, plural, one {1 satır} other {{total, number} "
-      & "satırın tümü}} seçildi} other {{selected, number}/{total, number} "
-      & "satır seçildi}}");
-   P ("label.tables.page_label",
-      "{page, plural, =0 {sayfa yok} other {{pages, plural, =0 {sayfa yok} "
-      & "other {{rows, plural, =0 {sayfa {page, number}/{pages, number}} one "
-      & "{sayfa {page, number}/{pages, number}, 1 satır} other {sayfa {page, "
-      & "number}/{pages, number}, {rows, number} satır}}}}}}");
-   P ("label.tables.filter_label",
-      "{state, select, no_rows {satır yok} none {eşleşen satır yok} all "
-      & "{{total, plural, one {1 satır} other {{total, number} satırın "
-      & "tümü}} görünür} other {{visible, number}/{total, number} satır "
-      & "görünür}}");
-   P ("label.tables.row_range_label",
-      "{state, select, none {satır yok} single {satır {first_row, "
-      & "number}/{total, number}} other {satır {first_row, number}-{last_row, "
-      & "number}/{total, number}}}");
-   P ("label.forms.remaining_characters_label",
-      "{state, select, unlimited {karakter sınırı yok} none_left {karakter "
-      & "kalmadı} left {{count, plural, one {1 karakter} other {{count, "
-      & "number} karakter}} kaldı} other {sınır {count, plural, one {1 "
-      & "karakter} other {{count, number} karakter}} aşıldı}}");
-   P ("label.forms.required_fields_label",
-      "{total, plural, =0 {zorunlu alan yok} one {{missing, plural, =0 {tüm "
-      & "zorunlu alanlar dolu} other {1/1 zorunlu alan eksik}}} other "
-      & "{{missing, plural, =0 {tüm zorunlu alanlar dolu} other {{missing, "
-      & "number}/{total, number} zorunlu alan eksik}}}}");
-   P ("label.forms.form_progress_label",
-      "{state, select, none {alan yok} all {tüm alanlar tamamlandı} other "
-      & "{{completed, number}/{total, number} alan tamamlandı}}");
-   P ("label.forms.section_progress_label",
-      "{state, select, none {{name}: alan yok} all {{name}: tüm alanlar "
-      & "tamamlandı} other {{name}: {completed, number}/{total, number} alan "
-      & "tamamlandı}}");
-   P ("label.forms.form_step_label",
-      "{total, plural, =0 {form adımı yok} one {adım 1/1: {name}} other "
-      & "{adım {current, number}/{total, number}: {name}}}");
-   P ("label.navigation.breadcrumb_position_label",
-      "{total, plural, =0 {içerik haritası yok} one {içerik haritası 1/1: "
-      & "{name}} other {içerik haritası {current, number}/{total, number}: "
-      & "{name}}}");
-   P ("label.navigation.tab_label",
-      "{total, plural, =0 {sekme yok} one {sekme 1/1: {name}} other {sekme "
-      & "{current, number}/{total, number}: {name}}}");
-   P ("label.notifications.inbox_label",
-      "{total, plural, =0 {gelen kutusu boş} one {{unread, plural, =0 {tüm "
-      & "bildirimler okundu} other {1/1 bildirim okunmamış}}} other {{unread, "
-      & "plural, =0 {tüm bildirimler okundu} other {{unread, number}/{total, "
-      & "number} bildirim okunmamış}}}}");
-   P ("label.notifications.delivery_attempt_label", "teslim denemesi {attempt, number}/{max_attempts, number}");
-   P ("label.tasks.checklist_label",
-      "{total, plural, =0 {kontrol listesi öğesi yok} one {{done, plural, "
-      & "=0 {0/1 öğe tamamlandı} other {1/1 öğe tamamlandı}}} other "
-      & "{{done, number}/{total, number} öğe tamamlandı}}");
-   P ("label.attachments.upload_progress_label",
-      "{total, plural, =0 {yükleme yok} one {{done, plural, =0 {0/1 yükleme "
-      & "tamamlandı} other {1/1 yükleme tamamlandı}}} other {{done, "
-      & "number}/{total, number} yükleme tamamlandı}}");
-   P ("label.events.capacity_label",
-      "{capacity, plural, =0 {kapasite yok} one {{reserved, plural, =0 {0/1 "
-      & "koltuk ayrıldı} other {1/1 koltuk ayrıldı}}} other {{reserved, "
-      & "number}/{capacity, number} koltuk ayrıldı}}");
-   P ("label.events.waitlist_label",
-      "{total, plural, =0 {bekleme listesi sırası {position, number}} other "
-      & "{bekleme listesi sırası {position, number}/{total, number}}}");
-   P ("label.comparisons.multi_value_summary",
-      "{mode, select, comparison_compact {{name} {changed, number}/{total, "
-      & "number} değişti} other {{name}: {changed, number} değişti, "
-      & "{unchanged, number} değişmedi, toplam {total, number}}}");
-   P ("label.palettes.advanced_palette_summary", "{harmony}, {mood}, {accessibility}; {roles}");
-   P ("label.groups", "{first}; {second}");
-   P ("label.parts", "{first}, {second}");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_d_n",
-      "mevcut ön plan {v1}:{v2, number} oranında büyük metin "
-      & "kontrastını karşılıyor");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_d_n",
-      "mevcut ön plan {v1}:{v2, number} oranında normal metin kontrastını "
-      & "karşılıyor");
-   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_enhanced_text_contrast",
-      "{v2, number}:{v3, number} gelişmiş metin kontrastı için {v1} "
-      & "kullanın");
-   P ("label.contrast.contrast_remediation_label.use_c_for_n_n_large_text_contrast",
-      "{v2, number}:{v3, number} büyük metin kontrastı için {v1} "
-      & "kullanın");
-   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_normal_text_contrast",
-      "{v2}:{v3, number} normal metin kontrastı için {v1} kullanın");
-   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_large_text_contrast",
-      "{v2}:{v3, number} büyük metin kontrastı için {v1} kullanın");
-   P ("label.contrast.contrast_remediation_label.use_c_for_d_n_enhanced_text_contrast",
-      "{v2}:{v3, number} gelişmiş metin kontrastı için {v1} kullanın");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_large_text_contrast_at_n_n",
-      "mevcut ön plan {v1, number}:{v2, number} oranında büyük metin "
-      & "kontrastını karşılıyor");
-   P ("label.contrast.contrast_remediation_label.current_foreground_meets_normal_text_contrast_at_n_n",
-      "mevcut ön plan {v1, number}:{v2, number} oranında normal metin "
-      & "kontrastını karşılıyor");
 end Labels_2;

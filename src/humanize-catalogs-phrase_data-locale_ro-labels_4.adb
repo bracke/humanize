@@ -94,4 +94,10 @@ begin
    P ("label.names.descriptive_color_name",
       "{base, select, pink {{hue}} other {{hue}}} {brightness} {chroma} "
       & "{temperature}");
+   P ("label.endpoints.url_label", "{state, select, empty {URL gol} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {URL gol} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[utilizator ascuns]");
+   P ("label.endpoints.url_label.query",
+      "interogare {count, plural, one {{count, number} parametru} few "
+      & "{{count, number} parametri} other {{count, number} de parametri}}");
 end Labels_4;

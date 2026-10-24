@@ -50,7 +50,7 @@ begin
       & "попереджень} other {{count, number} "
       & "попередження}}");
    P ("label.diagnostics.check_run_summary_label.skipped", "пропущено: {count, number}");
-   P ("label.diagnostics.check_run_summary_label.pending", "очікує: {count, number}");
+   P ("label.diagnostics.check_run_summary_label.pending", "в очікуванні: {count, number}");
    P ("label.workflows.workflow_summary_label.total",
       "{count, plural, one {{count, number} елемент} few {{count, "
       & "number} елементи} many {{count, number} елементів} "
@@ -198,4 +198,11 @@ begin
    P ("label.names.descriptive_color_name",
       "{brightness} {chroma} {temperature} {base, select, pink {{hue}} other "
       & "{{hue}}}");
+   P ("label.endpoints.url_label", "{state, select, empty {порожня URL-адреса} other {{url}}}");
+   P ("label.endpoints.safe_url_label", "{state, select, empty {порожня URL-адреса} other {{url}}}");
+   P ("label.endpoints.url_label.redacted_user", "[прихований користувач]");
+   P ("label.endpoints.url_label.query",
+      "запит {count, plural, one {{count, number} параметр} few "
+      & "{{count, number} параметри} many {{count, number} "
+      & "параметрів} other {{count, number} параметра}}");
 end Labels_5;
